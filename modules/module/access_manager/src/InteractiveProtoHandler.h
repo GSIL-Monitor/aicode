@@ -493,7 +493,7 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
-    struct BroadcastOnlineDevInfo__INNER : Req
+    struct BroadcastOnlineDevInfo_INNER : Req
     {
 
         std::list<Device> m_devInfoList;
@@ -517,7 +517,7 @@ public:
     struct GetOnlineUserInfoRsp_INNER : Rsp
     {
 
-        std::list<User> m_devInfoList;
+        std::list<User> m_userInfoList;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -528,7 +528,7 @@ public:
     struct BroadcastOnlineUserInfo_INNER : Req
     {
 
-        std::list<User> m_devInfoList;
+        std::list<User> m_userInfoList;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

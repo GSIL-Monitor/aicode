@@ -369,39 +369,39 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFriendsRsp_USR_T, handler));
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineDevInfoReq_INNER_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineDevInfoReq_INNER_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineDevInfoRsp_INNER_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineDevInfo_INNER_T, handler));
 
     ///////////////////////////////////////////////////////
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineDevInfoRsp_INNER_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineUserInfoReq_INNER_T, handler));
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineDevInfo_INNER_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineUserInfoRsp_INNER_T, handler));
 
-    ///////////////////////////////////////////////////////
+    handler.Szr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_UnSerializer, this, _1, _2);
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer, this, _1, _2);
-
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineUserInfoReq_INNER_T, handler));
-
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_UnSerializer, this, _1, _2);
-
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetOnlineUserInfoRsp_INNER_T, handler));
-
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_UnSerializer, this, _1, _2);
-
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineUserInfo_INNER_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineUserInfo_INNER_T, handler));
     
 
 }
@@ -770,65 +770,65 @@ bool InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer(const Interactive
     return UnSerializerT<QueryFriendsRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-//bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<GetOnlineDevInfoReq_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<GetOnlineDevInfoReq_INNER, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<GetOnlineDevInfoRsp_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<GetOnlineDevInfoRsp_INNER, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<BroadcastOnlineDevInfo_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<BroadcastOnlineDevInfo_INNER, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<GetOnlineUserInfoReq_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<GetOnlineUserInfoReq_INNER, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<GetOnlineUserInfoRsp_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<GetOnlineUserInfoRsp_INNER, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<BroadcastOnlineUserInfo_INNER, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<BroadcastOnlineUserInfo_INNER, Req>(InteractiveMsg, rsp);
-//}
+bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineDevInfoReq_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineDevInfoReq_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineDevInfoRsp_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineDevInfoRsp_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<BroadcastOnlineDevInfo_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<BroadcastOnlineDevInfo_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineUserInfoReq_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineUserInfoReq_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineUserInfoRsp_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineUserInfoRsp_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<BroadcastOnlineUserInfo_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<BroadcastOnlineUserInfo_INNER, Req>(InteractiveMsg, rsp);
+}
 
 
 
@@ -1912,13 +1912,15 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const Interactiv
         {
             usr.m_strItemsList.push_back(ItUser.stritems(k));
         }
+
+        m_allFriendUserInfoList.push_back(usr);
     }
 
 }
 
 void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
 {
-    Req::Serializer(InteractiveMsg);
+    Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFriendsRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->set_strvalue(m_strValue);
 
@@ -1963,6 +1965,239 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage
         ++itBegin;
     }
 }
+
+void InteractiveProtoHandler::GetOnlineDevInfoReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().getonlinedevinforeq_inner_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::GetOnlineDevInfoReq_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetOnlineDevInfoReq_INNER_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_getonlinedevinforeq_inner_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    UnSerializeDevList<Device>(m_devInfoList, InteractiveMsg.rspvalue().getonlinedevinforsp_inner_value().devinfo());
+    m_strValue = InteractiveMsg.rspvalue().getonlinedevinforsp_inner_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::GetOnlineDevInfoRsp_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetOnlineDevInfoRsp_INNER_T);
+
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_getonlinedevinforsp_inner_value()->mutable_devinfo();
+    SerializeDevList<Device>(m_devInfoList, uinfo);
+    InteractiveMsg.mutable_rspvalue()->mutable_getonlinedevinforsp_inner_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    UnSerializeDevList<Device>(m_devInfoList, InteractiveMsg.reqvalue().broadcastonlinedevinfo_inner_value().devinfo());
+    m_strValue = InteractiveMsg.reqvalue().broadcastonlinedevinfo_inner_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::BroadcastOnlineDevInfo_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::BroadcastOnlineDevInfo_INNER_T);
+
+    auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_broadcastonlinedevinfo_inner_value()->mutable_devinfo();
+    SerializeDevList<Device>(m_devInfoList, uinfo);
+    InteractiveMsg.mutable_reqvalue()->mutable_broadcastonlinedevinfo_inner_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::GetOnlineUserInfoReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().getonlineuserinforeq_inner_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::GetOnlineUserInfoReq_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetOnlineUserInfoReq_INNER_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_getonlineuserinforeq_inner_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().getonlineuserinforsp_inner_value().strvalue();
+
+    m_userInfoList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().getonlineuserinforsp_inner_value().userinfo_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        auto ItUser = InteractiveMsg.rspvalue().getonlineuserinforsp_inner_value().userinfo(i);
+
+        User usr;
+        usr.m_strUserID = ItUser.struserid();
+        usr.m_strUserName = ItUser.strusername();
+        usr.m_strUserPassword = ItUser.struserpassword();
+        usr.m_uiTypeInfo = ItUser.uitypeinfo();
+
+        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
+
+        usr.m_strItemsList.clear();
+        int iCount = ItUser.stritems_size();
+        for (int k = 0; k < iCount; ++k)
+        {
+            usr.m_strItemsList.push_back(ItUser.stritems(k));
+        }
+
+        m_userInfoList.push_back(usr);
+    }
+
+}
+
+void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetOnlineUserInfoRsp_INNER_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_getonlineuserinforsp_inner_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_userInfoList.size(); ++i)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_getonlineuserinforsp_inner_value()->add_userinfo();
+    }
+    auto itBegin = m_userInfoList.begin();
+    auto itEnd = m_userInfoList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_getonlineuserinforsp_inner_value()->mutable_userinfo(iUser);
+
+        uinfo->set_struserid(itBegin->m_strUserID);
+        uinfo->set_strusername(itBegin->m_strUserName);
+        uinfo->set_struserpassword(itBegin->m_strUserPassword);
+        uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
+        uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+
+        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
+
+        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
+        {
+            uinfo->add_stritems();
+        }
+        auto itBeginItem = itBegin->m_strItemsList.begin();
+        auto itEnditem = itBegin->m_strItemsList.end();
+        int i = 0;
+        while (itBeginItem != itEnditem)
+        {
+
+            uinfo->set_stritems(i, *itBeginItem);
+
+            ++i;
+            ++itBeginItem;
+        }
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().broadcastonlineuserinfo_inner_value().strvalue();
+
+    m_userInfoList.clear();
+    int iCountTmp = InteractiveMsg.reqvalue().broadcastonlineuserinfo_inner_value().userinfo_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        auto ItUser = InteractiveMsg.reqvalue().broadcastonlineuserinfo_inner_value().userinfo(i);
+
+        User usr;
+        usr.m_strUserID = ItUser.struserid();
+        usr.m_strUserName = ItUser.strusername();
+        usr.m_strUserPassword = ItUser.struserpassword();
+        usr.m_uiTypeInfo = ItUser.uitypeinfo();
+
+        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
+
+        usr.m_strItemsList.clear();
+        int iCount = ItUser.stritems_size();
+        for (int k = 0; k < iCount; ++k)
+        {
+            usr.m_strItemsList.push_back(ItUser.stritems(k));
+        }
+
+        m_userInfoList.push_back(usr);
+    }
+
+}
+
+void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::BroadcastOnlineUserInfo_INNER_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_broadcastonlineuserinfo_inner_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_userInfoList.size(); ++i)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_broadcastonlineuserinfo_inner_value()->add_userinfo();
+    }
+    auto itBegin = m_userInfoList.begin();
+    auto itEnd = m_userInfoList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_broadcastonlineuserinfo_inner_value()->mutable_userinfo(iUser);
+
+        uinfo->set_struserid(itBegin->m_strUserID);
+        uinfo->set_strusername(itBegin->m_strUserName);
+        uinfo->set_struserpassword(itBegin->m_strUserPassword);
+        uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
+        uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+
+        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
+
+        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
+        {
+            uinfo->add_stritems();
+        }
+        auto itBeginItem = itBegin->m_strItemsList.begin();
+        auto itEnditem = itBegin->m_strItemsList.end();
+        int i = 0;
+        while (itBeginItem != itEnditem)
+        {
+
+            uinfo->set_stritems(i, *itBeginItem);
+
+            ++i;
+            ++itBeginItem;
+        }
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+
+
 
 
 
