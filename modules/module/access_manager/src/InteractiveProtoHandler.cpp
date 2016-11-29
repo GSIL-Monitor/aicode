@@ -333,41 +333,41 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::CancelSharedDevRsp_USR_T, handler));
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::AddFriendsReq_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFriendsReq_USR_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddFriendsReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFriendsReq_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFriendsReq_USR_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFriendsReq_USR_T, handler));
 
-    ///////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::AddFriendsRsp_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFriendsRsp_USR_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddFriendsRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFriendsRsp_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFriendsRsp_USR_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFriendsRsp_USR_T, handler));
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::DelFriendsReq_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::DelFriendsReq_USR_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DelFriendsReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DelFriendsReq_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DelFriendsReq_USR_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DelFriendsReq_USR_T, handler));
 
-    ///////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::DelFriendsRsp_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::DelFriendsRsp_USR_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DelFriendsRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DelFriendsRsp_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DelFriendsRsp_USR_T, handler));
-    //
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFriendsReq_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFriendsReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DelFriendsRsp_USR_T, handler));
+    
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFriendsReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFriendsReq_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFriendsReq_USR_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFriendsReq_USR_T, handler));
 
-    ///////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
 
-    //handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFriendsRsp_USR_Serializer, this, _1, _2);
-    //handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer, this, _1, _2);
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFriendsRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer, this, _1, _2);
 
-    //m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFriendsRsp_USR_T, handler));
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFriendsRsp_USR_T, handler));
 
     //handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer, this, _1, _2);
     //handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_UnSerializer, this, _1, _2);
@@ -710,66 +710,66 @@ bool InteractiveProtoHandler::CancelSharedDevRsp_USR_UnSerializer(const Interact
     return UnSerializerT<CancelSharedDevRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-//bool InteractiveProtoHandler::AddFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<AddFriendsReq_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::AddFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<AddFriendsReq_USR, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::AddFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<AddFriendsRsp_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::AddFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<AddFriendsRsp_USR, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::DelFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<DelFriendsReq_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::DelFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<DelFriendsReq_USR, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::DelFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<DelFriendsRsp_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::DelFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<DelFriendsRsp_USR, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::QueryFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<QueryFriendsReq_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::QueryFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<QueryFriendsReq_USR, Req>(InteractiveMsg, rsp);
-//}
-//
-//bool InteractiveProtoHandler::QueryFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
-//{
-//    return SerializerT<QueryFriendsRsp_USR, Req>(rsp, strOutput);
-//}
-//
-//bool InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
-//{
-//    return UnSerializerT<QueryFriendsRsp_USR, Req>(InteractiveMsg, rsp);
-//}
-//
+bool InteractiveProtoHandler::AddFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<AddFriendsReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<AddFriendsReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::AddFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<AddFriendsRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<AddFriendsRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DelFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DelFriendsReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DelFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DelFriendsReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DelFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DelFriendsRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DelFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DelFriendsRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryFriendsReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryFriendsReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryFriendsReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryFriendsRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryFriendsRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
 //bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
 //{
 //    return SerializerT<GetOnlineDevInfoReq_INNER, Req>(rsp, strOutput);
@@ -1764,4 +1764,205 @@ void InteractiveProtoHandler::CancelSharedDevRsp_USR::Serializer(InteractiveMess
     InteractiveMsg.set_type(Interactive::Message::MsgType::CancelSharedDevRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_cancelshareddevrsp_usr_value()->set_strvalue(m_strValue);
 }
+
+void InteractiveProtoHandler::AddFriendsReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().addfriendsreq_usr_value().struserid();
+    m_strFriendUserID = InteractiveMsg.reqvalue().addfriendsreq_usr_value().strfrienduserid();
+    
+}
+
+void InteractiveProtoHandler::AddFriendsReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddFriendsReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_addfriendsreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_addfriendsreq_usr_value()->set_strfrienduserid(m_strFriendUserID);
+    
+}
+
+void InteractiveProtoHandler::AddFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().addfriendsrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::AddFriendsRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddFriendsRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_addfriendsrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::DelFriendsReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().delfriendsreq_usr_value().struserid();
+
+    m_strFriendUserIDList.clear();
+    int iCountTmp = InteractiveMsg.reqvalue().delfriendsreq_usr_value().strfrienduserid_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFriendUserIDList.push_back(InteractiveMsg.reqvalue().delfriendsreq_usr_value().strfrienduserid(i));
+    }
+
+}
+
+void InteractiveProtoHandler::DelFriendsReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DelFriendsReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_delfriendsreq_usr_value()->set_struserid(m_strUserID);
+
+    for (unsigned int i = 0; i < m_strFriendUserIDList.size(); ++i)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_delfriendsreq_usr_value()->add_strfrienduserid();
+    }
+    auto itBegin = m_strFriendUserIDList.begin();
+    auto itEnd = m_strFriendUserIDList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_delfriendsreq_usr_value()->set_strfrienduserid(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+
+void InteractiveProtoHandler::DelFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().delfriendsrsp_usr_value().strvalue();
+
+    m_strFriendUserIDFailedList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().delfriendsrsp_usr_value().strfrienduseridfailed_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFriendUserIDFailedList.push_back(InteractiveMsg.rspvalue().delfriendsrsp_usr_value().strfrienduseridfailed(i));
+    }
+
+}
+
+void InteractiveProtoHandler::DelFriendsRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DelFriendsRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_delfriendsrsp_usr_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_strFriendUserIDFailedList.size(); ++i)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_delfriendsrsp_usr_value()->add_strfrienduseridfailed();
+    }
+    auto itBegin = m_strFriendUserIDFailedList.begin();
+    auto itEnd = m_strFriendUserIDFailedList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_delfriendsrsp_usr_value()->set_strfrienduseridfailed(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+void InteractiveProtoHandler::QueryFriendsReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryfriendsreq_usr_value().struserid();
+    m_strValue = InteractiveMsg.reqvalue().queryfriendsreq_usr_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::QueryFriendsReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFriendsReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfriendsreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfriendsreq_usr_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().strvalue();
+
+    m_allFriendUserInfoList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().allfrienduserinfo_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        auto ItUser = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().allfrienduserinfo(i);
+
+        User usr;
+        usr.m_strUserID = ItUser.struserid();
+        usr.m_strUserName = ItUser.strusername();
+        usr.m_strUserPassword = ItUser.struserpassword();
+        usr.m_uiTypeInfo = ItUser.uitypeinfo();
+
+        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
+        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
+
+        usr.m_strItemsList.clear();
+        int iCount = ItUser.stritems_size();
+        for (int k = 0; k < iCount; ++k)
+        {
+            usr.m_strItemsList.push_back(ItUser.stritems(k));
+        }
+    }
+
+}
+
+void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFriendsRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_allFriendUserInfoList.size(); ++i)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->add_allfrienduserinfo();
+    }
+    auto itBegin = m_allFriendUserInfoList.begin();
+    auto itEnd = m_allFriendUserInfoList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->mutable_allfrienduserinfo(iUser);
+
+        uinfo->set_struserid(itBegin->m_strUserID);
+        uinfo->set_strusername(itBegin->m_strUserName);
+        uinfo->set_struserpassword(itBegin->m_strUserPassword);
+        uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
+        uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+
+        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
+        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
+
+        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
+        {
+            uinfo->add_stritems();
+        }
+        auto itBeginItem = itBegin->m_strItemsList.begin();
+        auto itEnditem = itBegin->m_strItemsList.end();
+        int i = 0;
+        while (itBeginItem != itEnditem)
+        {
+
+            uinfo->set_stritems(i, *itBeginItem);
+
+            ++i;
+            ++itBeginItem;
+        }
+        
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+
 
