@@ -1,0 +1,222 @@
+//Explicit 'optional' labels are disallowed in the Proto3 syntax. 
+//To define 'optional' fields in Proto3, simply remove the 'optional' label, as fields are 'optional' by default.
+
+syntax = "proto3"; 
+
+package TDFS.MESSAGE;
+
+enum MsgType
+{
+  Init_T = 0;
+  LoginReq_T = 10000; //登录
+  LoginRsp_T = 10010; 
+  LoginoutReq_T = 10020; //登出
+  LoginoutRsp_T = 10030;
+  ConfigInfoReq_T = 10040; //配置
+  ConfigInfoRsp_T = 10050;
+  ShakehandReq_T = 10060; //握手
+  ShakehandRsp_T = 10070;
+  GetSyncAddressReq_T = 10080; //获取同步服务节点地址
+  GetSyncAddressRsp_T = 10090;
+  SyncFileListPendingReq_T = 10100; //待同步文件列表
+  SyncFileListPendingRsp_T = 10110;
+  ControlCMDReq_T = 10120; //控制命令
+  ControlCMDRsp_T = 10130;
+  GetFileInfoReq_T = 10140; //获取文件信息
+  GetFileInfoRsp_T = 10150;
+  FullSyncReq_T = 10160; //全量同步请求
+  FullSyncRsp_T = 10170;
+  FullSyncConform_T = 10180; //全量同步确认
+  ActiveReportingReq_T = 10190; //主动上报请求
+  ActiveReportingRsp_T = 10200;
+  
+}
+
+enum SyncServiceStatus
+{
+  IDLE = 0;
+  BUSSY = 1;
+  FAULT = 2;
+}
+
+message LoginReq
+{
+  string strSyncServiceName = 1;
+  string strPassword = 2;
+  string strStorageIP = 3;
+  string strStoragePort = 4;
+}
+
+message LoginRsp
+{
+  string strSID = 3;
+}
+
+message LoginoutReq
+{
+  string strValue = 1;
+}
+
+message LoginoutRsp
+{
+  string strValue = 1;
+}
+
+message ConfigInfoReq
+{
+  string strSyncServiceName = 1;
+}
+
+message ConfigInfoRsp
+{
+  string strConfigJson = 1;
+}
+
+message ShakehandReq
+{
+  string strValue = 1;
+  
+  SyncServiceStatus status = 2;
+}
+
+message ShakehandRsp
+{
+  string strValue = 1;
+}
+
+message Address
+{
+   string strAddress = 1;
+   enum NodeType
+   {
+     Center = 0;
+	 Sync = 1;
+   }
+   NodeType type = 2;
+   string AreaID = 3;
+   string strStorageIP = 4;
+   string strStoragePort = 5;
+   SyncServiceStatus status = 6;
+}
+
+message GetSyncAddressReq
+{
+  string strValue = 1;
+}
+
+message GetSyncAddressRsp
+{
+  repeated Address AddressOfSync = 1;
+}
+
+message FileInfo
+{
+  string strFileID = 1;
+  string strFileName = 2;
+  uint32 uiFileSize = 3;
+  string strFileMD5 = 4;
+  string strCreatedate = 5;
+}
+
+message SyncFileListPendingReq
+{
+  repeated FileInfo FileInfoList = 1;  
+}
+
+message SyncFileListPendingRsp
+{
+  repeated FileInfo FileInfoList = 1;
+}
+
+message GetFileInfoReq
+{
+  string strFileID = 1;
+}
+
+message GetFileInfoRsp
+{
+  FileInfo fileinfo = 1;
+}
+
+message ControlCMDReq
+{
+  uint32 uiCMD = 1;
+  string strCMDMsg = 2;
+  bool blNeedActiveReporting = 3;
+}
+
+message ControlCMDRsp
+{
+  uint32 uiCMD = 1;
+  bool blNeedActiveReporting = 2;
+}
+
+message FullSyncReq
+{
+  string strValue = 1;
+}
+
+message FullSyncRsp
+{
+  repeated FileInfo FileInfoList = 1;
+}
+
+message FullSyncConform
+{
+  uint32 uiFlag = 1;
+  repeated FileInfo FileInfoList = 2;
+}
+
+message ActiveReportingReq
+{
+  uint32 uiTotal = 1;
+  uint32 uiCurrentCompleted = 2;
+  FileInfo CurrentCompletedFileInfo = 3;
+}
+
+message ActiveReportingRsp
+{
+  string strValue = 1;
+}
+
+message Req
+{
+  LoginReq LoginReqValue = 1; //登录 
+  LoginoutReq LoginoutReqValue = 2; //登出
+  ConfigInfoReq ConfigInfoReqValue = 3; //配置
+  ShakehandReq ShakehandReqValue = 4; //握手
+  GetSyncAddressReq GetSyncAddressReqValue = 5; //获取同步服务节点地址
+  SyncFileListPendingReq SyncFileListPendingReqValue = 6; //待同步文件列表
+  ControlCMDReq ControlCMDReqValue = 7; //控制命令
+  GetFileInfoReq GetFileInfoReqValue = 8; //获取文件信息
+  FullSyncReq FullSyncReqValue = 9; //全量同步请求
+  FullSyncConform FullSyncConformValue = 10; //全量同步确认
+  ActiveReportingReq ActiveReportingReqValue = 11; //主动上报请求  
+}
+
+message Rsp
+{
+  int32 iRetcode = 1;
+  string strRetMsg = 2;
+  
+  LoginRsp LoginRspValue = 3; 
+  LoginoutRsp LoginoutRspValue = 4;
+  ConfigInfoRsp ConfigInfoRspValue = 5;
+  ShakehandRsp ShakehandRspValue = 6;
+  GetSyncAddressRsp GetSyncAddressRspValue = 7;
+  SyncFileListPendingRsp SyncFileListPendingRspValue = 8;
+  ControlCMDRsp ControlCMDRspValue = 9;
+  GetFileInfoRsp GetFileInfoRspValue = 10;
+  FullSyncRsp FullSyncRspValue = 11;
+  ActiveReportingRsp ActiveReportingRspValue = 12;
+}
+
+message SyncMessage
+{
+  MsgType type = 1;
+  uint64 uiMsgSeq = 2;
+  string strSID = 3;  
+  Req ReqValue = 4;
+  Rsp RspValue = 5;
+}
+

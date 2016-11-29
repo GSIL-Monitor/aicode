@@ -1,0 +1,14 @@
+mysql5.7.XXX
+1：grep "password" /var/log/mysqld.log 命令获取MySQL的临时密码
+2：ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!';
+3：修改/etc/my.conf，最后增加validate_password=off，禁用密码插件；
+4：
+授权用户root使用密码jb51从任意主机连接到mysql服务器：
+代码如下:
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'jb51' WITH GRANT OPTION;
+flush privileges;
+
+授权用户root使用密码jb51从指定ip为218.12.50.60的主机连接到mysql服务器：
+代码如下:
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'218.12.50.60' IDENTIFIED BY 'jb51' WITH GRANT OPTION;
+flush privileges;
