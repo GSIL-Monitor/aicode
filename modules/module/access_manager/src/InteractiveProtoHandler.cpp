@@ -1432,7 +1432,7 @@ void InteractiveProtoHandler::DelDevReq_USR::Serializer(InteractiveMessage &Inte
 
 void InteractiveProtoHandler::DelDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
-    Req::UnSerializer(InteractiveMsg);
+    Rsp::UnSerializer(InteractiveMsg);
     m_strValue = InteractiveMsg.rspvalue().deldevrsp_usr_value().strvalue();
 
     m_strDevIDFailedList.clear();
@@ -1446,7 +1446,7 @@ void InteractiveProtoHandler::DelDevRsp_USR::UnSerializer(const InteractiveMessa
 
 void InteractiveProtoHandler::DelDevRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
 {
-    Req::Serializer(InteractiveMsg);
+    Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::DelDevRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_deldevrsp_usr_value()->set_strvalue(m_strValue);
 
@@ -1834,7 +1834,7 @@ void InteractiveProtoHandler::DelFriendsReq_USR::Serializer(InteractiveMessage &
 
 void InteractiveProtoHandler::DelFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
-    Req::UnSerializer(InteractiveMsg);
+    Rsp::UnSerializer(InteractiveMsg);
     m_strValue = InteractiveMsg.rspvalue().delfriendsrsp_usr_value().strvalue();
 
     m_strFriendUserIDFailedList.clear();
@@ -1848,7 +1848,7 @@ void InteractiveProtoHandler::DelFriendsRsp_USR::UnSerializer(const InteractiveM
 
 void InteractiveProtoHandler::DelFriendsRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
 {
-    Req::Serializer(InteractiveMsg);
+    Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::DelFriendsRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_delfriendsrsp_usr_value()->set_strvalue(m_strValue);
 
@@ -1887,7 +1887,7 @@ void InteractiveProtoHandler::QueryFriendsReq_USR::Serializer(InteractiveMessage
 
 void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
-    Req::UnSerializer(InteractiveMsg);
+    Rsp::UnSerializer(InteractiveMsg);
     m_strValue = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().strvalue();
 
     m_allFriendUserInfoList.clear();

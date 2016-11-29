@@ -7,6 +7,10 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 
+/************************************************************************/
+/* protobuffer协议序列化和反序列化相关接口与实现                         */
+/************************************************************************/
+
 namespace Interactive
 {
     namespace Message
