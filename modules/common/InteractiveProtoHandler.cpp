@@ -867,6 +867,7 @@ void InteractiveProtoHandler::RegisterUserReq_USR::UnSerializer(const Interactiv
     m_userInfo.m_strUserName = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strusername();
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strcreatedate();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().sharingdevinfo());
