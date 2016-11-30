@@ -7,8 +7,6 @@
 #include "ConfigSt.h"
 #include <boost/filesystem.hpp> 
 #include <boost/lexical_cast.hpp>
-#include "ProtoHandler.h"
-#include "ControlCenter.h"
 #include "MsgBusClientFanout.h"
 
 #define CONFIG_FILE_NAME "access_manager.ini"
@@ -263,177 +261,28 @@ int main(int argc, char* argv[])
         return 0;
     }
         
-    /************************************************************************/
-    /* 测试协议组件序列化和反序列化                                                     */
-    /************************************************************************/
-
-    ProtoHandler::LoginReq loginreq;
-    loginreq.m_MsgType = ProtoHandler::MsgType::LoginReq_T;
-    loginreq.m_uiMsgSeq = 1;
-    loginreq.m_strSID = "sssssseeee";
-    loginreq.m_strPassword = "pwd";
-    loginreq.m_strSyncServiceName = "TestName";
-
-    std::string strOutput;
-    ProtoHandler phr;
-    if (!phr.SerializeReq(loginreq, strOutput))
-    {
-        LOG_ERROR_RLD("Serialize login req failed.");
-        return 0;
-    }
-    ProtoHandler::LoginReq loginreq2;
-    if (!phr.UnSerializeReq(strOutput, loginreq2))
-    {
-        LOG_ERROR_RLD("Unserialize login req failed.");
-        return 0;
-    }
-
-    bool blResult = loginreq.m_strPassword == loginreq2.m_strPassword && loginreq.m_strSyncServiceName == loginreq2.m_strSyncServiceName
-        && loginreq.m_strSID == loginreq2.m_strSID && loginreq.m_uiMsgSeq && loginreq2.m_uiMsgSeq;
-
-    LOG_INFO_RLD("Test LoginReq serialize and unserialize result is " << (blResult ? "true" : "false"));
-
-    {
-        {
-            std::string strCrc = "21212";
-            std::string strContentEncoded = "bodybody=";
-            const char *pContentBufferEncoded = strContentEncoded.data();
-            const unsigned int uiContentBufferLenEncoded = strContentEncoded.size();
-            std::string strPartEndLen = "30";
-            std::string strSrcID = "111";
-            std::string strDstID = "222";
-            std::string strType = "1";
-            unsigned int uiAllLen = 200;
-            char *pAllBuffer = new char[uiAllLen + 1];
-            memset(pAllBuffer, 0, (uiAllLen + 1));
-            snprintf(pAllBuffer, uiAllLen + 1, "RG,%s,%s,%s,%s,", strPartEndLen.c_str(), strSrcID.c_str(), strDstID.c_str(), strType.c_str());
-
-            unsigned int uiPos1 = 7 + strPartEndLen.size() + strSrcID.size() + strDstID.size() + strType.size();
-            memcpy(pAllBuffer + uiPos1, pContentBufferEncoded, uiContentBufferLenEncoded);
-            std::string strTmp(",");
-            memcpy(pAllBuffer + uiPos1 + uiContentBufferLenEncoded, strTmp.data(), strTmp.size());
-            memcpy(pAllBuffer + uiPos1 + uiContentBufferLenEncoded + 1, strCrc.data(), strCrc.size());
-
-
-            LOG_INFO_RLD("Test msg is " << std::string(pAllBuffer, uiAllLen + 1));
-        }
-
-        {
-            ProtoHandler::SyncFileListPendingRsp syncfilelistrsp;
-            syncfilelistrsp.m_iRetcode = 0;
-            syncfilelistrsp.m_strRetMsg = "ok";
-            syncfilelistrsp.m_uiMsgSeq = 1;
-            syncfilelistrsp.m_strSID = "sslkkla";
-            syncfilelistrsp.m_MsgType = ProtoHandler::MsgType::SyncFileListPendingRsp_T;
-
-            std::string strOutputSync;
-            ProtoHandler phd;
-            if (!phd.SerializeRsp(syncfilelistrsp, strOutputSync))
-            {
-                LOG_ERROR_RLD("Serialize SyncFileListPendingRsp req failed.");
-                return 0;
-            }
-
-            ProtoHandler::SyncFileListPendingRsp syncfilelistrsp2;
-            if (!phd.UnSerializeRsp(strOutputSync, syncfilelistrsp2))
-            {
-                LOG_ERROR_RLD("UnSerialize SyncFileListPendingRsp req failed.");
-                return 0;
-            }
-
-            bool blRet = syncfilelistrsp.m_iRetcode == syncfilelistrsp2.m_iRetcode && syncfilelistrsp.m_strRetMsg == syncfilelistrsp2.m_strRetMsg &&
-                syncfilelistrsp.m_uiMsgSeq == syncfilelistrsp2.m_uiMsgSeq && syncfilelistrsp.m_strSID == syncfilelistrsp2.m_strSID && 
-                syncfilelistrsp.m_MsgType == syncfilelistrsp2.m_MsgType;
-            LOG_INFO_RLD("Test SyncFileListPendingRsp serialize and unserialize result is " << (blRet ? "true" : "false"));
-
-        }
-
-        ProtoHandler::SyncFileListPendingReq syncfilelistreq;
-        syncfilelistreq.m_MsgType = ProtoHandler::MsgType::SyncFileListPendingReq_T;
-        syncfilelistreq.m_uiMsgSeq = 22;
-        syncfilelistreq.m_strSID = "siddd";
-
-        ProtoHandler::FileInfo ff;
-        ff.strCreatedate = "xxx";
-        ff.strFileID = "ssaa";
-        ff.strFileMD5 = "ewwa";
-        ff.strFileName = "name";
-        ff.uiFileSize = 10;
-        syncfilelistreq.m_FileInfoList.push_back(ff);
-
-        ff.strCreatedate = "djkajk";
-        ff.strFileID = "ewq";
-        ff.strFileMD5 = "fsfgga";
-        ff.strFileName = "e4lkak";
-        ff.uiFileSize = 30;
-        syncfilelistreq.m_FileInfoList.push_back(ff);
-
-        std::string strOutputSync;
-        ProtoHandler phd;
-        if (!phd.SerializeReq(syncfilelistreq, strOutputSync))
-        {
-            LOG_ERROR_RLD("Serialize SyncFileListPendingReq req failed.");
-            return 0;
-        }
-
-        ProtoHandler::SyncFileListPendingReq syncfilelistreq2;
-        if (!phd.UnSerializeReq(strOutputSync, syncfilelistreq2))
-        {
-            LOG_ERROR_RLD("Unserialize SyncFileListPendingReq req failed.");
-            return 0;
-        }
-
-        bool blRet = syncfilelistreq.m_FileInfoList.size() == syncfilelistreq2.m_FileInfoList.size();
-        if (!blRet)
-        {
-            LOG_ERROR_RLD("Compare SyncFileListPendingReq size failed.");
-            return 0;
-        }
-
-        auto itBegin2 = syncfilelistreq2.m_FileInfoList.begin();
-        //auto itEnd2 = syncfilelistreq2.m_FileInfoList.end();
-
-        auto itBegin = syncfilelistreq.m_FileInfoList.begin();
-        auto itEnd = syncfilelistreq.m_FileInfoList.end();
-        while (itBegin != itEnd)
-        {
-            blRet = itBegin->strCreatedate == itBegin2->strCreatedate && itBegin->strFileID == itBegin2->strFileID
-                && itBegin->strFileMD5 == itBegin2->strFileMD5 && itBegin->strFileName == itBegin2->strFileName
-                && itBegin->uiFileSize == itBegin2->uiFileSize;
-            if (!blRet)
-            {
-                LOG_ERROR_RLD("Compare SyncFileListPendingReq info failed.");
-                return 0;
-            }
-
-            ++itBegin2;
-            ++itBegin;
-        }
-
-        LOG_INFO_RLD("Compare SyncFileListPendingReq success.");
-    }
     
-    //////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
-    ControlCenter::ParamInfo pinfo;
-    pinfo.strDBHost = strDBHost;
-    pinfo.strDBName = strDBName;
-    pinfo.strDBPassword = strDBPassword;
-    pinfo.strDBPort = strDBPort;
-    pinfo.strDBUser = strDBUser;
+    //ControlCenter::ParamInfo pinfo;
+    //pinfo.strDBHost = strDBHost;
+    //pinfo.strDBName = strDBName;
+    //pinfo.strDBPassword = strDBPassword;
+    //pinfo.strDBPort = strDBPort;
+    //pinfo.strDBUser = strDBUser;
 
-    pinfo.strRemoteAddress = strRemoteAddress;
-    pinfo.strRemotePort = strRemotePort;
-    pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
+    //pinfo.strRemoteAddress = strRemoteAddress;
+    //pinfo.strRemotePort = strRemotePort;
+    //pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
 
-    pinfo.strSelfID = strSelfID;
-    pinfo.uiSyncShakehandTimeoutCount = boost::lexical_cast<unsigned int>(strSyncShakehandTimeoutCount);
-    pinfo.uiSyncShakehandTimeout = boost::lexical_cast<unsigned int>(strSyncShakehandTimeout);
-    pinfo.uiSyncAddressRspInvalidTimeout = boost::lexical_cast<unsigned int>(strSyncAddressRspInvalidTimeout);
-    pinfo.uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
+    //pinfo.strSelfID = strSelfID;
+    //pinfo.uiSyncShakehandTimeoutCount = boost::lexical_cast<unsigned int>(strSyncShakehandTimeoutCount);
+    //pinfo.uiSyncShakehandTimeout = boost::lexical_cast<unsigned int>(strSyncShakehandTimeout);
+    //pinfo.uiSyncAddressRspInvalidTimeout = boost::lexical_cast<unsigned int>(strSyncAddressRspInvalidTimeout);
+    //pinfo.uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
 
-    ControlCenter ccenter(pinfo);
-    //ccenter.Run(true);
+    //ControlCenter ccenter(pinfo);
+    ////ccenter.Run(true);
 
 
     //test code
