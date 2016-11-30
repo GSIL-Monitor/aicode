@@ -983,6 +983,7 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::UnSerializer(const Interact
     m_userInfo.m_strUserName = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strusername();
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strcreatedate();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().sharingdevinfo());
@@ -1058,6 +1059,7 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_strUserName = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strusername();
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strcreatedate();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().sharingdevinfo());
@@ -1135,6 +1137,7 @@ void InteractiveProtoHandler::LogoutReq_USR::UnSerializer(const InteractiveMessa
     m_userInfo.m_strUserName = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strusername();
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strcreatedate();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().sharingdevinfo());
@@ -1902,6 +1905,7 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const Interactiv
         usr.m_strUserName = ItUser.strusername();
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
+        usr.m_strCreatedate = ItUser.strcreatedate();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
@@ -2051,6 +2055,7 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::UnSerializer(const Int
         usr.m_strUserName = ItUser.strusername();
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
+        usr.m_strCreatedate = ItUser.strcreatedate();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
@@ -2132,6 +2137,7 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::UnSerializer(const 
         usr.m_strUserName = ItUser.strusername();
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
+        usr.m_strCreatedate = ItUser.strcreatedate();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());

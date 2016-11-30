@@ -24,7 +24,7 @@
 #include <boost/lexical_cast.hpp>
 
 #define CONFIG_FILE_NAME "proxy.ini"
-#define PROXY_VERSION "[v1.0.6] "
+#define PROXY_VERSION "[v1.0.5] "
 
 #ifdef _MSC_VER
 #define strcasecmp _stricmp
@@ -254,17 +254,10 @@ int main(int argc, char* argv[])
 
         LOG_INFO_RLD("Proxy runing thread number is " << uiThreadNum << " port is " << usPort << ", daemon status is " << IsNeedDaemonRun);
 
-        unsigned int uiSSLEnabled = 0;
-        const std::string &strSSLEnable = GetConfig("General.SSLEnable");
-        if (!strSSLEnable.empty())
-        {
-            uiSSLEnabled = boost::lexical_cast<unsigned int>(strSSLEnable);
-        }
-
         ProxyHub *phb = NULL;
         try
         {
-            phb = new ProxyHub(usPort, uiSSLEnabled);
+            phb = new ProxyHub(usPort);
         }
         catch (...)
         {

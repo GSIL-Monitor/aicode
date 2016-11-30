@@ -5,7 +5,6 @@
 #include "boost/lexical_cast.hpp"
 #include "CommonUtility.h"
 #include "libcacheclient.h"
-#include "sasl.h"
 
 #ifdef WIN32
 #ifndef snprintf
@@ -13,17 +12,15 @@
 #endif
 #endif
 
-ProxyHub::ProxyHub(const unsigned short uiPort, const unsigned int uiSSLEnabled) : m_TSvr(uiPort, uiSSLEnabled), m_NeedAuth(true), m_SeqNum(0), m_SrcIDReplaceByIncSeq(false), m_CreateSIDOnConnected(false),
-m_uiAsyncReadTimeOut(10), m_blAuthEnable(false), m_iAuthSrcPort(11211), m_pMemCl(NULL), m_AuthRunner(1), m_uiSSLEnabled(uiSSLEnabled)
+ProxyHub::ProxyHub(const unsigned short uiPort) : m_TSvr(uiPort), m_NeedAuth(true), m_SeqNum(0), m_SrcIDReplaceByIncSeq(false), m_CreateSIDOnConnected(false),
+m_uiAsyncReadTimeOut(10), m_blAuthEnable(false), m_iAuthSrcPort(11211), m_pMemCl(NULL), m_AuthRunner(1)
 {
-    InitSasl();
-
     m_AuthRunner.Run();
 }
 
 ProxyHub::~ProxyHub()
 {
-    UninitSasl();
+
 }
 
 void ProxyHub::AcceptCB(boost::shared_ptr<TCPSessionOfServer> pSession, const boost::system::error_code &ec)
@@ -148,116 +145,22 @@ void ProxyHub::SetAuthEnable(const bool blAuthEnable)
     }
 }
 
-bool ProxyHub::Auth(const std::string &strSrcID, const std::string& strPW, bool bIsNewVersionSession)
+bool ProxyHub::Auth(const std::string &strSrcID)
 {
     if (!m_blAuthEnable || NULL == m_pMemCl)
     {
         LOG_INFO_RLD("current auth is disabled, so the result of auth client is true, client id is " << strSrcID);
         return true;
     }
-
-    bool bEcologicalDevice = false;
-    std::string strTmpSrcID = strSrcID;
-    std::string::size_type iPos = strSrcID.find('/');
-    if (iPos != std::string::npos)
-    {
-        bEcologicalDevice = true;
-        strTmpSrcID = strSrcID.substr(0, iPos);
-    }
     
     boost::unique_lock<boost::mutex>lock(m_MemClMutex);
 
     std::string strValue;
-    bool blRet = MemcacheClient::CACHE_SUCCESS == m_pMemCl->get(strTmpSrcID.c_str(), strValue);
+    bool blRet = MemcacheClient::CACHE_SUCCESS == m_pMemCl->get(strSrcID.c_str(), strValue);
     
-    LOG_INFO_RLD("the result of auth client " << strSrcID << " is " << (blRet ? "true" : "false") << ", strValue:" << strValue);
+    LOG_INFO_RLD("the result of auth client " <<strSrcID << " is " << (blRet ? "true" : "false"));
 
-    lock.unlock();
-
-    if (!blRet)
-    {
-        return blRet;
-    }
-
-    if (bIsNewVersionSession)
-    {
-        //get G1011C00000207F8L
-        //VALUE G1011C00000207F8L 0 140
-        //{"info":{"ks":"vmM3wW6mUgkaW9158l5LOA==","pwd":"wSiJNuUcbf03T4CTgCqbTg==","ts":"1464631532"},"type":"device","uptime":"2016-07-05 15:37:54"}
-        //END
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(strValue, root, false))
-        {
-            LOG_ERROR_RLD("Reader Parse failed, strValue:" << strValue);
-            return false;
-        }
-
-        if (!root.isObject())
-        {
-            LOG_ERROR_RLD("Reader Parse failed, strValue:" << strValue);
-            return false;
-        }
-
-        Json::Value info = root["info"];
-        if (!info.isObject())
-        {
-            LOG_ERROR_RLD("Reader Parse info failed, strValue:" << strValue);
-            return false;
-        }
-
-        Json::Value ks = info["ks"];
-        if (ks.isNull() || !ks.isString())
-        {
-            LOG_ERROR_RLD("Reader Parse ks failed, strValue:" << strValue);
-            return false;
-        }
-
-        std::string strKeySession = ks.asString();
-        LOG_INFO_RLD("Reader Parse devid:" << strSrcID << ", strKeySession:" << strKeySession);
-
-        if (strKeySession.empty())
-        {
-            LOG_ERROR_RLD("ProxyHub Auth failed, strKeySession is empty. ");
-            return false;
-        }
-
-        if (bEcologicalDevice) //生态设备
-        {
-            char* ks2 = NULL;
-            int nResult = Getks2(strSrcID.c_str(), strKeySession.c_str(), &ks2);
-            if (nResult != 0)
-            {
-                if (ks2)
-                {
-                    free(ks2);
-                    ks2 = NULL;
-                }
-                LOG_ERROR_RLD("ProxyHub Auth failed, Getks2 return false. ");
-                return false;
-            }
-
-            if (ks2)
-            {
-                strKeySession = ks2; //ks2保存至strKeySession
-                free(ks2);
-                ks2 = NULL;
-            }
-
-            LOG_INFO_RLD("Getks2 deviceid:" << strSrcID << ", ks2:" << strKeySession);
-        }
-
-        int nResult = Verify2(strKeySession.c_str(), strPW.c_str());
-        if (nResult != 0)
-        {
-            LOG_ERROR_RLD("ProxyHub Auth failed, Verify2 return false. ");
-            return false;
-        }
-    }
-
-    LOG_INFO_RLD("ProxyHub Auth success.");
-    return true;
+    return blRet;
 }
 
 char *ProxyHub::GeneratePackage(const std::string &strSrcID, const std::string &strDstID, const std::string &strType,
@@ -782,71 +685,6 @@ boost::uint64_t ProxySession::GetSeqID()
     return m_SeqNum;
 }
 
-bool ProxySession::Parse(const std::string &strProto, std::string& strPW, bool& bIsNewVersionSession)
-{
-    //base64解码
-    const std::string& strRecvBody = GetSessionPacketBody(strProto);
-    if (strRecvBody.empty())
-    {
-        LOG_ERROR_RLD("ProxySession GetSessionPacketBody failed, strProto:" << strProto);
-        return false;
-    }
-
-    const std::string& strBase64String = Decode64((unsigned char*)strRecvBody.c_str(), strRecvBody.length());
-
-    LOG_INFO_RLD("b64OutString:\n" << strBase64String);
-
-    std::string strMech;
-    Json::Value root;
-    Json::Reader reader;
-    if (reader.parse(strBase64String, root, false))
-    {
-        if (root["PW"].isString())
-        {
-            strPW = root["PW"].asString();
-        }
-        if (root["MECH"].isString())
-        {
-            strMech = root["MECH"].asString();
-        }
-    }
-
-    bIsNewVersionSession = (!strPW.empty() && (strMech == "CRAM-MD5"));
-    return true;
-}
-
-std::string ProxySession::GetSessionPacketBody(const std::string& strProto)
-{
-    //RG,长度,源端,目标端,类型, 协议体,校验和
-    int nIndex = 0;
-    int nStart = 0;
-    int nEnd = 0;
-    for (auto it = strProto.begin(); strProto.end() != it; ++it)
-    {
-        if (*it == ',')
-        {
-            nIndex++;
-
-            if (nIndex == 5) //body begin
-            {
-                nStart = it - strProto.begin();
-            }
-            if (nIndex == 6) //body end
-            {
-                nEnd = it - strProto.begin();
-            }
-        }
-    }
-
-    std::string strBody;
-    if (nStart != 0 && nEnd != 0 && nStart + 1 < nEnd)
-    {
-        strBody = strProto.substr(nStart + 1, nEnd - nStart - 1);
-    }
-
-    return strBody;
-}
-
 void ProxySession::PreprocessProtoMsg(std::string &strProto, std::list<std::string> *pDstIDList, const std::string &strSrcID, const std::string &strDstID)
 {
     if (strProto == "RG,9,0,0,0,0,0")
@@ -857,20 +695,13 @@ void ProxySession::PreprocessProtoMsg(std::string &strProto, std::list<std::stri
     }
     else
     {
-        bool IsNewVersionSession = false;
         bool IsSessionMsg = false;
         bool IsZeroPeer = false;
         if (m_strID.empty())
         {
             const std::string &strToAuthID = m_SrcIDReplaceByIncSeq ? m_strSeqNum : strSrcID;
             
-            std::string strPW;
-            if (!Parse(strProto, strPW, IsNewVersionSession))
-            {
-                return;
-            }
-
-            if (!Auth(strToAuthID, strPW, IsNewVersionSession))
+            if (!Auth(strToAuthID))
             {
                 return;
             }
@@ -903,32 +734,16 @@ void ProxySession::PreprocessProtoMsg(std::string &strProto, std::list<std::stri
             m_strID = strUUID;
 
             Json::Value jsBody;
-            if (IsNewVersionSession)
-            {
-                jsBody["VER"] = "1.0";
-                jsBody["CMD"] = "RESPON";
-                jsBody["SEQ"] = "";
-                jsBody["M5"] = "";
-                jsBody["MSG"] = "";
-                jsBody["TYPE"] = "LOGIN";
-                jsBody["ST"] = "0";
-                jsBody["SESSION"] = strUUID;
-                jsBody["UUID"] = strUUID;
-                jsBody["TIMESTAMP"] = "";
-            }
-            else
-            {
-                jsBody["VER"] = "1.0";
-                jsBody["CMD"] = "RESPON";
-                jsBody["SEQ"] = "";
-                jsBody["M5"] = "";
-                jsBody["MSG"] = "0";
-                jsBody["TYPE"] = "LOGIN";
-                jsBody["ST"] = "0";
-                jsBody["SESSION"] = strUUID; //pUUID; //"UUID";
-                jsBody["UUID"] = strUUID; //pUUID; //"";
-                jsBody["KS"] = "";
-            }
+            jsBody["VER"] = "1.0";
+            jsBody["CMD"] = "RESPON";
+            jsBody["SEQ"] = "";
+            jsBody["M5"] = "";
+            jsBody["MSG"] = "0";
+            jsBody["TYPE"] = "LOGIN";
+            jsBody["ST"] = "0";
+            jsBody["SESSION"] = strUUID; //pUUID; //"UUID";
+            jsBody["UUID"] = strUUID; //pUUID; //"";
+            jsBody["KS"] = "";
 
             Json::FastWriter fastwriter;                        
             const std::string &strBody = fastwriter.write(jsBody);//jsBody.toStyledString();
@@ -978,9 +793,9 @@ void ProxySession::PreprocessProtoMsg(std::string &strProto, std::list<std::stri
     }
 }
 
-bool ProxySession::Auth(const std::string &strSrcID, const std::string& strPW, bool bIsNewVersionSession)
+bool ProxySession::Auth(const std::string &strSrcID)
 {
-    if (!m_ProxyHub.Auth(strSrcID, strPW, bIsNewVersionSession))
+    if (!m_ProxyHub.Auth(strSrcID))
     {
         if (!m_pTCPSession.expired())
         {

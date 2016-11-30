@@ -265,6 +265,7 @@ int main(int argc, char* argv[])
     /************************************************************************/
     /* 测试协议组件序列化和反序列化                                                     */
     /************************************************************************/
+    //用户注册请求
     InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
     RegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T;
     RegUsrReq.m_uiMsgSeq = 1;
@@ -336,7 +337,6 @@ int main(int argc, char* argv[])
     LOG_INFO_RLD("Original m_userInfo.m_strCreatedate " << RegUsrReq.m_userInfo.m_strCreatedate << 
         " unserialize m_userInfo.m_strCreatedate " << RegUsrReqTmp.m_userInfo.m_strCreatedate);
 
-
     bool blTestResult = RegUsrReq.m_strValue == RegUsrReqTmp.m_strValue &&
         RegUsrReq.m_MsgType == RegUsrReqTmp.m_MsgType &&
         RegUsrReq.m_strSID == RegUsrReqTmp.m_strSID &&
@@ -345,18 +345,18 @@ int main(int argc, char* argv[])
         RegUsrReq.m_userInfo.m_strUserID == RegUsrReqTmp.m_userInfo.m_strUserID &&
         RegUsrReq.m_userInfo.m_strUserName == RegUsrReqTmp.m_userInfo.m_strUserName &&
         RegUsrReq.m_userInfo.m_strUserPassword == RegUsrReqTmp.m_userInfo.m_strUserPassword &&
-        RegUsrReq.m_userInfo.m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_uiTypeInfo;// &&
-        ////
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
-        //RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+        RegUsrReq.m_userInfo.m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_uiTypeInfo &&
+        //
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
+        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
 
     if (blTestResult)
     {
@@ -367,157 +367,595 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("Register user req serialize and unserialize compare failure.");
     }
 
+    //用户注册响应
+    InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
+    RegUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T;
+    RegUsrRsp.m_uiMsgSeq = 1;
+    RegUsrRsp.m_strSID = "ffffeeee";
+    RegUsrRsp.m_iRetcode = 1;
+    RegUsrRsp.m_strRetMsg = "test_msg";
+    RegUsrRsp.m_strUserID = "test_id";
+    RegUsrRsp.m_strValue = "value";
+
+    //std::string strSerializeOutPut;
+    //InteractiveProtoHandler iphander;
+    if (!iphander.SerializeReq(RegUsrRsp, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Register user rsp serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRspTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, RegUsrRspTmp))
+    {
+        LOG_ERROR_RLD("Register user rsp unserialize failed.");
+        return 0;
+    }
+
+    blTestResult = RegUsrRsp.m_strUserID == RegUsrRspTmp.m_strUserID &&
+        RegUsrRsp.m_strValue == RegUsrRspTmp.m_strValue &&
+        RegUsrRsp.m_iRetcode == RegUsrRspTmp.m_iRetcode &&
+        RegUsrRsp.m_MsgType == RegUsrRspTmp.m_MsgType &&
+        RegUsrRsp.m_strRetMsg == RegUsrRspTmp.m_strRetMsg &&
+        RegUsrRsp.m_strSID == RegUsrRspTmp.m_strSID;
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("Register user rsp serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("Register user rsp serialize and unserialize compare failure.");
+    }
+    
+    //用户注销请求
+    InteractiveProtoHandler::UnRegisterUserReq_USR UnRegUsrReq;
+    UnRegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T;
+    UnRegUsrReq.m_uiMsgSeq = 1;
+    UnRegUsrReq.m_strSID = "ffffeeee";
+    UnRegUsrReq.m_strValue = "value";
+    UnRegUsrReq.m_userInfo.m_strUserID = "uid_test";
+    UnRegUsrReq.m_userInfo.m_strUserName = "yinbin";
+    UnRegUsrReq.m_userInfo.m_strUserPassword = "testpwd";
+    UnRegUsrReq.m_userInfo.m_uiTypeInfo = 2;
+    UnRegUsrReq.m_userInfo.m_strCreatedate = "2016-11-30";
+
+    for (int j = 0; j < 2; ++j)
+    {
+        UnRegUsrReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
+
+        for (int i = 0; i < 2; ++i)
+        {
+            InteractiveProtoHandler::Device devInfo;
+            devInfo.m_strDevID = "did_test";
+            devInfo.m_strDevName = "test_device_name";
+            devInfo.m_strDevPassword = "test_dev_pwd";
+            devInfo.m_uiTypeInfo = 3;
+            devInfo.m_strCreatedate = "2016-11-30";
+            devInfo.m_strInnerinfo = "dev_inner_info";
+            devInfo.m_strOwnerUserID = "uid_test";
+            for (int k = 0; k < 2; ++k)
+            {
+                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+            }
+
+            if (0 == j)
+            {
+                UnRegUsrReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (1 == j)
+            {
+                UnRegUsrReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (2 == j)
+            {
+                UnRegUsrReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
+            }
+
+        }
+    }
+
+    if (!iphander.SerializeReq(UnRegUsrReq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("UnRegister user req serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::UnRegisterUserReq_USR UnRegUsrReqTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, UnRegUsrReqTmp))
+    {
+        LOG_ERROR_RLD("UnRegister user req unserialize failed.");
+        return 0;
+    }
+
+    LOG_INFO_RLD("Original m_strValue " << UnRegUsrReq.m_strValue << " unserialize m_strValue " << UnRegUsrReqTmp.m_strValue);
+    LOG_INFO_RLD("Original m_MsgType " << UnRegUsrReq.m_MsgType << " unserialize m_MsgType " << UnRegUsrReqTmp.m_MsgType);
+    LOG_INFO_RLD("Original m_strSID " << UnRegUsrReq.m_strSID << " unserialize m_strSID " << UnRegUsrReqTmp.m_strSID);
+    LOG_INFO_RLD("Original m_uiMsgSeq " << UnRegUsrReq.m_uiMsgSeq << " unserialize m_uiMsgSeq " << UnRegUsrReqTmp.m_uiMsgSeq);
+    LOG_INFO_RLD("Original m_userInfo.m_strCreatedate " << UnRegUsrReq.m_userInfo.m_strCreatedate <<
+        " unserialize m_userInfo.m_strCreatedate " << UnRegUsrReqTmp.m_userInfo.m_strCreatedate);
+
+    blTestResult = UnRegUsrReq.m_strValue == UnRegUsrReqTmp.m_strValue &&
+        UnRegUsrReq.m_MsgType == UnRegUsrReqTmp.m_MsgType &&
+        UnRegUsrReq.m_strSID == UnRegUsrReqTmp.m_strSID &&
+        UnRegUsrReq.m_uiMsgSeq == UnRegUsrReqTmp.m_uiMsgSeq &&
+        UnRegUsrReq.m_userInfo.m_strCreatedate == UnRegUsrReqTmp.m_userInfo.m_strCreatedate &&
+        UnRegUsrReq.m_userInfo.m_strUserID == UnRegUsrReqTmp.m_userInfo.m_strUserID &&
+        UnRegUsrReq.m_userInfo.m_strUserName == UnRegUsrReqTmp.m_userInfo.m_strUserName &&
+        UnRegUsrReq.m_userInfo.m_strUserPassword == UnRegUsrReqTmp.m_userInfo.m_strUserPassword &&
+        UnRegUsrReq.m_userInfo.m_uiTypeInfo == UnRegUsrReqTmp.m_userInfo.m_uiTypeInfo &&
+        //
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
+        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("UnRegister user req serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("UnRegister user req serialize and unserialize compare failure.");
+    }
+
+    //用户注销响应
+    InteractiveProtoHandler::UnRegisterUserRsp_USR UnRegUsrRsp;
+    UnRegUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::UnRegisterUserRsp_USR_T;
+    UnRegUsrRsp.m_uiMsgSeq = 1;
+    UnRegUsrRsp.m_strSID = "ffffeeee";
+    UnRegUsrRsp.m_iRetcode = 1;
+    UnRegUsrRsp.m_strRetMsg = "test_msg";
+    UnRegUsrRsp.m_strUserID = "test_id";
+    UnRegUsrRsp.m_strValue = "value";
+
+    //std::string strSerializeOutPut;
+    //InteractiveProtoHandler iphander;
+    if (!iphander.SerializeReq(UnRegUsrRsp, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("UnRegister user rsp serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::UnRegisterUserRsp_USR UnRegUsrRspTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, UnRegUsrRspTmp))
+    {
+        LOG_ERROR_RLD("UnRegister user rsp unserialize failed.");
+        return 0;
+    }
+
+    blTestResult = UnRegUsrRsp.m_strUserID == UnRegUsrRspTmp.m_strUserID &&
+        UnRegUsrRsp.m_strValue == UnRegUsrRspTmp.m_strValue &&
+        UnRegUsrRsp.m_iRetcode == UnRegUsrRspTmp.m_iRetcode &&
+        UnRegUsrRsp.m_MsgType == UnRegUsrRspTmp.m_MsgType &&
+        UnRegUsrRsp.m_strRetMsg == UnRegUsrRspTmp.m_strRetMsg &&
+        UnRegUsrRsp.m_strSID == UnRegUsrRspTmp.m_strSID;
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("UnRegister user rsp serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("UnRegister user rsp serialize and unserialize compare failure.");
+    }
+
+    //用户登录请求
+    InteractiveProtoHandler::LoginReq_USR LoginReq;
+    LoginReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_USR_T;
+    LoginReq.m_uiMsgSeq = 1;
+    LoginReq.m_strSID = "ffffeeee";
+    LoginReq.m_strValue = "value";
+    LoginReq.m_userInfo.m_strUserID = "uid_test";
+    LoginReq.m_userInfo.m_strUserName = "yinbin";
+    LoginReq.m_userInfo.m_strUserPassword = "testpwd";
+    LoginReq.m_userInfo.m_uiTypeInfo = 2;
+    LoginReq.m_userInfo.m_strCreatedate = "2016-11-30";
+
+    for (int j = 0; j < 2; ++j)
+    {
+        LoginReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
+
+        for (int i = 0; i < 2; ++i)
+        {
+            InteractiveProtoHandler::Device devInfo;
+            devInfo.m_strDevID = "did_test";
+            devInfo.m_strDevName = "test_device_name";
+            devInfo.m_strDevPassword = "test_dev_pwd";
+            devInfo.m_uiTypeInfo = 3;
+            devInfo.m_strCreatedate = "2016-11-30";
+            devInfo.m_strInnerinfo = "dev_inner_info";
+            devInfo.m_strOwnerUserID = "uid_test";
+            for (int k = 0; k < 2; ++k)
+            {
+                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+            }
+
+            if (0 == j)
+            {
+                LoginReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (1 == j)
+            {
+                LoginReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (2 == j)
+            {
+                LoginReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
+            }
+
+        }
+    }
+
+    if (!iphander.SerializeReq(LoginReq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("LoginReq user req serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::LoginReq_USR LoginReqTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, LoginReqTmp))
+    {
+        LOG_ERROR_RLD("LoginReq user req unserialize failed.");
+        return 0;
+    }
+
+    LOG_INFO_RLD("Original m_strValue " << LoginReq.m_strValue << " unserialize m_strValue " << LoginReqTmp.m_strValue);
+    LOG_INFO_RLD("Original m_MsgType " << LoginReq.m_MsgType << " unserialize m_MsgType " << LoginReqTmp.m_MsgType);
+    LOG_INFO_RLD("Original m_strSID " << LoginReq.m_strSID << " unserialize m_strSID " << LoginReqTmp.m_strSID);
+    LOG_INFO_RLD("Original m_uiMsgSeq " << LoginReq.m_uiMsgSeq << " unserialize m_uiMsgSeq " << LoginReqTmp.m_uiMsgSeq);
+    LOG_INFO_RLD("Original m_userInfo.m_strCreatedate " << LoginReq.m_userInfo.m_strCreatedate <<
+        " unserialize m_userInfo.m_strCreatedate " << LoginReqTmp.m_userInfo.m_strCreatedate);
+
+    blTestResult = LoginReq.m_strValue == LoginReqTmp.m_strValue &&
+        LoginReq.m_MsgType == LoginReqTmp.m_MsgType &&
+        LoginReq.m_strSID == LoginReqTmp.m_strSID &&
+        LoginReq.m_uiMsgSeq == LoginReqTmp.m_uiMsgSeq &&
+        LoginReq.m_userInfo.m_strCreatedate == LoginReqTmp.m_userInfo.m_strCreatedate &&
+        LoginReq.m_userInfo.m_strUserID == LoginReqTmp.m_userInfo.m_strUserID &&
+        LoginReq.m_userInfo.m_strUserName == LoginReqTmp.m_userInfo.m_strUserName &&
+        LoginReq.m_userInfo.m_strUserPassword == LoginReqTmp.m_userInfo.m_strUserPassword &&
+        LoginReq.m_userInfo.m_uiTypeInfo == LoginReqTmp.m_userInfo.m_uiTypeInfo &&
+        //
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
+        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("Login user req serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("Login user req serialize and unserialize compare failure.");
+    }
+    
+    //用户登录响应
+    InteractiveProtoHandler::LoginRsp_USR LoginRsp;
+    LoginRsp.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_USR_T;
+    LoginRsp.m_uiMsgSeq = 1;
+    LoginRsp.m_strSID = "ffffeeee";
+    LoginRsp.m_iRetcode = 1;
+    LoginRsp.m_strRetMsg = "test_msg";
+    LoginRsp.m_strValue = "value";
+
+    for (int i = 0; i < 2; ++i)
+    {
+        InteractiveProtoHandler::Device devInfo;
+        devInfo.m_strDevID = "did_test";
+        devInfo.m_strDevName = "test_device_name";
+        devInfo.m_strDevPassword = "test_dev_pwd";
+        devInfo.m_uiTypeInfo = 3;
+        devInfo.m_strCreatedate = "2016-11-30";
+        devInfo.m_strInnerinfo = "dev_inner_info";
+        devInfo.m_strOwnerUserID = "uid_test";
+        for (int k = 0; k < 2; ++k)
+        {
+            devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+            devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+            devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+        }
+
+        LoginRsp.m_devInfoList.push_back(std::move(devInfo));      
+    }
 
 
-    ///////
-    //ProtoHandler::LoginReq loginreq;
-    //loginreq.m_MsgType = ProtoHandler::MsgType::LoginReq_T;
-    //loginreq.m_uiMsgSeq = 1;
-    //loginreq.m_strSID = "sssssseeee";
-    //loginreq.m_strPassword = "pwd";
-    //loginreq.m_strSyncServiceName = "TestName";
+    if (!iphander.SerializeReq(LoginRsp, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Login user rsp serialize failed.");
+        return 0;
+    }
 
-    //std::string strOutput;
-    //ProtoHandler phr;
-    //if (!phr.SerializeReq(loginreq, strOutput))
-    //{
-    //    LOG_ERROR_RLD("Serialize login req failed.");
-    //    return 0;
-    //}
-    //ProtoHandler::LoginReq loginreq2;
-    //if (!phr.UnSerializeReq(strOutput, loginreq2))
-    //{
-    //    LOG_ERROR_RLD("Unserialize login req failed.");
-    //    return 0;
-    //}
+    InteractiveProtoHandler::LoginRsp_USR LoginRspTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, LoginRspTmp))
+    {
+        LOG_ERROR_RLD("Login user rsp unserialize failed.");
+        return 0;
+    }
 
-    //bool blResult = loginreq.m_strPassword == loginreq2.m_strPassword && loginreq.m_strSyncServiceName == loginreq2.m_strSyncServiceName
-    //    && loginreq.m_strSID == loginreq2.m_strSID && loginreq.m_uiMsgSeq && loginreq2.m_uiMsgSeq;
+    LOG_INFO_RLD("Original m_strValue " << LoginRsp.m_strValue << " unserialize m_strValue " << LoginRspTmp.m_strValue);
+    LOG_INFO_RLD("Original m_MsgType " << LoginRsp.m_MsgType << " unserialize m_MsgType " << LoginRspTmp.m_MsgType);
+    LOG_INFO_RLD("Original m_strSID " << LoginRsp.m_strSID << " unserialize m_strSID " << LoginRspTmp.m_strSID);
+    LOG_INFO_RLD("Original m_uiMsgSeq " << LoginRsp.m_uiMsgSeq << " unserialize m_uiMsgSeq " << LoginRspTmp.m_uiMsgSeq);
+    LOG_INFO_RLD("Original m_strRetMsg " << LoginRsp.m_strRetMsg << " unserialize m_strRetMsg " << LoginRsp.m_strRetMsg);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strCreatedate " << LoginRsp.m_devInfoList.front().m_strCreatedate <<
+        " unserialize m_devInfoList.front().m_strCreatedate " << LoginRspTmp.m_devInfoList.front().m_strCreatedate);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevID " << LoginRsp.m_devInfoList.front().m_strDevID <<
+        " unserialize m_devInfoList.front().m_strDevID " << LoginRspTmp.m_devInfoList.front().m_strDevID);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevName " << LoginRsp.m_devInfoList.front().m_strDevName <<
+        " unserialize m_devInfoList.front().m_strDevName " << LoginRspTmp.m_devInfoList.front().m_strDevName);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevPassword " << LoginRsp.m_devInfoList.front().m_strDevPassword <<
+        " unserialize m_devInfoList.front().m_strDevPassword " << LoginRspTmp.m_devInfoList.front().m_strDevPassword);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strInnerinfo " << LoginRsp.m_devInfoList.front().m_strInnerinfo <<
+        " unserialize m_devInfoList.front().m_strInnerinfo " << LoginRspTmp.m_devInfoList.front().m_strInnerinfo);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strOwnerUserID " << LoginRsp.m_devInfoList.front().m_strOwnerUserID <<
+        " unserialize m_devInfoList.front().m_strOwnerUserID " << LoginRspTmp.m_devInfoList.front().m_strOwnerUserID);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_uiTypeInfo " << LoginRsp.m_devInfoList.front().m_uiTypeInfo <<
+        " unserialize m_devInfoList.front().m_uiTypeInfo " << LoginRspTmp.m_devInfoList.front().m_uiTypeInfo);
+    LOG_INFO_RLD("Original m_devInfoList.front().m_sharedUserIDList.front() " << LoginRsp.m_devInfoList.front().m_sharedUserIDList.front() <<
+        " unserialize m_devInfoList.front().m_sharedUserIDList.front() " << LoginRspTmp.m_devInfoList.front().m_sharedUserIDList.front());
+    LOG_INFO_RLD("Original m_devInfoList.front().m_sharingUserIDList.front() " << LoginRsp.m_devInfoList.front().m_sharingUserIDList.front() <<
+        " unserialize m_devInfoList.front().m_sharingUserIDList.front() " << LoginRspTmp.m_devInfoList.front().m_sharingUserIDList.front());
+    LOG_INFO_RLD("Original m_devInfoList.front().m_strItemsList.front() " << LoginRsp.m_devInfoList.front().m_strItemsList.front() <<
+        " unserialize m_devInfoList.front().m_strItemsList.front() " << LoginRspTmp.m_devInfoList.front().m_strItemsList.front());
 
-    //LOG_INFO_RLD("Test LoginReq serialize and unserialize result is " << (blResult ? "true" : "false"));
+    blTestResult = LoginRsp.m_strValue == LoginRspTmp.m_strValue &&
+        LoginRsp.m_iRetcode == LoginRspTmp.m_iRetcode &&
+        LoginRsp.m_MsgType == LoginRspTmp.m_MsgType &&
+        LoginRsp.m_strRetMsg == LoginRspTmp.m_strRetMsg &&
+        LoginRsp.m_strSID == LoginRspTmp.m_strSID &&
 
-    //{
-    //    {
-    //        std::string strCrc = "21212";
-    //        std::string strContentEncoded = "bodybody=";
-    //        const char *pContentBufferEncoded = strContentEncoded.data();
-    //        const unsigned int uiContentBufferLenEncoded = strContentEncoded.size();
-    //        std::string strPartEndLen = "30";
-    //        std::string strSrcID = "111";
-    //        std::string strDstID = "222";
-    //        std::string strType = "1";
-    //        unsigned int uiAllLen = 200;
-    //        char *pAllBuffer = new char[uiAllLen + 1];
-    //        memset(pAllBuffer, 0, (uiAllLen + 1));
-    //        snprintf(pAllBuffer, uiAllLen + 1, "RG,%s,%s,%s,%s,", strPartEndLen.c_str(), strSrcID.c_str(), strDstID.c_str(), strType.c_str());
-
-    //        unsigned int uiPos1 = 7 + strPartEndLen.size() + strSrcID.size() + strDstID.size() + strType.size();
-    //        memcpy(pAllBuffer + uiPos1, pContentBufferEncoded, uiContentBufferLenEncoded);
-    //        std::string strTmp(",");
-    //        memcpy(pAllBuffer + uiPos1 + uiContentBufferLenEncoded, strTmp.data(), strTmp.size());
-    //        memcpy(pAllBuffer + uiPos1 + uiContentBufferLenEncoded + 1, strCrc.data(), strCrc.size());
-
-
-    //        LOG_INFO_RLD("Test msg is " << std::string(pAllBuffer, uiAllLen + 1));
-    //    }
-
-    //    {
-    //        ProtoHandler::SyncFileListPendingRsp syncfilelistrsp;
-    //        syncfilelistrsp.m_iRetcode = 0;
-    //        syncfilelistrsp.m_strRetMsg = "ok";
-    //        syncfilelistrsp.m_uiMsgSeq = 1;
-    //        syncfilelistrsp.m_strSID = "sslkkla";
-    //        syncfilelistrsp.m_MsgType = ProtoHandler::MsgType::SyncFileListPendingRsp_T;
-
-    //        std::string strOutputSync;
-    //        ProtoHandler phd;
-    //        if (!phd.SerializeRsp(syncfilelistrsp, strOutputSync))
-    //        {
-    //            LOG_ERROR_RLD("Serialize SyncFileListPendingRsp req failed.");
-    //            return 0;
-    //        }
-
-    //        ProtoHandler::SyncFileListPendingRsp syncfilelistrsp2;
-    //        if (!phd.UnSerializeRsp(strOutputSync, syncfilelistrsp2))
-    //        {
-    //            LOG_ERROR_RLD("UnSerialize SyncFileListPendingRsp req failed.");
-    //            return 0;
-    //        }
-
-    //        bool blRet = syncfilelistrsp.m_iRetcode == syncfilelistrsp2.m_iRetcode && syncfilelistrsp.m_strRetMsg == syncfilelistrsp2.m_strRetMsg &&
-    //            syncfilelistrsp.m_uiMsgSeq == syncfilelistrsp2.m_uiMsgSeq && syncfilelistrsp.m_strSID == syncfilelistrsp2.m_strSID &&
-    //            syncfilelistrsp.m_MsgType == syncfilelistrsp2.m_MsgType;
-    //        LOG_INFO_RLD("Test SyncFileListPendingRsp serialize and unserialize result is " << (blRet ? "true" : "false"));
-
-    //    }
-
-    //    ProtoHandler::SyncFileListPendingReq syncfilelistreq;
-    //    syncfilelistreq.m_MsgType = ProtoHandler::MsgType::SyncFileListPendingReq_T;
-    //    syncfilelistreq.m_uiMsgSeq = 22;
-    //    syncfilelistreq.m_strSID = "siddd";
-
-    //    ProtoHandler::FileInfo ff;
-    //    ff.strCreatedate = "xxx";
-    //    ff.strFileID = "ssaa";
-    //    ff.strFileMD5 = "ewwa";
-    //    ff.strFileName = "name";
-    //    ff.uiFileSize = 10;
-    //    syncfilelistreq.m_FileInfoList.push_back(ff);
-
-    //    ff.strCreatedate = "djkajk";
-    //    ff.strFileID = "ewq";
-    //    ff.strFileMD5 = "fsfgga";
-    //    ff.strFileName = "e4lkak";
-    //    ff.uiFileSize = 30;
-    //    syncfilelistreq.m_FileInfoList.push_back(ff);
-
-    //    std::string strOutputSync;
-    //    ProtoHandler phd;
-    //    if (!phd.SerializeReq(syncfilelistreq, strOutputSync))
-    //    {
-    //        LOG_ERROR_RLD("Serialize SyncFileListPendingReq req failed.");
-    //        return 0;
-    //    }
-
-    //    ProtoHandler::SyncFileListPendingReq syncfilelistreq2;
-    //    if (!phd.UnSerializeReq(strOutputSync, syncfilelistreq2))
-    //    {
-    //        LOG_ERROR_RLD("Unserialize SyncFileListPendingReq req failed.");
-    //        return 0;
-    //    }
-
-    //    bool blRet = syncfilelistreq.m_FileInfoList.size() == syncfilelistreq2.m_FileInfoList.size();
-    //    if (!blRet)
-    //    {
-    //        LOG_ERROR_RLD("Compare SyncFileListPendingReq size failed.");
-    //        return 0;
-    //    }
-
-    //    auto itBegin2 = syncfilelistreq2.m_FileInfoList.begin();
-    //    //auto itEnd2 = syncfilelistreq2.m_FileInfoList.end();
-
-    //    auto itBegin = syncfilelistreq.m_FileInfoList.begin();
-    //    auto itEnd = syncfilelistreq.m_FileInfoList.end();
-    //    while (itBegin != itEnd)
-    //    {
-    //        blRet = itBegin->strCreatedate == itBegin2->strCreatedate && itBegin->strFileID == itBegin2->strFileID
-    //            && itBegin->strFileMD5 == itBegin2->strFileMD5 && itBegin->strFileName == itBegin2->strFileName
-    //            && itBegin->uiFileSize == itBegin2->uiFileSize;
-    //        if (!blRet)
-    //        {
-    //            LOG_ERROR_RLD("Compare SyncFileListPendingReq info failed.");
-    //            return 0;
-    //        }
-
-    //        ++itBegin2;
-    //        ++itBegin;
-    //    }
-
-    //    LOG_INFO_RLD("Compare SyncFileListPendingReq success.");
-    //}
-
-    //////////////////////////////////////////////////////////////////////////
+        //
+        LoginRsp.m_devInfoList.front().m_strCreatedate == LoginRspTmp.m_devInfoList.front().m_strCreatedate &&
+        LoginRsp.m_devInfoList.front().m_strDevID == LoginRspTmp.m_devInfoList.front().m_strDevID &&
+        LoginRsp.m_devInfoList.front().m_strDevName == LoginRspTmp.m_devInfoList.front().m_strDevName &&
+        LoginRsp.m_devInfoList.front().m_strDevPassword == LoginRspTmp.m_devInfoList.front().m_strDevPassword &&
+        LoginRsp.m_devInfoList.front().m_strInnerinfo == LoginRspTmp.m_devInfoList.front().m_strInnerinfo &&
+        LoginRsp.m_devInfoList.front().m_strOwnerUserID == LoginRspTmp.m_devInfoList.front().m_strOwnerUserID &&
+        LoginRsp.m_devInfoList.front().m_uiTypeInfo == LoginRspTmp.m_devInfoList.front().m_uiTypeInfo &&
+        LoginRsp.m_devInfoList.front().m_sharedUserIDList.front() == LoginRspTmp.m_devInfoList.front().m_sharedUserIDList.front() &&
+        LoginRsp.m_devInfoList.front().m_sharingUserIDList.front() == LoginRspTmp.m_devInfoList.front().m_sharingUserIDList.front() &&
+        LoginRsp.m_devInfoList.front().m_strItemsList.front() == LoginRspTmp.m_devInfoList.front().m_strItemsList.front();
        
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("Login user rsp serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("Login user rsp serialize and unserialize compare failure.");
+    }
+
+    //用户登出请求
+    InteractiveProtoHandler::LogoutReq_USR LogoutReq;
+    LogoutReq.m_MsgType = InteractiveProtoHandler::MsgType::LogoutReq_USR_T;
+    LogoutReq.m_uiMsgSeq = 1;
+    LogoutReq.m_strSID = "ffffeeee";
+    LogoutReq.m_strValue = "value";
+    LogoutReq.m_userInfo.m_strUserID = "uid_test";
+    LogoutReq.m_userInfo.m_strUserName = "yinbin";
+    LogoutReq.m_userInfo.m_strUserPassword = "testpwd";
+    LogoutReq.m_userInfo.m_uiTypeInfo = 2;
+    LogoutReq.m_userInfo.m_strCreatedate = "2016-11-30";
+
+    for (int j = 0; j < 2; ++j)
+    {
+        LogoutReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
+
+        for (int i = 0; i < 2; ++i)
+        {
+            InteractiveProtoHandler::Device devInfo;
+            devInfo.m_strDevID = "did_test";
+            devInfo.m_strDevName = "test_device_name";
+            devInfo.m_strDevPassword = "test_dev_pwd";
+            devInfo.m_uiTypeInfo = 3;
+            devInfo.m_strCreatedate = "2016-11-30";
+            devInfo.m_strInnerinfo = "dev_inner_info";
+            devInfo.m_strOwnerUserID = "uid_test";
+            for (int k = 0; k < 2; ++k)
+            {
+                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
+            }
+
+            if (0 == j)
+            {
+                LogoutReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (1 == j)
+            {
+                LogoutReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
+            }
+            else if (2 == j)
+            {
+                LogoutReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
+            }
+
+        }
+    }
+
+    if (!iphander.SerializeReq(LogoutReq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("LogoutReq user req serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::LogoutReq_USR LogoutReqTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, LogoutReqTmp))
+    {
+        LOG_ERROR_RLD("LogoutReq user req unserialize failed.");
+        return 0;
+    }
+
+    LOG_INFO_RLD("Original m_strValue " << LogoutReq.m_strValue << " unserialize m_strValue " << LogoutReqTmp.m_strValue);
+    LOG_INFO_RLD("Original m_MsgType " << LogoutReq.m_MsgType << " unserialize m_MsgType " << LogoutReqTmp.m_MsgType);
+    LOG_INFO_RLD("Original m_strSID " << LogoutReq.m_strSID << " unserialize m_strSID " << LogoutReqTmp.m_strSID);
+    LOG_INFO_RLD("Original m_uiMsgSeq " << LogoutReq.m_uiMsgSeq << " unserialize m_uiMsgSeq " << LogoutReqTmp.m_uiMsgSeq);
+    LOG_INFO_RLD("Original m_userInfo.m_strCreatedate " << LogoutReq.m_userInfo.m_strCreatedate <<
+        " unserialize m_userInfo.m_strCreatedate " << LogoutReqTmp.m_userInfo.m_strCreatedate);
+
+    blTestResult = LogoutReq.m_strValue == LogoutReqTmp.m_strValue &&
+        LogoutReq.m_MsgType == LogoutReqTmp.m_MsgType &&
+        LogoutReq.m_strSID == LogoutReqTmp.m_strSID &&
+        LogoutReq.m_uiMsgSeq == LogoutReqTmp.m_uiMsgSeq &&
+        LogoutReq.m_userInfo.m_strCreatedate == LogoutReqTmp.m_userInfo.m_strCreatedate &&
+        LogoutReq.m_userInfo.m_strUserID == LogoutReqTmp.m_userInfo.m_strUserID &&
+        LogoutReq.m_userInfo.m_strUserName == LogoutReqTmp.m_userInfo.m_strUserName &&
+        LogoutReq.m_userInfo.m_strUserPassword == LogoutReqTmp.m_userInfo.m_strUserPassword &&
+        LogoutReq.m_userInfo.m_uiTypeInfo == LogoutReqTmp.m_userInfo.m_uiTypeInfo &&
+        //
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
+        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("Logout user req serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("Logout user req serialize and unserialize compare failure.");
+    }
+
+    //用户登出响应
+    InteractiveProtoHandler::LogoutRsp_USR LogoutRsp;
+    LogoutRsp.m_MsgType = InteractiveProtoHandler::MsgType::LogoutRsp_USR_T;
+    LogoutRsp.m_uiMsgSeq = 1;
+    LogoutRsp.m_strSID = "ffffeeee";
+    LogoutRsp.m_iRetcode = 1;
+    LogoutRsp.m_strRetMsg = "test_msg";
+    LogoutRsp.m_strValue = "value";
+
+    //std::string strSerializeOutPut;
+    //InteractiveProtoHandler iphander;
+    if (!iphander.SerializeReq(LogoutRsp, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Logout user rsp serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::LogoutRsp_USR LogoutRspTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, LogoutRspTmp))
+    {
+        LOG_ERROR_RLD("Logout user rsp unserialize failed.");
+        return 0;
+    }
+
+    blTestResult = LogoutRsp.m_strValue == LogoutRspTmp.m_strValue &&
+        LogoutRsp.m_iRetcode == LogoutRspTmp.m_iRetcode &&
+        LogoutRsp.m_MsgType == LogoutRspTmp.m_MsgType &&
+        LogoutRsp.m_strRetMsg == LogoutRspTmp.m_strRetMsg &&
+        LogoutRsp.m_strSID == LogoutRspTmp.m_strSID;
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("Logout user rsp serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("Logout user rsp serialize and unserialize compare failure.");
+    }
+
+    //握手请求
+    InteractiveProtoHandler::ShakehandReq_USR ShakehandReq;
+    ShakehandReq.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandReq_USR_T;
+    ShakehandReq.m_uiMsgSeq = 1;
+    ShakehandReq.m_strSID = "ffffeeee";
+    ShakehandReq.m_strValue = "value";
+    ShakehandReq.m_strUserID = "test_userid";
+
+    if (!iphander.SerializeReq(ShakehandReq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("ShakehandReq user req serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::ShakehandReq_USR ShakehandReqTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, ShakehandReqTmp))
+    {
+        LOG_ERROR_RLD("ShakehandReq user req unserialize failed.");
+        return 0;
+    }
+
+    blTestResult = ShakehandReq.m_strUserID == ShakehandReqTmp.m_strUserID &&
+        ShakehandReq.m_strValue == ShakehandReqTmp.m_strValue &&
+        ShakehandReq.m_strUserID == ShakehandReqTmp.m_strUserID &&
+        ShakehandReq.m_MsgType == ShakehandReqTmp.m_MsgType &&
+        ShakehandReq.m_strSID == ShakehandReqTmp.m_strSID;
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("ShakehandReq user req serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("ShakehandReq user req serialize and unserialize compare failure.");
+    }
+
+    //握手响应
+    InteractiveProtoHandler::ShakehandRsp_USR ShakehandRsp;
+    ShakehandRsp.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T;
+    ShakehandRsp.m_uiMsgSeq = 1;
+    ShakehandRsp.m_iRetcode = 3;
+    ShakehandRsp.m_strRetMsg = "test_msg";
+    ShakehandRsp.m_strSID = "ffffeeee";
+    ShakehandRsp.m_strValue = "value";
+
+    if (!iphander.SerializeReq(ShakehandRsp, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("ShakehandRsp user req serialize failed.");
+        return 0;
+    }
+
+    InteractiveProtoHandler::ShakehandRsp_USR ShakehandRspTmp;
+    if (!iphander.UnSerializeReq(strSerializeOutPut, ShakehandRspTmp))
+    {
+        LOG_ERROR_RLD("ShakehandRsp user req unserialize failed.");
+        return 0;
+    }
+
+    blTestResult = ShakehandRsp.m_iRetcode == ShakehandRspTmp.m_iRetcode &&
+        ShakehandRsp.m_strRetMsg == ShakehandRspTmp.m_strRetMsg &&
+        ShakehandRsp.m_strValue == ShakehandRspTmp.m_strValue &&
+        ShakehandRsp.m_MsgType == ShakehandRspTmp.m_MsgType &&
+        ShakehandRsp.m_strSID == ShakehandRspTmp.m_strSID;
+
+    if (blTestResult)
+    {
+        LOG_INFO_RLD("ShakehandRsp user rsp serialize and unserialize compare success.");
+    }
+    else
+    {
+        LOG_ERROR_RLD("ShakehandRsp user rsp serialize and unserialize compare failure.");
+    }
+
+
+
 
     ////test code
     //new boost::thread(Send);

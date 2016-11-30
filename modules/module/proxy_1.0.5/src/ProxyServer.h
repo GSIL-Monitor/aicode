@@ -98,11 +98,7 @@ private:
 
     void PreprocessProtoMsg(std::string &strProto, std::list<std::string> *pDstIDList, const std::string &strSrcID, const std::string &strDstID);
 
-    bool Auth(const std::string &strSrcID, const std::string& strPW, bool bIsNewVersionSession);
-
-    bool Parse(const std::string &strProto, std::string& strPW, bool& bIsNewVersionSession);
-
-    std::string GetSessionPacketBody(const std::string& strProto);
+    bool Auth(const std::string &strSrcID);
     
     ProxyHub &m_ProxyHub;
 
@@ -134,7 +130,7 @@ private:
 class ProxyHub
 {
 public:
-    ProxyHub(const unsigned short uiPort, const unsigned int uiSSLEnabled = 0);
+    ProxyHub(const unsigned short uiPort);
     ~ProxyHub();
 
     void AcceptCB(boost::shared_ptr<TCPSessionOfServer> pSession, const boost::system::error_code &ec);
@@ -201,7 +197,7 @@ public:
         return m_AuthRunner;
     };
 
-    bool Auth(const std::string &strSrcID, const std::string& strPW, bool bIsNewVersionSession);
+    bool Auth(const std::string &strSrcID);
 
     char *GeneratePackage(const std::string &strSrcID, const std::string &strDstID, const std::string &strType,
         const char *pContentBuffer, const boost::uint32_t uiContentBufferLen, boost::uint32_t &uiTotalLen);
@@ -233,7 +229,6 @@ private:
     boost::mutex m_MemClMutex;
 
     Runner m_AuthRunner;
-    unsigned int m_uiSSLEnabled;
 
 private:
 
