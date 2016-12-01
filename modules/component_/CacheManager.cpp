@@ -3,14 +3,18 @@
 
 
 CacheManager::CacheManager(const boost::uint32_t uiType, const boost::uint32_t uiMaxSize,
-    const boost::uint32_t uiLFUFreshInterval) :
+    const boost::uint32_t uiLFUFreshInterval, const boost::uint32_t uiCacheObjectTimeoutInterval) :
     m_uiMaxSize(uiMaxSize), m_uiType(uiType), 
-    m_TimeHr(boost::bind(&CacheManager::TimerOutHandler, this, _1), uiLFUFreshInterval)
+    m_TimeHr(boost::bind(&CacheManager::TimerOutHandler, this, _1), uiLFUFreshInterval),
+    m_uiTickNum(0),
+    m_TickTimer(boost::bind(&CacheManager::TickTimeHandler, this, _1), 1),
+    m_uiCacheObjectTimeoutInterval(uiCacheObjectTimeoutInterval)
 {
     if (CacheManager::LFU == m_uiType)
     {
         m_TimeHr.Run();
     }
+    m_TickTimer.Run();
 }
 
 
@@ -101,7 +105,17 @@ boost::shared_ptr<CacheObj> CacheManager::Get(const std::string &strKey)
     }
     else if (CacheManager::LRU == m_uiType)
     {
-        return GetLRU(strKey);
+        auto pCacheObj = GetLRU(strKey);
+        if (NULL != pCacheObj.get())
+        {
+            if (m_uiCacheObjectTimeoutInterval <= (m_uiTickNum - pCacheObj->GetTickSnapshot()))
+            {
+                RemoveInner(strKey);
+                return boost::shared_ptr<CacheObj>();
+            }
+
+        }
+        return pCacheObj;
     }
     else
     {
@@ -117,6 +131,7 @@ void CacheManager::Set(boost::shared_ptr<CacheObj> pCacheObj)
     }
     else if (CacheManager::LRU == m_uiType)
     {
+        pCacheObj->SetTickSnapshot(m_uiTickNum); //±£´æ¿ìÕÕ
         SetLRU(pCacheObj);
     }
     else
@@ -174,6 +189,11 @@ void CacheManager::RemoveInner(const std::string &strKey)
         m_CacheMap.erase(itFind);
 
     }
+}
+
+void CacheManager::TickTimeHandler(const boost::system::error_code &ec)
+{
+    ++m_uiTickNum;
 }
 
 void CacheManager::TimerOutHandler(const boost::system::error_code &ec)
@@ -253,7 +273,7 @@ void CacheManager::SetLRU(boost::shared_ptr<CacheObj> pCacheObj)
 
 
 
-CacheObj::CacheObj() : m_uiHit(0)
+CacheObj::CacheObj() : m_uiHit(0), m_uiTickSnapshot(0)
 {
 
 }
@@ -281,4 +301,14 @@ void CacheObj::SetPos(std::list<CacheObj*>::iterator itPos)
 std::list<CacheObj*>::iterator CacheObj::GetPos()
 {
     return m_Pos;
+}
+
+void CacheObj::SetTickSnapshot(const boost::uint64_t uiTickSnapshot)
+{
+    m_uiTickSnapshot = uiTickSnapshot;
+}
+
+boost::uint64_t CacheObj::GetTickSnapshot()
+{
+    return m_uiTickSnapshot;
 }

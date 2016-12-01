@@ -27,6 +27,8 @@
 #include "NetComm.h"
 #endif
 
+#include "boost/atomic.hpp"
+
 class CacheObj
 {
 public:
@@ -45,11 +47,15 @@ public:
 
     std::list<CacheObj*>::iterator GetPos();
 
+    void SetTickSnapshot(const boost::uint64_t uiTickSnapshot);
+
+    boost::uint64_t GetTickSnapshot();
 private:
     boost::uint64_t m_uiHit;
 
     std::list<CacheObj*>::iterator m_Pos;
 
+    boost::uint64_t m_uiTickSnapshot;
 };
 
 class CacheInterface
@@ -74,7 +80,7 @@ class CacheManager : public boost::noncopyable, public CacheInterface
 {
 public:
     CacheManager(const boost::uint32_t uiType = LRU, const boost::uint32_t uiMaxSize = MAX_CACHEOBJ_NUM,
-        const boost::uint32_t uiLFUFreshInterval = 60);
+        const boost::uint32_t uiLFUFreshInterval = 60, const boost::uint32_t uiCacheObjectTimeoutInterval = 30);
     ~CacheManager();
 
     boost::shared_ptr<CacheObj>  Get(const std::string &strKey);
@@ -97,6 +103,8 @@ private:
     void SetLRU(boost::shared_ptr<CacheObj> pCacheObj);
     void RemoveInner(const std::string &strKey);
 
+    void TickTimeHandler(const boost::system::error_code &ec);
+
 private:
     typedef std::unordered_map<std::string, boost::shared_ptr<CacheObj> > CacheMap;
     CacheMap m_CacheMap;
@@ -107,6 +115,11 @@ private:
     TimeOutHandler m_TimeHr;
     
     boost::shared_mutex m_Mutex;
+
+    boost::atomic_uint64_t m_uiTickNum;
+    TimeOutHandler m_TickTimer;
+
+    boost::uint32_t m_uiCacheObjectTimeoutInterval;
 };
 
 #endif
