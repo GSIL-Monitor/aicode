@@ -7,7 +7,6 @@
 #include "ConfigSt.h"
 #include <boost/filesystem.hpp> 
 #include <boost/lexical_cast.hpp>
-#include "MsgBusClientFanout.h"
 
 #define CONFIG_FILE_NAME "access_manager.ini"
 #define VERSION "[v1.0.0] "
@@ -37,9 +36,9 @@ std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t
 
 static void InitLog()
 {
-    std::string strHost = "TDFS_CENTER(127.0.0.1)";
+    std::string strHost = "AccessManager(127.0.0.1)";
     std::string strLogPath = "./logs/";
-    std::string strLogInnerShowName = "TDFS_CENTER";
+    std::string strLogInnerShowName = "AccessManager";
     int iLoglevel = LogRLD::INFO_LOG_LEVEL;
     int iSchedule = LogRLD::DAILY_LOG_SCHEDULE;
     int iMaxLogFileBackupNum = 10;
@@ -146,9 +145,6 @@ static std::string GetConfig(const std::string &strItem)
     }
     return "";
 }
-
-void Send();
-void Receive();
 
 int main(int argc, char* argv[])
 {
@@ -285,45 +281,6 @@ int main(int argc, char* argv[])
     ////ccenter.Run(true);
 
 
-    //test code
-    new boost::thread(Send);
-    boost::this_thread::sleep(boost::posix_time::seconds(2));
-    new boost::thread(Receive);
-    new boost::thread(Receive);
-
-
-    boost::this_thread::sleep(boost::posix_time::seconds(1000000));
 
 	return 0;
-}
-
-void Send()
-{
-    MsgBusClientFanout msg("exange_name_test", "172.20.122.250", 5672, "admin", "admin");
-    msg.Init();
-
-    for (int i = 0; i < 300000; ++i)
-    {
-        msg.BroadcastMsg("", "Msg by test");
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
-        LOG_INFO_RLD("send..." << i);
-    }
-
-    boost::this_thread::sleep(boost::posix_time::seconds(1000000));
-
-}
-
-void Receive()
-{
-    MsgBusClientFanout msg("exange_name_test", "172.20.122.250", 5672, "admin", "admin");
-    msg.Init();
-
-    for (int i = 0; i < 300000; ++i)
-    {
-        std::string strReceiveMsg;
-        msg.ListenMsg("", strReceiveMsg);
-        LOG_INFO_RLD("receive...");
-    }
-
-    boost::this_thread::sleep(boost::posix_time::seconds(1000000));
 }

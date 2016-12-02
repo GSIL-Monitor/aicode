@@ -218,12 +218,14 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       sizeof(PermissionOfUser),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PermissionOfUser, _internal_metadata_));
   Device_descriptor_ = file->message_type(1);
-  static const int Device_offsets_[10] = {
+  static const int Device_offsets_[12] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strdevid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strdevname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strdevpassword_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, uitypeinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strcreatedate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, uistatus_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strextend_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strinnerinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strowneruserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, strsharinguserid_),
@@ -241,12 +243,14 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       sizeof(Device),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Device, _internal_metadata_));
   User_descriptor_ = file->message_type(2);
-  static const int User_offsets_[9] = {
+  static const int User_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strusername_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, struserpassword_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, uitypeinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strcreatedate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, uistatus_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strextend_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, ownerdevinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, sharingdevinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, shareddevinfo_),
@@ -1531,238 +1535,240 @@ void protobuf_AddDesc_InteractiveProtocol_2eproto_impl() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\031InteractiveProtocol.proto\022\023Interactive"
     ".Message\"8\n\020PermissionOfUser\022\023\n\013uiUnlimi"
-    "ted\030\001 \001(\r\022\017\n\007uiWatch\030\002 \001(\r\"\344\001\n\006Device\022\020\n"
+    "ted\030\001 \001(\r\022\017\n\007uiWatch\030\002 \001(\r\"\211\002\n\006Device\022\020\n"
     "\010strDevID\030\001 \001(\t\022\022\n\nstrDevName\030\002 \001(\t\022\026\n\016s"
     "trDevPassword\030\003 \001(\t\022\022\n\nuiTypeInfo\030\004 \001(\r\022"
-    "\025\n\rstrCreatedate\030\005 \001(\t\022\024\n\014strInnerinfo\030\006"
-    " \001(\t\022\026\n\016strOwnerUserID\030\010 \001(\t\022\030\n\020strShari"
-    "ngUserID\030\t \003(\t\022\027\n\017strSharedUserID\030\n \003(\t\022"
-    "\020\n\010strItems\030\007 \003(\t\"\240\002\n\004User\022\021\n\tstrUserID\030"
-    "\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\027\n\017strUserPas"
-    "sword\030\003 \001(\t\022\022\n\nuiTypeInfo\030\004 \001(\r\022\025\n\rstrCr"
-    "eatedate\030\005 \001(\t\0221\n\014ownerDevInfo\030\006 \003(\0132\033.I"
-    "nteractive.Message.Device\0223\n\016sharingDevI"
-    "nfo\030\007 \003(\0132\033.Interactive.Message.Device\0222"
-    "\n\rsharedDevInfo\030\010 \003(\0132\033.Interactive.Mess"
-    "age.Device\022\020\n\010strItems\030\t \003(\t\"=\n\027GetAcces"
-    "sAddressReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010str"
-    "Value\030\002 \001(\t\"\\\n\027GetAccessAddressRsp_DEV\022\030"
-    "\n\020strAccessAddress\030\001 \001(\t\022\025\n\rstrAccessPor"
-    "t\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"G\n\014LoginReq_DE"
-    "V\022\020\n\010strDevID\030\001 \001(\t\022\023\n\013strPassword\030\002 \001(\t"
-    "\022\020\n\010strValue\030\003 \001(\t\" \n\014LoginRsp_DEV\022\020\n\010st"
-    "rValue\030\001 \001(\t\"3\n\rLogoutReq_DEV\022\020\n\010strDevI"
-    "D\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRsp_D"
-    "EV\022\020\n\010strValue\030\001 \001(\t\"6\n\020ShakehandReq_DEV"
-    "\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020"
-    "ShakehandRsp_DEV\022\020\n\010strValue\030\001 \001(\t\"7\n\021Co"
-    "nfigInfoReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010str"
-    "Value\030\002 \001(\t\"7\n\021ConfigInfoRsp_DEV\022\020\n\010strV"
-    "alue\030\001 \001(\t\022\020\n\010strItems\030\002 \003(\t\"4\n\013AuthReq_"
-    "DEV\022\023\n\013strPassword\030\001 \001(\t\022\020\n\010strValue\030\002 \001"
-    "(\t\"\037\n\013AuthRsp_DEV\022\020\n\010strValue\030\001 \001(\t\"C\n\027G"
-    "etAccessAddressReq_USR\022\026\n\016strSerializeID"
-    "\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"\\\n\027GetAccessAdd"
-    "ressRsp_USR\022\030\n\020strAccessAddress\030\001 \001(\t\022\025\n"
-    "\rstrAccessPort\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"T"
-    "\n\023RegisterUserReq_USR\022+\n\010userInfo\030\001 \001(\0132"
-    "\031.Interactive.Message.User\022\020\n\010strValue\030\002"
-    " \001(\t\":\n\023RegisterUserRsp_USR\022\021\n\tstrUserID"
-    "\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"V\n\025UnRegisterUs"
-    "erReq_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactiv"
-    "e.Message.User\022\020\n\010strValue\030\002 \001(\t\"<\n\025UnRe"
-    "gisterUserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
-    "strValue\030\002 \001(\t\"M\n\014LoginReq_USR\022+\n\010userIn"
-    "fo\030\001 \001(\0132\031.Interactive.Message.User\022\020\n\010s"
-    "trValue\030\002 \001(\t\"N\n\014LoginRsp_USR\022,\n\007devInfo"
-    "\030\001 \003(\0132\033.Interactive.Message.Device\022\020\n\010s"
-    "trValue\030\002 \001(\t\"N\n\rLogoutReq_USR\022+\n\010userIn"
-    "fo\030\001 \001(\0132\031.Interactive.Message.User\022\020\n\010s"
-    "trValue\030\002 \001(\t\"!\n\rLogoutRsp_USR\022\020\n\010strVal"
-    "ue\030\001 \001(\t\"7\n\020ShakehandReq_USR\022\021\n\tstrUserI"
-    "D\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020ShakehandRs"
-    "p_USR\022\020\n\010strValue\030\001 \001(\t\"8\n\021ConfigInfoReq"
-    "_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001("
-    "\t\"7\n\021ConfigInfoRsp_USR\022\020\n\010strValue\030\001 \001(\t"
-    "\022\020\n\010strItems\030\002 \003(\t\"P\n\rAddDevReq_USR\022\021\n\ts"
-    "trUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Intera"
-    "ctive.Message.Device\"!\n\rAddDevRsp_USR\022\020\n"
-    "\010strValue\030\001 \001(\t\"4\n\rDelDevReq_USR\022\021\n\tstrU"
-    "serID\030\001 \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9\n\rDelDevR"
-    "sp_USR\022\020\n\010strValue\030\001 \001(\t\022\026\n\016strDevIDFail"
-    "ed\030\002 \003(\t\"S\n\020ModifyDevReq_USR\022\021\n\tstrUserI"
-    "D\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Interactive.M"
-    "essage.Device\"$\n\020ModifyDevRsp_USR\022\020\n\010str"
-    "Value\030\001 \001(\t\"6\n\017QueryDevReq_USR\022\021\n\tstrUse"
-    "rID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"B\n\017QueryDevR"
-    "sp_USR\022/\n\nallDevInfo\030\001 \003(\0132\033.Interactive"
-    ".Message.Device\"\320\001\n\021SharingDevReq_USR\022\021\n"
-    "\tstrUserID\030\001 \001(\t\022\023\n\013strToUserID\030\002 \001(\t\022,\n"
-    "\007devInfo\030\003 \001(\0132\033.Interactive.Message.Dev"
-    "ice\022\022\n\nuiRelation\030\004 \001(\r\022\024\n\014strBeginDate\030"
-    "\005 \001(\t\022\022\n\nstrEndDate\030\006 \001(\t\022\025\n\rstrCreateDa"
-    "te\030\007 \001(\t\022\020\n\010strValue\030\010 \001(\t\"%\n\021SharingDev"
-    "Rsp_USR\022\020\n\010strValue\030\001 \001(\t\"O\n\026CancelShare"
-    "dDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDev"
-    "ID\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"*\n\026CancelShar"
-    "edDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021AddFri"
-    "endsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strFri"
-    "endUserID\030\002 \001(\t\"%\n\021AddFriendsRsp_USR\022\020\n\010"
-    "strValue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\ts"
-    "trUserID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\""
-    "D\n\021DelFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035"
-    "\n\025strFriendUserIDFailed\030\002 \003(\t\":\n\023QueryFr"
-    "iendsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVa"
-    "lue\030\002 \001(\t\"]\n\023QueryFriendsRsp_USR\0224\n\021allF"
-    "riendUserInfo\030\001 \003(\0132\031.Interactive.Messag"
-    "e.User\022\020\n\010strValue\030\002 \001(\t\"-\n\031GetOnlineDev"
-    "InfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOn"
-    "lineDevInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033."
-    "Interactive.Message.Device\022\020\n\010strValue\030\002"
-    " \001(\t\"^\n\034BroadcastOnlineDevInfo_INNER\022,\n\007"
-    "devInfo\030\001 \003(\0132\033.Interactive.Message.Devi"
-    "ce\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineUserInf"
-    "oReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnlin"
-    "eUserInfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.I"
-    "nteractive.Message.User\022\020\n\010strValue\030\002 \001("
-    "\t\"^\n\035BroadcastOnlineUserInfo_INNER\022+\n\010us"
-    "erInfo\030\001 \003(\0132\031.Interactive.Message.User\022"
-    "\020\n\010strValue\030\002 \001(\t\"\247\017\n\003Req\022S\n\035GetAccessAd"
-    "dressReq_DEV_Value\030\001 \001(\0132,.Interactive.M"
-    "essage.GetAccessAddressReq_DEV\022=\n\022LoginR"
-    "eq_DEV_Value\030\002 \001(\0132!.Interactive.Message"
-    ".LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value\030\003 \001"
-    "(\0132\".Interactive.Message.LogoutReq_DEV\022E"
-    "\n\026ShakehandReq_DEV_Value\030\004 \001(\0132%.Interac"
-    "tive.Message.ShakehandReq_DEV\022G\n\027ConfigI"
-    "nfoReq_DEV_Value\030\005 \001(\0132&.Interactive.Mes"
-    "sage.ConfigInfoReq_DEV\022;\n\021AuthReq_DEV_Va"
-    "lue\030\006 \001(\0132 .Interactive.Message.AuthReq_"
-    "DEV\022S\n\035GetAccessAddressReq_USR_Value\030\007 \001"
-    "(\0132,.Interactive.Message.GetAccessAddres"
-    "sReq_USR\022K\n\031RegisterUserReq_USR_Value\030\010 "
-    "\001(\0132(.Interactive.Message.RegisterUserRe"
-    "q_USR\022O\n\033UnRegisterUserReq_USR_Value\030\t \001"
-    "(\0132*.Interactive.Message.UnRegisterUserR"
-    "eq_USR\022=\n\022LoginReq_USR_Value\030\n \001(\0132!.Int"
-    "eractive.Message.LoginReq_USR\022\?\n\023LogoutR"
-    "eq_USR_Value\030\013 \001(\0132\".Interactive.Message"
-    ".LogoutReq_USR\022E\n\026ShakehandReq_USR_Value"
-    "\030\014 \001(\0132%.Interactive.Message.ShakehandRe"
-    "q_USR\022G\n\027ConfigInfoReq_USR_Value\030\r \001(\0132&"
-    ".Interactive.Message.ConfigInfoReq_USR\022\?"
-    "\n\023AddDevReq_USR_Value\030\016 \001(\0132\".Interactiv"
-    "e.Message.AddDevReq_USR\022\?\n\023DelDevReq_USR"
-    "_Value\030\017 \001(\0132\".Interactive.Message.DelDe"
-    "vReq_USR\022E\n\026ModifyDevReq_USR_Value\030\020 \001(\013"
-    "2%.Interactive.Message.ModifyDevReq_USR\022"
-    "C\n\025QueryDevReq_USR_Value\030\021 \001(\0132$.Interac"
-    "tive.Message.QueryDevReq_USR\022G\n\027SharingD"
-    "evReq_USR_Value\030\022 \001(\0132&.Interactive.Mess"
-    "age.SharingDevReq_USR\022Q\n\034CancelSharedDev"
-    "Req_USR_Value\030\023 \001(\0132+.Interactive.Messag"
-    "e.CancelSharedDevReq_USR\022G\n\027AddFriendsRe"
-    "q_USR_Value\030\024 \001(\0132&.Interactive.Message."
-    "AddFriendsReq_USR\022G\n\027DelFriendsReq_USR_V"
-    "alue\030\025 \001(\0132&.Interactive.Message.DelFrie"
-    "ndsReq_USR\022K\n\031QueryFriendsReq_USR_Value\030"
-    "\026 \001(\0132(.Interactive.Message.QueryFriends"
-    "Req_USR\022W\n\037GetOnlineDevInfoReq_INNER_Val"
-    "ue\030\027 \001(\0132..Interactive.Message.GetOnline"
-    "DevInfoReq_INNER\022]\n\"BroadcastOnlineDevIn"
-    "fo_INNER_Value\030\030 \001(\01321.Interactive.Messa"
-    "ge.BroadcastOnlineDevInfo_INNER\022Y\n GetOn"
-    "lineUserInfoReq_INNER_Value\030\031 \001(\0132/.Inte"
-    "ractive.Message.GetOnlineUserInfoReq_INN"
-    "ER\022_\n#BroadcastOnlineUserInfo_INNER_Valu"
-    "e\030\032 \001(\01322.Interactive.Message.BroadcastO"
-    "nlineUserInfo_INNER\"\214\016\n\003Rsp\022\020\n\010iRetcode\030"
-    "\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022S\n\035GetAccessAdd"
-    "ressRsp_DEV_Value\030\003 \001(\0132,.Interactive.Me"
-    "ssage.GetAccessAddressRsp_DEV\022=\n\022LoginRs"
-    "p_DEV_Value\030\004 \001(\0132!.Interactive.Message."
-    "LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_Value\030\005 \001("
-    "\0132\".Interactive.Message.LogoutRsp_DEV\022E\n"
-    "\026ShakehandRsp_DEV_Value\030\006 \001(\0132%.Interact"
-    "ive.Message.ShakehandRsp_DEV\022G\n\027ConfigIn"
-    "foRsp_DEV_Value\030\007 \001(\0132&.Interactive.Mess"
-    "age.ConfigInfoRsp_DEV\022;\n\021AuthRsp_DEV_Val"
-    "ue\030\010 \001(\0132 .Interactive.Message.AuthRsp_D"
-    "EV\022S\n\035GetAccessAddressRsp_USR_Value\030\t \001("
-    "\0132,.Interactive.Message.GetAccessAddress"
-    "Rsp_USR\022K\n\031RegisterUserRsp_USR_Value\030\n \001"
-    "(\0132(.Interactive.Message.RegisterUserRsp"
-    "_USR\022O\n\033UnRegisterUserRsp_USR_Value\030\013 \001("
-    "\0132*.Interactive.Message.UnRegisterUserRs"
-    "p_USR\022=\n\022LoginRsp_USR_Value\030\014 \001(\0132!.Inte"
-    "ractive.Message.LoginRsp_USR\022\?\n\023LogoutRs"
-    "p_USR_Value\030\r \001(\0132\".Interactive.Message."
-    "LogoutRsp_USR\022E\n\026ShakehandRsp_USR_Value\030"
-    "\016 \001(\0132%.Interactive.Message.ShakehandRsp"
-    "_USR\022G\n\027ConfigInfoRsp_USR_Value\030\017 \001(\0132&."
-    "Interactive.Message.ConfigInfoRsp_USR\022\?\n"
-    "\023AddDevRsp_USR_Value\030\020 \001(\0132\".Interactive"
-    ".Message.AddDevRsp_USR\022\?\n\023DelDevRsp_USR_"
-    "Value\030\021 \001(\0132\".Interactive.Message.DelDev"
-    "Rsp_USR\022E\n\026ModifyDevRsp_USR_Value\030\022 \001(\0132"
-    "%.Interactive.Message.ModifyDevRsp_USR\022C"
-    "\n\025QueryDevRsp_USR_Value\030\023 \001(\0132$.Interact"
-    "ive.Message.QueryDevRsp_USR\022G\n\027SharingDe"
-    "vRsp_USR_Value\030\024 \001(\0132&.Interactive.Messa"
-    "ge.SharingDevRsp_USR\022Q\n\034CancelSharedDevR"
-    "sp_USR_Value\030\025 \001(\0132+.Interactive.Message"
-    ".CancelSharedDevRsp_USR\022G\n\027AddFriendsRsp"
-    "_USR_Value\030\026 \001(\0132&.Interactive.Message.A"
-    "ddFriendsRsp_USR\022G\n\027DelFriendsRsp_USR_Va"
-    "lue\030\027 \001(\0132&.Interactive.Message.DelFrien"
-    "dsRsp_USR\022K\n\031QueryFriendsRsp_USR_Value\030\030"
-    " \001(\0132(.Interactive.Message.QueryFriendsR"
-    "sp_USR\022W\n\037GetOnlineDevInfoRsp_INNER_Valu"
-    "e\030\031 \001(\0132..Interactive.Message.GetOnlineD"
-    "evInfoRsp_INNER\022Y\n GetOnlineUserInfoRsp_"
-    "INNER_Value\030\032 \001(\0132/.Interactive.Message."
-    "GetOnlineUserInfoRsp_INNER\"\272\001\n\022Interacti"
-    "veMessage\022*\n\004type\030\001 \001(\0162\034.Interactive.Me"
-    "ssage.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSI"
-    "D\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive."
-    "Message.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interact"
-    "ive.Message.Rsp*\254\013\n\007MsgType\022\n\n\006Init_T\020\000\022"
-    "\036\n\031GetAccessAddressReq_DEV_T\020\220N\022\036\n\031GetAc"
-    "cessAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_"
-    "T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_D"
-    "EV_T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022Shakeha"
-    "ndReq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022"
-    "\030\n\023ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfoR"
-    "sp_DEV_T\020\352N\022\022\n\rAuthReq_DEV_T\020\364N\022\022\n\rAuthR"
-    "sp_DEV_T\020\376N\022\037\n\031GetAccessAddressReq_USR_T"
-    "\020\240\234\001\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n"
-    "\025RegisterUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUs"
-    "erRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR"
-    "_T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\024\n"
-    "\016LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234"
-    "\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_US"
-    "R_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Sha"
-    "kehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR"
-    "_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017Add"
-    "DevReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022"
-    "\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_"
-    "T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022Modif"
-    "yDevRsp_USR_T\020\336\235\001\022\027\n\021QueryDevReq_USR_T\020\350"
-    "\235\001\022\027\n\021QueryDevRsp_USR_T\020\362\235\001\022\031\n\023SharingDe"
-    "vReq_USR_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236"
-    "\001\022\036\n\030CancelSharedDevReq_USR_T\020\220\236\001\022\036\n\030Can"
-    "celSharedDevRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsR"
-    "eq_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022"
-    "\031\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023DelFriends"
-    "Rsp_USR_T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020"
-    "\314\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025Que"
-    "ryFriendsReq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRs"
-    "p_USR_T\020\352\236\001\022!\n\033GetOnlineDevInfoReq_INNER"
-    "_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_INNER_T\020\272\352"
-    "\001\022$\n\036BroadcastOnlineDevInfo_INNER_T\020\304\352\001\022"
-    "\"\n\034GetOnlineUserInfoReq_INNER_T\020\316\352\001\022\"\n\034G"
-    "etOnlineUserInfoRsp_INNER_T\020\330\352\001\022%\n\037Broad"
-    "castOnlineUserInfo_INNER_T\020\342\352\001b\006proto3", 9358);
+    "\025\n\rstrCreatedate\030\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r"
+    "\022\021\n\tstrExtend\030\007 \001(\t\022\024\n\014strInnerinfo\030\010 \001("
+    "\t\022\026\n\016strOwnerUserID\030\t \001(\t\022\030\n\020strSharingU"
+    "serID\030\n \003(\t\022\027\n\017strSharedUserID\030\013 \003(\t\022\020\n\010"
+    "strItems\030\014 \003(\t\"\305\002\n\004User\022\021\n\tstrUserID\030\001 \001"
+    "(\t\022\023\n\013strUserName\030\002 \001(\t\022\027\n\017strUserPasswo"
+    "rd\030\003 \001(\t\022\022\n\nuiTypeInfo\030\004 \001(\r\022\025\n\rstrCreat"
+    "edate\030\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r\022\021\n\tstrExte"
+    "nd\030\007 \001(\t\0221\n\014ownerDevInfo\030\010 \003(\0132\033.Interac"
+    "tive.Message.Device\0223\n\016sharingDevInfo\030\t "
+    "\003(\0132\033.Interactive.Message.Device\0222\n\rshar"
+    "edDevInfo\030\n \003(\0132\033.Interactive.Message.De"
+    "vice\022\020\n\010strItems\030\013 \003(\t\"=\n\027GetAccessAddre"
+    "ssReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030"
+    "\002 \001(\t\"\\\n\027GetAccessAddressRsp_DEV\022\030\n\020strA"
+    "ccessAddress\030\001 \001(\t\022\025\n\rstrAccessPort\030\002 \001("
+    "\t\022\020\n\010strValue\030\003 \001(\t\"G\n\014LoginReq_DEV\022\020\n\010s"
+    "trDevID\030\001 \001(\t\022\023\n\013strPassword\030\002 \001(\t\022\020\n\010st"
+    "rValue\030\003 \001(\t\" \n\014LoginRsp_DEV\022\020\n\010strValue"
+    "\030\001 \001(\t\"3\n\rLogoutReq_DEV\022\020\n\010strDevID\030\001 \001("
+    "\t\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRsp_DEV\022\020\n\010"
+    "strValue\030\001 \001(\t\"6\n\020ShakehandReq_DEV\022\020\n\010st"
+    "rDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020Shakeh"
+    "andRsp_DEV\022\020\n\010strValue\030\001 \001(\t\"7\n\021ConfigIn"
+    "foReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030"
+    "\002 \001(\t\"7\n\021ConfigInfoRsp_DEV\022\020\n\010strValue\030\001"
+    " \001(\t\022\020\n\010strItems\030\002 \003(\t\"4\n\013AuthReq_DEV\022\023\n"
+    "\013strPassword\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"\037\n\013"
+    "AuthRsp_DEV\022\020\n\010strValue\030\001 \001(\t\"C\n\027GetAcce"
+    "ssAddressReq_USR\022\026\n\016strSerializeID\030\001 \001(\t"
+    "\022\020\n\010strValue\030\002 \001(\t\"\\\n\027GetAccessAddressRs"
+    "p_USR\022\030\n\020strAccessAddress\030\001 \001(\t\022\025\n\rstrAc"
+    "cessPort\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"T\n\023Regi"
+    "sterUserReq_USR\022+\n\010userInfo\030\001 \001(\0132\031.Inte"
+    "ractive.Message.User\022\020\n\010strValue\030\002 \001(\t\":"
+    "\n\023RegisterUserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t"
+    "\022\020\n\010strValue\030\002 \001(\t\"V\n\025UnRegisterUserReq_"
+    "USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Mess"
+    "age.User\022\020\n\010strValue\030\002 \001(\t\"<\n\025UnRegister"
+    "UserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVal"
+    "ue\030\002 \001(\t\"M\n\014LoginReq_USR\022+\n\010userInfo\030\001 \001"
+    "(\0132\031.Interactive.Message.User\022\020\n\010strValu"
+    "e\030\002 \001(\t\"N\n\014LoginRsp_USR\022,\n\007devInfo\030\001 \003(\013"
+    "2\033.Interactive.Message.Device\022\020\n\010strValu"
+    "e\030\002 \001(\t\"N\n\rLogoutReq_USR\022+\n\010userInfo\030\001 \001"
+    "(\0132\031.Interactive.Message.User\022\020\n\010strValu"
+    "e\030\002 \001(\t\"!\n\rLogoutRsp_USR\022\020\n\010strValue\030\001 \001"
+    "(\t\"7\n\020ShakehandReq_USR\022\021\n\tstrUserID\030\001 \001("
+    "\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020ShakehandRsp_USR\022"
+    "\020\n\010strValue\030\001 \001(\t\"8\n\021ConfigInfoReq_USR\022\021"
+    "\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"7\n\021C"
+    "onfigInfoRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\020\n\010st"
+    "rItems\030\002 \003(\t\"P\n\rAddDevReq_USR\022\021\n\tstrUser"
+    "ID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Interactive."
+    "Message.Device\"!\n\rAddDevRsp_USR\022\020\n\010strVa"
+    "lue\030\001 \001(\t\"4\n\rDelDevReq_USR\022\021\n\tstrUserID\030"
+    "\001 \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9\n\rDelDevRsp_USR"
+    "\022\020\n\010strValue\030\001 \001(\t\022\026\n\016strDevIDFailed\030\002 \003"
+    "(\t\"S\n\020ModifyDevReq_USR\022\021\n\tstrUserID\030\001 \001("
+    "\t\022,\n\007devInfo\030\002 \001(\0132\033.Interactive.Message"
+    ".Device\"$\n\020ModifyDevRsp_USR\022\020\n\010strValue\030"
+    "\001 \001(\t\"6\n\017QueryDevReq_USR\022\021\n\tstrUserID\030\001 "
+    "\001(\t\022\020\n\010strValue\030\002 \001(\t\"B\n\017QueryDevRsp_USR"
+    "\022/\n\nallDevInfo\030\001 \003(\0132\033.Interactive.Messa"
+    "ge.Device\"\320\001\n\021SharingDevReq_USR\022\021\n\tstrUs"
+    "erID\030\001 \001(\t\022\023\n\013strToUserID\030\002 \001(\t\022,\n\007devIn"
+    "fo\030\003 \001(\0132\033.Interactive.Message.Device\022\022\n"
+    "\nuiRelation\030\004 \001(\r\022\024\n\014strBeginDate\030\005 \001(\t\022"
+    "\022\n\nstrEndDate\030\006 \001(\t\022\025\n\rstrCreateDate\030\007 \001"
+    "(\t\022\020\n\010strValue\030\010 \001(\t\"%\n\021SharingDevRsp_US"
+    "R\022\020\n\010strValue\030\001 \001(\t\"O\n\026CancelSharedDevRe"
+    "q_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \001"
+    "(\t\022\020\n\010strValue\030\003 \001(\t\"*\n\026CancelSharedDevR"
+    "sp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021AddFriendsRe"
+    "q_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strFriendUse"
+    "rID\030\002 \001(\t\"%\n\021AddFriendsRsp_USR\022\020\n\010strVal"
+    "ue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\tstrUser"
+    "ID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\"D\n\021Del"
+    "FriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n\025strF"
+    "riendUserIDFailed\030\002 \003(\t\":\n\023QueryFriendsR"
+    "eq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 "
+    "\001(\t\"]\n\023QueryFriendsRsp_USR\0224\n\021allFriendU"
+    "serInfo\030\001 \003(\0132\031.Interactive.Message.User"
+    "\022\020\n\010strValue\030\002 \001(\t\"-\n\031GetOnlineDevInfoRe"
+    "q_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnlineDe"
+    "vInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Intera"
+    "ctive.Message.Device\022\020\n\010strValue\030\002 \001(\t\"^"
+    "\n\034BroadcastOnlineDevInfo_INNER\022,\n\007devInf"
+    "o\030\001 \003(\0132\033.Interactive.Message.Device\022\020\n\010"
+    "strValue\030\002 \001(\t\".\n\032GetOnlineUserInfoReq_I"
+    "NNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnlineUserI"
+    "nfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interac"
+    "tive.Message.User\022\020\n\010strValue\030\002 \001(\t\"^\n\035B"
+    "roadcastOnlineUserInfo_INNER\022+\n\010userInfo"
+    "\030\001 \003(\0132\031.Interactive.Message.User\022\020\n\010str"
+    "Value\030\002 \001(\t\"\247\017\n\003Req\022S\n\035GetAccessAddressR"
+    "eq_DEV_Value\030\001 \001(\0132,.Interactive.Message"
+    ".GetAccessAddressReq_DEV\022=\n\022LoginReq_DEV"
+    "_Value\030\002 \001(\0132!.Interactive.Message.Login"
+    "Req_DEV\022\?\n\023LogoutReq_DEV_Value\030\003 \001(\0132\".I"
+    "nteractive.Message.LogoutReq_DEV\022E\n\026Shak"
+    "ehandReq_DEV_Value\030\004 \001(\0132%.Interactive.M"
+    "essage.ShakehandReq_DEV\022G\n\027ConfigInfoReq"
+    "_DEV_Value\030\005 \001(\0132&.Interactive.Message.C"
+    "onfigInfoReq_DEV\022;\n\021AuthReq_DEV_Value\030\006 "
+    "\001(\0132 .Interactive.Message.AuthReq_DEV\022S\n"
+    "\035GetAccessAddressReq_USR_Value\030\007 \001(\0132,.I"
+    "nteractive.Message.GetAccessAddressReq_U"
+    "SR\022K\n\031RegisterUserReq_USR_Value\030\010 \001(\0132(."
+    "Interactive.Message.RegisterUserReq_USR\022"
+    "O\n\033UnRegisterUserReq_USR_Value\030\t \001(\0132*.I"
+    "nteractive.Message.UnRegisterUserReq_USR"
+    "\022=\n\022LoginReq_USR_Value\030\n \001(\0132!.Interacti"
+    "ve.Message.LoginReq_USR\022\?\n\023LogoutReq_USR"
+    "_Value\030\013 \001(\0132\".Interactive.Message.Logou"
+    "tReq_USR\022E\n\026ShakehandReq_USR_Value\030\014 \001(\013"
+    "2%.Interactive.Message.ShakehandReq_USR\022"
+    "G\n\027ConfigInfoReq_USR_Value\030\r \001(\0132&.Inter"
+    "active.Message.ConfigInfoReq_USR\022\?\n\023AddD"
+    "evReq_USR_Value\030\016 \001(\0132\".Interactive.Mess"
+    "age.AddDevReq_USR\022\?\n\023DelDevReq_USR_Value"
+    "\030\017 \001(\0132\".Interactive.Message.DelDevReq_U"
+    "SR\022E\n\026ModifyDevReq_USR_Value\030\020 \001(\0132%.Int"
+    "eractive.Message.ModifyDevReq_USR\022C\n\025Que"
+    "ryDevReq_USR_Value\030\021 \001(\0132$.Interactive.M"
+    "essage.QueryDevReq_USR\022G\n\027SharingDevReq_"
+    "USR_Value\030\022 \001(\0132&.Interactive.Message.Sh"
+    "aringDevReq_USR\022Q\n\034CancelSharedDevReq_US"
+    "R_Value\030\023 \001(\0132+.Interactive.Message.Canc"
+    "elSharedDevReq_USR\022G\n\027AddFriendsReq_USR_"
+    "Value\030\024 \001(\0132&.Interactive.Message.AddFri"
+    "endsReq_USR\022G\n\027DelFriendsReq_USR_Value\030\025"
+    " \001(\0132&.Interactive.Message.DelFriendsReq"
+    "_USR\022K\n\031QueryFriendsReq_USR_Value\030\026 \001(\0132"
+    "(.Interactive.Message.QueryFriendsReq_US"
+    "R\022W\n\037GetOnlineDevInfoReq_INNER_Value\030\027 \001"
+    "(\0132..Interactive.Message.GetOnlineDevInf"
+    "oReq_INNER\022]\n\"BroadcastOnlineDevInfo_INN"
+    "ER_Value\030\030 \001(\01321.Interactive.Message.Bro"
+    "adcastOnlineDevInfo_INNER\022Y\n GetOnlineUs"
+    "erInfoReq_INNER_Value\030\031 \001(\0132/.Interactiv"
+    "e.Message.GetOnlineUserInfoReq_INNER\022_\n#"
+    "BroadcastOnlineUserInfo_INNER_Value\030\032 \001("
+    "\01322.Interactive.Message.BroadcastOnlineU"
+    "serInfo_INNER\"\214\016\n\003Rsp\022\020\n\010iRetcode\030\001 \001(\005\022"
+    "\021\n\tstrRetMsg\030\002 \001(\t\022S\n\035GetAccessAddressRs"
+    "p_DEV_Value\030\003 \001(\0132,.Interactive.Message."
+    "GetAccessAddressRsp_DEV\022=\n\022LoginRsp_DEV_"
+    "Value\030\004 \001(\0132!.Interactive.Message.LoginR"
+    "sp_DEV\022\?\n\023LogoutRsp_DEV_Value\030\005 \001(\0132\".In"
+    "teractive.Message.LogoutRsp_DEV\022E\n\026Shake"
+    "handRsp_DEV_Value\030\006 \001(\0132%.Interactive.Me"
+    "ssage.ShakehandRsp_DEV\022G\n\027ConfigInfoRsp_"
+    "DEV_Value\030\007 \001(\0132&.Interactive.Message.Co"
+    "nfigInfoRsp_DEV\022;\n\021AuthRsp_DEV_Value\030\010 \001"
+    "(\0132 .Interactive.Message.AuthRsp_DEV\022S\n\035"
+    "GetAccessAddressRsp_USR_Value\030\t \001(\0132,.In"
+    "teractive.Message.GetAccessAddressRsp_US"
+    "R\022K\n\031RegisterUserRsp_USR_Value\030\n \001(\0132(.I"
+    "nteractive.Message.RegisterUserRsp_USR\022O"
+    "\n\033UnRegisterUserRsp_USR_Value\030\013 \001(\0132*.In"
+    "teractive.Message.UnRegisterUserRsp_USR\022"
+    "=\n\022LoginRsp_USR_Value\030\014 \001(\0132!.Interactiv"
+    "e.Message.LoginRsp_USR\022\?\n\023LogoutRsp_USR_"
+    "Value\030\r \001(\0132\".Interactive.Message.Logout"
+    "Rsp_USR\022E\n\026ShakehandRsp_USR_Value\030\016 \001(\0132"
+    "%.Interactive.Message.ShakehandRsp_USR\022G"
+    "\n\027ConfigInfoRsp_USR_Value\030\017 \001(\0132&.Intera"
+    "ctive.Message.ConfigInfoRsp_USR\022\?\n\023AddDe"
+    "vRsp_USR_Value\030\020 \001(\0132\".Interactive.Messa"
+    "ge.AddDevRsp_USR\022\?\n\023DelDevRsp_USR_Value\030"
+    "\021 \001(\0132\".Interactive.Message.DelDevRsp_US"
+    "R\022E\n\026ModifyDevRsp_USR_Value\030\022 \001(\0132%.Inte"
+    "ractive.Message.ModifyDevRsp_USR\022C\n\025Quer"
+    "yDevRsp_USR_Value\030\023 \001(\0132$.Interactive.Me"
+    "ssage.QueryDevRsp_USR\022G\n\027SharingDevRsp_U"
+    "SR_Value\030\024 \001(\0132&.Interactive.Message.Sha"
+    "ringDevRsp_USR\022Q\n\034CancelSharedDevRsp_USR"
+    "_Value\030\025 \001(\0132+.Interactive.Message.Cance"
+    "lSharedDevRsp_USR\022G\n\027AddFriendsRsp_USR_V"
+    "alue\030\026 \001(\0132&.Interactive.Message.AddFrie"
+    "ndsRsp_USR\022G\n\027DelFriendsRsp_USR_Value\030\027 "
+    "\001(\0132&.Interactive.Message.DelFriendsRsp_"
+    "USR\022K\n\031QueryFriendsRsp_USR_Value\030\030 \001(\0132("
+    ".Interactive.Message.QueryFriendsRsp_USR"
+    "\022W\n\037GetOnlineDevInfoRsp_INNER_Value\030\031 \001("
+    "\0132..Interactive.Message.GetOnlineDevInfo"
+    "Rsp_INNER\022Y\n GetOnlineUserInfoRsp_INNER_"
+    "Value\030\032 \001(\0132/.Interactive.Message.GetOnl"
+    "ineUserInfoRsp_INNER\"\272\001\n\022InteractiveMess"
+    "age\022*\n\004type\030\001 \001(\0162\034.Interactive.Message."
+    "MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001("
+    "\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive.Messag"
+    "e.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interactive.Me"
+    "ssage.Rsp*\254\013\n\007MsgType\022\n\n\006Init_T\020\000\022\036\n\031Get"
+    "AccessAddressReq_DEV_T\020\220N\022\036\n\031GetAccessAd"
+    "dressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023"
+    "\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270"
+    "N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022ShakehandReq_"
+    "DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022\030\n\023Con"
+    "figInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfoRsp_DEV"
+    "_T\020\352N\022\022\n\rAuthReq_DEV_T\020\364N\022\022\n\rAuthRsp_DEV"
+    "_T\020\376N\022\037\n\031GetAccessAddressReq_USR_T\020\240\234\001\022\037"
+    "\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n\025Regis"
+    "terUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUserRsp_"
+    "USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR_T\020\310\234\001"
+    "\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\024\n\016Login"
+    "Req_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234\001\022\025\n\017L"
+    "ogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_USR_T\020\372\234"
+    "\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Shakehand"
+    "Rsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR_T\020\230\235\001"
+    "\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017AddDevReq"
+    "_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022\025\n\017Del"
+    "DevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_T\020\312\235\001\022"
+    "\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022ModifyDevRs"
+    "p_USR_T\020\336\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n\021"
+    "QueryDevRsp_USR_T\020\362\235\001\022\031\n\023SharingDevReq_U"
+    "SR_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030C"
+    "ancelSharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelSha"
+    "redDevRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR"
+    "_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023Del"
+    "FriendsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_US"
+    "R_T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n"
+    "\026ModifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFrie"
+    "ndsReq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_"
+    "T\020\352\236\001\022!\n\033GetOnlineDevInfoReq_INNER_T\020\260\352\001"
+    "\022!\n\033GetOnlineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036B"
+    "roadcastOnlineDevInfo_INNER_T\020\304\352\001\022\"\n\034Get"
+    "OnlineUserInfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnli"
+    "neUserInfoRsp_INNER_T\020\330\352\001\022%\n\037BroadcastOn"
+    "lineUserInfo_INNER_T\020\342\352\001b\006proto3", 9432);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_InteractiveProtocol_2eproto);
@@ -2179,6 +2185,8 @@ const int Device::kStrDevNameFieldNumber;
 const int Device::kStrDevPasswordFieldNumber;
 const int Device::kUiTypeInfoFieldNumber;
 const int Device::kStrCreatedateFieldNumber;
+const int Device::kUiStatusFieldNumber;
+const int Device::kStrExtendFieldNumber;
 const int Device::kStrInnerinfoFieldNumber;
 const int Device::kStrOwnerUserIDFieldNumber;
 const int Device::kStrSharingUserIDFieldNumber;
@@ -2209,9 +2217,11 @@ void Device::SharedCtor() {
   strdevname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strinnerinfo_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strowneruserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uitypeinfo_ = 0u;
+  ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
   _cached_size_ = 0;
 }
 
@@ -2225,6 +2235,7 @@ void Device::SharedDtor() {
   strdevname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strinnerinfo_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strowneruserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -2256,13 +2267,34 @@ Device* Device::New(::google::protobuf::Arena* arena) const {
 
 void Device::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.Device)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(Device, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<Device*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&(first), 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(uitypeinfo_, uistatus_);
   strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uitypeinfo_ = 0u;
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strinnerinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strowneruserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
   strsharinguserid_.Clear();
   strshareduserid_.Clear();
   stritems_.Clear();
@@ -2356,13 +2388,45 @@ bool Device::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_strInnerinfo;
+        if (input->ExpectTag(48)) goto parse_uiStatus;
         break;
       }
 
-      // optional string strInnerinfo = 6;
+      // optional uint32 uiStatus = 6;
       case 6: {
-        if (tag == 50) {
+        if (tag == 48) {
+         parse_uiStatus:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uistatus_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_strExtend;
+        break;
+      }
+
+      // optional string strExtend = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_strExtend:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strextend()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strextend().data(), this->strextend().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.Device.strExtend"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_strInnerinfo;
+        break;
+      }
+
+      // optional string strInnerinfo = 8;
+      case 8: {
+        if (tag == 66) {
          parse_strInnerinfo:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strinnerinfo()));
@@ -2373,32 +2437,13 @@ bool Device::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_strItems;
+        if (input->ExpectTag(74)) goto parse_strOwnerUserID;
         break;
       }
 
-      // repeated string strItems = 7;
-      case 7: {
-        if (tag == 58) {
-         parse_strItems:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_stritems()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->stritems(this->stritems_size() - 1).data(),
-            this->stritems(this->stritems_size() - 1).length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Interactive.Message.Device.strItems"));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(58)) goto parse_strItems;
-        if (input->ExpectTag(66)) goto parse_strOwnerUserID;
-        break;
-      }
-
-      // optional string strOwnerUserID = 8;
-      case 8: {
-        if (tag == 66) {
+      // optional string strOwnerUserID = 9;
+      case 9: {
+        if (tag == 74) {
          parse_strOwnerUserID:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strowneruserid()));
@@ -2409,13 +2454,13 @@ bool Device::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(74)) goto parse_strSharingUserID;
+        if (input->ExpectTag(82)) goto parse_strSharingUserID;
         break;
       }
 
-      // repeated string strSharingUserID = 9;
-      case 9: {
-        if (tag == 74) {
+      // repeated string strSharingUserID = 10;
+      case 10: {
+        if (tag == 82) {
          parse_strSharingUserID:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_strsharinguserid()));
@@ -2427,14 +2472,14 @@ bool Device::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(74)) goto parse_strSharingUserID;
-        if (input->ExpectTag(82)) goto parse_strSharedUserID;
+        if (input->ExpectTag(82)) goto parse_strSharingUserID;
+        if (input->ExpectTag(90)) goto parse_strSharedUserID;
         break;
       }
 
-      // repeated string strSharedUserID = 10;
-      case 10: {
-        if (tag == 82) {
+      // repeated string strSharedUserID = 11;
+      case 11: {
+        if (tag == 90) {
          parse_strSharedUserID:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_strshareduserid()));
@@ -2446,7 +2491,26 @@ bool Device::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(82)) goto parse_strSharedUserID;
+        if (input->ExpectTag(90)) goto parse_strSharedUserID;
+        if (input->ExpectTag(98)) goto parse_strItems;
+        break;
+      }
+
+      // repeated string strItems = 12;
+      case 12: {
+        if (tag == 98) {
+         parse_strItems:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_stritems()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->stritems(this->stritems_size() - 1).data(),
+            this->stritems(this->stritems_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.Device.strItems"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(98)) goto parse_strItems;
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2520,54 +2584,69 @@ void Device::SerializeWithCachedSizes(
       5, this->strcreatedate(), output);
   }
 
-  // optional string strInnerinfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uistatus(), output);
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.Device.strExtend");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->strextend(), output);
+  }
+
+  // optional string strInnerinfo = 8;
   if (this->strinnerinfo().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strinnerinfo().data(), this->strinnerinfo().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strInnerinfo");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->strinnerinfo(), output);
+      8, this->strinnerinfo(), output);
   }
 
-  // repeated string strItems = 7;
-  for (int i = 0; i < this->stritems_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->stritems(i).data(), this->stritems(i).length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Interactive.Message.Device.strItems");
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->stritems(i), output);
-  }
-
-  // optional string strOwnerUserID = 8;
+  // optional string strOwnerUserID = 9;
   if (this->strowneruserid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strowneruserid().data(), this->strowneruserid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strOwnerUserID");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      8, this->strowneruserid(), output);
+      9, this->strowneruserid(), output);
   }
 
-  // repeated string strSharingUserID = 9;
+  // repeated string strSharingUserID = 10;
   for (int i = 0; i < this->strsharinguserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strsharinguserid(i).data(), this->strsharinguserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strSharingUserID");
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      9, this->strsharinguserid(i), output);
+      10, this->strsharinguserid(i), output);
   }
 
-  // repeated string strSharedUserID = 10;
+  // repeated string strSharedUserID = 11;
   for (int i = 0; i < this->strshareduserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strshareduserid(i).data(), this->strshareduserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strSharedUserID");
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      10, this->strshareduserid(i), output);
+      11, this->strshareduserid(i), output);
+  }
+
+  // repeated string strItems = 12;
+  for (int i = 0; i < this->stritems_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stritems(i).data(), this->stritems(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.Device.strItems");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      12, this->stritems(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.Device)
@@ -2626,7 +2705,23 @@ void Device::SerializeWithCachedSizes(
         5, this->strcreatedate(), target);
   }
 
-  // optional string strInnerinfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uistatus(), target);
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.Device.strExtend");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->strextend(), target);
+  }
+
+  // optional string strInnerinfo = 8;
   if (this->strinnerinfo().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strinnerinfo().data(), this->strinnerinfo().length(),
@@ -2634,20 +2729,10 @@ void Device::SerializeWithCachedSizes(
       "Interactive.Message.Device.strInnerinfo");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->strinnerinfo(), target);
+        8, this->strinnerinfo(), target);
   }
 
-  // repeated string strItems = 7;
-  for (int i = 0; i < this->stritems_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->stritems(i).data(), this->stritems(i).length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Interactive.Message.Device.strItems");
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(7, this->stritems(i), target);
-  }
-
-  // optional string strOwnerUserID = 8;
+  // optional string strOwnerUserID = 9;
   if (this->strowneruserid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strowneruserid().data(), this->strowneruserid().length(),
@@ -2655,27 +2740,37 @@ void Device::SerializeWithCachedSizes(
       "Interactive.Message.Device.strOwnerUserID");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->strowneruserid(), target);
+        9, this->strowneruserid(), target);
   }
 
-  // repeated string strSharingUserID = 9;
+  // repeated string strSharingUserID = 10;
   for (int i = 0; i < this->strsharinguserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strsharinguserid(i).data(), this->strsharinguserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strSharingUserID");
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(9, this->strsharinguserid(i), target);
+      WriteStringToArray(10, this->strsharinguserid(i), target);
   }
 
-  // repeated string strSharedUserID = 10;
+  // repeated string strSharedUserID = 11;
   for (int i = 0; i < this->strshareduserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strshareduserid(i).data(), this->strshareduserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.Device.strSharedUserID");
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(10, this->strshareduserid(i), target);
+      WriteStringToArray(11, this->strshareduserid(i), target);
+  }
+
+  // repeated string strItems = 12;
+  for (int i = 0; i < this->stritems_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stritems(i).data(), this->stritems(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.Device.strItems");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(12, this->stritems(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.Device)
@@ -2721,21 +2816,35 @@ size_t Device::ByteSizeLong() const {
         this->strcreatedate());
   }
 
-  // optional string strInnerinfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uistatus());
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strextend());
+  }
+
+  // optional string strInnerinfo = 8;
   if (this->strinnerinfo().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strinnerinfo());
   }
 
-  // optional string strOwnerUserID = 8;
+  // optional string strOwnerUserID = 9;
   if (this->strowneruserid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strowneruserid());
   }
 
-  // repeated string strSharingUserID = 9;
+  // repeated string strSharingUserID = 10;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->strsharinguserid_size());
   for (int i = 0; i < this->strsharinguserid_size(); i++) {
@@ -2743,7 +2852,7 @@ size_t Device::ByteSizeLong() const {
       this->strsharinguserid(i));
   }
 
-  // repeated string strSharedUserID = 10;
+  // repeated string strSharedUserID = 11;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->strshareduserid_size());
   for (int i = 0; i < this->strshareduserid_size(); i++) {
@@ -2751,7 +2860,7 @@ size_t Device::ByteSizeLong() const {
       this->strshareduserid(i));
   }
 
-  // repeated string strItems = 7;
+  // repeated string strItems = 12;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->stritems_size());
   for (int i = 0; i < this->stritems_size(); i++) {
@@ -2814,6 +2923,13 @@ void Device::UnsafeMergeFrom(const Device& from) {
 
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
   }
+  if (from.uistatus() != 0) {
+    set_uistatus(from.uistatus());
+  }
+  if (from.strextend().size() > 0) {
+
+    strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
   if (from.strinnerinfo().size() > 0) {
 
     strinnerinfo_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strinnerinfo_);
@@ -2853,6 +2969,8 @@ void Device::InternalSwap(Device* other) {
   strdevpassword_.Swap(&other->strdevpassword_);
   std::swap(uitypeinfo_, other->uitypeinfo_);
   strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(uistatus_, other->uistatus_);
+  strextend_.Swap(&other->strextend_);
   strinnerinfo_.Swap(&other->strinnerinfo_);
   strowneruserid_.Swap(&other->strowneruserid_);
   strsharinguserid_.UnsafeArenaSwap(&other->strsharinguserid_);
@@ -3063,7 +3181,65 @@ void Device::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strCreatedate)
 }
 
-// optional string strInnerinfo = 6;
+// optional uint32 uiStatus = 6;
+void Device::clear_uistatus() {
+  uistatus_ = 0u;
+}
+::google::protobuf::uint32 Device::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Device.uiStatus)
+  return uistatus_;
+}
+void Device::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Device.uiStatus)
+}
+
+// optional string strExtend = 7;
+void Device::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Device::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strExtend)
+  return strextend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Device::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strExtend)
+}
+void Device::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strExtend)
+}
+void Device::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strExtend)
+}
+::std::string* Device::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Device::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Device.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Device::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strExtend)
+}
+
+// optional string strInnerinfo = 8;
 void Device::clear_strinnerinfo() {
   strinnerinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3107,7 +3283,7 @@ void Device::set_allocated_strinnerinfo(::std::string* strinnerinfo) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strInnerinfo)
 }
 
-// optional string strOwnerUserID = 8;
+// optional string strOwnerUserID = 9;
 void Device::clear_strowneruserid() {
   strowneruserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3151,7 +3327,7 @@ void Device::set_allocated_strowneruserid(::std::string* strowneruserid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strOwnerUserID)
 }
 
-// repeated string strSharingUserID = 9;
+// repeated string strSharingUserID = 10;
 int Device::strsharinguserid_size() const {
   return strsharinguserid_.size();
 }
@@ -3206,7 +3382,7 @@ Device::mutable_strsharinguserid() {
   return &strsharinguserid_;
 }
 
-// repeated string strSharedUserID = 10;
+// repeated string strSharedUserID = 11;
 int Device::strshareduserid_size() const {
   return strshareduserid_.size();
 }
@@ -3261,7 +3437,7 @@ Device::mutable_strshareduserid() {
   return &strshareduserid_;
 }
 
-// repeated string strItems = 7;
+// repeated string strItems = 12;
 int Device::stritems_size() const {
   return stritems_.size();
 }
@@ -3329,6 +3505,8 @@ const int User::kStrUserNameFieldNumber;
 const int User::kStrUserPasswordFieldNumber;
 const int User::kUiTypeInfoFieldNumber;
 const int User::kStrCreatedateFieldNumber;
+const int User::kUiStatusFieldNumber;
+const int User::kStrExtendFieldNumber;
 const int User::kOwnerDevInfoFieldNumber;
 const int User::kSharingDevInfoFieldNumber;
 const int User::kSharedDevInfoFieldNumber;
@@ -3358,7 +3536,9 @@ void User::SharedCtor() {
   strusername_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   struserpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uitypeinfo_ = 0u;
+  strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
   _cached_size_ = 0;
 }
 
@@ -3372,6 +3552,7 @@ void User::SharedDtor() {
   strusername_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   struserpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void User::SetCachedSize(int size) const {
@@ -3401,11 +3582,32 @@ User* User::New(::google::protobuf::Arena* arena) const {
 
 void User::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.User)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(User, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<User*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&(first), 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(uitypeinfo_, uistatus_);
   struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strusername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   struserpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uitypeinfo_ = 0u;
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
   ownerdevinfo_.Clear();
   sharingdevinfo_.Clear();
   shareddevinfo_.Clear();
@@ -3500,13 +3702,45 @@ bool User::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_ownerDevInfo;
+        if (input->ExpectTag(48)) goto parse_uiStatus;
         break;
       }
 
-      // repeated .Interactive.Message.Device ownerDevInfo = 6;
+      // optional uint32 uiStatus = 6;
       case 6: {
-        if (tag == 50) {
+        if (tag == 48) {
+         parse_uiStatus:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uistatus_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_strExtend;
+        break;
+      }
+
+      // optional string strExtend = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_strExtend:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strextend()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strextend().data(), this->strextend().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.User.strExtend"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_ownerDevInfo;
+        break;
+      }
+
+      // repeated .Interactive.Message.Device ownerDevInfo = 8;
+      case 8: {
+        if (tag == 66) {
          parse_ownerDevInfo:
           DO_(input->IncrementRecursionDepth());
          parse_loop_ownerDevInfo:
@@ -3515,15 +3749,15 @@ bool User::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_loop_ownerDevInfo;
-        if (input->ExpectTag(58)) goto parse_loop_sharingDevInfo;
+        if (input->ExpectTag(66)) goto parse_loop_ownerDevInfo;
+        if (input->ExpectTag(74)) goto parse_loop_sharingDevInfo;
         input->UnsafeDecrementRecursionDepth();
         break;
       }
 
-      // repeated .Interactive.Message.Device sharingDevInfo = 7;
-      case 7: {
-        if (tag == 58) {
+      // repeated .Interactive.Message.Device sharingDevInfo = 9;
+      case 9: {
+        if (tag == 74) {
           DO_(input->IncrementRecursionDepth());
          parse_loop_sharingDevInfo:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
@@ -3531,15 +3765,15 @@ bool User::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_loop_sharingDevInfo;
-        if (input->ExpectTag(66)) goto parse_loop_sharedDevInfo;
+        if (input->ExpectTag(74)) goto parse_loop_sharingDevInfo;
+        if (input->ExpectTag(82)) goto parse_loop_sharedDevInfo;
         input->UnsafeDecrementRecursionDepth();
         break;
       }
 
-      // repeated .Interactive.Message.Device sharedDevInfo = 8;
-      case 8: {
-        if (tag == 66) {
+      // repeated .Interactive.Message.Device sharedDevInfo = 10;
+      case 10: {
+        if (tag == 82) {
           DO_(input->IncrementRecursionDepth());
          parse_loop_sharedDevInfo:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
@@ -3547,15 +3781,15 @@ bool User::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(66)) goto parse_loop_sharedDevInfo;
+        if (input->ExpectTag(82)) goto parse_loop_sharedDevInfo;
         input->UnsafeDecrementRecursionDepth();
-        if (input->ExpectTag(74)) goto parse_strItems;
+        if (input->ExpectTag(90)) goto parse_strItems;
         break;
       }
 
-      // repeated string strItems = 9;
-      case 9: {
-        if (tag == 74) {
+      // repeated string strItems = 11;
+      case 11: {
+        if (tag == 90) {
          parse_strItems:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_stritems()));
@@ -3567,7 +3801,7 @@ bool User::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(74)) goto parse_strItems;
+        if (input->ExpectTag(90)) goto parse_strItems;
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -3641,32 +3875,47 @@ void User::SerializeWithCachedSizes(
       5, this->strcreatedate(), output);
   }
 
-  // repeated .Interactive.Message.Device ownerDevInfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uistatus(), output);
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strExtend");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->strextend(), output);
+  }
+
+  // repeated .Interactive.Message.Device ownerDevInfo = 8;
   for (unsigned int i = 0, n = this->ownerdevinfo_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->ownerdevinfo(i), output);
+      8, this->ownerdevinfo(i), output);
   }
 
-  // repeated .Interactive.Message.Device sharingDevInfo = 7;
+  // repeated .Interactive.Message.Device sharingDevInfo = 9;
   for (unsigned int i = 0, n = this->sharingdevinfo_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->sharingdevinfo(i), output);
+      9, this->sharingdevinfo(i), output);
   }
 
-  // repeated .Interactive.Message.Device sharedDevInfo = 8;
+  // repeated .Interactive.Message.Device sharedDevInfo = 10;
   for (unsigned int i = 0, n = this->shareddevinfo_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, this->shareddevinfo(i), output);
+      10, this->shareddevinfo(i), output);
   }
 
-  // repeated string strItems = 9;
+  // repeated string strItems = 11;
   for (int i = 0; i < this->stritems_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->stritems(i).data(), this->stritems(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.User.strItems");
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      9, this->stritems(i), output);
+      11, this->stritems(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.User)
@@ -3725,35 +3974,51 @@ void User::SerializeWithCachedSizes(
         5, this->strcreatedate(), target);
   }
 
-  // repeated .Interactive.Message.Device ownerDevInfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uistatus(), target);
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strExtend");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->strextend(), target);
+  }
+
+  // repeated .Interactive.Message.Device ownerDevInfo = 8;
   for (unsigned int i = 0, n = this->ownerdevinfo_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        6, this->ownerdevinfo(i), false, target);
+        8, this->ownerdevinfo(i), false, target);
   }
 
-  // repeated .Interactive.Message.Device sharingDevInfo = 7;
+  // repeated .Interactive.Message.Device sharingDevInfo = 9;
   for (unsigned int i = 0, n = this->sharingdevinfo_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        7, this->sharingdevinfo(i), false, target);
+        9, this->sharingdevinfo(i), false, target);
   }
 
-  // repeated .Interactive.Message.Device sharedDevInfo = 8;
+  // repeated .Interactive.Message.Device sharedDevInfo = 10;
   for (unsigned int i = 0, n = this->shareddevinfo_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        8, this->shareddevinfo(i), false, target);
+        10, this->shareddevinfo(i), false, target);
   }
 
-  // repeated string strItems = 9;
+  // repeated string strItems = 11;
   for (int i = 0; i < this->stritems_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->stritems(i).data(), this->stritems(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.User.strItems");
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(9, this->stritems(i), target);
+      WriteStringToArray(11, this->stritems(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.User)
@@ -3799,7 +4064,21 @@ size_t User::ByteSizeLong() const {
         this->strcreatedate());
   }
 
-  // repeated .Interactive.Message.Device ownerDevInfo = 6;
+  // optional uint32 uiStatus = 6;
+  if (this->uistatus() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uistatus());
+  }
+
+  // optional string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strextend());
+  }
+
+  // repeated .Interactive.Message.Device ownerDevInfo = 8;
   {
     unsigned int count = this->ownerdevinfo_size();
     total_size += 1UL * count;
@@ -3810,7 +4089,7 @@ size_t User::ByteSizeLong() const {
     }
   }
 
-  // repeated .Interactive.Message.Device sharingDevInfo = 7;
+  // repeated .Interactive.Message.Device sharingDevInfo = 9;
   {
     unsigned int count = this->sharingdevinfo_size();
     total_size += 1UL * count;
@@ -3821,7 +4100,7 @@ size_t User::ByteSizeLong() const {
     }
   }
 
-  // repeated .Interactive.Message.Device sharedDevInfo = 8;
+  // repeated .Interactive.Message.Device sharedDevInfo = 10;
   {
     unsigned int count = this->shareddevinfo_size();
     total_size += 1UL * count;
@@ -3832,7 +4111,7 @@ size_t User::ByteSizeLong() const {
     }
   }
 
-  // repeated string strItems = 9;
+  // repeated string strItems = 11;
   total_size += 1 *
       ::google::protobuf::internal::FromIntSize(this->stritems_size());
   for (int i = 0; i < this->stritems_size(); i++) {
@@ -3896,6 +4175,13 @@ void User::UnsafeMergeFrom(const User& from) {
 
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
   }
+  if (from.uistatus() != 0) {
+    set_uistatus(from.uistatus());
+  }
+  if (from.strextend().size() > 0) {
+
+    strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
 }
 
 void User::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3927,6 +4213,8 @@ void User::InternalSwap(User* other) {
   struserpassword_.Swap(&other->struserpassword_);
   std::swap(uitypeinfo_, other->uitypeinfo_);
   strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(uistatus_, other->uistatus_);
+  strextend_.Swap(&other->strextend_);
   ownerdevinfo_.UnsafeArenaSwap(&other->ownerdevinfo_);
   sharingdevinfo_.UnsafeArenaSwap(&other->sharingdevinfo_);
   shareddevinfo_.UnsafeArenaSwap(&other->shareddevinfo_);
@@ -4136,7 +4424,65 @@ void User::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strCreatedate)
 }
 
-// repeated .Interactive.Message.Device ownerDevInfo = 6;
+// optional uint32 uiStatus = 6;
+void User::clear_uistatus() {
+  uistatus_ = 0u;
+}
+::google::protobuf::uint32 User::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.uiStatus)
+  return uistatus_;
+}
+void User::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.uiStatus)
+}
+
+// optional string strExtend = 7;
+void User::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& User::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strExtend)
+  return strextend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strExtend)
+}
+void User::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strExtend)
+}
+void User::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strExtend)
+}
+::std::string* User::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* User::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
+}
+
+// repeated .Interactive.Message.Device ownerDevInfo = 8;
 int User::ownerdevinfo_size() const {
   return ownerdevinfo_.size();
 }
@@ -4166,7 +4512,7 @@ User::ownerdevinfo() const {
   return ownerdevinfo_;
 }
 
-// repeated .Interactive.Message.Device sharingDevInfo = 7;
+// repeated .Interactive.Message.Device sharingDevInfo = 9;
 int User::sharingdevinfo_size() const {
   return sharingdevinfo_.size();
 }
@@ -4196,7 +4542,7 @@ User::sharingdevinfo() const {
   return sharingdevinfo_;
 }
 
-// repeated .Interactive.Message.Device sharedDevInfo = 8;
+// repeated .Interactive.Message.Device sharedDevInfo = 10;
 int User::shareddevinfo_size() const {
   return shareddevinfo_.size();
 }
@@ -4226,7 +4572,7 @@ User::shareddevinfo() const {
   return shareddevinfo_;
 }
 
-// repeated string strItems = 9;
+// repeated string strItems = 11;
 int User::stritems_size() const {
   return stritems_.size();
 }

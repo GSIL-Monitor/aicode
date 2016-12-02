@@ -101,11 +101,13 @@ message Device
   string strDevPassword = 3;
   uint32 uiTypeInfo = 4;
   string strCreatedate = 5;
-  string strInnerinfo = 6;                      //设备上传到平台的信息  
-  string strOwnerUserID = 8;                    //设备的所有者
-  repeated string strSharingUserID = 9;         //主动分享该设备的用户ID（这里之所以是列表类型，是考虑到二次分享，从而导致该主动分享的用户ID可能是多个）
-  repeated string strSharedUserID = 10;         //设备被分享给其他用户的用户ID
-  repeated string strItems = 7;                 //设备其他属性
+  uint32 uiStatus = 6;
+  string strExtend = 7;
+  string strInnerinfo = 8;                      //设备上传到平台的信息  
+  string strOwnerUserID = 9;                    //设备的所有者
+  repeated string strSharingUserID = 10;        //主动分享该设备的用户ID（这里之所以是列表类型，是考虑到二次分享，从而导致该主动分享的用户ID可能是多个）
+  repeated string strSharedUserID = 11;         //设备被分享给其他用户的用户ID
+  repeated string strItems = 12;                //设备其他属性
 }
 
 message User
@@ -114,11 +116,13 @@ message User
   string strUserName = 2;
   string strUserPassword = 3;
   uint32 uiTypeInfo = 4;
-  string strCreatedate = 5;  
-  repeated Device ownerDevInfo = 6;             //用户所拥有的设备
-  repeated Device sharingDevInfo = 7;           //用户主动分享出去的设备
-  repeated Device sharedDevInfo = 8;            //用户被分享到的设备
-  repeated string strItems = 9;                 //用户其他属性
+  string strCreatedate = 5;
+  uint32 uiStatus = 6;
+  string strExtend = 7;
+  repeated Device ownerDevInfo = 8;             //用户所拥有的设备
+  repeated Device sharingDevInfo = 9;           //用户主动分享出去的设备
+  repeated Device sharedDevInfo = 10;            //用户被分享到的设备
+  repeated string strItems = 11;                 //用户其他属性
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
