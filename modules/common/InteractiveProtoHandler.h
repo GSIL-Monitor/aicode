@@ -100,6 +100,8 @@ public:
         std::string m_strDevPassword;
         unsigned int m_uiTypeInfo;
         std::string m_strCreatedate;
+        unsigned int m_uiStatus;
+        std::string m_strExtend;
         std::string m_strInnerinfo;                          //设备上传到平台的信息  
         std::string m_strOwnerUserID;                    //设备的所有者
         std::list<std::string> m_sharingUserIDList;   //主动分享该设备的用户ID（这里之所以是列表类型，是考虑到二次分享，从而导致该主动分享的用户ID可能是多个）
@@ -114,6 +116,8 @@ public:
         std::string m_strUserPassword;
         unsigned int m_uiTypeInfo;
         std::string m_strCreatedate;
+        unsigned int m_uiStatus;
+        std::string m_strExtend;
         std::list<Device> m_ownerDevInfoList;             //用户所拥有的设备
         std::list<Device> m_sharingDevInfoList;           //用户主动分享出去的设备
         std::list<Device> m_sharedDevInfoList;            //用户被分享到的设备

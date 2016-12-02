@@ -59,6 +59,8 @@ template<typename T> void UnSerializeDevList(std::list<T> &devInfoList,
         devInfo.m_strDevPassword = srcDevInfoList.Get(i).strdevpassword();
         devInfo.m_uiTypeInfo = srcDevInfoList.Get(i).uitypeinfo();
         devInfo.m_strCreatedate = srcDevInfoList.Get(i).strcreatedate();
+        devInfo.m_uiStatus = srcDevInfoList.Get(i).uistatus();
+        devInfo.m_strExtend = srcDevInfoList.Get(i).strextend();
         devInfo.m_strInnerinfo = srcDevInfoList.Get(i).strinnerinfo();
         devInfo.m_strOwnerUserID = srcDevInfoList.Get(i).strowneruserid();
 
@@ -83,7 +85,7 @@ template<typename T> void UnSerializeDevList(std::list<T> &devInfoList,
             devInfo.m_strItemsList.push_back(srcDevInfoList.Get(i).stritems(k));
         }
 
-        devInfoList.push_back(devInfo);
+        devInfoList.push_back(std::move(devInfo));
     }
 }
 
@@ -105,6 +107,8 @@ template<typename T> void SerializeDevList(const std::list<T> &devInfoList,
         pDstDevInfoList->Mutable(i)->set_strdevpassword(itBegin->m_strDevPassword);
         pDstDevInfoList->Mutable(i)->set_uitypeinfo(itBegin->m_uiTypeInfo);
         pDstDevInfoList->Mutable(i)->set_strcreatedate(itBegin->m_strCreatedate);
+        pDstDevInfoList->Mutable(i)->set_uistatus(itBegin->m_uiStatus);
+        pDstDevInfoList->Mutable(i)->set_strextend(itBegin->m_strExtend);
         pDstDevInfoList->Mutable(i)->set_strinnerinfo(itBegin->m_strInnerinfo);
         pDstDevInfoList->Mutable(i)->set_strowneruserid(itBegin->m_strOwnerUserID);
 
@@ -868,6 +872,8 @@ void InteractiveProtoHandler::RegisterUserReq_USR::UnSerializer(const Interactiv
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().uitypeinfo();
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().uistatus();
+    m_userInfo.m_strExtend = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strextend();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().sharingdevinfo());
@@ -936,6 +942,8 @@ void InteractiveProtoHandler::RegisterUserReq_USR::Serializer(InteractiveMessage
     uinfo->set_struserpassword(m_userInfo.m_strUserPassword);
     uinfo->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
+    uinfo->set_uistatus(m_userInfo.m_uiStatus);
+    uinfo->set_strextend(m_userInfo.m_strExtend);
     
     SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
     SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -984,6 +992,8 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::UnSerializer(const Interact
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().uitypeinfo();
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().uistatus();
+    m_userInfo.m_strExtend = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strextend();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().sharingdevinfo());
@@ -1013,6 +1023,8 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::Serializer(InteractiveMessa
     uinfo->set_struserpassword(m_userInfo.m_strUserPassword);
     uinfo->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
+    uinfo->set_uistatus(m_userInfo.m_uiStatus);
+    uinfo->set_strextend(m_userInfo.m_strExtend);
 
     SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
     SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -1060,6 +1072,8 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().uitypeinfo();
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().uistatus();
+    m_userInfo.m_strExtend = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strextend();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().sharingdevinfo());
@@ -1088,6 +1102,8 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
     uinfo->set_struserpassword(m_userInfo.m_strUserPassword);
     uinfo->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
+    uinfo->set_uistatus(m_userInfo.m_uiStatus);
+    uinfo->set_strextend(m_userInfo.m_strExtend);
 
     SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
     SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -1138,6 +1154,8 @@ void InteractiveProtoHandler::LogoutReq_USR::UnSerializer(const InteractiveMessa
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().uitypeinfo();
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().uistatus();
+    m_userInfo.m_strExtend = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strextend();
 
     UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().ownerdevinfo());
     UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().sharingdevinfo());
@@ -1166,6 +1184,8 @@ void InteractiveProtoHandler::LogoutReq_USR::Serializer(InteractiveMessage &Inte
     uinfo->set_struserpassword(m_userInfo.m_strUserPassword);
     uinfo->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
+    uinfo->set_uistatus(m_userInfo.m_uiStatus);
+    uinfo->set_strextend(m_userInfo.m_strExtend);
 
     SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
     SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -1297,6 +1317,8 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     m_devInfo.m_strDevPassword = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strdevpassword();
     m_devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().uitypeinfo();
     m_devInfo.m_strCreatedate = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strcreatedate();
+    m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().uistatus();
+    m_devInfo.m_strExtend = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strinnerinfo();
     m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strowneruserid();
 
@@ -1334,6 +1356,8 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
 
@@ -1480,6 +1504,8 @@ void InteractiveProtoHandler::ModifyDevReq_USR::UnSerializer(const InteractiveMe
     m_devInfo.m_strDevPassword = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdevpassword();
     m_devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().uitypeinfo();
     m_devInfo.m_strCreatedate = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strcreatedate();
+    m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().uistatus();
+    m_devInfo.m_strExtend = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strinnerinfo();
     m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strowneruserid();
 
@@ -1517,6 +1543,8 @@ void InteractiveProtoHandler::ModifyDevReq_USR::Serializer(InteractiveMessage &I
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
 
@@ -1624,6 +1652,8 @@ void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveM
     m_devInfo.m_strDevPassword = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strdevpassword();
     m_devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().uitypeinfo();
     m_devInfo.m_strCreatedate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strcreatedate();
+    m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().uistatus();
+    m_devInfo.m_strExtend = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strinnerinfo();
     m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strowneruserid();
 
@@ -1669,6 +1699,8 @@ void InteractiveProtoHandler::SharingDevReq_USR::Serializer(InteractiveMessage &
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
 
@@ -1906,6 +1938,8 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const Interactiv
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
         usr.m_strCreatedate = ItUser.strcreatedate();
+        usr.m_uiStatus = ItUser.uistatus();
+        usr.m_strExtend = ItUser.strextend();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
@@ -1945,6 +1979,8 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage
         uinfo->set_struserpassword(itBegin->m_strUserPassword);
         uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+        uinfo->set_uistatus(itBegin->m_uiStatus);
+        uinfo->set_strextend(itBegin->m_strExtend);
 
         SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
         SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -2056,6 +2092,8 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::UnSerializer(const Int
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
         usr.m_strCreatedate = ItUser.strcreatedate();
+        usr.m_uiStatus = ItUser.uistatus();
+        usr.m_strExtend = ItUser.strextend();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
@@ -2095,6 +2133,8 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::Serializer(Interactive
         uinfo->set_struserpassword(itBegin->m_strUserPassword);
         uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+        uinfo->set_uistatus(itBegin->m_uiStatus);
+        uinfo->set_strextend(itBegin->m_strExtend);
 
         SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
         SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
@@ -2138,6 +2178,8 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::UnSerializer(const 
         usr.m_strUserPassword = ItUser.struserpassword();
         usr.m_uiTypeInfo = ItUser.uitypeinfo();
         usr.m_strCreatedate = ItUser.strcreatedate();
+        usr.m_uiStatus = ItUser.uistatus();
+        usr.m_strExtend = ItUser.strextend();
 
         UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
         UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
@@ -2177,6 +2219,8 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
         uinfo->set_struserpassword(itBegin->m_strUserPassword);
         uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
+        uinfo->set_uistatus(itBegin->m_uiStatus);
+        uinfo->set_strextend(itBegin->m_strExtend);
 
         SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
         SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());

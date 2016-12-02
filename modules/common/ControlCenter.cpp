@@ -195,6 +195,7 @@ void ControlCenter::ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string 
     if (!MsgHdr(strData, strSrcID, boost::bind(&ControlCenter::MsgWrite, this, _1, _2)))
     {
         LOG_ERROR_RLD("Unserializer handler failed and type is " << iMsgType << " src id is " << strSrcID);
+        //m_pClient->AsyncRead(pValue); //当处理失败时需要考虑是否需要继续接收消息
     }
     else
     {

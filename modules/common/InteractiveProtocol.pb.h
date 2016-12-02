@@ -376,9 +376,26 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // optional string strInnerinfo = 6;
+  // optional uint32 uiStatus = 6;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 6;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // optional string strExtend = 7;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 7;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // optional string strInnerinfo = 8;
   void clear_strinnerinfo();
-  static const int kStrInnerinfoFieldNumber = 6;
+  static const int kStrInnerinfoFieldNumber = 8;
   const ::std::string& strinnerinfo() const;
   void set_strinnerinfo(const ::std::string& value);
   void set_strinnerinfo(const char* value);
@@ -387,9 +404,9 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strinnerinfo();
   void set_allocated_strinnerinfo(::std::string* strinnerinfo);
 
-  // optional string strOwnerUserID = 8;
+  // optional string strOwnerUserID = 9;
   void clear_strowneruserid();
-  static const int kStrOwnerUserIDFieldNumber = 8;
+  static const int kStrOwnerUserIDFieldNumber = 9;
   const ::std::string& strowneruserid() const;
   void set_strowneruserid(const ::std::string& value);
   void set_strowneruserid(const char* value);
@@ -398,10 +415,10 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strowneruserid();
   void set_allocated_strowneruserid(::std::string* strowneruserid);
 
-  // repeated string strSharingUserID = 9;
+  // repeated string strSharingUserID = 10;
   int strsharinguserid_size() const;
   void clear_strsharinguserid();
-  static const int kStrSharingUserIDFieldNumber = 9;
+  static const int kStrSharingUserIDFieldNumber = 10;
   const ::std::string& strsharinguserid(int index) const;
   ::std::string* mutable_strsharinguserid(int index);
   void set_strsharinguserid(int index, const ::std::string& value);
@@ -414,10 +431,10 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   const ::google::protobuf::RepeatedPtrField< ::std::string>& strsharinguserid() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strsharinguserid();
 
-  // repeated string strSharedUserID = 10;
+  // repeated string strSharedUserID = 11;
   int strshareduserid_size() const;
   void clear_strshareduserid();
-  static const int kStrSharedUserIDFieldNumber = 10;
+  static const int kStrSharedUserIDFieldNumber = 11;
   const ::std::string& strshareduserid(int index) const;
   ::std::string* mutable_strshareduserid(int index);
   void set_strshareduserid(int index, const ::std::string& value);
@@ -430,10 +447,10 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   const ::google::protobuf::RepeatedPtrField< ::std::string>& strshareduserid() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strshareduserid();
 
-  // repeated string strItems = 7;
+  // repeated string strItems = 12;
   int stritems_size() const;
   void clear_stritems();
-  static const int kStrItemsFieldNumber = 7;
+  static const int kStrItemsFieldNumber = 12;
   const ::std::string& stritems(int index) const;
   ::std::string* mutable_stritems(int index);
   void set_stritems(int index, const ::std::string& value);
@@ -457,9 +474,11 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::internal::ArenaStringPtr strdevname_;
   ::google::protobuf::internal::ArenaStringPtr strdevpassword_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::internal::ArenaStringPtr strinnerinfo_;
   ::google::protobuf::internal::ArenaStringPtr strowneruserid_;
   ::google::protobuf::uint32 uitypeinfo_;
+  ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -585,10 +604,27 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // repeated .Interactive.Message.Device ownerDevInfo = 6;
+  // optional uint32 uiStatus = 6;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 6;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // optional string strExtend = 7;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 7;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // repeated .Interactive.Message.Device ownerDevInfo = 8;
   int ownerdevinfo_size() const;
   void clear_ownerdevinfo();
-  static const int kOwnerDevInfoFieldNumber = 6;
+  static const int kOwnerDevInfoFieldNumber = 8;
   const ::Interactive::Message::Device& ownerdevinfo(int index) const;
   ::Interactive::Message::Device* mutable_ownerdevinfo(int index);
   ::Interactive::Message::Device* add_ownerdevinfo();
@@ -597,10 +633,10 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
       ownerdevinfo() const;
 
-  // repeated .Interactive.Message.Device sharingDevInfo = 7;
+  // repeated .Interactive.Message.Device sharingDevInfo = 9;
   int sharingdevinfo_size() const;
   void clear_sharingdevinfo();
-  static const int kSharingDevInfoFieldNumber = 7;
+  static const int kSharingDevInfoFieldNumber = 9;
   const ::Interactive::Message::Device& sharingdevinfo(int index) const;
   ::Interactive::Message::Device* mutable_sharingdevinfo(int index);
   ::Interactive::Message::Device* add_sharingdevinfo();
@@ -609,10 +645,10 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
       sharingdevinfo() const;
 
-  // repeated .Interactive.Message.Device sharedDevInfo = 8;
+  // repeated .Interactive.Message.Device sharedDevInfo = 10;
   int shareddevinfo_size() const;
   void clear_shareddevinfo();
-  static const int kSharedDevInfoFieldNumber = 8;
+  static const int kSharedDevInfoFieldNumber = 10;
   const ::Interactive::Message::Device& shareddevinfo(int index) const;
   ::Interactive::Message::Device* mutable_shareddevinfo(int index);
   ::Interactive::Message::Device* add_shareddevinfo();
@@ -621,10 +657,10 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
       shareddevinfo() const;
 
-  // repeated string strItems = 9;
+  // repeated string strItems = 11;
   int stritems_size() const;
   void clear_stritems();
-  static const int kStrItemsFieldNumber = 9;
+  static const int kStrItemsFieldNumber = 11;
   const ::std::string& stritems(int index) const;
   ::std::string* mutable_stritems(int index);
   void set_stritems(int index, const ::std::string& value);
@@ -649,7 +685,9 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr strusername_;
   ::google::protobuf::internal::ArenaStringPtr struserpassword_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint32 uitypeinfo_;
+  ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -6815,7 +6853,65 @@ inline void Device::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strCreatedate)
 }
 
-// optional string strInnerinfo = 6;
+// optional uint32 uiStatus = 6;
+inline void Device::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 Device::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Device.uiStatus)
+  return uistatus_;
+}
+inline void Device::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Device.uiStatus)
+}
+
+// optional string strExtend = 7;
+inline void Device::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Device::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strExtend)
+  return strextend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Device::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strExtend)
+}
+inline void Device::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strExtend)
+}
+inline void Device::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strExtend)
+}
+inline ::std::string* Device::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Device::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Device.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Device::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strExtend)
+}
+
+// optional string strInnerinfo = 8;
 inline void Device::clear_strinnerinfo() {
   strinnerinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -6859,7 +6955,7 @@ inline void Device::set_allocated_strinnerinfo(::std::string* strinnerinfo) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strInnerinfo)
 }
 
-// optional string strOwnerUserID = 8;
+// optional string strOwnerUserID = 9;
 inline void Device::clear_strowneruserid() {
   strowneruserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -6903,7 +6999,7 @@ inline void Device::set_allocated_strowneruserid(::std::string* strowneruserid) 
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strOwnerUserID)
 }
 
-// repeated string strSharingUserID = 9;
+// repeated string strSharingUserID = 10;
 inline int Device::strsharinguserid_size() const {
   return strsharinguserid_.size();
 }
@@ -6958,7 +7054,7 @@ Device::mutable_strsharinguserid() {
   return &strsharinguserid_;
 }
 
-// repeated string strSharedUserID = 10;
+// repeated string strSharedUserID = 11;
 inline int Device::strshareduserid_size() const {
   return strshareduserid_.size();
 }
@@ -7013,7 +7109,7 @@ Device::mutable_strshareduserid() {
   return &strshareduserid_;
 }
 
-// repeated string strItems = 7;
+// repeated string strItems = 12;
 inline int Device::stritems_size() const {
   return stritems_.size();
 }
@@ -7265,7 +7361,65 @@ inline void User::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strCreatedate)
 }
 
-// repeated .Interactive.Message.Device ownerDevInfo = 6;
+// optional uint32 uiStatus = 6;
+inline void User::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 User::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.uiStatus)
+  return uistatus_;
+}
+inline void User::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.uiStatus)
+}
+
+// optional string strExtend = 7;
+inline void User::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& User::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strExtend)
+  return strextend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void User::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strExtend)
+}
+inline void User::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strExtend)
+}
+inline void User::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strExtend)
+}
+inline ::std::string* User::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* User::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void User::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
+}
+
+// repeated .Interactive.Message.Device ownerDevInfo = 8;
 inline int User::ownerdevinfo_size() const {
   return ownerdevinfo_.size();
 }
@@ -7295,7 +7449,7 @@ User::ownerdevinfo() const {
   return ownerdevinfo_;
 }
 
-// repeated .Interactive.Message.Device sharingDevInfo = 7;
+// repeated .Interactive.Message.Device sharingDevInfo = 9;
 inline int User::sharingdevinfo_size() const {
   return sharingdevinfo_.size();
 }
@@ -7325,7 +7479,7 @@ User::sharingdevinfo() const {
   return sharingdevinfo_;
 }
 
-// repeated .Interactive.Message.Device sharedDevInfo = 8;
+// repeated .Interactive.Message.Device sharedDevInfo = 10;
 inline int User::shareddevinfo_size() const {
   return shareddevinfo_.size();
 }
@@ -7355,7 +7509,7 @@ User::shareddevinfo() const {
   return shareddevinfo_;
 }
 
-// repeated string strItems = 9;
+// repeated string strItems = 11;
 inline int User::stritems_size() const {
   return stritems_.size();
 }

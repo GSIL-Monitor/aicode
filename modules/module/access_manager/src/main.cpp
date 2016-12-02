@@ -7,6 +7,8 @@
 #include "ConfigSt.h"
 #include <boost/filesystem.hpp> 
 #include <boost/lexical_cast.hpp>
+#include "UserManager.h"
+#include "ControlCenter.h"
 
 #define CONFIG_FILE_NAME "access_manager.ini"
 #define VERSION "[v1.0.0] "
@@ -161,7 +163,7 @@ int main(int argc, char* argv[])
 
     InitLog();
 
-    LOG_INFO_RLD("TDFS_Center begin runing and daemon status is " << IsNeedDaemonRun);
+    LOG_INFO_RLD("AccessManager begin runing and daemon status is " << IsNeedDaemonRun);
 
     const std::string &strDBHost = GetConfig("DB.DBHost");
     if (strDBHost.empty())
@@ -260,25 +262,32 @@ int main(int argc, char* argv[])
     
     ////////////////////////////////////////////////////////////////////////////
 
-    //ControlCenter::ParamInfo pinfo;
-    //pinfo.strDBHost = strDBHost;
-    //pinfo.strDBName = strDBName;
-    //pinfo.strDBPassword = strDBPassword;
-    //pinfo.strDBPort = strDBPort;
-    //pinfo.strDBUser = strDBUser;
+    UserManager::ParamInfo UmgParam;
+    UmgParam.strDBHost = strDBHost;
+    UmgParam.strDBName = strDBName;
+    UmgParam.strDBPassword = strDBPassword;
+    UmgParam.strDBPort = strDBPort;
+    UmgParam.strDBUser = strDBUser;
 
-    //pinfo.strRemoteAddress = strRemoteAddress;
-    //pinfo.strRemotePort = strRemotePort;
-    //pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
+    UserManager Umg(UmgParam);
+    
+    ControlCenter::ParamInfo pinfo;    
+    pinfo.strRemoteAddress = strRemoteAddress;
+    pinfo.strRemotePort = strRemotePort;
+    pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
 
-    //pinfo.strSelfID = strSelfID;
-    //pinfo.uiSyncShakehandTimeoutCount = boost::lexical_cast<unsigned int>(strSyncShakehandTimeoutCount);
-    //pinfo.uiSyncShakehandTimeout = boost::lexical_cast<unsigned int>(strSyncShakehandTimeout);
-    //pinfo.uiSyncAddressRspInvalidTimeout = boost::lexical_cast<unsigned int>(strSyncAddressRspInvalidTimeout);
-    //pinfo.uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
+    pinfo.strSelfID = strSelfID;
+    pinfo.uiSyncShakehandTimeoutCount = boost::lexical_cast<unsigned int>(strSyncShakehandTimeoutCount);
+    pinfo.uiSyncShakehandTimeout = boost::lexical_cast<unsigned int>(strSyncShakehandTimeout);
+    pinfo.uiSyncAddressRspInvalidTimeout = boost::lexical_cast<unsigned int>(strSyncAddressRspInvalidTimeout);
+    pinfo.uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
 
-    //ControlCenter ccenter(pinfo);
-    ////ccenter.Run(true);
+    ControlCenter ccenter(pinfo);
+
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&UserManager::RegisterUserReq, &Umg, _1, _2, _3));
+
+    ccenter.Run(true);
+
 
 
 
