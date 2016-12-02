@@ -9,6 +9,7 @@
 #include <boost/lexical_cast.hpp>
 #include "MsgBusClientFanout.h"
 #include "InteractiveProtoHandler.h"
+#include "UserTest.h"
 
 #define CONFIG_FILE_NAME "platform_test.ini"
 #define VERSION "[v1.0.0] "
@@ -953,16 +954,25 @@ int main(int argc, char* argv[])
     {
         LOG_ERROR_RLD("ShakehandRsp user rsp serialize and unserialize compare failure.");
     }
-
-
-
-
+        
     ////test code
     //new boost::thread(Send);
     //boost::this_thread::sleep(boost::posix_time::seconds(2));
     //new boost::thread(Receive);
     //new boost::thread(Receive);
     //boost::this_thread::sleep(boost::posix_time::seconds(1000000));
+    // 
+
+    {
+        boost::shared_ptr<UserTest> pCObj(new UserTest);
+        pCObj->init(strRemoteAddress.c_str(), strRemotePort.c_str(), 1);
+        boost::this_thread::sleep(boost::posix_time::seconds(30));
+        pCObj->Close();
+    }
+
+    printf("wait 5 seconds...\n");
+    boost::this_thread::sleep(boost::posix_time::seconds(5));
+    printf("exit.\n");
 
     return 0;
 }

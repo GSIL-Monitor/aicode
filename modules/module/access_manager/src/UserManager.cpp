@@ -84,10 +84,10 @@ void UserManager::InsertUserToDB(const std::string &strUserID, const std::string
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_info("
         "id,userid,username, userpassword, typeinfo, createdate, status, extend) values(uuid(),"        
-        "'%s',%s,'%s','%d','%s', %d,'%s')";
+        "'%s','%s','%s','%d','%s', %d,'%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strUserName.c_str(), strUserPwd.c_str(), iTypeInfo, strCreateDate.c_str(), iStatus, strExtend.c_str());
 
-    if (!DataAccessInstance::instance().QuerySql(std::string(sql)))
+    if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("Insert t_user_info sql exec failed, sql is " << sql);        
     }

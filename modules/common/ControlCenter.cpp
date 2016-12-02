@@ -157,6 +157,8 @@ void ControlCenter::Reconnect()
 
 void ControlCenter::MsgWrite(const std::string &strDstID, const std::string &strDataToBeWriting)
 {
+    //char *pBuffer = new char[strDataToBeWriting.size()];
+    //memcpy(pBuffer, strDataToBeWriting.data(), strDataToBeWriting.size());
     m_pClient->AsyncWrite("0", strDstID, "0", strDataToBeWriting.data(), strDataToBeWriting.size(), true);
 }
 
