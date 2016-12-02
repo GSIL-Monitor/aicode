@@ -270,6 +270,11 @@ int main(int argc, char* argv[])
     UmgParam.strDBUser = strDBUser;
 
     UserManager Umg(UmgParam);
+    if (!Umg.Init())
+    {
+        LOG_ERROR_RLD("Failed to init user manager.");
+        return 1;
+    }
     
     ControlCenter::ParamInfo pinfo;    
     pinfo.strRemoteAddress = strRemoteAddress;

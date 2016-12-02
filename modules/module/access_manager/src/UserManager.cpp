@@ -3,8 +3,10 @@
 #include "intf.h"
 #include "CommonUtility.h"
 #include "ReturnCode.h"
+#include "mysql_impl.h"
 
-UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler)
+UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql)
 {
     
 }
@@ -13,11 +15,19 @@ UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner
 UserManager::~UserManager()
 {
     m_DBRuner.Stop();
+
+    delete m_pMysql;
+    m_pMysql = NULL;
 }
 
 bool UserManager::Init()
 {
-    
+    if (!m_pMysql->Init(m_ParamInfo.strDBHost.c_str(), m_ParamInfo.strDBUser.c_str(), m_ParamInfo.strDBPassword.c_str(), m_ParamInfo.strDBName.c_str()))
+    {
+        LOG_ERROR_RLD("Init db failed, db host is " << m_ParamInfo.strDBHost << " db user is " << m_ParamInfo.strDBUser << " db pwd is " <<
+            m_ParamInfo.strDBPassword << " db name is " << m_ParamInfo.strDBName);
+        return false;
+    }
 
     m_DBRuner.Run();
 

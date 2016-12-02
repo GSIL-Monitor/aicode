@@ -1,8 +1,9 @@
 #include "DBInfoCacheManager.h"
 #include "intf.h"
 #include "LogRLD.h"
+#include "mysql_impl.h"
 
-DBInfoCacheManager::DBInfoCacheManager() : m_pCacheContainer(new CacheManager())
+DBInfoCacheManager::DBInfoCacheManager(MysqlImpl *pMysql) : m_pCacheContainer(new CacheManager()), m_pMysql(pMysql)
 {
 }
 
@@ -33,11 +34,23 @@ bool DBInfoCacheManager::QuerySql(const std::string &strQuerySql, std::list<boos
     }
 
     boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
-    if (!DataAccessInstance::instance().QuerySql(strQuerySql, boost::bind(&DBInfoCacheManager::SqlHanler, this, _1, _2, _3, pResultList.get())))
+    
+    if (NULL == m_pMysql)
     {
-        LOG_ERROR_RLD("DBInfoCacheManager query file sql exec failed, sql is " << strQuerySql);
-        return false;
+        if (!DataAccessInstance::instance().QuerySql(strQuerySql, boost::bind(&DBInfoCacheManager::SqlHanler, this, _1, _2, _3, pResultList.get())))
+        {
+            LOG_ERROR_RLD("DBInfoCacheManager query file sql exec failed, sql is " << strQuerySql);
+            return false;
+        }
     }
+    else
+    {
+        if (!m_pMysql->QueryExec(strQuerySql, boost::bind(&DBInfoCacheManager::SqlHanler, this, _1, _2, _3, pResultList.get())))
+        {
+            LOG_ERROR_RLD("DBInfoCacheManager query file sql exec failed, sql is " << strQuerySql);
+            return false;
+        }
+    }    
 
     //m_pCacheContainer->Remove(strQuerySql);
 

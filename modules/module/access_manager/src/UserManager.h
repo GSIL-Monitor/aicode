@@ -11,6 +11,8 @@
 #include "NetComm.h"
 #include "DBInfoCacheManager.h"
 
+class MysqlImpl;
+
 /************************************************************************/
 /* 用户管理类，提供了管理用户所有相关的方法接口和实现。
  * 该类提供的方法会注册到到ControlCenter类中。
@@ -61,7 +63,11 @@ private:
     Runner m_DBRuner;
     boost::shared_ptr<InteractiveProtoHandler> m_pProtoHandler;
     
+    MysqlImpl *m_pMysql;
+
     DBInfoCacheManager m_DBCache;
+
+
 
 };
 

@@ -6,11 +6,12 @@
 #include <list>
 #include "boost/any.hpp"
 
+class MysqlImpl;
 
 class DBInfoCacheManager : public boost::noncopyable
 {
 public:
-    DBInfoCacheManager();
+    DBInfoCacheManager(MysqlImpl *pMysql = NULL);
     ~DBInfoCacheManager();
 
     typedef boost::function<void(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)> DBSqlHandlerCB;
@@ -40,6 +41,8 @@ private:
     boost::shared_ptr<CacheInterface> m_pCacheContainer;
 
     DBSqlHandlerCB m_DBSqlHandlerCB;
+
+    MysqlImpl *m_pMysql;
 
 };
 
