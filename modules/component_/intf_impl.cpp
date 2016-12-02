@@ -17,7 +17,31 @@
 #include <uuid/uuid.h>
 
 std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t uiSize);
-std::string GetStorageIDFromFileID(const std::string &strFileID);
+std::string GetStorageIDFromFileID(const std::string &strFileID)
+{
+    //const std::string strFileID(fileid);
+    std::string::size_type pos = strFileID.find('/');
+    if (std::string::npos == pos)
+    {
+        LOG_ERROR_RLD("File id incorrect: " << strFileID);
+        return "";
+    }
+
+    std::string strRealFileID;
+
+    //这里要考虑兼容，数据库中原来的文件id也需要支持能够下载（类似 group3/M03/7A/C4/ChQPDVbL-oyANQ-cAAaPBriXo3M579.tar）
+    const std::string &strID = strFileID.substr(pos + 1);
+    if (strID.substr(0, 5) == "group") //表示为新的文件id格式
+    {
+        strRealFileID = strID;
+    }
+    else
+    {
+        strRealFileID = strFileID;
+    }
+
+    return strRealFileID;
+}
 
 enum RecordStatus
 {
