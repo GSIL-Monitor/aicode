@@ -50,15 +50,23 @@ void UserTest::WriteCB(const boost::system::error_code &ec, void *pValue)
         printf("write error %s\n", ec.message().c_str());
         LOG_ERROR_RLD("write cb error " << ec.message());
 
-        boost::shared_ptr<UserTest> *pInCObj = (boost::shared_ptr<UserTest> *)pValue;
-        delete pInCObj;
-        pInCObj = NULL;
+        //boost::shared_ptr<UserTest> *pInCObj = (boost::shared_ptr<UserTest> *)pValue;
+        //delete pInCObj;
+        //pInCObj = NULL;
         return;
     }
 
     //boost::shared_ptr<ClientObj> *pCObj = new boost::shared_ptr<ClientObj>(shared_from_this());
 
     m_pClient->AsyncRead(pValue);
+
+    if (!g_strSessionID.empty())
+    {
+        boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+        const std::string &strMsg = RegisterUsrReq();
+        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+        LOG_INFO_RLD("=======================");
+    }
 
     //boost::shared_ptr<ClientObj> *pInCObj = (boost::shared_ptr<ClientObj> *)pValue;
     //delete pInCObj;
@@ -70,25 +78,22 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
 {
     //printf("read cb.\n");
 
-    if (NULL == pClientMsgList)
+    if (ec)
     {
-        printf("client msg is null.\n");
-        LOG_ERROR_RLD("client msg is null.");
+        printf("Receive error.\n");
+        LOG_ERROR_RLD("Receive error :" << ec.message());
 
-        boost::shared_ptr<UserTest> *pInCObj = (boost::shared_ptr<UserTest> *)pValue;
-        delete pInCObj;
-        pInCObj = NULL;
+        //boost::shared_ptr<UserTest> *pInCObj = (boost::shared_ptr<UserTest> *)pValue;
+        //delete pInCObj;
+        //pInCObj = NULL;
         return;
     }
 
-    if (pClientMsgList->empty())
+    if (pClientMsgList->empty() || NULL == pClientMsgList)
     {
         printf("client msg is empty.\n");
         LOG_ERROR_RLD("client msg is empty.");
 
-        boost::shared_ptr<UserTest> *pInCObj = (boost::shared_ptr<UserTest> *)pValue;
-        delete pInCObj;
-        pInCObj = NULL;
         return;
     }
 
@@ -195,11 +200,13 @@ std::string UserTest::RegisterUsrReq()
     RegUsrReq.m_uiMsgSeq = 1;
     RegUsrReq.m_strSID = "ffffeeee";
     RegUsrReq.m_strValue = "value";
+    RegUsrReq.m_userInfo.m_uiStatus = 0;
     RegUsrReq.m_userInfo.m_strUserID = "uid_test";
     RegUsrReq.m_userInfo.m_strUserName = "yinbin";
     RegUsrReq.m_userInfo.m_strUserPassword = "testpwd";
     RegUsrReq.m_userInfo.m_uiTypeInfo = 2;
     RegUsrReq.m_userInfo.m_strCreatedate = "2016-11-30";
+    RegUsrReq.m_userInfo.m_strExtend = "ext_info";
     
     std::string strSerializeOutPut;
         

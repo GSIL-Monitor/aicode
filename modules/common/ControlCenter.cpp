@@ -89,7 +89,12 @@ void ControlCenter::ReadCB(const boost::system::error_code &ec, std::list<Client
     {
         LOG_ERROR_RLD("Read msg failed, error is " << ec.message() << " pClientMsgList is " << (NULL == pClientMsgList) <<
            " and pClientMsgList size is " << (NULL == pClientMsgList) ? 0 : pClientMsgList->size());
-        Reconnect();
+
+        if (ec)
+        {
+            Reconnect();
+        }
+        
         return;
     }
 

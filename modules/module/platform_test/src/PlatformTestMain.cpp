@@ -965,8 +965,8 @@ int main(int argc, char* argv[])
 
     {
         boost::shared_ptr<UserTest> pCObj(new UserTest);
-        pCObj->init(strRemoteAddress.c_str(), strRemotePort.c_str(), 1);
-        boost::this_thread::sleep(boost::posix_time::seconds(30));
+        pCObj->init(strRemoteAddress.c_str(), strRemotePort.c_str(), 2);
+        boost::this_thread::sleep(boost::posix_time::seconds(300000));
         pCObj->Close();
     }
 
