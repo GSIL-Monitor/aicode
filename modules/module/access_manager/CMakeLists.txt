@@ -23,6 +23,6 @@ add_executable(access_manager ${dir_srcs})
 target_link_libraries(access_manager libcommon.a libcomponent.a libSimpleAmqpClient.a librabbitmq.a 
 liblog4cplus.a libboost_chrono.a libboost_system.a 
 libboost_thread.a libboost_filesystem.a libboost_date_time.a libjsoncpp.a libuuid.a libprotobuf.a libssl.a libcrypto.a 
-libmysqlclient.a libfdfsclient.a libfastcommon.a)
+libmysqlclient.a libfdfsclient.a libfastcommon.a libmemcached.a libmemcachedutil.a)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin) 
 #set(CMAKE_EXE_LINKER_FLAGS "-lrt")

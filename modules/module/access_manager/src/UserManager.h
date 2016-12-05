@@ -13,6 +13,13 @@
 
 class MysqlImpl;
 
+namespace roiland
+{
+    class MemcacheClient;
+}
+
+using roiland::MemcacheClient;
+
 /************************************************************************/
 /* 用户管理类，提供了管理用户所有相关的方法接口和实现。
  * 该类提供的方法会注册到到ControlCenter类中。
@@ -34,9 +41,16 @@ public:
         std::string strDBUser;
         std::string strDBPassword;
         std::string strDBName;
+        std::string strMemAddress;
+        std::string strMemPort;
 
     } ParamInfo;
     
+    inline void SetParamInfo(const ParamInfo &pinfo)
+    {
+        m_ParamInfo = pinfo;
+    };
+
     UserManager(const ParamInfo &pinfo);
     ~UserManager();
     bool Init();
@@ -45,14 +59,17 @@ public:
 
     bool UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
-    inline void SetParamInfo(const ParamInfo &pinfo)
-    {
-        m_ParamInfo = pinfo;
-    };
+    bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    
 
 private:
     void InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo,
         const std::string &strCreateDate, const int iStatus, const std::string &strExtend);
+
+    bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
+
+    void SqlCB (const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
 
 
 private:
@@ -67,8 +84,15 @@ private:
 
     DBInfoCacheManager m_DBCache;
 
+    typedef struct
+    {
+        std::string strType;
+        std::string strValue;
+    } ValueInDB;
 
-
+    boost::mutex m_MemcachedMutex;
+    MemcacheClient *m_pMemCl;
+    
 };
 
 
