@@ -290,6 +290,10 @@ int main(int argc, char* argv[])
     ControlCenter ccenter(pinfo);
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&UserManager::RegisterUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T, boost::bind(&UserManager::UnRegisterUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_USR_T, boost::bind(&UserManager::LoginReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LogoutReq_USR_T, boost::bind(&UserManager::LogoutReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_USR_T, boost::bind(&UserManager::Shakehand, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

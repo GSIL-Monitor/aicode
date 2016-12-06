@@ -10,6 +10,7 @@
 #include "boost/thread/mutex.hpp"
 #include "NetComm.h"
 #include "DBInfoCacheManager.h"
+#include "boost/atomic.hpp"
 
 class MysqlImpl;
 
@@ -61,15 +62,19 @@ public:
 
     bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
-    
+    bool LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool Shakehand(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo,
         const std::string &strCreateDate, const int iStatus, const std::string &strExtend);
 
+    void UpdateUserToDB(const std::string &strUserID, const int iStatus);
+
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList);
 
-    bool QueryRelationByDevID(const std::string &strDevID);
+    bool QueryRelationByDevID(const std::string &strDevID, const int iRelation, std::list<std::string> &UserIDList);
 
     bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
 
@@ -104,6 +109,7 @@ private:
     boost::mutex m_MemcachedMutex;
     MemcacheClient *m_pMemCl;
     
+    boost::atomic_uint64_t m_uiMsgSeq;
 };
 
 

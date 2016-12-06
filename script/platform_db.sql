@@ -10,7 +10,7 @@ CREATE TABLE `t_user_info` (
   `userpassword` varchar(100) DEFAULT NULL,
   `typeinfo` int(11) NOT NULL DEFAULT '0',   
   `createdate` datetime NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX index_ref1(userid),
