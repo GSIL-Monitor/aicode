@@ -258,8 +258,21 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("ThreadOfWorking config item not found.");
         return 0;
     }
+
+    const std::string &strMemcachedAddress = GetConfig("MemCached.MemAddress");
+    if (strMemcachedAddress.empty())
+    {
+        LOG_ERROR_RLD("Memcached address config item not found.");
+        return 0;
+    }
+
+    const std::string &strMemcachedPort = GetConfig("MemCached.MemPort");
+    if (strMemcachedPort.empty())
+    {
+        LOG_ERROR_RLD("Memcached port config item not found.");
+        return 0;
+    }
         
-    
     ////////////////////////////////////////////////////////////////////////////
 
     UserManager::ParamInfo UmgParam;
@@ -268,6 +281,8 @@ int main(int argc, char* argv[])
     UmgParam.strDBPassword = strDBPassword;
     UmgParam.strDBPort = strDBPort;
     UmgParam.strDBUser = strDBUser;
+    UmgParam.strMemAddress = strMemcachedAddress;
+    UmgParam.strMemPort = strMemcachedPort;
 
     UserManager Umg(UmgParam);
     if (!Umg.Init())
