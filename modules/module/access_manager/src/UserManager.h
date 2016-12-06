@@ -67,9 +67,20 @@ private:
     void InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo,
         const std::string &strCreateDate, const int iStatus, const std::string &strExtend);
 
+    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList);
+
+    bool QueryRelationByDevID(const std::string &strDevID);
+
     bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
 
-    void SqlCB (const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
+    void UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
+
+    void DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
+        std::list<InteractiveProtoHandler::Device> *pDevList);
+
+    void UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
+        std::list<std::string> *pUserIDList);
+
 
 
 private:

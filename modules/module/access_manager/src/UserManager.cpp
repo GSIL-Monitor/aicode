@@ -49,7 +49,7 @@ bool UserManager::Init()
     }
 
 
-    m_DBCache.SetSqlCB(boost::bind(&UserManager::SqlCB, this, _1, _2, _3, _4));
+    m_DBCache.SetSqlCB(boost::bind(&UserManager::UserInfoSqlCB, this, _1, _2, _3, _4));
     
     m_DBRuner.Run();
 
@@ -174,6 +174,92 @@ void UserManager::InsertUserToDB(const std::string &strUserID, const std::string
     }
 }
 
+bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend"
+        "from t_device_info dev, t_user_device_relation rel"
+        "where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
+    {
+        LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
+        return false;
+    }
+
+    if (DevList.empty())
+    {
+        LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
+        return true;
+    }
+
+    memset(sql, 0, sizeof(sql));
+    const char *sqlft = "select rel.userid from t_user_device_relation rel"
+        "where rel.deviceid = '%s' and rel.relation = '%d'";
+    
+    
+    auto itBegin = DevList.begin();
+    auto itEnd = DevList.end();
+    while (itBegin != itEnd)
+    {
+        //`relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
+        {
+            snprintf(sql, sizeof(sql), sqlft, itBegin->m_strDevID.c_str(), 0);
+            std::list<std::string> UserIDList;
+            if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::UserInfoRelationSqlCB, this, _1, _2, _3, &UserIDList)))
+            {
+                LOG_ERROR_RLD("Query device relation failed and user id is " << strUserID);
+                return false;
+            }
+
+            if (!UserIDList.empty())
+            {
+                itBegin->m_strOwnerUserID = UserIDList.front();
+            }
+        }
+        
+        memset(sql, 0, sizeof(sql));
+
+        {
+            snprintf(sql, sizeof(sql), sqlft, itBegin->m_strDevID.c_str(), 2);
+            std::list<std::string> UserIDList;
+            if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::UserInfoRelationSqlCB, this, _1, _2, _3, &UserIDList)))
+            {
+                LOG_ERROR_RLD("Query device relation failed and user id is " << strUserID);
+                return false;
+            }
+
+            if (!UserIDList.empty())
+            {
+                itBegin->m_sharingUserIDList.swap(UserIDList);
+            }
+        }
+
+        memset(sql, 0, sizeof(sql));
+
+        {
+            snprintf(sql, sizeof(sql), sqlft, itBegin->m_strDevID.c_str(), 1);
+            std::list<std::string> UserIDList;
+            if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::UserInfoRelationSqlCB, this, _1, _2, _3, &UserIDList)))
+            {
+                LOG_ERROR_RLD("Query device relation failed and user id is " << strUserID);
+                return false;
+            }
+
+            if (!UserIDList.empty())
+            {
+                itBegin->m_sharedUserIDList.swap(UserIDList);
+            }
+        }
+        
+        ++itBegin;
+    }
+
+
+    return true;
+}
+
 bool UserManager::ValidUser(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo)
 {
     //Valid user id
@@ -228,7 +314,7 @@ bool UserManager::ValidUser(const std::string &strUserID, const std::string &str
     return true;
 }
 
-void UserManager::SqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+void UserManager::UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
 {
     ValueInDB value;
     value.strValue = strColumn;
@@ -257,11 +343,65 @@ void UserManager::SqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t ui
         value.strType = "extend";
         break;
     default:
-        LOG_ERROR_RLD("UserManager sqlcb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+        LOG_ERROR_RLD("UserInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
         break;
     }
 
     Result = value;
+
+}
+
+void UserManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
+    std::list<InteractiveProtoHandler::Device> *pDevList)
+{
+    //select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend        
+    if (pDevList->empty() || (pDevList->size() < (1 + uiRowNum)))
+    {
+        InteractiveProtoHandler::Device devInfoTmp;
+        pDevList->push_back(std::move(devInfoTmp));
+    }
+    
+    InteractiveProtoHandler::Device &devInfo = pDevList->back();
+
+    switch (uiColumnNum)
+    {
+    case 0:
+        devInfo.m_strDevID = strColumn;
+        break;
+    case 1:
+        devInfo.m_strDevName = strColumn;
+        break;
+    case 2:
+        devInfo.m_strDevPassword = strColumn;
+        break;
+    case 3:
+        devInfo.m_uiTypeInfo = boost::lexical_cast<unsigned int>(strColumn);
+        break;
+    case 4:
+        devInfo.m_strCreatedate = strColumn;
+        break;
+    case 5:
+        devInfo.m_uiStatus = boost::lexical_cast<unsigned int>(strColumn);
+    case 6:
+        devInfo.m_strInnerinfo = strColumn;
+    case 7:
+        devInfo.m_strExtend = strColumn;
+    default:
+        LOG_ERROR_RLD("DevInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+        break;
+    }
+}
+
+void UserManager::UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
+    std::list<std::string> *pUserIDList)
+{
+    if (pUserIDList->empty() || (pUserIDList->size() < (1 + uiRowNum)))
+    {
+        std::string strUserIDTmp;
+        pUserIDList->push_back(std::move(strUserIDTmp));
+    }
+
+    pUserIDList->back() = strColumn;
 
 }
 
