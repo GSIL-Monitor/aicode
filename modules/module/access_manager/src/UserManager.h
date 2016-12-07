@@ -14,12 +14,7 @@
 
 class MysqlImpl;
 
-namespace roiland
-{
-    class MemcacheClient;
-}
-
-using roiland::MemcacheClient;
+class MemcacheClient;
 
 /************************************************************************/
 /* 用户管理类，提供了管理用户所有相关的方法接口和实现。
@@ -110,6 +105,8 @@ private:
     MemcacheClient *m_pMemCl;
     
     boost::atomic_uint64_t m_uiMsgSeq;
+
+
 };
 
 

@@ -131,6 +131,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
         return false;
     }
 
+    //检查用户SessionID是否存在，表示是否用户已经登录
     {
         boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
         int iRet = 0;
@@ -153,7 +154,11 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
             return false;
         }
     }
-    
+
+    //广播消息表示用户注销
+
+
+    //异步更新数据库内容
     m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, 1));
 
     blResult = true;
@@ -244,6 +249,9 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
         return false;
     }
 
+    //广播消息表示用户登录
+
+
     blResult = true;
 
     BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &strSessionID, &writer, &strSrcID)
@@ -306,6 +314,9 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
             return false;
         }
     }
+
+    //广播消息表示用户登出
+
 
     blResult = true;
 

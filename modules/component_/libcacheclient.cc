@@ -5,8 +5,6 @@
 #include <libmemcached/memcached.h>
 #include "libcacheclient.h"
 
-using namespace roiland;
-
 MemcacheClient* MemcacheClient::create()
 {
 	return new MemcacheClientImpl();
