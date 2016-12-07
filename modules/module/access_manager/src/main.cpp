@@ -272,7 +272,14 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("Memcached port config item not found.");
         return 0;
     }
-        
+
+    const std::string &strSessionTimeoutCountThreshold = GetConfig("General.SessionTimeoutCountThreshold");
+    if (strSessionTimeoutCountThreshold.empty())
+    {
+        LOG_ERROR_RLD("Session timout threshold config item not found.");
+        return 0;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 
     UserManager::ParamInfo UmgParam;
@@ -283,6 +290,7 @@ int main(int argc, char* argv[])
     UmgParam.strDBUser = strDBUser;
     UmgParam.strMemAddress = strMemcachedAddress;
     UmgParam.strMemPort = strMemcachedPort;
+    UmgParam.strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
 
     UserManager Umg(UmgParam);
     if (!Umg.Init())

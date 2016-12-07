@@ -11,6 +11,7 @@
 #include "NetComm.h"
 #include "DBInfoCacheManager.h"
 #include "boost/atomic.hpp"
+#include "SessionMgr.h"
 
 class MysqlImpl;
 
@@ -39,6 +40,7 @@ public:
         std::string strDBName;
         std::string strMemAddress;
         std::string strMemPort;
+        std::string strSessionTimeoutCountThreshold;
 
     } ParamInfo;
     
@@ -81,6 +83,8 @@ private:
     void UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
         std::list<std::string> *pUserIDList);
 
+    void SessionTimeoutProcessCB(const std::string &strSessionID);
+
 
 
 private:
@@ -105,8 +109,8 @@ private:
     MemcacheClient *m_pMemCl;
     
     boost::atomic_uint64_t m_uiMsgSeq;
-
-
+    
+    SessionMgr m_SessionMgr;
 };
 
 

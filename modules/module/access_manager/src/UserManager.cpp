@@ -17,6 +17,8 @@ m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_pMemCl(NULL), m_uiMsgSeq(0)
 
 UserManager::~UserManager()
 {
+    m_SessionMgr.Stop();
+
     m_DBRuner.Stop();
 
     delete m_pMysql;
@@ -52,6 +54,8 @@ bool UserManager::Init()
     m_DBCache.SetSqlCB(boost::bind(&UserManager::UserInfoSqlCB, this, _1, _2, _3, _4));
     
     m_DBRuner.Run();
+
+    m_SessionMgr.Run();
 
     LOG_INFO_RLD("UserManager init success");
 
@@ -153,6 +157,8 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
                 " and session id is " << UnRegUsrReq.m_strSID);
             return false;
         }
+
+        m_SessionMgr.Remove(UnRegUsrReq.m_strSID); //会话管理器删除会话
     }
 
     //广播消息表示用户注销
@@ -240,6 +246,9 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
             LOG_ERROR_RLD("Login user set session id to cache failed, return code is " << iRet << " and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
             return false;
         }
+
+        m_SessionMgr.Create(strSessionID, boost::lexical_cast<unsigned int>(m_ParamInfo.strSessionTimeoutCountThreshold), 
+            boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
     }
 
     std::list<InteractiveProtoHandler::Device> DeviceList;
@@ -318,6 +327,8 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
     //广播消息表示用户登出
 
 
+    m_SessionMgr.Remove(LogoutReqUsr.m_strSID); //移除会话
+
     blResult = true;
 
     BOOST_SCOPE_EXIT(&blResult, this_, &LogoutReqUsr, &writer, &strSrcID)
@@ -369,6 +380,8 @@ bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrc
             return false;
         }
     }
+
+    m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
 
     blResult = true;
 
@@ -664,6 +677,22 @@ void UserManager::UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const bo
     }
 
     pUserIDList->back() = strColumn;
+
+}
+
+void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
+{
+    {
+        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
+        int iRet = 0;
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(strSessionID.c_str())))
+        {
+            LOG_ERROR_RLD("Session timeout remove session id cache failed, return code is " << iRet << " and session id is " << strSessionID);
+            return;
+        }
+    }
+
+    //广播消息表示用户会话超时
 
 }
 
