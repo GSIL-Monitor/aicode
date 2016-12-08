@@ -24,9 +24,9 @@ public:
 
 private:
     std::string RegisterUsrReq();
-    bool RegisterUsrRsp(const std::string &strMsg);
-
     std::string LoginUsrReq();
+    std::string ShakehandReq();
+    std::string LogoutUsrReq();
 
 private:
     ClientCommInterface *m_pClient;

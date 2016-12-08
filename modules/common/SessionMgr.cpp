@@ -16,11 +16,13 @@ SessionMgr::~SessionMgr()
 void SessionMgr::Run()
 {
     m_TMRunner.Run();
+    m_TickTM.Run();
 }
 
 
 void SessionMgr::Stop()
 {
+    m_TickTM.Stop();
     m_TMRunner.Stop();
 }
 
@@ -85,7 +87,7 @@ bool SessionMgr::Reset(const std::string &strSessionID)
     auto itFind = m_SessionMap.find(strSessionID);
     if (m_SessionMap.end() == itFind)
     {
-        LOG_ERROR_RLD("Create session failed becasue session id not exists, sessid is " << strSessionID);
+        LOG_ERROR_RLD("Rest session failed becasue session id not exists, sessid is " << strSessionID);
         return false;
     }
 
@@ -102,7 +104,7 @@ bool SessionMgr::Remove(const std::string &strSessionID)
         auto itFind = m_SessionMap.find(strSessionID);
         if (m_SessionMap.end() == itFind)
         {
-            LOG_ERROR_RLD("Create session failed becasue session id not exists, sessid is " << strSessionID);
+            LOG_ERROR_RLD("Remove session failed becasue session id not exists, sessid is " << strSessionID);
             return false;
         }
     }
@@ -112,7 +114,7 @@ bool SessionMgr::Remove(const std::string &strSessionID)
         auto itFind = m_SessionMap.find(strSessionID);
         if (m_SessionMap.end() == itFind)
         {
-            LOG_ERROR_RLD("Create session failed becasue session id not exists, sessid is " << strSessionID);
+            LOG_ERROR_RLD("Remove session failed becasue session id not exists, sessid is " << strSessionID);
             return false;
         }
 
@@ -125,6 +127,8 @@ bool SessionMgr::Remove(const std::string &strSessionID)
 
 void SessionMgr::TimeoutCB(const boost::system::error_code &ec)
 {
+    //LOG_INFO_RLD("Session mgr check all session status");
+
     boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
     auto itBegin = m_SessionMap.begin();
     auto itEnd = m_SessionMap.end();
@@ -134,12 +138,12 @@ void SessionMgr::TimeoutCB(const boost::system::error_code &ec)
 
         if (itBegin->second->m_uiThreshold < itBegin->second->m_uiTickNum)
         {
-            m_TMRunner.Post(boost::bind(&SessionMgr::TimoutProcess, this, itBegin->second->m_strSessionID, itBegin->second->m_TimeoutCB));
-            m_SessionMap.erase(itBegin++);
-            
             LOG_INFO_RLD("Timout was reached and session id is " << itBegin->second->m_strSessionID << " and threshold is " <<
                 itBegin->second->m_uiThreshold << " and tick number is " << itBegin->second->m_uiTickNum);
 
+            m_TMRunner.Post(boost::bind(&SessionMgr::TimoutProcess, this, itBegin->second->m_strSessionID, itBegin->second->m_TimeoutCB));
+            m_SessionMap.erase(itBegin++);
+            
             continue;
         }
 

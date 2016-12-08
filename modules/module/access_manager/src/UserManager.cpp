@@ -66,27 +66,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
 {
     bool blResult = false;
 
-    InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
-    if (!m_pProtoHandler->UnSerializeReq(strMsg, RegUsrReq))
-    {
-        LOG_ERROR_RLD("Register user req unserialize failed, src id is " << strSrcID);
-        return false;
-    }
-
-    //注册用户是无需到数据库中校验的，用户名是可以重复的。
-    //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
     const std::string &strUserID = CreateUUID();
-    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-    std::string::size_type pos = strCurrentTime.find('T');
-    strCurrentTime.replace(pos, 1, std::string(" "));
-
-    m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, strUserID, RegUsrReq.m_userInfo.m_strUserName,
-        RegUsrReq.m_userInfo.m_strUserPassword, RegUsrReq.m_userInfo.m_uiTypeInfo, strCurrentTime,
-        0, RegUsrReq.m_userInfo.m_strExtend));
-
-
-    blResult = true;
-
     BOOST_SCOPE_EXIT(&blResult, this_, &strUserID, &writer, &strSrcID)
     {
         InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
@@ -107,13 +87,33 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("Register user rsp already send, dst id is " << strSrcID);
+        LOG_INFO_RLD("Register user rsp already send, dst id is " << strSrcID << " and user id is " << strUserID << " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
 
+    InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, RegUsrReq))
+    {
+        LOG_ERROR_RLD("Register user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //注册用户是无需到数据库中校验的，用户名是可以重复的。
+    //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
+    
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, strUserID, RegUsrReq.m_userInfo.m_strUserName,
+        RegUsrReq.m_userInfo.m_strUserPassword, RegUsrReq.m_userInfo.m_uiTypeInfo, strCurrentTime,
+        0, RegUsrReq.m_userInfo.m_strExtend));
+
+
+    blResult = true;
+    
     
     return blResult;
-
 }
 
 bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -123,51 +123,6 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
     bool blResult = false;
 
     InteractiveProtoHandler::UnRegisterUserReq_USR UnRegUsrReq;
-    if (!m_pProtoHandler->UnSerializeReq(strMsg, UnRegUsrReq))
-    {
-        LOG_ERROR_RLD("Unregister user req unserialize failed, src id is " << strSrcID);
-        return false;
-    }
-
-    if (!UnRegUsrReq.m_userInfo.m_strUserID.empty())
-    {
-        LOG_ERROR_RLD("Unregister user id is empty, src id is " << strSrcID);
-        return false;
-    }
-
-    //检查用户SessionID是否存在，表示是否用户已经登录
-    {
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(UnRegUsrReq.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Unregister user find session id from cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
-                " and session id is " << UnRegUsrReq.m_strSID);
-            return false;
-        }
-    }
-
-    //将memcached中的session id信息删除掉，相当于将用户登出了系统
-    {
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(UnRegUsrReq.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Unregister user remove session id cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
-                " and session id is " << UnRegUsrReq.m_strSID);
-            return false;
-        }
-
-        m_SessionMgr.Remove(UnRegUsrReq.m_strSID); //会话管理器删除会话
-    }
-
-    //广播消息表示用户注销
-
-
-    //异步更新数据库内容
-    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, 1));
-
-    blResult = true;
 
     BOOST_SCOPE_EXIT(&blResult, this_, &UnRegUsrReq, &writer, &strSrcID)
     {
@@ -188,11 +143,54 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User unregister rsp already send, dst id is " << strSrcID);
+        LOG_INFO_RLD("User unregister rsp already send, dst id is " << strSrcID << " and user id is " << UnRegRspUsr.m_strUserID << " and result is " << blResult);
 
     }
     BOOST_SCOPE_EXIT_END
-    
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, UnRegUsrReq))
+    {
+        LOG_ERROR_RLD("Unregister user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!UnRegUsrReq.m_userInfo.m_strUserID.empty())
+    {
+        LOG_ERROR_RLD("Unregister user id is empty, src id is " << strSrcID);
+        return false;
+    }
+
+    //检查用户SessionID是否存在，表示是否用户已经登录
+    {
+        m_SessionMgr.Remove(UnRegUsrReq.m_strSID); //会话管理器删除会话
+
+        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
+        int iRet = 0;
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(UnRegUsrReq.m_strSID.c_str())))
+        {
+            LOG_ERROR_RLD("Unregister user find session id from cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
+                " and session id is " << UnRegUsrReq.m_strSID);
+            return false;
+        }
+
+        //将memcached中的session id信息删除掉，相当于将用户登出了系统
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(UnRegUsrReq.m_strSID.c_str())))
+        {
+            LOG_ERROR_RLD("Unregister user remove session id cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
+                " and session id is " << UnRegUsrReq.m_strSID);
+            return false;
+        }        
+    }
+
+    //广播消息表示用户注销
+
+
+    //异步更新数据库内容
+    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, 1));
+
+    blResult = true;
+
+        
     return blResult;
 }
 
@@ -200,9 +198,11 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
 {
     bool blResult = false;
 
+    InteractiveProtoHandler::LoginReq_USR LoginReqUsr;
+
     const std::string &strSessionID = CreateUUID();
     std::list<InteractiveProtoHandler::Device> DeviceList;
-    BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &strSessionID, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &strSessionID, &LoginReqUsr, &writer, &strSrcID)
     {
         InteractiveProtoHandler::LoginRsp_USR LoginRspUsr;
 
@@ -226,12 +226,14 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID);
+        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID << " and user id is " << LoginReqUsr.m_userInfo.m_strUserID << 
+            " and user password is " << LoginReqUsr.m_userInfo.m_strUserPassword <<
+            " and result is " << blResult);
 
     }
     BOOST_SCOPE_EXIT_END
 
-    InteractiveProtoHandler::LoginReq_USR LoginReqUsr;
+    
     if (!m_pProtoHandler->UnSerializeReq(strMsg, LoginReqUsr))
     {
         LOG_ERROR_RLD("Login user req unserialize failed, src id is " << strSrcID);
@@ -303,36 +305,6 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
     bool blResult = false;
 
     InteractiveProtoHandler::LogoutReq_USR LogoutReqUsr;
-    if (!m_pProtoHandler->UnSerializeReq(strMsg, LogoutReqUsr))
-    {
-        LOG_ERROR_RLD("Logout user req unserialize failed, src id is " << strSrcID);
-        return false;
-    }
-
-    //用戶登出，简化操作，不需要校验用户ID和用户密码
-    if (LogoutReqUsr.m_strSID.empty())
-    {
-        LOG_ERROR_RLD("Logout req session id is empty and src id is " << strSrcID);
-        return false;
-    }
-
-    {
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(LogoutReqUsr.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Logout user remove session id cache failed, return code is " << iRet << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID <<
-                " and session id is " << LogoutReqUsr.m_strSID);
-            return false;
-        }
-    }
-
-    //广播消息表示用户登出
-
-
-    m_SessionMgr.Remove(LogoutReqUsr.m_strSID); //移除会话
-
-    blResult = true;
 
     BOOST_SCOPE_EXIT(&blResult, this_, &LogoutReqUsr, &writer, &strSrcID)
     {
@@ -352,10 +324,53 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User logout rsp already send, dst id is " << strSrcID);
+        LOG_INFO_RLD("User logout rsp already send, dst id is " << strSrcID << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID << 
+            " and session id is " << LogoutReqUsr.m_strSID <<
+            " and result is " << blResult);
 
     }
     BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, LogoutReqUsr))
+    {
+        LOG_ERROR_RLD("Logout user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //用戶登出，简化操作，不需要校验用户ID和用户密码
+    if (LogoutReqUsr.m_strSID.empty())
+    {
+        LOG_ERROR_RLD("Logout req session id is empty and src id is " << strSrcID);
+        return false;
+    }
+
+    //检查用户SessionID是否存在，表示是否用户已经登录
+    {
+        m_SessionMgr.Remove(LogoutReqUsr.m_strSID); //移除会话
+
+        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
+        int iRet = 0;
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(LogoutReqUsr.m_strSID.c_str())))
+        {
+            LOG_ERROR_RLD("Logout user find session id from cache failed, return code is " << iRet << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID <<
+                " and session id is " << LogoutReqUsr.m_strSID);
+            return false;
+        }
+
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(LogoutReqUsr.m_strSID.c_str())))
+        {
+            LOG_ERROR_RLD("Logout user remove session id cache failed, return code is " << iRet << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID <<
+                " and session id is " << LogoutReqUsr.m_strSID);
+            return false;
+        }        
+    }
+
+    //广播消息表示用户登出
+
+    
+    blResult = true;
+
+    
     
     return blResult;
 }
@@ -367,6 +382,32 @@ bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrc
     bool blResult = false;
 
     InteractiveProtoHandler::ShakehandReq_USR ShakehandReqUsr;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &ShakehandReqUsr, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::ShakehandRsp_USR ShakehandRspUsr;
+        ShakehandRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T;
+        ShakehandRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        ShakehandRspUsr.m_strSID = ShakehandReqUsr.m_strSID;
+        ShakehandRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        ShakehandRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        ShakehandRspUsr.m_strValue = "value";
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(ShakehandRspUsr, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Shakehand user rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User shakehand rsp already send, dst id is " << strSrcID << " and user id is " << ShakehandReqUsr.m_strUserID << 
+            " and session id is " << ShakehandReqUsr.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
     if (!m_pProtoHandler->UnSerializeReq(strMsg, ShakehandReqUsr))
     {
         LOG_ERROR_RLD("Shakehand req unserialize failed, src id is " << strSrcID);
@@ -382,34 +423,15 @@ bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrc
                 " and session id is " << ShakehandReqUsr.m_strSID);
             return false;
         }
+
+        m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
     }
 
-    m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
+    LOG_INFO_RLD("Shake hand user received and user id is " << ShakehandReqUsr.m_strUserID << " and session id is " << ShakehandReqUsr.m_strSID);
 
     blResult = true;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &ShakehandReqUsr, &writer, &strSrcID)
-    {
-        InteractiveProtoHandler::ShakehandRsp_USR ShakehandRspUsr;
-        ShakehandRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LogoutRsp_USR_T;
-        ShakehandRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
-        ShakehandRspUsr.m_strSID = ShakehandReqUsr.m_strSID;
-        ShakehandRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
-        ShakehandRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        ShakehandRspUsr.m_strValue = "value";
-
-        std::string strSerializeOutPut;
-        if (!this_->m_pProtoHandler->SerializeReq(ShakehandRspUsr, strSerializeOutPut))
-        {
-            LOG_ERROR_RLD("Shakehand user rsp serialize failed.");
-            return; //false;
-        }
-
-        writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User shakehand rsp already send, dst id is " << strSrcID);
-
-    }
-    BOOST_SCOPE_EXIT_END
+    
 
     return blResult;
 
@@ -583,7 +605,7 @@ bool UserManager::ValidUser(const std::string &strUserID, const std::string &str
         return false;
     }
 
-    LOG_INFO_RLD("Valid user success and sql is " << sql);
+    LOG_INFO_RLD("Valid user success and user id is " << strUserName << " and user password is " << strUserPwd);
 
     return true;
 }

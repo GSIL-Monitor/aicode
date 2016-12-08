@@ -33,9 +33,6 @@ public:
         unsigned int uiShakehandOfChannelInterval;
 
         std::string strSelfID;
-        unsigned int uiSyncShakehandTimeoutCount;
-        unsigned int uiSyncShakehandTimeout;
-        unsigned int uiSyncAddressRspInvalidTimeout;
         unsigned int uiThreadOfWorking;
 
     } ParamInfo;

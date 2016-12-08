@@ -198,9 +198,55 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
 
             g_strUserSessionID = LoginUsrRsp.m_strSID;
             
+            //用户握手
+            const std::string &strMsg = ShakehandReq();
+            if (strMsg.empty())
+            {
+                LOG_ERROR_RLD("Shake user req msg is empty.");
+                return;
+            }
+
+            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
 
             LOG_INFO_RLD("Login user rsp return code is " << LoginUsrRsp.m_iRetcode << " return msg is " << LoginUsrRsp.m_strRetMsg <<
                 " and user session id is " << LoginUsrRsp.m_strSID);
+
+        }
+        else if (InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T == mtype)
+        {
+            InteractiveProtoHandler::ShakehandRsp_USR rsp;
+            if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+            {
+                LOG_ERROR_RLD("Shakehand user rsp unserialize failed.");
+                return;
+            }
+
+            //用户登出
+            const std::string &strMsg = LogoutUsrReq();
+            if (strMsg.empty())
+            {
+                LOG_ERROR_RLD("Logout user req msg is empty.");
+                return;
+            }
+
+            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+            LOG_INFO_RLD("Shakehand user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+                " and user session id is " << rsp.m_strSID);
+
+        }
+        else if (InteractiveProtoHandler::MsgType::LogoutRsp_USR_T == mtype)
+        {
+            InteractiveProtoHandler::LogoutRsp_USR rsp;
+            if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+            {
+                LOG_ERROR_RLD("Logout user rsp unserialize failed.");
+                return;
+            }
+
+            LOG_INFO_RLD("Logout user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+                " and user session id is " << rsp.m_strSID);
 
         }
         else
@@ -290,6 +336,45 @@ std::string UserTest::LoginUsrReq()
     if (!m_pHandler->SerializeReq(LgUsrReq, strSerializeOutPut))
     {
         LOG_ERROR_RLD("Login user req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
+std::string UserTest::ShakehandReq()
+{
+    InteractiveProtoHandler::ShakehandReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandReq_USR_T;
+    req.m_uiMsgSeq = 3;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strValue = "shakehandk_value";
+    req.m_strUserID = g_strUserID;
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Shakehand user req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
+std::string UserTest::LogoutUsrReq()
+{
+    InteractiveProtoHandler::LogoutReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::LogoutReq_USR_T;
+    req.m_uiMsgSeq = 3;
+    req.m_strSID = g_strUserSessionID;
+    req.m_userInfo.m_strUserID = g_strUserID;
+    
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Shakehand user req serialize failed.");
         return "";
     }
 
