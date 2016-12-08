@@ -6,6 +6,8 @@
 #include "InteractiveProtoHandler.h"
 
 static std::string g_strSessionID;
+static std::string g_strUserID;
+static std::string g_strUserSessionID;
 
 UserTest::UserTest() : m_pClient(NULL), m_pHandler(new InteractiveProtoHandler)
 {
@@ -60,13 +62,21 @@ void UserTest::WriteCB(const boost::system::error_code &ec, void *pValue)
 
     m_pClient->AsyncRead(pValue);
 
-    if (!g_strSessionID.empty())
-    {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(100));
-        const std::string &strMsg = RegisterUsrReq();
-        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
-        LOG_INFO_RLD("=======================");
-    }
+    /////////循环注册用户
+    //if (!g_strSessionID.empty())
+    //{
+    //    boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+    //    const std::string &strMsg = RegisterUsrReq();
+    //    m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+    //    LOG_INFO_RLD("=======================");
+    //}
+    /////////
+
+
+
+
+
+
 
     //boost::shared_ptr<ClientObj> *pInCObj = (boost::shared_ptr<ClientObj> *)pValue;
     //delete pInCObj;
@@ -130,7 +140,13 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
 
     if (IsNeedRegisterUsr)
     {
+        //首先注册用户
         const std::string &strMsg = RegisterUsrReq();
+        if (strMsg.empty())
+        {
+            LOG_ERROR_RLD("Register user msg is empty.");
+            return;
+        }
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);        
     }
     else
@@ -155,9 +171,44 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
                 return;
             }
 
-            LOG_INFO_RLD("Register rsp return code is " << RegUsrRsp.m_iRetcode << " return msg is " << RegUsrRsp.m_strRetMsg);
+            g_strUserID = RegUsrRsp.m_strUserID;
+
+            //用户登录
+            const std::string &strMsg = LoginUsrReq();
+            if (strMsg.empty())
+            {
+                LOG_ERROR_RLD("Login user req msg is empty.");
+                return;
+            }
+
+            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+            LOG_INFO_RLD("Register rsp return code is " << RegUsrRsp.m_iRetcode << " return msg is " << RegUsrRsp.m_strRetMsg <<
+                " and user id is " << RegUsrRsp.m_strUserID);
 
         }
+        else if (InteractiveProtoHandler::MsgType::LoginRsp_USR_T == mtype)
+        {
+            InteractiveProtoHandler::LoginRsp_USR LoginUsrRsp;
+            if (!m_pHandler->UnSerializeReq(strMsgReceived, LoginUsrRsp))
+            {
+                LOG_ERROR_RLD("Login user rsp unserialize failed.");
+                return;
+            }
+
+            g_strUserSessionID = LoginUsrRsp.m_strSID;
+            
+
+            LOG_INFO_RLD("Login user rsp return code is " << LoginUsrRsp.m_iRetcode << " return msg is " << LoginUsrRsp.m_strRetMsg <<
+                " and user session id is " << LoginUsrRsp.m_strSID);
+
+        }
+        else
+        {
+            LOG_ERROR_RLD("Unknown message type is " << mtype);
+            return;
+        }
+
     }
 
     
@@ -213,6 +264,32 @@ std::string UserTest::RegisterUsrReq()
     if (!m_pHandler->SerializeReq(RegUsrReq, strSerializeOutPut))
     {
         LOG_ERROR_RLD("Register user req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
+std::string UserTest::LoginUsrReq()
+{
+    InteractiveProtoHandler::LoginReq_USR LgUsrReq;
+    LgUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_USR_T;
+    LgUsrReq.m_uiMsgSeq = 2;
+    LgUsrReq.m_strSID = "xxxxx";
+    LgUsrReq.m_strValue = "value";
+    LgUsrReq.m_userInfo.m_strUserID = g_strUserID;
+    LgUsrReq.m_userInfo.m_strUserName = "yinbin";
+    LgUsrReq.m_userInfo.m_strUserPassword = "testpwd";
+    LgUsrReq.m_userInfo.m_uiTypeInfo = 2;
+    LgUsrReq.m_userInfo.m_strCreatedate = "2016-11-30";
+    LgUsrReq.m_userInfo.m_uiStatus = 0;
+    LgUsrReq.m_userInfo.m_strExtend = "login_extend";
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(LgUsrReq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Login user req serialize failed.");
         return "";
     }
 

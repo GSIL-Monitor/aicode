@@ -200,6 +200,37 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
 {
     bool blResult = false;
 
+    const std::string &strSessionID = CreateUUID();
+    std::list<InteractiveProtoHandler::Device> DeviceList;
+    BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &strSessionID, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::LoginRsp_USR LoginRspUsr;
+
+        LoginRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_USR_T;
+        LoginRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        LoginRspUsr.m_strSID = strSessionID;
+        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        LoginRspUsr.m_strValue = "value";
+
+        if (blResult)
+        {
+            LoginRspUsr.m_devInfoList.swap(DeviceList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(LoginRspUsr, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Login user rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
     InteractiveProtoHandler::LoginReq_USR LoginReqUsr;
     if (!m_pProtoHandler->UnSerializeReq(strMsg, LoginReqUsr))
     {
@@ -231,7 +262,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    const std::string &strSessionID = CreateUUID();
+    
     Json::Value jsBody;
     jsBody["logindate"] = strCurrentTime;
     jsBody["userid"] = LoginReqUsr.m_userInfo.m_strUserID;
@@ -251,7 +282,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
             boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
     }
 
-    std::list<InteractiveProtoHandler::Device> DeviceList;
+    
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, DeviceList))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
@@ -262,35 +293,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
 
 
     blResult = true;
-
-    BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &strSessionID, &writer, &strSrcID)
-    {
-        InteractiveProtoHandler::LoginRsp_USR LoginRspUsr;
-
-        LoginRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_USR_T;
-        LoginRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
-        LoginRspUsr.m_strSID = strSessionID;
-        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
-        LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        LoginRspUsr.m_strValue = "value";
-        
-        if (blResult)
-        {
-            LoginRspUsr.m_devInfoList.swap(DeviceList);
-        }
-
-        std::string strSerializeOutPut;
-        if (!this_->m_pProtoHandler->SerializeReq(LoginRspUsr, strSerializeOutPut))
-        {
-            LOG_ERROR_RLD("Login user rsp serialize failed.");
-            return; //false;
-        }
-
-        writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID);
-
-    }
-    BOOST_SCOPE_EXIT_END
+    
     
     return blResult;
 }
@@ -444,8 +447,8 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend"
-        "from t_device_info dev, t_user_device_relation rel"
-        "where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0";
+        " from t_device_info dev, t_user_device_relation rel "
+        " where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
@@ -536,8 +539,7 @@ bool UserManager::ValidUser(const std::string &strUserID, const std::string &str
 {
     //Valid user id
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select userid,username, userpassword, typeinfo, createdate, status, extend where userid = "
-        "'%s')";
+    const char* sqlfmt = "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
     std::list<boost::any> ResultList;
@@ -691,8 +693,10 @@ void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
             return;
         }
     }
-
+    
     //广播消息表示用户会话超时
 
+
+    LOG_INFO_RLD("Session timeout and session id is " << strSessionID);
 }
 

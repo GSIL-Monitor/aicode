@@ -22,8 +22,11 @@ public:
     void init(const char *pIpAddress, const char *pIpPort, const unsigned int uiShakehandInterval);
     void Close();
 
+private:
     std::string RegisterUsrReq();
     bool RegisterUsrRsp(const std::string &strMsg);
+
+    std::string LoginUsrReq();
 
 private:
     ClientCommInterface *m_pClient;

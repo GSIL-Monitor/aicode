@@ -43,7 +43,7 @@ CREATE TABLE `t_user_device_relation` (
   `userid` varchar(100) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
   `srcuserid` varchar(100) NOT NULL,       #设备所有者的用户ID
-  `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
+  `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2，可以按照位域的方式来
   `begindate` datetime NOT NULL,
   `enddate` datetime NOT NULL,
   `createdate` datetime NOT NULL,

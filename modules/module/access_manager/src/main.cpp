@@ -229,33 +229,18 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("SelfID config item not found.");
         return 0;
     }
-
-    const std::string &strSyncShakehandTimeoutCount = GetConfig("General.SyncShakehandTimeoutCount");
-    if (strSyncShakehandTimeoutCount.empty())
-    {
-        LOG_ERROR_RLD("SyncShakehandTimeoutCount config item not found.");
-        return 0;
-    }
-
-    const std::string &strSyncShakehandTimeout = GetConfig("General.SyncShakehandTimeout");
-    if (strSyncShakehandTimeout.empty())
-    {
-
-        LOG_ERROR_RLD("SyncShakehandTimeout config item not found.");
-        return 0;
-    }
-
-    const std::string &strSyncAddressRspInvalidTimeout = GetConfig("General.SyncAddressRspInvalidTimeout");
-    if (strSyncAddressRspInvalidTimeout.empty())
-    {
-        LOG_ERROR_RLD("SyncAddressRspInvalidTimeout config item not found.");
-        return 0;
-    }
-
+    
     const std::string &strThreadOfWorking = GetConfig("General.ThreadOfWorking");
     if (strThreadOfWorking.empty())
     {
         LOG_ERROR_RLD("ThreadOfWorking config item not found.");
+        return 0;
+    }
+
+    const std::string &strSessionTimeoutCountThreshold = GetConfig("General.SessionTimeoutCountThreshold");
+    if (strSessionTimeoutCountThreshold.empty())
+    {
+        LOG_ERROR_RLD("Session timout threshold config item not found.");
         return 0;
     }
 
@@ -273,12 +258,6 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    const std::string &strSessionTimeoutCountThreshold = GetConfig("General.SessionTimeoutCountThreshold");
-    if (strSessionTimeoutCountThreshold.empty())
-    {
-        LOG_ERROR_RLD("Session timout threshold config item not found.");
-        return 0;
-    }
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -305,9 +284,6 @@ int main(int argc, char* argv[])
     pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
 
     pinfo.strSelfID = strSelfID;
-    pinfo.uiSyncShakehandTimeoutCount = boost::lexical_cast<unsigned int>(strSyncShakehandTimeoutCount);
-    pinfo.uiSyncShakehandTimeout = boost::lexical_cast<unsigned int>(strSyncShakehandTimeout);
-    pinfo.uiSyncAddressRspInvalidTimeout = boost::lexical_cast<unsigned int>(strSyncAddressRspInvalidTimeout);
     pinfo.uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
 
     ControlCenter ccenter(pinfo);
