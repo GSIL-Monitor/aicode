@@ -15,8 +15,6 @@
 
 class MysqlImpl;
 
-class MemcacheClient;
-
 /************************************************************************/
 /* 用户管理类，提供了管理用户所有相关的方法接口和实现。
  * 该类提供的方法会注册到到ControlCenter类中。
@@ -61,7 +59,9 @@ public:
 
     bool LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
-    bool Shakehand(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    bool ShakehandReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo,
@@ -89,14 +89,11 @@ private:
 
 private:
     ParamInfo m_ParamInfo;
-    boost::mutex m_UserInfoMutex;
-    std::unordered_map<std::string, boost::shared_ptr<InteractiveProtoHandler::User> > m_UserInfoMap; //Key is session id
 
     Runner m_DBRuner;
     boost::shared_ptr<InteractiveProtoHandler> m_pProtoHandler;
     
     MysqlImpl *m_pMysql;
-
     DBInfoCacheManager m_DBCache;
 
     typedef struct
@@ -106,7 +103,6 @@ private:
     } ValueInDB;
 
     boost::mutex m_MemcachedMutex;
-    MemcacheClient *m_pMemCl;
     
     boost::atomic_uint64_t m_uiMsgSeq;
     

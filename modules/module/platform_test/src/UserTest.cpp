@@ -376,6 +376,8 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             return;
         }
 
+
+
         ////用户登出
         //const std::string &strMsg = LogoutUsrReq();
         //if (strMsg.empty())
@@ -384,14 +386,24 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         //    return;
         //}
 
-        //用户注销
-        const std::string &strMsg = UnregisterUsrReq();
+        ////用户注销
+        //const std::string &strMsg = UnregisterUsrReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Unregister user req msg is empty.");
+        //    return;
+        //}
+        //
+
+        //用户握手
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
+        const std::string &strMsg = ShakehandReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Unregister user req msg is empty.");
+            LOG_ERROR_RLD("Shake user req msg is empty.");
             return;
         }
-        
+
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
         LOG_INFO_RLD("Shakehand user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<

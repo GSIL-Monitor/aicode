@@ -10,10 +10,11 @@
 #include "NetComm.h"
 #include <unordered_map>
 
+class MemcacheClient;
 
 /************************************************************************/
 /*会话管理器，进行多个会话的计时处理。
- *提供会话超时处理函数设置接口
+ *提供会话超时处理函数设置接口，内部实现上将会话信息存储到memcached
  *Author：尹宾
  *Date：2016-12-7*/
 /************************************************************************/
@@ -23,13 +24,17 @@ public:
     SessionMgr();
     ~SessionMgr();
 
+    void SetMemCacheAddRess(const std::string &strMemAddress, const std::string &strMemPort);
+
+    bool Init();
+
     void Run();
 
     void Stop();
 
     typedef boost::function<void(const std::string &)> TMOUT_CB;
 
-    bool Create(const std::string &strSessionID, const unsigned int uiThreshold, TMOUT_CB tcb);
+    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb);
 
     bool Exist(const std::string &strSessionID);
     
@@ -42,12 +47,21 @@ private:
 
     void TimoutProcess(const std::string &strSessionID, TMOUT_CB tcb);
 
+    bool MemCacheRemove(const std::string &strKey);
+
+    bool MemCacheExist(const std::string &strKey);
+
+    bool MemCacheCreate(const std::string &strKey, const std::string &strValue, const unsigned int uiThreshold);
+
+    bool MemCacheReset(const std::string &strKey, const std::string &strValue, const unsigned int uiThreshold);
+
 private:
 
     struct Session 
     {
         std::string m_strSessionID;
         unsigned int m_uiThreshold;
+        std::string m_strValue;
         boost::atomic_uint64_t m_uiTickNum;
         TMOUT_CB m_TimeoutCB;
     };
@@ -60,6 +74,12 @@ private:
     TimeOutHandler m_TickTM;
 
     Runner m_TMRunner;
+
+    std::string m_strMemAddress;
+    std::string m_strMemPort;
+
+    boost::mutex m_MemcachedMutex;
+    MemcacheClient *m_pMemCl;
 
 };
 

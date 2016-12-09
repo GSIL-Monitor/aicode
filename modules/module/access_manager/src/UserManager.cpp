@@ -1,15 +1,13 @@
 #include "UserManager.h"
 #include <boost/scope_exit.hpp>
-#include "intf.h"
 #include "CommonUtility.h"
 #include "ReturnCode.h"
 #include "mysql_impl.h"
-#include "libcacheclient.h"
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
 
 UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
-m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_pMemCl(NULL), m_uiMsgSeq(0)
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0)
 {
     
 }
@@ -24,8 +22,6 @@ UserManager::~UserManager()
     delete m_pMysql;
     m_pMysql = NULL;
 
-    MemcacheClient::destoy(m_pMemCl);
-    m_pMemCl = NULL;
 }
 
 bool UserManager::Init()
@@ -37,17 +33,12 @@ bool UserManager::Init()
         return false;
     }
 
-    m_pMemCl = MemcacheClient::create();
-    if (MemcacheClient::CACHE_SUCCESS != m_pMemCl->addServer(m_ParamInfo.strMemAddress.c_str(), boost::lexical_cast<int>(m_ParamInfo.strMemPort)))
-    {
-        MemcacheClient::destoy(m_pMemCl);
-        m_pMemCl = NULL;
+    m_SessionMgr.SetMemCacheAddRess(m_ParamInfo.strMemAddress, m_ParamInfo.strMemPort);
 
-        LOG_ERROR_RLD("memcached client init failed, remote ip: " << m_ParamInfo.strMemAddress << ", remote port:" << m_ParamInfo.strMemPort);
-    }
-    else
+    if (!m_SessionMgr.Init())
     {
-        LOG_INFO_RLD("memcached client init succeed, remote ip: " << m_ParamInfo.strMemAddress << ", remote port:" << m_ParamInfo.strMemPort);
+        LOG_ERROR_RLD("Session mgr init failed.");
+        return false;
     }
 
 
@@ -162,27 +153,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
         return false;
     }
 
-    //检查用户SessionID是否存在，表示是否用户已经登录
-    {
-        m_SessionMgr.Remove(UnRegUsrReq.m_strSID); //会话管理器删除会话
-
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(UnRegUsrReq.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Unregister user find session id from cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
-                " and session id is " << UnRegUsrReq.m_strSID);
-            return false;
-        }
-
-        //将memcached中的session id信息删除掉，相当于将用户登出了系统
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(UnRegUsrReq.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Unregister user remove session id cache failed, return code is " << iRet << " and user id is " << UnRegUsrReq.m_userInfo.m_strUserID <<
-                " and session id is " << UnRegUsrReq.m_strSID);
-            return false;
-        }        
-    }
+    m_SessionMgr.Remove(UnRegUsrReq.m_strSID);
 
     //广播消息表示用户注销
 
@@ -272,21 +243,10 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     jsBody["userid"] = LoginReqUsr.m_userInfo.m_strUserID;
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
-
-    {            
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->set(strSessionID.c_str(), strBody.c_str(), strBody.size())))
-        {
-            LOG_ERROR_RLD("Login user set session id to cache failed, return code is " << iRet << " and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
-            return false;
-        }
-
-        m_SessionMgr.Create(strSessionID, boost::lexical_cast<unsigned int>(m_ParamInfo.strSessionTimeoutCountThreshold), 
-            boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
-    }
-
-    
+     
+    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.strSessionTimeoutCountThreshold), 
+        boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
+        
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, DeviceList))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
@@ -347,25 +307,8 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
     }
 
     //检查用户SessionID是否存在，表示是否用户已经登录
-    {
-        m_SessionMgr.Remove(LogoutReqUsr.m_strSID); //移除会话
+    m_SessionMgr.Remove(LogoutReqUsr.m_strSID); //移除会话
 
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(LogoutReqUsr.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Logout user find session id from cache failed, return code is " << iRet << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID <<
-                " and session id is " << LogoutReqUsr.m_strSID);
-            return false;
-        }
-
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(LogoutReqUsr.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Logout user remove session id cache failed, return code is " << iRet << " and user id is " << LogoutReqUsr.m_userInfo.m_strUserID <<
-                " and session id is " << LogoutReqUsr.m_strSID);
-            return false;
-        }        
-    }
 
     //广播消息表示用户登出
 
@@ -377,7 +320,7 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
     return blResult;
 }
 
-bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool UserManager::ShakehandReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     //这里根据SessionID值来进行握手，SID值以memcached中的数据为参考源
     
@@ -416,19 +359,8 @@ bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrc
         return false;
     }
 
-    {
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(ShakehandReqUsr.m_strSID.c_str())))
-        {
-            LOG_ERROR_RLD("Shakehand user find session id from cache failed, return code is " << iRet << " and user id is " << ShakehandReqUsr.m_strUserID <<
-                " and session id is " << ShakehandReqUsr.m_strSID);
-            return false;
-        }
-
-        m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
-    }
-
+    m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
+    
     LOG_INFO_RLD("Shake hand user received and user id is " << ShakehandReqUsr.m_strUserID << " and session id is " << ShakehandReqUsr.m_strSID);
 
     blResult = true;
@@ -437,6 +369,12 @@ bool UserManager::Shakehand(const std::string &strMsg, const std::string &strSrc
 
     return blResult;
 
+}
+
+bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+
+    return true;
 }
 
 void UserManager::InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, 
@@ -708,16 +646,7 @@ void UserManager::UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const bo
 
 void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
 {
-    {
-        boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
-        int iRet = 0;
-        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->remove(strSessionID.c_str())))
-        {
-            LOG_ERROR_RLD("Session timeout remove session id cache failed, return code is " << iRet << " and session id is " << strSessionID);
-            return;
-        }
-    }
-    
+        
     //广播消息表示用户会话超时
 
 
