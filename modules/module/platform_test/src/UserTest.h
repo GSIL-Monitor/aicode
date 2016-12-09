@@ -4,6 +4,7 @@
 #include "boost/enable_shared_from_this.hpp"
 #include "ClientCommInterface.h"
 
+class Runner;
 class InteractiveProtoHandler;
 
 class UserTest : public boost::enable_shared_from_this<UserTest>
@@ -27,11 +28,16 @@ private:
     std::string LoginUsrReq();
     std::string ShakehandReq();
     std::string LogoutUsrReq();
+    std::string UnregisterUsrReq();
+
+    void MsgProcess(const std::string &strMsgReceived, void *pValue);
 
 private:
     ClientCommInterface *m_pClient;
 
     boost::shared_ptr<InteractiveProtoHandler> m_pHandler;
+
+    Runner *m_pRunner;
 
 };
 

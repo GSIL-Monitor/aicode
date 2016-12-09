@@ -9,8 +9,9 @@ static std::string g_strSessionID;
 static std::string g_strUserID;
 static std::string g_strUserSessionID;
 
-UserTest::UserTest() : m_pClient(NULL), m_pHandler(new InteractiveProtoHandler)
+UserTest::UserTest() : m_pClient(NULL), m_pHandler(new InteractiveProtoHandler), m_pRunner(new Runner(2))
 {
+    m_pRunner->Run();
 }
 
 
@@ -18,6 +19,8 @@ UserTest::~UserTest()
 {
     printf("client obj destruct\n");
     LOG_INFO_RLD("client obj destruct.");
+
+    m_pRunner->Stop();
 
     delete m_pClient;
     m_pClient = NULL;
@@ -153,107 +156,7 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
     {
         const std::string &strMsgReceived = std::string(pClientMsgList->front().pContentBuffer.get(), pClientMsgList->front().uiContentBufferLen);
 
-        InteractiveProtoHandler::MsgType mtype;
-        if (!m_pHandler->GetMsgType(strMsgReceived, mtype))
-        {
-            LOG_ERROR_RLD("Get msg type failed.");
-            return;
-        }
-
-        LOG_INFO_RLD("Receive msg type is " << mtype);
-
-        if (InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == mtype)
-        {
-            InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
-            if (!m_pHandler->UnSerializeReq(strMsgReceived, RegUsrRsp))
-            {
-                LOG_ERROR_RLD("Register user rsp unserialize failed.");
-                return;
-            }
-
-            g_strUserID = RegUsrRsp.m_strUserID;
-
-            //用户登录
-            const std::string &strMsg = LoginUsrReq();
-            if (strMsg.empty())
-            {
-                LOG_ERROR_RLD("Login user req msg is empty.");
-                return;
-            }
-
-            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
-
-            LOG_INFO_RLD("Register rsp return code is " << RegUsrRsp.m_iRetcode << " return msg is " << RegUsrRsp.m_strRetMsg <<
-                " and user id is " << RegUsrRsp.m_strUserID);
-
-        }
-        else if (InteractiveProtoHandler::MsgType::LoginRsp_USR_T == mtype)
-        {
-            InteractiveProtoHandler::LoginRsp_USR LoginUsrRsp;
-            if (!m_pHandler->UnSerializeReq(strMsgReceived, LoginUsrRsp))
-            {
-                LOG_ERROR_RLD("Login user rsp unserialize failed.");
-                return;
-            }
-
-            g_strUserSessionID = LoginUsrRsp.m_strSID;
-            
-            //用户握手
-            const std::string &strMsg = ShakehandReq();
-            if (strMsg.empty())
-            {
-                LOG_ERROR_RLD("Shake user req msg is empty.");
-                return;
-            }
-
-            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
-
-
-            LOG_INFO_RLD("Login user rsp return code is " << LoginUsrRsp.m_iRetcode << " return msg is " << LoginUsrRsp.m_strRetMsg <<
-                " and user session id is " << LoginUsrRsp.m_strSID);
-
-        }
-        else if (InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T == mtype)
-        {
-            InteractiveProtoHandler::ShakehandRsp_USR rsp;
-            if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
-            {
-                LOG_ERROR_RLD("Shakehand user rsp unserialize failed.");
-                return;
-            }
-
-            //用户登出
-            const std::string &strMsg = LogoutUsrReq();
-            if (strMsg.empty())
-            {
-                LOG_ERROR_RLD("Logout user req msg is empty.");
-                return;
-            }
-
-            m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
-
-            LOG_INFO_RLD("Shakehand user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
-                " and user session id is " << rsp.m_strSID);
-
-        }
-        else if (InteractiveProtoHandler::MsgType::LogoutRsp_USR_T == mtype)
-        {
-            InteractiveProtoHandler::LogoutRsp_USR rsp;
-            if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
-            {
-                LOG_ERROR_RLD("Logout user rsp unserialize failed.");
-                return;
-            }
-
-            LOG_INFO_RLD("Logout user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
-                " and user session id is " << rsp.m_strSID);
-
-        }
-        else
-        {
-            LOG_ERROR_RLD("Unknown message type is " << mtype);
-            return;
-        }
+        m_pRunner->Post(boost::bind(&UserTest::MsgProcess, this, strMsgReceived, pValue));
 
     }
 
@@ -379,4 +282,151 @@ std::string UserTest::LogoutUsrReq()
     }
 
     return strSerializeOutPut;
+}
+
+std::string UserTest::UnregisterUsrReq()
+{
+    InteractiveProtoHandler::UnRegisterUserReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T;
+    req.m_uiMsgSeq = 4;
+    req.m_strSID = g_strUserSessionID;
+    req.m_userInfo.m_strUserID = g_strUserID;
+
+    //LOG_INFO_RLD("======g_strUserSessionID: " << g_strUserSessionID << " ===========g_strUserID: " << g_strUserID);
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Unregister user req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
+void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
+{
+    InteractiveProtoHandler::MsgType mtype;
+    if (!m_pHandler->GetMsgType(strMsgReceived, mtype))
+    {
+        LOG_ERROR_RLD("Get msg type failed.");
+        return;
+    }
+
+    LOG_INFO_RLD("Receive msg type is " << mtype);
+
+    if (InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, RegUsrRsp))
+        {
+            LOG_ERROR_RLD("Register user rsp unserialize failed.");
+            return;
+        }
+
+        g_strUserID = RegUsrRsp.m_strUserID;
+
+        //用户登录
+        const std::string &strMsg = LoginUsrReq();
+        if (strMsg.empty())
+        {
+            LOG_ERROR_RLD("Login user req msg is empty.");
+            return;
+        }
+
+        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        LOG_INFO_RLD("Register rsp return code is " << RegUsrRsp.m_iRetcode << " return msg is " << RegUsrRsp.m_strRetMsg <<
+            " and user id is " << RegUsrRsp.m_strUserID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::LoginRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::LoginRsp_USR LoginUsrRsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, LoginUsrRsp))
+        {
+            LOG_ERROR_RLD("Login user rsp unserialize failed.");
+            return;
+        }
+
+        g_strUserSessionID = LoginUsrRsp.m_strSID;
+
+        //用户握手
+        const std::string &strMsg = ShakehandReq();
+        if (strMsg.empty())
+        {
+            LOG_ERROR_RLD("Shake user req msg is empty.");
+            return;
+        }
+
+        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+
+        LOG_INFO_RLD("Login user rsp return code is " << LoginUsrRsp.m_iRetcode << " return msg is " << LoginUsrRsp.m_strRetMsg <<
+            " and user session id is " << LoginUsrRsp.m_strSID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::ShakehandRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Shakehand user rsp unserialize failed.");
+            return;
+        }
+
+        ////用户登出
+        //const std::string &strMsg = LogoutUsrReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Logout user req msg is empty.");
+        //    return;
+        //}
+
+        //用户注销
+        const std::string &strMsg = UnregisterUsrReq();
+        if (strMsg.empty())
+        {
+            LOG_ERROR_RLD("Unregister user req msg is empty.");
+            return;
+        }
+        
+        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        LOG_INFO_RLD("Shakehand user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::LogoutRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::LogoutRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Logout user rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Logout user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::UnRegisterUserRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::UnRegisterUserRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Unregister user rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Unregister user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
+    else
+    {
+        LOG_ERROR_RLD("Unknown message type is " << mtype);
+        return;
+    }
 }

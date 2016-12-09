@@ -154,7 +154,9 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
         return false;
     }
 
-    if (!UnRegUsrReq.m_userInfo.m_strUserID.empty())
+    LOG_INFO_RLD("Unregister user id is " << UnRegUsrReq.m_userInfo.m_strUserID << " session id is " << UnRegUsrReq.m_strSID);
+
+    if (UnRegUsrReq.m_userInfo.m_strUserID.empty())
     {
         LOG_ERROR_RLD("Unregister user id is empty, src id is " << strSrcID);
         return false;
@@ -456,8 +458,8 @@ void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_user_info set status = '%d' where userid = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strUserID);
-
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strUserID.c_str());
+    
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
