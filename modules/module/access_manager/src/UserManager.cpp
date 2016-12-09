@@ -373,6 +373,19 @@ bool UserManager::ShakehandReq(const std::string &strMsg, const std::string &str
 
 bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    bool blResult = false;
+    InteractiveProtoHandler::AddDevReq_USR req;
+
+
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+
+
 
     return true;
 }

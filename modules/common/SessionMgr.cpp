@@ -74,16 +74,6 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     }
 
     {
-        boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-        auto itFind = m_SessionMap.find(strSessionID);
-        if (m_SessionMap.end() != itFind)
-        {
-            LOG_ERROR_RLD("Create session failed becasue session id already exists, sessid is " << strSessionID);
-            return false;
-        }
-    }
-
-    {
         boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
         auto itFind = m_SessionMap.find(strSessionID);
         if (m_SessionMap.end() != itFind)
@@ -110,12 +100,15 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
 
 bool SessionMgr::Exist(const std::string &strSessionID)
 {
-    boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-    auto itFind = m_SessionMap.find(strSessionID);
-    if (m_SessionMap.end() == itFind)
     {
-        LOG_ERROR_RLD("Session id not found in local and session id is " << strSessionID);
-        return false;
+
+        boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
+        auto itFind = m_SessionMap.find(strSessionID);
+        if (m_SessionMap.end() == itFind)
+        {
+            LOG_ERROR_RLD("Session id not found in local and session id is " << strSessionID);
+            return false;
+        }
     }
         
     if (!MemCacheExist(strSessionID))
@@ -152,16 +145,6 @@ bool SessionMgr::Reset(const std::string &strSessionID)
 
 bool SessionMgr::Remove(const std::string &strSessionID)
 {
-    {
-        boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-        auto itFind = m_SessionMap.find(strSessionID);
-        if (m_SessionMap.end() == itFind)
-        {
-            LOG_ERROR_RLD("Remove session failed becasue session id not exists, sessid is " << strSessionID);
-            return false;
-        }
-    }
-
     {
         boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
         auto itFind = m_SessionMap.find(strSessionID);
