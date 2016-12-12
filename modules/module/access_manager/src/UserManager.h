@@ -84,8 +84,7 @@ private:
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
-    void InserDeviceToDB(const std::string &strDevID, const std::string &strDevName, const std::string &strDevPwd, const int iTypeInfo, 
-        const std::string &strCreateDate, const int iStatus, const std::string &strInnerInfo, const std::string &strExtend);
+    void InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
 private:
     ParamInfo m_ParamInfo;

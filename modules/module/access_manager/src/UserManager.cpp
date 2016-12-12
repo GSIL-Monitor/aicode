@@ -674,3 +674,22 @@ void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
     LOG_INFO_RLD("Session timeout and session id is " << strSessionID);
 }
 
+void UserManager::InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+{
+    //这里考虑到设备内部信息可能不一定是可打印字符，为了后续日志打印和维护方便，这里就将其内容文本化之后再存储到数据库中
+    const std::string &strInner = DevInfo.m_strInnerinfo.empty() ? 
+        DevInfo.m_strInnerinfo : Encode64((const unsigned char *)DevInfo.m_strInnerinfo.c_str(), DevInfo.m_strInnerinfo.size());
+
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "insert into t_device_info("
+        "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend) values(uuid(),"
+        "'%s','%s','%s','%d','%s', '%d','%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, DevInfo.m_strDevID.c_str(), DevInfo.m_strDevName.c_str(), DevInfo.m_strDevPassword.c_str(), DevInfo.m_uiTypeInfo,
+        DevInfo.m_strCreatedate.c_str(), DevInfo.m_uiStatus, strInner.c_str(), DevInfo.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Insert t_device_info sql exec failed, sql is " << sql);
+    }
+}
+
