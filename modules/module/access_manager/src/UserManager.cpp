@@ -96,9 +96,16 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, strUserID, RegUsrReq.m_userInfo.m_strUserName,
-        RegUsrReq.m_userInfo.m_strUserPassword, RegUsrReq.m_userInfo.m_uiTypeInfo, strCurrentTime,
-        0, RegUsrReq.m_userInfo.m_strExtend));
+    InteractiveProtoHandler::User UsrInfo;
+    UsrInfo.m_strUserID = strUserID;
+    UsrInfo.m_strUserName = RegUsrReq.m_userInfo.m_strUserName;
+    UsrInfo.m_strUserPassword = RegUsrReq.m_userInfo.m_strUserPassword;
+    UsrInfo.m_uiTypeInfo = RegUsrReq.m_userInfo.m_uiTypeInfo;
+    UsrInfo.m_strCreatedate = strCurrentTime;
+    UsrInfo.m_uiStatus = 0;
+    UsrInfo.m_strExtend = RegUsrReq.m_userInfo.m_strExtend;
+    
+    m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, UsrInfo));
 
 
     blResult = true;
@@ -390,14 +397,15 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     return true;
 }
 
-void UserManager::InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, 
-    const int iTypeInfo, const std::string &strCreateDate, const int iStatus, const std::string &strExtend)
+void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
+    
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_info("
         "id,userid,username, userpassword, typeinfo, createdate, status, extend) values(uuid(),"        
         "'%s','%s','%s','%d','%s', '%d','%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strUserName.c_str(), strUserPwd.c_str(), iTypeInfo, strCreateDate.c_str(), iStatus, strExtend.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserID.c_str(), UsrInfo.m_strUserName.c_str(), UsrInfo.m_strUserPassword.c_str(), UsrInfo.m_uiTypeInfo, 
+        UsrInfo.m_strCreatedate.c_str(), UsrInfo.m_uiStatus, UsrInfo.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {

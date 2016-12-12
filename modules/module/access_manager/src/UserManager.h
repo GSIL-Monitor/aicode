@@ -64,8 +64,7 @@ public:
     bool AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
-    void InsertUserToDB(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo,
-        const std::string &strCreateDate, const int iStatus, const std::string &strExtend);
+    void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
     void UpdateUserToDB(const std::string &strUserID, const int iStatus);
 
@@ -85,7 +84,8 @@ private:
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
-
+    void InserDeviceToDB(const std::string &strDevID, const std::string &strDevName, const std::string &strDevPwd, const int iTypeInfo, 
+        const std::string &strCreateDate, const int iStatus, const std::string &strInnerInfo, const std::string &strExtend);
 
 private:
     ParamInfo m_ParamInfo;
