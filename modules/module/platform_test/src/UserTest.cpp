@@ -306,16 +306,15 @@ std::string UserTest::UnregisterUsrReq()
 }
 
 std::string UserTest::AddDevReq()
-{
-    
+{    
     InteractiveProtoHandler::AddDevReq_USR req;
     req.m_MsgType = InteractiveProtoHandler::MsgType::AddDevReq_USR_T;
     req.m_uiMsgSeq = 3;
     req.m_strSID = g_strUserSessionID;
     req.m_strUserID = g_strUserID;
     req.m_devInfo.m_strCreatedate = "2016-12-14 10:58:00";
-    req.m_devInfo.m_strDevID = "test_devid1";
-    req.m_devInfo.m_strDevName = "test_devname";
+    req.m_devInfo.m_strDevID = CreateUUID();
+    req.m_devInfo.m_strDevName = CreateUUID();
     req.m_devInfo.m_strDevPassword = "test_devpwd";
     req.m_devInfo.m_strExtend = "test_devextend";
     req.m_devInfo.m_strInnerinfo = "test_inner";
@@ -333,6 +332,27 @@ std::string UserTest::AddDevReq()
 
     return strSerializeOutPut;
 
+}
+
+std::string UserTest::DelDevReq()
+{
+    InteractiveProtoHandler::DelDevReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::DelDevReq_USR_T;
+    req.m_uiMsgSeq = 4;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_strDevIDList.push_back("20841AD4151B2E4E854D1EC8798D40D2");
+    req.m_strDevIDList.push_back("C59D43E07729434492D77B44086B88D2");
+    
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Delete device req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
 }
 
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
@@ -406,14 +426,22 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             return;
         }
 
-        //用户增加设备
-        const std::string &strMsg = AddDevReq();
+        //用户删除设备
+        const std::string &strMsg = DelDevReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Add device req msg is empty.");
+            LOG_ERROR_RLD("Delete device req msg is empty.");
             return;
         }
-        
+
+
+        ////用户增加设备
+        //const std::string &strMsg = AddDevReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Add device req msg is empty.");
+        //    return;
+        //}
 
         ////用户登出
         //const std::string &strMsg = LogoutUsrReq();
@@ -495,6 +523,21 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 
         LOG_INFO_RLD("Add device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
+    }
+    else if (InteractiveProtoHandler::MsgType::DelDevRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::DelDevRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Delete device rsp unserialize failed.");
+            return;
+        }
+
+        
+
+        LOG_INFO_RLD("Delete device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
     }
     else
     {

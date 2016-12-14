@@ -24,10 +24,9 @@ class MysqlImpl;
 class UserManager : public boost::noncopyable
 {
 public:
-    static const int ONLINE_STATUS = 0;
-    static const int OFFLINE_STATUS = 1;
-    static const int DELETE_STATUS = 2;
-    static const int FROZEN_STATUS = 3;
+    static const int NORMAL_STATUS = 0;    
+    static const int DELETE_STATUS = 1;
+    static const int FROZEN_STATUS = 2;
 
     static const int RELATION_OF_OWNER = 0;
     static const int RELATION_OF_BE_SHARED = 1;
@@ -83,6 +82,8 @@ public:
 
     bool AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -107,6 +108,8 @@ private:
     void InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
     void InsertRelationToDB(const RelationOfUsrAndDev &relation);
+
+    void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus);
 
 private:
     ParamInfo m_ParamInfo;

@@ -30,6 +30,7 @@ private:
     std::string LogoutUsrReq();
     std::string UnregisterUsrReq();
     std::string AddDevReq();
+    std::string DelDevReq();
 
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);

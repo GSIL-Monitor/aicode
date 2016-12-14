@@ -104,7 +104,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     UsrInfo.m_strUserPassword = RegUsrReq.m_userInfo.m_strUserPassword;
     UsrInfo.m_uiTypeInfo = RegUsrReq.m_userInfo.m_uiTypeInfo;
     UsrInfo.m_strCreatedate = strCurrentTime;
-    UsrInfo.m_uiStatus = 0;
+    UsrInfo.m_uiStatus = NORMAL_STATUS;
     UsrInfo.m_strExtend = RegUsrReq.m_userInfo.m_strExtend;
     
     m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, UsrInfo));
@@ -168,7 +168,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
 
 
     //异步更新数据库内容
-    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, 1));
+    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, DELETE_STATUS));
 
     blResult = true;
 
@@ -427,7 +427,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
     DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
     DevInfo.m_strCreatedate = strCurrentTime;
-    DevInfo.m_uiStatus = 0;
+    DevInfo.m_uiStatus = NORMAL_STATUS;
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
     DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
@@ -436,7 +436,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
 
     RelationOfUsrAndDev relation;
     relation.m_iRelation = RELATION_OF_OWNER;
-    relation.m_iStatus = 0;
+    relation.m_iStatus = NORMAL_STATUS;
     relation.m_strBeginDate = strCurrentTime;
     relation.m_strEndDate = MAX_DATE;
     relation.m_strCreateDate = strCurrentTime;
@@ -451,7 +451,52 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
 
     blResult = true;
     
-    return true;
+    return blResult;
+}
+
+bool UserManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::DelDevReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::DelDevRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DelDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User delete device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    
+    m_DBRuner.Post(boost::bind(&UserManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
+
+    blResult = true;
+
+    return blResult;
 }
 
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
@@ -488,7 +533,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
     char sql[1024] = { 0 };
     const char* sqlfmt = "select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend"
         " from t_device_info dev, t_user_device_relation rel "
-        " where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0";
+        " where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0 and dev.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
@@ -763,6 +808,48 @@ void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
     {
         LOG_ERROR_RLD("Insert t_user_device_relation sql exec failed, sql is " << sql);
     }
+}
 
+void UserManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus)
+{
+    if (strDevIDList.empty())
+    {
+        LOG_ERROR_RLD("Delete device id list is empty.");
+        return;
+    }
+
+    //"update t_device_info set status = '%d' where deviceid = '%s'";
+
+    std::string strSql;
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "update t_device_info set status = '%d' where ";
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus);
+    strSql = sql;
+
+    auto itBegin = strDevIDList.begin();
+    auto itEnd = strDevIDList.end();
+    while (itBegin != itEnd)
+    {
+        std::string strTmp;
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), "deviceid = '%s'", itBegin->c_str());
+        strTmp = cTmp;
+
+        auto itTmp = itBegin;
+        ++itTmp;
+        if (itTmp != itEnd)
+        {
+            strTmp += " or ";
+        }
+
+        strSql += strTmp;
+
+        ++itBegin;
+    }
+    
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Delete t_device_info sql exec failed, sql is " << strSql);
+    }
 }
 

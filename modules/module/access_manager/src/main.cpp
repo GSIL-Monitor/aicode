@@ -294,6 +294,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LogoutReq_USR_T, boost::bind(&UserManager::LogoutReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_USR_T, boost::bind(&UserManager::ShakehandReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddDevReq_USR_T, boost::bind(&UserManager::AddDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelDevReq_USR_T, boost::bind(&UserManager::DelDeviceReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 
