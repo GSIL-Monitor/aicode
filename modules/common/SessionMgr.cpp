@@ -249,7 +249,7 @@ bool SessionMgr::MemCacheCreate(const std::string &strKey, const std::string &st
 
     time_t CurrentTimeValue = time(NULL);
     
-    CurrentTimeValue += 3 + uiThreshold; //指定memcache中某条项目的超时时间比本地超时要稍微长一些
+    CurrentTimeValue = CurrentTimeValue + (10 + uiThreshold); //指定memcache中某条项目的超时时间比本地超时要稍微长一些
 
     int iRet = 0;
     if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->set(strKey.c_str(), strValue.c_str(), strValue.size(), CurrentTimeValue)))
@@ -262,7 +262,10 @@ bool SessionMgr::MemCacheCreate(const std::string &strKey, const std::string &st
 }
 
 bool SessionMgr::MemCacheReset(const std::string &strKey, const std::string &strValue, const unsigned int uiThreshold)
-{    
+{
+    
+    LOG_INFO_RLD("Mem cache reset and key is " << strKey << " and value is " << strValue << " and threshold is " << uiThreshold);
+
     return MemCacheCreate(strKey, strValue, uiThreshold);
 }
 

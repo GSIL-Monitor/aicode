@@ -32,6 +32,8 @@ public:
     static const int RELATION_OF_OWNER = 0;
     static const int RELATION_OF_BE_SHARED = 1;
     static const int RELATION_OF_SHARING = 2;
+
+    static const std::string MAX_DATE;
     
 
     typedef struct _Relation

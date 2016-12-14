@@ -6,6 +6,8 @@
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
 
+const std::string UserManager::MAX_DATE = "2199-01-01 00:00:00";
+
 UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0)
 {
@@ -386,7 +388,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
-        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
@@ -428,6 +430,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_uiStatus = 0;
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
+    DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::InserDeviceToDB, this, DevInfo));
 
@@ -435,11 +438,11 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     relation.m_iRelation = RELATION_OF_OWNER;
     relation.m_iStatus = 0;
     relation.m_strBeginDate = strCurrentTime;
-    relation.m_strEndDate = ""; //结束时间为空，表示无限期
+    relation.m_strEndDate = MAX_DATE;
     relation.m_strCreateDate = strCurrentTime;
     relation.m_strDevID = req.m_devInfo.m_strDevID;
     relation.m_strExtend = req.m_devInfo.m_strExtend;
-    relation.m_strOwnerID = req.m_strUserID;
+    relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
     relation.m_strUsrID = req.m_strUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
@@ -752,7 +755,7 @@ void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_device_relation("
         "id, userid, deviceid, ownerid, relation, begindate, enddate, createdate, status, extend) values(uuid(),"
-        "'%s','%s','%s','%d','%s', '%d','%s', '%s')";
+        "'%s','%s','%s','%d','%s', '%s', '%s','%d', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_strOwnerID.c_str(), relation.m_iRelation,
         relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
 

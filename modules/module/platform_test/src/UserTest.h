@@ -29,6 +29,8 @@ private:
     std::string ShakehandReq();
     std::string LogoutUsrReq();
     std::string UnregisterUsrReq();
+    std::string AddDevReq();
+
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);
 
