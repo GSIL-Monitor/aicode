@@ -26,14 +26,14 @@ UserManager::~UserManager()
 
 bool UserManager::Init()
 {
-    if (!m_pMysql->Init(m_ParamInfo.strDBHost.c_str(), m_ParamInfo.strDBUser.c_str(), m_ParamInfo.strDBPassword.c_str(), m_ParamInfo.strDBName.c_str()))
+    if (!m_pMysql->Init(m_ParamInfo.m_strDBHost.c_str(), m_ParamInfo.m_strDBUser.c_str(), m_ParamInfo.m_strDBPassword.c_str(), m_ParamInfo.m_strDBName.c_str()))
     {
-        LOG_ERROR_RLD("Init db failed, db host is " << m_ParamInfo.strDBHost << " db user is " << m_ParamInfo.strDBUser << " db pwd is " <<
-            m_ParamInfo.strDBPassword << " db name is " << m_ParamInfo.strDBName);
+        LOG_ERROR_RLD("Init db failed, db host is " << m_ParamInfo.m_strDBHost << " db user is " << m_ParamInfo.m_strDBUser << " db pwd is " <<
+            m_ParamInfo.m_strDBPassword << " db name is " << m_ParamInfo.m_strDBName);
         return false;
     }
 
-    m_SessionMgr.SetMemCacheAddRess(m_ParamInfo.strMemAddress, m_ParamInfo.strMemPort);
+    m_SessionMgr.SetMemCacheAddRess(m_ParamInfo.m_strMemAddress, m_ParamInfo.m_strMemPort);
 
     if (!m_SessionMgr.Init())
     {
@@ -251,7 +251,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
-    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.strSessionTimeoutCountThreshold), 
+    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold), 
         boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
         
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, DeviceList))
@@ -383,7 +383,30 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     bool blResult = false;
     InteractiveProtoHandler::AddDevReq_USR req;
 
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::AddDevRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
 
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User add device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
 
     if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
     {
@@ -391,9 +414,40 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
         return false;
     }
 
+    //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
 
+    InteractiveProtoHandler::Device DevInfo;
+    DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
+    DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
+    DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
+    DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
+    DevInfo.m_strCreatedate = strCurrentTime;
+    DevInfo.m_uiStatus = 0;
+    DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
+    DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
 
+    m_DBRuner.Post(boost::bind(&UserManager::InserDeviceToDB, this, DevInfo));
 
+    RelationOfUsrAndDev relation;
+    relation.m_iRelation = RELATION_OF_OWNER;
+    relation.m_iStatus = 0;
+    relation.m_strBeginDate = strCurrentTime;
+    relation.m_strEndDate = ""; //结束时间为空，表示无限期
+    relation.m_strCreateDate = strCurrentTime;
+    relation.m_strDevID = req.m_devInfo.m_strDevID;
+    relation.m_strExtend = req.m_devInfo.m_strExtend;
+    relation.m_strOwnerID = req.m_strUserID;
+    relation.m_strUsrID = req.m_strUserID;
+
+    m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+
+    m_SessionMgr.Reset(req.m_strSID); //普通命令的处理也需要重置Session
+
+    blResult = true;
+    
     return true;
 }
 
@@ -691,5 +745,21 @@ void UserManager::InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
     {
         LOG_ERROR_RLD("Insert t_device_info sql exec failed, sql is " << sql);
     }
+}
+
+void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "insert into t_user_device_relation("
+        "id, userid, deviceid, ownerid, relation, begindate, enddate, createdate, status, extend) values(uuid(),"
+        "'%s','%s','%s','%d','%s', '%d','%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_strOwnerID.c_str(), relation.m_iRelation,
+        relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Insert t_user_device_relation sql exec failed, sql is " << sql);
+    }
+
 }
 

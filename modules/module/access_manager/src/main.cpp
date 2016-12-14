@@ -262,14 +262,14 @@ int main(int argc, char* argv[])
     ////////////////////////////////////////////////////////////////////////////
 
     UserManager::ParamInfo UmgParam;
-    UmgParam.strDBHost = strDBHost;
-    UmgParam.strDBName = strDBName;
-    UmgParam.strDBPassword = strDBPassword;
-    UmgParam.strDBPort = strDBPort;
-    UmgParam.strDBUser = strDBUser;
-    UmgParam.strMemAddress = strMemcachedAddress;
-    UmgParam.strMemPort = strMemcachedPort;
-    UmgParam.strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
+    UmgParam.m_strDBHost = strDBHost;
+    UmgParam.m_strDBName = strDBName;
+    UmgParam.m_strDBPassword = strDBPassword;
+    UmgParam.m_strDBPort = strDBPort;
+    UmgParam.m_strDBUser = strDBUser;
+    UmgParam.m_strMemAddress = strMemcachedAddress;
+    UmgParam.m_strMemPort = strMemcachedPort;
+    UmgParam.m_strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
 
     UserManager Umg(UmgParam);
     if (!Umg.Init())
@@ -293,6 +293,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_USR_T, boost::bind(&UserManager::LoginReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LogoutReq_USR_T, boost::bind(&UserManager::LogoutReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_USR_T, boost::bind(&UserManager::ShakehandReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddDevReq_USR_T, boost::bind(&UserManager::AddDeviceReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

@@ -29,16 +29,34 @@ public:
     static const int DELETE_STATUS = 2;
     static const int FROZEN_STATUS = 3;
 
+    static const int RELATION_OF_OWNER = 0;
+    static const int RELATION_OF_BE_SHARED = 1;
+    static const int RELATION_OF_SHARING = 2;
+    
+
+    typedef struct _Relation
+    {
+        std::string m_strUsrID;
+        std::string m_strDevID;
+        std::string m_strOwnerID;
+        int m_iRelation;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        std::string m_strCreateDate;
+        int m_iStatus;
+        std::string m_strExtend;
+    } RelationOfUsrAndDev;
+
     typedef struct _ParamInfo
     {
-        std::string strDBHost;
-        std::string strDBPort;
-        std::string strDBUser;
-        std::string strDBPassword;
-        std::string strDBName;
-        std::string strMemAddress;
-        std::string strMemPort;
-        std::string strSessionTimeoutCountThreshold;
+        std::string m_strDBHost;
+        std::string m_strDBPort;
+        std::string m_strDBUser;
+        std::string m_strDBPassword;
+        std::string m_strDBName;
+        std::string m_strMemAddress;
+        std::string m_strMemPort;
+        std::string m_strSessionTimeoutCountThreshold;
 
     } ParamInfo;
     
@@ -85,6 +103,8 @@ private:
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
     void InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
+
+    void InsertRelationToDB(const RelationOfUsrAndDev &relation);
 
 private:
     ParamInfo m_ParamInfo;
