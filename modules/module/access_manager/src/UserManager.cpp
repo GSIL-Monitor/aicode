@@ -542,7 +542,7 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
     DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
     DevInfo.m_strCreatedate = req.m_devInfo.m_strCreatedate;
-    DevInfo.m_uiStatus = NORMAL_STATUS;
+    DevInfo.m_uiStatus = req.m_devInfo.m_uiStatus;
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
     DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
@@ -595,7 +595,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
 
     std::string strSql;
     char cTmp[128] = { 0 };
-    snprintf(cTmp, sizeof(cTmp), " limit '%u', '%u'", uiBeginIndex, uiPageSize);
+    snprintf(cTmp, sizeof(cTmp), " limit %u, %u", uiBeginIndex, uiPageSize);
     strSql = std::string(sql) + std::string(cTmp);
     
 
@@ -618,7 +618,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
         //`relation` int(11) NOT NULL DEFAULT '0', 关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
         {
             std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, 0, UserIDList))
+            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_OWNER, UserIDList))
             {
                 LOG_ERROR_RLD("Query relation failed.");
                 return false;
@@ -633,7 +633,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
         
         {
             std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, 2, UserIDList))
+            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_SHARING, UserIDList))
             {
                 LOG_ERROR_RLD("Query relation failed.");
                 return false;
@@ -647,7 +647,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
         
         {
             std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, 1, UserIDList))
+            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_BE_SHARED, UserIDList))
             {
                 LOG_ERROR_RLD("Query relation failed.");
                 return false;
@@ -670,7 +670,7 @@ bool UserManager::QueryRelationByDevID(const std::string &strDevID, const int iR
     char sql[1024] = { 0 };
     memset(sql, 0, sizeof(sql));
     const char *sqlft = "select rel.userid from t_user_device_relation rel"
-        "where rel.deviceid = '%s' and rel.relation = '%d'";
+        " where rel.deviceid = '%s' and rel.relation = '%d'";
 
     snprintf(sql, sizeof(sql), sqlft, strDevID.c_str(), iRelation);
 

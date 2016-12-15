@@ -31,7 +31,7 @@ private:
     std::string UnregisterUsrReq();
     std::string AddDevReq();
     std::string DelDevReq();
-
+    std::string ModDevReq();
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);
 

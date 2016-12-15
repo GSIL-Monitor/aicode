@@ -143,14 +143,28 @@ void UserTest::ReadCB(const boost::system::error_code &ec, std::list<ClientMsg> 
 
     if (IsNeedRegisterUsr)
     {
-        //首先注册用户
-        const std::string &strMsg = RegisterUsrReq();
+        ////首先注册用户
+        //const std::string &strMsg = RegisterUsrReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Register user msg is empty.");
+        //    return;
+        //}
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        ////////////////////////////////////////////////////////
+        g_strUserID = "A087FEC87BE5DF4784394F853F0EDF69";
+
+        //用户登录
+        const std::string &strMsg = LoginUsrReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Register user msg is empty.");
+            LOG_ERROR_RLD("Login user req msg is empty.");
             return;
         }
-        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);        
+        m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+               
+
     }
     else
     {
@@ -355,6 +369,31 @@ std::string UserTest::DelDevReq()
     return strSerializeOutPut;
 }
 
+std::string UserTest::ModDevReq()
+{
+    InteractiveProtoHandler::ModifyDevReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T;
+    req.m_uiMsgSeq = 5;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_devInfo.m_strDevID = "5D1C115660F6704CB048DAB53B845D45";
+    req.m_devInfo.m_strDevName = "ModifyDevName";
+    req.m_devInfo.m_strDevPassword = "ModifyPwd";
+    req.m_devInfo.m_uiStatus = 0xFFFFFFFF;
+    req.m_devInfo.m_uiTypeInfo = 0xFFFFFFFF;
+    
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Modify device req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -402,15 +441,64 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 
         g_strUserSessionID = LoginUsrRsp.m_strSID;
 
-        //用户握手
-        const std::string &strMsg = ShakehandReq();
+        //解析登录之后获得的该用户关联的设备列表
+        unsigned int iLoop = 0;
+        auto itBegin = LoginUsrRsp.m_devInfoList.begin();
+        auto itEnd = LoginUsrRsp.m_devInfoList.end();
+        while (itBegin != itEnd)
+        {
+            
+            LOG_INFO_RLD("Device " << iLoop << "============");
+            LOG_INFO_RLD("Device id is " << itBegin->m_strDevID << " and device name is " << itBegin->m_strDevName <<
+                " and device password is " << itBegin->m_strDevPassword << " and type info is " << itBegin->m_uiTypeInfo <<
+                " and createdate is " << itBegin->m_strCreatedate << " and status is " << itBegin->m_uiStatus <<
+                " and extend is " << itBegin->m_strExtend << " and inner info is " << itBegin->m_strInnerinfo <<
+                " and owner id is " << itBegin->m_strOwnerUserID);
+            {
+                auto itUsrBegin = itBegin->m_sharingUserIDList.begin();
+                auto itUsrEnd = itBegin->m_sharingUserIDList.end();
+                while (itUsrBegin != itUsrEnd)
+                {
+                    LOG_INFO_RLD("Sharing user id is " << *itUsrBegin);
+                    ++itUsrBegin;
+                }
+            }
+
+            {
+                auto itUsrBegin = itBegin->m_sharedUserIDList.begin();
+                auto itUsrEnd = itBegin->m_sharedUserIDList.end();
+                while (itUsrBegin != itUsrEnd)
+                {
+                    LOG_INFO_RLD("Shared user id is " << *itUsrBegin);
+                    ++itUsrBegin;
+                }
+            }
+
+            ++iLoop;
+            ++itBegin;
+        }
+
+        //用户修改设备
+        const std::string &strMsg = ModDevReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Shake user req msg is empty.");
+            LOG_ERROR_RLD("Modify device req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+
+
+        ////用户握手
+        //const std::string &strMsg = ShakehandReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Shake user req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
 
         LOG_INFO_RLD("Login user rsp return code is " << LoginUsrRsp.m_iRetcode << " return msg is " << LoginUsrRsp.m_strRetMsg <<
@@ -426,22 +514,22 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             return;
         }
 
-        //用户删除设备
-        const std::string &strMsg = DelDevReq();
-        if (strMsg.empty())
-        {
-            LOG_ERROR_RLD("Delete device req msg is empty.");
-            return;
-        }
-
-
-        ////用户增加设备
-        //const std::string &strMsg = AddDevReq();
+        ////用户删除设备
+        //const std::string &strMsg = DelDevReq();
         //if (strMsg.empty())
         //{
-        //    LOG_ERROR_RLD("Add device req msg is empty.");
+        //    LOG_ERROR_RLD("Delete device req msg is empty.");
         //    return;
         //}
+
+
+        //用户增加设备
+        const std::string &strMsg = AddDevReq();
+        if (strMsg.empty())
+        {
+            LOG_ERROR_RLD("Add device req msg is empty.");
+            return;
+        }
 
         ////用户登出
         //const std::string &strMsg = LogoutUsrReq();
@@ -539,6 +627,19 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             " and user session id is " << rsp.m_strSID);
 
     }
+    else if (InteractiveProtoHandler::MsgType::ModifyDevRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::ModifyDevRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Modify device rsp unserialize failed.");
+            return;
+        }
+        
+        LOG_INFO_RLD("Modify device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+    }
+
     else
     {
         LOG_ERROR_RLD("Unknown message type is " << mtype);
