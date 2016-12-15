@@ -296,6 +296,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddDevReq_USR_T, boost::bind(&UserManager::AddDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelDevReq_USR_T, boost::bind(&UserManager::DelDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T, boost::bind(&UserManager::ModDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevReq_USR_T, boost::bind(&UserManager::QueryDeviceReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

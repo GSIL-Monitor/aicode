@@ -321,7 +321,8 @@ message ModifyDevRsp_USR
 message QueryDevReq_USR
 {
   string strUserID = 1;
-  string strValue = 2;
+  uint32 uiBeginIndex = 2;
+  string strValue = 3;
 }
 
 message QueryDevRsp_USR

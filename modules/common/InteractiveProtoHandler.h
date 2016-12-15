@@ -351,6 +351,7 @@ public:
     {
 
         std::string m_strUserID;
+        unsigned int m_uiBeginIndex;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

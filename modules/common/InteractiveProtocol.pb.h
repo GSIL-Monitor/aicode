@@ -4019,9 +4019,15 @@ class QueryDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_struserid();
   void set_allocated_struserid(::std::string* struserid);
 
-  // optional string strValue = 2;
+  // optional uint32 uiBeginIndex = 2;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 2;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // optional string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   void set_strvalue(const char* value);
@@ -4036,6 +4042,7 @@ class QueryDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uibeginindex_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -10435,7 +10442,21 @@ inline void QueryDevReq_USR::set_allocated_struserid(::std::string* struserid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevReq_USR.strUserID)
 }
 
-// optional string strValue = 2;
+// optional uint32 uiBeginIndex = 2;
+inline void QueryDevReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryDevReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryDevReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevReq_USR.uiBeginIndex)
+}
+
+// optional string strValue = 3;
 inline void QueryDevReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

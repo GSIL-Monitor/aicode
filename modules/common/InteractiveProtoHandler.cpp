@@ -1611,6 +1611,7 @@ void InteractiveProtoHandler::QueryDevReq_USR::UnSerializer(const InteractiveMes
 {
     Req::UnSerializer(InteractiveMsg);
     m_strUserID = InteractiveMsg.reqvalue().querydevreq_usr_value().struserid();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().querydevreq_usr_value().uibeginindex();
     m_strValue = InteractiveMsg.reqvalue().querydevreq_usr_value().strvalue();
 
 }
@@ -1620,6 +1621,7 @@ void InteractiveProtoHandler::QueryDevReq_USR::Serializer(InteractiveMessage &In
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_querydevreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
     InteractiveMsg.mutable_reqvalue()->mutable_querydevreq_usr_value()->set_strvalue(m_strValue);
 
 }

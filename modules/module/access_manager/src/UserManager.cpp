@@ -555,6 +555,62 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
     return blResult;    
 }
 
+bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::QueryDevReq_USR req;
+    std::list<InteractiveProtoHandler::Device> DeviceList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &DeviceList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryDevRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_allDevInfoList.swap(DeviceList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryRelationByUserID(req.m_strUserID, DeviceList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query device info failed and user id is " << req.m_strUserID);
+        return false;
+    }
+
+
+
+    blResult = true;
+
+
+    return blResult;
+}
+
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
