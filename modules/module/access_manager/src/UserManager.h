@@ -84,12 +84,15 @@ public:
 
     bool DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool ModDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
     void UpdateUserToDB(const std::string &strUserID, const int iStatus);
 
-    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList);
+    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList, 
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryRelationByDevID(const std::string &strDevID, const int iRelation, std::list<std::string> &UserIDList);
 
@@ -105,11 +108,13 @@ private:
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
-    void InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
+    void InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
     void InsertRelationToDB(const RelationOfUsrAndDev &relation);
 
     void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus);
+
+    void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
 private:
     ParamInfo m_ParamInfo;

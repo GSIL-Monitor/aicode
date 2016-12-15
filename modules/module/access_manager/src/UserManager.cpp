@@ -432,7 +432,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
     DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
 
-    m_DBRuner.Post(boost::bind(&UserManager::InserDeviceToDB, this, DevInfo));
+    m_DBRuner.Post(boost::bind(&UserManager::InsertDeviceToDB, this, DevInfo));
 
     RelationOfUsrAndDev relation;
     relation.m_iRelation = RELATION_OF_OWNER;
@@ -499,6 +499,62 @@ bool UserManager::DelDeviceReq(const std::string &strMsg, const std::string &str
     return blResult;
 }
 
+bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::ModifyDevReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::ModifyDevRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User modify device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+
+    InteractiveProtoHandler::Device DevInfo;
+    DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
+    DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
+    DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
+    DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
+    DevInfo.m_strCreatedate = req.m_devInfo.m_strCreatedate;
+    DevInfo.m_uiStatus = NORMAL_STATUS;
+    DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
+    DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
+    DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
+
+    m_DBRuner.Post(boost::bind(&UserManager::ModDeviceToDB, this, DevInfo));
+
+    blResult = true;
+
+
+    return blResult;    
+}
+
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
@@ -528,7 +584,8 @@ void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus
 
 }
 
-bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList)
+bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList,
+    const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend"
@@ -536,7 +593,13 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
         " where dev.deviceid = rel.deviceid and rel.userid = '%s' and rel.status = 0 and dev.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
-    if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
+    std::string strSql;
+    char cTmp[128] = { 0 };
+    snprintf(cTmp, sizeof(cTmp), " limit '%u', '%u'", uiBeginIndex, uiPageSize);
+    strSql = std::string(sql) + std::string(cTmp);
+    
+
+    if (!m_pMysql->QueryExec(strSql, boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
     {
         LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
         return false;
@@ -776,7 +839,7 @@ void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
     LOG_INFO_RLD("Session timeout and session id is " << strSessionID);
 }
 
-void UserManager::InserDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+void UserManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
 {
     //这里考虑到设备内部信息可能不一定是可打印字符，为了后续日志打印和维护方便，这里就将其内容文本化之后再存储到数据库中
     const std::string &strInner = DevInfo.m_strInnerinfo.empty() ? 
@@ -851,5 +914,90 @@ void UserManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, cons
     {
         LOG_ERROR_RLD("Delete t_device_info sql exec failed, sql is " << strSql);
     }
+}
+
+void UserManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+{
+    //注意，只有给Device对象的字段赋过值的才需要更新到数据库中。
+    //"update t_device_info set status = '%d' where deviceid = '%s'";
+
+    if (DevInfo.m_strDevID.empty())
+    {
+        LOG_INFO_RLD("No need to update device info to db because device id is empty.");
+        return;
+    }
+
+    std::string strTmp;
+    std::string strSql;
+
+    if (!DevInfo.m_strDevName.empty())
+    {        
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), " devicename = '%s' ", DevInfo.m_strDevName.c_str());
+        strSql = cTmp;
+
+    }
+
+    if (!DevInfo.m_strDevPassword.empty())
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", devicepassword = '%s' ", DevInfo.m_strDevPassword.c_str());
+        strSql += cTmp;
+    }
+
+    if (DevInfo.m_uiTypeInfo != 0xFFFFFFFF)
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", typeinfo = '%u' ", DevInfo.m_uiTypeInfo);
+        strSql += cTmp;
+    }
+
+    if (!DevInfo.m_strCreatedate.empty())
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", createdate = '%s' ", DevInfo.m_strCreatedate.c_str());
+        strSql += cTmp;
+    }
+
+    if (DevInfo.m_uiStatus != 0xFFFFFFFF)
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", status = '%u' ", DevInfo.m_uiStatus);
+        strSql += cTmp;
+    }
+
+    if (!DevInfo.m_strInnerinfo.empty())
+    {
+        const std::string &strInner = Encode64((const unsigned char *)DevInfo.m_strInnerinfo.c_str(), DevInfo.m_strInnerinfo.size());
+
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", innerinfo = '%s' ", strInner.c_str());
+        strSql += cTmp;
+    }
+
+    if (!DevInfo.m_strExtend.empty())
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", extend = '%s' ", DevInfo.m_strExtend.c_str());
+        strSql += cTmp;
+    }
+        
+    if (strSql.empty())
+    {
+        LOG_INFO_RLD("No need to update device info to db and device id is " << DevInfo.m_strDevID);
+        return;
+    }
+
+    char cTmp[256] = { 0 };
+    snprintf(cTmp, sizeof(cTmp), "where deviceid = '%s'", DevInfo.m_strDevID.c_str());
+    strSql += cTmp;
+
+    strSql = "update t_device_info set " + strSql;
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Insert t_device_info sql exec failed, sql is " << strSql);
+    }
+    
 }
 
