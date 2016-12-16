@@ -23,6 +23,18 @@ public:
 private:
     void SqlHanler(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, std::list<boost::any> *pReslutList);
 
+    inline boost::shared_ptr<CacheObj> Get(const std::string &strKey)
+    {
+        boost::shared_lock<boost::shared_mutex> lock(m_CacheMutex);
+        return m_pCacheContainer->Get(strKey);
+    }
+
+    inline void Set(boost::shared_ptr<CacheObj> pCacheObj)
+    {
+        boost::unique_lock<boost::shared_mutex> lock(m_CacheMutex);
+        m_pCacheContainer->Set(pCacheObj);
+    }
+
 private:
     struct DBInfoObj : public CacheObj
     {
@@ -38,6 +50,7 @@ private:
         boost::shared_ptr<std::list<boost::any> > m_Content;
     };
 
+    boost::shared_mutex m_CacheMutex;
     boost::shared_ptr<CacheInterface> m_pCacheContainer;
 
     DBSqlHandlerCB m_DBSqlHandlerCB;

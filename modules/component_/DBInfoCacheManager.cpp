@@ -16,7 +16,7 @@ bool DBInfoCacheManager::QuerySql(const std::string &strQuerySql, std::list<boos
 {
     if (!IsForceFromDB)
     {
-        boost::shared_ptr<CacheObj> pObj = m_pCacheContainer->Get(strQuerySql);
+        boost::shared_ptr<CacheObj> pObj = Get(strQuerySql);
         if (NULL != pObj.get())
         {
             DBInfoObj *pDBObj = (DBInfoObj*)pObj.get();
@@ -57,7 +57,7 @@ bool DBInfoCacheManager::QuerySql(const std::string &strQuerySql, std::list<boos
     DBInfoObj *pDBObj = new DBInfoObj(strQuerySql);
     boost::shared_ptr<CacheObj> pObj(pDBObj);
     pDBObj->m_Content = pResultList;
-    m_pCacheContainer->Set(pObj);
+    Set(pObj);
 
     //ResultList.swap(*pResultList);
 
