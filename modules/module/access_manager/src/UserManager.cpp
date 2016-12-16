@@ -654,39 +654,56 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
     snprintf(cTmp, sizeof(cTmp), " limit %u, %u", uiBeginIndex, uiPageSize);
     strSql = std::string(sql) + std::string(cTmp);
     
+    std::list<boost::any> ResultList;
+    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        boost::shared_ptr<std::list<InteractiveProtoHandler::Device> > pDevList;
+        pDevList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Device> > >(ResultList.front());
 
-    if (!m_pMysql->QueryExec(strSql, boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
-    {
-        LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
-        return false;
-    }
-
-    if (DevList.empty())
-    {
-        LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
-        return true;
-    }
-    
-    auto itBegin = DevList.begin();
-    auto itEnd = DevList.end();
-    while (itBegin != itEnd)
-    {
-        //`relation` int(11) NOT NULL DEFAULT '0', 关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
+        auto itBegin = pDevList->begin();
+        auto itEnd = pDevList->end();
+        while (itBegin != itEnd)
         {
-            std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_OWNER, UserIDList))
+            DevList.push_back(*itBegin);
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query relation get result from cache and sql is " << strSql);
+    }
+    else
+    {        
+        if (!m_pMysql->QueryExec(strSql, boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &DevList)))
+        {
+            LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
+            return false;
+        }
+
+        if (DevList.empty())
+        {
+            LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
+            return true;
+        }
+
+        auto itBegin = DevList.begin();
+        auto itEnd = DevList.end();
+        while (itBegin != itEnd)
+        {
+            //`relation` int(11) NOT NULL DEFAULT '0', 关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
             {
-                LOG_ERROR_RLD("Query relation failed.");
-                return false;
+                std::list<std::string> UserIDList;
+                if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_OWNER, UserIDList))
+                {
+                    LOG_ERROR_RLD("Query relation failed.");
+                    return false;
+                }
+
+                if (!UserIDList.empty())
+                {
+                    itBegin->m_strOwnerUserID = UserIDList.front();
+                }
+
             }
 
-            if (!UserIDList.empty())
-            {
-                itBegin->m_strOwnerUserID = UserIDList.front();
-            }            
-
-        }
-        
         {
             std::list<std::string> UserIDList;
             if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_SHARING, UserIDList))
@@ -700,7 +717,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
                 itBegin->m_sharingUserIDList.swap(UserIDList);
             }
         }
-        
+
         {
             std::list<std::string> UserIDList;
             if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_BE_SHARED, UserIDList))
@@ -714,10 +731,28 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
                 itBegin->m_sharedUserIDList.swap(UserIDList);
             }
         }
-        
+
         ++itBegin;
+        }
+
+
+        boost::shared_ptr<std::list<InteractiveProtoHandler::Device> > pDevList(new std::list<InteractiveProtoHandler::Device>);
+        auto itBeginDev = DevList.begin();
+        auto itEndDev = DevList.end();
+        while (itBeginDev != itEndDev)
+        {
+            pDevList->push_back(*itBeginDev);
+            ++itBeginDev;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(pDevList);
+
+        m_DBCache.SetResult(strSql, pResultList);
+
+        LOG_INFO_RLD("Query relation get result from db and sql is " << strSql);
     }
-    
+
     return true;
 }
 
