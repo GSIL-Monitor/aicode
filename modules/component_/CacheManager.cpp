@@ -108,9 +108,13 @@ boost::shared_ptr<CacheObj> CacheManager::Get(const std::string &strKey)
         auto pCacheObj = GetLRU(strKey);
         if (NULL != pCacheObj.get())
         {
-            if (m_uiCacheObjectTimeoutInterval <= (m_uiTickNum - pCacheObj->GetTickSnapshot()))
+            //若是uiTimeoutInterval最后值为0，则表示不考虑缓存超时处理操作
+            const boost::uint32_t uiTimeoutInterval = (0 == pCacheObj->GetTimeoutInterval()) ? 
+            m_uiCacheObjectTimeoutInterval : pCacheObj->GetTimeoutInterval();
+
+            if ((0 != uiTimeoutInterval) && (uiTimeoutInterval <= (m_uiTickNum - pCacheObj->GetTickSnapshot())))
             {
-                RemoveInner(strKey);
+                //RemoveInner(strKey); //这里不再考虑删除，因为若是执行删除，会导致多个Get操作之间不能并发进行
                 return boost::shared_ptr<CacheObj>();
             }
 
@@ -177,6 +181,11 @@ void CacheManager::Clear()
     
     m_CacheMap.clear();
     m_CacheObjList.clear();
+}
+
+void CacheManager::SetCacheObjectTimeoutInterval(const boost::uint32_t uiCacheObjectTimeoutInterval)
+{
+    m_uiCacheObjectTimeoutInterval = uiCacheObjectTimeoutInterval;
 }
 
 void CacheManager::RemoveInner(const std::string &strKey)
@@ -273,7 +282,7 @@ void CacheManager::SetLRU(boost::shared_ptr<CacheObj> pCacheObj)
 
 
 
-CacheObj::CacheObj() : m_uiHit(0), m_uiTickSnapshot(0)
+CacheObj::CacheObj() : m_uiHit(0), m_uiTickSnapshot(0), m_uiTimeoutInterval(0)
 {
 
 }
@@ -311,4 +320,14 @@ void CacheObj::SetTickSnapshot(const boost::uint64_t uiTickSnapshot)
 boost::uint64_t CacheObj::GetTickSnapshot()
 {
     return m_uiTickSnapshot;
+}
+
+void CacheObj::SetTimeoutInterval(const boost::uint32_t uiTimeoutInterval)
+{
+    m_uiTimeoutInterval = uiTimeoutInterval;
+}
+
+boost::uint32_t CacheObj::GetTimeoutInterval()
+{
+    return m_uiTimeoutInterval;
 }

@@ -50,12 +50,17 @@ public:
     void SetTickSnapshot(const boost::uint64_t uiTickSnapshot);
 
     boost::uint64_t GetTickSnapshot();
+
+    void SetTimeoutInterval(const boost::uint32_t uiTimeoutInterval);
+
+    boost::uint32_t GetTimeoutInterval();
 private:
     boost::uint64_t m_uiHit;
 
     std::list<CacheObj*>::iterator m_Pos;
 
     boost::uint64_t m_uiTickSnapshot;
+    boost::uint32_t m_uiTimeoutInterval;
 };
 
 class CacheInterface
@@ -87,6 +92,8 @@ public:
     void Set(boost::shared_ptr<CacheObj> pCacheObj);
     void Remove(const std::string &strKey);
     void Clear();
+
+    void SetCacheObjectTimeoutInterval(const boost::uint32_t uiCacheObjectTimeoutInterval);
 
     static const boost::uint32_t LRU = 0;
     static const boost::uint32_t LFU = 1;
