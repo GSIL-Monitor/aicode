@@ -1638,7 +1638,7 @@ void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &In
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevRsp_USR_T);
 
-    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->mutable_devinfo();
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->mutable_alldevinfo();
     SerializeDevList<Device>(m_allDevInfoList, uinfo);
 
 }

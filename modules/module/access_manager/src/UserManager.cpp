@@ -584,7 +584,7 @@ bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &s
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+        LOG_INFO_RLD("User query rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
             " and result is " << blResult);
 
     }

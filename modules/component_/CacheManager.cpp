@@ -118,6 +118,8 @@ boost::shared_ptr<CacheObj> CacheManager::Get(const std::string &strKey)
                 return boost::shared_ptr<CacheObj>();
             }
 
+            pCacheObj->SetTickSnapshot(m_uiTickNum); //保存快照，这里相当于是重置了快照
+
         }
         return pCacheObj;
     }

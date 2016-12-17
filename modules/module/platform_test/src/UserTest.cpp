@@ -394,6 +394,27 @@ std::string UserTest::ModDevReq()
 
 }
 
+std::string UserTest::QueryDevReq()
+{
+    InteractiveProtoHandler::QueryDevReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevReq_USR_T;
+    req.m_uiMsgSeq = 5;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_uiBeginIndex = 0;
+    req.m_strValue = "value";
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Query device req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -478,18 +499,27 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             ++itBegin;
         }
 
-        //用户修改设备
-        const std::string &strMsg = ModDevReq();
+        //用户查询设备
+        const std::string &strMsg = QueryDevReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Modify device req msg is empty.");
+            LOG_ERROR_RLD("Query device req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
 
+        ////用户修改设备
+        //const std::string &strMsg = ModDevReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Modify device req msg is empty.");
+        //    return;
+        //}
 
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+        
         ////用户握手
         //const std::string &strMsg = ShakehandReq();
         //if (strMsg.empty())
@@ -639,7 +669,56 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         LOG_INFO_RLD("Modify device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
     }
+    else if (InteractiveProtoHandler::MsgType::QueryDevRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::QueryDevRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Query device rsp unserialize failed.");
+            return;
+        }
 
+        //解析查询获得的该用户关联的设备列表
+        unsigned int iLoop = 0;
+        auto itBegin = rsp.m_allDevInfoList.begin();
+        auto itEnd = rsp.m_allDevInfoList.end();
+        while (itBegin != itEnd)
+        {
+
+            LOG_INFO_RLD("Query Device " << iLoop << "+++++++++++++++++++++++++++");
+            LOG_INFO_RLD("Query Device id is " << itBegin->m_strDevID << " and device name is " << itBegin->m_strDevName <<
+                " and device password is " << itBegin->m_strDevPassword << " and type info is " << itBegin->m_uiTypeInfo <<
+                " and createdate is " << itBegin->m_strCreatedate << " and status is " << itBegin->m_uiStatus <<
+                " and extend is " << itBegin->m_strExtend << " and inner info is " << itBegin->m_strInnerinfo <<
+                " and owner id is " << itBegin->m_strOwnerUserID);
+            {
+                auto itUsrBegin = itBegin->m_sharingUserIDList.begin();
+                auto itUsrEnd = itBegin->m_sharingUserIDList.end();
+                while (itUsrBegin != itUsrEnd)
+                {
+                    LOG_INFO_RLD("Sharing user id is " << *itUsrBegin);
+                    ++itUsrBegin;
+                }
+            }
+
+            {
+                auto itUsrBegin = itBegin->m_sharedUserIDList.begin();
+                auto itUsrEnd = itBegin->m_sharedUserIDList.end();
+                while (itUsrBegin != itUsrEnd)
+                {
+                    LOG_INFO_RLD("Shared user id is " << *itUsrBegin);
+                    ++itUsrBegin;
+                }
+            }
+
+            ++iLoop;
+            ++itBegin;
+        }
+        
+        LOG_INFO_RLD("Query device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
     else
     {
         LOG_ERROR_RLD("Unknown message type is " << mtype);
