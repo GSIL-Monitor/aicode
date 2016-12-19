@@ -88,10 +88,14 @@ public:
 
     bool QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
     void UpdateUserToDB(const std::string &strUserID, const int iStatus);
+
+    bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation);
 
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList, 
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);

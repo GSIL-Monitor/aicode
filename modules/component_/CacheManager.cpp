@@ -118,7 +118,10 @@ boost::shared_ptr<CacheObj> CacheManager::Get(const std::string &strKey)
                 return boost::shared_ptr<CacheObj>();
             }
 
-            pCacheObj->SetTickSnapshot(m_uiTickNum); //保存快照，这里相当于是重置了快照
+            if (pCacheObj->GetResetTickSnapshot())
+            {
+                pCacheObj->SetTickSnapshot(m_uiTickNum); //保存快照，这里相当于是重置了快照
+            }
 
         }
         return pCacheObj;
@@ -284,7 +287,7 @@ void CacheManager::SetLRU(boost::shared_ptr<CacheObj> pCacheObj)
 
 
 
-CacheObj::CacheObj() : m_uiHit(0), m_uiTickSnapshot(0), m_uiTimeoutInterval(0)
+CacheObj::CacheObj() : m_uiHit(0), m_uiTickSnapshot(0), m_uiTimeoutInterval(0), m_blResetTickSnapshot(false)
 {
 
 }
@@ -332,4 +335,14 @@ void CacheObj::SetTimeoutInterval(const boost::uint32_t uiTimeoutInterval)
 boost::uint32_t CacheObj::GetTimeoutInterval()
 {
     return m_uiTimeoutInterval;
+}
+
+void CacheObj::SetResetTickSnapshot(const bool blResetTickSnapshot)
+{
+    m_blResetTickSnapshot = blResetTickSnapshot;
+}
+
+bool CacheObj::GetResetTickSnapshot()
+{
+    return m_blResetTickSnapshot;
 }

@@ -611,6 +611,78 @@ bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &s
     return blResult;
 }
 
+bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::SharingDevReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::SharingDevRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::SharingDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Sharing device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User sharing device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Sharing device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //考虑到用户设备关系表后续查询的方便，用户与设备的关系在表中体现的是一条条记录
+    //分享设备会在对应的用户设备关系表中增加两条记录，分别对应的是主动分享中、被分享
+    {
+        RelationOfUsrAndDev relation;
+        relation.m_iRelation = RELATION_OF_SHARING;
+        relation.m_iStatus = NORMAL_STATUS;
+        relation.m_strBeginDate = req.m_strBeginDate;
+        relation.m_strEndDate = req.m_strEndDate;
+        relation.m_strCreateDate = req.m_strCreateDate;
+        relation.m_strDevID = req.m_devInfo.m_strDevID;
+        relation.m_strExtend = req.m_devInfo.m_strExtend;
+        relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
+        relation.m_strUsrID = req.m_strUserID;
+
+        m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+    }
+
+    {
+        RelationOfUsrAndDev relation;
+        relation.m_iRelation = RELATION_OF_BE_SHARED;
+        relation.m_iStatus = NORMAL_STATUS;
+        relation.m_strBeginDate = req.m_strBeginDate;
+        relation.m_strEndDate = req.m_strEndDate;
+        relation.m_strCreateDate = req.m_strCreateDate;
+        relation.m_strDevID = req.m_devInfo.m_strDevID;
+        relation.m_strExtend = req.m_devInfo.m_strExtend;
+        relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
+        relation.m_strUsrID = req.m_strToUserID;
+
+        m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+    }
+
+    blResult = true;
+    return blResult;
+}
+
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
@@ -638,6 +710,46 @@ void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus
         LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
     }
 
+}
+
+bool UserManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    std::string strSql = sql;
+
+    std::list<boost::any> ResultList;
+    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        unsigned int uiResult = boost::any_cast<unsigned int>(ResultList.front());
+
+        LOG_INFO_RLD("Query relation exist get result from cache and sql is " << strSql << " and result is " << uiResult);
+    }
+    else
+    {
+        unsigned int uiResult = 0;
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)//, unsigned int &uiResult)
+        {
+            uiResult = boost::lexical_cast<unsigned int>(strColumn);
+            //LOG_INFO_RLD("The relation count number  is " << uiResult);
+        };
+
+        if (!m_pMysql->QueryExec(strSql, FuncTmp))//boost::bind(FuncTmp, _1, _2, _3, uiResult)))
+        {
+            LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
+            return false;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(uiResult);
+
+        m_DBCache.SetResult(strSql, pResultList);
+
+        LOG_INFO_RLD("Query relation exist get result from db and sql is " << strSql << " and result is " << uiResult);
+    }
+
+    return true;
 }
 
 bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList,

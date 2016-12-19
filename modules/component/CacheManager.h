@@ -54,6 +54,11 @@ public:
     void SetTimeoutInterval(const boost::uint32_t uiTimeoutInterval);
 
     boost::uint32_t GetTimeoutInterval();
+
+    void SetResetTickSnapshot(const bool blResetTickSnapshot);
+
+    bool GetResetTickSnapshot();
+
 private:
     boost::uint64_t m_uiHit;
 
@@ -61,6 +66,7 @@ private:
 
     boost::uint64_t m_uiTickSnapshot;
     boost::uint32_t m_uiTimeoutInterval;
+    bool m_blResetTickSnapshot;
 };
 
 class CacheInterface

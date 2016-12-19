@@ -4,6 +4,7 @@
 #include "json/json.h"
 #include "CommonUtility.h"
 #include "InteractiveProtoHandler.h"
+#include "boost/date_time.hpp"
 
 static std::string g_strSessionID;
 static std::string g_strUserID;
@@ -415,6 +416,47 @@ std::string UserTest::QueryDevReq()
     return strSerializeOutPut;
 }
 
+std::string UserTest::SharingDevReq()
+{
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+    
+    InteractiveProtoHandler::SharingDevReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::SharingDevReq_USR_T;
+    req.m_uiMsgSeq = 6;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_strToUserID = "DECC8BC2FF45F64DA223928B3FA14727";
+    
+    req.m_devInfo.m_strCreatedate = "2016-12-14 10:58:00";
+    req.m_devInfo.m_strDevID = "5D1C115660F6704CB048DAB53B845D45";
+    req.m_devInfo.m_strDevName = "ModifyDevName";
+    req.m_devInfo.m_strDevPassword = "ModifyPwd";
+    req.m_devInfo.m_strExtend = "test_devextend";
+    req.m_devInfo.m_strInnerinfo = "test_inner";
+    req.m_devInfo.m_strOwnerUserID = g_strUserID;
+    req.m_devInfo.m_uiStatus = 0;
+    req.m_devInfo.m_uiTypeInfo = 0;
+
+    req.m_uiRelation = 2;
+    req.m_strBeginDate = strCurrentTime;
+    req.m_strEndDate = "2199-01-01 00:00:00";
+    req.m_strCreateDate = strCurrentTime;
+    req.m_strValue = "value";
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Sharing device req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -499,15 +541,26 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             ++itBegin;
         }
 
-        //用户查询设备
-        const std::string &strMsg = QueryDevReq();
+        //用户分享设备
+        const std::string &strMsg = SharingDevReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Query device req msg is empty.");
+            LOG_ERROR_RLD("Sharing device req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+                
+
+        ////用户查询设备
+        //const std::string &strMsg = QueryDevReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Query device req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
 
         ////用户修改设备
@@ -716,6 +769,19 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         }
         
         LOG_INFO_RLD("Query device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::SharingDevRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::SharingDevRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Sharing device rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Sharing device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
 
     }

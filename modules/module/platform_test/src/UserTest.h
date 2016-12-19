@@ -33,6 +33,7 @@ private:
     std::string DelDevReq();
     std::string ModDevReq();
     std::string QueryDevReq();
+    std::string SharingDevReq();
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);
 
