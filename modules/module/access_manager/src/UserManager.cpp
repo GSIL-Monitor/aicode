@@ -661,7 +661,7 @@ bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string 
         relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
         relation.m_strUsrID = req.m_strUserID;
 
-        m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+        m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
     }
 
     {
@@ -676,7 +676,7 @@ bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string 
         relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
         relation.m_strUsrID = req.m_strToUserID;
 
-        m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+        m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
     }
 
     blResult = true;
@@ -712,17 +712,18 @@ void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus
 
 }
 
-bool UserManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation)
+bool UserManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strDevID.c_str(), iRelation);
     std::string strSql = sql;
 
     std::list<boost::any> ResultList;
-    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    if (IsNeedCache && m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
     {
         unsigned int uiResult = boost::any_cast<unsigned int>(ResultList.front());
+        blExist = 0 < uiResult;
 
         LOG_INFO_RLD("Query relation exist get result from cache and sql is " << strSql << " and result is " << uiResult);
     }
@@ -732,19 +733,24 @@ bool UserManager::QueryRelationExist(const std::string &strUserID, const std::st
         auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)//, unsigned int &uiResult)
         {
             uiResult = boost::lexical_cast<unsigned int>(strColumn);
-            //LOG_INFO_RLD("The relation count number  is " << uiResult);
+            LOG_INFO_RLD("The relation count number that from db  is " << uiResult);
         };
 
-        if (!m_pMysql->QueryExec(strSql, FuncTmp))//boost::bind(FuncTmp, _1, _2, _3, uiResult)))
+        if (!m_pMysql->QueryExec(strSql, FuncTmp)) //boost::bind(FuncTmp, _1, _2, _3, uiResult)))
         {
-            LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
+            LOG_ERROR_RLD("Query relation failed and user id is " << strUserID << " and device id is " << strDevID  << " and relation is " << iRelation);
             return false;
         }
 
         boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
         pResultList->push_back(uiResult);
 
-        m_DBCache.SetResult(strSql, pResultList);
+        blExist = 0 < uiResult;
+
+        if (IsNeedCache)
+        {
+            m_DBCache.SetResult(strSql, pResultList);
+        }
 
         LOG_INFO_RLD("Query relation exist get result from db and sql is " << strSql << " and result is " << uiResult);
     }
@@ -1202,5 +1208,25 @@ void UserManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
         LOG_ERROR_RLD("Insert t_device_info sql exec failed, sql is " << strSql);
     }
     
+}
+
+void UserManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
+{
+    bool blExist = false;
+    if (!QueryRelationExist(relation.m_strUsrID, relation.m_strDevID, relation.m_iRelation, blExist, false))
+    {
+        LOG_ERROR_RLD("Sharing relation failed and user id is " << relation.m_strUsrID
+            << " and device id is " << relation.m_strDevID << " and relation is " << relation.m_iRelation);
+        return;
+    }
+
+    if (blExist)
+    {
+        LOG_ERROR_RLD("Sharing relation already exist and user id is " << relation.m_strUsrID
+            << " and device id is " << relation.m_strDevID << " and relation is " << relation.m_iRelation);
+        return;
+    }
+        
+    InsertRelationToDB(relation);
 }
 

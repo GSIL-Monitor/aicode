@@ -95,7 +95,7 @@ private:
 
     void UpdateUserToDB(const std::string &strUserID, const int iStatus);
 
-    bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation);
+    bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
 
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList, 
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
@@ -121,6 +121,8 @@ private:
     void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus);
 
     void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
+
+    void SharingRelationToDB(const RelationOfUsrAndDev &relation);
 
 private:
     ParamInfo m_ParamInfo;
