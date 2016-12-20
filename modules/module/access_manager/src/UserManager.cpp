@@ -430,7 +430,6 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_uiStatus = NORMAL_STATUS;
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
-    DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::InsertDeviceToDB, this, DevInfo));
 
@@ -442,7 +441,6 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     relation.m_strCreateDate = strCurrentTime;
     relation.m_strDevID = req.m_devInfo.m_strDevID;
     relation.m_strExtend = req.m_devInfo.m_strExtend;
-    relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
     relation.m_strUsrID = req.m_strUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
@@ -545,7 +543,6 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_uiStatus = req.m_devInfo.m_uiStatus;
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
-    DevInfo.m_strOwnerUserID = req.m_devInfo.m_strOwnerUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::ModDeviceToDB, this, DevInfo));
 
@@ -635,7 +632,7 @@ bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string 
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User sharing device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+        LOG_INFO_RLD("User sharing device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_relationInfo.m_strUserID <<
             " and result is " << blResult);
 
     }
@@ -648,38 +645,69 @@ bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string 
     }
 
     //考虑到用户设备关系表后续查询的方便，用户与设备的关系在表中体现的是一条条记录
-    //分享设备会在对应的用户设备关系表中增加两条记录，分别对应的是主动分享中、被分享
-    {
-        RelationOfUsrAndDev relation;
-        relation.m_iRelation = RELATION_OF_SHARING;
-        relation.m_iStatus = NORMAL_STATUS;
-        relation.m_strBeginDate = req.m_strBeginDate;
-        relation.m_strEndDate = req.m_strEndDate;
-        relation.m_strCreateDate = req.m_strCreateDate;
-        relation.m_strDevID = req.m_devInfo.m_strDevID;
-        relation.m_strExtend = req.m_devInfo.m_strExtend;
-        relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
-        relation.m_strUsrID = req.m_strUserID;
+    //分享设备会在对应的用户设备关系表中只增加一条记录，原来的主动分享的记录不变化（还是表示设备最开始的归属）
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+    
+    RelationOfUsrAndDev relation;
+    relation.m_iRelation = RELATION_OF_BE_SHARED;
+    relation.m_iStatus = NORMAL_STATUS;
+    relation.m_strBeginDate = req.m_relationInfo.m_strBeginDate;
+    relation.m_strEndDate = req.m_relationInfo.m_strEndDate;
+    relation.m_strCreateDate = strCurrentTime;
+    relation.m_strDevID = req.m_relationInfo.m_strDevID;
+    relation.m_strExtend = req.m_relationInfo.m_strValue;
+    relation.m_strUsrID = req.m_relationInfo.m_strUserID;
 
-        m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
-    }
-
-    {
-        RelationOfUsrAndDev relation;
-        relation.m_iRelation = RELATION_OF_BE_SHARED;
-        relation.m_iStatus = NORMAL_STATUS;
-        relation.m_strBeginDate = req.m_strBeginDate;
-        relation.m_strEndDate = req.m_strEndDate;
-        relation.m_strCreateDate = req.m_strCreateDate;
-        relation.m_strDevID = req.m_devInfo.m_strDevID;
-        relation.m_strExtend = req.m_devInfo.m_strExtend;
-        relation.m_strOwnerID = req.m_devInfo.m_strOwnerUserID;;
-        relation.m_strUsrID = req.m_strToUserID;
-
-        m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
-    }
+    m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
+    
 
     blResult = true;
+    return blResult;
+}
+
+bool UserManager::CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::CancelSharedDevReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::CancelSharedDevRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::CancelSharedDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Cancel shared device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User cancel shared device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_relationInfo.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Cancel shared device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+
+
+    blResult = true;
+
     return blResult;
 }
 
@@ -715,7 +743,7 @@ void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus
 bool UserManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d";
+    const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strDevID.c_str(), iRelation);
     std::string strSql = sql;
 
@@ -801,58 +829,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
             LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
             return true;
         }
-
-        auto itBegin = DevList.begin();
-        auto itEnd = DevList.end();
-        while (itBegin != itEnd)
-        {
-            //`relation` int(11) NOT NULL DEFAULT '0', 关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
-            {
-                std::list<std::string> UserIDList;
-                if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_OWNER, UserIDList))
-                {
-                    LOG_ERROR_RLD("Query relation failed.");
-                    return false;
-                }
-
-                if (!UserIDList.empty())
-                {
-                    itBegin->m_strOwnerUserID = UserIDList.front();
-                }
-
-            }
-
-        {
-            std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_SHARING, UserIDList))
-            {
-                LOG_ERROR_RLD("Query relation failed.");
-                return false;
-            }
-
-            if (!UserIDList.empty())
-            {
-                itBegin->m_sharingUserIDList.swap(UserIDList);
-            }
-        }
-
-        {
-            std::list<std::string> UserIDList;
-            if (!QueryRelationByDevID(itBegin->m_strDevID, RELATION_OF_BE_SHARED, UserIDList))
-            {
-                LOG_ERROR_RLD("Query relation failed.");
-                return false;
-            }
-
-            if (!UserIDList.empty())
-            {
-                itBegin->m_sharedUserIDList.swap(UserIDList);
-            }
-        }
-
-        ++itBegin;
-        }
-
+        
 
         boost::shared_ptr<std::list<InteractiveProtoHandler::Device> > pDevList(new std::list<InteractiveProtoHandler::Device>);
         auto itBeginDev = DevList.begin();
@@ -1071,9 +1048,9 @@ void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_device_relation("
-        "id, userid, deviceid, ownerid, relation, begindate, enddate, createdate, status, extend) values(uuid(),"
-        "'%s','%s','%s','%d','%s', '%s', '%s','%d', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_strOwnerID.c_str(), relation.m_iRelation,
+        "id, userid, deviceid, relation, begindate, enddate, createdate, status, extend) values(uuid(),"
+        "'%s','%s', '%d','%s', '%s', '%s','%d', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation,
         relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))

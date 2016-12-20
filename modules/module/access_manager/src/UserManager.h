@@ -39,7 +39,6 @@ public:
     {
         std::string m_strUsrID;
         std::string m_strDevID;
-        std::string m_strOwnerID;
         int m_iRelation;
         std::string m_strBeginDate;
         std::string m_strEndDate;
@@ -90,6 +89,8 @@ public:
 
     bool SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -123,6 +124,8 @@ private:
     void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
     void SharingRelationToDB(const RelationOfUsrAndDev &relation);
+
+    void CancelShardRelationToDB(const std::string &strUserID, const std::string &strDevID);
 
 private:
     ParamInfo m_ParamInfo;

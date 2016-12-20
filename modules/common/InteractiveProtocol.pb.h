@@ -82,8 +82,11 @@ class QueryDevReq_USR;
 class QueryDevRsp_USR;
 class QueryFriendsReq_USR;
 class QueryFriendsRsp_USR;
+class QueryUserReq_USR;
+class QueryUserRsp_USR;
 class RegisterUserReq_USR;
 class RegisterUserRsp_USR;
+class Relation;
 class Req;
 class Rsp;
 class ShakehandReq_DEV;
@@ -404,79 +407,16 @@ class Device : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strinnerinfo();
   void set_allocated_strinnerinfo(::std::string* strinnerinfo);
 
-  // optional string strOwnerUserID = 9;
-  void clear_strowneruserid();
-  static const int kStrOwnerUserIDFieldNumber = 9;
-  const ::std::string& strowneruserid() const;
-  void set_strowneruserid(const ::std::string& value);
-  void set_strowneruserid(const char* value);
-  void set_strowneruserid(const char* value, size_t size);
-  ::std::string* mutable_strowneruserid();
-  ::std::string* release_strowneruserid();
-  void set_allocated_strowneruserid(::std::string* strowneruserid);
-
-  // repeated string strSharingUserID = 10;
-  int strsharinguserid_size() const;
-  void clear_strsharinguserid();
-  static const int kStrSharingUserIDFieldNumber = 10;
-  const ::std::string& strsharinguserid(int index) const;
-  ::std::string* mutable_strsharinguserid(int index);
-  void set_strsharinguserid(int index, const ::std::string& value);
-  void set_strsharinguserid(int index, const char* value);
-  void set_strsharinguserid(int index, const char* value, size_t size);
-  ::std::string* add_strsharinguserid();
-  void add_strsharinguserid(const ::std::string& value);
-  void add_strsharinguserid(const char* value);
-  void add_strsharinguserid(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& strsharinguserid() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strsharinguserid();
-
-  // repeated string strSharedUserID = 11;
-  int strshareduserid_size() const;
-  void clear_strshareduserid();
-  static const int kStrSharedUserIDFieldNumber = 11;
-  const ::std::string& strshareduserid(int index) const;
-  ::std::string* mutable_strshareduserid(int index);
-  void set_strshareduserid(int index, const ::std::string& value);
-  void set_strshareduserid(int index, const char* value);
-  void set_strshareduserid(int index, const char* value, size_t size);
-  ::std::string* add_strshareduserid();
-  void add_strshareduserid(const ::std::string& value);
-  void add_strshareduserid(const char* value);
-  void add_strshareduserid(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& strshareduserid() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strshareduserid();
-
-  // repeated string strItems = 12;
-  int stritems_size() const;
-  void clear_stritems();
-  static const int kStrItemsFieldNumber = 12;
-  const ::std::string& stritems(int index) const;
-  ::std::string* mutable_stritems(int index);
-  void set_stritems(int index, const ::std::string& value);
-  void set_stritems(int index, const char* value);
-  void set_stritems(int index, const char* value, size_t size);
-  ::std::string* add_stritems();
-  void add_stritems(const ::std::string& value);
-  void add_stritems(const char* value);
-  void add_stritems(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& stritems() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_stritems();
-
   // @@protoc_insertion_point(class_scope:Interactive.Message.Device)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> strsharinguserid_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> strshareduserid_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> stritems_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strdevname_;
   ::google::protobuf::internal::ArenaStringPtr strdevpassword_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::internal::ArenaStringPtr strinnerinfo_;
-  ::google::protobuf::internal::ArenaStringPtr strowneruserid_;
   ::google::protobuf::uint32 uitypeinfo_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
@@ -621,66 +561,10 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
-  // repeated .Interactive.Message.Device ownerDevInfo = 8;
-  int ownerdevinfo_size() const;
-  void clear_ownerdevinfo();
-  static const int kOwnerDevInfoFieldNumber = 8;
-  const ::Interactive::Message::Device& ownerdevinfo(int index) const;
-  ::Interactive::Message::Device* mutable_ownerdevinfo(int index);
-  ::Interactive::Message::Device* add_ownerdevinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-      mutable_ownerdevinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-      ownerdevinfo() const;
-
-  // repeated .Interactive.Message.Device sharingDevInfo = 9;
-  int sharingdevinfo_size() const;
-  void clear_sharingdevinfo();
-  static const int kSharingDevInfoFieldNumber = 9;
-  const ::Interactive::Message::Device& sharingdevinfo(int index) const;
-  ::Interactive::Message::Device* mutable_sharingdevinfo(int index);
-  ::Interactive::Message::Device* add_sharingdevinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-      mutable_sharingdevinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-      sharingdevinfo() const;
-
-  // repeated .Interactive.Message.Device sharedDevInfo = 10;
-  int shareddevinfo_size() const;
-  void clear_shareddevinfo();
-  static const int kSharedDevInfoFieldNumber = 10;
-  const ::Interactive::Message::Device& shareddevinfo(int index) const;
-  ::Interactive::Message::Device* mutable_shareddevinfo(int index);
-  ::Interactive::Message::Device* add_shareddevinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-      mutable_shareddevinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-      shareddevinfo() const;
-
-  // repeated string strItems = 11;
-  int stritems_size() const;
-  void clear_stritems();
-  static const int kStrItemsFieldNumber = 11;
-  const ::std::string& stritems(int index) const;
-  ::std::string* mutable_stritems(int index);
-  void set_stritems(int index, const ::std::string& value);
-  void set_stritems(int index, const char* value);
-  void set_stritems(int index, const char* value, size_t size);
-  ::std::string* add_stritems();
-  void add_stritems(const ::std::string& value);
-  void add_stritems(const char* value);
-  void add_stritems(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& stritems() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_stritems();
-
   // @@protoc_insertion_point(class_scope:Interactive.Message.User)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device > ownerdevinfo_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device > sharingdevinfo_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device > shareddevinfo_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> stritems_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strusername_;
   ::google::protobuf::internal::ArenaStringPtr struserpassword_;
@@ -697,6 +581,152 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void InitAsDefaultInstance();
 };
 extern ::google::protobuf::internal::ExplicitlyConstructed<User> User_default_instance_;
+
+// -------------------------------------------------------------------
+
+class Relation : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.Relation) */ {
+ public:
+  Relation();
+  virtual ~Relation();
+
+  Relation(const Relation& from);
+
+  inline Relation& operator=(const Relation& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Relation& default_instance();
+
+  static const Relation* internal_default_instance();
+
+  void Swap(Relation* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Relation* New() const { return New(NULL); }
+
+  Relation* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Relation& from);
+  void MergeFrom(const Relation& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Relation* other);
+  void UnsafeMergeFrom(const Relation& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // optional string strDevID = 2;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 2;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // optional uint32 uiRelation = 3;
+  void clear_uirelation();
+  static const int kUiRelationFieldNumber = 3;
+  ::google::protobuf::uint32 uirelation() const;
+  void set_uirelation(::google::protobuf::uint32 value);
+
+  // optional string strBeginDate = 4;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 4;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // optional string strEndDate = 5;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 5;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
+  // optional string strValue = 6;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 6;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.Relation)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uirelation_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<Relation> Relation_default_instance_;
 
 // -------------------------------------------------------------------
 
@@ -4147,6 +4177,208 @@ extern ::google::protobuf::internal::ExplicitlyConstructed<QueryDevRsp_USR> Quer
 
 // -------------------------------------------------------------------
 
+class QueryUserReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUserReq_USR) */ {
+ public:
+  QueryUserReq_USR();
+  virtual ~QueryUserReq_USR();
+
+  QueryUserReq_USR(const QueryUserReq_USR& from);
+
+  inline QueryUserReq_USR& operator=(const QueryUserReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUserReq_USR& default_instance();
+
+  static const QueryUserReq_USR* internal_default_instance();
+
+  void Swap(QueryUserReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUserReq_USR* New() const { return New(NULL); }
+
+  QueryUserReq_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryUserReq_USR& from);
+  void MergeFrom(const QueryUserReq_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryUserReq_USR* other);
+  void UnsafeMergeFrom(const QueryUserReq_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // optional uint32 uiBeginIndex = 2;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 2;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // optional string strValue = 3;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 3;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uibeginindex_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryUserReq_USR> QueryUserReq_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
+class QueryUserRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUserRsp_USR) */ {
+ public:
+  QueryUserRsp_USR();
+  virtual ~QueryUserRsp_USR();
+
+  QueryUserRsp_USR(const QueryUserRsp_USR& from);
+
+  inline QueryUserRsp_USR& operator=(const QueryUserRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUserRsp_USR& default_instance();
+
+  static const QueryUserRsp_USR* internal_default_instance();
+
+  void Swap(QueryUserRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUserRsp_USR* New() const { return New(NULL); }
+
+  QueryUserRsp_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryUserRsp_USR& from);
+  void MergeFrom(const QueryUserRsp_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryUserRsp_USR* other);
+  void UnsafeMergeFrom(const QueryUserRsp_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.User allUserInfo = 1;
+  int alluserinfo_size() const;
+  void clear_alluserinfo();
+  static const int kAllUserInfoFieldNumber = 1;
+  const ::Interactive::Message::User& alluserinfo(int index) const;
+  ::Interactive::Message::User* mutable_alluserinfo(int index);
+  ::Interactive::Message::User* add_alluserinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
+      mutable_alluserinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
+      alluserinfo() const;
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User > alluserinfo_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryUserRsp_USR> QueryUserRsp_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
 class SharingDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.SharingDevReq_USR) */ {
  public:
   SharingDevReq_USR();
@@ -4210,79 +4442,18 @@ class SharingDevReq_USR : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // optional string strUserID = 1;
-  void clear_struserid();
-  static const int kStrUserIDFieldNumber = 1;
-  const ::std::string& struserid() const;
-  void set_struserid(const ::std::string& value);
-  void set_struserid(const char* value);
-  void set_struserid(const char* value, size_t size);
-  ::std::string* mutable_struserid();
-  ::std::string* release_struserid();
-  void set_allocated_struserid(::std::string* struserid);
+  // optional .Interactive.Message.Relation relationInfo = 1;
+  bool has_relationinfo() const;
+  void clear_relationinfo();
+  static const int kRelationInfoFieldNumber = 1;
+  const ::Interactive::Message::Relation& relationinfo() const;
+  ::Interactive::Message::Relation* mutable_relationinfo();
+  ::Interactive::Message::Relation* release_relationinfo();
+  void set_allocated_relationinfo(::Interactive::Message::Relation* relationinfo);
 
-  // optional string strToUserID = 2;
-  void clear_strtouserid();
-  static const int kStrToUserIDFieldNumber = 2;
-  const ::std::string& strtouserid() const;
-  void set_strtouserid(const ::std::string& value);
-  void set_strtouserid(const char* value);
-  void set_strtouserid(const char* value, size_t size);
-  ::std::string* mutable_strtouserid();
-  ::std::string* release_strtouserid();
-  void set_allocated_strtouserid(::std::string* strtouserid);
-
-  // optional .Interactive.Message.Device devInfo = 3;
-  bool has_devinfo() const;
-  void clear_devinfo();
-  static const int kDevInfoFieldNumber = 3;
-  const ::Interactive::Message::Device& devinfo() const;
-  ::Interactive::Message::Device* mutable_devinfo();
-  ::Interactive::Message::Device* release_devinfo();
-  void set_allocated_devinfo(::Interactive::Message::Device* devinfo);
-
-  // optional uint32 uiRelation = 4;
-  void clear_uirelation();
-  static const int kUiRelationFieldNumber = 4;
-  ::google::protobuf::uint32 uirelation() const;
-  void set_uirelation(::google::protobuf::uint32 value);
-
-  // optional string strBeginDate = 5;
-  void clear_strbegindate();
-  static const int kStrBeginDateFieldNumber = 5;
-  const ::std::string& strbegindate() const;
-  void set_strbegindate(const ::std::string& value);
-  void set_strbegindate(const char* value);
-  void set_strbegindate(const char* value, size_t size);
-  ::std::string* mutable_strbegindate();
-  ::std::string* release_strbegindate();
-  void set_allocated_strbegindate(::std::string* strbegindate);
-
-  // optional string strEndDate = 6;
-  void clear_strenddate();
-  static const int kStrEndDateFieldNumber = 6;
-  const ::std::string& strenddate() const;
-  void set_strenddate(const ::std::string& value);
-  void set_strenddate(const char* value);
-  void set_strenddate(const char* value, size_t size);
-  ::std::string* mutable_strenddate();
-  ::std::string* release_strenddate();
-  void set_allocated_strenddate(::std::string* strenddate);
-
-  // optional string strCreateDate = 7;
-  void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 7;
-  const ::std::string& strcreatedate() const;
-  void set_strcreatedate(const ::std::string& value);
-  void set_strcreatedate(const char* value);
-  void set_strcreatedate(const char* value, size_t size);
-  ::std::string* mutable_strcreatedate();
-  ::std::string* release_strcreatedate();
-  void set_allocated_strcreatedate(::std::string* strcreatedate);
-
-  // optional string strValue = 8;
+  // optional string strValue = 2;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 8;
+  static const int kStrValueFieldNumber = 2;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   void set_strvalue(const char* value);
@@ -4295,14 +4466,8 @@ class SharingDevReq_USR : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr struserid_;
-  ::google::protobuf::internal::ArenaStringPtr strtouserid_;
-  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
-  ::google::protobuf::internal::ArenaStringPtr strenddate_;
-  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
-  ::Interactive::Message::Device* devinfo_;
-  ::google::protobuf::uint32 uirelation_;
+  ::Interactive::Message::Relation* relationinfo_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -4469,31 +4634,18 @@ class CancelSharedDevReq_USR : public ::google::protobuf::Message /* @@protoc_in
 
   // accessors -------------------------------------------------------
 
-  // optional string strUserID = 1;
-  void clear_struserid();
-  static const int kStrUserIDFieldNumber = 1;
-  const ::std::string& struserid() const;
-  void set_struserid(const ::std::string& value);
-  void set_struserid(const char* value);
-  void set_struserid(const char* value, size_t size);
-  ::std::string* mutable_struserid();
-  ::std::string* release_struserid();
-  void set_allocated_struserid(::std::string* struserid);
+  // optional .Interactive.Message.Relation relationInfo = 1;
+  bool has_relationinfo() const;
+  void clear_relationinfo();
+  static const int kRelationInfoFieldNumber = 1;
+  const ::Interactive::Message::Relation& relationinfo() const;
+  ::Interactive::Message::Relation* mutable_relationinfo();
+  ::Interactive::Message::Relation* release_relationinfo();
+  void set_allocated_relationinfo(::Interactive::Message::Relation* relationinfo);
 
-  // optional string strDevID = 2;
-  void clear_strdevid();
-  static const int kStrDevIDFieldNumber = 2;
-  const ::std::string& strdevid() const;
-  void set_strdevid(const ::std::string& value);
-  void set_strdevid(const char* value);
-  void set_strdevid(const char* value, size_t size);
-  ::std::string* mutable_strdevid();
-  ::std::string* release_strdevid();
-  void set_allocated_strdevid(::std::string* strdevid);
-
-  // optional string strValue = 3;
+  // optional string strValue = 2;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 3;
+  static const int kStrValueFieldNumber = 2;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   void set_strvalue(const char* value);
@@ -4506,9 +4658,8 @@ class CancelSharedDevReq_USR : public ::google::protobuf::Message /* @@protoc_in
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr struserid_;
-  ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::Interactive::Message::Relation* relationinfo_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -6962,215 +7113,6 @@ inline void Device::set_allocated_strinnerinfo(::std::string* strinnerinfo) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strInnerinfo)
 }
 
-// optional string strOwnerUserID = 9;
-inline void Device::clear_strowneruserid() {
-  strowneruserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& Device::strowneruserid() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strOwnerUserID)
-  return strowneruserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Device::set_strowneruserid(const ::std::string& value) {
-  
-  strowneruserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strOwnerUserID)
-}
-inline void Device::set_strowneruserid(const char* value) {
-  
-  strowneruserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strOwnerUserID)
-}
-inline void Device::set_strowneruserid(const char* value, size_t size) {
-  
-  strowneruserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strOwnerUserID)
-}
-inline ::std::string* Device::mutable_strowneruserid() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strOwnerUserID)
-  return strowneruserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Device::release_strowneruserid() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.Device.strOwnerUserID)
-  
-  return strowneruserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Device::set_allocated_strowneruserid(::std::string* strowneruserid) {
-  if (strowneruserid != NULL) {
-    
-  } else {
-    
-  }
-  strowneruserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strowneruserid);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Device.strOwnerUserID)
-}
-
-// repeated string strSharingUserID = 10;
-inline int Device::strsharinguserid_size() const {
-  return strsharinguserid_.size();
-}
-inline void Device::clear_strsharinguserid() {
-  strsharinguserid_.Clear();
-}
-inline const ::std::string& Device::strsharinguserid(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strSharingUserID)
-  return strsharinguserid_.Get(index);
-}
-inline ::std::string* Device::mutable_strsharinguserid(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strSharingUserID)
-  return strsharinguserid_.Mutable(index);
-}
-inline void Device::set_strsharinguserid(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strSharingUserID)
-  strsharinguserid_.Mutable(index)->assign(value);
-}
-inline void Device::set_strsharinguserid(int index, const char* value) {
-  strsharinguserid_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strSharingUserID)
-}
-inline void Device::set_strsharinguserid(int index, const char* value, size_t size) {
-  strsharinguserid_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strSharingUserID)
-}
-inline ::std::string* Device::add_strsharinguserid() {
-  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.Device.strSharingUserID)
-  return strsharinguserid_.Add();
-}
-inline void Device::add_strsharinguserid(const ::std::string& value) {
-  strsharinguserid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:Interactive.Message.Device.strSharingUserID)
-}
-inline void Device::add_strsharinguserid(const char* value) {
-  strsharinguserid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:Interactive.Message.Device.strSharingUserID)
-}
-inline void Device::add_strsharinguserid(const char* value, size_t size) {
-  strsharinguserid_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.Device.strSharingUserID)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Device::strsharinguserid() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.Device.strSharingUserID)
-  return strsharinguserid_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Device::mutable_strsharinguserid() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.Device.strSharingUserID)
-  return &strsharinguserid_;
-}
-
-// repeated string strSharedUserID = 11;
-inline int Device::strshareduserid_size() const {
-  return strshareduserid_.size();
-}
-inline void Device::clear_strshareduserid() {
-  strshareduserid_.Clear();
-}
-inline const ::std::string& Device::strshareduserid(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strSharedUserID)
-  return strshareduserid_.Get(index);
-}
-inline ::std::string* Device::mutable_strshareduserid(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strSharedUserID)
-  return strshareduserid_.Mutable(index);
-}
-inline void Device::set_strshareduserid(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strSharedUserID)
-  strshareduserid_.Mutable(index)->assign(value);
-}
-inline void Device::set_strshareduserid(int index, const char* value) {
-  strshareduserid_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strSharedUserID)
-}
-inline void Device::set_strshareduserid(int index, const char* value, size_t size) {
-  strshareduserid_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strSharedUserID)
-}
-inline ::std::string* Device::add_strshareduserid() {
-  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.Device.strSharedUserID)
-  return strshareduserid_.Add();
-}
-inline void Device::add_strshareduserid(const ::std::string& value) {
-  strshareduserid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:Interactive.Message.Device.strSharedUserID)
-}
-inline void Device::add_strshareduserid(const char* value) {
-  strshareduserid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:Interactive.Message.Device.strSharedUserID)
-}
-inline void Device::add_strshareduserid(const char* value, size_t size) {
-  strshareduserid_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.Device.strSharedUserID)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Device::strshareduserid() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.Device.strSharedUserID)
-  return strshareduserid_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Device::mutable_strshareduserid() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.Device.strSharedUserID)
-  return &strshareduserid_;
-}
-
-// repeated string strItems = 12;
-inline int Device::stritems_size() const {
-  return stritems_.size();
-}
-inline void Device::clear_stritems() {
-  stritems_.Clear();
-}
-inline const ::std::string& Device::stritems(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.Device.strItems)
-  return stritems_.Get(index);
-}
-inline ::std::string* Device::mutable_stritems(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.Device.strItems)
-  return stritems_.Mutable(index);
-}
-inline void Device::set_stritems(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:Interactive.Message.Device.strItems)
-  stritems_.Mutable(index)->assign(value);
-}
-inline void Device::set_stritems(int index, const char* value) {
-  stritems_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.Device.strItems)
-}
-inline void Device::set_stritems(int index, const char* value, size_t size) {
-  stritems_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Device.strItems)
-}
-inline ::std::string* Device::add_stritems() {
-  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.Device.strItems)
-  return stritems_.Add();
-}
-inline void Device::add_stritems(const ::std::string& value) {
-  stritems_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:Interactive.Message.Device.strItems)
-}
-inline void Device::add_stritems(const char* value) {
-  stritems_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:Interactive.Message.Device.strItems)
-}
-inline void Device::add_stritems(const char* value, size_t size) {
-  stritems_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.Device.strItems)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Device::stritems() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.Device.strItems)
-  return stritems_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Device::mutable_stritems() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.Device.strItems)
-  return &stritems_;
-}
-
 inline const Device* Device::internal_default_instance() {
   return &Device_default_instance_.get();
 }
@@ -7426,153 +7368,249 @@ inline void User::set_allocated_strextend(::std::string* strextend) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
 }
 
-// repeated .Interactive.Message.Device ownerDevInfo = 8;
-inline int User::ownerdevinfo_size() const {
-  return ownerdevinfo_.size();
-}
-inline void User::clear_ownerdevinfo() {
-  ownerdevinfo_.Clear();
-}
-inline const ::Interactive::Message::Device& User::ownerdevinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.User.ownerDevInfo)
-  return ownerdevinfo_.Get(index);
-}
-inline ::Interactive::Message::Device* User::mutable_ownerdevinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.ownerDevInfo)
-  return ownerdevinfo_.Mutable(index);
-}
-inline ::Interactive::Message::Device* User::add_ownerdevinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.User.ownerDevInfo)
-  return ownerdevinfo_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-User::mutable_ownerdevinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.User.ownerDevInfo)
-  return &ownerdevinfo_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-User::ownerdevinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.User.ownerDevInfo)
-  return ownerdevinfo_;
-}
-
-// repeated .Interactive.Message.Device sharingDevInfo = 9;
-inline int User::sharingdevinfo_size() const {
-  return sharingdevinfo_.size();
-}
-inline void User::clear_sharingdevinfo() {
-  sharingdevinfo_.Clear();
-}
-inline const ::Interactive::Message::Device& User::sharingdevinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.User.sharingDevInfo)
-  return sharingdevinfo_.Get(index);
-}
-inline ::Interactive::Message::Device* User::mutable_sharingdevinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.sharingDevInfo)
-  return sharingdevinfo_.Mutable(index);
-}
-inline ::Interactive::Message::Device* User::add_sharingdevinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.User.sharingDevInfo)
-  return sharingdevinfo_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-User::mutable_sharingdevinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.User.sharingDevInfo)
-  return &sharingdevinfo_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-User::sharingdevinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.User.sharingDevInfo)
-  return sharingdevinfo_;
-}
-
-// repeated .Interactive.Message.Device sharedDevInfo = 10;
-inline int User::shareddevinfo_size() const {
-  return shareddevinfo_.size();
-}
-inline void User::clear_shareddevinfo() {
-  shareddevinfo_.Clear();
-}
-inline const ::Interactive::Message::Device& User::shareddevinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.User.sharedDevInfo)
-  return shareddevinfo_.Get(index);
-}
-inline ::Interactive::Message::Device* User::mutable_shareddevinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.sharedDevInfo)
-  return shareddevinfo_.Mutable(index);
-}
-inline ::Interactive::Message::Device* User::add_shareddevinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.User.sharedDevInfo)
-  return shareddevinfo_.Add();
-}
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-User::mutable_shareddevinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.User.sharedDevInfo)
-  return &shareddevinfo_;
-}
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-User::shareddevinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.User.sharedDevInfo)
-  return shareddevinfo_;
-}
-
-// repeated string strItems = 11;
-inline int User::stritems_size() const {
-  return stritems_.size();
-}
-inline void User::clear_stritems() {
-  stritems_.Clear();
-}
-inline const ::std::string& User::stritems(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.User.strItems)
-  return stritems_.Get(index);
-}
-inline ::std::string* User::mutable_stritems(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strItems)
-  return stritems_.Mutable(index);
-}
-inline void User::set_stritems(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:Interactive.Message.User.strItems)
-  stritems_.Mutable(index)->assign(value);
-}
-inline void User::set_stritems(int index, const char* value) {
-  stritems_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strItems)
-}
-inline void User::set_stritems(int index, const char* value, size_t size) {
-  stritems_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strItems)
-}
-inline ::std::string* User::add_stritems() {
-  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.User.strItems)
-  return stritems_.Add();
-}
-inline void User::add_stritems(const ::std::string& value) {
-  stritems_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:Interactive.Message.User.strItems)
-}
-inline void User::add_stritems(const char* value) {
-  stritems_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:Interactive.Message.User.strItems)
-}
-inline void User::add_stritems(const char* value, size_t size) {
-  stritems_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.User.strItems)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-User::stritems() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.User.strItems)
-  return stritems_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-User::mutable_stritems() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.User.strItems)
-  return &stritems_;
-}
-
 inline const User* User::internal_default_instance() {
   return &User_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// Relation
+
+// optional string strUserID = 1;
+inline void Relation::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Relation::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.strUserID)
+  return struserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.strUserID)
+}
+inline void Relation::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Relation.strUserID)
+}
+inline void Relation::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Relation.strUserID)
+}
+inline ::std::string* Relation::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Relation.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Relation::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Relation.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strUserID)
+}
+
+// optional string strDevID = 2;
+inline void Relation::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Relation::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.strDevID)
+  return strdevid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.strDevID)
+}
+inline void Relation::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Relation.strDevID)
+}
+inline void Relation::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Relation.strDevID)
+}
+inline ::std::string* Relation::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Relation.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Relation::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Relation.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strDevID)
+}
+
+// optional uint32 uiRelation = 3;
+inline void Relation::clear_uirelation() {
+  uirelation_ = 0u;
+}
+inline ::google::protobuf::uint32 Relation::uirelation() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.uiRelation)
+  return uirelation_;
+}
+inline void Relation::set_uirelation(::google::protobuf::uint32 value) {
+  
+  uirelation_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.uiRelation)
+}
+
+// optional string strBeginDate = 4;
+inline void Relation::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Relation::strbegindate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.strBeginDate)
+  return strbegindate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.strBeginDate)
+}
+inline void Relation::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Relation.strBeginDate)
+}
+inline void Relation::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Relation.strBeginDate)
+}
+inline ::std::string* Relation::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Relation.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Relation::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Relation.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strBeginDate)
+}
+
+// optional string strEndDate = 5;
+inline void Relation::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Relation::strenddate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.strEndDate)
+  return strenddate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.strEndDate)
+}
+inline void Relation::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Relation.strEndDate)
+}
+inline void Relation::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Relation.strEndDate)
+}
+inline ::std::string* Relation::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Relation.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Relation::release_strenddate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Relation.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strEndDate)
+}
+
+// optional string strValue = 6;
+inline void Relation::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Relation::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Relation.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Relation.strValue)
+}
+inline void Relation::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Relation.strValue)
+}
+inline void Relation::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Relation.strValue)
+}
+inline ::std::string* Relation::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Relation.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Relation::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Relation.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Relation::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strValue)
+}
+
+inline const Relation* Relation::internal_default_instance() {
+  return &Relation_default_instance_.get();
 }
 // -------------------------------------------------------------------
 
@@ -10542,282 +10580,194 @@ inline const QueryDevRsp_USR* QueryDevRsp_USR::internal_default_instance() {
 }
 // -------------------------------------------------------------------
 
+// QueryUserReq_USR
+
+// optional string strDevID = 1;
+inline void QueryUserReq_USR::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserReq_USR::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserReq_USR.strDevID)
+  return strdevid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserReq_USR::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserReq_USR.strDevID)
+}
+inline void QueryUserReq_USR::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserReq_USR.strDevID)
+}
+inline void QueryUserReq_USR::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserReq_USR.strDevID)
+}
+inline ::std::string* QueryUserReq_USR::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserReq_USR.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserReq_USR::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserReq_USR.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserReq_USR::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserReq_USR.strDevID)
+}
+
+// optional uint32 uiBeginIndex = 2;
+inline void QueryUserReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryUserReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryUserReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserReq_USR.uiBeginIndex)
+}
+
+// optional string strValue = 3;
+inline void QueryUserReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserReq_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserReq_USR.strValue)
+}
+inline void QueryUserReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserReq_USR.strValue)
+}
+inline void QueryUserReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserReq_USR.strValue)
+}
+inline ::std::string* QueryUserReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserReq_USR.strValue)
+}
+
+inline const QueryUserReq_USR* QueryUserReq_USR::internal_default_instance() {
+  return &QueryUserReq_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// QueryUserRsp_USR
+
+// repeated .Interactive.Message.User allUserInfo = 1;
+inline int QueryUserRsp_USR::alluserinfo_size() const {
+  return alluserinfo_.size();
+}
+inline void QueryUserRsp_USR::clear_alluserinfo() {
+  alluserinfo_.Clear();
+}
+inline const ::Interactive::Message::User& QueryUserRsp_USR::alluserinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserRsp_USR.allUserInfo)
+  return alluserinfo_.Get(index);
+}
+inline ::Interactive::Message::User* QueryUserRsp_USR::mutable_alluserinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserRsp_USR.allUserInfo)
+  return alluserinfo_.Mutable(index);
+}
+inline ::Interactive::Message::User* QueryUserRsp_USR::add_alluserinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryUserRsp_USR.allUserInfo)
+  return alluserinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
+QueryUserRsp_USR::mutable_alluserinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryUserRsp_USR.allUserInfo)
+  return &alluserinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
+QueryUserRsp_USR::alluserinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryUserRsp_USR.allUserInfo)
+  return alluserinfo_;
+}
+
+inline const QueryUserRsp_USR* QueryUserRsp_USR::internal_default_instance() {
+  return &QueryUserRsp_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
 // SharingDevReq_USR
 
-// optional string strUserID = 1;
-inline void SharingDevReq_USR::clear_struserid() {
-  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional .Interactive.Message.Relation relationInfo = 1;
+inline bool SharingDevReq_USR::has_relationinfo() const {
+  return this != internal_default_instance() && relationinfo_ != NULL;
 }
-inline const ::std::string& SharingDevReq_USR::struserid() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strUserID)
-  return struserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void SharingDevReq_USR::clear_relationinfo() {
+  if (GetArenaNoVirtual() == NULL && relationinfo_ != NULL) delete relationinfo_;
+  relationinfo_ = NULL;
 }
-inline void SharingDevReq_USR::set_struserid(const ::std::string& value) {
+inline const ::Interactive::Message::Relation& SharingDevReq_USR::relationinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.relationInfo)
+  return relationinfo_ != NULL ? *relationinfo_
+                         : *::Interactive::Message::Relation::internal_default_instance();
+}
+inline ::Interactive::Message::Relation* SharingDevReq_USR::mutable_relationinfo() {
   
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strUserID)
-}
-inline void SharingDevReq_USR::set_struserid(const char* value) {
-  
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strUserID)
-}
-inline void SharingDevReq_USR::set_struserid(const char* value, size_t size) {
-  
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strUserID)
-}
-inline ::std::string* SharingDevReq_USR::mutable_struserid() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strUserID)
-  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SharingDevReq_USR::release_struserid() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strUserID)
-  
-  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_allocated_struserid(::std::string* struserid) {
-  if (struserid != NULL) {
-    
-  } else {
-    
+  if (relationinfo_ == NULL) {
+    relationinfo_ = new ::Interactive::Message::Relation;
   }
-  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strUserID)
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.relationInfo)
+  return relationinfo_;
 }
-
-// optional string strToUserID = 2;
-inline void SharingDevReq_USR::clear_strtouserid() {
-  strtouserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SharingDevReq_USR::strtouserid() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strToUserID)
-  return strtouserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_strtouserid(const ::std::string& value) {
+inline ::Interactive::Message::Relation* SharingDevReq_USR::release_relationinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.relationInfo)
   
-  strtouserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strToUserID)
-}
-inline void SharingDevReq_USR::set_strtouserid(const char* value) {
-  
-  strtouserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strToUserID)
-}
-inline void SharingDevReq_USR::set_strtouserid(const char* value, size_t size) {
-  
-  strtouserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strToUserID)
-}
-inline ::std::string* SharingDevReq_USR::mutable_strtouserid() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strToUserID)
-  return strtouserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SharingDevReq_USR::release_strtouserid() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strToUserID)
-  
-  return strtouserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_allocated_strtouserid(::std::string* strtouserid) {
-  if (strtouserid != NULL) {
-    
-  } else {
-    
-  }
-  strtouserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strtouserid);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strToUserID)
-}
-
-// optional .Interactive.Message.Device devInfo = 3;
-inline bool SharingDevReq_USR::has_devinfo() const {
-  return this != internal_default_instance() && devinfo_ != NULL;
-}
-inline void SharingDevReq_USR::clear_devinfo() {
-  if (GetArenaNoVirtual() == NULL && devinfo_ != NULL) delete devinfo_;
-  devinfo_ = NULL;
-}
-inline const ::Interactive::Message::Device& SharingDevReq_USR::devinfo() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.devInfo)
-  return devinfo_ != NULL ? *devinfo_
-                         : *::Interactive::Message::Device::internal_default_instance();
-}
-inline ::Interactive::Message::Device* SharingDevReq_USR::mutable_devinfo() {
-  
-  if (devinfo_ == NULL) {
-    devinfo_ = new ::Interactive::Message::Device;
-  }
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.devInfo)
-  return devinfo_;
-}
-inline ::Interactive::Message::Device* SharingDevReq_USR::release_devinfo() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.devInfo)
-  
-  ::Interactive::Message::Device* temp = devinfo_;
-  devinfo_ = NULL;
+  ::Interactive::Message::Relation* temp = relationinfo_;
+  relationinfo_ = NULL;
   return temp;
 }
-inline void SharingDevReq_USR::set_allocated_devinfo(::Interactive::Message::Device* devinfo) {
-  delete devinfo_;
-  devinfo_ = devinfo;
-  if (devinfo) {
+inline void SharingDevReq_USR::set_allocated_relationinfo(::Interactive::Message::Relation* relationinfo) {
+  delete relationinfo_;
+  relationinfo_ = relationinfo;
+  if (relationinfo) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.devInfo)
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.relationInfo)
 }
 
-// optional uint32 uiRelation = 4;
-inline void SharingDevReq_USR::clear_uirelation() {
-  uirelation_ = 0u;
-}
-inline ::google::protobuf::uint32 SharingDevReq_USR::uirelation() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.uiRelation)
-  return uirelation_;
-}
-inline void SharingDevReq_USR::set_uirelation(::google::protobuf::uint32 value) {
-  
-  uirelation_ = value;
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.uiRelation)
-}
-
-// optional string strBeginDate = 5;
-inline void SharingDevReq_USR::clear_strbegindate() {
-  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SharingDevReq_USR::strbegindate() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strBeginDate)
-  return strbegindate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_strbegindate(const ::std::string& value) {
-  
-  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strBeginDate)
-}
-inline void SharingDevReq_USR::set_strbegindate(const char* value) {
-  
-  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strBeginDate)
-}
-inline void SharingDevReq_USR::set_strbegindate(const char* value, size_t size) {
-  
-  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strBeginDate)
-}
-inline ::std::string* SharingDevReq_USR::mutable_strbegindate() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strBeginDate)
-  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SharingDevReq_USR::release_strbegindate() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strBeginDate)
-  
-  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_allocated_strbegindate(::std::string* strbegindate) {
-  if (strbegindate != NULL) {
-    
-  } else {
-    
-  }
-  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strBeginDate)
-}
-
-// optional string strEndDate = 6;
-inline void SharingDevReq_USR::clear_strenddate() {
-  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SharingDevReq_USR::strenddate() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strEndDate)
-  return strenddate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_strenddate(const ::std::string& value) {
-  
-  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strEndDate)
-}
-inline void SharingDevReq_USR::set_strenddate(const char* value) {
-  
-  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strEndDate)
-}
-inline void SharingDevReq_USR::set_strenddate(const char* value, size_t size) {
-  
-  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strEndDate)
-}
-inline ::std::string* SharingDevReq_USR::mutable_strenddate() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strEndDate)
-  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SharingDevReq_USR::release_strenddate() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strEndDate)
-  
-  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_allocated_strenddate(::std::string* strenddate) {
-  if (strenddate != NULL) {
-    
-  } else {
-    
-  }
-  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strEndDate)
-}
-
-// optional string strCreateDate = 7;
-inline void SharingDevReq_USR::clear_strcreatedate() {
-  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& SharingDevReq_USR::strcreatedate() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strCreateDate)
-  return strcreatedate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_strcreatedate(const ::std::string& value) {
-  
-  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strCreateDate)
-}
-inline void SharingDevReq_USR::set_strcreatedate(const char* value) {
-  
-  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strCreateDate)
-}
-inline void SharingDevReq_USR::set_strcreatedate(const char* value, size_t size) {
-  
-  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strCreateDate)
-}
-inline ::std::string* SharingDevReq_USR::mutable_strcreatedate() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strCreateDate)
-  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* SharingDevReq_USR::release_strcreatedate() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strCreateDate)
-  
-  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void SharingDevReq_USR::set_allocated_strcreatedate(::std::string* strcreatedate) {
-  if (strcreatedate != NULL) {
-    
-  } else {
-    
-  }
-  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strCreateDate)
-}
-
-// optional string strValue = 8;
+// optional string strValue = 2;
 inline void SharingDevReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -10919,95 +10869,46 @@ inline const SharingDevRsp_USR* SharingDevRsp_USR::internal_default_instance() {
 
 // CancelSharedDevReq_USR
 
-// optional string strUserID = 1;
-inline void CancelSharedDevReq_USR::clear_struserid() {
-  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional .Interactive.Message.Relation relationInfo = 1;
+inline bool CancelSharedDevReq_USR::has_relationinfo() const {
+  return this != internal_default_instance() && relationinfo_ != NULL;
 }
-inline const ::std::string& CancelSharedDevReq_USR::struserid() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.CancelSharedDevReq_USR.strUserID)
-  return struserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void CancelSharedDevReq_USR::clear_relationinfo() {
+  if (GetArenaNoVirtual() == NULL && relationinfo_ != NULL) delete relationinfo_;
+  relationinfo_ = NULL;
 }
-inline void CancelSharedDevReq_USR::set_struserid(const ::std::string& value) {
+inline const ::Interactive::Message::Relation& CancelSharedDevReq_USR::relationinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.CancelSharedDevReq_USR.relationInfo)
+  return relationinfo_ != NULL ? *relationinfo_
+                         : *::Interactive::Message::Relation::internal_default_instance();
+}
+inline ::Interactive::Message::Relation* CancelSharedDevReq_USR::mutable_relationinfo() {
   
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.CancelSharedDevReq_USR.strUserID)
+  if (relationinfo_ == NULL) {
+    relationinfo_ = new ::Interactive::Message::Relation;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.CancelSharedDevReq_USR.relationInfo)
+  return relationinfo_;
 }
-inline void CancelSharedDevReq_USR::set_struserid(const char* value) {
+inline ::Interactive::Message::Relation* CancelSharedDevReq_USR::release_relationinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.CancelSharedDevReq_USR.relationInfo)
   
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.CancelSharedDevReq_USR.strUserID)
+  ::Interactive::Message::Relation* temp = relationinfo_;
+  relationinfo_ = NULL;
+  return temp;
 }
-inline void CancelSharedDevReq_USR::set_struserid(const char* value, size_t size) {
-  
-  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.CancelSharedDevReq_USR.strUserID)
-}
-inline ::std::string* CancelSharedDevReq_USR::mutable_struserid() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.CancelSharedDevReq_USR.strUserID)
-  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CancelSharedDevReq_USR::release_struserid() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.CancelSharedDevReq_USR.strUserID)
-  
-  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CancelSharedDevReq_USR::set_allocated_struserid(::std::string* struserid) {
-  if (struserid != NULL) {
+inline void CancelSharedDevReq_USR::set_allocated_relationinfo(::Interactive::Message::Relation* relationinfo) {
+  delete relationinfo_;
+  relationinfo_ = relationinfo;
+  if (relationinfo) {
     
   } else {
     
   }
-  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.CancelSharedDevReq_USR.strUserID)
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.CancelSharedDevReq_USR.relationInfo)
 }
 
-// optional string strDevID = 2;
-inline void CancelSharedDevReq_USR::clear_strdevid() {
-  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& CancelSharedDevReq_USR::strdevid() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-  return strdevid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CancelSharedDevReq_USR::set_strdevid(const ::std::string& value) {
-  
-  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-}
-inline void CancelSharedDevReq_USR::set_strdevid(const char* value) {
-  
-  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-}
-inline void CancelSharedDevReq_USR::set_strdevid(const char* value, size_t size) {
-  
-  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-}
-inline ::std::string* CancelSharedDevReq_USR::mutable_strdevid() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* CancelSharedDevReq_USR::release_strdevid() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-  
-  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void CancelSharedDevReq_USR::set_allocated_strdevid(::std::string* strdevid) {
-  if (strdevid != NULL) {
-    
-  } else {
-    
-  }
-  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.CancelSharedDevReq_USR.strDevID)
-}
-
-// optional string strValue = 3;
+// optional string strValue = 2;
 inline void CancelSharedDevReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -14245,6 +14146,12 @@ inline const InteractiveMessage* InteractiveMessage::internal_default_instance()
   return &InteractiveMessage_default_instance_.get();
 }
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

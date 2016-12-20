@@ -62,28 +62,6 @@ template<typename T> void UnSerializeDevList(std::list<T> &devInfoList,
         devInfo.m_uiStatus = srcDevInfoList.Get(i).uistatus();
         devInfo.m_strExtend = srcDevInfoList.Get(i).strextend();
         devInfo.m_strInnerinfo = srcDevInfoList.Get(i).strinnerinfo();
-        devInfo.m_strOwnerUserID = srcDevInfoList.Get(i).strowneruserid();
-
-        devInfo.m_sharingUserIDList.clear();
-        int iCountTmp = srcDevInfoList.Get(i).strsharinguserid_size();
-        for (int k = 0; k < iCountTmp; ++k)
-        {
-            devInfo.m_sharingUserIDList.push_back(srcDevInfoList.Get(i).strsharinguserid(k));
-        }
-
-        devInfo.m_sharedUserIDList.clear();
-        iCountTmp = srcDevInfoList.Get(i).strshareduserid_size();
-        for (int k = 0; k < iCountTmp; ++k)
-        {
-            devInfo.m_sharedUserIDList.push_back(srcDevInfoList.Get(i).strshareduserid(k));
-        }
-
-        devInfo.m_strItemsList.clear();
-        iCountTmp = srcDevInfoList.Get(i).stritems_size();
-        for (int k = 0; k < iCountTmp; ++k)
-        {
-            devInfo.m_strItemsList.push_back(srcDevInfoList.Get(i).stritems(k));
-        }
 
         devInfoList.push_back(std::move(devInfo));
     }
@@ -110,54 +88,7 @@ template<typename T> void SerializeDevList(const std::list<T> &devInfoList,
         pDstDevInfoList->Mutable(i)->set_uistatus(itBegin->m_uiStatus);
         pDstDevInfoList->Mutable(i)->set_strextend(itBegin->m_strExtend);
         pDstDevInfoList->Mutable(i)->set_strinnerinfo(itBegin->m_strInnerinfo);
-        pDstDevInfoList->Mutable(i)->set_strowneruserid(itBegin->m_strOwnerUserID);
-
-
-        for (unsigned int k = 0; k < itBegin->m_sharingUserIDList.size(); ++k)
-        {
-            pDstDevInfoList->Mutable(i)->add_strsharinguserid();
-        }
-        auto itSharingBegin = itBegin->m_sharingUserIDList.begin();
-        auto itSharingEnd = itBegin->m_sharingUserIDList.end();
-        int iSharing = 0;
-        while (itSharingBegin != itSharingEnd)
-        {
-            pDstDevInfoList->Mutable(i)->set_strsharinguserid(iSharing, *itSharingBegin);
-
-            ++iSharing;
-            ++itSharingBegin;
-        }
-
-        for (unsigned int k = 0; k < itBegin->m_sharedUserIDList.size(); ++k)
-        {
-            pDstDevInfoList->Mutable(i)->add_strshareduserid();
-        }
-        auto itSharedBegin = itBegin->m_sharedUserIDList.begin();
-        auto itSharedEnd = itBegin->m_sharedUserIDList.end();
-        int iShared = 0;
-        while (itSharedBegin != itSharedEnd)
-        {
-            pDstDevInfoList->Mutable(i)->set_strshareduserid(iShared, *itSharedBegin);
-
-            ++iShared;
-            ++itSharedBegin;
-        }
-
-        for (unsigned int k = 0; k < itBegin->m_strItemsList.size(); ++k)
-        {
-            pDstDevInfoList->Mutable(i)->add_stritems();
-        }
-        auto itItemsBegin = itBegin->m_strItemsList.begin();
-        auto itItemsEnd = itBegin->m_strItemsList.end();
-        int iItems = 0;
-        while (itItemsBegin != itItemsEnd)
-        {
-            pDstDevInfoList->Mutable(i)->set_stritems(iItems, *itItemsBegin);
-
-            ++iItems;
-            ++itItemsBegin;
-        }
-        
+                        
         ++i;
         ++itBegin;
     }
@@ -875,17 +806,6 @@ void InteractiveProtoHandler::RegisterUserReq_USR::UnSerializer(const Interactiv
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strextend();
 
-    UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().sharingdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().shareddevinfo());
-    
-    m_userInfo.m_strItemsList.clear();
-    int iCount = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().stritems_size();
-    for (int i = 0; i < iCount; ++i)
-    {
-        m_userInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().stritems(i));
-    }
-
     m_strValue = InteractiveMsg.reqvalue().registeruserreq_usr_value().strvalue();
     
 
@@ -945,25 +865,6 @@ void InteractiveProtoHandler::RegisterUserReq_USR::Serializer(InteractiveMessage
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
     
-    SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-    for (unsigned int i = 0; i < m_userInfo.m_strItemsList.size(); ++i)
-    {
-        uinfo->add_stritems();
-    }
-    auto itBegin = m_userInfo.m_strItemsList.begin();
-    auto itEnd = m_userInfo.m_strItemsList.end();
-    int i = 0;
-    while (itBegin != itEnd)
-    {
-        
-        uinfo->set_stritems(i, *itBegin);
-
-        ++i;
-        ++itBegin;
-    }
 }
 
 
@@ -995,17 +896,6 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::UnSerializer(const Interact
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strextend();
 
-    UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().ownerdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().sharingdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().shareddevinfo());
-
-    m_userInfo.m_strItemsList.clear();
-    int iCount = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().stritems_size();
-    for (int i = 0; i < iCount; ++i)
-    {
-        m_userInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().stritems(i));
-    }
-
     m_strValue = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().strvalue();
     
 }
@@ -1026,25 +916,6 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::Serializer(InteractiveMessa
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
 
-    SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-    for (unsigned int i = 0; i < m_userInfo.m_strItemsList.size(); ++i)
-    {
-        uinfo->add_stritems();
-    }
-    auto itBegin = m_userInfo.m_strItemsList.begin();
-    auto itEnd = m_userInfo.m_strItemsList.end();
-    int i = 0;
-    while (itBegin != itEnd)
-    {
-
-        uinfo->set_stritems(i, *itBegin);
-
-        ++i;
-        ++itBegin;
-    }
 }
 
 void InteractiveProtoHandler::UnRegisterUserRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1075,17 +946,6 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strextend();
 
-    UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().ownerdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().sharingdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().shareddevinfo());
-
-    m_userInfo.m_strItemsList.clear();
-    int iCount = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().stritems_size();
-    for (int i = 0; i < iCount; ++i)
-    {
-        m_userInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().stritems(i));
-    }
-
     m_strValue = InteractiveMsg.reqvalue().loginreq_usr_value().strvalue();
 }
 
@@ -1105,25 +965,6 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
 
-    SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-    for (unsigned int i = 0; i < m_userInfo.m_strItemsList.size(); ++i)
-    {
-        uinfo->add_stritems();
-    }
-    auto itBegin = m_userInfo.m_strItemsList.begin();
-    auto itEnd = m_userInfo.m_strItemsList.end();
-    int i = 0;
-    while (itBegin != itEnd)
-    {
-
-        uinfo->set_stritems(i, *itBegin);
-
-        ++i;
-        ++itBegin;
-    }
 }
 
 void InteractiveProtoHandler::LoginRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1157,17 +998,6 @@ void InteractiveProtoHandler::LogoutReq_USR::UnSerializer(const InteractiveMessa
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strextend();
 
-    UnSerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().ownerdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().sharingdevinfo());
-    UnSerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().shareddevinfo());
-
-    m_userInfo.m_strItemsList.clear();
-    int iCount = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().stritems_size();
-    for (int i = 0; i < iCount; ++i)
-    {
-        m_userInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().stritems(i));
-    }
-
     m_strValue = InteractiveMsg.reqvalue().logoutreq_usr_value().strvalue();
 }
 
@@ -1187,25 +1017,6 @@ void InteractiveProtoHandler::LogoutReq_USR::Serializer(InteractiveMessage &Inte
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
 
-    SerializeDevList<Device>(m_userInfo.m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-    SerializeDevList<Device>(m_userInfo.m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-    for (unsigned int i = 0; i < m_userInfo.m_strItemsList.size(); ++i)
-    {
-        uinfo->add_stritems();
-    }
-    auto itBegin = m_userInfo.m_strItemsList.begin();
-    auto itEnd = m_userInfo.m_strItemsList.end();
-    int i = 0;
-    while (itBegin != itEnd)
-    {
-
-        uinfo->set_stritems(i, *itBegin);
-
-        ++i;
-        ++itBegin;
-    }
 }
 
 void InteractiveProtoHandler::LogoutRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1320,29 +1131,7 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().uistatus();
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strinnerinfo();
-    m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strowneruserid();
-
-    m_devInfo.m_sharingUserIDList.clear();
-    int iCountTmp = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strsharinguserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharingUserIDList.push_back(InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strsharinguserid(i));
-    }
-
-    m_devInfo.m_sharedUserIDList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strshareduserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharedUserIDList.push_back(InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strshareduserid(i));
-    }
-
-    m_devInfo.m_strItemsList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().stritems_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().stritems(i));
-    }
-
+        
 }
 
 void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1359,53 +1148,7 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
-    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharingUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->add_strsharinguserid();
-    }
-    auto itSharingBegin = m_devInfo.m_sharingUserIDList.begin();
-    auto itSharingEnd = m_devInfo.m_sharingUserIDList.end();
-    int iSharing = 0;
-    while (itSharingBegin != itSharingEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strsharinguserid(iSharing, *itSharingBegin);
-
-        ++iSharing;
-        ++itSharingBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharedUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->add_strshareduserid();
-    }
-    auto itSharedBegin = m_devInfo.m_sharedUserIDList.begin();
-    auto itSharedEnd = m_devInfo.m_sharedUserIDList.end();
-    int iShared = 0;
-    while (itSharedBegin != itSharedEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iShared, *itSharedBegin);
-
-        ++iShared;
-        ++itSharedBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_strItemsList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->add_stritems();
-    }
-    auto itItemBegin = m_devInfo.m_strItemsList.begin();
-    auto itItemEnd = m_devInfo.m_strItemsList.end();
-    int iItem = 0;
-    while (itItemBegin != itItemEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iItem, *itItemBegin);
-
-        ++iItem;
-        ++itItemBegin;
-    }
-
+    
 }
 
 void InteractiveProtoHandler::AddDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1507,29 +1250,7 @@ void InteractiveProtoHandler::ModifyDevReq_USR::UnSerializer(const InteractiveMe
     m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().uistatus();
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strinnerinfo();
-    m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strowneruserid();
-
-    m_devInfo.m_sharingUserIDList.clear();
-    int iCountTmp = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strsharinguserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharingUserIDList.push_back(InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strsharinguserid(i));
-    }
-
-    m_devInfo.m_sharedUserIDList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strshareduserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharedUserIDList.push_back(InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strshareduserid(i));
-    }
-
-    m_devInfo.m_strItemsList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().stritems_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().stritems(i));
-    }
-
+    
 }
 
 void InteractiveProtoHandler::ModifyDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1546,52 +1267,7 @@ void InteractiveProtoHandler::ModifyDevReq_USR::Serializer(InteractiveMessage &I
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
-    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharingUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->add_strsharinguserid();
-    }
-    auto itSharingBegin = m_devInfo.m_sharingUserIDList.begin();
-    auto itSharingEnd = m_devInfo.m_sharingUserIDList.end();
-    int iSharing = 0;
-    while (itSharingBegin != itSharingEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strsharinguserid(iSharing, *itSharingBegin);
-
-        ++iSharing;
-        ++itSharingBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharedUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->add_strshareduserid();
-    }
-    auto itSharedBegin = m_devInfo.m_sharedUserIDList.begin();
-    auto itSharedEnd = m_devInfo.m_sharedUserIDList.end();
-    int iShared = 0;
-    while (itSharedBegin != itSharedEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iShared, *itSharedBegin);
-
-        ++iShared;
-        ++itSharedBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_strItemsList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->add_stritems();
-    }
-    auto itItemBegin = m_devInfo.m_strItemsList.begin();
-    auto itItemEnd = m_devInfo.m_strItemsList.end();
-    int iItem = 0;
-    while (itItemBegin != itItemEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iItem, *itItemBegin);
-
-        ++iItem;
-        ++itItemBegin;
-    }
+    
 }
 
 void InteractiveProtoHandler::ModifyDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1646,44 +1322,14 @@ void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &In
 void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
-    m_strUserID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().struserid();
-    m_strToUserID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strtouserid();
     
-    m_devInfo.m_strDevID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strdevid();
-    m_devInfo.m_strDevName = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strdevname();
-    m_devInfo.m_strDevPassword = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strdevpassword();
-    m_devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().uitypeinfo();
-    m_devInfo.m_strCreatedate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strcreatedate();
-    m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().uistatus();
-    m_devInfo.m_strExtend = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strextend();
-    m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strinnerinfo();
-    m_devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strowneruserid();
+    m_relationInfo.m_strBeginDate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().strbegindate();
+    m_relationInfo.m_strDevID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().strdevid();
+    m_relationInfo.m_strEndDate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().strenddate();
+    m_relationInfo.m_strUserID = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().struserid();
+    m_relationInfo.m_strValue = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().strvalue();
+    m_relationInfo.m_uiRelation = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().uirelation();
 
-    m_devInfo.m_sharingUserIDList.clear();
-    int iCountTmp = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strsharinguserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharingUserIDList.push_back(InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strsharinguserid(i));
-    }
-
-    m_devInfo.m_sharedUserIDList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strshareduserid_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_sharedUserIDList.push_back(InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().strshareduserid(i));
-    }
-
-    m_devInfo.m_strItemsList.clear();
-    iCountTmp = InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().stritems_size();
-    for (int i = 0; i < iCountTmp; ++i)
-    {
-        m_devInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().sharingdevreq_usr_value().devinfo().stritems(i));
-    }
-
-    m_uiRelation = InteractiveMsg.reqvalue().sharingdevreq_usr_value().uirelation();
-    m_strBeginDate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strbegindate();
-    m_strEndDate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strenddate();
-    m_strCreateDate = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strcreatedate();
     m_strValue = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strvalue();
 
 
@@ -1692,69 +1338,15 @@ void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveM
 void InteractiveProtoHandler::SharingDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
 {
     Req::Serializer(InteractiveMsg);
+
     InteractiveMsg.set_type(Interactive::Message::MsgType::SharingDevReq_USR_T);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_struserid(m_strUserID);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strtouserid(m_strToUserID);
-
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strdevid(m_devInfo.m_strDevID);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strowneruserid(m_devInfo.m_strOwnerUserID);
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharingUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->add_strsharinguserid();
-    }
-    auto itSharingBegin = m_devInfo.m_sharingUserIDList.begin();
-    auto itSharingEnd = m_devInfo.m_sharingUserIDList.end();
-    int iSharing = 0;
-    while (itSharingBegin != itSharingEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strsharinguserid(iSharing, *itSharingBegin);
-
-        ++iSharing;
-        ++itSharingBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_sharedUserIDList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->add_strshareduserid();
-    }
-    auto itSharedBegin = m_devInfo.m_sharedUserIDList.begin();
-    auto itSharedEnd = m_devInfo.m_sharedUserIDList.end();
-    int iShared = 0;
-    while (itSharedBegin != itSharedEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iShared, *itSharedBegin);
-
-        ++iShared;
-        ++itSharedBegin;
-    }
-
-    for (unsigned int i = 0; i < m_devInfo.m_strItemsList.size(); ++i)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->add_stritems();
-    }
-    auto itItemBegin = m_devInfo.m_strItemsList.begin();
-    auto itItemEnd = m_devInfo.m_strItemsList.end();
-    int iItem = 0;
-    while (itItemBegin != itItemEnd)
-    {
-        InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_devinfo()->set_strshareduserid(iItem, *itItemBegin);
-
-        ++iItem;
-        ++itItemBegin;
-    }
-
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_uirelation(m_uiRelation);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strbegindate(m_strBeginDate);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strenddate(m_strEndDate);
-    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strcreatedate(m_strCreateDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_strbegindate(m_relationInfo.m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_strdevid(m_relationInfo.m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_strenddate(m_relationInfo.m_strEndDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_struserid(m_relationInfo.m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_strvalue(m_relationInfo.m_strValue);
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_uirelation(m_relationInfo.m_uiRelation);
+    
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strvalue(m_strValue);
 
 }
@@ -1776,17 +1368,30 @@ void InteractiveProtoHandler::SharingDevRsp_USR::Serializer(InteractiveMessage &
 void InteractiveProtoHandler::CancelSharedDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
-    m_strUserID = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().struserid();
-    m_strDevID = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().strdevid();
+    
+    m_relationInfo.m_strBeginDate = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().strbegindate();
+    m_relationInfo.m_strDevID = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().strdevid();
+    m_relationInfo.m_strEndDate = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().strenddate();
+    m_relationInfo.m_strUserID = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().struserid();
+    m_relationInfo.m_strValue = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().strvalue();
+    m_relationInfo.m_uiRelation = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().relationinfo().uirelation();
+
     m_strValue = InteractiveMsg.reqvalue().cancelshareddevreq_usr_value().strvalue();
 }
 
 void InteractiveProtoHandler::CancelSharedDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
 {
     Req::Serializer(InteractiveMsg);
+
     InteractiveMsg.set_type(Interactive::Message::MsgType::CancelSharedDevReq_USR_T);
-    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->set_struserid(m_strUserID);
-    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->set_strdevid(m_strDevID);
+    
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_strbegindate(m_relationInfo.m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_strdevid(m_relationInfo.m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_strenddate(m_relationInfo.m_strEndDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_struserid(m_relationInfo.m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_strvalue(m_relationInfo.m_strValue);
+    InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->mutable_relationinfo()->set_uirelation(m_relationInfo.m_uiRelation);
+
     InteractiveMsg.mutable_reqvalue()->mutable_cancelshareddevreq_usr_value()->set_strvalue(m_strValue);
 }
 
@@ -1943,17 +1548,6 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const Interactiv
         usr.m_uiStatus = ItUser.uistatus();
         usr.m_strExtend = ItUser.strextend();
 
-        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
-
-        usr.m_strItemsList.clear();
-        int iCount = ItUser.stritems_size();
-        for (int k = 0; k < iCount; ++k)
-        {
-            usr.m_strItemsList.push_back(ItUser.stritems(k));
-        }
-
         m_allFriendUserInfoList.push_back(usr);
     }
 
@@ -1984,26 +1578,6 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage
         uinfo->set_uistatus(itBegin->m_uiStatus);
         uinfo->set_strextend(itBegin->m_strExtend);
 
-        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
-        {
-            uinfo->add_stritems();
-        }
-        auto itBeginItem = itBegin->m_strItemsList.begin();
-        auto itEnditem = itBegin->m_strItemsList.end();
-        int i = 0;
-        while (itBeginItem != itEnditem)
-        {
-
-            uinfo->set_stritems(i, *itBeginItem);
-
-            ++i;
-            ++itBeginItem;
-        }
-        
         ++iUser;
         ++itBegin;
     }
@@ -2097,17 +1671,6 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::UnSerializer(const Int
         usr.m_uiStatus = ItUser.uistatus();
         usr.m_strExtend = ItUser.strextend();
 
-        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
-
-        usr.m_strItemsList.clear();
-        int iCount = ItUser.stritems_size();
-        for (int k = 0; k < iCount; ++k)
-        {
-            usr.m_strItemsList.push_back(ItUser.stritems(k));
-        }
-
         m_userInfoList.push_back(usr);
     }
 
@@ -2138,26 +1701,6 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::Serializer(Interactive
         uinfo->set_uistatus(itBegin->m_uiStatus);
         uinfo->set_strextend(itBegin->m_strExtend);
 
-        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
-        {
-            uinfo->add_stritems();
-        }
-        auto itBeginItem = itBegin->m_strItemsList.begin();
-        auto itEnditem = itBegin->m_strItemsList.end();
-        int i = 0;
-        while (itBeginItem != itEnditem)
-        {
-
-            uinfo->set_stritems(i, *itBeginItem);
-
-            ++i;
-            ++itBeginItem;
-        }
-
         ++iUser;
         ++itBegin;
     }
@@ -2182,17 +1725,6 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::UnSerializer(const 
         usr.m_strCreatedate = ItUser.strcreatedate();
         usr.m_uiStatus = ItUser.uistatus();
         usr.m_strExtend = ItUser.strextend();
-
-        UnSerializeDevList<Device>(usr.m_ownerDevInfoList, ItUser.ownerdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharingDevInfoList, ItUser.sharingdevinfo());
-        UnSerializeDevList<Device>(usr.m_sharedDevInfoList, ItUser.shareddevinfo());
-
-        usr.m_strItemsList.clear();
-        int iCount = ItUser.stritems_size();
-        for (int k = 0; k < iCount; ++k)
-        {
-            usr.m_strItemsList.push_back(ItUser.stritems(k));
-        }
 
         m_userInfoList.push_back(usr);
     }
@@ -2223,27 +1755,7 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
         uinfo->set_uistatus(itBegin->m_uiStatus);
         uinfo->set_strextend(itBegin->m_strExtend);
-
-        SerializeDevList<Device>(itBegin->m_ownerDevInfoList, uinfo->mutable_ownerdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharingDevInfoList, uinfo->mutable_sharingdevinfo());
-        SerializeDevList<Device>(itBegin->m_sharedDevInfoList, uinfo->mutable_shareddevinfo());
-
-        for (unsigned int i = 0; i < itBegin->m_strItemsList.size(); ++i)
-        {
-            uinfo->add_stritems();
-        }
-        auto itBeginItem = itBegin->m_strItemsList.begin();
-        auto itEnditem = itBegin->m_strItemsList.end();
-        int i = 0;
-        while (itBeginItem != itEnditem)
-        {
-
-            uinfo->set_stritems(i, *itBeginItem);
-
-            ++i;
-            ++itBeginItem;
-        }
-
+        
         ++iUser;
         ++itBegin;
     }

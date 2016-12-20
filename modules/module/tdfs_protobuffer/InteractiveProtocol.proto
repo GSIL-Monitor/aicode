@@ -103,11 +103,8 @@ message Device
   string strCreatedate = 5;
   uint32 uiStatus = 6;
   string strExtend = 7;
-  string strInnerinfo = 8;                      //设备上传到平台的信息  
-  string strOwnerUserID = 9;                    //设备的所有者
-  repeated string strSharingUserID = 10;        //主动分享该设备的用户ID（这里之所以是列表类型，是考虑到二次分享，从而导致该主动分享的用户ID可能是多个）
-  repeated string strSharedUserID = 11;         //设备被分享给其他用户的用户ID
-  repeated string strItems = 12;                //设备其他属性
+  string strInnerinfo = 8;                      //设备上传到平台的信息
+  
 }
 
 message User
@@ -119,10 +116,17 @@ message User
   string strCreatedate = 5;
   uint32 uiStatus = 6;
   string strExtend = 7;
-  repeated Device ownerDevInfo = 8;             //用户所拥有的设备
-  repeated Device sharingDevInfo = 9;           //用户主动分享出去的设备
-  repeated Device sharedDevInfo = 10;            //用户被分享到的设备
-  repeated string strItems = 11;                 //用户其他属性
+  
+}
+
+message Relation                                //用户与设备关系（设备与用户关系）
+{
+  string strUserID = 1;
+  string strDevID = 2;
+  uint32 uiRelation = 3;                        //关系包括，拥有0、被分享1、分享中2、转移3，目前只有0，1，2这三种关系
+  string strBeginDate = 4;
+  string strEndDate = 5;
+  string strValue = 6;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -330,28 +334,33 @@ message QueryDevRsp_USR
   repeated Device allDevInfo = 1;      //用户所拥有、分享中、被分享的设备列表
 }
 
+message QueryUserReq_USR               //设备关联的用户
+{
+  string strDevID = 1;
+  uint32 uiBeginIndex = 2;
+  string strValue = 3;
+}
+
+message QueryUserRsp_USR
+{
+  repeated User allUserInfo = 1;
+}
+
 message SharingDevReq_USR
 {
-  string strUserID = 1;                //主动分享用户
-  string strToUserID = 2;              //被分享用户
-  Device devInfo = 3;
-  uint32 uiRelation = 4;               //关系包括，拥有0、被分享1、分享中2、转移3，目前只有0，1，2这三种关系
-  string strBeginDate = 5;
-  string strEndDate = 6;
-  string strCreateDate = 7;
-  string strValue = 8;
+  Relation relationInfo = 1;
+  string strValue = 2;
 }
 
 message SharingDevRsp_USR
 {
-  string strValue = 1;  
+  string strValue = 1;
 }
 
 message CancelSharedDevReq_USR
 {
-  string strUserID = 1;
-  string strDevID = 2;
-  string strValue = 3;
+  Relation relationInfo = 1;
+  string strValue = 2;
 }
 
 message CancelSharedDevRsp_USR

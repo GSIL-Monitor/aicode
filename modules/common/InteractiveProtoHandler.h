@@ -103,10 +103,7 @@ public:
         unsigned int m_uiStatus;
         std::string m_strExtend;
         std::string m_strInnerinfo;                          //设备上传到平台的信息  
-        std::string m_strOwnerUserID;                    //设备的所有者
-        std::list<std::string> m_sharingUserIDList;   //主动分享该设备的用户ID（这里之所以是列表类型，是考虑到二次分享，从而导致该主动分享的用户ID可能是多个）
-        std::list<std::string> m_sharedUserIDList;    //设备被分享给其他用户的用户ID
-        std::list<std::string> m_strItemsList;            //设备其他属性
+
     };
 
     struct User
@@ -118,12 +115,18 @@ public:
         std::string m_strCreatedate;
         unsigned int m_uiStatus;
         std::string m_strExtend;
-        std::list<Device> m_ownerDevInfoList;             //用户所拥有的设备
-        std::list<Device> m_sharingDevInfoList;           //用户主动分享出去的设备
-        std::list<Device> m_sharedDevInfoList;            //用户被分享到的设备
-        std::list<std::string> m_strItemsList;                 //用户其他属性
+
     };
 
+    struct Relation                                //用户与设备关系（设备与用户关系）
+    {
+        std::string m_strUserID;
+        std::string m_strDevID;
+        unsigned int m_uiRelation;                        //关系包括，拥有0、被分享1、分享中2、转移3，目前只有0，1，2这三种关系
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        std::string m_strValue;
+    };
     
     struct Req
     {
@@ -368,17 +371,33 @@ public:
 
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
-    
+
+    struct QueryUserReq_USR : Req
+    {
+
+        std::string m_strDevID;
+        unsigned int m_uiBeginIndex;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUserRsp_USR : Rsp
+    {
+
+        std::list<User> m_allUserInfoList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+        
     struct SharingDevReq_USR : Req
     {
 
-        std::string m_strUserID;                //主动分享用户
-        std::string m_strToUserID;             //被分享用户
-        Device m_devInfo;
-        unsigned int m_uiRelation;           //关系包括，拥有0、被分享1、分享中2、转移3，目前只有0，1，2这三种关系
-        std::string m_strBeginDate;
-        std::string m_strEndDate;
-        std::string m_strCreateDate;
+        Relation m_relationInfo;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -399,8 +418,7 @@ public:
     struct CancelSharedDevReq_USR : Req
     {
 
-        std::string m_strUserID;
-        std::string m_strDevID;
+        Relation m_relationInfo;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
