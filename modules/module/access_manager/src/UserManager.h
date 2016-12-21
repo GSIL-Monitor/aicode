@@ -119,13 +119,15 @@ private:
 
     void InsertRelationToDB(const RelationOfUsrAndDev &relation);
 
+    void RemoveRelationToDB(const RelationOfUsrAndDev &relation);
+
     void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus);
 
     void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
     void SharingRelationToDB(const RelationOfUsrAndDev &relation);
 
-    void CancelShardRelationToDB(const std::string &strUserID, const std::string &strDevID);
+    void CancelSharedRelationToDB(const RelationOfUsrAndDev &relation);
 
 private:
     ParamInfo m_ParamInfo;

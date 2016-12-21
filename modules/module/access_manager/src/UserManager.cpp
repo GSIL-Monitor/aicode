@@ -704,7 +704,21 @@ bool UserManager::CancelSharedDeviceReq(const std::string &strMsg, const std::st
         return false;
     }
 
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
 
+    RelationOfUsrAndDev relation;
+    relation.m_iRelation = RELATION_OF_BE_SHARED;
+    relation.m_iStatus = NORMAL_STATUS;
+    relation.m_strBeginDate = req.m_relationInfo.m_strBeginDate;
+    relation.m_strEndDate = req.m_relationInfo.m_strEndDate;
+    relation.m_strCreateDate = strCurrentTime;
+    relation.m_strDevID = req.m_relationInfo.m_strDevID;
+    relation.m_strExtend = req.m_relationInfo.m_strValue;
+    relation.m_strUsrID = req.m_relationInfo.m_strUserID;
+
+    m_DBRuner.Post(boost::bind(&UserManager::CancelSharedRelationToDB, this, relation));
 
     blResult = true;
 
@@ -1059,6 +1073,19 @@ void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
     }
 }
 
+void UserManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "update t_user_device_relation set status = %d where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation);
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Update t_user_device_relation sql exec failed, sql is " << sql);
+    }
+
+}
+
 void UserManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus)
 {
     if (strDevIDList.empty())
@@ -1205,5 +1232,26 @@ void UserManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
     }
         
     InsertRelationToDB(relation);
+}
+
+void UserManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)
+{
+    bool blExist = false;
+    if (!QueryRelationExist(relation.m_strUsrID, relation.m_strDevID, relation.m_iRelation, blExist, false))
+    {
+        LOG_ERROR_RLD("Cancel shared relation failed and user id is " << relation.m_strUsrID
+            << " and device id is " << relation.m_strDevID << " and relation is " << relation.m_iRelation);
+        return;
+    }
+
+    if (!blExist)
+    {
+        LOG_ERROR_RLD("Cancel shared relation not exist and user id is " << relation.m_strUsrID
+            << " and device id is " << relation.m_strDevID << " and relation is " << relation.m_iRelation);
+        return;
+    }
+
+    RemoveRelationToDB(relation);
+
 }
 
