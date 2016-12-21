@@ -63,6 +63,8 @@ enum MsgType
   ModifyDevRsp_USR_T = 20190;
   QueryDevReq_USR_T = 20200;         //用户查询设备
   QueryDevRsp_USR_T = 20210;  
+  QueryUserReq_USR_T = 20211;        //设备相关用户
+  QueryUserRsp_USR_T = 20212;
   SharingDevReq_USR_T = 20220;       //用户共享设备
   SharingDevRsp_USR_T = 20230;
   CancelSharedDevReq_USR_T = 20240;  //用户取消共享设备
@@ -462,18 +464,19 @@ message Req
   AddDevReq_USR AddDevReq_USR_Value = 14;                         //用户添加设备
   DelDevReq_USR DelDevReq_USR_Value = 15;                         //用户删除设备
   ModifyDevReq_USR ModifyDevReq_USR_Value = 16;                   //用户修改设备
-  QueryDevReq_USR QueryDevReq_USR_Value = 17;                     //用户查询设备
-  SharingDevReq_USR SharingDevReq_USR_Value = 18;                 //用户共享设备
-  CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 19;       //用户取消共享设备
+  QueryDevReq_USR QueryDevReq_USR_Value = 17;                     //用户根据用户ID查看相关联的设备
+  QueryUserReq_USR QueryUserReq_USR_Value = 18;                   //用户根据设备ID查看相关联的用户
+  SharingDevReq_USR SharingDevReq_USR_Value = 19;                 //用户共享设备
+  CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 20;       //用户取消共享设备
   
-  AddFriendsReq_USR AddFriendsReq_USR_Value = 20;                 //用户添加好友
-  DelFriendsReq_USR DelFriendsReq_USR_Value = 21;                 //用户删除好友
-  QueryFriendsReq_USR QueryFriendsReq_USR_Value = 22;             //用户查询好友
+  AddFriendsReq_USR AddFriendsReq_USR_Value = 21;                 //用户添加好友
+  DelFriendsReq_USR DelFriendsReq_USR_Value = 22;                 //用户删除好友
+  QueryFriendsReq_USR QueryFriendsReq_USR_Value = 23;             //用户查询好友
   
-  GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 23;                //获取在线设备信息
-  BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 24;        //广播在线设备信息
-  GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 25;              //获取在线用户信息
-  BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 26;      //广播在线用户信息
+  GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 24;                //获取在线设备信息
+  BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 25;        //广播在线设备信息
+  GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 26;              //获取在线用户信息
+  BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 27;      //广播在线用户信息
   
 }
 
@@ -501,16 +504,17 @@ message Rsp
   AddDevRsp_USR AddDevRsp_USR_Value = 16;                         //用户添加设备
   DelDevRsp_USR DelDevRsp_USR_Value = 17;                         //用户删除设备
   ModifyDevRsp_USR ModifyDevRsp_USR_Value = 18;                   //用户修改设备
-  QueryDevRsp_USR QueryDevRsp_USR_Value = 19;                     //用户查询设备
-  SharingDevRsp_USR SharingDevRsp_USR_Value = 20;                 //用户共享设备
-  CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 21;       //用户取消共享设备
+  QueryDevRsp_USR QueryDevRsp_USR_Value = 19;                     //用户根据用户ID查看相关联的设备
+  QueryUserRsp_USR QueryUserRsp_USR_Value = 20;                   //用户根据设备ID查看相关联的用户
+  SharingDevRsp_USR SharingDevRsp_USR_Value = 21;                 //用户共享设备
+  CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 22;       //用户取消共享设备
   
-  AddFriendsRsp_USR AddFriendsRsp_USR_Value = 22;                 //用户添加好友
-  DelFriendsRsp_USR DelFriendsRsp_USR_Value = 23;                 //用户删除好友
-  QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 24;             //用户查询好友
+  AddFriendsRsp_USR AddFriendsRsp_USR_Value = 23;                 //用户添加好友
+  DelFriendsRsp_USR DelFriendsRsp_USR_Value = 24;                 //用户删除好友
+  QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 25;             //用户查询好友
   
-  GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 25; //获取在线设备信息
-  GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 26; //获取在线用户信息
+  GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 26; //获取在线设备信息
+  GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 27; //获取在线用户信息
 
 }
 

@@ -277,43 +277,7 @@ int main(int argc, char* argv[])
     RegUsrReq.m_userInfo.m_strUserPassword = "testpwd";
     RegUsrReq.m_userInfo.m_uiTypeInfo = 2;
     RegUsrReq.m_userInfo.m_strCreatedate = "2016-11-30";
-
-    for (int j = 0; j < 2; ++j)
-    {
-        RegUsrReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
-
-        for (int i = 0; i < 2; ++i)
-        {
-            InteractiveProtoHandler::Device devInfo;
-            devInfo.m_strDevID = "did_test";
-            devInfo.m_strDevName = "test_device_name";
-            devInfo.m_strDevPassword = "test_dev_pwd";
-            devInfo.m_uiTypeInfo = 3;
-            devInfo.m_strCreatedate = "2016-11-30";
-            devInfo.m_strInnerinfo = "dev_inner_info";
-            devInfo.m_strOwnerUserID = "uid_test";
-            for (int k = 0; k < 2; ++k)
-            {
-                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            }
-            
-            if (0 == j)
-            {
-                RegUsrReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));                
-            }
-            else if (1 == j)
-            {
-                RegUsrReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (2 == j)
-            {
-                RegUsrReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
-            }
-            
-        }
-    }
+      
 
     std::string strSerializeOutPut;
     
@@ -346,18 +310,8 @@ int main(int argc, char* argv[])
         RegUsrReq.m_userInfo.m_strUserID == RegUsrReqTmp.m_userInfo.m_strUserID &&
         RegUsrReq.m_userInfo.m_strUserName == RegUsrReqTmp.m_userInfo.m_strUserName &&
         RegUsrReq.m_userInfo.m_strUserPassword == RegUsrReqTmp.m_userInfo.m_strUserPassword &&
-        RegUsrReq.m_userInfo.m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_uiTypeInfo &&
-        //
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
-        RegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == RegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+        RegUsrReq.m_userInfo.m_uiTypeInfo == RegUsrReqTmp.m_userInfo.m_uiTypeInfo;
+        
 
     if (blTestResult)
     {
@@ -420,44 +374,7 @@ int main(int argc, char* argv[])
     UnRegUsrReq.m_userInfo.m_strUserPassword = "testpwd";
     UnRegUsrReq.m_userInfo.m_uiTypeInfo = 2;
     UnRegUsrReq.m_userInfo.m_strCreatedate = "2016-11-30";
-
-    for (int j = 0; j < 2; ++j)
-    {
-        UnRegUsrReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
-
-        for (int i = 0; i < 2; ++i)
-        {
-            InteractiveProtoHandler::Device devInfo;
-            devInfo.m_strDevID = "did_test";
-            devInfo.m_strDevName = "test_device_name";
-            devInfo.m_strDevPassword = "test_dev_pwd";
-            devInfo.m_uiTypeInfo = 3;
-            devInfo.m_strCreatedate = "2016-11-30";
-            devInfo.m_strInnerinfo = "dev_inner_info";
-            devInfo.m_strOwnerUserID = "uid_test";
-            for (int k = 0; k < 2; ++k)
-            {
-                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            }
-
-            if (0 == j)
-            {
-                UnRegUsrReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (1 == j)
-            {
-                UnRegUsrReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (2 == j)
-            {
-                UnRegUsrReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
-            }
-
-        }
-    }
-
+        
     if (!iphander.SerializeReq(UnRegUsrReq, strSerializeOutPut))
     {
         LOG_ERROR_RLD("UnRegister user req serialize failed.");
@@ -486,19 +403,8 @@ int main(int argc, char* argv[])
         UnRegUsrReq.m_userInfo.m_strUserID == UnRegUsrReqTmp.m_userInfo.m_strUserID &&
         UnRegUsrReq.m_userInfo.m_strUserName == UnRegUsrReqTmp.m_userInfo.m_strUserName &&
         UnRegUsrReq.m_userInfo.m_strUserPassword == UnRegUsrReqTmp.m_userInfo.m_strUserPassword &&
-        UnRegUsrReq.m_userInfo.m_uiTypeInfo == UnRegUsrReqTmp.m_userInfo.m_uiTypeInfo &&
-        //
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
-        UnRegUsrReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == UnRegUsrReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
-
+        UnRegUsrReq.m_userInfo.m_uiTypeInfo == UnRegUsrReqTmp.m_userInfo.m_uiTypeInfo;
+        
     if (blTestResult)
     {
         LOG_INFO_RLD("UnRegister user req serialize and unserialize compare success.");
@@ -560,44 +466,7 @@ int main(int argc, char* argv[])
     LoginReq.m_userInfo.m_strUserPassword = "testpwd";
     LoginReq.m_userInfo.m_uiTypeInfo = 2;
     LoginReq.m_userInfo.m_strCreatedate = "2016-11-30";
-
-    for (int j = 0; j < 2; ++j)
-    {
-        LoginReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
-
-        for (int i = 0; i < 2; ++i)
-        {
-            InteractiveProtoHandler::Device devInfo;
-            devInfo.m_strDevID = "did_test";
-            devInfo.m_strDevName = "test_device_name";
-            devInfo.m_strDevPassword = "test_dev_pwd";
-            devInfo.m_uiTypeInfo = 3;
-            devInfo.m_strCreatedate = "2016-11-30";
-            devInfo.m_strInnerinfo = "dev_inner_info";
-            devInfo.m_strOwnerUserID = "uid_test";
-            for (int k = 0; k < 2; ++k)
-            {
-                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            }
-
-            if (0 == j)
-            {
-                LoginReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (1 == j)
-            {
-                LoginReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (2 == j)
-            {
-                LoginReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
-            }
-
-        }
-    }
-
+        
     if (!iphander.SerializeReq(LoginReq, strSerializeOutPut))
     {
         LOG_ERROR_RLD("LoginReq user req serialize failed.");
@@ -626,18 +495,8 @@ int main(int argc, char* argv[])
         LoginReq.m_userInfo.m_strUserID == LoginReqTmp.m_userInfo.m_strUserID &&
         LoginReq.m_userInfo.m_strUserName == LoginReqTmp.m_userInfo.m_strUserName &&
         LoginReq.m_userInfo.m_strUserPassword == LoginReqTmp.m_userInfo.m_strUserPassword &&
-        LoginReq.m_userInfo.m_uiTypeInfo == LoginReqTmp.m_userInfo.m_uiTypeInfo &&
-        //
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
-        LoginReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == LoginReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+        LoginReq.m_userInfo.m_uiTypeInfo == LoginReqTmp.m_userInfo.m_uiTypeInfo;
+        
 
     if (blTestResult)
     {
@@ -666,14 +525,7 @@ int main(int argc, char* argv[])
         devInfo.m_uiTypeInfo = 3;
         devInfo.m_strCreatedate = "2016-11-30";
         devInfo.m_strInnerinfo = "dev_inner_info";
-        devInfo.m_strOwnerUserID = "uid_test";
-        for (int k = 0; k < 2; ++k)
-        {
-            devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-        }
-
+        
         LoginRsp.m_devInfoList.push_back(std::move(devInfo));      
     }
 
@@ -705,18 +557,10 @@ int main(int argc, char* argv[])
     LOG_INFO_RLD("Original m_devInfoList.front().m_strDevPassword " << LoginRsp.m_devInfoList.front().m_strDevPassword <<
         " unserialize m_devInfoList.front().m_strDevPassword " << LoginRspTmp.m_devInfoList.front().m_strDevPassword);
     LOG_INFO_RLD("Original m_devInfoList.front().m_strInnerinfo " << LoginRsp.m_devInfoList.front().m_strInnerinfo <<
-        " unserialize m_devInfoList.front().m_strInnerinfo " << LoginRspTmp.m_devInfoList.front().m_strInnerinfo);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strOwnerUserID " << LoginRsp.m_devInfoList.front().m_strOwnerUserID <<
-        " unserialize m_devInfoList.front().m_strOwnerUserID " << LoginRspTmp.m_devInfoList.front().m_strOwnerUserID);
+        " unserialize m_devInfoList.front().m_strInnerinfo " << LoginRspTmp.m_devInfoList.front().m_strInnerinfo);    
     LOG_INFO_RLD("Original m_devInfoList.front().m_uiTypeInfo " << LoginRsp.m_devInfoList.front().m_uiTypeInfo <<
         " unserialize m_devInfoList.front().m_uiTypeInfo " << LoginRspTmp.m_devInfoList.front().m_uiTypeInfo);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_sharedUserIDList.front() " << LoginRsp.m_devInfoList.front().m_sharedUserIDList.front() <<
-        " unserialize m_devInfoList.front().m_sharedUserIDList.front() " << LoginRspTmp.m_devInfoList.front().m_sharedUserIDList.front());
-    LOG_INFO_RLD("Original m_devInfoList.front().m_sharingUserIDList.front() " << LoginRsp.m_devInfoList.front().m_sharingUserIDList.front() <<
-        " unserialize m_devInfoList.front().m_sharingUserIDList.front() " << LoginRspTmp.m_devInfoList.front().m_sharingUserIDList.front());
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strItemsList.front() " << LoginRsp.m_devInfoList.front().m_strItemsList.front() <<
-        " unserialize m_devInfoList.front().m_strItemsList.front() " << LoginRspTmp.m_devInfoList.front().m_strItemsList.front());
-
+    
     blTestResult = LoginRsp.m_strValue == LoginRspTmp.m_strValue &&
         LoginRsp.m_iRetcode == LoginRspTmp.m_iRetcode &&
         LoginRsp.m_MsgType == LoginRspTmp.m_MsgType &&
@@ -729,11 +573,7 @@ int main(int argc, char* argv[])
         LoginRsp.m_devInfoList.front().m_strDevName == LoginRspTmp.m_devInfoList.front().m_strDevName &&
         LoginRsp.m_devInfoList.front().m_strDevPassword == LoginRspTmp.m_devInfoList.front().m_strDevPassword &&
         LoginRsp.m_devInfoList.front().m_strInnerinfo == LoginRspTmp.m_devInfoList.front().m_strInnerinfo &&
-        LoginRsp.m_devInfoList.front().m_strOwnerUserID == LoginRspTmp.m_devInfoList.front().m_strOwnerUserID &&
-        LoginRsp.m_devInfoList.front().m_uiTypeInfo == LoginRspTmp.m_devInfoList.front().m_uiTypeInfo &&
-        LoginRsp.m_devInfoList.front().m_sharedUserIDList.front() == LoginRspTmp.m_devInfoList.front().m_sharedUserIDList.front() &&
-        LoginRsp.m_devInfoList.front().m_sharingUserIDList.front() == LoginRspTmp.m_devInfoList.front().m_sharingUserIDList.front() &&
-        LoginRsp.m_devInfoList.front().m_strItemsList.front() == LoginRspTmp.m_devInfoList.front().m_strItemsList.front();
+        LoginRsp.m_devInfoList.front().m_uiTypeInfo == LoginRspTmp.m_devInfoList.front().m_uiTypeInfo;
        
     if (blTestResult)
     {
@@ -755,44 +595,7 @@ int main(int argc, char* argv[])
     LogoutReq.m_userInfo.m_strUserPassword = "testpwd";
     LogoutReq.m_userInfo.m_uiTypeInfo = 2;
     LogoutReq.m_userInfo.m_strCreatedate = "2016-11-30";
-
-    for (int j = 0; j < 2; ++j)
-    {
-        LogoutReq.m_userInfo.m_strItemsList.push_back(std::move(std::move(boost::lexical_cast<std::string>(j))));
-
-        for (int i = 0; i < 2; ++i)
-        {
-            InteractiveProtoHandler::Device devInfo;
-            devInfo.m_strDevID = "did_test";
-            devInfo.m_strDevName = "test_device_name";
-            devInfo.m_strDevPassword = "test_dev_pwd";
-            devInfo.m_uiTypeInfo = 3;
-            devInfo.m_strCreatedate = "2016-11-30";
-            devInfo.m_strInnerinfo = "dev_inner_info";
-            devInfo.m_strOwnerUserID = "uid_test";
-            for (int k = 0; k < 2; ++k)
-            {
-                devInfo.m_sharingUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_sharedUserIDList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-                devInfo.m_strItemsList.push_back(std::move(boost::lexical_cast<std::string>(k)));
-            }
-
-            if (0 == j)
-            {
-                LogoutReq.m_userInfo.m_ownerDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (1 == j)
-            {
-                LogoutReq.m_userInfo.m_sharingDevInfoList.push_back(std::move(devInfo));
-            }
-            else if (2 == j)
-            {
-                LogoutReq.m_userInfo.m_sharedDevInfoList.push_back(std::move(devInfo));
-            }
-
-        }
-    }
-
+        
     if (!iphander.SerializeReq(LogoutReq, strSerializeOutPut))
     {
         LOG_ERROR_RLD("LogoutReq user req serialize failed.");
@@ -821,18 +624,8 @@ int main(int argc, char* argv[])
         LogoutReq.m_userInfo.m_strUserID == LogoutReqTmp.m_userInfo.m_strUserID &&
         LogoutReq.m_userInfo.m_strUserName == LogoutReqTmp.m_userInfo.m_strUserName &&
         LogoutReq.m_userInfo.m_strUserPassword == LogoutReqTmp.m_userInfo.m_strUserPassword &&
-        LogoutReq.m_userInfo.m_uiTypeInfo == LogoutReqTmp.m_userInfo.m_uiTypeInfo &&
-        //
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strCreatedate &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevID == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevID &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevName == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevName &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strDevPassword &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strInnerinfo &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strOwnerUserID &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_uiTypeInfo &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharedUserIDList.front() &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_sharingUserIDList.front() &&
-        LogoutReq.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front() == LogoutReqTmp.m_userInfo.m_ownerDevInfoList.front().m_strItemsList.front();
+        LogoutReq.m_userInfo.m_uiTypeInfo == LogoutReqTmp.m_userInfo.m_uiTypeInfo;
+        
 
     if (blTestResult)
     {

@@ -94,6 +94,52 @@ template<typename T> void SerializeDevList(const std::list<T> &devInfoList,
     }
 }
 
+void UnSerializeUsrList(std::list<InteractiveProtoHandler::User> &usrInfoList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User > &srcUsrInfoList)
+{
+    usrInfoList.clear();
+    int iCount = srcUsrInfoList.size();
+    for (int i = 0; i < iCount; ++i)
+    {
+        InteractiveProtoHandler::User usrInfo;
+        usrInfo.m_strUserID = srcUsrInfoList.Get(i).struserid();
+        usrInfo.m_strUserName = srcUsrInfoList.Get(i).strusername();
+        usrInfo.m_strUserPassword = srcUsrInfoList.Get(i).struserpassword();
+        usrInfo.m_uiTypeInfo = srcUsrInfoList.Get(i).uitypeinfo();
+        usrInfo.m_strCreatedate = srcUsrInfoList.Get(i).strcreatedate();
+        usrInfo.m_uiStatus = srcUsrInfoList.Get(i).uistatus();
+        usrInfo.m_strExtend = srcUsrInfoList.Get(i).strextend();
+
+        usrInfoList.push_back(std::move(usrInfo));
+    }
+}
+
+void SerializeUsrList(const std::list<InteractiveProtoHandler::User> &usrInfoList,
+     ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >* pDstUsrInfoList)
+ {
+     for (unsigned int i = 0; i < usrInfoList.size(); ++i)
+     {
+         pDstUsrInfoList->Add();
+     }
+
+     auto itBegin = usrInfoList.begin();
+     auto itEnd = usrInfoList.end();
+     int i = 0;
+     while (itBegin != itEnd)
+     {
+         pDstUsrInfoList->Mutable(i)->set_struserid(itBegin->m_strUserID);
+         pDstUsrInfoList->Mutable(i)->set_strusername(itBegin->m_strUserName);
+         pDstUsrInfoList->Mutable(i)->set_struserpassword(itBegin->m_strUserPassword);
+         pDstUsrInfoList->Mutable(i)->set_uitypeinfo(itBegin->m_uiTypeInfo);
+         pDstUsrInfoList->Mutable(i)->set_strcreatedate(itBegin->m_strCreatedate);
+         pDstUsrInfoList->Mutable(i)->set_uistatus(itBegin->m_uiStatus);
+         pDstUsrInfoList->Mutable(i)->set_strextend(itBegin->m_strExtend);
+
+         ++i;
+         ++itBegin;
+     }
+ }
+
 
 
 
@@ -1317,6 +1363,38 @@ void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &In
     auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->mutable_alldevinfo();
     SerializeDevList<Device>(m_allDevInfoList, uinfo);
 
+}
+
+void InteractiveProtoHandler::QueryUserReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().queryuserreq_usr_value().strdevid();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().queryuserreq_usr_value().uibeginindex();
+    m_strValue = InteractiveMsg.reqvalue().queryuserreq_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryUserReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUserReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryuserreq_usr_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryuserreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryuserreq_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryUserRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    UnSerializeUsrList(m_allUserInfoList, InteractiveMsg.rspvalue().queryuserrsp_usr_value().alluserinfo());
+}
+
+void InteractiveProtoHandler::QueryUserRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUserRsp_USR_T);
+
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->mutable_alluserinfo();
+    SerializeUsrList(m_allUserInfoList, uinfo);
 }
 
 void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

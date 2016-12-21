@@ -135,6 +135,8 @@ enum MsgType {
   ModifyDevRsp_USR_T = 20190,
   QueryDevReq_USR_T = 20200,
   QueryDevRsp_USR_T = 20210,
+  QueryUserReq_USR_T = 20211,
+  QueryUserRsp_USR_T = 20212,
   SharingDevReq_USR_T = 20220,
   SharingDevRsp_USR_T = 20230,
   CancelSharedDevReq_USR_T = 20240,
@@ -6194,82 +6196,91 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDevReq_USR* release_querydevreq_usr_value();
   void set_allocated_querydevreq_usr_value(::Interactive::Message::QueryDevReq_USR* querydevreq_usr_value);
 
-  // optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 18;
+  // optional .Interactive.Message.QueryUserReq_USR QueryUserReq_USR_Value = 18;
+  bool has_queryuserreq_usr_value() const;
+  void clear_queryuserreq_usr_value();
+  static const int kQueryUserReqUSRValueFieldNumber = 18;
+  const ::Interactive::Message::QueryUserReq_USR& queryuserreq_usr_value() const;
+  ::Interactive::Message::QueryUserReq_USR* mutable_queryuserreq_usr_value();
+  ::Interactive::Message::QueryUserReq_USR* release_queryuserreq_usr_value();
+  void set_allocated_queryuserreq_usr_value(::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value);
+
+  // optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 19;
   bool has_sharingdevreq_usr_value() const;
   void clear_sharingdevreq_usr_value();
-  static const int kSharingDevReqUSRValueFieldNumber = 18;
+  static const int kSharingDevReqUSRValueFieldNumber = 19;
   const ::Interactive::Message::SharingDevReq_USR& sharingdevreq_usr_value() const;
   ::Interactive::Message::SharingDevReq_USR* mutable_sharingdevreq_usr_value();
   ::Interactive::Message::SharingDevReq_USR* release_sharingdevreq_usr_value();
   void set_allocated_sharingdevreq_usr_value(::Interactive::Message::SharingDevReq_USR* sharingdevreq_usr_value);
 
-  // optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 19;
+  // optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 20;
   bool has_cancelshareddevreq_usr_value() const;
   void clear_cancelshareddevreq_usr_value();
-  static const int kCancelSharedDevReqUSRValueFieldNumber = 19;
+  static const int kCancelSharedDevReqUSRValueFieldNumber = 20;
   const ::Interactive::Message::CancelSharedDevReq_USR& cancelshareddevreq_usr_value() const;
   ::Interactive::Message::CancelSharedDevReq_USR* mutable_cancelshareddevreq_usr_value();
   ::Interactive::Message::CancelSharedDevReq_USR* release_cancelshareddevreq_usr_value();
   void set_allocated_cancelshareddevreq_usr_value(::Interactive::Message::CancelSharedDevReq_USR* cancelshareddevreq_usr_value);
 
-  // optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 20;
+  // optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 21;
   bool has_addfriendsreq_usr_value() const;
   void clear_addfriendsreq_usr_value();
-  static const int kAddFriendsReqUSRValueFieldNumber = 20;
+  static const int kAddFriendsReqUSRValueFieldNumber = 21;
   const ::Interactive::Message::AddFriendsReq_USR& addfriendsreq_usr_value() const;
   ::Interactive::Message::AddFriendsReq_USR* mutable_addfriendsreq_usr_value();
   ::Interactive::Message::AddFriendsReq_USR* release_addfriendsreq_usr_value();
   void set_allocated_addfriendsreq_usr_value(::Interactive::Message::AddFriendsReq_USR* addfriendsreq_usr_value);
 
-  // optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 21;
+  // optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 22;
   bool has_delfriendsreq_usr_value() const;
   void clear_delfriendsreq_usr_value();
-  static const int kDelFriendsReqUSRValueFieldNumber = 21;
+  static const int kDelFriendsReqUSRValueFieldNumber = 22;
   const ::Interactive::Message::DelFriendsReq_USR& delfriendsreq_usr_value() const;
   ::Interactive::Message::DelFriendsReq_USR* mutable_delfriendsreq_usr_value();
   ::Interactive::Message::DelFriendsReq_USR* release_delfriendsreq_usr_value();
   void set_allocated_delfriendsreq_usr_value(::Interactive::Message::DelFriendsReq_USR* delfriendsreq_usr_value);
 
-  // optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 22;
+  // optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 23;
   bool has_queryfriendsreq_usr_value() const;
   void clear_queryfriendsreq_usr_value();
-  static const int kQueryFriendsReqUSRValueFieldNumber = 22;
+  static const int kQueryFriendsReqUSRValueFieldNumber = 23;
   const ::Interactive::Message::QueryFriendsReq_USR& queryfriendsreq_usr_value() const;
   ::Interactive::Message::QueryFriendsReq_USR* mutable_queryfriendsreq_usr_value();
   ::Interactive::Message::QueryFriendsReq_USR* release_queryfriendsreq_usr_value();
   void set_allocated_queryfriendsreq_usr_value(::Interactive::Message::QueryFriendsReq_USR* queryfriendsreq_usr_value);
 
-  // optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 23;
+  // optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 24;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
-  static const int kGetOnlineDevInfoReqINNERValueFieldNumber = 23;
+  static const int kGetOnlineDevInfoReqINNERValueFieldNumber = 24;
   const ::Interactive::Message::GetOnlineDevInfoReq_INNER& getonlinedevinforeq_inner_value() const;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* mutable_getonlinedevinforeq_inner_value();
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* release_getonlinedevinforeq_inner_value();
   void set_allocated_getonlinedevinforeq_inner_value(::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value);
 
-  // optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 24;
+  // optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 25;
   bool has_broadcastonlinedevinfo_inner_value() const;
   void clear_broadcastonlinedevinfo_inner_value();
-  static const int kBroadcastOnlineDevInfoINNERValueFieldNumber = 24;
+  static const int kBroadcastOnlineDevInfoINNERValueFieldNumber = 25;
   const ::Interactive::Message::BroadcastOnlineDevInfo_INNER& broadcastonlinedevinfo_inner_value() const;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* mutable_broadcastonlinedevinfo_inner_value();
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* release_broadcastonlinedevinfo_inner_value();
   void set_allocated_broadcastonlinedevinfo_inner_value(::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value);
 
-  // optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 25;
+  // optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 26;
   bool has_getonlineuserinforeq_inner_value() const;
   void clear_getonlineuserinforeq_inner_value();
-  static const int kGetOnlineUserInfoReqINNERValueFieldNumber = 25;
+  static const int kGetOnlineUserInfoReqINNERValueFieldNumber = 26;
   const ::Interactive::Message::GetOnlineUserInfoReq_INNER& getonlineuserinforeq_inner_value() const;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* mutable_getonlineuserinforeq_inner_value();
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* release_getonlineuserinforeq_inner_value();
   void set_allocated_getonlineuserinforeq_inner_value(::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value);
 
-  // optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 26;
+  // optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 27;
   bool has_broadcastonlineuserinfo_inner_value() const;
   void clear_broadcastonlineuserinfo_inner_value();
-  static const int kBroadcastOnlineUserInfoINNERValueFieldNumber = 26;
+  static const int kBroadcastOnlineUserInfoINNERValueFieldNumber = 27;
   const ::Interactive::Message::BroadcastOnlineUserInfo_INNER& broadcastonlineuserinfo_inner_value() const;
   ::Interactive::Message::BroadcastOnlineUserInfo_INNER* mutable_broadcastonlineuserinfo_inner_value();
   ::Interactive::Message::BroadcastOnlineUserInfo_INNER* release_broadcastonlineuserinfo_inner_value();
@@ -6296,6 +6307,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DelDevReq_USR* deldevreq_usr_value_;
   ::Interactive::Message::ModifyDevReq_USR* modifydevreq_usr_value_;
   ::Interactive::Message::QueryDevReq_USR* querydevreq_usr_value_;
+  ::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value_;
   ::Interactive::Message::SharingDevReq_USR* sharingdevreq_usr_value_;
   ::Interactive::Message::CancelSharedDevReq_USR* cancelshareddevreq_usr_value_;
   ::Interactive::Message::AddFriendsReq_USR* addfriendsreq_usr_value_;
@@ -6550,64 +6562,73 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDevRsp_USR* release_querydevrsp_usr_value();
   void set_allocated_querydevrsp_usr_value(::Interactive::Message::QueryDevRsp_USR* querydevrsp_usr_value);
 
-  // optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 20;
+  // optional .Interactive.Message.QueryUserRsp_USR QueryUserRsp_USR_Value = 20;
+  bool has_queryuserrsp_usr_value() const;
+  void clear_queryuserrsp_usr_value();
+  static const int kQueryUserRspUSRValueFieldNumber = 20;
+  const ::Interactive::Message::QueryUserRsp_USR& queryuserrsp_usr_value() const;
+  ::Interactive::Message::QueryUserRsp_USR* mutable_queryuserrsp_usr_value();
+  ::Interactive::Message::QueryUserRsp_USR* release_queryuserrsp_usr_value();
+  void set_allocated_queryuserrsp_usr_value(::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value);
+
+  // optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 21;
   bool has_sharingdevrsp_usr_value() const;
   void clear_sharingdevrsp_usr_value();
-  static const int kSharingDevRspUSRValueFieldNumber = 20;
+  static const int kSharingDevRspUSRValueFieldNumber = 21;
   const ::Interactive::Message::SharingDevRsp_USR& sharingdevrsp_usr_value() const;
   ::Interactive::Message::SharingDevRsp_USR* mutable_sharingdevrsp_usr_value();
   ::Interactive::Message::SharingDevRsp_USR* release_sharingdevrsp_usr_value();
   void set_allocated_sharingdevrsp_usr_value(::Interactive::Message::SharingDevRsp_USR* sharingdevrsp_usr_value);
 
-  // optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 21;
+  // optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 22;
   bool has_cancelshareddevrsp_usr_value() const;
   void clear_cancelshareddevrsp_usr_value();
-  static const int kCancelSharedDevRspUSRValueFieldNumber = 21;
+  static const int kCancelSharedDevRspUSRValueFieldNumber = 22;
   const ::Interactive::Message::CancelSharedDevRsp_USR& cancelshareddevrsp_usr_value() const;
   ::Interactive::Message::CancelSharedDevRsp_USR* mutable_cancelshareddevrsp_usr_value();
   ::Interactive::Message::CancelSharedDevRsp_USR* release_cancelshareddevrsp_usr_value();
   void set_allocated_cancelshareddevrsp_usr_value(::Interactive::Message::CancelSharedDevRsp_USR* cancelshareddevrsp_usr_value);
 
-  // optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 22;
+  // optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 23;
   bool has_addfriendsrsp_usr_value() const;
   void clear_addfriendsrsp_usr_value();
-  static const int kAddFriendsRspUSRValueFieldNumber = 22;
+  static const int kAddFriendsRspUSRValueFieldNumber = 23;
   const ::Interactive::Message::AddFriendsRsp_USR& addfriendsrsp_usr_value() const;
   ::Interactive::Message::AddFriendsRsp_USR* mutable_addfriendsrsp_usr_value();
   ::Interactive::Message::AddFriendsRsp_USR* release_addfriendsrsp_usr_value();
   void set_allocated_addfriendsrsp_usr_value(::Interactive::Message::AddFriendsRsp_USR* addfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 23;
+  // optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 24;
   bool has_delfriendsrsp_usr_value() const;
   void clear_delfriendsrsp_usr_value();
-  static const int kDelFriendsRspUSRValueFieldNumber = 23;
+  static const int kDelFriendsRspUSRValueFieldNumber = 24;
   const ::Interactive::Message::DelFriendsRsp_USR& delfriendsrsp_usr_value() const;
   ::Interactive::Message::DelFriendsRsp_USR* mutable_delfriendsrsp_usr_value();
   ::Interactive::Message::DelFriendsRsp_USR* release_delfriendsrsp_usr_value();
   void set_allocated_delfriendsrsp_usr_value(::Interactive::Message::DelFriendsRsp_USR* delfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 24;
+  // optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 25;
   bool has_queryfriendsrsp_usr_value() const;
   void clear_queryfriendsrsp_usr_value();
-  static const int kQueryFriendsRspUSRValueFieldNumber = 24;
+  static const int kQueryFriendsRspUSRValueFieldNumber = 25;
   const ::Interactive::Message::QueryFriendsRsp_USR& queryfriendsrsp_usr_value() const;
   ::Interactive::Message::QueryFriendsRsp_USR* mutable_queryfriendsrsp_usr_value();
   ::Interactive::Message::QueryFriendsRsp_USR* release_queryfriendsrsp_usr_value();
   void set_allocated_queryfriendsrsp_usr_value(::Interactive::Message::QueryFriendsRsp_USR* queryfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 25;
+  // optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 26;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
-  static const int kGetOnlineDevInfoRspINNERValueFieldNumber = 25;
+  static const int kGetOnlineDevInfoRspINNERValueFieldNumber = 26;
   const ::Interactive::Message::GetOnlineDevInfoRsp_INNER& getonlinedevinforsp_inner_value() const;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* mutable_getonlinedevinforsp_inner_value();
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* release_getonlinedevinforsp_inner_value();
   void set_allocated_getonlinedevinforsp_inner_value(::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value);
 
-  // optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 26;
+  // optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 27;
   bool has_getonlineuserinforsp_inner_value() const;
   void clear_getonlineuserinforsp_inner_value();
-  static const int kGetOnlineUserInfoRspINNERValueFieldNumber = 26;
+  static const int kGetOnlineUserInfoRspINNERValueFieldNumber = 27;
   const ::Interactive::Message::GetOnlineUserInfoRsp_INNER& getonlineuserinforsp_inner_value() const;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* mutable_getonlineuserinforsp_inner_value();
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* release_getonlineuserinforsp_inner_value();
@@ -6635,6 +6656,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DelDevRsp_USR* deldevrsp_usr_value_;
   ::Interactive::Message::ModifyDevRsp_USR* modifydevrsp_usr_value_;
   ::Interactive::Message::QueryDevRsp_USR* querydevrsp_usr_value_;
+  ::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value_;
   ::Interactive::Message::SharingDevRsp_USR* sharingdevrsp_usr_value_;
   ::Interactive::Message::CancelSharedDevRsp_USR* cancelshareddevrsp_usr_value_;
   ::Interactive::Message::AddFriendsRsp_USR* addfriendsrsp_usr_value_;
@@ -12633,7 +12655,46 @@ inline void Req::set_allocated_querydevreq_usr_value(::Interactive::Message::Que
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 18;
+// optional .Interactive.Message.QueryUserReq_USR QueryUserReq_USR_Value = 18;
+inline bool Req::has_queryuserreq_usr_value() const {
+  return this != internal_default_instance() && queryuserreq_usr_value_ != NULL;
+}
+inline void Req::clear_queryuserreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryuserreq_usr_value_ != NULL) delete queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserReq_USR& Req::queryuserreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryUserReq_USR_Value)
+  return queryuserreq_usr_value_ != NULL ? *queryuserreq_usr_value_
+                         : *::Interactive::Message::QueryUserReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserReq_USR* Req::mutable_queryuserreq_usr_value() {
+  
+  if (queryuserreq_usr_value_ == NULL) {
+    queryuserreq_usr_value_ = new ::Interactive::Message::QueryUserReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryUserReq_USR_Value)
+  return queryuserreq_usr_value_;
+}
+inline ::Interactive::Message::QueryUserReq_USR* Req::release_queryuserreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryUserReq_USR_Value)
+  
+  ::Interactive::Message::QueryUserReq_USR* temp = queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryuserreq_usr_value(::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value) {
+  delete queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = queryuserreq_usr_value;
+  if (queryuserreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUserReq_USR_Value)
+}
+
+// optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 19;
 inline bool Req::has_sharingdevreq_usr_value() const {
   return this != internal_default_instance() && sharingdevreq_usr_value_ != NULL;
 }
@@ -12672,7 +12733,7 @@ inline void Req::set_allocated_sharingdevreq_usr_value(::Interactive::Message::S
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.SharingDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 19;
+// optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 20;
 inline bool Req::has_cancelshareddevreq_usr_value() const {
   return this != internal_default_instance() && cancelshareddevreq_usr_value_ != NULL;
 }
@@ -12711,7 +12772,7 @@ inline void Req::set_allocated_cancelshareddevreq_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.CancelSharedDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 20;
+// optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 21;
 inline bool Req::has_addfriendsreq_usr_value() const {
   return this != internal_default_instance() && addfriendsreq_usr_value_ != NULL;
 }
@@ -12750,7 +12811,7 @@ inline void Req::set_allocated_addfriendsreq_usr_value(::Interactive::Message::A
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 21;
+// optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 22;
 inline bool Req::has_delfriendsreq_usr_value() const {
   return this != internal_default_instance() && delfriendsreq_usr_value_ != NULL;
 }
@@ -12789,7 +12850,7 @@ inline void Req::set_allocated_delfriendsreq_usr_value(::Interactive::Message::D
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DelFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 22;
+// optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 23;
 inline bool Req::has_queryfriendsreq_usr_value() const {
   return this != internal_default_instance() && queryfriendsreq_usr_value_ != NULL;
 }
@@ -12828,7 +12889,7 @@ inline void Req::set_allocated_queryfriendsreq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 23;
+// optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 24;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
 }
@@ -12867,7 +12928,7 @@ inline void Req::set_allocated_getonlinedevinforeq_inner_value(::Interactive::Me
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetOnlineDevInfoReq_INNER_Value)
 }
 
-// optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 24;
+// optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 25;
 inline bool Req::has_broadcastonlinedevinfo_inner_value() const {
   return this != internal_default_instance() && broadcastonlinedevinfo_inner_value_ != NULL;
 }
@@ -12906,7 +12967,7 @@ inline void Req::set_allocated_broadcastonlinedevinfo_inner_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.BroadcastOnlineDevInfo_INNER_Value)
 }
 
-// optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 25;
+// optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 26;
 inline bool Req::has_getonlineuserinforeq_inner_value() const {
   return this != internal_default_instance() && getonlineuserinforeq_inner_value_ != NULL;
 }
@@ -12945,7 +13006,7 @@ inline void Req::set_allocated_getonlineuserinforeq_inner_value(::Interactive::M
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetOnlineUserInfoReq_INNER_Value)
 }
 
-// optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 26;
+// optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 27;
 inline bool Req::has_broadcastonlineuserinfo_inner_value() const {
   return this != internal_default_instance() && broadcastonlineuserinfo_inner_value_ != NULL;
 }
@@ -13712,7 +13773,46 @@ inline void Rsp::set_allocated_querydevrsp_usr_value(::Interactive::Message::Que
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 20;
+// optional .Interactive.Message.QueryUserRsp_USR QueryUserRsp_USR_Value = 20;
+inline bool Rsp::has_queryuserrsp_usr_value() const {
+  return this != internal_default_instance() && queryuserrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryuserrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryuserrsp_usr_value_ != NULL) delete queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserRsp_USR& Rsp::queryuserrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  return queryuserrsp_usr_value_ != NULL ? *queryuserrsp_usr_value_
+                         : *::Interactive::Message::QueryUserRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserRsp_USR* Rsp::mutable_queryuserrsp_usr_value() {
+  
+  if (queryuserrsp_usr_value_ == NULL) {
+    queryuserrsp_usr_value_ = new ::Interactive::Message::QueryUserRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  return queryuserrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryUserRsp_USR* Rsp::release_queryuserrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  
+  ::Interactive::Message::QueryUserRsp_USR* temp = queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryuserrsp_usr_value(::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value) {
+  delete queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = queryuserrsp_usr_value;
+  if (queryuserrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+}
+
+// optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 21;
 inline bool Rsp::has_sharingdevrsp_usr_value() const {
   return this != internal_default_instance() && sharingdevrsp_usr_value_ != NULL;
 }
@@ -13751,7 +13851,7 @@ inline void Rsp::set_allocated_sharingdevrsp_usr_value(::Interactive::Message::S
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.SharingDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 21;
+// optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 22;
 inline bool Rsp::has_cancelshareddevrsp_usr_value() const {
   return this != internal_default_instance() && cancelshareddevrsp_usr_value_ != NULL;
 }
@@ -13790,7 +13890,7 @@ inline void Rsp::set_allocated_cancelshareddevrsp_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.CancelSharedDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 22;
+// optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 23;
 inline bool Rsp::has_addfriendsrsp_usr_value() const {
   return this != internal_default_instance() && addfriendsrsp_usr_value_ != NULL;
 }
@@ -13829,7 +13929,7 @@ inline void Rsp::set_allocated_addfriendsrsp_usr_value(::Interactive::Message::A
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 23;
+// optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 24;
 inline bool Rsp::has_delfriendsrsp_usr_value() const {
   return this != internal_default_instance() && delfriendsrsp_usr_value_ != NULL;
 }
@@ -13868,7 +13968,7 @@ inline void Rsp::set_allocated_delfriendsrsp_usr_value(::Interactive::Message::D
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DelFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 24;
+// optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 25;
 inline bool Rsp::has_queryfriendsrsp_usr_value() const {
   return this != internal_default_instance() && queryfriendsrsp_usr_value_ != NULL;
 }
@@ -13907,7 +14007,7 @@ inline void Rsp::set_allocated_queryfriendsrsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 25;
+// optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 26;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
 }
@@ -13946,7 +14046,7 @@ inline void Rsp::set_allocated_getonlinedevinforsp_inner_value(::Interactive::Me
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.GetOnlineDevInfoRsp_INNER_Value)
 }
 
-// optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 26;
+// optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 27;
 inline bool Rsp::has_getonlineuserinforsp_inner_value() const {
   return this != internal_default_instance() && getonlineuserinforsp_inner_value_ != NULL;
 }

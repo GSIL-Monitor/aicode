@@ -297,6 +297,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelDevReq_USR_T, boost::bind(&UserManager::DelDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T, boost::bind(&UserManager::ModDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevReq_USR_T, boost::bind(&UserManager::QueryDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUserReq_USR_T, boost::bind(&UserManager::QueryUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::SharingDevReq_USR_T, boost::bind(&UserManager::SharingDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::CancelSharedDevReq_USR_T, boost::bind(&UserManager::CancelSharedDeviceReq, &Umg, _1, _2, _3));
 

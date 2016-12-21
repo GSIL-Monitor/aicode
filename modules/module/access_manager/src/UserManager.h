@@ -87,6 +87,8 @@ public:
 
     bool QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -101,7 +103,8 @@ private:
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList, 
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool QueryRelationByDevID(const std::string &strDevID, const int iRelation, std::list<std::string> &UserIDList);
+    bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::User> &UserList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
 

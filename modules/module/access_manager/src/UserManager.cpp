@@ -581,7 +581,7 @@ bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &s
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User query rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+        LOG_INFO_RLD("Query device rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
             " and result is " << blResult);
 
     }
@@ -604,6 +604,61 @@ bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &s
 
     blResult = true;
 
+
+    return blResult;
+}
+
+bool UserManager::QueryUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::QueryUserReq_USR req;
+    std::list<InteractiveProtoHandler::User> UserList;
+
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &UserList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryUserRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_allUserInfoList.swap(UserList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query user rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryRelationByDevID(req.m_strDevID, UserList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query user info failed and user id is " << req.m_strDevID);
+        return false;
+    }
+
+
+    blResult = true;
 
     return blResult;
 }
@@ -865,19 +920,106 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
     return true;
 }
 
-bool UserManager::QueryRelationByDevID(const std::string &strDevID, const int iRelation, std::list<std::string> &UserIDList)
+bool UserManager::QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::User> &UserList,
+    const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     memset(sql, 0, sizeof(sql));
-    const char *sqlft = "select rel.userid from t_user_device_relation rel"
-        " where rel.deviceid = '%s' and rel.relation = '%d'";
+    const char *sqlft = "select usr.userid, usr.username, usr.userpassword, usr.typeinfo, usr.createdate, usr.status, usr.extend"
+        " from t_user_info usr, t_user_device_relation rel "
+        " where usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0";
+    snprintf(sql, sizeof(sql), sqlft, strDevID.c_str());
 
-    snprintf(sql, sizeof(sql), sqlft, strDevID.c_str(), iRelation);
+    std::string strSql;
+    char cTmp[128] = { 0 };
+    snprintf(cTmp, sizeof(cTmp), " limit %u, %u", uiBeginIndex, uiPageSize);
+    strSql = std::string(sql) + std::string(cTmp);
 
-    if (!m_pMysql->QueryExec(std::string(sql), boost::bind(&UserManager::UserInfoRelationSqlCB, this, _1, _2, _3, &UserIDList)))
+    std::list<boost::any> ResultList;
+    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
     {
-        LOG_ERROR_RLD("Query device relation failed and device id is " << strDevID << " and relation is " << iRelation);
-        return false;
+        boost::shared_ptr<std::list<InteractiveProtoHandler::User> > pUsrList;
+        pUsrList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::User> >>(ResultList.front());
+
+        auto itBegin = pUsrList->begin();
+        auto itEnd = pUsrList->end();
+        while (itBegin != itEnd)
+        {
+            UserList.push_back(*itBegin);
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query relation by device id get result from cache and sql is " << strSql);
+    }
+    else
+    {
+        std::list<InteractiveProtoHandler::User> *pUsrList = &UserList;
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)//, unsigned int &uiResult)
+        {
+            if (pUsrList->empty() || (pUsrList->size() < (1 + uiRowNum)))
+            {
+                InteractiveProtoHandler::User usrInfoTmp;
+                pUsrList->push_back(std::move(usrInfoTmp));
+            }
+
+            InteractiveProtoHandler::User &usrInfo = pUsrList->back();
+
+            switch (uiColumnNum)
+            {
+            case 0:
+                usrInfo.m_strUserID = strColumn;
+                break;
+            case 1:
+                usrInfo.m_strUserName = strColumn;
+                break;
+            case 2:
+                usrInfo.m_strUserPassword = strColumn;
+                break;
+            case 3:
+                usrInfo.m_uiTypeInfo = boost::lexical_cast<unsigned int>(strColumn);
+                break;
+            case 4:
+                usrInfo.m_strCreatedate = strColumn;
+                break;
+            case 5:
+                usrInfo.m_uiStatus = boost::lexical_cast<unsigned int>(strColumn);
+                break;
+            case 6:
+                usrInfo.m_strExtend = strColumn;
+                break;
+            default:
+                LOG_ERROR_RLD("UsrInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+                break;
+            }
+        };
+        
+        if (!m_pMysql->QueryExec(strSql, FuncTmp))
+        {
+            LOG_ERROR_RLD("Query relation by device id failed and device id is " << strDevID);
+            return false;
+        }
+
+        if (UserList.empty())
+        {
+            LOG_INFO_RLD("QueryRelationByDevID result is empty and device id is " << strDevID);
+            return true;
+        }
+        
+        boost::shared_ptr<std::list<InteractiveProtoHandler::User> > pUsrListTmp(new std::list<InteractiveProtoHandler::User>);
+        auto itBeginUsr = UserList.begin();
+        auto itEndUsr = UserList.end();
+        while (itBeginUsr != itEndUsr)
+        {
+            pUsrListTmp->push_back(*itBeginUsr);
+            ++itBeginUsr;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(pUsrListTmp);
+
+        m_DBCache.SetResult(strSql, pResultList);
+
+        LOG_INFO_RLD("Query relation by device id get result from db and sql is " << strSql);
     }
 
     return true;

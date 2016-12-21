@@ -69,6 +69,8 @@ public:
         ModifyDevRsp_USR_T = 20190,
         QueryDevReq_USR_T = 20200,               //用户查询设备
         QueryDevRsp_USR_T = 20210,
+        QueryUserReq_USR_T = 20211,
+        QueryUserRsp_USR_T = 20212,
         SharingDevReq_USR_T = 20220,             //用户共享设备
         SharingDevRsp_USR_T = 20230,
         CancelSharedDevReq_USR_T = 20240,    //用户取消共享设备
