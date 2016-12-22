@@ -52,6 +52,8 @@ public:
         RegisterUserRsp_USR_T = 20030,
         UnRegisterUserReq_USR_T = 20040,       //用户注销
         UnRegisterUserRsp_USR_T = 20050,
+        QueryUsrInfoReq_USR_T = 20051,
+        QueryUsrInfoRsp_USR_T = 20052,
         LoginReq_USR_T = 20060,                      //用户登录用户设备管理服务器
         LoginRsp_USR_T = 20070,
         LogoutReq_USR_T = 20080,                   //用户登出用户设备管理服务器
@@ -67,6 +69,8 @@ public:
         DelDevRsp_USR_T = 20170,
         ModifyDevReq_USR_T = 20180,             //用户修改设备
         ModifyDevRsp_USR_T = 20190,
+        QueryDevInfoReq_USR_T = 20191,
+        QueryDevInfoRsp_USR_T = 20192,
         QueryDevReq_USR_T = 20200,               //用户查询设备
         QueryDevRsp_USR_T = 20210,
         QueryUserReq_USR_T = 20211,
@@ -190,10 +194,32 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
-    struct UnRegisterUserRsp_USR :Rsp
+    struct UnRegisterUserRsp_USR : Rsp
     {
 
         std::string m_strUserID;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUsrInfoReq_USR : Req
+    {
+
+        std::string m_strUserID;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUsrInfoRsp_USR : Rsp
+    {
+
+        User m_userInfo;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -215,7 +241,7 @@ public:
     struct LoginRsp_USR : Rsp
     {
 
-        std::list<Device> m_devInfoList; //用户登录之后返回用户所关联的设备信息，包括了拥有、分享中、被分享的所有设备，这些类型在Device中有字段表示
+        std::list<Relation> m_reInfoList; //用户登录之后返回用户所关联的设备信息，包括了拥有、分享中、被分享的所有设备，这些类型在Device中有字段表示
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -352,6 +378,26 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryDevInfoReq_USR : Req
+    {
+        std::string m_strDevID;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDevInfoRsp_USR : Rsp
+    {
+        Device m_devInfo;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     struct QueryDevReq_USR : Req
     {
 
@@ -366,8 +412,8 @@ public:
 
     struct QueryDevRsp_USR : Rsp
     {
-
-        std::list<Device> m_allDevInfoList;
+                        
+        std::list<Relation> m_allRelationInfoList;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -389,7 +435,7 @@ public:
     struct QueryUserRsp_USR : Rsp
     {
 
-        std::list<User> m_allUserInfoList;
+        std::list<Relation> m_allRelationInfoList;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -588,6 +634,11 @@ private:
     bool UnRegisterUserRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool UnRegisterUserRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool QueryUsrInfoReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryUsrInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryUsrInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryUsrInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
     bool LoginReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool LoginReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool LoginRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
@@ -623,10 +674,21 @@ private:
     bool ModifyDevRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool ModifyDevRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
     
+    bool QueryDevInfoReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryDevInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryDevInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryDevInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+    
     bool QueryDevReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool QueryDevReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryDevRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryDevRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryUserReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryUserReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryUserRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryUserRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
     bool SharingDevReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool SharingDevReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);

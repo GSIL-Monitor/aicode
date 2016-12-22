@@ -518,15 +518,15 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < 2; ++i)
     {
-        InteractiveProtoHandler::Device devInfo;
-        devInfo.m_strDevID = "did_test";
-        devInfo.m_strDevName = "test_device_name";
-        devInfo.m_strDevPassword = "test_dev_pwd";
-        devInfo.m_uiTypeInfo = 3;
-        devInfo.m_strCreatedate = "2016-11-30";
-        devInfo.m_strInnerinfo = "dev_inner_info";
+        InteractiveProtoHandler::Relation rel;
+        rel.m_strBeginDate = "2016-11-30";
+        rel.m_strDevID = "did_test";
+        rel.m_strEndDate = "2019-12-12";
+        rel.m_strUserID = "test_userid";
+        rel.m_strValue = "test_value";
+        rel.m_uiRelation = 1;
         
-        LoginRsp.m_devInfoList.push_back(std::move(devInfo));      
+        LoginRsp.m_reInfoList.push_back(std::move(rel));      
     }
 
 
@@ -548,32 +548,12 @@ int main(int argc, char* argv[])
     LOG_INFO_RLD("Original m_strSID " << LoginRsp.m_strSID << " unserialize m_strSID " << LoginRspTmp.m_strSID);
     LOG_INFO_RLD("Original m_uiMsgSeq " << LoginRsp.m_uiMsgSeq << " unserialize m_uiMsgSeq " << LoginRspTmp.m_uiMsgSeq);
     LOG_INFO_RLD("Original m_strRetMsg " << LoginRsp.m_strRetMsg << " unserialize m_strRetMsg " << LoginRsp.m_strRetMsg);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strCreatedate " << LoginRsp.m_devInfoList.front().m_strCreatedate <<
-        " unserialize m_devInfoList.front().m_strCreatedate " << LoginRspTmp.m_devInfoList.front().m_strCreatedate);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevID " << LoginRsp.m_devInfoList.front().m_strDevID <<
-        " unserialize m_devInfoList.front().m_strDevID " << LoginRspTmp.m_devInfoList.front().m_strDevID);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevName " << LoginRsp.m_devInfoList.front().m_strDevName <<
-        " unserialize m_devInfoList.front().m_strDevName " << LoginRspTmp.m_devInfoList.front().m_strDevName);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strDevPassword " << LoginRsp.m_devInfoList.front().m_strDevPassword <<
-        " unserialize m_devInfoList.front().m_strDevPassword " << LoginRspTmp.m_devInfoList.front().m_strDevPassword);
-    LOG_INFO_RLD("Original m_devInfoList.front().m_strInnerinfo " << LoginRsp.m_devInfoList.front().m_strInnerinfo <<
-        " unserialize m_devInfoList.front().m_strInnerinfo " << LoginRspTmp.m_devInfoList.front().m_strInnerinfo);    
-    LOG_INFO_RLD("Original m_devInfoList.front().m_uiTypeInfo " << LoginRsp.m_devInfoList.front().m_uiTypeInfo <<
-        " unserialize m_devInfoList.front().m_uiTypeInfo " << LoginRspTmp.m_devInfoList.front().m_uiTypeInfo);
-    
+        
     blTestResult = LoginRsp.m_strValue == LoginRspTmp.m_strValue &&
         LoginRsp.m_iRetcode == LoginRspTmp.m_iRetcode &&
         LoginRsp.m_MsgType == LoginRspTmp.m_MsgType &&
         LoginRsp.m_strRetMsg == LoginRspTmp.m_strRetMsg &&
-        LoginRsp.m_strSID == LoginRspTmp.m_strSID &&
-
-        //
-        LoginRsp.m_devInfoList.front().m_strCreatedate == LoginRspTmp.m_devInfoList.front().m_strCreatedate &&
-        LoginRsp.m_devInfoList.front().m_strDevID == LoginRspTmp.m_devInfoList.front().m_strDevID &&
-        LoginRsp.m_devInfoList.front().m_strDevName == LoginRspTmp.m_devInfoList.front().m_strDevName &&
-        LoginRsp.m_devInfoList.front().m_strDevPassword == LoginRspTmp.m_devInfoList.front().m_strDevPassword &&
-        LoginRsp.m_devInfoList.front().m_strInnerinfo == LoginRspTmp.m_devInfoList.front().m_strInnerinfo &&
-        LoginRsp.m_devInfoList.front().m_uiTypeInfo == LoginRspTmp.m_devInfoList.front().m_uiTypeInfo;
+        LoginRsp.m_strSID == LoginRspTmp.m_strSID;
        
     if (blTestResult)
     {
@@ -582,6 +562,7 @@ int main(int argc, char* argv[])
     else
     {
         LOG_ERROR_RLD("Login user rsp serialize and unserialize compare failure.");
+        return 0;
     }
 
     //用户登出请求
@@ -634,6 +615,7 @@ int main(int argc, char* argv[])
     else
     {
         LOG_ERROR_RLD("Logout user req serialize and unserialize compare failure.");
+        return 0;
     }
 
     //用户登出响应
@@ -673,6 +655,7 @@ int main(int argc, char* argv[])
     else
     {
         LOG_ERROR_RLD("Logout user rsp serialize and unserialize compare failure.");
+        return 0;
     }
 
     //握手请求
@@ -709,6 +692,7 @@ int main(int argc, char* argv[])
     else
     {
         LOG_ERROR_RLD("ShakehandReq user req serialize and unserialize compare failure.");
+        return 0;
     }
 
     //握手响应
@@ -746,6 +730,7 @@ int main(int argc, char* argv[])
     else
     {
         LOG_ERROR_RLD("ShakehandRsp user rsp serialize and unserialize compare failure.");
+        return 0;
     }
         
     ////test code

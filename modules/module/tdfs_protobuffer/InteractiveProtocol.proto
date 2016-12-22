@@ -46,6 +46,8 @@ enum MsgType
   RegisterUserRsp_USR_T = 20030;
   UnRegisterUserReq_USR_T = 20040;   //用户注销
   UnRegisterUserRsp_USR_T = 20050;
+  QueryUsrInfoReq_USR_T = 20051;     //用户查询
+  QueryUsrInfoRsp_USR_T = 20052;
   LoginReq_USR_T = 20060;            //用户登录用户设备管理服务器
   LoginRsp_USR_T = 20070; 
   LogoutReq_USR_T = 20080;           //用户登出用户设备管理服务器
@@ -61,7 +63,9 @@ enum MsgType
   DelDevRsp_USR_T = 20170;
   ModifyDevReq_USR_T = 20180;        //用户修改设备
   ModifyDevRsp_USR_T = 20190;
-  QueryDevReq_USR_T = 20200;         //用户查询设备
+  QueryDevInfoReq_USR_T = 20191;     //用户查询设备
+  QueryDevInfoRsp_USR_T = 20192;
+  QueryDevReq_USR_T = 20200;         //用户查询设备关系
   QueryDevRsp_USR_T = 20210;  
   QueryUserReq_USR_T = 20211;        //设备相关用户
   QueryUserRsp_USR_T = 20212;
@@ -242,6 +246,18 @@ message UnRegisterUserRsp_USR
   string strValue = 2;  
 }
 
+message QueryUsrInfoReq_USR
+{
+  string strUserID = 1;
+  string strValue = 2;
+}
+
+message QueryUsrInfoRsp_USR
+{
+  User userInfo = 1;
+  string strValue = 2;
+}
+
 message LoginReq_USR
 {
   User userInfo = 1;
@@ -250,7 +266,7 @@ message LoginReq_USR
 
 message LoginRsp_USR
 {
-  repeated Device devInfo = 1; //用户登录之后返回用户所关联的设备信息，包括了拥有、分享中、被分享的所有设备，这些类型在Device中有字段表示
+  repeated Relation relationInfo = 1;
   string strValue = 2;
 }
 
@@ -324,6 +340,18 @@ message ModifyDevRsp_USR
   string strValue = 1;
 }
 
+message QueryDevInfoReq_USR
+{
+  string strDevID = 1;
+  string strValue = 2;
+}
+
+message QueryDevInfoRsp_USR
+{
+  Device devInfo = 1;
+  string strValue = 2;
+}
+
 message QueryDevReq_USR
 {
   string strUserID = 1;
@@ -333,7 +361,7 @@ message QueryDevReq_USR
 
 message QueryDevRsp_USR
 {
-  repeated Device allDevInfo = 1;      //用户所拥有、分享中、被分享的设备列表
+  repeated Relation allRelationInfo = 1;      
 }
 
 message QueryUserReq_USR               //设备关联的用户
@@ -345,7 +373,7 @@ message QueryUserReq_USR               //设备关联的用户
 
 message QueryUserRsp_USR
 {
-  repeated User allUserInfo = 1;
+  repeated Relation allRelationInfo = 1;
 }
 
 message SharingDevReq_USR
@@ -446,75 +474,79 @@ message BroadcastOnlineUserInfo_INNER
 
 message Req
 {
-  GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 1;      //设备获取接入服务器地址 
-  LoginReq_DEV LoginReq_DEV_Value = 2;                            //设备登录接入管理服务器
-  LogoutReq_DEV LogoutReq_DEV_Value = 3;                          //设备登出接入管理服务器
-  ShakehandReq_DEV ShakehandReq_DEV_Value = 4;                    //设备与接入管理服务器握手
-  ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 5;                  //设备请求配置信息
-  AuthReq_DEV AuthReq_DEV_Value = 6;                              //平台请求设备鉴权
+  GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 10;      //设备获取接入服务器地址 
+  LoginReq_DEV LoginReq_DEV_Value = 20;                            //设备登录接入管理服务器
+  LogoutReq_DEV LogoutReq_DEV_Value = 30;                          //设备登出接入管理服务器
+  ShakehandReq_DEV ShakehandReq_DEV_Value = 40;                    //设备与接入管理服务器握手
+  ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;                  //设备请求配置信息
+  AuthReq_DEV AuthReq_DEV_Value = 60;                              //平台请求设备鉴权
   
-  GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 7;      //用户获取用户设备管理服务器地址
-  RegisterUserReq_USR RegisterUserReq_USR_Value = 8;              //用户注册
-  UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 9;          //用户注销
-  LoginReq_USR LoginReq_USR_Value = 10;                           //用户登录用户设备管理服务器
-  LogoutReq_USR LogoutReq_USR_Value = 11;                         //用户登出用户设备管理服务器
-  ShakehandReq_USR ShakehandReq_USR_Value = 12;                   //用户与用户设备管理服务器握手
-  ConfigInfoReq_USR ConfigInfoReq_USR_Value = 13;                 //用户请求配置信息
+  GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
+  RegisterUserReq_USR RegisterUserReq_USR_Value = 80;              //用户注册
+  UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;          //用户注销
+  QueryUsrInfoReq_USR QueryUsrInfoReq_USR_Value = 100;             //用户查询
+  LoginReq_USR LoginReq_USR_Value = 110;                           //用户登录用户设备管理服务器
+  LogoutReq_USR LogoutReq_USR_Value = 120;                         //用户登出用户设备管理服务器
+  ShakehandReq_USR ShakehandReq_USR_Value = 130;                   //用户与用户设备管理服务器握手
+  ConfigInfoReq_USR ConfigInfoReq_USR_Value = 140;                 //用户请求配置信息
   
-  AddDevReq_USR AddDevReq_USR_Value = 14;                         //用户添加设备
-  DelDevReq_USR DelDevReq_USR_Value = 15;                         //用户删除设备
-  ModifyDevReq_USR ModifyDevReq_USR_Value = 16;                   //用户修改设备
-  QueryDevReq_USR QueryDevReq_USR_Value = 17;                     //用户根据用户ID查看相关联的设备
-  QueryUserReq_USR QueryUserReq_USR_Value = 18;                   //用户根据设备ID查看相关联的用户
-  SharingDevReq_USR SharingDevReq_USR_Value = 19;                 //用户共享设备
-  CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 20;       //用户取消共享设备
+  AddDevReq_USR AddDevReq_USR_Value = 150;                         //用户添加设备
+  DelDevReq_USR DelDevReq_USR_Value = 160;                         //用户删除设备
+  ModifyDevReq_USR ModifyDevReq_USR_Value = 170;                   //用户修改设备
+  QueryDevInfoReq_USR QueryDevInfoReq_USR_Value = 180;             //用户查询设备
+  QueryDevReq_USR QueryDevReq_USR_Value = 190;                     //用户根据用户ID查看相关联的设备
+  QueryUserReq_USR QueryUserReq_USR_Value = 200;                   //用户根据设备ID查看相关联的用户
+  SharingDevReq_USR SharingDevReq_USR_Value = 210;                 //用户共享设备
+  CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 220;       //用户取消共享设备
   
-  AddFriendsReq_USR AddFriendsReq_USR_Value = 21;                 //用户添加好友
-  DelFriendsReq_USR DelFriendsReq_USR_Value = 22;                 //用户删除好友
-  QueryFriendsReq_USR QueryFriendsReq_USR_Value = 23;             //用户查询好友
+  AddFriendsReq_USR AddFriendsReq_USR_Value = 230;                 //用户添加好友
+  DelFriendsReq_USR DelFriendsReq_USR_Value = 240;                 //用户删除好友
+  QueryFriendsReq_USR QueryFriendsReq_USR_Value = 250;             //用户查询好友
   
-  GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 24;                //获取在线设备信息
-  BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 25;        //广播在线设备信息
-  GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 26;              //获取在线用户信息
-  BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 27;      //广播在线用户信息
+  GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;                //获取在线设备信息
+  BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
+  GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;              //获取在线用户信息
+  BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 290;      //广播在线用户信息
   
 }
 
 message Rsp
 {
-  int32 iRetcode = 1;                                             //返回码
-  string strRetMsg = 2;                                           //返回消息
+  int32 iRetcode = 10;                                             //返回码
+  string strRetMsg = 20;                                           //返回消息
   
   
-  GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 3;      //设备获取接入服务器地址 
-  LoginRsp_DEV LoginRsp_DEV_Value = 4;                            //设备登录接入管理服务器
-  LogoutRsp_DEV LogoutRsp_DEV_Value = 5;                          //设备登出接入管理服务器
-  ShakehandRsp_DEV ShakehandRsp_DEV_Value = 6;                    //设备与接入管理服务器握手
-  ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 7;                  //设备请求配置信息
-  AuthRsp_DEV AuthRsp_DEV_Value = 8;                              //平台请求设备鉴权
+  GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 30;      //设备获取接入服务器地址 
+  LoginRsp_DEV LoginRsp_DEV_Value = 40;                            //设备登录接入管理服务器
+  LogoutRsp_DEV LogoutRsp_DEV_Value = 50;                          //设备登出接入管理服务器
+  ShakehandRsp_DEV ShakehandRsp_DEV_Value = 60;                    //设备与接入管理服务器握手
+  ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;                  //设备请求配置信息
+  AuthRsp_DEV AuthRsp_DEV_Value = 80;                              //平台请求设备鉴权
   
-  GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 9;      //用户获取用户设备管理服务器地址
-  RegisterUserRsp_USR RegisterUserRsp_USR_Value = 10;              //用户注册
-  UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 11;          //用户注销
-  LoginRsp_USR LoginRsp_USR_Value = 12;                           //用户登录用户设备管理服务器
-  LogoutRsp_USR LogoutRsp_USR_Value = 13;                         //用户登出用户设备管理服务器
-  ShakehandRsp_USR ShakehandRsp_USR_Value = 14;                   //用户与用户设备管理服务器握手
-  ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 15;                 //用户请求配置信息
+  GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
+  RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;             //用户注册
+  UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;         //用户注销
+  QueryUsrInfoRsp_USR QueryUsrInfoRsp_USR_Value = 120;             //用户查询
+  LoginRsp_USR LoginRsp_USR_Value = 130;                           //用户登录用户设备管理服务器
+  LogoutRsp_USR LogoutRsp_USR_Value = 140;                         //用户登出用户设备管理服务器
+  ShakehandRsp_USR ShakehandRsp_USR_Value = 150;                   //用户与用户设备管理服务器握手
+  ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 160;                 //用户请求配置信息
   
-  AddDevRsp_USR AddDevRsp_USR_Value = 16;                         //用户添加设备
-  DelDevRsp_USR DelDevRsp_USR_Value = 17;                         //用户删除设备
-  ModifyDevRsp_USR ModifyDevRsp_USR_Value = 18;                   //用户修改设备
-  QueryDevRsp_USR QueryDevRsp_USR_Value = 19;                     //用户根据用户ID查看相关联的设备
-  QueryUserRsp_USR QueryUserRsp_USR_Value = 20;                   //用户根据设备ID查看相关联的用户
-  SharingDevRsp_USR SharingDevRsp_USR_Value = 21;                 //用户共享设备
-  CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 22;       //用户取消共享设备
+  AddDevRsp_USR AddDevRsp_USR_Value = 170;                         //用户添加设备
+  DelDevRsp_USR DelDevRsp_USR_Value = 180;                         //用户删除设备
+  ModifyDevRsp_USR ModifyDevRsp_USR_Value = 190;                   //用户修改设备
+  QueryDevInfoRsp_USR QueryDevInfoRsp_USR_Value = 200;             //用户查询设备
+  QueryDevRsp_USR QueryDevRsp_USR_Value = 210;                     //用户根据用户ID查看相关联的设备
+  QueryUserRsp_USR QueryUserRsp_USR_Value = 220;                   //用户根据设备ID查看相关联的用户
+  SharingDevRsp_USR SharingDevRsp_USR_Value = 230;                 //用户共享设备
+  CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 240;       //用户取消共享设备
   
-  AddFriendsRsp_USR AddFriendsRsp_USR_Value = 23;                 //用户添加好友
-  DelFriendsRsp_USR DelFriendsRsp_USR_Value = 24;                 //用户删除好友
-  QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 25;             //用户查询好友
+  AddFriendsRsp_USR AddFriendsRsp_USR_Value = 250;                 //用户添加好友
+  DelFriendsRsp_USR DelFriendsRsp_USR_Value = 260;                 //用户删除好友
+  QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 270;             //用户查询好友
   
-  GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 26; //获取在线设备信息
-  GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 27; //获取在线用户信息
+  GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
+  GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息
 
 }
 

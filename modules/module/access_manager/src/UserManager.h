@@ -73,6 +73,8 @@ public:
 
     bool UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -84,6 +86,8 @@ public:
     bool DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool ModDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryDevInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
@@ -100,10 +104,10 @@ private:
 
     bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
 
-    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Device> &DevList, 
+    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList, 
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::User> &UserList,
+    bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
@@ -111,10 +115,7 @@ private:
     void UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
 
     void DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
-        std::list<InteractiveProtoHandler::Device> *pDevList);
-
-    void UserInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
-        std::list<std::string> *pUserIDList);
+        std::list<InteractiveProtoHandler::Relation> *pRelationList);
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
@@ -131,6 +132,10 @@ private:
     void SharingRelationToDB(const RelationOfUsrAndDev &relation);
 
     void CancelSharedRelationToDB(const RelationOfUsrAndDev &relation);
+
+    bool QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache = true);
+
+    bool QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache = true);
 
 private:
     ParamInfo m_ParamInfo;

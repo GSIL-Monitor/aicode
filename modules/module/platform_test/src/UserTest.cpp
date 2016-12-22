@@ -545,16 +545,15 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 
         //解析登录之后获得的该用户关联的设备列表
         unsigned int iLoop = 0;
-        auto itBegin = LoginUsrRsp.m_devInfoList.begin();
-        auto itEnd = LoginUsrRsp.m_devInfoList.end();
+        auto itBegin = LoginUsrRsp.m_reInfoList.begin();
+        auto itEnd = LoginUsrRsp.m_reInfoList.end();
         while (itBegin != itEnd)
         {
             
             LOG_INFO_RLD("Device " << iLoop << "============");
-            LOG_INFO_RLD("Device id is " << itBegin->m_strDevID << " and device name is " << itBegin->m_strDevName <<
-                " and device password is " << itBegin->m_strDevPassword << " and type info is " << itBegin->m_uiTypeInfo <<
-                " and createdate is " << itBegin->m_strCreatedate << " and status is " << itBegin->m_uiStatus <<
-                " and extend is " << itBegin->m_strExtend << " and inner info is " << itBegin->m_strInnerinfo);
+            LOG_INFO_RLD("Query user id is " << itBegin->m_strUserID << " and device id is " << itBegin->m_strDevID <<
+                " and begin date is " << itBegin->m_strBeginDate << " and end date is " << itBegin->m_strEndDate <<
+                " and value is " << itBegin->m_strValue);
             
             ++iLoop;
             ++itBegin;
@@ -774,22 +773,50 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 
         //解析查询获得的该用户关联的设备列表
         unsigned int iLoop = 0;
-        auto itBegin = rsp.m_allDevInfoList.begin();
-        auto itEnd = rsp.m_allDevInfoList.end();
+        auto itBegin = rsp.m_allRelationInfoList.begin();
+        auto itEnd = rsp.m_allRelationInfoList.end();
         while (itBegin != itEnd)
         {
 
             LOG_INFO_RLD("Query Device " << iLoop << "+++++++++++++++++++++++++++");
-            LOG_INFO_RLD("Query Device id is " << itBegin->m_strDevID << " and device name is " << itBegin->m_strDevName <<
-                " and device password is " << itBegin->m_strDevPassword << " and type info is " << itBegin->m_uiTypeInfo <<
-                " and createdate is " << itBegin->m_strCreatedate << " and status is " << itBegin->m_uiStatus <<
-                " and extend is " << itBegin->m_strExtend << " and inner info is " << itBegin->m_strInnerinfo);
+            LOG_INFO_RLD("Query user id is " << itBegin->m_strUserID << " and device id is " << itBegin->m_strDevID <<
+                " and begin date is " << itBegin->m_strBeginDate << " and end date is " << itBegin->m_strEndDate <<
+                " and value is " << itBegin->m_strValue);
             
             ++iLoop;
             ++itBegin;
         }
         
         LOG_INFO_RLD("Query device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+    }
+    else if (InteractiveProtoHandler::MsgType::QueryUserRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::QueryUserRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Query device rsp unserialize failed.");
+            return;
+        }
+
+        //解析查询获得的该设备关联的关系列表
+        unsigned int iLoop = 0;
+        auto itBegin = rsp.m_allRelationInfoList.begin();
+        auto itEnd = rsp.m_allRelationInfoList.end();
+        while (itBegin != itEnd)
+        {
+
+            LOG_INFO_RLD("Query user " << iLoop << "*********************************");
+            LOG_INFO_RLD("Query user id is " << itBegin->m_strUserID << " and device id is " << itBegin->m_strDevID <<
+                " and begin date is " << itBegin->m_strBeginDate << " and end date is " << itBegin->m_strEndDate <<
+                " and value is " << itBegin->m_strValue);
+
+            ++iLoop;
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query user rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
 
     }

@@ -78,12 +78,16 @@ class LogoutRsp_USR;
 class ModifyDevReq_USR;
 class ModifyDevRsp_USR;
 class PermissionOfUser;
+class QueryDevInfoReq_USR;
+class QueryDevInfoRsp_USR;
 class QueryDevReq_USR;
 class QueryDevRsp_USR;
 class QueryFriendsReq_USR;
 class QueryFriendsRsp_USR;
 class QueryUserReq_USR;
 class QueryUserRsp_USR;
+class QueryUsrInfoReq_USR;
+class QueryUsrInfoRsp_USR;
 class RegisterUserReq_USR;
 class RegisterUserRsp_USR;
 class Relation;
@@ -119,6 +123,8 @@ enum MsgType {
   RegisterUserRsp_USR_T = 20030,
   UnRegisterUserReq_USR_T = 20040,
   UnRegisterUserRsp_USR_T = 20050,
+  QueryUsrInfoReq_USR_T = 20051,
+  QueryUsrInfoRsp_USR_T = 20052,
   LoginReq_USR_T = 20060,
   LoginRsp_USR_T = 20070,
   LogoutReq_USR_T = 20080,
@@ -133,8 +139,12 @@ enum MsgType {
   DelDevRsp_USR_T = 20170,
   ModifyDevReq_USR_T = 20180,
   ModifyDevRsp_USR_T = 20190,
+  QueryDevInfoReq_USR_T = 20191,
+  QueryDevInfoRsp_USR_T = 20192,
   QueryDevReq_USR_T = 20200,
   QueryDevRsp_USR_T = 20210,
+  QueryUserReq_USR_T = 20211,
+  QueryUserRsp_USR_T = 20212,
   SharingDevReq_USR_T = 20220,
   SharingDevRsp_USR_T = 20230,
   CancelSharedDevReq_USR_T = 20240,
@@ -2573,6 +2583,210 @@ extern ::google::protobuf::internal::ExplicitlyConstructed<UnRegisterUserRsp_USR
 
 // -------------------------------------------------------------------
 
+class QueryUsrInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUsrInfoReq_USR) */ {
+ public:
+  QueryUsrInfoReq_USR();
+  virtual ~QueryUsrInfoReq_USR();
+
+  QueryUsrInfoReq_USR(const QueryUsrInfoReq_USR& from);
+
+  inline QueryUsrInfoReq_USR& operator=(const QueryUsrInfoReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUsrInfoReq_USR& default_instance();
+
+  static const QueryUsrInfoReq_USR* internal_default_instance();
+
+  void Swap(QueryUsrInfoReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUsrInfoReq_USR* New() const { return New(NULL); }
+
+  QueryUsrInfoReq_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryUsrInfoReq_USR& from);
+  void MergeFrom(const QueryUsrInfoReq_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryUsrInfoReq_USR* other);
+  void UnsafeMergeFrom(const QueryUsrInfoReq_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // optional string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUsrInfoReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryUsrInfoReq_USR> QueryUsrInfoReq_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
+class QueryUsrInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUsrInfoRsp_USR) */ {
+ public:
+  QueryUsrInfoRsp_USR();
+  virtual ~QueryUsrInfoRsp_USR();
+
+  QueryUsrInfoRsp_USR(const QueryUsrInfoRsp_USR& from);
+
+  inline QueryUsrInfoRsp_USR& operator=(const QueryUsrInfoRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUsrInfoRsp_USR& default_instance();
+
+  static const QueryUsrInfoRsp_USR* internal_default_instance();
+
+  void Swap(QueryUsrInfoRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUsrInfoRsp_USR* New() const { return New(NULL); }
+
+  QueryUsrInfoRsp_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryUsrInfoRsp_USR& from);
+  void MergeFrom(const QueryUsrInfoRsp_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryUsrInfoRsp_USR* other);
+  void UnsafeMergeFrom(const QueryUsrInfoRsp_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .Interactive.Message.User userInfo = 1;
+  bool has_userinfo() const;
+  void clear_userinfo();
+  static const int kUserInfoFieldNumber = 1;
+  const ::Interactive::Message::User& userinfo() const;
+  ::Interactive::Message::User* mutable_userinfo();
+  ::Interactive::Message::User* release_userinfo();
+  void set_allocated_userinfo(::Interactive::Message::User* userinfo);
+
+  // optional string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUsrInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::Interactive::Message::User* userinfo_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryUsrInfoRsp_USR> QueryUsrInfoRsp_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
 class LoginReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.LoginReq_USR) */ {
  public:
   LoginReq_USR();
@@ -2737,17 +2951,17 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated .Interactive.Message.Device devInfo = 1;
-  int devinfo_size() const;
-  void clear_devinfo();
-  static const int kDevInfoFieldNumber = 1;
-  const ::Interactive::Message::Device& devinfo(int index) const;
-  ::Interactive::Message::Device* mutable_devinfo(int index);
-  ::Interactive::Message::Device* add_devinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-      mutable_devinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-      devinfo() const;
+  // repeated .Interactive.Message.Relation relationInfo = 1;
+  int relationinfo_size() const;
+  void clear_relationinfo();
+  static const int kRelationInfoFieldNumber = 1;
+  const ::Interactive::Message::Relation& relationinfo(int index) const;
+  ::Interactive::Message::Relation* mutable_relationinfo(int index);
+  ::Interactive::Message::Relation* add_relationinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+      mutable_relationinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+      relationinfo() const;
 
   // optional string strValue = 2;
   void clear_strvalue();
@@ -2764,7 +2978,7 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device > devinfo_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > relationinfo_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
@@ -3975,6 +4189,210 @@ extern ::google::protobuf::internal::ExplicitlyConstructed<ModifyDevRsp_USR> Mod
 
 // -------------------------------------------------------------------
 
+class QueryDevInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDevInfoReq_USR) */ {
+ public:
+  QueryDevInfoReq_USR();
+  virtual ~QueryDevInfoReq_USR();
+
+  QueryDevInfoReq_USR(const QueryDevInfoReq_USR& from);
+
+  inline QueryDevInfoReq_USR& operator=(const QueryDevInfoReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDevInfoReq_USR& default_instance();
+
+  static const QueryDevInfoReq_USR* internal_default_instance();
+
+  void Swap(QueryDevInfoReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDevInfoReq_USR* New() const { return New(NULL); }
+
+  QueryDevInfoReq_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryDevInfoReq_USR& from);
+  void MergeFrom(const QueryDevInfoReq_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryDevInfoReq_USR* other);
+  void UnsafeMergeFrom(const QueryDevInfoReq_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // optional string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDevInfoReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryDevInfoReq_USR> QueryDevInfoReq_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
+class QueryDevInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDevInfoRsp_USR) */ {
+ public:
+  QueryDevInfoRsp_USR();
+  virtual ~QueryDevInfoRsp_USR();
+
+  QueryDevInfoRsp_USR(const QueryDevInfoRsp_USR& from);
+
+  inline QueryDevInfoRsp_USR& operator=(const QueryDevInfoRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDevInfoRsp_USR& default_instance();
+
+  static const QueryDevInfoRsp_USR* internal_default_instance();
+
+  void Swap(QueryDevInfoRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDevInfoRsp_USR* New() const { return New(NULL); }
+
+  QueryDevInfoRsp_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryDevInfoRsp_USR& from);
+  void MergeFrom(const QueryDevInfoRsp_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(QueryDevInfoRsp_USR* other);
+  void UnsafeMergeFrom(const QueryDevInfoRsp_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .Interactive.Message.Device devInfo = 1;
+  bool has_devinfo() const;
+  void clear_devinfo();
+  static const int kDevInfoFieldNumber = 1;
+  const ::Interactive::Message::Device& devinfo() const;
+  ::Interactive::Message::Device* mutable_devinfo();
+  ::Interactive::Message::Device* release_devinfo();
+  void set_allocated_devinfo(::Interactive::Message::Device* devinfo);
+
+  // optional string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDevInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::Interactive::Message::Device* devinfo_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<QueryDevInfoRsp_USR> QueryDevInfoRsp_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
 class QueryDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDevReq_USR) */ {
  public:
   QueryDevReq_USR();
@@ -4148,23 +4566,23 @@ class QueryDevRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
-  // repeated .Interactive.Message.Device allDevInfo = 1;
-  int alldevinfo_size() const;
-  void clear_alldevinfo();
-  static const int kAllDevInfoFieldNumber = 1;
-  const ::Interactive::Message::Device& alldevinfo(int index) const;
-  ::Interactive::Message::Device* mutable_alldevinfo(int index);
-  ::Interactive::Message::Device* add_alldevinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-      mutable_alldevinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-      alldevinfo() const;
+  // repeated .Interactive.Message.Relation allRelationInfo = 1;
+  int allrelationinfo_size() const;
+  void clear_allrelationinfo();
+  static const int kAllRelationInfoFieldNumber = 1;
+  const ::Interactive::Message::Relation& allrelationinfo(int index) const;
+  ::Interactive::Message::Relation* mutable_allrelationinfo(int index);
+  ::Interactive::Message::Relation* add_allrelationinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+      mutable_allrelationinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+      allrelationinfo() const;
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDevRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device > alldevinfo_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > allrelationinfo_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -4350,23 +4768,23 @@ class QueryUserRsp_USR : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // repeated .Interactive.Message.User allUserInfo = 1;
-  int alluserinfo_size() const;
-  void clear_alluserinfo();
-  static const int kAllUserInfoFieldNumber = 1;
-  const ::Interactive::Message::User& alluserinfo(int index) const;
-  ::Interactive::Message::User* mutable_alluserinfo(int index);
-  ::Interactive::Message::User* add_alluserinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
-      mutable_alluserinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
-      alluserinfo() const;
+  // repeated .Interactive.Message.Relation allRelationInfo = 1;
+  int allrelationinfo_size() const;
+  void clear_allrelationinfo();
+  static const int kAllRelationInfoFieldNumber = 1;
+  const ::Interactive::Message::Relation& allrelationinfo(int index) const;
+  ::Interactive::Message::Relation* mutable_allrelationinfo(int index);
+  ::Interactive::Message::Relation* add_allrelationinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+      mutable_allrelationinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+      allrelationinfo() const;
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User > alluserinfo_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > allrelationinfo_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -6041,235 +6459,262 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
 
   // accessors -------------------------------------------------------
 
-  // optional .Interactive.Message.GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 1;
+  // optional .Interactive.Message.GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 10;
   bool has_getaccessaddressreq_dev_value() const;
   void clear_getaccessaddressreq_dev_value();
-  static const int kGetAccessAddressReqDEVValueFieldNumber = 1;
+  static const int kGetAccessAddressReqDEVValueFieldNumber = 10;
   const ::Interactive::Message::GetAccessAddressReq_DEV& getaccessaddressreq_dev_value() const;
   ::Interactive::Message::GetAccessAddressReq_DEV* mutable_getaccessaddressreq_dev_value();
   ::Interactive::Message::GetAccessAddressReq_DEV* release_getaccessaddressreq_dev_value();
   void set_allocated_getaccessaddressreq_dev_value(::Interactive::Message::GetAccessAddressReq_DEV* getaccessaddressreq_dev_value);
 
-  // optional .Interactive.Message.LoginReq_DEV LoginReq_DEV_Value = 2;
+  // optional .Interactive.Message.LoginReq_DEV LoginReq_DEV_Value = 20;
   bool has_loginreq_dev_value() const;
   void clear_loginreq_dev_value();
-  static const int kLoginReqDEVValueFieldNumber = 2;
+  static const int kLoginReqDEVValueFieldNumber = 20;
   const ::Interactive::Message::LoginReq_DEV& loginreq_dev_value() const;
   ::Interactive::Message::LoginReq_DEV* mutable_loginreq_dev_value();
   ::Interactive::Message::LoginReq_DEV* release_loginreq_dev_value();
   void set_allocated_loginreq_dev_value(::Interactive::Message::LoginReq_DEV* loginreq_dev_value);
 
-  // optional .Interactive.Message.LogoutReq_DEV LogoutReq_DEV_Value = 3;
+  // optional .Interactive.Message.LogoutReq_DEV LogoutReq_DEV_Value = 30;
   bool has_logoutreq_dev_value() const;
   void clear_logoutreq_dev_value();
-  static const int kLogoutReqDEVValueFieldNumber = 3;
+  static const int kLogoutReqDEVValueFieldNumber = 30;
   const ::Interactive::Message::LogoutReq_DEV& logoutreq_dev_value() const;
   ::Interactive::Message::LogoutReq_DEV* mutable_logoutreq_dev_value();
   ::Interactive::Message::LogoutReq_DEV* release_logoutreq_dev_value();
   void set_allocated_logoutreq_dev_value(::Interactive::Message::LogoutReq_DEV* logoutreq_dev_value);
 
-  // optional .Interactive.Message.ShakehandReq_DEV ShakehandReq_DEV_Value = 4;
+  // optional .Interactive.Message.ShakehandReq_DEV ShakehandReq_DEV_Value = 40;
   bool has_shakehandreq_dev_value() const;
   void clear_shakehandreq_dev_value();
-  static const int kShakehandReqDEVValueFieldNumber = 4;
+  static const int kShakehandReqDEVValueFieldNumber = 40;
   const ::Interactive::Message::ShakehandReq_DEV& shakehandreq_dev_value() const;
   ::Interactive::Message::ShakehandReq_DEV* mutable_shakehandreq_dev_value();
   ::Interactive::Message::ShakehandReq_DEV* release_shakehandreq_dev_value();
   void set_allocated_shakehandreq_dev_value(::Interactive::Message::ShakehandReq_DEV* shakehandreq_dev_value);
 
-  // optional .Interactive.Message.ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 5;
+  // optional .Interactive.Message.ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;
   bool has_configinforeq_dev_value() const;
   void clear_configinforeq_dev_value();
-  static const int kConfigInfoReqDEVValueFieldNumber = 5;
+  static const int kConfigInfoReqDEVValueFieldNumber = 50;
   const ::Interactive::Message::ConfigInfoReq_DEV& configinforeq_dev_value() const;
   ::Interactive::Message::ConfigInfoReq_DEV* mutable_configinforeq_dev_value();
   ::Interactive::Message::ConfigInfoReq_DEV* release_configinforeq_dev_value();
   void set_allocated_configinforeq_dev_value(::Interactive::Message::ConfigInfoReq_DEV* configinforeq_dev_value);
 
-  // optional .Interactive.Message.AuthReq_DEV AuthReq_DEV_Value = 6;
+  // optional .Interactive.Message.AuthReq_DEV AuthReq_DEV_Value = 60;
   bool has_authreq_dev_value() const;
   void clear_authreq_dev_value();
-  static const int kAuthReqDEVValueFieldNumber = 6;
+  static const int kAuthReqDEVValueFieldNumber = 60;
   const ::Interactive::Message::AuthReq_DEV& authreq_dev_value() const;
   ::Interactive::Message::AuthReq_DEV* mutable_authreq_dev_value();
   ::Interactive::Message::AuthReq_DEV* release_authreq_dev_value();
   void set_allocated_authreq_dev_value(::Interactive::Message::AuthReq_DEV* authreq_dev_value);
 
-  // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 7;
+  // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
   bool has_getaccessaddressreq_usr_value() const;
   void clear_getaccessaddressreq_usr_value();
-  static const int kGetAccessAddressReqUSRValueFieldNumber = 7;
+  static const int kGetAccessAddressReqUSRValueFieldNumber = 70;
   const ::Interactive::Message::GetAccessAddressReq_USR& getaccessaddressreq_usr_value() const;
   ::Interactive::Message::GetAccessAddressReq_USR* mutable_getaccessaddressreq_usr_value();
   ::Interactive::Message::GetAccessAddressReq_USR* release_getaccessaddressreq_usr_value();
   void set_allocated_getaccessaddressreq_usr_value(::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value);
 
-  // optional .Interactive.Message.RegisterUserReq_USR RegisterUserReq_USR_Value = 8;
+  // optional .Interactive.Message.RegisterUserReq_USR RegisterUserReq_USR_Value = 80;
   bool has_registeruserreq_usr_value() const;
   void clear_registeruserreq_usr_value();
-  static const int kRegisterUserReqUSRValueFieldNumber = 8;
+  static const int kRegisterUserReqUSRValueFieldNumber = 80;
   const ::Interactive::Message::RegisterUserReq_USR& registeruserreq_usr_value() const;
   ::Interactive::Message::RegisterUserReq_USR* mutable_registeruserreq_usr_value();
   ::Interactive::Message::RegisterUserReq_USR* release_registeruserreq_usr_value();
   void set_allocated_registeruserreq_usr_value(::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value);
 
-  // optional .Interactive.Message.UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 9;
+  // optional .Interactive.Message.UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;
   bool has_unregisteruserreq_usr_value() const;
   void clear_unregisteruserreq_usr_value();
-  static const int kUnRegisterUserReqUSRValueFieldNumber = 9;
+  static const int kUnRegisterUserReqUSRValueFieldNumber = 90;
   const ::Interactive::Message::UnRegisterUserReq_USR& unregisteruserreq_usr_value() const;
   ::Interactive::Message::UnRegisterUserReq_USR* mutable_unregisteruserreq_usr_value();
   ::Interactive::Message::UnRegisterUserReq_USR* release_unregisteruserreq_usr_value();
   void set_allocated_unregisteruserreq_usr_value(::Interactive::Message::UnRegisterUserReq_USR* unregisteruserreq_usr_value);
 
-  // optional .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 10;
+  // optional .Interactive.Message.QueryUsrInfoReq_USR QueryUsrInfoReq_USR_Value = 100;
+  bool has_queryusrinforeq_usr_value() const;
+  void clear_queryusrinforeq_usr_value();
+  static const int kQueryUsrInfoReqUSRValueFieldNumber = 100;
+  const ::Interactive::Message::QueryUsrInfoReq_USR& queryusrinforeq_usr_value() const;
+  ::Interactive::Message::QueryUsrInfoReq_USR* mutable_queryusrinforeq_usr_value();
+  ::Interactive::Message::QueryUsrInfoReq_USR* release_queryusrinforeq_usr_value();
+  void set_allocated_queryusrinforeq_usr_value(::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value);
+
+  // optional .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
   bool has_loginreq_usr_value() const;
   void clear_loginreq_usr_value();
-  static const int kLoginReqUSRValueFieldNumber = 10;
+  static const int kLoginReqUSRValueFieldNumber = 110;
   const ::Interactive::Message::LoginReq_USR& loginreq_usr_value() const;
   ::Interactive::Message::LoginReq_USR* mutable_loginreq_usr_value();
   ::Interactive::Message::LoginReq_USR* release_loginreq_usr_value();
   void set_allocated_loginreq_usr_value(::Interactive::Message::LoginReq_USR* loginreq_usr_value);
 
-  // optional .Interactive.Message.LogoutReq_USR LogoutReq_USR_Value = 11;
+  // optional .Interactive.Message.LogoutReq_USR LogoutReq_USR_Value = 120;
   bool has_logoutreq_usr_value() const;
   void clear_logoutreq_usr_value();
-  static const int kLogoutReqUSRValueFieldNumber = 11;
+  static const int kLogoutReqUSRValueFieldNumber = 120;
   const ::Interactive::Message::LogoutReq_USR& logoutreq_usr_value() const;
   ::Interactive::Message::LogoutReq_USR* mutable_logoutreq_usr_value();
   ::Interactive::Message::LogoutReq_USR* release_logoutreq_usr_value();
   void set_allocated_logoutreq_usr_value(::Interactive::Message::LogoutReq_USR* logoutreq_usr_value);
 
-  // optional .Interactive.Message.ShakehandReq_USR ShakehandReq_USR_Value = 12;
+  // optional .Interactive.Message.ShakehandReq_USR ShakehandReq_USR_Value = 130;
   bool has_shakehandreq_usr_value() const;
   void clear_shakehandreq_usr_value();
-  static const int kShakehandReqUSRValueFieldNumber = 12;
+  static const int kShakehandReqUSRValueFieldNumber = 130;
   const ::Interactive::Message::ShakehandReq_USR& shakehandreq_usr_value() const;
   ::Interactive::Message::ShakehandReq_USR* mutable_shakehandreq_usr_value();
   ::Interactive::Message::ShakehandReq_USR* release_shakehandreq_usr_value();
   void set_allocated_shakehandreq_usr_value(::Interactive::Message::ShakehandReq_USR* shakehandreq_usr_value);
 
-  // optional .Interactive.Message.ConfigInfoReq_USR ConfigInfoReq_USR_Value = 13;
+  // optional .Interactive.Message.ConfigInfoReq_USR ConfigInfoReq_USR_Value = 140;
   bool has_configinforeq_usr_value() const;
   void clear_configinforeq_usr_value();
-  static const int kConfigInfoReqUSRValueFieldNumber = 13;
+  static const int kConfigInfoReqUSRValueFieldNumber = 140;
   const ::Interactive::Message::ConfigInfoReq_USR& configinforeq_usr_value() const;
   ::Interactive::Message::ConfigInfoReq_USR* mutable_configinforeq_usr_value();
   ::Interactive::Message::ConfigInfoReq_USR* release_configinforeq_usr_value();
   void set_allocated_configinforeq_usr_value(::Interactive::Message::ConfigInfoReq_USR* configinforeq_usr_value);
 
-  // optional .Interactive.Message.AddDevReq_USR AddDevReq_USR_Value = 14;
+  // optional .Interactive.Message.AddDevReq_USR AddDevReq_USR_Value = 150;
   bool has_adddevreq_usr_value() const;
   void clear_adddevreq_usr_value();
-  static const int kAddDevReqUSRValueFieldNumber = 14;
+  static const int kAddDevReqUSRValueFieldNumber = 150;
   const ::Interactive::Message::AddDevReq_USR& adddevreq_usr_value() const;
   ::Interactive::Message::AddDevReq_USR* mutable_adddevreq_usr_value();
   ::Interactive::Message::AddDevReq_USR* release_adddevreq_usr_value();
   void set_allocated_adddevreq_usr_value(::Interactive::Message::AddDevReq_USR* adddevreq_usr_value);
 
-  // optional .Interactive.Message.DelDevReq_USR DelDevReq_USR_Value = 15;
+  // optional .Interactive.Message.DelDevReq_USR DelDevReq_USR_Value = 160;
   bool has_deldevreq_usr_value() const;
   void clear_deldevreq_usr_value();
-  static const int kDelDevReqUSRValueFieldNumber = 15;
+  static const int kDelDevReqUSRValueFieldNumber = 160;
   const ::Interactive::Message::DelDevReq_USR& deldevreq_usr_value() const;
   ::Interactive::Message::DelDevReq_USR* mutable_deldevreq_usr_value();
   ::Interactive::Message::DelDevReq_USR* release_deldevreq_usr_value();
   void set_allocated_deldevreq_usr_value(::Interactive::Message::DelDevReq_USR* deldevreq_usr_value);
 
-  // optional .Interactive.Message.ModifyDevReq_USR ModifyDevReq_USR_Value = 16;
+  // optional .Interactive.Message.ModifyDevReq_USR ModifyDevReq_USR_Value = 170;
   bool has_modifydevreq_usr_value() const;
   void clear_modifydevreq_usr_value();
-  static const int kModifyDevReqUSRValueFieldNumber = 16;
+  static const int kModifyDevReqUSRValueFieldNumber = 170;
   const ::Interactive::Message::ModifyDevReq_USR& modifydevreq_usr_value() const;
   ::Interactive::Message::ModifyDevReq_USR* mutable_modifydevreq_usr_value();
   ::Interactive::Message::ModifyDevReq_USR* release_modifydevreq_usr_value();
   void set_allocated_modifydevreq_usr_value(::Interactive::Message::ModifyDevReq_USR* modifydevreq_usr_value);
 
-  // optional .Interactive.Message.QueryDevReq_USR QueryDevReq_USR_Value = 17;
+  // optional .Interactive.Message.QueryDevInfoReq_USR QueryDevInfoReq_USR_Value = 180;
+  bool has_querydevinforeq_usr_value() const;
+  void clear_querydevinforeq_usr_value();
+  static const int kQueryDevInfoReqUSRValueFieldNumber = 180;
+  const ::Interactive::Message::QueryDevInfoReq_USR& querydevinforeq_usr_value() const;
+  ::Interactive::Message::QueryDevInfoReq_USR* mutable_querydevinforeq_usr_value();
+  ::Interactive::Message::QueryDevInfoReq_USR* release_querydevinforeq_usr_value();
+  void set_allocated_querydevinforeq_usr_value(::Interactive::Message::QueryDevInfoReq_USR* querydevinforeq_usr_value);
+
+  // optional .Interactive.Message.QueryDevReq_USR QueryDevReq_USR_Value = 190;
   bool has_querydevreq_usr_value() const;
   void clear_querydevreq_usr_value();
-  static const int kQueryDevReqUSRValueFieldNumber = 17;
+  static const int kQueryDevReqUSRValueFieldNumber = 190;
   const ::Interactive::Message::QueryDevReq_USR& querydevreq_usr_value() const;
   ::Interactive::Message::QueryDevReq_USR* mutable_querydevreq_usr_value();
   ::Interactive::Message::QueryDevReq_USR* release_querydevreq_usr_value();
   void set_allocated_querydevreq_usr_value(::Interactive::Message::QueryDevReq_USR* querydevreq_usr_value);
 
-  // optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 18;
+  // optional .Interactive.Message.QueryUserReq_USR QueryUserReq_USR_Value = 200;
+  bool has_queryuserreq_usr_value() const;
+  void clear_queryuserreq_usr_value();
+  static const int kQueryUserReqUSRValueFieldNumber = 200;
+  const ::Interactive::Message::QueryUserReq_USR& queryuserreq_usr_value() const;
+  ::Interactive::Message::QueryUserReq_USR* mutable_queryuserreq_usr_value();
+  ::Interactive::Message::QueryUserReq_USR* release_queryuserreq_usr_value();
+  void set_allocated_queryuserreq_usr_value(::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value);
+
+  // optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 210;
   bool has_sharingdevreq_usr_value() const;
   void clear_sharingdevreq_usr_value();
-  static const int kSharingDevReqUSRValueFieldNumber = 18;
+  static const int kSharingDevReqUSRValueFieldNumber = 210;
   const ::Interactive::Message::SharingDevReq_USR& sharingdevreq_usr_value() const;
   ::Interactive::Message::SharingDevReq_USR* mutable_sharingdevreq_usr_value();
   ::Interactive::Message::SharingDevReq_USR* release_sharingdevreq_usr_value();
   void set_allocated_sharingdevreq_usr_value(::Interactive::Message::SharingDevReq_USR* sharingdevreq_usr_value);
 
-  // optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 19;
+  // optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 220;
   bool has_cancelshareddevreq_usr_value() const;
   void clear_cancelshareddevreq_usr_value();
-  static const int kCancelSharedDevReqUSRValueFieldNumber = 19;
+  static const int kCancelSharedDevReqUSRValueFieldNumber = 220;
   const ::Interactive::Message::CancelSharedDevReq_USR& cancelshareddevreq_usr_value() const;
   ::Interactive::Message::CancelSharedDevReq_USR* mutable_cancelshareddevreq_usr_value();
   ::Interactive::Message::CancelSharedDevReq_USR* release_cancelshareddevreq_usr_value();
   void set_allocated_cancelshareddevreq_usr_value(::Interactive::Message::CancelSharedDevReq_USR* cancelshareddevreq_usr_value);
 
-  // optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 20;
+  // optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 230;
   bool has_addfriendsreq_usr_value() const;
   void clear_addfriendsreq_usr_value();
-  static const int kAddFriendsReqUSRValueFieldNumber = 20;
+  static const int kAddFriendsReqUSRValueFieldNumber = 230;
   const ::Interactive::Message::AddFriendsReq_USR& addfriendsreq_usr_value() const;
   ::Interactive::Message::AddFriendsReq_USR* mutable_addfriendsreq_usr_value();
   ::Interactive::Message::AddFriendsReq_USR* release_addfriendsreq_usr_value();
   void set_allocated_addfriendsreq_usr_value(::Interactive::Message::AddFriendsReq_USR* addfriendsreq_usr_value);
 
-  // optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 21;
+  // optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 240;
   bool has_delfriendsreq_usr_value() const;
   void clear_delfriendsreq_usr_value();
-  static const int kDelFriendsReqUSRValueFieldNumber = 21;
+  static const int kDelFriendsReqUSRValueFieldNumber = 240;
   const ::Interactive::Message::DelFriendsReq_USR& delfriendsreq_usr_value() const;
   ::Interactive::Message::DelFriendsReq_USR* mutable_delfriendsreq_usr_value();
   ::Interactive::Message::DelFriendsReq_USR* release_delfriendsreq_usr_value();
   void set_allocated_delfriendsreq_usr_value(::Interactive::Message::DelFriendsReq_USR* delfriendsreq_usr_value);
 
-  // optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 22;
+  // optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 250;
   bool has_queryfriendsreq_usr_value() const;
   void clear_queryfriendsreq_usr_value();
-  static const int kQueryFriendsReqUSRValueFieldNumber = 22;
+  static const int kQueryFriendsReqUSRValueFieldNumber = 250;
   const ::Interactive::Message::QueryFriendsReq_USR& queryfriendsreq_usr_value() const;
   ::Interactive::Message::QueryFriendsReq_USR* mutable_queryfriendsreq_usr_value();
   ::Interactive::Message::QueryFriendsReq_USR* release_queryfriendsreq_usr_value();
   void set_allocated_queryfriendsreq_usr_value(::Interactive::Message::QueryFriendsReq_USR* queryfriendsreq_usr_value);
 
-  // optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 23;
+  // optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
-  static const int kGetOnlineDevInfoReqINNERValueFieldNumber = 23;
+  static const int kGetOnlineDevInfoReqINNERValueFieldNumber = 260;
   const ::Interactive::Message::GetOnlineDevInfoReq_INNER& getonlinedevinforeq_inner_value() const;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* mutable_getonlinedevinforeq_inner_value();
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* release_getonlinedevinforeq_inner_value();
   void set_allocated_getonlinedevinforeq_inner_value(::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value);
 
-  // optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 24;
+  // optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;
   bool has_broadcastonlinedevinfo_inner_value() const;
   void clear_broadcastonlinedevinfo_inner_value();
-  static const int kBroadcastOnlineDevInfoINNERValueFieldNumber = 24;
+  static const int kBroadcastOnlineDevInfoINNERValueFieldNumber = 270;
   const ::Interactive::Message::BroadcastOnlineDevInfo_INNER& broadcastonlinedevinfo_inner_value() const;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* mutable_broadcastonlinedevinfo_inner_value();
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* release_broadcastonlinedevinfo_inner_value();
   void set_allocated_broadcastonlinedevinfo_inner_value(::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value);
 
-  // optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 25;
+  // optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;
   bool has_getonlineuserinforeq_inner_value() const;
   void clear_getonlineuserinforeq_inner_value();
-  static const int kGetOnlineUserInfoReqINNERValueFieldNumber = 25;
+  static const int kGetOnlineUserInfoReqINNERValueFieldNumber = 280;
   const ::Interactive::Message::GetOnlineUserInfoReq_INNER& getonlineuserinforeq_inner_value() const;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* mutable_getonlineuserinforeq_inner_value();
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* release_getonlineuserinforeq_inner_value();
   void set_allocated_getonlineuserinforeq_inner_value(::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value);
 
-  // optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 26;
+  // optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 290;
   bool has_broadcastonlineuserinfo_inner_value() const;
   void clear_broadcastonlineuserinfo_inner_value();
-  static const int kBroadcastOnlineUserInfoINNERValueFieldNumber = 26;
+  static const int kBroadcastOnlineUserInfoINNERValueFieldNumber = 290;
   const ::Interactive::Message::BroadcastOnlineUserInfo_INNER& broadcastonlineuserinfo_inner_value() const;
   ::Interactive::Message::BroadcastOnlineUserInfo_INNER* mutable_broadcastonlineuserinfo_inner_value();
   ::Interactive::Message::BroadcastOnlineUserInfo_INNER* release_broadcastonlineuserinfo_inner_value();
@@ -6288,6 +6733,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
   ::Interactive::Message::UnRegisterUserReq_USR* unregisteruserreq_usr_value_;
+  ::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value_;
   ::Interactive::Message::LoginReq_USR* loginreq_usr_value_;
   ::Interactive::Message::LogoutReq_USR* logoutreq_usr_value_;
   ::Interactive::Message::ShakehandReq_USR* shakehandreq_usr_value_;
@@ -6295,7 +6741,9 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddDevReq_USR* adddevreq_usr_value_;
   ::Interactive::Message::DelDevReq_USR* deldevreq_usr_value_;
   ::Interactive::Message::ModifyDevReq_USR* modifydevreq_usr_value_;
+  ::Interactive::Message::QueryDevInfoReq_USR* querydevinforeq_usr_value_;
   ::Interactive::Message::QueryDevReq_USR* querydevreq_usr_value_;
+  ::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value_;
   ::Interactive::Message::SharingDevReq_USR* sharingdevreq_usr_value_;
   ::Interactive::Message::CancelSharedDevReq_USR* cancelshareddevreq_usr_value_;
   ::Interactive::Message::AddFriendsReq_USR* addfriendsreq_usr_value_;
@@ -6380,15 +6828,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
 
   // accessors -------------------------------------------------------
 
-  // optional int32 iRetcode = 1;
+  // optional int32 iRetcode = 10;
   void clear_iretcode();
-  static const int kIRetcodeFieldNumber = 1;
+  static const int kIRetcodeFieldNumber = 10;
   ::google::protobuf::int32 iretcode() const;
   void set_iretcode(::google::protobuf::int32 value);
 
-  // optional string strRetMsg = 2;
+  // optional string strRetMsg = 20;
   void clear_strretmsg();
-  static const int kStrRetMsgFieldNumber = 2;
+  static const int kStrRetMsgFieldNumber = 20;
   const ::std::string& strretmsg() const;
   void set_strretmsg(const ::std::string& value);
   void set_strretmsg(const char* value);
@@ -6397,217 +6845,244 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::std::string* release_strretmsg();
   void set_allocated_strretmsg(::std::string* strretmsg);
 
-  // optional .Interactive.Message.GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 3;
+  // optional .Interactive.Message.GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 30;
   bool has_getaccessaddressrsp_dev_value() const;
   void clear_getaccessaddressrsp_dev_value();
-  static const int kGetAccessAddressRspDEVValueFieldNumber = 3;
+  static const int kGetAccessAddressRspDEVValueFieldNumber = 30;
   const ::Interactive::Message::GetAccessAddressRsp_DEV& getaccessaddressrsp_dev_value() const;
   ::Interactive::Message::GetAccessAddressRsp_DEV* mutable_getaccessaddressrsp_dev_value();
   ::Interactive::Message::GetAccessAddressRsp_DEV* release_getaccessaddressrsp_dev_value();
   void set_allocated_getaccessaddressrsp_dev_value(::Interactive::Message::GetAccessAddressRsp_DEV* getaccessaddressrsp_dev_value);
 
-  // optional .Interactive.Message.LoginRsp_DEV LoginRsp_DEV_Value = 4;
+  // optional .Interactive.Message.LoginRsp_DEV LoginRsp_DEV_Value = 40;
   bool has_loginrsp_dev_value() const;
   void clear_loginrsp_dev_value();
-  static const int kLoginRspDEVValueFieldNumber = 4;
+  static const int kLoginRspDEVValueFieldNumber = 40;
   const ::Interactive::Message::LoginRsp_DEV& loginrsp_dev_value() const;
   ::Interactive::Message::LoginRsp_DEV* mutable_loginrsp_dev_value();
   ::Interactive::Message::LoginRsp_DEV* release_loginrsp_dev_value();
   void set_allocated_loginrsp_dev_value(::Interactive::Message::LoginRsp_DEV* loginrsp_dev_value);
 
-  // optional .Interactive.Message.LogoutRsp_DEV LogoutRsp_DEV_Value = 5;
+  // optional .Interactive.Message.LogoutRsp_DEV LogoutRsp_DEV_Value = 50;
   bool has_logoutrsp_dev_value() const;
   void clear_logoutrsp_dev_value();
-  static const int kLogoutRspDEVValueFieldNumber = 5;
+  static const int kLogoutRspDEVValueFieldNumber = 50;
   const ::Interactive::Message::LogoutRsp_DEV& logoutrsp_dev_value() const;
   ::Interactive::Message::LogoutRsp_DEV* mutable_logoutrsp_dev_value();
   ::Interactive::Message::LogoutRsp_DEV* release_logoutrsp_dev_value();
   void set_allocated_logoutrsp_dev_value(::Interactive::Message::LogoutRsp_DEV* logoutrsp_dev_value);
 
-  // optional .Interactive.Message.ShakehandRsp_DEV ShakehandRsp_DEV_Value = 6;
+  // optional .Interactive.Message.ShakehandRsp_DEV ShakehandRsp_DEV_Value = 60;
   bool has_shakehandrsp_dev_value() const;
   void clear_shakehandrsp_dev_value();
-  static const int kShakehandRspDEVValueFieldNumber = 6;
+  static const int kShakehandRspDEVValueFieldNumber = 60;
   const ::Interactive::Message::ShakehandRsp_DEV& shakehandrsp_dev_value() const;
   ::Interactive::Message::ShakehandRsp_DEV* mutable_shakehandrsp_dev_value();
   ::Interactive::Message::ShakehandRsp_DEV* release_shakehandrsp_dev_value();
   void set_allocated_shakehandrsp_dev_value(::Interactive::Message::ShakehandRsp_DEV* shakehandrsp_dev_value);
 
-  // optional .Interactive.Message.ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 7;
+  // optional .Interactive.Message.ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;
   bool has_configinforsp_dev_value() const;
   void clear_configinforsp_dev_value();
-  static const int kConfigInfoRspDEVValueFieldNumber = 7;
+  static const int kConfigInfoRspDEVValueFieldNumber = 70;
   const ::Interactive::Message::ConfigInfoRsp_DEV& configinforsp_dev_value() const;
   ::Interactive::Message::ConfigInfoRsp_DEV* mutable_configinforsp_dev_value();
   ::Interactive::Message::ConfigInfoRsp_DEV* release_configinforsp_dev_value();
   void set_allocated_configinforsp_dev_value(::Interactive::Message::ConfigInfoRsp_DEV* configinforsp_dev_value);
 
-  // optional .Interactive.Message.AuthRsp_DEV AuthRsp_DEV_Value = 8;
+  // optional .Interactive.Message.AuthRsp_DEV AuthRsp_DEV_Value = 80;
   bool has_authrsp_dev_value() const;
   void clear_authrsp_dev_value();
-  static const int kAuthRspDEVValueFieldNumber = 8;
+  static const int kAuthRspDEVValueFieldNumber = 80;
   const ::Interactive::Message::AuthRsp_DEV& authrsp_dev_value() const;
   ::Interactive::Message::AuthRsp_DEV* mutable_authrsp_dev_value();
   ::Interactive::Message::AuthRsp_DEV* release_authrsp_dev_value();
   void set_allocated_authrsp_dev_value(::Interactive::Message::AuthRsp_DEV* authrsp_dev_value);
 
-  // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 9;
+  // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
   bool has_getaccessaddressrsp_usr_value() const;
   void clear_getaccessaddressrsp_usr_value();
-  static const int kGetAccessAddressRspUSRValueFieldNumber = 9;
+  static const int kGetAccessAddressRspUSRValueFieldNumber = 90;
   const ::Interactive::Message::GetAccessAddressRsp_USR& getaccessaddressrsp_usr_value() const;
   ::Interactive::Message::GetAccessAddressRsp_USR* mutable_getaccessaddressrsp_usr_value();
   ::Interactive::Message::GetAccessAddressRsp_USR* release_getaccessaddressrsp_usr_value();
   void set_allocated_getaccessaddressrsp_usr_value(::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value);
 
-  // optional .Interactive.Message.RegisterUserRsp_USR RegisterUserRsp_USR_Value = 10;
+  // optional .Interactive.Message.RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;
   bool has_registeruserrsp_usr_value() const;
   void clear_registeruserrsp_usr_value();
-  static const int kRegisterUserRspUSRValueFieldNumber = 10;
+  static const int kRegisterUserRspUSRValueFieldNumber = 100;
   const ::Interactive::Message::RegisterUserRsp_USR& registeruserrsp_usr_value() const;
   ::Interactive::Message::RegisterUserRsp_USR* mutable_registeruserrsp_usr_value();
   ::Interactive::Message::RegisterUserRsp_USR* release_registeruserrsp_usr_value();
   void set_allocated_registeruserrsp_usr_value(::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value);
 
-  // optional .Interactive.Message.UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 11;
+  // optional .Interactive.Message.UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;
   bool has_unregisteruserrsp_usr_value() const;
   void clear_unregisteruserrsp_usr_value();
-  static const int kUnRegisterUserRspUSRValueFieldNumber = 11;
+  static const int kUnRegisterUserRspUSRValueFieldNumber = 110;
   const ::Interactive::Message::UnRegisterUserRsp_USR& unregisteruserrsp_usr_value() const;
   ::Interactive::Message::UnRegisterUserRsp_USR* mutable_unregisteruserrsp_usr_value();
   ::Interactive::Message::UnRegisterUserRsp_USR* release_unregisteruserrsp_usr_value();
   void set_allocated_unregisteruserrsp_usr_value(::Interactive::Message::UnRegisterUserRsp_USR* unregisteruserrsp_usr_value);
 
-  // optional .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 12;
+  // optional .Interactive.Message.QueryUsrInfoRsp_USR QueryUsrInfoRsp_USR_Value = 120;
+  bool has_queryusrinforsp_usr_value() const;
+  void clear_queryusrinforsp_usr_value();
+  static const int kQueryUsrInfoRspUSRValueFieldNumber = 120;
+  const ::Interactive::Message::QueryUsrInfoRsp_USR& queryusrinforsp_usr_value() const;
+  ::Interactive::Message::QueryUsrInfoRsp_USR* mutable_queryusrinforsp_usr_value();
+  ::Interactive::Message::QueryUsrInfoRsp_USR* release_queryusrinforsp_usr_value();
+  void set_allocated_queryusrinforsp_usr_value(::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value);
+
+  // optional .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
   bool has_loginrsp_usr_value() const;
   void clear_loginrsp_usr_value();
-  static const int kLoginRspUSRValueFieldNumber = 12;
+  static const int kLoginRspUSRValueFieldNumber = 130;
   const ::Interactive::Message::LoginRsp_USR& loginrsp_usr_value() const;
   ::Interactive::Message::LoginRsp_USR* mutable_loginrsp_usr_value();
   ::Interactive::Message::LoginRsp_USR* release_loginrsp_usr_value();
   void set_allocated_loginrsp_usr_value(::Interactive::Message::LoginRsp_USR* loginrsp_usr_value);
 
-  // optional .Interactive.Message.LogoutRsp_USR LogoutRsp_USR_Value = 13;
+  // optional .Interactive.Message.LogoutRsp_USR LogoutRsp_USR_Value = 140;
   bool has_logoutrsp_usr_value() const;
   void clear_logoutrsp_usr_value();
-  static const int kLogoutRspUSRValueFieldNumber = 13;
+  static const int kLogoutRspUSRValueFieldNumber = 140;
   const ::Interactive::Message::LogoutRsp_USR& logoutrsp_usr_value() const;
   ::Interactive::Message::LogoutRsp_USR* mutable_logoutrsp_usr_value();
   ::Interactive::Message::LogoutRsp_USR* release_logoutrsp_usr_value();
   void set_allocated_logoutrsp_usr_value(::Interactive::Message::LogoutRsp_USR* logoutrsp_usr_value);
 
-  // optional .Interactive.Message.ShakehandRsp_USR ShakehandRsp_USR_Value = 14;
+  // optional .Interactive.Message.ShakehandRsp_USR ShakehandRsp_USR_Value = 150;
   bool has_shakehandrsp_usr_value() const;
   void clear_shakehandrsp_usr_value();
-  static const int kShakehandRspUSRValueFieldNumber = 14;
+  static const int kShakehandRspUSRValueFieldNumber = 150;
   const ::Interactive::Message::ShakehandRsp_USR& shakehandrsp_usr_value() const;
   ::Interactive::Message::ShakehandRsp_USR* mutable_shakehandrsp_usr_value();
   ::Interactive::Message::ShakehandRsp_USR* release_shakehandrsp_usr_value();
   void set_allocated_shakehandrsp_usr_value(::Interactive::Message::ShakehandRsp_USR* shakehandrsp_usr_value);
 
-  // optional .Interactive.Message.ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 15;
+  // optional .Interactive.Message.ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 160;
   bool has_configinforsp_usr_value() const;
   void clear_configinforsp_usr_value();
-  static const int kConfigInfoRspUSRValueFieldNumber = 15;
+  static const int kConfigInfoRspUSRValueFieldNumber = 160;
   const ::Interactive::Message::ConfigInfoRsp_USR& configinforsp_usr_value() const;
   ::Interactive::Message::ConfigInfoRsp_USR* mutable_configinforsp_usr_value();
   ::Interactive::Message::ConfigInfoRsp_USR* release_configinforsp_usr_value();
   void set_allocated_configinforsp_usr_value(::Interactive::Message::ConfigInfoRsp_USR* configinforsp_usr_value);
 
-  // optional .Interactive.Message.AddDevRsp_USR AddDevRsp_USR_Value = 16;
+  // optional .Interactive.Message.AddDevRsp_USR AddDevRsp_USR_Value = 170;
   bool has_adddevrsp_usr_value() const;
   void clear_adddevrsp_usr_value();
-  static const int kAddDevRspUSRValueFieldNumber = 16;
+  static const int kAddDevRspUSRValueFieldNumber = 170;
   const ::Interactive::Message::AddDevRsp_USR& adddevrsp_usr_value() const;
   ::Interactive::Message::AddDevRsp_USR* mutable_adddevrsp_usr_value();
   ::Interactive::Message::AddDevRsp_USR* release_adddevrsp_usr_value();
   void set_allocated_adddevrsp_usr_value(::Interactive::Message::AddDevRsp_USR* adddevrsp_usr_value);
 
-  // optional .Interactive.Message.DelDevRsp_USR DelDevRsp_USR_Value = 17;
+  // optional .Interactive.Message.DelDevRsp_USR DelDevRsp_USR_Value = 180;
   bool has_deldevrsp_usr_value() const;
   void clear_deldevrsp_usr_value();
-  static const int kDelDevRspUSRValueFieldNumber = 17;
+  static const int kDelDevRspUSRValueFieldNumber = 180;
   const ::Interactive::Message::DelDevRsp_USR& deldevrsp_usr_value() const;
   ::Interactive::Message::DelDevRsp_USR* mutable_deldevrsp_usr_value();
   ::Interactive::Message::DelDevRsp_USR* release_deldevrsp_usr_value();
   void set_allocated_deldevrsp_usr_value(::Interactive::Message::DelDevRsp_USR* deldevrsp_usr_value);
 
-  // optional .Interactive.Message.ModifyDevRsp_USR ModifyDevRsp_USR_Value = 18;
+  // optional .Interactive.Message.ModifyDevRsp_USR ModifyDevRsp_USR_Value = 190;
   bool has_modifydevrsp_usr_value() const;
   void clear_modifydevrsp_usr_value();
-  static const int kModifyDevRspUSRValueFieldNumber = 18;
+  static const int kModifyDevRspUSRValueFieldNumber = 190;
   const ::Interactive::Message::ModifyDevRsp_USR& modifydevrsp_usr_value() const;
   ::Interactive::Message::ModifyDevRsp_USR* mutable_modifydevrsp_usr_value();
   ::Interactive::Message::ModifyDevRsp_USR* release_modifydevrsp_usr_value();
   void set_allocated_modifydevrsp_usr_value(::Interactive::Message::ModifyDevRsp_USR* modifydevrsp_usr_value);
 
-  // optional .Interactive.Message.QueryDevRsp_USR QueryDevRsp_USR_Value = 19;
+  // optional .Interactive.Message.QueryDevInfoRsp_USR QueryDevInfoRsp_USR_Value = 200;
+  bool has_querydevinforsp_usr_value() const;
+  void clear_querydevinforsp_usr_value();
+  static const int kQueryDevInfoRspUSRValueFieldNumber = 200;
+  const ::Interactive::Message::QueryDevInfoRsp_USR& querydevinforsp_usr_value() const;
+  ::Interactive::Message::QueryDevInfoRsp_USR* mutable_querydevinforsp_usr_value();
+  ::Interactive::Message::QueryDevInfoRsp_USR* release_querydevinforsp_usr_value();
+  void set_allocated_querydevinforsp_usr_value(::Interactive::Message::QueryDevInfoRsp_USR* querydevinforsp_usr_value);
+
+  // optional .Interactive.Message.QueryDevRsp_USR QueryDevRsp_USR_Value = 210;
   bool has_querydevrsp_usr_value() const;
   void clear_querydevrsp_usr_value();
-  static const int kQueryDevRspUSRValueFieldNumber = 19;
+  static const int kQueryDevRspUSRValueFieldNumber = 210;
   const ::Interactive::Message::QueryDevRsp_USR& querydevrsp_usr_value() const;
   ::Interactive::Message::QueryDevRsp_USR* mutable_querydevrsp_usr_value();
   ::Interactive::Message::QueryDevRsp_USR* release_querydevrsp_usr_value();
   void set_allocated_querydevrsp_usr_value(::Interactive::Message::QueryDevRsp_USR* querydevrsp_usr_value);
 
-  // optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 20;
+  // optional .Interactive.Message.QueryUserRsp_USR QueryUserRsp_USR_Value = 220;
+  bool has_queryuserrsp_usr_value() const;
+  void clear_queryuserrsp_usr_value();
+  static const int kQueryUserRspUSRValueFieldNumber = 220;
+  const ::Interactive::Message::QueryUserRsp_USR& queryuserrsp_usr_value() const;
+  ::Interactive::Message::QueryUserRsp_USR* mutable_queryuserrsp_usr_value();
+  ::Interactive::Message::QueryUserRsp_USR* release_queryuserrsp_usr_value();
+  void set_allocated_queryuserrsp_usr_value(::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value);
+
+  // optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 230;
   bool has_sharingdevrsp_usr_value() const;
   void clear_sharingdevrsp_usr_value();
-  static const int kSharingDevRspUSRValueFieldNumber = 20;
+  static const int kSharingDevRspUSRValueFieldNumber = 230;
   const ::Interactive::Message::SharingDevRsp_USR& sharingdevrsp_usr_value() const;
   ::Interactive::Message::SharingDevRsp_USR* mutable_sharingdevrsp_usr_value();
   ::Interactive::Message::SharingDevRsp_USR* release_sharingdevrsp_usr_value();
   void set_allocated_sharingdevrsp_usr_value(::Interactive::Message::SharingDevRsp_USR* sharingdevrsp_usr_value);
 
-  // optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 21;
+  // optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 240;
   bool has_cancelshareddevrsp_usr_value() const;
   void clear_cancelshareddevrsp_usr_value();
-  static const int kCancelSharedDevRspUSRValueFieldNumber = 21;
+  static const int kCancelSharedDevRspUSRValueFieldNumber = 240;
   const ::Interactive::Message::CancelSharedDevRsp_USR& cancelshareddevrsp_usr_value() const;
   ::Interactive::Message::CancelSharedDevRsp_USR* mutable_cancelshareddevrsp_usr_value();
   ::Interactive::Message::CancelSharedDevRsp_USR* release_cancelshareddevrsp_usr_value();
   void set_allocated_cancelshareddevrsp_usr_value(::Interactive::Message::CancelSharedDevRsp_USR* cancelshareddevrsp_usr_value);
 
-  // optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 22;
+  // optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 250;
   bool has_addfriendsrsp_usr_value() const;
   void clear_addfriendsrsp_usr_value();
-  static const int kAddFriendsRspUSRValueFieldNumber = 22;
+  static const int kAddFriendsRspUSRValueFieldNumber = 250;
   const ::Interactive::Message::AddFriendsRsp_USR& addfriendsrsp_usr_value() const;
   ::Interactive::Message::AddFriendsRsp_USR* mutable_addfriendsrsp_usr_value();
   ::Interactive::Message::AddFriendsRsp_USR* release_addfriendsrsp_usr_value();
   void set_allocated_addfriendsrsp_usr_value(::Interactive::Message::AddFriendsRsp_USR* addfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 23;
+  // optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 260;
   bool has_delfriendsrsp_usr_value() const;
   void clear_delfriendsrsp_usr_value();
-  static const int kDelFriendsRspUSRValueFieldNumber = 23;
+  static const int kDelFriendsRspUSRValueFieldNumber = 260;
   const ::Interactive::Message::DelFriendsRsp_USR& delfriendsrsp_usr_value() const;
   ::Interactive::Message::DelFriendsRsp_USR* mutable_delfriendsrsp_usr_value();
   ::Interactive::Message::DelFriendsRsp_USR* release_delfriendsrsp_usr_value();
   void set_allocated_delfriendsrsp_usr_value(::Interactive::Message::DelFriendsRsp_USR* delfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 24;
+  // optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 270;
   bool has_queryfriendsrsp_usr_value() const;
   void clear_queryfriendsrsp_usr_value();
-  static const int kQueryFriendsRspUSRValueFieldNumber = 24;
+  static const int kQueryFriendsRspUSRValueFieldNumber = 270;
   const ::Interactive::Message::QueryFriendsRsp_USR& queryfriendsrsp_usr_value() const;
   ::Interactive::Message::QueryFriendsRsp_USR* mutable_queryfriendsrsp_usr_value();
   ::Interactive::Message::QueryFriendsRsp_USR* release_queryfriendsrsp_usr_value();
   void set_allocated_queryfriendsrsp_usr_value(::Interactive::Message::QueryFriendsRsp_USR* queryfriendsrsp_usr_value);
 
-  // optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 25;
+  // optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
-  static const int kGetOnlineDevInfoRspINNERValueFieldNumber = 25;
+  static const int kGetOnlineDevInfoRspINNERValueFieldNumber = 280;
   const ::Interactive::Message::GetOnlineDevInfoRsp_INNER& getonlinedevinforsp_inner_value() const;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* mutable_getonlinedevinforsp_inner_value();
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* release_getonlinedevinforsp_inner_value();
   void set_allocated_getonlinedevinforsp_inner_value(::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value);
 
-  // optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 26;
+  // optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290;
   bool has_getonlineuserinforsp_inner_value() const;
   void clear_getonlineuserinforsp_inner_value();
-  static const int kGetOnlineUserInfoRspINNERValueFieldNumber = 26;
+  static const int kGetOnlineUserInfoRspINNERValueFieldNumber = 290;
   const ::Interactive::Message::GetOnlineUserInfoRsp_INNER& getonlineuserinforsp_inner_value() const;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* mutable_getonlineuserinforsp_inner_value();
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* release_getonlineuserinforsp_inner_value();
@@ -6627,6 +7102,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
   ::Interactive::Message::UnRegisterUserRsp_USR* unregisteruserrsp_usr_value_;
+  ::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value_;
   ::Interactive::Message::LoginRsp_USR* loginrsp_usr_value_;
   ::Interactive::Message::LogoutRsp_USR* logoutrsp_usr_value_;
   ::Interactive::Message::ShakehandRsp_USR* shakehandrsp_usr_value_;
@@ -6634,7 +7110,9 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddDevRsp_USR* adddevrsp_usr_value_;
   ::Interactive::Message::DelDevRsp_USR* deldevrsp_usr_value_;
   ::Interactive::Message::ModifyDevRsp_USR* modifydevrsp_usr_value_;
+  ::Interactive::Message::QueryDevInfoRsp_USR* querydevinforsp_usr_value_;
   ::Interactive::Message::QueryDevRsp_USR* querydevrsp_usr_value_;
+  ::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value_;
   ::Interactive::Message::SharingDevRsp_USR* sharingdevrsp_usr_value_;
   ::Interactive::Message::CancelSharedDevRsp_USR* cancelshareddevrsp_usr_value_;
   ::Interactive::Message::AddFriendsRsp_USR* addfriendsrsp_usr_value_;
@@ -9281,6 +9759,191 @@ inline const UnRegisterUserRsp_USR* UnRegisterUserRsp_USR::internal_default_inst
 }
 // -------------------------------------------------------------------
 
+// QueryUsrInfoReq_USR
+
+// optional string strUserID = 1;
+inline void QueryUsrInfoReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUsrInfoReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+  return struserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+}
+inline void QueryUsrInfoReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+}
+inline void QueryUsrInfoReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+}
+inline ::std::string* QueryUsrInfoReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUsrInfoReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUsrInfoReq_USR.strUserID)
+}
+
+// optional string strValue = 2;
+inline void QueryUsrInfoReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUsrInfoReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+}
+inline void QueryUsrInfoReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+}
+inline void QueryUsrInfoReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+}
+inline ::std::string* QueryUsrInfoReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUsrInfoReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUsrInfoReq_USR.strValue)
+}
+
+inline const QueryUsrInfoReq_USR* QueryUsrInfoReq_USR::internal_default_instance() {
+  return &QueryUsrInfoReq_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// QueryUsrInfoRsp_USR
+
+// optional .Interactive.Message.User userInfo = 1;
+inline bool QueryUsrInfoRsp_USR::has_userinfo() const {
+  return this != internal_default_instance() && userinfo_ != NULL;
+}
+inline void QueryUsrInfoRsp_USR::clear_userinfo() {
+  if (GetArenaNoVirtual() == NULL && userinfo_ != NULL) delete userinfo_;
+  userinfo_ = NULL;
+}
+inline const ::Interactive::Message::User& QueryUsrInfoRsp_USR::userinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUsrInfoRsp_USR.userInfo)
+  return userinfo_ != NULL ? *userinfo_
+                         : *::Interactive::Message::User::internal_default_instance();
+}
+inline ::Interactive::Message::User* QueryUsrInfoRsp_USR::mutable_userinfo() {
+  
+  if (userinfo_ == NULL) {
+    userinfo_ = new ::Interactive::Message::User;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUsrInfoRsp_USR.userInfo)
+  return userinfo_;
+}
+inline ::Interactive::Message::User* QueryUsrInfoRsp_USR::release_userinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUsrInfoRsp_USR.userInfo)
+  
+  ::Interactive::Message::User* temp = userinfo_;
+  userinfo_ = NULL;
+  return temp;
+}
+inline void QueryUsrInfoRsp_USR::set_allocated_userinfo(::Interactive::Message::User* userinfo) {
+  delete userinfo_;
+  userinfo_ = userinfo;
+  if (userinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUsrInfoRsp_USR.userInfo)
+}
+
+// optional string strValue = 2;
+inline void QueryUsrInfoRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUsrInfoRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+}
+inline void QueryUsrInfoRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+}
+inline void QueryUsrInfoRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+}
+inline ::std::string* QueryUsrInfoRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUsrInfoRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUsrInfoRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+}
+
+inline const QueryUsrInfoRsp_USR* QueryUsrInfoRsp_USR::internal_default_instance() {
+  return &QueryUsrInfoRsp_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
 // LoginReq_USR
 
 // optional .Interactive.Message.User userInfo = 1;
@@ -9373,34 +10036,34 @@ inline const LoginReq_USR* LoginReq_USR::internal_default_instance() {
 
 // LoginRsp_USR
 
-// repeated .Interactive.Message.Device devInfo = 1;
-inline int LoginRsp_USR::devinfo_size() const {
-  return devinfo_.size();
+// repeated .Interactive.Message.Relation relationInfo = 1;
+inline int LoginRsp_USR::relationinfo_size() const {
+  return relationinfo_.size();
 }
-inline void LoginRsp_USR::clear_devinfo() {
-  devinfo_.Clear();
+inline void LoginRsp_USR::clear_relationinfo() {
+  relationinfo_.Clear();
 }
-inline const ::Interactive::Message::Device& LoginRsp_USR::devinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.LoginRsp_USR.devInfo)
-  return devinfo_.Get(index);
+inline const ::Interactive::Message::Relation& LoginRsp_USR::relationinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginRsp_USR.relationInfo)
+  return relationinfo_.Get(index);
 }
-inline ::Interactive::Message::Device* LoginRsp_USR::mutable_devinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginRsp_USR.devInfo)
-  return devinfo_.Mutable(index);
+inline ::Interactive::Message::Relation* LoginRsp_USR::mutable_relationinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginRsp_USR.relationInfo)
+  return relationinfo_.Mutable(index);
 }
-inline ::Interactive::Message::Device* LoginRsp_USR::add_devinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.LoginRsp_USR.devInfo)
-  return devinfo_.Add();
+inline ::Interactive::Message::Relation* LoginRsp_USR::add_relationinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.LoginRsp_USR.relationInfo)
+  return relationinfo_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-LoginRsp_USR::mutable_devinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.LoginRsp_USR.devInfo)
-  return &devinfo_;
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+LoginRsp_USR::mutable_relationinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.LoginRsp_USR.relationInfo)
+  return &relationinfo_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-LoginRsp_USR::devinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.LoginRsp_USR.devInfo)
-  return devinfo_;
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+LoginRsp_USR::relationinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.LoginRsp_USR.relationInfo)
+  return relationinfo_;
 }
 
 // optional string strValue = 2;
@@ -10434,6 +11097,191 @@ inline const ModifyDevRsp_USR* ModifyDevRsp_USR::internal_default_instance() {
 }
 // -------------------------------------------------------------------
 
+// QueryDevInfoReq_USR
+
+// optional string strDevID = 1;
+inline void QueryDevInfoReq_USR::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDevInfoReq_USR::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+  return strdevid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoReq_USR::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+}
+inline void QueryDevInfoReq_USR::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+}
+inline void QueryDevInfoReq_USR::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+}
+inline ::std::string* QueryDevInfoReq_USR::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDevInfoReq_USR::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoReq_USR::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoReq_USR.strDevID)
+}
+
+// optional string strValue = 2;
+inline void QueryDevInfoReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDevInfoReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoReq_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevInfoReq_USR.strValue)
+}
+inline void QueryDevInfoReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDevInfoReq_USR.strValue)
+}
+inline void QueryDevInfoReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDevInfoReq_USR.strValue)
+}
+inline ::std::string* QueryDevInfoReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevInfoReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDevInfoReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDevInfoReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoReq_USR.strValue)
+}
+
+inline const QueryDevInfoReq_USR* QueryDevInfoReq_USR::internal_default_instance() {
+  return &QueryDevInfoReq_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// QueryDevInfoRsp_USR
+
+// optional .Interactive.Message.Device devInfo = 1;
+inline bool QueryDevInfoRsp_USR::has_devinfo() const {
+  return this != internal_default_instance() && devinfo_ != NULL;
+}
+inline void QueryDevInfoRsp_USR::clear_devinfo() {
+  if (GetArenaNoVirtual() == NULL && devinfo_ != NULL) delete devinfo_;
+  devinfo_ = NULL;
+}
+inline const ::Interactive::Message::Device& QueryDevInfoRsp_USR::devinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoRsp_USR.devInfo)
+  return devinfo_ != NULL ? *devinfo_
+                         : *::Interactive::Message::Device::internal_default_instance();
+}
+inline ::Interactive::Message::Device* QueryDevInfoRsp_USR::mutable_devinfo() {
+  
+  if (devinfo_ == NULL) {
+    devinfo_ = new ::Interactive::Message::Device;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevInfoRsp_USR.devInfo)
+  return devinfo_;
+}
+inline ::Interactive::Message::Device* QueryDevInfoRsp_USR::release_devinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDevInfoRsp_USR.devInfo)
+  
+  ::Interactive::Message::Device* temp = devinfo_;
+  devinfo_ = NULL;
+  return temp;
+}
+inline void QueryDevInfoRsp_USR::set_allocated_devinfo(::Interactive::Message::Device* devinfo) {
+  delete devinfo_;
+  devinfo_ = devinfo;
+  if (devinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoRsp_USR.devInfo)
+}
+
+// optional string strValue = 2;
+inline void QueryDevInfoRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDevInfoRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+}
+inline void QueryDevInfoRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+}
+inline void QueryDevInfoRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+}
+inline ::std::string* QueryDevInfoRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDevInfoRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoRsp_USR.strValue)
+}
+
+inline const QueryDevInfoRsp_USR* QueryDevInfoRsp_USR::internal_default_instance() {
+  return &QueryDevInfoRsp_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
 // QueryDevReq_USR
 
 // optional string strUserID = 1;
@@ -10545,34 +11393,34 @@ inline const QueryDevReq_USR* QueryDevReq_USR::internal_default_instance() {
 
 // QueryDevRsp_USR
 
-// repeated .Interactive.Message.Device allDevInfo = 1;
-inline int QueryDevRsp_USR::alldevinfo_size() const {
-  return alldevinfo_.size();
+// repeated .Interactive.Message.Relation allRelationInfo = 1;
+inline int QueryDevRsp_USR::allrelationinfo_size() const {
+  return allrelationinfo_.size();
 }
-inline void QueryDevRsp_USR::clear_alldevinfo() {
-  alldevinfo_.Clear();
+inline void QueryDevRsp_USR::clear_allrelationinfo() {
+  allrelationinfo_.Clear();
 }
-inline const ::Interactive::Message::Device& QueryDevRsp_USR::alldevinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevRsp_USR.allDevInfo)
-  return alldevinfo_.Get(index);
+inline const ::Interactive::Message::Relation& QueryDevRsp_USR::allrelationinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
+  return allrelationinfo_.Get(index);
 }
-inline ::Interactive::Message::Device* QueryDevRsp_USR::mutable_alldevinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevRsp_USR.allDevInfo)
-  return alldevinfo_.Mutable(index);
+inline ::Interactive::Message::Relation* QueryDevRsp_USR::mutable_allrelationinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
+  return allrelationinfo_.Mutable(index);
 }
-inline ::Interactive::Message::Device* QueryDevRsp_USR::add_alldevinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.QueryDevRsp_USR.allDevInfo)
-  return alldevinfo_.Add();
+inline ::Interactive::Message::Relation* QueryDevRsp_USR::add_allrelationinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
+  return allrelationinfo_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >*
-QueryDevRsp_USR::mutable_alldevinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryDevRsp_USR.allDevInfo)
-  return &alldevinfo_;
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+QueryDevRsp_USR::mutable_allrelationinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
+  return &allrelationinfo_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Device >&
-QueryDevRsp_USR::alldevinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.QueryDevRsp_USR.allDevInfo)
-  return alldevinfo_;
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+QueryDevRsp_USR::allrelationinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
+  return allrelationinfo_;
 }
 
 inline const QueryDevRsp_USR* QueryDevRsp_USR::internal_default_instance() {
@@ -10691,34 +11539,34 @@ inline const QueryUserReq_USR* QueryUserReq_USR::internal_default_instance() {
 
 // QueryUserRsp_USR
 
-// repeated .Interactive.Message.User allUserInfo = 1;
-inline int QueryUserRsp_USR::alluserinfo_size() const {
-  return alluserinfo_.size();
+// repeated .Interactive.Message.Relation allRelationInfo = 1;
+inline int QueryUserRsp_USR::allrelationinfo_size() const {
+  return allrelationinfo_.size();
 }
-inline void QueryUserRsp_USR::clear_alluserinfo() {
-  alluserinfo_.Clear();
+inline void QueryUserRsp_USR::clear_allrelationinfo() {
+  allrelationinfo_.Clear();
 }
-inline const ::Interactive::Message::User& QueryUserRsp_USR::alluserinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserRsp_USR.allUserInfo)
-  return alluserinfo_.Get(index);
+inline const ::Interactive::Message::Relation& QueryUserRsp_USR::allrelationinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
+  return allrelationinfo_.Get(index);
 }
-inline ::Interactive::Message::User* QueryUserRsp_USR::mutable_alluserinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserRsp_USR.allUserInfo)
-  return alluserinfo_.Mutable(index);
+inline ::Interactive::Message::Relation* QueryUserRsp_USR::mutable_allrelationinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
+  return allrelationinfo_.Mutable(index);
 }
-inline ::Interactive::Message::User* QueryUserRsp_USR::add_alluserinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.QueryUserRsp_USR.allUserInfo)
-  return alluserinfo_.Add();
+inline ::Interactive::Message::Relation* QueryUserRsp_USR::add_allrelationinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
+  return allrelationinfo_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
-QueryUserRsp_USR::mutable_alluserinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryUserRsp_USR.allUserInfo)
-  return &alluserinfo_;
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >*
+QueryUserRsp_USR::mutable_allrelationinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
+  return &allrelationinfo_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
-QueryUserRsp_USR::alluserinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.QueryUserRsp_USR.allUserInfo)
-  return alluserinfo_;
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
+QueryUserRsp_USR::allrelationinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
+  return allrelationinfo_;
 }
 
 inline const QueryUserRsp_USR* QueryUserRsp_USR::internal_default_instance() {
@@ -11970,7 +12818,7 @@ inline const BroadcastOnlineUserInfo_INNER* BroadcastOnlineUserInfo_INNER::inter
 
 // Req
 
-// optional .Interactive.Message.GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 1;
+// optional .Interactive.Message.GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 10;
 inline bool Req::has_getaccessaddressreq_dev_value() const {
   return this != internal_default_instance() && getaccessaddressreq_dev_value_ != NULL;
 }
@@ -12009,7 +12857,7 @@ inline void Req::set_allocated_getaccessaddressreq_dev_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetAccessAddressReq_DEV_Value)
 }
 
-// optional .Interactive.Message.LoginReq_DEV LoginReq_DEV_Value = 2;
+// optional .Interactive.Message.LoginReq_DEV LoginReq_DEV_Value = 20;
 inline bool Req::has_loginreq_dev_value() const {
   return this != internal_default_instance() && loginreq_dev_value_ != NULL;
 }
@@ -12048,7 +12896,7 @@ inline void Req::set_allocated_loginreq_dev_value(::Interactive::Message::LoginR
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.LoginReq_DEV_Value)
 }
 
-// optional .Interactive.Message.LogoutReq_DEV LogoutReq_DEV_Value = 3;
+// optional .Interactive.Message.LogoutReq_DEV LogoutReq_DEV_Value = 30;
 inline bool Req::has_logoutreq_dev_value() const {
   return this != internal_default_instance() && logoutreq_dev_value_ != NULL;
 }
@@ -12087,7 +12935,7 @@ inline void Req::set_allocated_logoutreq_dev_value(::Interactive::Message::Logou
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.LogoutReq_DEV_Value)
 }
 
-// optional .Interactive.Message.ShakehandReq_DEV ShakehandReq_DEV_Value = 4;
+// optional .Interactive.Message.ShakehandReq_DEV ShakehandReq_DEV_Value = 40;
 inline bool Req::has_shakehandreq_dev_value() const {
   return this != internal_default_instance() && shakehandreq_dev_value_ != NULL;
 }
@@ -12126,7 +12974,7 @@ inline void Req::set_allocated_shakehandreq_dev_value(::Interactive::Message::Sh
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ShakehandReq_DEV_Value)
 }
 
-// optional .Interactive.Message.ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 5;
+// optional .Interactive.Message.ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;
 inline bool Req::has_configinforeq_dev_value() const {
   return this != internal_default_instance() && configinforeq_dev_value_ != NULL;
 }
@@ -12165,7 +13013,7 @@ inline void Req::set_allocated_configinforeq_dev_value(::Interactive::Message::C
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ConfigInfoReq_DEV_Value)
 }
 
-// optional .Interactive.Message.AuthReq_DEV AuthReq_DEV_Value = 6;
+// optional .Interactive.Message.AuthReq_DEV AuthReq_DEV_Value = 60;
 inline bool Req::has_authreq_dev_value() const {
   return this != internal_default_instance() && authreq_dev_value_ != NULL;
 }
@@ -12204,7 +13052,7 @@ inline void Req::set_allocated_authreq_dev_value(::Interactive::Message::AuthReq
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AuthReq_DEV_Value)
 }
 
-// optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 7;
+// optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
 inline bool Req::has_getaccessaddressreq_usr_value() const {
   return this != internal_default_instance() && getaccessaddressreq_usr_value_ != NULL;
 }
@@ -12243,7 +13091,7 @@ inline void Req::set_allocated_getaccessaddressreq_usr_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetAccessAddressReq_USR_Value)
 }
 
-// optional .Interactive.Message.RegisterUserReq_USR RegisterUserReq_USR_Value = 8;
+// optional .Interactive.Message.RegisterUserReq_USR RegisterUserReq_USR_Value = 80;
 inline bool Req::has_registeruserreq_usr_value() const {
   return this != internal_default_instance() && registeruserreq_usr_value_ != NULL;
 }
@@ -12282,7 +13130,7 @@ inline void Req::set_allocated_registeruserreq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.RegisterUserReq_USR_Value)
 }
 
-// optional .Interactive.Message.UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 9;
+// optional .Interactive.Message.UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;
 inline bool Req::has_unregisteruserreq_usr_value() const {
   return this != internal_default_instance() && unregisteruserreq_usr_value_ != NULL;
 }
@@ -12321,7 +13169,46 @@ inline void Req::set_allocated_unregisteruserreq_usr_value(::Interactive::Messag
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.UnRegisterUserReq_USR_Value)
 }
 
-// optional .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 10;
+// optional .Interactive.Message.QueryUsrInfoReq_USR QueryUsrInfoReq_USR_Value = 100;
+inline bool Req::has_queryusrinforeq_usr_value() const {
+  return this != internal_default_instance() && queryusrinforeq_usr_value_ != NULL;
+}
+inline void Req::clear_queryusrinforeq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryusrinforeq_usr_value_ != NULL) delete queryusrinforeq_usr_value_;
+  queryusrinforeq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUsrInfoReq_USR& Req::queryusrinforeq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryUsrInfoReq_USR_Value)
+  return queryusrinforeq_usr_value_ != NULL ? *queryusrinforeq_usr_value_
+                         : *::Interactive::Message::QueryUsrInfoReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUsrInfoReq_USR* Req::mutable_queryusrinforeq_usr_value() {
+  
+  if (queryusrinforeq_usr_value_ == NULL) {
+    queryusrinforeq_usr_value_ = new ::Interactive::Message::QueryUsrInfoReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryUsrInfoReq_USR_Value)
+  return queryusrinforeq_usr_value_;
+}
+inline ::Interactive::Message::QueryUsrInfoReq_USR* Req::release_queryusrinforeq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryUsrInfoReq_USR_Value)
+  
+  ::Interactive::Message::QueryUsrInfoReq_USR* temp = queryusrinforeq_usr_value_;
+  queryusrinforeq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryusrinforeq_usr_value(::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value) {
+  delete queryusrinforeq_usr_value_;
+  queryusrinforeq_usr_value_ = queryusrinforeq_usr_value;
+  if (queryusrinforeq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUsrInfoReq_USR_Value)
+}
+
+// optional .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
 inline bool Req::has_loginreq_usr_value() const {
   return this != internal_default_instance() && loginreq_usr_value_ != NULL;
 }
@@ -12360,7 +13247,7 @@ inline void Req::set_allocated_loginreq_usr_value(::Interactive::Message::LoginR
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.LoginReq_USR_Value)
 }
 
-// optional .Interactive.Message.LogoutReq_USR LogoutReq_USR_Value = 11;
+// optional .Interactive.Message.LogoutReq_USR LogoutReq_USR_Value = 120;
 inline bool Req::has_logoutreq_usr_value() const {
   return this != internal_default_instance() && logoutreq_usr_value_ != NULL;
 }
@@ -12399,7 +13286,7 @@ inline void Req::set_allocated_logoutreq_usr_value(::Interactive::Message::Logou
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.LogoutReq_USR_Value)
 }
 
-// optional .Interactive.Message.ShakehandReq_USR ShakehandReq_USR_Value = 12;
+// optional .Interactive.Message.ShakehandReq_USR ShakehandReq_USR_Value = 130;
 inline bool Req::has_shakehandreq_usr_value() const {
   return this != internal_default_instance() && shakehandreq_usr_value_ != NULL;
 }
@@ -12438,7 +13325,7 @@ inline void Req::set_allocated_shakehandreq_usr_value(::Interactive::Message::Sh
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ShakehandReq_USR_Value)
 }
 
-// optional .Interactive.Message.ConfigInfoReq_USR ConfigInfoReq_USR_Value = 13;
+// optional .Interactive.Message.ConfigInfoReq_USR ConfigInfoReq_USR_Value = 140;
 inline bool Req::has_configinforeq_usr_value() const {
   return this != internal_default_instance() && configinforeq_usr_value_ != NULL;
 }
@@ -12477,7 +13364,7 @@ inline void Req::set_allocated_configinforeq_usr_value(::Interactive::Message::C
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ConfigInfoReq_USR_Value)
 }
 
-// optional .Interactive.Message.AddDevReq_USR AddDevReq_USR_Value = 14;
+// optional .Interactive.Message.AddDevReq_USR AddDevReq_USR_Value = 150;
 inline bool Req::has_adddevreq_usr_value() const {
   return this != internal_default_instance() && adddevreq_usr_value_ != NULL;
 }
@@ -12516,7 +13403,7 @@ inline void Req::set_allocated_adddevreq_usr_value(::Interactive::Message::AddDe
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.DelDevReq_USR DelDevReq_USR_Value = 15;
+// optional .Interactive.Message.DelDevReq_USR DelDevReq_USR_Value = 160;
 inline bool Req::has_deldevreq_usr_value() const {
   return this != internal_default_instance() && deldevreq_usr_value_ != NULL;
 }
@@ -12555,7 +13442,7 @@ inline void Req::set_allocated_deldevreq_usr_value(::Interactive::Message::DelDe
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DelDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.ModifyDevReq_USR ModifyDevReq_USR_Value = 16;
+// optional .Interactive.Message.ModifyDevReq_USR ModifyDevReq_USR_Value = 170;
 inline bool Req::has_modifydevreq_usr_value() const {
   return this != internal_default_instance() && modifydevreq_usr_value_ != NULL;
 }
@@ -12594,7 +13481,46 @@ inline void Req::set_allocated_modifydevreq_usr_value(::Interactive::Message::Mo
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.QueryDevReq_USR QueryDevReq_USR_Value = 17;
+// optional .Interactive.Message.QueryDevInfoReq_USR QueryDevInfoReq_USR_Value = 180;
+inline bool Req::has_querydevinforeq_usr_value() const {
+  return this != internal_default_instance() && querydevinforeq_usr_value_ != NULL;
+}
+inline void Req::clear_querydevinforeq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevinforeq_usr_value_ != NULL) delete querydevinforeq_usr_value_;
+  querydevinforeq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDevInfoReq_USR& Req::querydevinforeq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryDevInfoReq_USR_Value)
+  return querydevinforeq_usr_value_ != NULL ? *querydevinforeq_usr_value_
+                         : *::Interactive::Message::QueryDevInfoReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDevInfoReq_USR* Req::mutable_querydevinforeq_usr_value() {
+  
+  if (querydevinforeq_usr_value_ == NULL) {
+    querydevinforeq_usr_value_ = new ::Interactive::Message::QueryDevInfoReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryDevInfoReq_USR_Value)
+  return querydevinforeq_usr_value_;
+}
+inline ::Interactive::Message::QueryDevInfoReq_USR* Req::release_querydevinforeq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryDevInfoReq_USR_Value)
+  
+  ::Interactive::Message::QueryDevInfoReq_USR* temp = querydevinforeq_usr_value_;
+  querydevinforeq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_querydevinforeq_usr_value(::Interactive::Message::QueryDevInfoReq_USR* querydevinforeq_usr_value) {
+  delete querydevinforeq_usr_value_;
+  querydevinforeq_usr_value_ = querydevinforeq_usr_value;
+  if (querydevinforeq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDevInfoReq_USR_Value)
+}
+
+// optional .Interactive.Message.QueryDevReq_USR QueryDevReq_USR_Value = 190;
 inline bool Req::has_querydevreq_usr_value() const {
   return this != internal_default_instance() && querydevreq_usr_value_ != NULL;
 }
@@ -12633,7 +13559,46 @@ inline void Req::set_allocated_querydevreq_usr_value(::Interactive::Message::Que
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 18;
+// optional .Interactive.Message.QueryUserReq_USR QueryUserReq_USR_Value = 200;
+inline bool Req::has_queryuserreq_usr_value() const {
+  return this != internal_default_instance() && queryuserreq_usr_value_ != NULL;
+}
+inline void Req::clear_queryuserreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryuserreq_usr_value_ != NULL) delete queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserReq_USR& Req::queryuserreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryUserReq_USR_Value)
+  return queryuserreq_usr_value_ != NULL ? *queryuserreq_usr_value_
+                         : *::Interactive::Message::QueryUserReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserReq_USR* Req::mutable_queryuserreq_usr_value() {
+  
+  if (queryuserreq_usr_value_ == NULL) {
+    queryuserreq_usr_value_ = new ::Interactive::Message::QueryUserReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryUserReq_USR_Value)
+  return queryuserreq_usr_value_;
+}
+inline ::Interactive::Message::QueryUserReq_USR* Req::release_queryuserreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryUserReq_USR_Value)
+  
+  ::Interactive::Message::QueryUserReq_USR* temp = queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryuserreq_usr_value(::Interactive::Message::QueryUserReq_USR* queryuserreq_usr_value) {
+  delete queryuserreq_usr_value_;
+  queryuserreq_usr_value_ = queryuserreq_usr_value;
+  if (queryuserreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUserReq_USR_Value)
+}
+
+// optional .Interactive.Message.SharingDevReq_USR SharingDevReq_USR_Value = 210;
 inline bool Req::has_sharingdevreq_usr_value() const {
   return this != internal_default_instance() && sharingdevreq_usr_value_ != NULL;
 }
@@ -12672,7 +13637,7 @@ inline void Req::set_allocated_sharingdevreq_usr_value(::Interactive::Message::S
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.SharingDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 19;
+// optional .Interactive.Message.CancelSharedDevReq_USR CancelSharedDevReq_USR_Value = 220;
 inline bool Req::has_cancelshareddevreq_usr_value() const {
   return this != internal_default_instance() && cancelshareddevreq_usr_value_ != NULL;
 }
@@ -12711,7 +13676,7 @@ inline void Req::set_allocated_cancelshareddevreq_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.CancelSharedDevReq_USR_Value)
 }
 
-// optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 20;
+// optional .Interactive.Message.AddFriendsReq_USR AddFriendsReq_USR_Value = 230;
 inline bool Req::has_addfriendsreq_usr_value() const {
   return this != internal_default_instance() && addfriendsreq_usr_value_ != NULL;
 }
@@ -12750,7 +13715,7 @@ inline void Req::set_allocated_addfriendsreq_usr_value(::Interactive::Message::A
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 21;
+// optional .Interactive.Message.DelFriendsReq_USR DelFriendsReq_USR_Value = 240;
 inline bool Req::has_delfriendsreq_usr_value() const {
   return this != internal_default_instance() && delfriendsreq_usr_value_ != NULL;
 }
@@ -12789,7 +13754,7 @@ inline void Req::set_allocated_delfriendsreq_usr_value(::Interactive::Message::D
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DelFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 22;
+// optional .Interactive.Message.QueryFriendsReq_USR QueryFriendsReq_USR_Value = 250;
 inline bool Req::has_queryfriendsreq_usr_value() const {
   return this != internal_default_instance() && queryfriendsreq_usr_value_ != NULL;
 }
@@ -12828,7 +13793,7 @@ inline void Req::set_allocated_queryfriendsreq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFriendsReq_USR_Value)
 }
 
-// optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 23;
+// optional .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
 }
@@ -12867,7 +13832,7 @@ inline void Req::set_allocated_getonlinedevinforeq_inner_value(::Interactive::Me
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetOnlineDevInfoReq_INNER_Value)
 }
 
-// optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 24;
+// optional .Interactive.Message.BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;
 inline bool Req::has_broadcastonlinedevinfo_inner_value() const {
   return this != internal_default_instance() && broadcastonlinedevinfo_inner_value_ != NULL;
 }
@@ -12906,7 +13871,7 @@ inline void Req::set_allocated_broadcastonlinedevinfo_inner_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.BroadcastOnlineDevInfo_INNER_Value)
 }
 
-// optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 25;
+// optional .Interactive.Message.GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;
 inline bool Req::has_getonlineuserinforeq_inner_value() const {
   return this != internal_default_instance() && getonlineuserinforeq_inner_value_ != NULL;
 }
@@ -12945,7 +13910,7 @@ inline void Req::set_allocated_getonlineuserinforeq_inner_value(::Interactive::M
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetOnlineUserInfoReq_INNER_Value)
 }
 
-// optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 26;
+// optional .Interactive.Message.BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 290;
 inline bool Req::has_broadcastonlineuserinfo_inner_value() const {
   return this != internal_default_instance() && broadcastonlineuserinfo_inner_value_ != NULL;
 }
@@ -12991,7 +13956,7 @@ inline const Req* Req::internal_default_instance() {
 
 // Rsp
 
-// optional int32 iRetcode = 1;
+// optional int32 iRetcode = 10;
 inline void Rsp::clear_iretcode() {
   iretcode_ = 0;
 }
@@ -13005,7 +13970,7 @@ inline void Rsp::set_iretcode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.Rsp.iRetcode)
 }
 
-// optional string strRetMsg = 2;
+// optional string strRetMsg = 20;
 inline void Rsp::clear_strretmsg() {
   strretmsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -13049,7 +14014,7 @@ inline void Rsp::set_allocated_strretmsg(::std::string* strretmsg) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.strRetMsg)
 }
 
-// optional .Interactive.Message.GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 3;
+// optional .Interactive.Message.GetAccessAddressRsp_DEV GetAccessAddressRsp_DEV_Value = 30;
 inline bool Rsp::has_getaccessaddressrsp_dev_value() const {
   return this != internal_default_instance() && getaccessaddressrsp_dev_value_ != NULL;
 }
@@ -13088,7 +14053,7 @@ inline void Rsp::set_allocated_getaccessaddressrsp_dev_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.GetAccessAddressRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.LoginRsp_DEV LoginRsp_DEV_Value = 4;
+// optional .Interactive.Message.LoginRsp_DEV LoginRsp_DEV_Value = 40;
 inline bool Rsp::has_loginrsp_dev_value() const {
   return this != internal_default_instance() && loginrsp_dev_value_ != NULL;
 }
@@ -13127,7 +14092,7 @@ inline void Rsp::set_allocated_loginrsp_dev_value(::Interactive::Message::LoginR
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.LoginRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.LogoutRsp_DEV LogoutRsp_DEV_Value = 5;
+// optional .Interactive.Message.LogoutRsp_DEV LogoutRsp_DEV_Value = 50;
 inline bool Rsp::has_logoutrsp_dev_value() const {
   return this != internal_default_instance() && logoutrsp_dev_value_ != NULL;
 }
@@ -13166,7 +14131,7 @@ inline void Rsp::set_allocated_logoutrsp_dev_value(::Interactive::Message::Logou
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.LogoutRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.ShakehandRsp_DEV ShakehandRsp_DEV_Value = 6;
+// optional .Interactive.Message.ShakehandRsp_DEV ShakehandRsp_DEV_Value = 60;
 inline bool Rsp::has_shakehandrsp_dev_value() const {
   return this != internal_default_instance() && shakehandrsp_dev_value_ != NULL;
 }
@@ -13205,7 +14170,7 @@ inline void Rsp::set_allocated_shakehandrsp_dev_value(::Interactive::Message::Sh
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ShakehandRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 7;
+// optional .Interactive.Message.ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;
 inline bool Rsp::has_configinforsp_dev_value() const {
   return this != internal_default_instance() && configinforsp_dev_value_ != NULL;
 }
@@ -13244,7 +14209,7 @@ inline void Rsp::set_allocated_configinforsp_dev_value(::Interactive::Message::C
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ConfigInfoRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.AuthRsp_DEV AuthRsp_DEV_Value = 8;
+// optional .Interactive.Message.AuthRsp_DEV AuthRsp_DEV_Value = 80;
 inline bool Rsp::has_authrsp_dev_value() const {
   return this != internal_default_instance() && authrsp_dev_value_ != NULL;
 }
@@ -13283,7 +14248,7 @@ inline void Rsp::set_allocated_authrsp_dev_value(::Interactive::Message::AuthRsp
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AuthRsp_DEV_Value)
 }
 
-// optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 9;
+// optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
 inline bool Rsp::has_getaccessaddressrsp_usr_value() const {
   return this != internal_default_instance() && getaccessaddressrsp_usr_value_ != NULL;
 }
@@ -13322,7 +14287,7 @@ inline void Rsp::set_allocated_getaccessaddressrsp_usr_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.GetAccessAddressRsp_USR_Value)
 }
 
-// optional .Interactive.Message.RegisterUserRsp_USR RegisterUserRsp_USR_Value = 10;
+// optional .Interactive.Message.RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;
 inline bool Rsp::has_registeruserrsp_usr_value() const {
   return this != internal_default_instance() && registeruserrsp_usr_value_ != NULL;
 }
@@ -13361,7 +14326,7 @@ inline void Rsp::set_allocated_registeruserrsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.RegisterUserRsp_USR_Value)
 }
 
-// optional .Interactive.Message.UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 11;
+// optional .Interactive.Message.UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;
 inline bool Rsp::has_unregisteruserrsp_usr_value() const {
   return this != internal_default_instance() && unregisteruserrsp_usr_value_ != NULL;
 }
@@ -13400,7 +14365,46 @@ inline void Rsp::set_allocated_unregisteruserrsp_usr_value(::Interactive::Messag
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.UnRegisterUserRsp_USR_Value)
 }
 
-// optional .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 12;
+// optional .Interactive.Message.QueryUsrInfoRsp_USR QueryUsrInfoRsp_USR_Value = 120;
+inline bool Rsp::has_queryusrinforsp_usr_value() const {
+  return this != internal_default_instance() && queryusrinforsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryusrinforsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryusrinforsp_usr_value_ != NULL) delete queryusrinforsp_usr_value_;
+  queryusrinforsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUsrInfoRsp_USR& Rsp::queryusrinforsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUsrInfoRsp_USR_Value)
+  return queryusrinforsp_usr_value_ != NULL ? *queryusrinforsp_usr_value_
+                         : *::Interactive::Message::QueryUsrInfoRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUsrInfoRsp_USR* Rsp::mutable_queryusrinforsp_usr_value() {
+  
+  if (queryusrinforsp_usr_value_ == NULL) {
+    queryusrinforsp_usr_value_ = new ::Interactive::Message::QueryUsrInfoRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUsrInfoRsp_USR_Value)
+  return queryusrinforsp_usr_value_;
+}
+inline ::Interactive::Message::QueryUsrInfoRsp_USR* Rsp::release_queryusrinforsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUsrInfoRsp_USR_Value)
+  
+  ::Interactive::Message::QueryUsrInfoRsp_USR* temp = queryusrinforsp_usr_value_;
+  queryusrinforsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryusrinforsp_usr_value(::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value) {
+  delete queryusrinforsp_usr_value_;
+  queryusrinforsp_usr_value_ = queryusrinforsp_usr_value;
+  if (queryusrinforsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUsrInfoRsp_USR_Value)
+}
+
+// optional .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
 inline bool Rsp::has_loginrsp_usr_value() const {
   return this != internal_default_instance() && loginrsp_usr_value_ != NULL;
 }
@@ -13439,7 +14443,7 @@ inline void Rsp::set_allocated_loginrsp_usr_value(::Interactive::Message::LoginR
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.LoginRsp_USR_Value)
 }
 
-// optional .Interactive.Message.LogoutRsp_USR LogoutRsp_USR_Value = 13;
+// optional .Interactive.Message.LogoutRsp_USR LogoutRsp_USR_Value = 140;
 inline bool Rsp::has_logoutrsp_usr_value() const {
   return this != internal_default_instance() && logoutrsp_usr_value_ != NULL;
 }
@@ -13478,7 +14482,7 @@ inline void Rsp::set_allocated_logoutrsp_usr_value(::Interactive::Message::Logou
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.LogoutRsp_USR_Value)
 }
 
-// optional .Interactive.Message.ShakehandRsp_USR ShakehandRsp_USR_Value = 14;
+// optional .Interactive.Message.ShakehandRsp_USR ShakehandRsp_USR_Value = 150;
 inline bool Rsp::has_shakehandrsp_usr_value() const {
   return this != internal_default_instance() && shakehandrsp_usr_value_ != NULL;
 }
@@ -13517,7 +14521,7 @@ inline void Rsp::set_allocated_shakehandrsp_usr_value(::Interactive::Message::Sh
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ShakehandRsp_USR_Value)
 }
 
-// optional .Interactive.Message.ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 15;
+// optional .Interactive.Message.ConfigInfoRsp_USR ConfigInfoRsp_USR_Value = 160;
 inline bool Rsp::has_configinforsp_usr_value() const {
   return this != internal_default_instance() && configinforsp_usr_value_ != NULL;
 }
@@ -13556,7 +14560,7 @@ inline void Rsp::set_allocated_configinforsp_usr_value(::Interactive::Message::C
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ConfigInfoRsp_USR_Value)
 }
 
-// optional .Interactive.Message.AddDevRsp_USR AddDevRsp_USR_Value = 16;
+// optional .Interactive.Message.AddDevRsp_USR AddDevRsp_USR_Value = 170;
 inline bool Rsp::has_adddevrsp_usr_value() const {
   return this != internal_default_instance() && adddevrsp_usr_value_ != NULL;
 }
@@ -13595,7 +14599,7 @@ inline void Rsp::set_allocated_adddevrsp_usr_value(::Interactive::Message::AddDe
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.DelDevRsp_USR DelDevRsp_USR_Value = 17;
+// optional .Interactive.Message.DelDevRsp_USR DelDevRsp_USR_Value = 180;
 inline bool Rsp::has_deldevrsp_usr_value() const {
   return this != internal_default_instance() && deldevrsp_usr_value_ != NULL;
 }
@@ -13634,7 +14638,7 @@ inline void Rsp::set_allocated_deldevrsp_usr_value(::Interactive::Message::DelDe
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DelDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.ModifyDevRsp_USR ModifyDevRsp_USR_Value = 18;
+// optional .Interactive.Message.ModifyDevRsp_USR ModifyDevRsp_USR_Value = 190;
 inline bool Rsp::has_modifydevrsp_usr_value() const {
   return this != internal_default_instance() && modifydevrsp_usr_value_ != NULL;
 }
@@ -13673,7 +14677,46 @@ inline void Rsp::set_allocated_modifydevrsp_usr_value(::Interactive::Message::Mo
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.QueryDevRsp_USR QueryDevRsp_USR_Value = 19;
+// optional .Interactive.Message.QueryDevInfoRsp_USR QueryDevInfoRsp_USR_Value = 200;
+inline bool Rsp::has_querydevinforsp_usr_value() const {
+  return this != internal_default_instance() && querydevinforsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_querydevinforsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevinforsp_usr_value_ != NULL) delete querydevinforsp_usr_value_;
+  querydevinforsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDevInfoRsp_USR& Rsp::querydevinforsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryDevInfoRsp_USR_Value)
+  return querydevinforsp_usr_value_ != NULL ? *querydevinforsp_usr_value_
+                         : *::Interactive::Message::QueryDevInfoRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDevInfoRsp_USR* Rsp::mutable_querydevinforsp_usr_value() {
+  
+  if (querydevinforsp_usr_value_ == NULL) {
+    querydevinforsp_usr_value_ = new ::Interactive::Message::QueryDevInfoRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryDevInfoRsp_USR_Value)
+  return querydevinforsp_usr_value_;
+}
+inline ::Interactive::Message::QueryDevInfoRsp_USR* Rsp::release_querydevinforsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryDevInfoRsp_USR_Value)
+  
+  ::Interactive::Message::QueryDevInfoRsp_USR* temp = querydevinforsp_usr_value_;
+  querydevinforsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_querydevinforsp_usr_value(::Interactive::Message::QueryDevInfoRsp_USR* querydevinforsp_usr_value) {
+  delete querydevinforsp_usr_value_;
+  querydevinforsp_usr_value_ = querydevinforsp_usr_value;
+  if (querydevinforsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDevInfoRsp_USR_Value)
+}
+
+// optional .Interactive.Message.QueryDevRsp_USR QueryDevRsp_USR_Value = 210;
 inline bool Rsp::has_querydevrsp_usr_value() const {
   return this != internal_default_instance() && querydevrsp_usr_value_ != NULL;
 }
@@ -13712,7 +14755,46 @@ inline void Rsp::set_allocated_querydevrsp_usr_value(::Interactive::Message::Que
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 20;
+// optional .Interactive.Message.QueryUserRsp_USR QueryUserRsp_USR_Value = 220;
+inline bool Rsp::has_queryuserrsp_usr_value() const {
+  return this != internal_default_instance() && queryuserrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryuserrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryuserrsp_usr_value_ != NULL) delete queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserRsp_USR& Rsp::queryuserrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  return queryuserrsp_usr_value_ != NULL ? *queryuserrsp_usr_value_
+                         : *::Interactive::Message::QueryUserRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserRsp_USR* Rsp::mutable_queryuserrsp_usr_value() {
+  
+  if (queryuserrsp_usr_value_ == NULL) {
+    queryuserrsp_usr_value_ = new ::Interactive::Message::QueryUserRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  return queryuserrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryUserRsp_USR* Rsp::release_queryuserrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+  
+  ::Interactive::Message::QueryUserRsp_USR* temp = queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryuserrsp_usr_value(::Interactive::Message::QueryUserRsp_USR* queryuserrsp_usr_value) {
+  delete queryuserrsp_usr_value_;
+  queryuserrsp_usr_value_ = queryuserrsp_usr_value;
+  if (queryuserrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUserRsp_USR_Value)
+}
+
+// optional .Interactive.Message.SharingDevRsp_USR SharingDevRsp_USR_Value = 230;
 inline bool Rsp::has_sharingdevrsp_usr_value() const {
   return this != internal_default_instance() && sharingdevrsp_usr_value_ != NULL;
 }
@@ -13751,7 +14833,7 @@ inline void Rsp::set_allocated_sharingdevrsp_usr_value(::Interactive::Message::S
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.SharingDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 21;
+// optional .Interactive.Message.CancelSharedDevRsp_USR CancelSharedDevRsp_USR_Value = 240;
 inline bool Rsp::has_cancelshareddevrsp_usr_value() const {
   return this != internal_default_instance() && cancelshareddevrsp_usr_value_ != NULL;
 }
@@ -13790,7 +14872,7 @@ inline void Rsp::set_allocated_cancelshareddevrsp_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.CancelSharedDevRsp_USR_Value)
 }
 
-// optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 22;
+// optional .Interactive.Message.AddFriendsRsp_USR AddFriendsRsp_USR_Value = 250;
 inline bool Rsp::has_addfriendsrsp_usr_value() const {
   return this != internal_default_instance() && addfriendsrsp_usr_value_ != NULL;
 }
@@ -13829,7 +14911,7 @@ inline void Rsp::set_allocated_addfriendsrsp_usr_value(::Interactive::Message::A
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 23;
+// optional .Interactive.Message.DelFriendsRsp_USR DelFriendsRsp_USR_Value = 260;
 inline bool Rsp::has_delfriendsrsp_usr_value() const {
   return this != internal_default_instance() && delfriendsrsp_usr_value_ != NULL;
 }
@@ -13868,7 +14950,7 @@ inline void Rsp::set_allocated_delfriendsrsp_usr_value(::Interactive::Message::D
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DelFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 24;
+// optional .Interactive.Message.QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 270;
 inline bool Rsp::has_queryfriendsrsp_usr_value() const {
   return this != internal_default_instance() && queryfriendsrsp_usr_value_ != NULL;
 }
@@ -13907,7 +14989,7 @@ inline void Rsp::set_allocated_queryfriendsrsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFriendsRsp_USR_Value)
 }
 
-// optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 25;
+// optional .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
 }
@@ -13946,7 +15028,7 @@ inline void Rsp::set_allocated_getonlinedevinforsp_inner_value(::Interactive::Me
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.GetOnlineDevInfoRsp_INNER_Value)
 }
 
-// optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 26;
+// optional .Interactive.Message.GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290;
 inline bool Rsp::has_getonlineuserinforsp_inner_value() const {
   return this != internal_default_instance() && getonlineuserinforsp_inner_value_ != NULL;
 }
@@ -14146,6 +15228,14 @@ inline const InteractiveMessage* InteractiveMessage::internal_default_instance()
   return &InteractiveMessage_default_instance_.get();
 }
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

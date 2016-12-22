@@ -94,46 +94,44 @@ template<typename T> void SerializeDevList(const std::list<T> &devInfoList,
     }
 }
 
-void UnSerializeUsrList(std::list<InteractiveProtoHandler::User> &usrInfoList,
-    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User > &srcUsrInfoList)
+void UnSerializeRelationList(std::list<InteractiveProtoHandler::Relation> &usrInfoList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > &srcReInfoList)
 {
     usrInfoList.clear();
-    int iCount = srcUsrInfoList.size();
+    int iCount = srcReInfoList.size();
     for (int i = 0; i < iCount; ++i)
     {
-        InteractiveProtoHandler::User usrInfo;
-        usrInfo.m_strUserID = srcUsrInfoList.Get(i).struserid();
-        usrInfo.m_strUserName = srcUsrInfoList.Get(i).strusername();
-        usrInfo.m_strUserPassword = srcUsrInfoList.Get(i).struserpassword();
-        usrInfo.m_uiTypeInfo = srcUsrInfoList.Get(i).uitypeinfo();
-        usrInfo.m_strCreatedate = srcUsrInfoList.Get(i).strcreatedate();
-        usrInfo.m_uiStatus = srcUsrInfoList.Get(i).uistatus();
-        usrInfo.m_strExtend = srcUsrInfoList.Get(i).strextend();
-
-        usrInfoList.push_back(std::move(usrInfo));
+        InteractiveProtoHandler::Relation reInfo;
+        reInfo.m_strUserID = srcReInfoList.Get(i).struserid();
+        reInfo.m_strDevID = srcReInfoList.Get(i).strdevid();
+        reInfo.m_uiRelation = srcReInfoList.Get(i).uirelation();
+        reInfo.m_strBeginDate = srcReInfoList.Get(i).strbegindate();
+        reInfo.m_strEndDate = srcReInfoList.Get(i).strenddate();
+        reInfo.m_strValue = srcReInfoList.Get(i).strvalue();
+        
+        usrInfoList.push_back(std::move(reInfo));
     }
 }
 
-void SerializeUsrList(const std::list<InteractiveProtoHandler::User> &usrInfoList,
-     ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >* pDstUsrInfoList)
+void SerializeRelationList(const std::list<InteractiveProtoHandler::Relation> &reInfoList,
+     ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >* pDstReInfoList)
  {
-     for (unsigned int i = 0; i < usrInfoList.size(); ++i)
+     for (unsigned int i = 0; i < reInfoList.size(); ++i)
      {
-         pDstUsrInfoList->Add();
+         pDstReInfoList->Add();
      }
 
-     auto itBegin = usrInfoList.begin();
-     auto itEnd = usrInfoList.end();
+     auto itBegin = reInfoList.begin();
+     auto itEnd = reInfoList.end();
      int i = 0;
      while (itBegin != itEnd)
      {
-         pDstUsrInfoList->Mutable(i)->set_struserid(itBegin->m_strUserID);
-         pDstUsrInfoList->Mutable(i)->set_strusername(itBegin->m_strUserName);
-         pDstUsrInfoList->Mutable(i)->set_struserpassword(itBegin->m_strUserPassword);
-         pDstUsrInfoList->Mutable(i)->set_uitypeinfo(itBegin->m_uiTypeInfo);
-         pDstUsrInfoList->Mutable(i)->set_strcreatedate(itBegin->m_strCreatedate);
-         pDstUsrInfoList->Mutable(i)->set_uistatus(itBegin->m_uiStatus);
-         pDstUsrInfoList->Mutable(i)->set_strextend(itBegin->m_strExtend);
+         pDstReInfoList->Mutable(i)->set_struserid(itBegin->m_strUserID);
+         pDstReInfoList->Mutable(i)->set_strdevid(itBegin->m_strDevID);
+         pDstReInfoList->Mutable(i)->set_uirelation(itBegin->m_uiRelation);
+         pDstReInfoList->Mutable(i)->set_strbegindate(itBegin->m_strBeginDate);
+         pDstReInfoList->Mutable(i)->set_strenddate(itBegin->m_strEndDate);
+         pDstReInfoList->Mutable(i)->set_strvalue(itBegin->m_strValue);
 
          ++i;
          ++itBegin;
@@ -173,6 +171,21 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::UnRegisterUserRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UnRegisterUserRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUsrInfoReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUsrInfoReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUsrInfoReq_USR_T, handler));
+
+    ////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUsrInfoRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUsrInfoRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUsrInfoRsp_USR_T, handler));
+
 
     /////////////////////////////////////////////////////////
     
@@ -274,21 +287,47 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     ///////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDevInfoReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDevInfoReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDevInfoReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDevInfoRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDevInfoRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDevInfoRsp_USR_T, handler));
+
+    ///////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDevReq_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDevReq_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDevReq_USR_T, handler));
 
     //
-    
-    /////////////////////////////////////////////////////
 
     handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDevRsp_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDevRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDevRsp_USR_T, handler));
 
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUserReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUserReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUserReq_USR_T, handler));
+
     //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUserRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUserRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUserRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
 
     handler.Szr = boost::bind(&InteractiveProtoHandler::SharingDevReq_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::SharingDevReq_USR_UnSerializer, this, _1, _2);
@@ -491,6 +530,26 @@ bool InteractiveProtoHandler::UnRegisterUserRsp_USR_UnSerializer(const Interacti
     return UnSerializerT<UnRegisterUserRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::QueryUsrInfoReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryUsrInfoReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUsrInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryUsrInfoReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryUsrInfoReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryUsrInfoReq_USR, Req>(InteractiveMsg, rsp);
+}
+
 bool InteractiveProtoHandler::LoginReq_USR_Serializer(const Req &req, std::string &strOutput)
 {
     return SerializerT<LoginReq_USR, Req>(req, strOutput);
@@ -631,6 +690,26 @@ bool InteractiveProtoHandler::ModifyDevRsp_USR_UnSerializer(const InteractiveMes
     return UnSerializerT<ModifyDevRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::QueryDevInfoReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryDevInfoReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDevInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryDevInfoReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryDevInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryDevInfoRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDevInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryDevInfoRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
 bool InteractiveProtoHandler::QueryDevReq_USR_Serializer(const Req &req, std::string &strOutput)
 {
     return SerializerT<QueryDevReq_USR, Req>(req, strOutput);
@@ -641,14 +720,34 @@ bool InteractiveProtoHandler::QueryDevReq_USR_UnSerializer(const InteractiveMess
     return UnSerializerT<QueryDevReq_USR, Req>(InteractiveMsg, req);
 }
 
-bool InteractiveProtoHandler::QueryDevRsp_USR_Serializer(const Req &req, std::string &strOutput)
+bool InteractiveProtoHandler::QueryDevRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
 {
-    return SerializerT<QueryDevRsp_USR, Req>(req, strOutput);
+    return SerializerT<QueryDevRsp_USR, Req>(rsp, strOutput);
 }
 
-bool InteractiveProtoHandler::QueryDevRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+bool InteractiveProtoHandler::QueryDevRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
-    return UnSerializerT<QueryDevRsp_USR, Req>(InteractiveMsg, req);
+    return UnSerializerT<QueryDevRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryUserReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryUserReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUserReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryUserReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryUserRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryUserRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUserRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryUserRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::SharingDevReq_USR_Serializer(const Req &rsp, std::string &strOutput)
@@ -981,6 +1080,55 @@ void InteractiveProtoHandler::UnRegisterUserRsp_USR::Serializer(InteractiveMessa
 
 }
 
+void InteractiveProtoHandler::QueryUsrInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryusrinforeq_usr_value().struserid();
+    m_strValue = InteractiveMsg.reqvalue().queryusrinforeq_usr_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::QueryUsrInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUsrInfoReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryusrinforeq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryusrinforeq_usr_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::QueryUsrInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_userInfo.m_strCreatedate = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_strExtend = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().strextend();
+    m_userInfo.m_strUserID = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().struserid();
+    m_userInfo.m_strUserName = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().strusername();
+    m_userInfo.m_strUserPassword = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().struserpassword();
+    m_userInfo.m_uiStatus = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().uistatus();
+    m_userInfo.m_uiTypeInfo = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().uitypeinfo();
+
+    m_strValue = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::QueryUsrInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUsrInfoRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_strcreatedate(m_userInfo.m_strCreatedate);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_strextend(m_userInfo.m_strExtend);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_struserid(m_userInfo.m_strUserID);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_strusername(m_userInfo.m_strUserName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_struserpassword(m_userInfo.m_strUserPassword);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_uistatus(m_userInfo.m_uiStatus);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->set_strvalue(m_strValue);
+}
+
 void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
@@ -1016,7 +1164,7 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
 void InteractiveProtoHandler::LoginRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
-    UnSerializeDevList<Device>(m_devInfoList, InteractiveMsg.rspvalue().loginrsp_usr_value().devinfo());
+    UnSerializeRelationList(m_reInfoList, InteractiveMsg.rspvalue().loginrsp_usr_value().relationinfo());
     m_strValue = InteractiveMsg.rspvalue().loginrsp_usr_value().strvalue();
 
 }
@@ -1028,8 +1176,8 @@ void InteractiveProtoHandler::LoginRsp_USR::Serializer(InteractiveMessage &Inter
 
     InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->set_strvalue(m_strValue);
 
-    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->mutable_devinfo();
-    SerializeDevList<Device>(m_devInfoList, uinfo);
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->mutable_relationinfo();
+    SerializeRelationList(m_reInfoList, uinfo);
 
 }
 
@@ -1329,6 +1477,61 @@ void InteractiveProtoHandler::ModifyDevRsp_USR::Serializer(InteractiveMessage &I
     InteractiveMsg.mutable_rspvalue()->mutable_modifydevrsp_usr_value()->set_strvalue(m_strValue);
 }
 
+void InteractiveProtoHandler::QueryDevInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+
+    m_strDevID = InteractiveMsg.reqvalue().querydevinforeq_usr_value().strdevid();
+    m_strValue = InteractiveMsg.reqvalue().querydevinforeq_usr_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::QueryDevInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevInfoReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_strvalue(m_strValue);
+
+}
+
+void InteractiveProtoHandler::QueryDevInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_devInfo.m_strCreatedate = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strcreatedate();
+    m_devInfo.m_strDevID = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevid();
+    m_devInfo.m_strDevName = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevname();
+    m_devInfo.m_strDevPassword = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevpassword();
+    m_devInfo.m_strExtend = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strextend();
+    m_devInfo.m_strInnerinfo = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strinnerinfo();
+    m_devInfo.m_uiStatus = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().uistatus();
+    m_devInfo.m_uiTypeInfo = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().uitypeinfo();
+
+    m_strValue = InteractiveMsg.rspvalue().querydevinforsp_usr_value().strvalue();
+
+}
+
+void InteractiveProtoHandler::QueryDevInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevInfoRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevid(m_devInfo.m_strDevID);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->set_strvalue(m_strValue);
+
+
+}
+
 void InteractiveProtoHandler::QueryDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
@@ -1351,8 +1554,8 @@ void InteractiveProtoHandler::QueryDevReq_USR::Serializer(InteractiveMessage &In
 void InteractiveProtoHandler::QueryDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
-    UnSerializeDevList<Device>(m_allDevInfoList, InteractiveMsg.rspvalue().querydevrsp_usr_value().alldevinfo());
-
+    UnSerializeRelationList(m_allRelationInfoList, InteractiveMsg.rspvalue().querydevrsp_usr_value().allrelationinfo());
+    
 }
 
 void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1360,8 +1563,8 @@ void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &In
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevRsp_USR_T);
 
-    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->mutable_alldevinfo();
-    SerializeDevList<Device>(m_allDevInfoList, uinfo);
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->mutable_allrelationinfo();
+    SerializeRelationList(m_allRelationInfoList, uinfo);
 
 }
 
@@ -1385,7 +1588,7 @@ void InteractiveProtoHandler::QueryUserReq_USR::Serializer(InteractiveMessage &I
 void InteractiveProtoHandler::QueryUserRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
-    UnSerializeUsrList(m_allUserInfoList, InteractiveMsg.rspvalue().queryuserrsp_usr_value().alluserinfo());
+    UnSerializeRelationList(m_allRelationInfoList, InteractiveMsg.rspvalue().queryuserrsp_usr_value().allrelationinfo());
 }
 
 void InteractiveProtoHandler::QueryUserRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1393,8 +1596,8 @@ void InteractiveProtoHandler::QueryUserRsp_USR::Serializer(InteractiveMessage &I
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUserRsp_USR_T);
 
-    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->mutable_alluserinfo();
-    SerializeUsrList(m_allUserInfoList, uinfo);
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->mutable_allrelationinfo();
+    SerializeRelationList(m_allRelationInfoList, uinfo);
 }
 
 void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1838,9 +2041,4 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
         ++itBegin;
     }
 }
-
-
-
-
-
 
