@@ -591,12 +591,12 @@ bool InteractiveProtoHandler::QueryUsrInfoReq_USR_UnSerializer(const Interactive
 
 bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
 {
-    return SerializerT<QueryUsrInfoReq_USR, Req>(rsp, strOutput);
+    return SerializerT<QueryUsrInfoRsp_USR, Req>(rsp, strOutput);
 }
 
 bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
-    return UnSerializerT<QueryUsrInfoReq_USR, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<QueryUsrInfoRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::LoginReq_USR_Serializer(const Req &req, std::string &strOutput)

@@ -496,6 +496,47 @@ std::string UserTest::CancelSharedDevReq()
     return strSerializeOutPut;
 }
 
+std::string UserTest::QueryUsrInfoReq()
+{
+    InteractiveProtoHandler::QueryUsrInfoReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T;
+    req.m_uiMsgSeq = 8;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = "A087FEC87BE5DF4784394F853F0EDF69";
+    req.m_strValue = "value";
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Query user info req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+}
+
+std::string UserTest::QueryDevInfoReq()
+{
+    InteractiveProtoHandler::QueryDevInfoReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevInfoReq_USR_T;
+    req.m_uiMsgSeq = 8;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strDevID = "5D1C115660F6704CB048DAB53B845D45";
+    req.m_strValue = "value";
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Query device info req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -559,15 +600,36 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             ++itBegin;
         }
 
-        //设备关联用户查询
-        const std::string &strMsg = QueryUsrReq();
+        // 查询设备信息
+        const std::string &strMsg = QueryDevInfoReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Query user req msg is empty.");
+            LOG_ERROR_RLD("Query device info req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        ////查询用户信息
+        //const std::string &strMsg = QueryUsrInfoReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Query user info req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+
+        ////设备关联用户查询
+        //const std::string &strMsg = QueryUsrReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Query user req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
         ////用户分享设备
         //const std::string &strMsg = SharingDevReq();
@@ -845,14 +907,54 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         LOG_INFO_RLD("Cancel shared device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
     }
-    else if (InteractiveProtoHandler::MsgType::QueryUserRsp_USR_T == mtype)
+    else if (InteractiveProtoHandler::MsgType::QueryDevInfoRsp_USR_T == mtype)
     {
-        InteractiveProtoHandler::QueryUserRsp_USR rsp;
+        InteractiveProtoHandler::QueryDevInfoRsp_USR rsp;
+
         if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
         {
-            LOG_ERROR_RLD("Query user rsp unserialize failed.");
+            LOG_ERROR_RLD("Query device info rsp unserialize failed.");
             return;
         }
+
+        LOG_INFO_RLD("Query device id is " << rsp.m_devInfo.m_strDevID << " device name is " << rsp.m_devInfo.m_strDevName <<
+            " device pwd is " << rsp.m_devInfo.m_strDevPassword << " type info is " << rsp.m_devInfo.m_uiTypeInfo <<
+            " create date is " << rsp.m_devInfo.m_strCreatedate << " status is " << rsp.m_devInfo.m_uiStatus <<
+            " extend is " << rsp.m_devInfo.m_strExtend << " and inner info is " << rsp.m_devInfo.m_strInnerinfo);
+
+        LOG_INFO_RLD("Query device info rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+    }
+    else if (InteractiveProtoHandler::MsgType::QueryUsrInfoRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::QueryUsrInfoRsp_USR rsp;
+
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Query user info rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Query user id is " << rsp.m_userInfo.m_strUserID << " user name is " << rsp.m_userInfo.m_strUserName <<
+            " user pwd is " << rsp.m_userInfo.m_strUserPassword << " type info is " << rsp.m_userInfo.m_uiTypeInfo <<
+            " create date is " << rsp.m_userInfo.m_strCreatedate << " status is " << rsp.m_userInfo.m_uiStatus <<
+            " extend is " << rsp.m_userInfo.m_strExtend);
+
+        LOG_INFO_RLD("Query user info rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+    }
+    else if (InteractiveProtoHandler::MsgType::MsgPreHandlerRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::MsgPreHandlerRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Msg prehandler rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Msg prehandler rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
     }
     else
     {

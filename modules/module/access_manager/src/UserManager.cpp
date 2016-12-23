@@ -1654,7 +1654,7 @@ bool UserManager::QueryUserInfoToDB(const std::string &strUserID, InteractivePro
 bool UserManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend from t_user_info where deviceid = '%s' and status = 0";
+    const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend from t_device_info where deviceid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str());
     std::string strSql = sql;
 
