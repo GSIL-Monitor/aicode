@@ -288,6 +288,8 @@ int main(int argc, char* argv[])
 
     ControlCenter ccenter(pinfo);
 
+    ccenter.SetupMsgPreHandler(boost::bind(&UserManager::PreCommonHandler, &Umg, _1, _2, _3));
+
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&UserManager::RegisterUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T, boost::bind(&UserManager::UnRegisterUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T, boost::bind(&UserManager::QueryUsrInfoReq, &Umg, _1, _2, _3));

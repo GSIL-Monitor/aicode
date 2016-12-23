@@ -46,6 +46,8 @@ public:
 
         ////////////////////////////////////////////////////////
 
+        MsgPreHandlerReq_USR_T = 19990,       //消息预处理
+        MsgPreHandlerRsp_USR_T = 19991,
         GetAccessAddressReq_USR_T = 20000,    //用户获取用户设备管理服务器地址
         GetAccessAddressRsp_USR_T = 20010,
         RegisterUserReq_USR_T = 20020,            //用户注册
@@ -160,6 +162,28 @@ public:
 
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
+
+    struct MsgPreHandlerReq_USR : Req
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
+    struct MsgPreHandlerRsp_USR : Rsp
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+    
 
     struct RegisterUserReq_USR : Req
     {
@@ -622,8 +646,15 @@ public:
     bool SerializeRsp(const Rsp &rsp, std::string &strOutput);
     bool UnSerializeRsp(const std::string &strData, Rsp &rsp);
 
+    bool UnSerializeReqBase(const std::string &strData, Req &req);
+
 private:
 
+    bool MsgPreHandlerReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool MsgPreHandlerReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool MsgPreHandlerRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool MsgPreHandlerRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+    
     bool RegisterUserReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool RegisterUserReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool RegisterUserRsp_USR_Serializer(const Req &rsp, std::string &strOutput);

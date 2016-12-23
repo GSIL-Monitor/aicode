@@ -146,6 +146,21 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     //////////////////////////////////////////////////////
     
     SerializeHandler handler;
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::MsgPreHandlerReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::MsgPreHandlerReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::MsgPreHandlerReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::MsgPreHandlerRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::MsgPreHandlerRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::MsgPreHandlerRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&InteractiveProtoHandler::RegisterUserReq_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::RegisterUserReq_USR_UnSerializer, this, _1, _2);
 
@@ -487,6 +502,40 @@ bool InteractiveProtoHandler::SerializeRsp(const Rsp &rsp, std::string &strOutpu
 bool InteractiveProtoHandler::UnSerializeRsp(const std::string &strData, Rsp &rsp)
 {
     return UnSerializeReq(strData, rsp);
+}
+
+bool InteractiveProtoHandler::UnSerializeReqBase(const std::string &strData, Req &req)
+{
+    InteractiveMessage Msg;
+    Msg.Clear();
+    if (!Msg.ParseFromString(strData))
+    {
+        return false;
+    }
+
+    req.UnSerializer(Msg);
+
+    return true;
+}
+
+bool InteractiveProtoHandler::MsgPreHandlerReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<MsgPreHandlerReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::MsgPreHandlerReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<MsgPreHandlerReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::MsgPreHandlerRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<MsgPreHandlerRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::MsgPreHandlerRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<MsgPreHandlerRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::RegisterUserReq_USR_Serializer(const Req &req, std::string &strOutput)
@@ -938,6 +987,32 @@ void InteractiveProtoHandler::Rsp::Serializer(InteractiveMessage &InteractiveMsg
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.mutable_rspvalue()->set_iretcode(m_iRetcode);
     InteractiveMsg.mutable_rspvalue()->set_strretmsg(m_strRetMsg);
+}
+
+void InteractiveProtoHandler::MsgPreHandlerReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().msgprehandlerreq_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::MsgPreHandlerReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::MsgPreHandlerReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_msgprehandlerreq_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::MsgPreHandlerRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().msgprehandlerrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::MsgPreHandlerRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::MsgPreHandlerRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_msgprehandlerrsp_usr_value()->set_strvalue(m_strValue);
 }
 
 void InteractiveProtoHandler::RegisterUserReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2041,4 +2116,5 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
         ++itBegin;
     }
 }
+
 

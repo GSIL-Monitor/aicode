@@ -40,6 +40,8 @@ enum MsgType
   
   ////////////////////////////////////////////////////////
   
+  MsgPreHandlerReq_USR_T = 19990;    //消息预处理
+  MsgPreHandlerRsp_USR_T = 19991;    
   GetAccessAddressReq_USR_T = 20000; //用户获取用户设备管理服务器地址
   GetAccessAddressRsp_USR_T = 20010;
   RegisterUserReq_USR_T = 20020;     //用户注册
@@ -208,6 +210,16 @@ message AuthRsp_DEV
 }
 
 ////////////////////////////////////////////////////////
+
+message MsgPreHandlerReq_USR      //消息预处理，包括了一些通用的检查动作
+{
+  string strValue = 1;
+}
+
+message MsgPreHandlerRsp_USR
+{
+  string strValue = 1;
+}
 
 message GetAccessAddressReq_USR   //分布式场景下用，目前不用考虑
 {
@@ -481,6 +493,7 @@ message Req
   ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;                  //设备请求配置信息
   AuthReq_DEV AuthReq_DEV_Value = 60;                              //平台请求设备鉴权
   
+  MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
   RegisterUserReq_USR RegisterUserReq_USR_Value = 80;              //用户注册
   UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;          //用户注销
@@ -523,6 +536,7 @@ message Rsp
   ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;                  //设备请求配置信息
   AuthRsp_DEV AuthRsp_DEV_Value = 80;                              //平台请求设备鉴权
   
+  MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
   GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
   RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;             //用户注册
   UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;         //用户注销

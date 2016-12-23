@@ -52,6 +52,8 @@ public:
 
     void SetupMsgHandler(const int iMsgType, MsgHandler msghandler);
 
+    void SetupMsgPreHandler(MsgHandler msghandler);
+
 private:    
     void ConnectCB(const boost::system::error_code &ec);
     void WriteCB(const boost::system::error_code &ec, void *pValue);
@@ -70,6 +72,8 @@ private:
     Runner m_MsgHandlerRunner;
     
     std::map<int, MsgHandler> m_MsgHandlerMap;
+
+    std::list<MsgHandler> m_MsgPreHandlerList;
 
 private:
     bool ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue);

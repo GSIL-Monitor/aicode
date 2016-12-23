@@ -77,6 +77,8 @@ class LogoutRsp_DEV;
 class LogoutRsp_USR;
 class ModifyDevReq_USR;
 class ModifyDevRsp_USR;
+class MsgPreHandlerReq_USR;
+class MsgPreHandlerRsp_USR;
 class PermissionOfUser;
 class QueryDevInfoReq_USR;
 class QueryDevInfoRsp_USR;
@@ -117,6 +119,8 @@ enum MsgType {
   ConfigInfoRsp_DEV_T = 10090,
   AuthReq_DEV_T = 10100,
   AuthRsp_DEV_T = 10110,
+  MsgPreHandlerReq_USR_T = 19990,
+  MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
   GetAccessAddressRsp_USR_T = 20010,
   RegisterUserReq_USR_T = 20020,
@@ -1954,6 +1958,188 @@ class AuthRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_poi
   void InitAsDefaultInstance();
 };
 extern ::google::protobuf::internal::ExplicitlyConstructed<AuthRsp_DEV> AuthRsp_DEV_default_instance_;
+
+// -------------------------------------------------------------------
+
+class MsgPreHandlerReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.MsgPreHandlerReq_USR) */ {
+ public:
+  MsgPreHandlerReq_USR();
+  virtual ~MsgPreHandlerReq_USR();
+
+  MsgPreHandlerReq_USR(const MsgPreHandlerReq_USR& from);
+
+  inline MsgPreHandlerReq_USR& operator=(const MsgPreHandlerReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MsgPreHandlerReq_USR& default_instance();
+
+  static const MsgPreHandlerReq_USR* internal_default_instance();
+
+  void Swap(MsgPreHandlerReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline MsgPreHandlerReq_USR* New() const { return New(NULL); }
+
+  MsgPreHandlerReq_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const MsgPreHandlerReq_USR& from);
+  void MergeFrom(const MsgPreHandlerReq_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(MsgPreHandlerReq_USR* other);
+  void UnsafeMergeFrom(const MsgPreHandlerReq_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.MsgPreHandlerReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerReq_USR> MsgPreHandlerReq_USR_default_instance_;
+
+// -------------------------------------------------------------------
+
+class MsgPreHandlerRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.MsgPreHandlerRsp_USR) */ {
+ public:
+  MsgPreHandlerRsp_USR();
+  virtual ~MsgPreHandlerRsp_USR();
+
+  MsgPreHandlerRsp_USR(const MsgPreHandlerRsp_USR& from);
+
+  inline MsgPreHandlerRsp_USR& operator=(const MsgPreHandlerRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const MsgPreHandlerRsp_USR& default_instance();
+
+  static const MsgPreHandlerRsp_USR* internal_default_instance();
+
+  void Swap(MsgPreHandlerRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline MsgPreHandlerRsp_USR* New() const { return New(NULL); }
+
+  MsgPreHandlerRsp_USR* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const MsgPreHandlerRsp_USR& from);
+  void MergeFrom(const MsgPreHandlerRsp_USR& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(MsgPreHandlerRsp_USR* other);
+  void UnsafeMergeFrom(const MsgPreHandlerRsp_USR& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.MsgPreHandlerRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
+  friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
+  friend void protobuf_AssignDesc_InteractiveProtocol_2eproto();
+  friend void protobuf_ShutdownFile_InteractiveProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerRsp_USR> MsgPreHandlerRsp_USR_default_instance_;
 
 // -------------------------------------------------------------------
 
@@ -6513,6 +6699,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AuthReq_DEV* release_authreq_dev_value();
   void set_allocated_authreq_dev_value(::Interactive::Message::AuthReq_DEV* authreq_dev_value);
 
+  // optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+  bool has_msgprehandlerreq_usr_value() const;
+  void clear_msgprehandlerreq_usr_value();
+  static const int kMsgPreHandlerReqUSRValueFieldNumber = 65;
+  const ::Interactive::Message::MsgPreHandlerReq_USR& msgprehandlerreq_usr_value() const;
+  ::Interactive::Message::MsgPreHandlerReq_USR* mutable_msgprehandlerreq_usr_value();
+  ::Interactive::Message::MsgPreHandlerReq_USR* release_msgprehandlerreq_usr_value();
+  void set_allocated_msgprehandlerreq_usr_value(::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value);
+
   // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
   bool has_getaccessaddressreq_usr_value() const;
   void clear_getaccessaddressreq_usr_value();
@@ -6730,6 +6925,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ShakehandReq_DEV* shakehandreq_dev_value_;
   ::Interactive::Message::ConfigInfoReq_DEV* configinforeq_dev_value_;
   ::Interactive::Message::AuthReq_DEV* authreq_dev_value_;
+  ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
   ::Interactive::Message::UnRegisterUserReq_USR* unregisteruserreq_usr_value_;
@@ -6898,6 +7094,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AuthRsp_DEV* mutable_authrsp_dev_value();
   ::Interactive::Message::AuthRsp_DEV* release_authrsp_dev_value();
   void set_allocated_authrsp_dev_value(::Interactive::Message::AuthRsp_DEV* authrsp_dev_value);
+
+  // optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+  bool has_msgprehandlerrsp_usr_value() const;
+  void clear_msgprehandlerrsp_usr_value();
+  static const int kMsgPreHandlerRspUSRValueFieldNumber = 85;
+  const ::Interactive::Message::MsgPreHandlerRsp_USR& msgprehandlerrsp_usr_value() const;
+  ::Interactive::Message::MsgPreHandlerRsp_USR* mutable_msgprehandlerrsp_usr_value();
+  ::Interactive::Message::MsgPreHandlerRsp_USR* release_msgprehandlerrsp_usr_value();
+  void set_allocated_msgprehandlerrsp_usr_value(::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value);
 
   // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
   bool has_getaccessaddressrsp_usr_value() const;
@@ -7099,6 +7304,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ShakehandRsp_DEV* shakehandrsp_dev_value_;
   ::Interactive::Message::ConfigInfoRsp_DEV* configinforsp_dev_value_;
   ::Interactive::Message::AuthRsp_DEV* authrsp_dev_value_;
+  ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
   ::Interactive::Message::UnRegisterUserRsp_USR* unregisteruserrsp_usr_value_;
@@ -9152,6 +9358,108 @@ inline void AuthRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
 
 inline const AuthRsp_DEV* AuthRsp_DEV::internal_default_instance() {
   return &AuthRsp_DEV_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// MsgPreHandlerReq_USR
+
+// optional string strValue = 1;
+inline void MsgPreHandlerReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MsgPreHandlerReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgPreHandlerReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+inline void MsgPreHandlerReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+inline void MsgPreHandlerReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+inline ::std::string* MsgPreHandlerReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MsgPreHandlerReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgPreHandlerReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+
+inline const MsgPreHandlerReq_USR* MsgPreHandlerReq_USR::internal_default_instance() {
+  return &MsgPreHandlerReq_USR_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// MsgPreHandlerRsp_USR
+
+// optional string strValue = 1;
+inline void MsgPreHandlerRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& MsgPreHandlerRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgPreHandlerRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+inline void MsgPreHandlerRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+inline void MsgPreHandlerRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+inline ::std::string* MsgPreHandlerRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* MsgPreHandlerRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void MsgPreHandlerRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+
+inline const MsgPreHandlerRsp_USR* MsgPreHandlerRsp_USR::internal_default_instance() {
+  return &MsgPreHandlerRsp_USR_default_instance_.get();
 }
 // -------------------------------------------------------------------
 
@@ -13052,6 +13360,45 @@ inline void Req::set_allocated_authreq_dev_value(::Interactive::Message::AuthReq
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AuthReq_DEV_Value)
 }
 
+// optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+inline bool Req::has_msgprehandlerreq_usr_value() const {
+  return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
+}
+inline void Req::clear_msgprehandlerreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && msgprehandlerreq_usr_value_ != NULL) delete msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::MsgPreHandlerReq_USR& Req::msgprehandlerreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  return msgprehandlerreq_usr_value_ != NULL ? *msgprehandlerreq_usr_value_
+                         : *::Interactive::Message::MsgPreHandlerReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::MsgPreHandlerReq_USR* Req::mutable_msgprehandlerreq_usr_value() {
+  
+  if (msgprehandlerreq_usr_value_ == NULL) {
+    msgprehandlerreq_usr_value_ = new ::Interactive::Message::MsgPreHandlerReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  return msgprehandlerreq_usr_value_;
+}
+inline ::Interactive::Message::MsgPreHandlerReq_USR* Req::release_msgprehandlerreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  
+  ::Interactive::Message::MsgPreHandlerReq_USR* temp = msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_msgprehandlerreq_usr_value(::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value) {
+  delete msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = msgprehandlerreq_usr_value;
+  if (msgprehandlerreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+}
+
 // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
 inline bool Req::has_getaccessaddressreq_usr_value() const {
   return this != internal_default_instance() && getaccessaddressreq_usr_value_ != NULL;
@@ -14248,6 +14595,45 @@ inline void Rsp::set_allocated_authrsp_dev_value(::Interactive::Message::AuthRsp
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AuthRsp_DEV_Value)
 }
 
+// optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+inline bool Rsp::has_msgprehandlerrsp_usr_value() const {
+  return this != internal_default_instance() && msgprehandlerrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_msgprehandlerrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && msgprehandlerrsp_usr_value_ != NULL) delete msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::MsgPreHandlerRsp_USR& Rsp::msgprehandlerrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  return msgprehandlerrsp_usr_value_ != NULL ? *msgprehandlerrsp_usr_value_
+                         : *::Interactive::Message::MsgPreHandlerRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::MsgPreHandlerRsp_USR* Rsp::mutable_msgprehandlerrsp_usr_value() {
+  
+  if (msgprehandlerrsp_usr_value_ == NULL) {
+    msgprehandlerrsp_usr_value_ = new ::Interactive::Message::MsgPreHandlerRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  return msgprehandlerrsp_usr_value_;
+}
+inline ::Interactive::Message::MsgPreHandlerRsp_USR* Rsp::release_msgprehandlerrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  
+  ::Interactive::Message::MsgPreHandlerRsp_USR* temp = msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_msgprehandlerrsp_usr_value(::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value) {
+  delete msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = msgprehandlerrsp_usr_value;
+  if (msgprehandlerrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+}
+
 // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
 inline bool Rsp::has_getaccessaddressrsp_usr_value() const {
   return this != internal_default_instance() && getaccessaddressrsp_usr_value_ != NULL;
@@ -15228,6 +15614,10 @@ inline const InteractiveMessage* InteractiveMessage::internal_default_instance()
   return &InteractiveMessage_default_instance_.get();
 }
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

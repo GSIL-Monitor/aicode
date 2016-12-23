@@ -55,6 +55,73 @@ bool UserManager::Init()
     return true;
 }
 
+bool UserManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::Req req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        if (blResult)
+        {
+            LOG_INFO_RLD("PreCommonHandler success, dst id is " << strSrcID <<
+                " and session id is " << req.m_strSID);
+            return;
+        }
+        InteractiveProtoHandler::MsgPreHandlerRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::MsgPreHandlerRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("PreCommonHandler rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_ERROR_RLD("PreCommonHandler failed and rsp already send, dst id is " << strSrcID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReqBase(strMsg, req))
+    {
+        LOG_ERROR_RLD("PreCommonHandler req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+    
+    if (InteractiveProtoHandler::MsgType::LoginReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType)
+    {
+        LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
+        blResult = true;
+        return blResult;
+    }
+
+    //通用预处理操作
+    if (!m_SessionMgr.Exist(req.m_strSID))
+    {
+        LOG_ERROR_RLD("PreCommonHandler return false because session is invalid and msg type is " << req.m_MsgType
+            << " and session id is " << req.m_strSID);
+        blResult = false;
+        return blResult;
+    }
+
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;

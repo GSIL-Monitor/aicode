@@ -70,6 +70,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* AuthRsp_DEV_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AuthRsp_DEV_reflection_ = NULL;
+const ::google::protobuf::Descriptor* MsgPreHandlerReq_USR_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  MsgPreHandlerReq_USR_reflection_ = NULL;
+const ::google::protobuf::Descriptor* MsgPreHandlerRsp_USR_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  MsgPreHandlerRsp_USR_reflection_ = NULL;
 const ::google::protobuf::Descriptor* GetAccessAddressReq_USR_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   GetAccessAddressReq_USR_reflection_ = NULL;
@@ -476,7 +482,35 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(AuthRsp_DEV),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AuthRsp_DEV, _internal_metadata_));
-  GetAccessAddressReq_USR_descriptor_ = file->message_type(16);
+  MsgPreHandlerReq_USR_descriptor_ = file->message_type(16);
+  static const int MsgPreHandlerReq_USR_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MsgPreHandlerReq_USR, strvalue_),
+  };
+  MsgPreHandlerReq_USR_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      MsgPreHandlerReq_USR_descriptor_,
+      MsgPreHandlerReq_USR::internal_default_instance(),
+      MsgPreHandlerReq_USR_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(MsgPreHandlerReq_USR),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MsgPreHandlerReq_USR, _internal_metadata_));
+  MsgPreHandlerRsp_USR_descriptor_ = file->message_type(17);
+  static const int MsgPreHandlerRsp_USR_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MsgPreHandlerRsp_USR, strvalue_),
+  };
+  MsgPreHandlerRsp_USR_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      MsgPreHandlerRsp_USR_descriptor_,
+      MsgPreHandlerRsp_USR::internal_default_instance(),
+      MsgPreHandlerRsp_USR_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(MsgPreHandlerRsp_USR),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MsgPreHandlerRsp_USR, _internal_metadata_));
+  GetAccessAddressReq_USR_descriptor_ = file->message_type(18);
   static const int GetAccessAddressReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressReq_USR, strserializeid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressReq_USR, strvalue_),
@@ -491,7 +525,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetAccessAddressReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressReq_USR, _internal_metadata_));
-  GetAccessAddressRsp_USR_descriptor_ = file->message_type(17);
+  GetAccessAddressRsp_USR_descriptor_ = file->message_type(19);
   static const int GetAccessAddressRsp_USR_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressRsp_USR, straccessaddress_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressRsp_USR, straccessport_),
@@ -507,7 +541,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetAccessAddressRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetAccessAddressRsp_USR, _internal_metadata_));
-  RegisterUserReq_USR_descriptor_ = file->message_type(18);
+  RegisterUserReq_USR_descriptor_ = file->message_type(20);
   static const int RegisterUserReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserReq_USR, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserReq_USR, strvalue_),
@@ -522,7 +556,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(RegisterUserReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserReq_USR, _internal_metadata_));
-  RegisterUserRsp_USR_descriptor_ = file->message_type(19);
+  RegisterUserRsp_USR_descriptor_ = file->message_type(21);
   static const int RegisterUserRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserRsp_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserRsp_USR, strvalue_),
@@ -537,7 +571,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(RegisterUserRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterUserRsp_USR, _internal_metadata_));
-  UnRegisterUserReq_USR_descriptor_ = file->message_type(20);
+  UnRegisterUserReq_USR_descriptor_ = file->message_type(22);
   static const int UnRegisterUserReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserReq_USR, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserReq_USR, strvalue_),
@@ -552,7 +586,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(UnRegisterUserReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserReq_USR, _internal_metadata_));
-  UnRegisterUserRsp_USR_descriptor_ = file->message_type(21);
+  UnRegisterUserRsp_USR_descriptor_ = file->message_type(23);
   static const int UnRegisterUserRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserRsp_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserRsp_USR, strvalue_),
@@ -567,7 +601,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(UnRegisterUserRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnRegisterUserRsp_USR, _internal_metadata_));
-  QueryUsrInfoReq_USR_descriptor_ = file->message_type(22);
+  QueryUsrInfoReq_USR_descriptor_ = file->message_type(24);
   static const int QueryUsrInfoReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoReq_USR, strvalue_),
@@ -582,7 +616,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryUsrInfoReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoReq_USR, _internal_metadata_));
-  QueryUsrInfoRsp_USR_descriptor_ = file->message_type(23);
+  QueryUsrInfoRsp_USR_descriptor_ = file->message_type(25);
   static const int QueryUsrInfoRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoRsp_USR, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoRsp_USR, strvalue_),
@@ -597,7 +631,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryUsrInfoRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUsrInfoRsp_USR, _internal_metadata_));
-  LoginReq_USR_descriptor_ = file->message_type(24);
+  LoginReq_USR_descriptor_ = file->message_type(26);
   static const int LoginReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_USR, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_USR, strvalue_),
@@ -612,7 +646,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(LoginReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_USR, _internal_metadata_));
-  LoginRsp_USR_descriptor_ = file->message_type(25);
+  LoginRsp_USR_descriptor_ = file->message_type(27);
   static const int LoginRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRsp_USR, relationinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRsp_USR, strvalue_),
@@ -627,7 +661,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(LoginRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRsp_USR, _internal_metadata_));
-  LogoutReq_USR_descriptor_ = file->message_type(26);
+  LogoutReq_USR_descriptor_ = file->message_type(28);
   static const int LogoutReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogoutReq_USR, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogoutReq_USR, strvalue_),
@@ -642,7 +676,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(LogoutReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogoutReq_USR, _internal_metadata_));
-  LogoutRsp_USR_descriptor_ = file->message_type(27);
+  LogoutRsp_USR_descriptor_ = file->message_type(29);
   static const int LogoutRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogoutRsp_USR, strvalue_),
   };
@@ -656,7 +690,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(LogoutRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LogoutRsp_USR, _internal_metadata_));
-  ShakehandReq_USR_descriptor_ = file->message_type(28);
+  ShakehandReq_USR_descriptor_ = file->message_type(30);
   static const int ShakehandReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandReq_USR, strvalue_),
@@ -671,7 +705,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ShakehandReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandReq_USR, _internal_metadata_));
-  ShakehandRsp_USR_descriptor_ = file->message_type(29);
+  ShakehandRsp_USR_descriptor_ = file->message_type(31);
   static const int ShakehandRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandRsp_USR, strvalue_),
   };
@@ -685,7 +719,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ShakehandRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandRsp_USR, _internal_metadata_));
-  ConfigInfoReq_USR_descriptor_ = file->message_type(30);
+  ConfigInfoReq_USR_descriptor_ = file->message_type(32);
   static const int ConfigInfoReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoReq_USR, strvalue_),
@@ -700,7 +734,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ConfigInfoReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoReq_USR, _internal_metadata_));
-  ConfigInfoRsp_USR_descriptor_ = file->message_type(31);
+  ConfigInfoRsp_USR_descriptor_ = file->message_type(33);
   static const int ConfigInfoRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoRsp_USR, strvalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoRsp_USR, stritems_),
@@ -715,7 +749,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ConfigInfoRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigInfoRsp_USR, _internal_metadata_));
-  AddDevReq_USR_descriptor_ = file->message_type(32);
+  AddDevReq_USR_descriptor_ = file->message_type(34);
   static const int AddDevReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddDevReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddDevReq_USR, devinfo_),
@@ -730,7 +764,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(AddDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddDevReq_USR, _internal_metadata_));
-  AddDevRsp_USR_descriptor_ = file->message_type(33);
+  AddDevRsp_USR_descriptor_ = file->message_type(35);
   static const int AddDevRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddDevRsp_USR, strvalue_),
   };
@@ -744,7 +778,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(AddDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddDevRsp_USR, _internal_metadata_));
-  DelDevReq_USR_descriptor_ = file->message_type(34);
+  DelDevReq_USR_descriptor_ = file->message_type(36);
   static const int DelDevReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevReq_USR, strdevid_),
@@ -759,7 +793,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(DelDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevReq_USR, _internal_metadata_));
-  DelDevRsp_USR_descriptor_ = file->message_type(35);
+  DelDevRsp_USR_descriptor_ = file->message_type(37);
   static const int DelDevRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevRsp_USR, strvalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevRsp_USR, strdevidfailed_),
@@ -774,7 +808,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(DelDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelDevRsp_USR, _internal_metadata_));
-  ModifyDevReq_USR_descriptor_ = file->message_type(36);
+  ModifyDevReq_USR_descriptor_ = file->message_type(38);
   static const int ModifyDevReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyDevReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyDevReq_USR, devinfo_),
@@ -789,7 +823,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ModifyDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyDevReq_USR, _internal_metadata_));
-  ModifyDevRsp_USR_descriptor_ = file->message_type(37);
+  ModifyDevRsp_USR_descriptor_ = file->message_type(39);
   static const int ModifyDevRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyDevRsp_USR, strvalue_),
   };
@@ -803,7 +837,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(ModifyDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyDevRsp_USR, _internal_metadata_));
-  QueryDevInfoReq_USR_descriptor_ = file->message_type(38);
+  QueryDevInfoReq_USR_descriptor_ = file->message_type(40);
   static const int QueryDevInfoReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoReq_USR, strdevid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoReq_USR, strvalue_),
@@ -818,7 +852,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryDevInfoReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoReq_USR, _internal_metadata_));
-  QueryDevInfoRsp_USR_descriptor_ = file->message_type(39);
+  QueryDevInfoRsp_USR_descriptor_ = file->message_type(41);
   static const int QueryDevInfoRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoRsp_USR, devinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoRsp_USR, strvalue_),
@@ -833,7 +867,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryDevInfoRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevInfoRsp_USR, _internal_metadata_));
-  QueryDevReq_USR_descriptor_ = file->message_type(40);
+  QueryDevReq_USR_descriptor_ = file->message_type(42);
   static const int QueryDevReq_USR_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevReq_USR, uibeginindex_),
@@ -849,7 +883,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevReq_USR, _internal_metadata_));
-  QueryDevRsp_USR_descriptor_ = file->message_type(41);
+  QueryDevRsp_USR_descriptor_ = file->message_type(43);
   static const int QueryDevRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevRsp_USR, allrelationinfo_),
   };
@@ -863,7 +897,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDevRsp_USR, _internal_metadata_));
-  QueryUserReq_USR_descriptor_ = file->message_type(42);
+  QueryUserReq_USR_descriptor_ = file->message_type(44);
   static const int QueryUserReq_USR_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUserReq_USR, strdevid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUserReq_USR, uibeginindex_),
@@ -879,7 +913,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryUserReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUserReq_USR, _internal_metadata_));
-  QueryUserRsp_USR_descriptor_ = file->message_type(43);
+  QueryUserRsp_USR_descriptor_ = file->message_type(45);
   static const int QueryUserRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUserRsp_USR, allrelationinfo_),
   };
@@ -893,7 +927,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryUserRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUserRsp_USR, _internal_metadata_));
-  SharingDevReq_USR_descriptor_ = file->message_type(44);
+  SharingDevReq_USR_descriptor_ = file->message_type(46);
   static const int SharingDevReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SharingDevReq_USR, relationinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SharingDevReq_USR, strvalue_),
@@ -908,7 +942,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(SharingDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SharingDevReq_USR, _internal_metadata_));
-  SharingDevRsp_USR_descriptor_ = file->message_type(45);
+  SharingDevRsp_USR_descriptor_ = file->message_type(47);
   static const int SharingDevRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SharingDevRsp_USR, strvalue_),
   };
@@ -922,7 +956,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(SharingDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SharingDevRsp_USR, _internal_metadata_));
-  CancelSharedDevReq_USR_descriptor_ = file->message_type(46);
+  CancelSharedDevReq_USR_descriptor_ = file->message_type(48);
   static const int CancelSharedDevReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelSharedDevReq_USR, relationinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelSharedDevReq_USR, strvalue_),
@@ -937,7 +971,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(CancelSharedDevReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelSharedDevReq_USR, _internal_metadata_));
-  CancelSharedDevRsp_USR_descriptor_ = file->message_type(47);
+  CancelSharedDevRsp_USR_descriptor_ = file->message_type(49);
   static const int CancelSharedDevRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelSharedDevRsp_USR, strvalue_),
   };
@@ -951,7 +985,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(CancelSharedDevRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelSharedDevRsp_USR, _internal_metadata_));
-  AddFriendsReq_USR_descriptor_ = file->message_type(48);
+  AddFriendsReq_USR_descriptor_ = file->message_type(50);
   static const int AddFriendsReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFriendsReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFriendsReq_USR, strfrienduserid_),
@@ -966,7 +1000,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(AddFriendsReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFriendsReq_USR, _internal_metadata_));
-  AddFriendsRsp_USR_descriptor_ = file->message_type(49);
+  AddFriendsRsp_USR_descriptor_ = file->message_type(51);
   static const int AddFriendsRsp_USR_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFriendsRsp_USR, strvalue_),
   };
@@ -980,7 +1014,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(AddFriendsRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFriendsRsp_USR, _internal_metadata_));
-  DelFriendsReq_USR_descriptor_ = file->message_type(50);
+  DelFriendsReq_USR_descriptor_ = file->message_type(52);
   static const int DelFriendsReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsReq_USR, strfrienduserid_),
@@ -995,7 +1029,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(DelFriendsReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsReq_USR, _internal_metadata_));
-  DelFriendsRsp_USR_descriptor_ = file->message_type(51);
+  DelFriendsRsp_USR_descriptor_ = file->message_type(53);
   static const int DelFriendsRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsRsp_USR, strvalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsRsp_USR, strfrienduseridfailed_),
@@ -1010,7 +1044,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(DelFriendsRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsRsp_USR, _internal_metadata_));
-  QueryFriendsReq_USR_descriptor_ = file->message_type(52);
+  QueryFriendsReq_USR_descriptor_ = file->message_type(54);
   static const int QueryFriendsReq_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, struserid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, strvalue_),
@@ -1025,7 +1059,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryFriendsReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, _internal_metadata_));
-  QueryFriendsRsp_USR_descriptor_ = file->message_type(53);
+  QueryFriendsRsp_USR_descriptor_ = file->message_type(55);
   static const int QueryFriendsRsp_USR_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, allfrienduserinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, strvalue_),
@@ -1040,7 +1074,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(QueryFriendsRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, _internal_metadata_));
-  GetOnlineDevInfoReq_INNER_descriptor_ = file->message_type(54);
+  GetOnlineDevInfoReq_INNER_descriptor_ = file->message_type(56);
   static const int GetOnlineDevInfoReq_INNER_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineDevInfoReq_INNER, strvalue_),
   };
@@ -1054,7 +1088,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetOnlineDevInfoReq_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineDevInfoReq_INNER, _internal_metadata_));
-  GetOnlineDevInfoRsp_INNER_descriptor_ = file->message_type(55);
+  GetOnlineDevInfoRsp_INNER_descriptor_ = file->message_type(57);
   static const int GetOnlineDevInfoRsp_INNER_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineDevInfoRsp_INNER, devinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineDevInfoRsp_INNER, strvalue_),
@@ -1069,7 +1103,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetOnlineDevInfoRsp_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineDevInfoRsp_INNER, _internal_metadata_));
-  BroadcastOnlineDevInfo_INNER_descriptor_ = file->message_type(56);
+  BroadcastOnlineDevInfo_INNER_descriptor_ = file->message_type(58);
   static const int BroadcastOnlineDevInfo_INNER_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineDevInfo_INNER, devinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineDevInfo_INNER, strvalue_),
@@ -1084,7 +1118,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(BroadcastOnlineDevInfo_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineDevInfo_INNER, _internal_metadata_));
-  GetOnlineUserInfoReq_INNER_descriptor_ = file->message_type(57);
+  GetOnlineUserInfoReq_INNER_descriptor_ = file->message_type(59);
   static const int GetOnlineUserInfoReq_INNER_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineUserInfoReq_INNER, strvalue_),
   };
@@ -1098,7 +1132,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetOnlineUserInfoReq_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineUserInfoReq_INNER, _internal_metadata_));
-  GetOnlineUserInfoRsp_INNER_descriptor_ = file->message_type(58);
+  GetOnlineUserInfoRsp_INNER_descriptor_ = file->message_type(60);
   static const int GetOnlineUserInfoRsp_INNER_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineUserInfoRsp_INNER, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineUserInfoRsp_INNER, strvalue_),
@@ -1113,7 +1147,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(GetOnlineUserInfoRsp_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetOnlineUserInfoRsp_INNER, _internal_metadata_));
-  BroadcastOnlineUserInfo_INNER_descriptor_ = file->message_type(59);
+  BroadcastOnlineUserInfo_INNER_descriptor_ = file->message_type(61);
   static const int BroadcastOnlineUserInfo_INNER_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineUserInfo_INNER, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineUserInfo_INNER, strvalue_),
@@ -1128,14 +1162,15 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(BroadcastOnlineUserInfo_INNER),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BroadcastOnlineUserInfo_INNER, _internal_metadata_));
-  Req_descriptor_ = file->message_type(60);
-  static const int Req_offsets_[29] = {
+  Req_descriptor_ = file->message_type(62);
+  static const int Req_offsets_[30] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, getaccessaddressreq_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, loginreq_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, logoutreq_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, shakehandreq_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, configinforeq_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, authreq_dev_value_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, msgprehandlerreq_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, getaccessaddressreq_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, registeruserreq_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, unregisteruserreq_usr_value_),
@@ -1170,8 +1205,8 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(Req),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, _internal_metadata_));
-  Rsp_descriptor_ = file->message_type(61);
-  static const int Rsp_offsets_[29] = {
+  Rsp_descriptor_ = file->message_type(63);
+  static const int Rsp_offsets_[30] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, iretcode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, strretmsg_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getaccessaddressrsp_dev_value_),
@@ -1180,6 +1215,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, shakehandrsp_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, configinforsp_dev_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, authrsp_dev_value_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, msgprehandlerrsp_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getaccessaddressrsp_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, registeruserrsp_usr_value_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, unregisteruserrsp_usr_value_),
@@ -1212,7 +1248,7 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       -1,
       sizeof(Rsp),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, _internal_metadata_));
-  InteractiveMessage_descriptor_ = file->message_type(62);
+  InteractiveMessage_descriptor_ = file->message_type(64);
   static const int InteractiveMessage_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InteractiveMessage, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InteractiveMessage, uimsgseq_),
@@ -1276,6 +1312,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
       AuthReq_DEV_descriptor_, AuthReq_DEV::internal_default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       AuthRsp_DEV_descriptor_, AuthRsp_DEV::internal_default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      MsgPreHandlerReq_USR_descriptor_, MsgPreHandlerReq_USR::internal_default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      MsgPreHandlerRsp_USR_descriptor_, MsgPreHandlerRsp_USR::internal_default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       GetAccessAddressReq_USR_descriptor_, GetAccessAddressReq_USR::internal_default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -1407,6 +1447,10 @@ void protobuf_ShutdownFile_InteractiveProtocol_2eproto() {
   delete AuthReq_DEV_reflection_;
   AuthRsp_DEV_default_instance_.Shutdown();
   delete AuthRsp_DEV_reflection_;
+  MsgPreHandlerReq_USR_default_instance_.Shutdown();
+  delete MsgPreHandlerReq_USR_reflection_;
+  MsgPreHandlerRsp_USR_default_instance_.Shutdown();
+  delete MsgPreHandlerRsp_USR_reflection_;
   GetAccessAddressReq_USR_default_instance_.Shutdown();
   delete GetAccessAddressReq_USR_reflection_;
   GetAccessAddressRsp_USR_default_instance_.Shutdown();
@@ -1538,6 +1582,10 @@ void protobuf_InitDefaults_InteractiveProtocol_2eproto_impl() {
   ::google::protobuf::internal::GetEmptyString();
   AuthRsp_DEV_default_instance_.DefaultConstruct();
   ::google::protobuf::internal::GetEmptyString();
+  MsgPreHandlerReq_USR_default_instance_.DefaultConstruct();
+  ::google::protobuf::internal::GetEmptyString();
+  MsgPreHandlerRsp_USR_default_instance_.DefaultConstruct();
+  ::google::protobuf::internal::GetEmptyString();
   GetAccessAddressReq_USR_default_instance_.DefaultConstruct();
   ::google::protobuf::internal::GetEmptyString();
   GetAccessAddressRsp_USR_default_instance_.DefaultConstruct();
@@ -1644,6 +1692,8 @@ void protobuf_InitDefaults_InteractiveProtocol_2eproto_impl() {
   ConfigInfoRsp_DEV_default_instance_.get_mutable()->InitAsDefaultInstance();
   AuthReq_DEV_default_instance_.get_mutable()->InitAsDefaultInstance();
   AuthRsp_DEV_default_instance_.get_mutable()->InitAsDefaultInstance();
+  MsgPreHandlerReq_USR_default_instance_.get_mutable()->InitAsDefaultInstance();
+  MsgPreHandlerRsp_USR_default_instance_.get_mutable()->InitAsDefaultInstance();
   GetAccessAddressReq_USR_default_instance_.get_mutable()->InitAsDefaultInstance();
   GetAccessAddressRsp_USR_default_instance_.get_mutable()->InitAsDefaultInstance();
   RegisterUserReq_USR_default_instance_.get_mutable()->InitAsDefaultInstance();
@@ -1733,235 +1783,242 @@ void protobuf_AddDesc_InteractiveProtocol_2eproto_impl() {
     "oRsp_DEV\022\020\n\010strValue\030\001 \001(\t\022\020\n\010strItems\030\002"
     " \003(\t\"4\n\013AuthReq_DEV\022\023\n\013strPassword\030\001 \001(\t"
     "\022\020\n\010strValue\030\002 \001(\t\"\037\n\013AuthRsp_DEV\022\020\n\010str"
-    "Value\030\001 \001(\t\"C\n\027GetAccessAddressReq_USR\022\026"
-    "\n\016strSerializeID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t"
-    "\"\\\n\027GetAccessAddressRsp_USR\022\030\n\020strAccess"
-    "Address\030\001 \001(\t\022\025\n\rstrAccessPort\030\002 \001(\t\022\020\n\010"
-    "strValue\030\003 \001(\t\"T\n\023RegisterUserReq_USR\022+\n"
+    "Value\030\001 \001(\t\"(\n\024MsgPreHandlerReq_USR\022\020\n\010s"
+    "trValue\030\001 \001(\t\"(\n\024MsgPreHandlerRsp_USR\022\020\n"
+    "\010strValue\030\001 \001(\t\"C\n\027GetAccessAddressReq_U"
+    "SR\022\026\n\016strSerializeID\030\001 \001(\t\022\020\n\010strValue\030\002"
+    " \001(\t\"\\\n\027GetAccessAddressRsp_USR\022\030\n\020strAc"
+    "cessAddress\030\001 \001(\t\022\025\n\rstrAccessPort\030\002 \001(\t"
+    "\022\020\n\010strValue\030\003 \001(\t\"T\n\023RegisterUserReq_US"
+    "R\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Messag"
+    "e.User\022\020\n\010strValue\030\002 \001(\t\":\n\023RegisterUser"
+    "Rsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002"
+    " \001(\t\"V\n\025UnRegisterUserReq_USR\022+\n\010userInf"
+    "o\030\001 \001(\0132\031.Interactive.Message.User\022\020\n\010st"
+    "rValue\030\002 \001(\t\"<\n\025UnRegisterUserRsp_USR\022\021\n"
+    "\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\":\n\023Qu"
+    "eryUsrInfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
+    "strValue\030\002 \001(\t\"T\n\023QueryUsrInfoRsp_USR\022+\n"
     "\010userInfo\030\001 \001(\0132\031.Interactive.Message.Us"
-    "er\022\020\n\010strValue\030\002 \001(\t\":\n\023RegisterUserRsp_"
-    "USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t"
-    "\"V\n\025UnRegisterUserReq_USR\022+\n\010userInfo\030\001 "
-    "\001(\0132\031.Interactive.Message.User\022\020\n\010strVal"
-    "ue\030\002 \001(\t\"<\n\025UnRegisterUserRsp_USR\022\021\n\tstr"
-    "UserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\":\n\023QueryU"
-    "srInfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strV"
-    "alue\030\002 \001(\t\"T\n\023QueryUsrInfoRsp_USR\022+\n\010use"
-    "rInfo\030\001 \001(\0132\031.Interactive.Message.User\022\020"
-    "\n\010strValue\030\002 \001(\t\"M\n\014LoginReq_USR\022+\n\010user"
-    "Info\030\001 \001(\0132\031.Interactive.Message.User\022\020\n"
-    "\010strValue\030\002 \001(\t\"U\n\014LoginRsp_USR\0223\n\014relat"
-    "ionInfo\030\001 \003(\0132\035.Interactive.Message.Rela"
-    "tion\022\020\n\010strValue\030\002 \001(\t\"N\n\rLogoutReq_USR\022"
-    "+\n\010userInfo\030\001 \001(\0132\031.Interactive.Message."
-    "User\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRsp_USR\022"
-    "\020\n\010strValue\030\001 \001(\t\"7\n\020ShakehandReq_USR\022\021\n"
-    "\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020Sh"
-    "akehandRsp_USR\022\020\n\010strValue\030\001 \001(\t\"8\n\021Conf"
-    "igInfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strV"
-    "alue\030\002 \001(\t\"7\n\021ConfigInfoRsp_USR\022\020\n\010strVa"
-    "lue\030\001 \001(\t\022\020\n\010strItems\030\002 \003(\t\"P\n\rAddDevReq"
-    "_USR\022\021\n\tstrUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\013"
-    "2\033.Interactive.Message.Device\"!\n\rAddDevR"
-    "sp_USR\022\020\n\010strValue\030\001 \001(\t\"4\n\rDelDevReq_US"
-    "R\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9"
-    "\n\rDelDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\026\n\016str"
-    "DevIDFailed\030\002 \003(\t\"S\n\020ModifyDevReq_USR\022\021\n"
-    "\tstrUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Inte"
-    "ractive.Message.Device\"$\n\020ModifyDevRsp_U"
-    "SR\022\020\n\010strValue\030\001 \001(\t\"9\n\023QueryDevInfoReq_"
-    "USR\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\""
-    "U\n\023QueryDevInfoRsp_USR\022,\n\007devInfo\030\001 \001(\0132"
-    "\033.Interactive.Message.Device\022\020\n\010strValue"
-    "\030\002 \001(\t\"L\n\017QueryDevReq_USR\022\021\n\tstrUserID\030\001"
-    " \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003"
-    " \001(\t\"I\n\017QueryDevRsp_USR\0226\n\017allRelationIn"
-    "fo\030\001 \003(\0132\035.Interactive.Message.Relation\""
-    "L\n\020QueryUserReq_USR\022\020\n\010strDevID\030\001 \001(\t\022\024\n"
-    "\014uiBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"J\n"
-    "\020QueryUserRsp_USR\0226\n\017allRelationInfo\030\001 \003"
-    "(\0132\035.Interactive.Message.Relation\"Z\n\021Sha"
-    "ringDevReq_USR\0223\n\014relationInfo\030\001 \001(\0132\035.I"
-    "nteractive.Message.Relation\022\020\n\010strValue\030"
-    "\002 \001(\t\"%\n\021SharingDevRsp_USR\022\020\n\010strValue\030\001"
-    " \001(\t\"_\n\026CancelSharedDevReq_USR\0223\n\014relati"
-    "onInfo\030\001 \001(\0132\035.Interactive.Message.Relat"
-    "ion\022\020\n\010strValue\030\002 \001(\t\"*\n\026CancelSharedDev"
-    "Rsp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021AddFriendsR"
-    "eq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strFriendUs"
-    "erID\030\002 \001(\t\"%\n\021AddFriendsRsp_USR\022\020\n\010strVa"
-    "lue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\tstrUse"
-    "rID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\"D\n\021De"
-    "lFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n\025str"
-    "FriendUserIDFailed\030\002 \003(\t\":\n\023QueryFriends"
-    "Req_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002"
-    " \001(\t\"]\n\023QueryFriendsRsp_USR\0224\n\021allFriend"
-    "UserInfo\030\001 \003(\0132\031.Interactive.Message.Use"
-    "r\022\020\n\010strValue\030\002 \001(\t\"-\n\031GetOnlineDevInfoR"
-    "eq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnlineD"
-    "evInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Inter"
-    "active.Message.Device\022\020\n\010strValue\030\002 \001(\t\""
-    "^\n\034BroadcastOnlineDevInfo_INNER\022,\n\007devIn"
-    "fo\030\001 \003(\0132\033.Interactive.Message.Device\022\020\n"
-    "\010strValue\030\002 \001(\t\".\n\032GetOnlineUserInfoReq_"
-    "INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnlineUser"
-    "InfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Intera"
-    "ctive.Message.User\022\020\n\010strValue\030\002 \001(\t\"^\n\035"
-    "BroadcastOnlineUserInfo_INNER\022+\n\010userInf"
-    "o\030\001 \003(\0132\031.Interactive.Message.User\022\020\n\010st"
-    "rValue\030\002 \001(\t\"\231\021\n\003Req\022S\n\035GetAccessAddress"
-    "Req_DEV_Value\030\n \001(\0132,.Interactive.Messag"
-    "e.GetAccessAddressReq_DEV\022=\n\022LoginReq_DE"
-    "V_Value\030\024 \001(\0132!.Interactive.Message.Logi"
-    "nReq_DEV\022\?\n\023LogoutReq_DEV_Value\030\036 \001(\0132\"."
-    "Interactive.Message.LogoutReq_DEV\022E\n\026Sha"
-    "kehandReq_DEV_Value\030( \001(\0132%.Interactive."
-    "Message.ShakehandReq_DEV\022G\n\027ConfigInfoRe"
-    "q_DEV_Value\0302 \001(\0132&.Interactive.Message."
-    "ConfigInfoReq_DEV\022;\n\021AuthReq_DEV_Value\030<"
-    " \001(\0132 .Interactive.Message.AuthReq_DEV\022S"
-    "\n\035GetAccessAddressReq_USR_Value\030F \001(\0132,."
-    "Interactive.Message.GetAccessAddressReq_"
-    "USR\022K\n\031RegisterUserReq_USR_Value\030P \001(\0132("
-    ".Interactive.Message.RegisterUserReq_USR"
-    "\022O\n\033UnRegisterUserReq_USR_Value\030Z \001(\0132*."
-    "Interactive.Message.UnRegisterUserReq_US"
-    "R\022K\n\031QueryUsrInfoReq_USR_Value\030d \001(\0132(.I"
-    "nteractive.Message.QueryUsrInfoReq_USR\022="
-    "\n\022LoginReq_USR_Value\030n \001(\0132!.Interactive"
-    ".Message.LoginReq_USR\022\?\n\023LogoutReq_USR_V"
-    "alue\030x \001(\0132\".Interactive.Message.LogoutR"
-    "eq_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 \001(\0132"
-    "%.Interactive.Message.ShakehandReq_USR\022H"
-    "\n\027ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.Inter"
-    "active.Message.ConfigInfoReq_USR\022@\n\023AddD"
-    "evReq_USR_Value\030\226\001 \001(\0132\".Interactive.Mes"
-    "sage.AddDevReq_USR\022@\n\023DelDevReq_USR_Valu"
-    "e\030\240\001 \001(\0132\".Interactive.Message.DelDevReq"
-    "_USR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001(\0132%."
-    "Interactive.Message.ModifyDevReq_USR\022L\n\031"
-    "QueryDevInfoReq_USR_Value\030\264\001 \001(\0132(.Inter"
-    "active.Message.QueryDevInfoReq_USR\022D\n\025Qu"
-    "eryDevReq_USR_Value\030\276\001 \001(\0132$.Interactive"
-    ".Message.QueryDevReq_USR\022F\n\026QueryUserReq"
-    "_USR_Value\030\310\001 \001(\0132%.Interactive.Message."
-    "QueryUserReq_USR\022H\n\027SharingDevReq_USR_Va"
-    "lue\030\322\001 \001(\0132&.Interactive.Message.Sharing"
-    "DevReq_USR\022R\n\034CancelSharedDevReq_USR_Val"
-    "ue\030\334\001 \001(\0132+.Interactive.Message.CancelSh"
-    "aredDevReq_USR\022H\n\027AddFriendsReq_USR_Valu"
-    "e\030\346\001 \001(\0132&.Interactive.Message.AddFriend"
-    "sReq_USR\022H\n\027DelFriendsReq_USR_Value\030\360\001 \001"
-    "(\0132&.Interactive.Message.DelFriendsReq_U"
-    "SR\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001(\0132("
-    ".Interactive.Message.QueryFriendsReq_USR"
-    "\022X\n\037GetOnlineDevInfoReq_INNER_Value\030\204\002 \001"
-    "(\0132..Interactive.Message.GetOnlineDevInf"
-    "oReq_INNER\022^\n\"BroadcastOnlineDevInfo_INN"
-    "ER_Value\030\216\002 \001(\01321.Interactive.Message.Br"
-    "oadcastOnlineDevInfo_INNER\022Z\n GetOnlineU"
-    "serInfoReq_INNER_Value\030\230\002 \001(\0132/.Interact"
-    "ive.Message.GetOnlineUserInfoReq_INNER\022`"
-    "\n#BroadcastOnlineUserInfo_INNER_Value\030\242\002"
-    " \001(\01322.Interactive.Message.BroadcastOnli"
-    "neUserInfo_INNER\"\376\017\n\003Rsp\022\020\n\010iRetcode\030\n \001"
-    "(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035GetAccessAddres"
-    "sRsp_DEV_Value\030\036 \001(\0132,.Interactive.Messa"
-    "ge.GetAccessAddressRsp_DEV\022=\n\022LoginRsp_D"
-    "EV_Value\030( \001(\0132!.Interactive.Message.Log"
-    "inRsp_DEV\022\?\n\023LogoutRsp_DEV_Value\0302 \001(\0132\""
-    ".Interactive.Message.LogoutRsp_DEV\022E\n\026Sh"
-    "akehandRsp_DEV_Value\030< \001(\0132%.Interactive"
-    ".Message.ShakehandRsp_DEV\022G\n\027ConfigInfoR"
-    "sp_DEV_Value\030F \001(\0132&.Interactive.Message"
-    ".ConfigInfoRsp_DEV\022;\n\021AuthRsp_DEV_Value\030"
-    "P \001(\0132 .Interactive.Message.AuthRsp_DEV\022"
-    "S\n\035GetAccessAddressRsp_USR_Value\030Z \001(\0132,"
-    ".Interactive.Message.GetAccessAddressRsp"
-    "_USR\022K\n\031RegisterUserRsp_USR_Value\030d \001(\0132"
-    "(.Interactive.Message.RegisterUserRsp_US"
-    "R\022O\n\033UnRegisterUserRsp_USR_Value\030n \001(\0132*"
-    ".Interactive.Message.UnRegisterUserRsp_U"
-    "SR\022K\n\031QueryUsrInfoRsp_USR_Value\030x \001(\0132(."
-    "Interactive.Message.QueryUsrInfoRsp_USR\022"
-    ">\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Interacti"
-    "ve.Message.LoginRsp_USR\022@\n\023LogoutRsp_USR"
-    "_Value\030\214\001 \001(\0132\".Interactive.Message.Logo"
-    "utRsp_USR\022F\n\026ShakehandRsp_USR_Value\030\226\001 \001"
-    "(\0132%.Interactive.Message.ShakehandRsp_US"
-    "R\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001(\0132&.In"
-    "teractive.Message.ConfigInfoRsp_USR\022@\n\023A"
-    "ddDevRsp_USR_Value\030\252\001 \001(\0132\".Interactive."
-    "Message.AddDevRsp_USR\022@\n\023DelDevRsp_USR_V"
-    "alue\030\264\001 \001(\0132\".Interactive.Message.DelDev"
-    "Rsp_USR\022F\n\026ModifyDevRsp_USR_Value\030\276\001 \001(\013"
-    "2%.Interactive.Message.ModifyDevRsp_USR\022"
-    "L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001(\0132(.In"
-    "teractive.Message.QueryDevInfoRsp_USR\022D\n"
-    "\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.Interact"
-    "ive.Message.QueryDevRsp_USR\022F\n\026QueryUser"
-    "Rsp_USR_Value\030\334\001 \001(\0132%.Interactive.Messa"
-    "ge.QueryUserRsp_USR\022H\n\027SharingDevRsp_USR"
-    "_Value\030\346\001 \001(\0132&.Interactive.Message.Shar"
-    "ingDevRsp_USR\022R\n\034CancelSharedDevRsp_USR_"
-    "Value\030\360\001 \001(\0132+.Interactive.Message.Cance"
-    "lSharedDevRsp_USR\022H\n\027AddFriendsRsp_USR_V"
-    "alue\030\372\001 \001(\0132&.Interactive.Message.AddFri"
-    "endsRsp_USR\022H\n\027DelFriendsRsp_USR_Value\030\204"
-    "\002 \001(\0132&.Interactive.Message.DelFriendsRs"
-    "p_USR\022L\n\031QueryFriendsRsp_USR_Value\030\216\002 \001("
-    "\0132(.Interactive.Message.QueryFriendsRsp_"
-    "USR\022X\n\037GetOnlineDevInfoRsp_INNER_Value\030\230"
+    "er\022\020\n\010strValue\030\002 \001(\t\"M\n\014LoginReq_USR\022+\n\010"
+    "userInfo\030\001 \001(\0132\031.Interactive.Message.Use"
+    "r\022\020\n\010strValue\030\002 \001(\t\"U\n\014LoginRsp_USR\0223\n\014r"
+    "elationInfo\030\001 \003(\0132\035.Interactive.Message."
+    "Relation\022\020\n\010strValue\030\002 \001(\t\"N\n\rLogoutReq_"
+    "USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Mess"
+    "age.User\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRsp_"
+    "USR\022\020\n\010strValue\030\001 \001(\t\"7\n\020ShakehandReq_US"
+    "R\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$"
+    "\n\020ShakehandRsp_USR\022\020\n\010strValue\030\001 \001(\t\"8\n\021"
+    "ConfigInfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
+    "strValue\030\002 \001(\t\"7\n\021ConfigInfoRsp_USR\022\020\n\010s"
+    "trValue\030\001 \001(\t\022\020\n\010strItems\030\002 \003(\t\"P\n\rAddDe"
+    "vReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022,\n\007devInfo\030\002"
+    " \001(\0132\033.Interactive.Message.Device\"!\n\rAdd"
+    "DevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"4\n\rDelDevRe"
+    "q_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \003"
+    "(\t\"9\n\rDelDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\026\n"
+    "\016strDevIDFailed\030\002 \003(\t\"S\n\020ModifyDevReq_US"
+    "R\022\021\n\tstrUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033."
+    "Interactive.Message.Device\"$\n\020ModifyDevR"
+    "sp_USR\022\020\n\010strValue\030\001 \001(\t\"9\n\023QueryDevInfo"
+    "Req_USR\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\002 "
+    "\001(\t\"U\n\023QueryDevInfoRsp_USR\022,\n\007devInfo\030\001 "
+    "\001(\0132\033.Interactive.Message.Device\022\020\n\010strV"
+    "alue\030\002 \001(\t\"L\n\017QueryDevReq_USR\022\021\n\tstrUser"
+    "ID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strVal"
+    "ue\030\003 \001(\t\"I\n\017QueryDevRsp_USR\0226\n\017allRelati"
+    "onInfo\030\001 \003(\0132\035.Interactive.Message.Relat"
+    "ion\"L\n\020QueryUserReq_USR\022\020\n\010strDevID\030\001 \001("
+    "\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001("
+    "\t\"J\n\020QueryUserRsp_USR\0226\n\017allRelationInfo"
+    "\030\001 \003(\0132\035.Interactive.Message.Relation\"Z\n"
+    "\021SharingDevReq_USR\0223\n\014relationInfo\030\001 \001(\013"
+    "2\035.Interactive.Message.Relation\022\020\n\010strVa"
+    "lue\030\002 \001(\t\"%\n\021SharingDevRsp_USR\022\020\n\010strVal"
+    "ue\030\001 \001(\t\"_\n\026CancelSharedDevReq_USR\0223\n\014re"
+    "lationInfo\030\001 \001(\0132\035.Interactive.Message.R"
+    "elation\022\020\n\010strValue\030\002 \001(\t\"*\n\026CancelShare"
+    "dDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021AddFrie"
+    "ndsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strFrie"
+    "ndUserID\030\002 \001(\t\"%\n\021AddFriendsRsp_USR\022\020\n\010s"
+    "trValue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\tst"
+    "rUserID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\"D"
+    "\n\021DelFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n"
+    "\025strFriendUserIDFailed\030\002 \003(\t\":\n\023QueryFri"
+    "endsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVal"
+    "ue\030\002 \001(\t\"]\n\023QueryFriendsRsp_USR\0224\n\021allFr"
+    "iendUserInfo\030\001 \003(\0132\031.Interactive.Message"
+    ".User\022\020\n\010strValue\030\002 \001(\t\"-\n\031GetOnlineDevI"
+    "nfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnl"
+    "ineDevInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.I"
+    "nteractive.Message.Device\022\020\n\010strValue\030\002 "
+    "\001(\t\"^\n\034BroadcastOnlineDevInfo_INNER\022,\n\007d"
+    "evInfo\030\001 \003(\0132\033.Interactive.Message.Devic"
+    "e\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineUserInfo"
+    "Req_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnline"
+    "UserInfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.In"
+    "teractive.Message.User\022\020\n\010strValue\030\002 \001(\t"
+    "\"^\n\035BroadcastOnlineUserInfo_INNER\022+\n\010use"
+    "rInfo\030\001 \003(\0132\031.Interactive.Message.User\022\020"
+    "\n\010strValue\030\002 \001(\t\"\350\021\n\003Req\022S\n\035GetAccessAdd"
+    "ressReq_DEV_Value\030\n \001(\0132,.Interactive.Me"
+    "ssage.GetAccessAddressReq_DEV\022=\n\022LoginRe"
+    "q_DEV_Value\030\024 \001(\0132!.Interactive.Message."
+    "LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value\030\036 \001("
+    "\0132\".Interactive.Message.LogoutReq_DEV\022E\n"
+    "\026ShakehandReq_DEV_Value\030( \001(\0132%.Interact"
+    "ive.Message.ShakehandReq_DEV\022G\n\027ConfigIn"
+    "foReq_DEV_Value\0302 \001(\0132&.Interactive.Mess"
+    "age.ConfigInfoReq_DEV\022;\n\021AuthReq_DEV_Val"
+    "ue\030< \001(\0132 .Interactive.Message.AuthReq_D"
+    "EV\022M\n\032MsgPreHandlerReq_USR_Value\030A \001(\0132)"
+    ".Interactive.Message.MsgPreHandlerReq_US"
+    "R\022S\n\035GetAccessAddressReq_USR_Value\030F \001(\013"
+    "2,.Interactive.Message.GetAccessAddressR"
+    "eq_USR\022K\n\031RegisterUserReq_USR_Value\030P \001("
+    "\0132(.Interactive.Message.RegisterUserReq_"
+    "USR\022O\n\033UnRegisterUserReq_USR_Value\030Z \001(\013"
+    "2*.Interactive.Message.UnRegisterUserReq"
+    "_USR\022K\n\031QueryUsrInfoReq_USR_Value\030d \001(\0132"
+    "(.Interactive.Message.QueryUsrInfoReq_US"
+    "R\022=\n\022LoginReq_USR_Value\030n \001(\0132!.Interact"
+    "ive.Message.LoginReq_USR\022\?\n\023LogoutReq_US"
+    "R_Value\030x \001(\0132\".Interactive.Message.Logo"
+    "utReq_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 \001"
+    "(\0132%.Interactive.Message.ShakehandReq_US"
+    "R\022H\n\027ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.In"
+    "teractive.Message.ConfigInfoReq_USR\022@\n\023A"
+    "ddDevReq_USR_Value\030\226\001 \001(\0132\".Interactive."
+    "Message.AddDevReq_USR\022@\n\023DelDevReq_USR_V"
+    "alue\030\240\001 \001(\0132\".Interactive.Message.DelDev"
+    "Req_USR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001(\013"
+    "2%.Interactive.Message.ModifyDevReq_USR\022"
+    "L\n\031QueryDevInfoReq_USR_Value\030\264\001 \001(\0132(.In"
+    "teractive.Message.QueryDevInfoReq_USR\022D\n"
+    "\025QueryDevReq_USR_Value\030\276\001 \001(\0132$.Interact"
+    "ive.Message.QueryDevReq_USR\022F\n\026QueryUser"
+    "Req_USR_Value\030\310\001 \001(\0132%.Interactive.Messa"
+    "ge.QueryUserReq_USR\022H\n\027SharingDevReq_USR"
+    "_Value\030\322\001 \001(\0132&.Interactive.Message.Shar"
+    "ingDevReq_USR\022R\n\034CancelSharedDevReq_USR_"
+    "Value\030\334\001 \001(\0132+.Interactive.Message.Cance"
+    "lSharedDevReq_USR\022H\n\027AddFriendsReq_USR_V"
+    "alue\030\346\001 \001(\0132&.Interactive.Message.AddFri"
+    "endsReq_USR\022H\n\027DelFriendsReq_USR_Value\030\360"
+    "\001 \001(\0132&.Interactive.Message.DelFriendsRe"
+    "q_USR\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001("
+    "\0132(.Interactive.Message.QueryFriendsReq_"
+    "USR\022X\n\037GetOnlineDevInfoReq_INNER_Value\030\204"
     "\002 \001(\0132..Interactive.Message.GetOnlineDev"
-    "InfoRsp_INNER\022Z\n GetOnlineUserInfoRsp_IN"
-    "NER_Value\030\242\002 \001(\0132/.Interactive.Message.G"
-    "etOnlineUserInfoRsp_INNER\"\272\001\n\022Interactiv"
-    "eMessage\022*\n\004type\030\001 \001(\0162\034.Interactive.Mes"
-    "sage.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID"
-    "\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive.M"
-    "essage.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interacti"
-    "ve.Message.Rsp*\324\014\n\007MsgType\022\n\n\006Init_T\020\000\022\036"
-    "\n\031GetAccessAddressReq_DEV_T\020\220N\022\036\n\031GetAcc"
-    "essAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_T"
-    "\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_DE"
-    "V_T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022Shakehan"
-    "dReq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022\030"
-    "\n\023ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfoRs"
-    "p_DEV_T\020\352N\022\022\n\rAuthReq_DEV_T\020\364N\022\022\n\rAuthRs"
-    "p_DEV_T\020\376N\022\037\n\031GetAccessAddressReq_USR_T\020"
-    "\240\234\001\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n\025"
-    "RegisterUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUse"
-    "rRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR_"
-    "T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\033\n\025"
-    "QueryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025QueryUsrInf"
-    "oRsp_USR_T\020\324\234\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016"
-    "LoginRsp_USR_T\020\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234"
-    "\001\022\025\n\017LogoutRsp_USR_T\020\372\234\001\022\030\n\022ShakehandReq"
-    "_USR_T\020\204\235\001\022\030\n\022ShakehandRsp_USR_T\020\216\235\001\022\031\n\023"
-    "ConfigInfoReq_USR_T\020\230\235\001\022\031\n\023ConfigInfoRsp"
-    "_USR_T\020\242\235\001\022\025\n\017AddDevReq_USR_T\020\254\235\001\022\025\n\017Add"
-    "DevRsp_USR_T\020\266\235\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022"
-    "\025\n\017DelDevRsp_USR_T\020\312\235\001\022\030\n\022ModifyDevReq_U"
-    "SR_T\020\324\235\001\022\030\n\022ModifyDevRsp_USR_T\020\336\235\001\022\033\n\025Qu"
-    "eryDevInfoReq_USR_T\020\337\235\001\022\033\n\025QueryDevInfoR"
-    "sp_USR_T\020\340\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n"
-    "\021QueryDevRsp_USR_T\020\362\235\001\022\030\n\022QueryUserReq_U"
-    "SR_T\020\363\235\001\022\030\n\022QueryUserRsp_USR_T\020\364\235\001\022\031\n\023Sh"
-    "aringDevReq_USR_T\020\374\235\001\022\031\n\023SharingDevRsp_U"
-    "SR_T\020\206\236\001\022\036\n\030CancelSharedDevReq_USR_T\020\220\236\001"
-    "\022\036\n\030CancelSharedDevRsp_USR_T\020\232\236\001\022\031\n\023AddF"
-    "riendsReq_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR"
-    "_T\020\256\236\001\022\031\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023Del"
-    "FriendsRsp_USR_T\020\302\236\001\022\034\n\026ModifyFriendsReq"
-    "_USR_T\020\314\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020\326\236\001"
-    "\022\033\n\025QueryFriendsReq_USR_T\020\340\236\001\022\033\n\025QueryFr"
-    "iendsRsp_USR_T\020\352\236\001\022!\n\033GetOnlineDevInfoRe"
-    "q_INNER_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_INN"
-    "ER_T\020\272\352\001\022$\n\036BroadcastOnlineDevInfo_INNER"
-    "_T\020\304\352\001\022\"\n\034GetOnlineUserInfoReq_INNER_T\020\316"
-    "\352\001\022\"\n\034GetOnlineUserInfoRsp_INNER_T\020\330\352\001\022%"
-    "\n\037BroadcastOnlineUserInfo_INNER_T\020\342\352\001b\006p"
-    "roto3", 10325);
+    "InfoReq_INNER\022^\n\"BroadcastOnlineDevInfo_"
+    "INNER_Value\030\216\002 \001(\01321.Interactive.Message"
+    ".BroadcastOnlineDevInfo_INNER\022Z\n GetOnli"
+    "neUserInfoReq_INNER_Value\030\230\002 \001(\0132/.Inter"
+    "active.Message.GetOnlineUserInfoReq_INNE"
+    "R\022`\n#BroadcastOnlineUserInfo_INNER_Value"
+    "\030\242\002 \001(\01322.Interactive.Message.BroadcastO"
+    "nlineUserInfo_INNER\"\315\020\n\003Rsp\022\020\n\010iRetcode\030"
+    "\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035GetAccessAdd"
+    "ressRsp_DEV_Value\030\036 \001(\0132,.Interactive.Me"
+    "ssage.GetAccessAddressRsp_DEV\022=\n\022LoginRs"
+    "p_DEV_Value\030( \001(\0132!.Interactive.Message."
+    "LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_Value\0302 \001("
+    "\0132\".Interactive.Message.LogoutRsp_DEV\022E\n"
+    "\026ShakehandRsp_DEV_Value\030< \001(\0132%.Interact"
+    "ive.Message.ShakehandRsp_DEV\022G\n\027ConfigIn"
+    "foRsp_DEV_Value\030F \001(\0132&.Interactive.Mess"
+    "age.ConfigInfoRsp_DEV\022;\n\021AuthRsp_DEV_Val"
+    "ue\030P \001(\0132 .Interactive.Message.AuthRsp_D"
+    "EV\022M\n\032MsgPreHandlerRsp_USR_Value\030U \001(\0132)"
+    ".Interactive.Message.MsgPreHandlerRsp_US"
+    "R\022S\n\035GetAccessAddressRsp_USR_Value\030Z \001(\013"
+    "2,.Interactive.Message.GetAccessAddressR"
+    "sp_USR\022K\n\031RegisterUserRsp_USR_Value\030d \001("
+    "\0132(.Interactive.Message.RegisterUserRsp_"
+    "USR\022O\n\033UnRegisterUserRsp_USR_Value\030n \001(\013"
+    "2*.Interactive.Message.UnRegisterUserRsp"
+    "_USR\022K\n\031QueryUsrInfoRsp_USR_Value\030x \001(\0132"
+    "(.Interactive.Message.QueryUsrInfoRsp_US"
+    "R\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Interac"
+    "tive.Message.LoginRsp_USR\022@\n\023LogoutRsp_U"
+    "SR_Value\030\214\001 \001(\0132\".Interactive.Message.Lo"
+    "goutRsp_USR\022F\n\026ShakehandRsp_USR_Value\030\226\001"
+    " \001(\0132%.Interactive.Message.ShakehandRsp_"
+    "USR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001(\0132&."
+    "Interactive.Message.ConfigInfoRsp_USR\022@\n"
+    "\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".Interactiv"
+    "e.Message.AddDevRsp_USR\022@\n\023DelDevRsp_USR"
+    "_Value\030\264\001 \001(\0132\".Interactive.Message.DelD"
+    "evRsp_USR\022F\n\026ModifyDevRsp_USR_Value\030\276\001 \001"
+    "(\0132%.Interactive.Message.ModifyDevRsp_US"
+    "R\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001(\0132(."
+    "Interactive.Message.QueryDevInfoRsp_USR\022"
+    "D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.Intera"
+    "ctive.Message.QueryDevRsp_USR\022F\n\026QueryUs"
+    "erRsp_USR_Value\030\334\001 \001(\0132%.Interactive.Mes"
+    "sage.QueryUserRsp_USR\022H\n\027SharingDevRsp_U"
+    "SR_Value\030\346\001 \001(\0132&.Interactive.Message.Sh"
+    "aringDevRsp_USR\022R\n\034CancelSharedDevRsp_US"
+    "R_Value\030\360\001 \001(\0132+.Interactive.Message.Can"
+    "celSharedDevRsp_USR\022H\n\027AddFriendsRsp_USR"
+    "_Value\030\372\001 \001(\0132&.Interactive.Message.AddF"
+    "riendsRsp_USR\022H\n\027DelFriendsRsp_USR_Value"
+    "\030\204\002 \001(\0132&.Interactive.Message.DelFriends"
+    "Rsp_USR\022L\n\031QueryFriendsRsp_USR_Value\030\216\002 "
+    "\001(\0132(.Interactive.Message.QueryFriendsRs"
+    "p_USR\022X\n\037GetOnlineDevInfoRsp_INNER_Value"
+    "\030\230\002 \001(\0132..Interactive.Message.GetOnlineD"
+    "evInfoRsp_INNER\022Z\n GetOnlineUserInfoRsp_"
+    "INNER_Value\030\242\002 \001(\0132/.Interactive.Message"
+    ".GetOnlineUserInfoRsp_INNER\"\272\001\n\022Interact"
+    "iveMessage\022*\n\004type\030\001 \001(\0162\034.Interactive.M"
+    "essage.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strS"
+    "ID\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive"
+    ".Message.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interac"
+    "tive.Message.Rsp*\220\r\n\007MsgType\022\n\n\006Init_T\020\000"
+    "\022\036\n\031GetAccessAddressReq_DEV_T\020\220N\022\036\n\031GetA"
+    "ccessAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV"
+    "_T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_"
+    "DEV_T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022Shakeh"
+    "andReq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N"
+    "\022\030\n\023ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfo"
+    "Rsp_DEV_T\020\352N\022\022\n\rAuthReq_DEV_T\020\364N\022\022\n\rAuth"
+    "Rsp_DEV_T\020\376N\022\034\n\026MsgPreHandlerReq_USR_T\020\226"
+    "\234\001\022\034\n\026MsgPreHandlerRsp_USR_T\020\227\234\001\022\037\n\031GetA"
+    "ccessAddressReq_USR_T\020\240\234\001\022\037\n\031GetAccessAd"
+    "dressRsp_USR_T\020\252\234\001\022\033\n\025RegisterUserReq_US"
+    "R_T\020\264\234\001\022\033\n\025RegisterUserRsp_USR_T\020\276\234\001\022\035\n\027"
+    "UnRegisterUserReq_USR_T\020\310\234\001\022\035\n\027UnRegiste"
+    "rUserRsp_USR_T\020\322\234\001\022\033\n\025QueryUsrInfoReq_US"
+    "R_T\020\323\234\001\022\033\n\025QueryUsrInfoRsp_USR_T\020\324\234\001\022\024\n\016"
+    "LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234\001"
+    "\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_USR"
+    "_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Shak"
+    "ehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR_"
+    "T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017AddD"
+    "evReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022\025"
+    "\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_T"
+    "\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022Modify"
+    "DevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq_USR_"
+    "T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022\027\n\021Qu"
+    "eryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_USR_T"
+    "\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022QueryU"
+    "serRsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_USR_T\020"
+    "\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030Cancel"
+    "SharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelSharedDe"
+    "vRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR_T\020\244\236"
+    "\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023DelFrien"
+    "dsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_USR_T\020\302"
+    "\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n\026Modi"
+    "fyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFriendsRe"
+    "q_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_T\020\352\236\001"
+    "\022!\n\033GetOnlineDevInfoReq_INNER_T\020\260\352\001\022!\n\033G"
+    "etOnlineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036Broadc"
+    "astOnlineDevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlin"
+    "eUserInfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnlineUse"
+    "rInfoRsp_INNER_T\020\330\352\001\022%\n\037BroadcastOnlineU"
+    "serInfo_INNER_T\020\342\352\001b\006proto3", 10627);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_InteractiveProtocol_2eproto);
@@ -1997,6 +2054,8 @@ bool MsgType_IsValid(int value) {
     case 10090:
     case 10100:
     case 10110:
+    case 19990:
+    case 19991:
     case 20000:
     case 20010:
     case 20020:
@@ -9273,6 +9332,584 @@ void AuthRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
 
 inline const AuthRsp_DEV* AuthRsp_DEV::internal_default_instance() {
   return &AuthRsp_DEV_default_instance_.get();
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int MsgPreHandlerReq_USR::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+MsgPreHandlerReq_USR::MsgPreHandlerReq_USR()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (this != internal_default_instance()) protobuf_InitDefaults_InteractiveProtocol_2eproto();
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.MsgPreHandlerReq_USR)
+}
+
+void MsgPreHandlerReq_USR::InitAsDefaultInstance() {
+}
+
+MsgPreHandlerReq_USR::MsgPreHandlerReq_USR(const MsgPreHandlerReq_USR& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  UnsafeMergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.MsgPreHandlerReq_USR)
+}
+
+void MsgPreHandlerReq_USR::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+MsgPreHandlerReq_USR::~MsgPreHandlerReq_USR() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.MsgPreHandlerReq_USR)
+  SharedDtor();
+}
+
+void MsgPreHandlerReq_USR::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void MsgPreHandlerReq_USR::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* MsgPreHandlerReq_USR::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return MsgPreHandlerReq_USR_descriptor_;
+}
+
+const MsgPreHandlerReq_USR& MsgPreHandlerReq_USR::default_instance() {
+  protobuf_InitDefaults_InteractiveProtocol_2eproto();
+  return *internal_default_instance();
+}
+
+::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerReq_USR> MsgPreHandlerReq_USR_default_instance_;
+
+MsgPreHandlerReq_USR* MsgPreHandlerReq_USR::New(::google::protobuf::Arena* arena) const {
+  MsgPreHandlerReq_USR* n = new MsgPreHandlerReq_USR;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void MsgPreHandlerReq_USR::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.MsgPreHandlerReq_USR)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool MsgPreHandlerReq_USR::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.MsgPreHandlerReq_USR)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string strValue = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.MsgPreHandlerReq_USR.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.MsgPreHandlerReq_USR)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.MsgPreHandlerReq_USR)
+  return false;
+#undef DO_
+}
+
+void MsgPreHandlerReq_USR::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.MsgPreHandlerReq_USR)
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.MsgPreHandlerReq_USR.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.MsgPreHandlerReq_USR)
+}
+
+::google::protobuf::uint8* MsgPreHandlerReq_USR::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.MsgPreHandlerReq_USR)
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.MsgPreHandlerReq_USR.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.MsgPreHandlerReq_USR)
+  return target;
+}
+
+size_t MsgPreHandlerReq_USR::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.MsgPreHandlerReq_USR)
+  size_t total_size = 0;
+
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void MsgPreHandlerReq_USR::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.MsgPreHandlerReq_USR)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const MsgPreHandlerReq_USR* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const MsgPreHandlerReq_USR>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.MsgPreHandlerReq_USR)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.MsgPreHandlerReq_USR)
+    UnsafeMergeFrom(*source);
+  }
+}
+
+void MsgPreHandlerReq_USR::MergeFrom(const MsgPreHandlerReq_USR& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.MsgPreHandlerReq_USR)
+  if (GOOGLE_PREDICT_TRUE(&from != this)) {
+    UnsafeMergeFrom(from);
+  } else {
+    MergeFromFail(__LINE__);
+  }
+}
+
+void MsgPreHandlerReq_USR::UnsafeMergeFrom(const MsgPreHandlerReq_USR& from) {
+  GOOGLE_DCHECK(&from != this);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void MsgPreHandlerReq_USR::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.MsgPreHandlerReq_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void MsgPreHandlerReq_USR::CopyFrom(const MsgPreHandlerReq_USR& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.MsgPreHandlerReq_USR)
+  if (&from == this) return;
+  Clear();
+  UnsafeMergeFrom(from);
+}
+
+bool MsgPreHandlerReq_USR::IsInitialized() const {
+
+  return true;
+}
+
+void MsgPreHandlerReq_USR::Swap(MsgPreHandlerReq_USR* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MsgPreHandlerReq_USR::InternalSwap(MsgPreHandlerReq_USR* other) {
+  strvalue_.Swap(&other->strvalue_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata MsgPreHandlerReq_USR::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = MsgPreHandlerReq_USR_descriptor_;
+  metadata.reflection = MsgPreHandlerReq_USR_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// MsgPreHandlerReq_USR
+
+// optional string strValue = 1;
+void MsgPreHandlerReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& MsgPreHandlerReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void MsgPreHandlerReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+void MsgPreHandlerReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+void MsgPreHandlerReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+::std::string* MsgPreHandlerReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* MsgPreHandlerReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void MsgPreHandlerReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.MsgPreHandlerReq_USR.strValue)
+}
+
+inline const MsgPreHandlerReq_USR* MsgPreHandlerReq_USR::internal_default_instance() {
+  return &MsgPreHandlerReq_USR_default_instance_.get();
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int MsgPreHandlerRsp_USR::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+MsgPreHandlerRsp_USR::MsgPreHandlerRsp_USR()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (this != internal_default_instance()) protobuf_InitDefaults_InteractiveProtocol_2eproto();
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.MsgPreHandlerRsp_USR)
+}
+
+void MsgPreHandlerRsp_USR::InitAsDefaultInstance() {
+}
+
+MsgPreHandlerRsp_USR::MsgPreHandlerRsp_USR(const MsgPreHandlerRsp_USR& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  UnsafeMergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.MsgPreHandlerRsp_USR)
+}
+
+void MsgPreHandlerRsp_USR::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+MsgPreHandlerRsp_USR::~MsgPreHandlerRsp_USR() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.MsgPreHandlerRsp_USR)
+  SharedDtor();
+}
+
+void MsgPreHandlerRsp_USR::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void MsgPreHandlerRsp_USR::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* MsgPreHandlerRsp_USR::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return MsgPreHandlerRsp_USR_descriptor_;
+}
+
+const MsgPreHandlerRsp_USR& MsgPreHandlerRsp_USR::default_instance() {
+  protobuf_InitDefaults_InteractiveProtocol_2eproto();
+  return *internal_default_instance();
+}
+
+::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerRsp_USR> MsgPreHandlerRsp_USR_default_instance_;
+
+MsgPreHandlerRsp_USR* MsgPreHandlerRsp_USR::New(::google::protobuf::Arena* arena) const {
+  MsgPreHandlerRsp_USR* n = new MsgPreHandlerRsp_USR;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void MsgPreHandlerRsp_USR::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool MsgPreHandlerRsp_USR::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string strValue = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.MsgPreHandlerRsp_USR.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.MsgPreHandlerRsp_USR)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.MsgPreHandlerRsp_USR)
+  return false;
+#undef DO_
+}
+
+void MsgPreHandlerRsp_USR::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.MsgPreHandlerRsp_USR.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.MsgPreHandlerRsp_USR)
+}
+
+::google::protobuf::uint8* MsgPreHandlerRsp_USR::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.MsgPreHandlerRsp_USR.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.MsgPreHandlerRsp_USR)
+  return target;
+}
+
+size_t MsgPreHandlerRsp_USR::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  size_t total_size = 0;
+
+  // optional string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void MsgPreHandlerRsp_USR::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const MsgPreHandlerRsp_USR* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const MsgPreHandlerRsp_USR>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.MsgPreHandlerRsp_USR)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.MsgPreHandlerRsp_USR)
+    UnsafeMergeFrom(*source);
+  }
+}
+
+void MsgPreHandlerRsp_USR::MergeFrom(const MsgPreHandlerRsp_USR& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  if (GOOGLE_PREDICT_TRUE(&from != this)) {
+    UnsafeMergeFrom(from);
+  } else {
+    MergeFromFail(__LINE__);
+  }
+}
+
+void MsgPreHandlerRsp_USR::UnsafeMergeFrom(const MsgPreHandlerRsp_USR& from) {
+  GOOGLE_DCHECK(&from != this);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void MsgPreHandlerRsp_USR::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void MsgPreHandlerRsp_USR::CopyFrom(const MsgPreHandlerRsp_USR& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.MsgPreHandlerRsp_USR)
+  if (&from == this) return;
+  Clear();
+  UnsafeMergeFrom(from);
+}
+
+bool MsgPreHandlerRsp_USR::IsInitialized() const {
+
+  return true;
+}
+
+void MsgPreHandlerRsp_USR::Swap(MsgPreHandlerRsp_USR* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void MsgPreHandlerRsp_USR::InternalSwap(MsgPreHandlerRsp_USR* other) {
+  strvalue_.Swap(&other->strvalue_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata MsgPreHandlerRsp_USR::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = MsgPreHandlerRsp_USR_descriptor_;
+  metadata.reflection = MsgPreHandlerRsp_USR_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// MsgPreHandlerRsp_USR
+
+// optional string strValue = 1;
+void MsgPreHandlerRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& MsgPreHandlerRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void MsgPreHandlerRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+void MsgPreHandlerRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+void MsgPreHandlerRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+::std::string* MsgPreHandlerRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* MsgPreHandlerRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void MsgPreHandlerRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.MsgPreHandlerRsp_USR.strValue)
+}
+
+inline const MsgPreHandlerRsp_USR* MsgPreHandlerRsp_USR::internal_default_instance() {
+  return &MsgPreHandlerRsp_USR_default_instance_.get();
 }
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
@@ -25165,6 +25802,7 @@ const int Req::kLogoutReqDEVValueFieldNumber;
 const int Req::kShakehandReqDEVValueFieldNumber;
 const int Req::kConfigInfoReqDEVValueFieldNumber;
 const int Req::kAuthReqDEVValueFieldNumber;
+const int Req::kMsgPreHandlerReqUSRValueFieldNumber;
 const int Req::kGetAccessAddressReqUSRValueFieldNumber;
 const int Req::kRegisterUserReqUSRValueFieldNumber;
 const int Req::kUnRegisterUserReqUSRValueFieldNumber;
@@ -25210,6 +25848,8 @@ void Req::InitAsDefaultInstance() {
       ::Interactive::Message::ConfigInfoReq_DEV::internal_default_instance());
   authreq_dev_value_ = const_cast< ::Interactive::Message::AuthReq_DEV*>(
       ::Interactive::Message::AuthReq_DEV::internal_default_instance());
+  msgprehandlerreq_usr_value_ = const_cast< ::Interactive::Message::MsgPreHandlerReq_USR*>(
+      ::Interactive::Message::MsgPreHandlerReq_USR::internal_default_instance());
   getaccessaddressreq_usr_value_ = const_cast< ::Interactive::Message::GetAccessAddressReq_USR*>(
       ::Interactive::Message::GetAccessAddressReq_USR::internal_default_instance());
   registeruserreq_usr_value_ = const_cast< ::Interactive::Message::RegisterUserReq_USR*>(
@@ -25273,6 +25913,7 @@ void Req::SharedCtor() {
   shakehandreq_dev_value_ = NULL;
   configinforeq_dev_value_ = NULL;
   authreq_dev_value_ = NULL;
+  msgprehandlerreq_usr_value_ = NULL;
   getaccessaddressreq_usr_value_ = NULL;
   registeruserreq_usr_value_ = NULL;
   unregisteruserreq_usr_value_ = NULL;
@@ -25312,6 +25953,7 @@ void Req::SharedDtor() {
     delete shakehandreq_dev_value_;
     delete configinforeq_dev_value_;
     delete authreq_dev_value_;
+    delete msgprehandlerreq_usr_value_;
     delete getaccessaddressreq_usr_value_;
     delete registeruserreq_usr_value_;
     delete unregisteruserreq_usr_value_;
@@ -25377,6 +26019,8 @@ void Req::Clear() {
   configinforeq_dev_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && authreq_dev_value_ != NULL) delete authreq_dev_value_;
   authreq_dev_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && msgprehandlerreq_usr_value_ != NULL) delete msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && getaccessaddressreq_usr_value_ != NULL) delete getaccessaddressreq_usr_value_;
   getaccessaddressreq_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && registeruserreq_usr_value_ != NULL) delete registeruserreq_usr_value_;
@@ -25505,6 +26149,19 @@ bool Req::MergePartialFromCodedStream(
          parse_AuthReq_DEV_Value:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_authreq_dev_value()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(522)) goto parse_MsgPreHandlerReq_USR_Value;
+        break;
+      }
+
+      // optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+      case 65: {
+        if (tag == 522) {
+         parse_MsgPreHandlerReq_USR_Value:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_msgprehandlerreq_usr_value()));
         } else {
           goto handle_unusual;
         }
@@ -25871,6 +26528,12 @@ void Req::SerializeWithCachedSizes(
       60, *this->authreq_dev_value_, output);
   }
 
+  // optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+  if (this->has_msgprehandlerreq_usr_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      65, *this->msgprehandlerreq_usr_value_, output);
+  }
+
   // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
   if (this->has_getaccessaddressreq_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -26056,6 +26719,13 @@ void Req::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         60, *this->authreq_dev_value_, false, target);
+  }
+
+  // optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+  if (this->has_msgprehandlerreq_usr_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        65, *this->msgprehandlerreq_usr_value_, false, target);
   }
 
   // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
@@ -26267,6 +26937,13 @@ size_t Req::ByteSizeLong() const {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->authreq_dev_value_);
+  }
+
+  // optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+  if (this->has_msgprehandlerreq_usr_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->msgprehandlerreq_usr_value_);
   }
 
   // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
@@ -26481,6 +27158,9 @@ void Req::UnsafeMergeFrom(const Req& from) {
   if (from.has_authreq_dev_value()) {
     mutable_authreq_dev_value()->::Interactive::Message::AuthReq_DEV::MergeFrom(from.authreq_dev_value());
   }
+  if (from.has_msgprehandlerreq_usr_value()) {
+    mutable_msgprehandlerreq_usr_value()->::Interactive::Message::MsgPreHandlerReq_USR::MergeFrom(from.msgprehandlerreq_usr_value());
+  }
   if (from.has_getaccessaddressreq_usr_value()) {
     mutable_getaccessaddressreq_usr_value()->::Interactive::Message::GetAccessAddressReq_USR::MergeFrom(from.getaccessaddressreq_usr_value());
   }
@@ -26582,6 +27262,7 @@ void Req::InternalSwap(Req* other) {
   std::swap(shakehandreq_dev_value_, other->shakehandreq_dev_value_);
   std::swap(configinforeq_dev_value_, other->configinforeq_dev_value_);
   std::swap(authreq_dev_value_, other->authreq_dev_value_);
+  std::swap(msgprehandlerreq_usr_value_, other->msgprehandlerreq_usr_value_);
   std::swap(getaccessaddressreq_usr_value_, other->getaccessaddressreq_usr_value_);
   std::swap(registeruserreq_usr_value_, other->registeruserreq_usr_value_);
   std::swap(unregisteruserreq_usr_value_, other->unregisteruserreq_usr_value_);
@@ -26852,6 +27533,45 @@ void Req::set_allocated_authreq_dev_value(::Interactive::Message::AuthReq_DEV* a
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AuthReq_DEV_Value)
+}
+
+// optional .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
+bool Req::has_msgprehandlerreq_usr_value() const {
+  return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
+}
+void Req::clear_msgprehandlerreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && msgprehandlerreq_usr_value_ != NULL) delete msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = NULL;
+}
+const ::Interactive::Message::MsgPreHandlerReq_USR& Req::msgprehandlerreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  return msgprehandlerreq_usr_value_ != NULL ? *msgprehandlerreq_usr_value_
+                         : *::Interactive::Message::MsgPreHandlerReq_USR::internal_default_instance();
+}
+::Interactive::Message::MsgPreHandlerReq_USR* Req::mutable_msgprehandlerreq_usr_value() {
+  
+  if (msgprehandlerreq_usr_value_ == NULL) {
+    msgprehandlerreq_usr_value_ = new ::Interactive::Message::MsgPreHandlerReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  return msgprehandlerreq_usr_value_;
+}
+::Interactive::Message::MsgPreHandlerReq_USR* Req::release_msgprehandlerreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
+  
+  ::Interactive::Message::MsgPreHandlerReq_USR* temp = msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = NULL;
+  return temp;
+}
+void Req::set_allocated_msgprehandlerreq_usr_value(::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value) {
+  delete msgprehandlerreq_usr_value_;
+  msgprehandlerreq_usr_value_ = msgprehandlerreq_usr_value;
+  if (msgprehandlerreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.MsgPreHandlerReq_USR_Value)
 }
 
 // optional .Interactive.Message.GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;
@@ -27767,6 +28487,7 @@ const int Rsp::kLogoutRspDEVValueFieldNumber;
 const int Rsp::kShakehandRspDEVValueFieldNumber;
 const int Rsp::kConfigInfoRspDEVValueFieldNumber;
 const int Rsp::kAuthRspDEVValueFieldNumber;
+const int Rsp::kMsgPreHandlerRspUSRValueFieldNumber;
 const int Rsp::kGetAccessAddressRspUSRValueFieldNumber;
 const int Rsp::kRegisterUserRspUSRValueFieldNumber;
 const int Rsp::kUnRegisterUserRspUSRValueFieldNumber;
@@ -27810,6 +28531,8 @@ void Rsp::InitAsDefaultInstance() {
       ::Interactive::Message::ConfigInfoRsp_DEV::internal_default_instance());
   authrsp_dev_value_ = const_cast< ::Interactive::Message::AuthRsp_DEV*>(
       ::Interactive::Message::AuthRsp_DEV::internal_default_instance());
+  msgprehandlerrsp_usr_value_ = const_cast< ::Interactive::Message::MsgPreHandlerRsp_USR*>(
+      ::Interactive::Message::MsgPreHandlerRsp_USR::internal_default_instance());
   getaccessaddressrsp_usr_value_ = const_cast< ::Interactive::Message::GetAccessAddressRsp_USR*>(
       ::Interactive::Message::GetAccessAddressRsp_USR::internal_default_instance());
   registeruserrsp_usr_value_ = const_cast< ::Interactive::Message::RegisterUserRsp_USR*>(
@@ -27870,6 +28593,7 @@ void Rsp::SharedCtor() {
   shakehandrsp_dev_value_ = NULL;
   configinforsp_dev_value_ = NULL;
   authrsp_dev_value_ = NULL;
+  msgprehandlerrsp_usr_value_ = NULL;
   getaccessaddressrsp_usr_value_ = NULL;
   registeruserrsp_usr_value_ = NULL;
   unregisteruserrsp_usr_value_ = NULL;
@@ -27909,6 +28633,7 @@ void Rsp::SharedDtor() {
     delete shakehandrsp_dev_value_;
     delete configinforsp_dev_value_;
     delete authrsp_dev_value_;
+    delete msgprehandlerrsp_usr_value_;
     delete getaccessaddressrsp_usr_value_;
     delete registeruserrsp_usr_value_;
     delete unregisteruserrsp_usr_value_;
@@ -27974,6 +28699,8 @@ void Rsp::Clear() {
   configinforsp_dev_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && authrsp_dev_value_ != NULL) delete authrsp_dev_value_;
   authrsp_dev_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && msgprehandlerrsp_usr_value_ != NULL) delete msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && getaccessaddressrsp_usr_value_ != NULL) delete getaccessaddressrsp_usr_value_;
   getaccessaddressrsp_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && registeruserrsp_usr_value_ != NULL) delete registeruserrsp_usr_value_;
@@ -28130,6 +28857,19 @@ bool Rsp::MergePartialFromCodedStream(
          parse_AuthRsp_DEV_Value:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_authrsp_dev_value()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(682)) goto parse_MsgPreHandlerRsp_USR_Value;
+        break;
+      }
+
+      // optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+      case 85: {
+        if (tag == 682) {
+         parse_MsgPreHandlerRsp_USR_Value:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_msgprehandlerrsp_usr_value()));
         } else {
           goto handle_unusual;
         }
@@ -28485,6 +29225,12 @@ void Rsp::SerializeWithCachedSizes(
       80, *this->authrsp_dev_value_, output);
   }
 
+  // optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+  if (this->has_msgprehandlerrsp_usr_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      85, *this->msgprehandlerrsp_usr_value_, output);
+  }
+
   // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
   if (this->has_getaccessaddressrsp_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -28674,6 +29420,13 @@ void Rsp::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         80, *this->authrsp_dev_value_, false, target);
+  }
+
+  // optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+  if (this->has_msgprehandlerrsp_usr_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        85, *this->msgprehandlerrsp_usr_value_, false, target);
   }
 
   // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
@@ -28887,6 +29640,13 @@ size_t Rsp::ByteSizeLong() const {
         *this->authrsp_dev_value_);
   }
 
+  // optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+  if (this->has_msgprehandlerrsp_usr_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->msgprehandlerrsp_usr_value_);
+  }
+
   // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;
   if (this->has_getaccessaddressrsp_usr_value()) {
     total_size += 2 +
@@ -29092,6 +29852,9 @@ void Rsp::UnsafeMergeFrom(const Rsp& from) {
   if (from.has_authrsp_dev_value()) {
     mutable_authrsp_dev_value()->::Interactive::Message::AuthRsp_DEV::MergeFrom(from.authrsp_dev_value());
   }
+  if (from.has_msgprehandlerrsp_usr_value()) {
+    mutable_msgprehandlerrsp_usr_value()->::Interactive::Message::MsgPreHandlerRsp_USR::MergeFrom(from.msgprehandlerrsp_usr_value());
+  }
   if (from.has_getaccessaddressrsp_usr_value()) {
     mutable_getaccessaddressrsp_usr_value()->::Interactive::Message::GetAccessAddressRsp_USR::MergeFrom(from.getaccessaddressrsp_usr_value());
   }
@@ -29189,6 +29952,7 @@ void Rsp::InternalSwap(Rsp* other) {
   std::swap(shakehandrsp_dev_value_, other->shakehandrsp_dev_value_);
   std::swap(configinforsp_dev_value_, other->configinforsp_dev_value_);
   std::swap(authrsp_dev_value_, other->authrsp_dev_value_);
+  std::swap(msgprehandlerrsp_usr_value_, other->msgprehandlerrsp_usr_value_);
   std::swap(getaccessaddressrsp_usr_value_, other->getaccessaddressrsp_usr_value_);
   std::swap(registeruserrsp_usr_value_, other->registeruserrsp_usr_value_);
   std::swap(unregisteruserrsp_usr_value_, other->unregisteruserrsp_usr_value_);
@@ -29515,6 +30279,45 @@ void Rsp::set_allocated_authrsp_dev_value(::Interactive::Message::AuthRsp_DEV* a
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AuthRsp_DEV_Value)
+}
+
+// optional .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
+bool Rsp::has_msgprehandlerrsp_usr_value() const {
+  return this != internal_default_instance() && msgprehandlerrsp_usr_value_ != NULL;
+}
+void Rsp::clear_msgprehandlerrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && msgprehandlerrsp_usr_value_ != NULL) delete msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = NULL;
+}
+const ::Interactive::Message::MsgPreHandlerRsp_USR& Rsp::msgprehandlerrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  return msgprehandlerrsp_usr_value_ != NULL ? *msgprehandlerrsp_usr_value_
+                         : *::Interactive::Message::MsgPreHandlerRsp_USR::internal_default_instance();
+}
+::Interactive::Message::MsgPreHandlerRsp_USR* Rsp::mutable_msgprehandlerrsp_usr_value() {
+  
+  if (msgprehandlerrsp_usr_value_ == NULL) {
+    msgprehandlerrsp_usr_value_ = new ::Interactive::Message::MsgPreHandlerRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  return msgprehandlerrsp_usr_value_;
+}
+::Interactive::Message::MsgPreHandlerRsp_USR* Rsp::release_msgprehandlerrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
+  
+  ::Interactive::Message::MsgPreHandlerRsp_USR* temp = msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = NULL;
+  return temp;
+}
+void Rsp::set_allocated_msgprehandlerrsp_usr_value(::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value) {
+  delete msgprehandlerrsp_usr_value_;
+  msgprehandlerrsp_usr_value_ = msgprehandlerrsp_usr_value;
+  if (msgprehandlerrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.MsgPreHandlerRsp_USR_Value)
 }
 
 // optional .Interactive.Message.GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;

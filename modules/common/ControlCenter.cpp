@@ -47,6 +47,11 @@ void ControlCenter::SetupMsgHandler(const int iMsgType, MsgHandler msghandler)
     m_MsgHandlerMap.insert(std::make_pair(iMsgType, msghandler));
 }
 
+void ControlCenter::SetupMsgPreHandler(MsgHandler msghandler)
+{
+    m_MsgPreHandlerList.push_back(msghandler);
+}
+
 void ControlCenter::ConnectCB(const boost::system::error_code &ec)
 {
     if (ec)
@@ -199,14 +204,27 @@ bool ControlCenter::ReceiveMsgHandler(const std::string &strData, const std::str
 
 void ControlCenter::ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string &strData, const std::string &strSrcID, const int iMsgType, void *pValue)
 {
+    auto itBegin = m_MsgPreHandlerList.begin();
+    auto itEnd = m_MsgPreHandlerList.end();
+    while (itBegin != itEnd)
+    {
+        if (!(*itBegin)(strData, strSrcID, boost::bind(&ControlCenter::MsgWrite, this, _1, _2)))
+        {
+            LOG_ERROR_RLD("Receive msg prehandler failed and type is " << iMsgType << " src id is " << strSrcID);
+            return;
+        }
+
+        ++itBegin;
+    }
+
     if (!MsgHdr(strData, strSrcID, boost::bind(&ControlCenter::MsgWrite, this, _1, _2)))
     {
-        LOG_ERROR_RLD("Unserializer handler failed and type is " << iMsgType << " src id is " << strSrcID);
+        LOG_ERROR_RLD("Receive msg handler failed and type is " << iMsgType << " src id is " << strSrcID);
         //m_pClient->AsyncRead(pValue); //当处理失败时需要考虑是否需要继续接收消息
     }
     else
     {
-        LOG_INFO_RLD("Unserializer handler success and type is " << iMsgType << " src id is " << strSrcID);
+        LOG_INFO_RLD("Receive msg handler success and type is " << iMsgType << " src id is " << strSrcID);
     }
 
     //m_pClient->AsyncRead(pValue);

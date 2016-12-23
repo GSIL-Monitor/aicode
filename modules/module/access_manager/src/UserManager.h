@@ -69,6 +69,8 @@ public:
     ~UserManager();
     bool Init();
 
+    bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
