@@ -1,22 +1,30 @@
-//Explicit 'optional' labels are disallowed in the Proto3 syntax. 
-//To define 'optional' fields in Proto3, simply remove the 'optional' label, as fields are 'optional' by default.
-
 /////////////////////////////////////////////////
 //作者：尹宾
 //日期：2016-11-25
+//内容：初步完成协议框架定义。
 //版本：1.0.0
+//
+//修订：尹宾
+//日期：2016-12-22
+//修改内容：增加单独的用户查询和设备查询命令
+//版本：1.0.1
 /////////////////////////////////////////////////
 
 ///////////////传输协议格式介绍//////////////////
-//RG,长度,源端,目标端,类型, 协议体,校验和
+//    __   ____   ____   ______   ____   ______   ______
+//   |RG|,|长度|,|源端|,|目标端|,|类型|,|协议体|,|校验和|
+//   ￣￣  ￣￣   ￣￣   ￣￣￣   ￣￣   ￣￣￣   ￣￣￣   
 //长度：  该值为“源端,目标端,类型,协议体,校验和”的字节数，不包括长度字段后面的逗号。
-//源端：  该值为消息传输投递的源头，代表发送消息自身实体，可以唯一表示源端，一般都需要实现约定好。
+//源端：  该值为消息传输投递的源头，代表发送消息自身实体，可以唯一表示源端。
 //目标端：该值为消息传输投递的目标，代表接收消息实体，一般都需要实现约定好。
 //类型：  该值为消息的具体业务类型，目前该值填写0.
-//协议体：该值为业务协议的具体内容，就是下面采用protobuffer协议形成的字节缓冲区。
+//协议体：该值为业务协议的具体内容，就是下面采用protobuffer协议序列化后形成的字节缓冲区，支持Base64编码。
 //校验和：该值为“源端,目标端,类型, 协议体”的crc16计算得出的值。
 /////////////////////////////////////////////////
 
+
+//Explicit 'optional' labels are disallowed in the Proto3 syntax. 
+//To define 'optional' fields in Proto3, simply remove the 'optional' label, as fields are 'optional' by default.
 
 syntax = "proto3"; 
 
@@ -87,22 +95,22 @@ enum MsgType
    
   ///////////////////////////////////////////////////////
   
-  GetOnlineDevInfoReq_INNER_T = 30000;        //获取在线设备信息
+  GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
   GetOnlineDevInfoRsp_INNER_T = 30010;
-  BroadcastOnlineDevInfo_INNER_T = 30020;    //广播在线设备信息
-  GetOnlineUserInfoReq_INNER_T = 30030;       //获取在线用户信息
+  BroadcastOnlineDevInfo_INNER_T = 30020;       //广播在线设备信息
+  GetOnlineUserInfoReq_INNER_T = 30030;         //获取在线用户信息
   GetOnlineUserInfoRsp_INNER_T = 30040;
-  BroadcastOnlineUserInfo_INNER_T = 30050;   //广播在线用户信息
+  BroadcastOnlineUserInfo_INNER_T = 30050;      //广播在线用户信息
   
 }
 
-message PermissionOfUser
+message PermissionOfUser                        //用户权限对象
 {
   uint32 uiUnlimited = 1;
   uint32 uiWatch = 2;    
 }
 
-message Device
+message Device                                  //设备信息对象
 {
   string strDevID = 1;
   string strDevName = 2;
@@ -115,7 +123,7 @@ message Device
   
 }
 
-message User
+message User                                    //用户信息对象
 {
   string strUserID = 1;
   string strUserName = 2;
@@ -131,7 +139,7 @@ message Relation                                //用户与设备关系（设备
 {
   string strUserID = 1;
   string strDevID = 2;
-  uint32 uiRelation = 3;                        //关系包括，拥有0、被分享1、分享中2、转移3，目前只有0，1，2这三种关系
+  uint32 uiRelation = 3;                        //关系包括，拥有0、被分享1、分享中2、转移3
   string strBeginDate = 4;
   string strEndDate = 5;
   string strValue = 6;
@@ -139,313 +147,316 @@ message Relation                                //用户与设备关系（设备
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-message GetAccessAddressReq_DEV                 //分布式场景下用，目前不用考虑
+message GetAccessAddressReq_DEV                 //分布式场景下用
 {
   string strDevID = 1;
   string strValue = 2;
 }
 
-message GetAccessAddressRsp_DEV                 //分布式场景下用，目前不用考虑
+message GetAccessAddressRsp_DEV                 //分布式场景下用
 {
   string strAccessAddress = 1;
   string strAccessPort = 2;
   string strValue = 3;
 }
 
-message LoginReq_DEV
+message LoginReq_DEV                            //设备登陆请求
 {
   string strDevID = 1;
   string strPassword = 2;
   string strValue = 3;
 }
 
-message LoginRsp_DEV
+message LoginRsp_DEV                            //设备登陆响应
 {  
   string strValue = 1;
 }
 
-message LogoutReq_DEV
+message LogoutReq_DEV                           //设备登出请求
 {
   string strDevID = 1;
   string strValue = 2;
 }
 
-message LogoutRsp_DEV
+message LogoutRsp_DEV                           //设备登出响应
 {
   string strValue = 1;
 }
 
-message ShakehandReq_DEV
+message ShakehandReq_DEV                        //设备握手请求
 {
   string strDevID = 1;
   string strValue = 2;
 }
 
-message ShakehandRsp_DEV
+message ShakehandRsp_DEV                        //设备握手响应
 {
   string strValue = 1;
 }
 
-message ConfigInfoReq_DEV
+message ConfigInfoReq_DEV                       //设备配置信息请求
 {
   string strDevID = 1;
   string strValue = 2;
 }
 
-message ConfigInfoRsp_DEV
+message ConfigInfoRsp_DEV                       //设备配置信息响应
 {
   string strValue = 1;
   repeated string strItems = 2;
 }
 
-message AuthReq_DEV
+message AuthReq_DEV                             //设备授权请求
 {
   string strPassword = 1;
   string strValue = 2;
 }
 
-message AuthRsp_DEV
+message AuthRsp_DEV                             //设备授权响应
 {
   string strValue = 1;
 }
 
 ////////////////////////////////////////////////////////
 
-message MsgPreHandlerReq_USR      //消息预处理，包括了一些通用的检查动作
+message MsgPreHandlerReq_USR                    //消息预处理，包括了一些通用的检查动作
 {
   string strValue = 1;
 }
 
-message MsgPreHandlerRsp_USR
+message MsgPreHandlerRsp_USR                    //消息预处理响应，若是失败，则后续业务操作都全部终止
 {
   string strValue = 1;
 }
 
-message GetAccessAddressReq_USR   //分布式场景下用，目前不用考虑
+message GetAccessAddressReq_USR                 //分布式场景下用
 {
-  string strSerializeID = 1;      //用户终端软件的序列号
+  string strSerializeID = 1;                    
   string strValue = 2;
 }
 
-message GetAccessAddressRsp_USR   //分布式场景下用，目前不用考虑
+message GetAccessAddressRsp_USR                 //分布式场景下用
 {
   string strAccessAddress = 1;
   string strAccessPort = 2;
   string strValue = 3;
 }
 
-message RegisterUserReq_USR
+message RegisterUserReq_USR                     //用户注册请求
 {
   User userInfo = 1;
   string strValue = 2;
 }
 
-message RegisterUserRsp_USR
+message RegisterUserRsp_USR                     //用户注册响应
 {
-  string strUserID = 1;           //系统返回用户ID，这个ID后续用来代表用户的身份来进行后续的操作
+  string strUserID = 1;                         //系统返回用户ID，这个ID后续用来代表用户的身份来进行后续的操作
   string strValue = 2;
 }
 
-message UnRegisterUserReq_USR
+message UnRegisterUserReq_USR                   //用户注销请求
 {
   User userInfo = 1;
   string strValue = 2;
 }
 
-message UnRegisterUserRsp_USR
+message UnRegisterUserRsp_USR                   //用户注销响应
 {
   string strUserID = 1;
   string strValue = 2;  
 }
 
-message QueryUsrInfoReq_USR
+message QueryUsrInfoReq_USR                     //查询用户信息请求
 {
   string strUserID = 1;
   string strValue = 2;
 }
 
-message QueryUsrInfoRsp_USR
+message QueryUsrInfoRsp_USR                     //查询用户信息响应
 {
   User userInfo = 1;
   string strValue = 2;
 }
 
-message LoginReq_USR
+message LoginReq_USR                            //用户登录请求
 {
   User userInfo = 1;
   string strValue = 2;
 }
 
-message LoginRsp_USR
+message LoginRsp_USR                            //用户登录响应
 {
-  repeated Relation relationInfo = 1;
+  repeated Relation relationInfo = 1;           //这里直接返回用户与设备关联的信息，便于前端处理
   string strValue = 2;
 }
 
-message LogoutReq_USR
+message LogoutReq_USR                           //用户登出请求
 {
   User userInfo = 1;
   string strValue = 2;
 }
 
-message LogoutRsp_USR
+message LogoutRsp_USR                           //用户登出响应
 {
   string strValue = 1;
 }
 
-message ShakehandReq_USR
+message ShakehandReq_USR                        //用户与平台的握手请求，这里握手主要是用来对后台对应的Session进行保活处理
 {
   string strUserID = 1;
   string strValue = 2;
 }
 
-message ShakehandRsp_USR
+message ShakehandRsp_USR                        //用户与平台的握手响应
 {
   string strValue = 1;
 }
 
-message ConfigInfoReq_USR
+message ConfigInfoReq_USR                       //用户配置信息请求
 {
   string strUserID = 1;
   string strValue = 2;
 }
 
-message ConfigInfoRsp_USR
+message ConfigInfoRsp_USR                       //用户配置信息响应
 {
   string strValue = 1;
   repeated string strItems = 2;
 }
 
 
-message AddDevReq_USR
+message AddDevReq_USR                           //添加设备请求，同时建立了用户与设备之间绑定关系
 {
   string strUserID = 1;
   Device devInfo = 2;
   
 }
 
-message AddDevRsp_USR
+message AddDevRsp_USR                           //添加设备响应。
 {
   string strValue = 1;
 }
 
-message DelDevReq_USR
+message DelDevReq_USR                           //删除设备请求
 {
   string strUserID = 1;
-  repeated string strDevID = 2;        //批量设备删除，这里增加、修改、查询都不支持单个命令批量处理，只有删除支持批量处理
+  repeated string strDevID = 2;                 //支持批量设备删除，这里增加、修改、查询都不支持单个命令批量处理，只有删除支持批量处理
 }
 
-message DelDevRsp_USR
+message DelDevRsp_USR                           //删除设备响应
 {
   string strValue = 1;
-  repeated string strDevIDFailed = 2;  //考虑到批量删除设备，部分失败的情况。
+  repeated string strDevIDFailed = 2;           //考虑到批量删除设备，部分失败的情况。
 }
 
-message ModifyDevReq_USR
+message ModifyDevReq_USR                        //修改设备信息请求
 {
   string strUserID = 1;
   Device devInfo = 2;
 }
 
-message ModifyDevRsp_USR
+message ModifyDevRsp_USR                        //修改设备信息响应
 {
   string strValue = 1;
 }
 
-message QueryDevInfoReq_USR
+message QueryDevInfoReq_USR                     //查询设备信息请求
 {
   string strDevID = 1;
   string strValue = 2;
 }
 
-message QueryDevInfoRsp_USR
+message QueryDevInfoRsp_USR                     //查询设备信息响应
 {
   Device devInfo = 1;
   string strValue = 2;
 }
 
-message QueryDevReq_USR
+message QueryDevReq_USR                         //查询用户关联设备的信息，这里要考虑到分页处理
 {
   string strUserID = 1;
   uint32 uiBeginIndex = 2;
   string strValue = 3;
 }
 
-message QueryDevRsp_USR
+message QueryDevRsp_USR                         //查询用户关联设备响应，这里返回的是Relation对象，描述了用户与设备之间的关系。
 {
   repeated Relation allRelationInfo = 1;      
 }
 
-message QueryUserReq_USR               //设备关联的用户
+message QueryUserReq_USR                        //查询设备关联的用户信息，这里要考虑分页处理
 {
   string strDevID = 1;
   uint32 uiBeginIndex = 2;
   string strValue = 3;
 }
 
-message QueryUserRsp_USR
+message QueryUserRsp_USR                        //查询设备关联用户信息响应
 {
   repeated Relation allRelationInfo = 1;
 }
 
-message SharingDevReq_USR
+message SharingDevReq_USR                       //分享设备请求
 {
   Relation relationInfo = 1;
   string strValue = 2;
 }
 
-message SharingDevRsp_USR
+message SharingDevRsp_USR                       //分享设备响应
 {
   string strValue = 1;
 }
 
-message CancelSharedDevReq_USR
+message CancelSharedDevReq_USR                  //取消分享设备请求
 {
   Relation relationInfo = 1;
   string strValue = 2;
 }
 
-message CancelSharedDevRsp_USR
+message CancelSharedDevRsp_USR                  //取消分享设备响应
 {
   string strValue = 1;  
 }
 
-message AddFriendsReq_USR                  //好友关系只有增加、删除、查询，没有修改动作
+message AddFriendsReq_USR                       //添加好友请求。好友关系只有增加、删除、查询，没有修改动作
 {
   string strUserID = 1;
   string strFriendUserID = 2;
 }
 
-message AddFriendsRsp_USR
+message AddFriendsRsp_USR                       //添加好友响应
 {
   string strValue = 1;  
 }
 
-message DelFriendsReq_USR
+message DelFriendsReq_USR                       //删除好友请求，支持批量删除好友
 {
   string strUserID = 1;
   repeated string strFriendUserID = 2;
 }
 
-message DelFriendsRsp_USR
+message DelFriendsRsp_USR                       //删除好友响应
 {
   string strValue = 1;
-  repeated string strFriendUserIDFailed = 2;  //考虑到批量删除好友，部分失败的情况。
+  repeated string strFriendUserIDFailed = 2;    //考虑到批量删除好友，部分失败的情况。
 }
 
-message QueryFriendsReq_USR
+message QueryFriendsReq_USR                     //查询好友请求
 {
   string strUserID = 1;
   string strValue = 2;
 }
 
-message QueryFriendsRsp_USR
+message QueryFriendsRsp_USR                     //查询好友响应
 {
   repeated User allFriendUserInfo = 1;
   string strValue = 2;
 }
 
-message GetOnlineDevInfoReq_INNER
+
+////////////////////////////////////////////////下面这些都是一些通知、广播类的消息///////////////////
+
+message GetOnlineDevInfoReq_INNER               
 {
   string strValue = 1;
 }
@@ -483,7 +494,7 @@ message BroadcastOnlineUserInfo_INNER
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+//请求对象
 message Req
 {
   GetAccessAddressReq_DEV GetAccessAddressReq_DEV_Value = 10;      //设备获取接入服务器地址 
@@ -523,6 +534,7 @@ message Req
   
 }
 
+//响应对象
 message Rsp
 {
   int32 iRetcode = 10;                                             //返回码
@@ -564,6 +576,7 @@ message Rsp
 
 }
 
+//主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理
 message InteractiveMessage
 {
   MsgType type = 1;        //消息类型

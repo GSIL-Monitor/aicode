@@ -42,7 +42,7 @@ CREATE TABLE `t_user_device_relation` (
   `id` varchar(36) NOT NULL,
   `userid` varchar(100) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
-  `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2，可以按照位域的方式来
+  `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
   `begindate` datetime NOT NULL,
   `enddate` datetime NOT NULL,
   `createdate` datetime NOT NULL,
@@ -55,6 +55,20 @@ CREATE TABLE `t_user_device_relation` (
   INDEX index_ref4(status),
   INDEX index_ref5(createdate)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_user_relation`;
+CREATE TABLE `t_user_relation` (
+  `id` varchar(36) NOT NULL,
+  `userid` varchar(100) NOT NULL,
+  `relation_userid` varchar(100) NOT NULL,
+  `relation` int(11) NOT NULL DEFAULT '0', #目前只使用好友关系，值为0
+  `createdate` datetime NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `extend` varchar(4000) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(userid, relation)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `t_user_operation_log`;
 CREATE TABLE `t_user_operation_log` (

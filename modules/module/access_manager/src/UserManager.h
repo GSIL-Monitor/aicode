@@ -32,6 +32,8 @@ public:
     static const int RELATION_OF_BE_SHARED = 1;
     static const int RELATION_OF_SHARING = 2;
 
+    static const int RELATION_OF_FRIENDS = 0;
+
     static const std::string MAX_DATE;
     
 
@@ -46,6 +48,16 @@ public:
         int m_iStatus;
         std::string m_strExtend;
     } RelationOfUsrAndDev;
+
+    typedef struct _RelationOfUsr
+    {
+        std::string m_strUsrID;
+        std::string m_strRelationOfUsrID;
+        int m_iRelation;
+        std::string m_strCreateDate;
+        int m_iStatus;
+        std::string m_strExtend;
+    } RelationOfUsr;
 
     typedef struct _ParamInfo
     {
@@ -98,6 +110,8 @@ public:
     bool SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);

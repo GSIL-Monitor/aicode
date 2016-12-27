@@ -965,6 +965,77 @@ bool UserManager::CancelSharedDeviceReq(const std::string &strMsg, const std::st
     return blResult;
 }
 
+bool UserManager::AddFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::AddFriendsReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::AddFriendsRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddFriendsRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add friend rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User add friend rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID << 
+            " and friend id is " << req.m_strFriendUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add friend req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //校验好友用户ID有效性
+    InteractiveProtoHandler::User usr;
+    if (!QueryUserInfoToDB(req.m_strFriendUserID, usr))
+    {
+        LOG_ERROR_RLD("Query friend user info from db failed, friend user id is " << req.m_strFriendUserID);
+        return false;
+    }
+
+    if (usr.m_strUserID.empty())
+    {
+        LOG_ERROR_RLD("Query friend user info from db is empty, friend user id is " << req.m_strFriendUserID);
+        return false;
+    }
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+    
+    RelationOfUsr relation;
+    relation.m_iRelation = RELATION_OF_FRIENDS;
+    relation.m_iStatus = NORMAL_STATUS;
+    relation.m_strCreateDate = strCurrentTime;
+    //relation.m_strExtend
+    relation.m_strRelationOfUsrID = req.m_strFriendUserID;
+    relation.m_strUsrID = req.m_strUserID;
+
+
+
+
+    blResult = true;
+
+    return blResult;
+}
+
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
