@@ -38,6 +38,8 @@ private:
     std::string CancelSharedDevReq();
     std::string QueryUsrInfoReq();
     std::string QueryDevInfoReq();
+    std::string AddFriendsReq();
+    std::string DelFriendsReq();
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);
 

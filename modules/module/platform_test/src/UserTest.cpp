@@ -537,6 +537,50 @@ std::string UserTest::QueryDevInfoReq()
 
 }
 
+std::string UserTest::AddFriendsReq()
+{
+    InteractiveProtoHandler::AddFriendsReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::AddFriendsReq_USR_T;
+    req.m_uiMsgSeq = 8;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_strFriendUserID = "950670E8CB0EF34F9FCA9C4C099971E5";
+    
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Add friends req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
+std::string UserTest::DelFriendsReq()
+{
+    InteractiveProtoHandler::DelFriendsReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T;
+    req.m_uiMsgSeq = 8;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_strFriendUserIDList.push_back("DECC8BC2FF45F64DA223928B3FA14727");
+    req.m_strFriendUserIDList.push_back("950670E8CB0EF34F9FCA9C4C099971E5");
+
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Delete friends req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -600,15 +644,35 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             ++itBegin;
         }
 
-        // 查询设备信息
-        const std::string &strMsg = QueryDevInfoReq();
+        //删除好友
+        const std::string &strMsg = DelFriendsReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Query device info req msg is empty.");
+            LOG_ERROR_RLD("Delete friends req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        //// 添加好友
+        //const std::string &strMsg = AddFriendsReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Add friends req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        //// 查询设备信息
+        //const std::string &strMsg = QueryDevInfoReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Query device info req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
         ////查询用户信息
         //const std::string &strMsg = QueryUsrInfoReq();
@@ -805,8 +869,7 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             LOG_ERROR_RLD("Delete device rsp unserialize failed.");
             return;
         }
-
-        
+               
 
         LOG_INFO_RLD("Delete device rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
@@ -955,6 +1018,30 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         LOG_INFO_RLD("Msg prehandler rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
 
+    }
+    else if (InteractiveProtoHandler::MsgType::AddFriendsRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::AddFriendsRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Add friends rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Add friends rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+    }
+    else if (InteractiveProtoHandler::MsgType::DelFriendsRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::DelFriendsRsp_USR rsp;
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Delete friends rsp unserialize failed.");
+            return;
+        }
+
+        LOG_INFO_RLD("Delete friends rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
     }
     else
     {

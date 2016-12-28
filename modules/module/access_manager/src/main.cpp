@@ -304,12 +304,10 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUserReq_USR_T, boost::bind(&UserManager::QueryUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::SharingDevReq_USR_T, boost::bind(&UserManager::SharingDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::CancelSharedDevReq_USR_T, boost::bind(&UserManager::CancelSharedDeviceReq, &Umg, _1, _2, _3));
-
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddFriendsReq_USR_T, boost::bind(&UserManager::AddFriendsReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T, boost::bind(&UserManager::DelFriendsReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
-
-
-
 
 	return 0;
 }

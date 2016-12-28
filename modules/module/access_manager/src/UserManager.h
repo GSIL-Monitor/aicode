@@ -113,6 +113,8 @@ public:
 
     bool AddFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool DelFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -152,6 +154,14 @@ private:
     bool QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache = true);
 
     bool QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache = true);
+
+    void AddFriendsToDB(const RelationOfUsr &relation);
+
+    void DelFriendsToDB(const std::string &strUserID, const std::list<std::string> &FriendIDList, const int iStatus);
+
+    bool QueryUserRelationExist(const std::string &strUserID, const std::string &strFriendsID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
+
+    bool QueryUserRelationInfoToDB(const std::string &strUserID, RelationOfUsr &relation, const bool IsNeedCache = true);
 
 private:
     ParamInfo m_ParamInfo;

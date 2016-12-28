@@ -1015,7 +1015,23 @@ bool UserManager::AddFriendsReq(const std::string &strMsg, const std::string &st
         LOG_ERROR_RLD("Query friend user info from db is empty, friend user id is " << req.m_strFriendUserID);
         return false;
     }
+    
+    //校验好友用户是否存在
+    bool blExist = false;
+    if (!QueryUserRelationExist(req.m_strUserID, req.m_strFriendUserID, RELATION_OF_FRIENDS, blExist, false))
+    {
+        LOG_ERROR_RLD("Query friend relation failed and user id is " << req.m_strUserID << " and friends id is " << req.m_strFriendUserID);
+        return false;
+    }
 
+    //查询是否重复添加好友，若是，考虑到幂等性，也需要返回成功，只是不再需要插入数据库操作了
+    if (blExist)
+    {
+        LOG_INFO_RLD("Query friend relation already exist and user id is " << req.m_strUserID << " and friends id is " << req.m_strFriendUserID);
+        blResult = true;
+        return blResult;
+    }
+        
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
@@ -1028,9 +1044,52 @@ bool UserManager::AddFriendsReq(const std::string &strMsg, const std::string &st
     relation.m_strRelationOfUsrID = req.m_strFriendUserID;
     relation.m_strUsrID = req.m_strUserID;
 
+    m_DBRuner.Post(boost::bind(&UserManager::AddFriendsToDB, this, relation));
 
+    blResult = true;
 
+    return blResult;
+}
 
+bool UserManager::DelFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DelFriendsReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::DelFriendsRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DelFriendsRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete friends rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User delete friends rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+        
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete friends req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+    
+    m_DBRuner.Post(boost::bind(&UserManager::DelFriendsToDB, this, req.m_strUserID, req.m_strFriendUserIDList, DELETE_STATUS));
+    
     blResult = true;
 
     return blResult;
@@ -1797,6 +1856,120 @@ bool UserManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProto
 
         LOG_INFO_RLD("Query device info exist get result from db and sql is " << strSql << " and device id is " << dev.m_strDevID);
     }
+
+    return true;
+}
+
+void UserManager::AddFriendsToDB(const RelationOfUsr &relation)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "insert into t_user_relation("
+        "id, userid, relation_userid, relation, createdate, status, extend) values(uuid(),"
+        "'%s', '%s', '%d', '%s', '%d', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strRelationOfUsrID.c_str(), relation.m_iRelation,
+        relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Insert t_user_relation sql exec failed, sql is " << sql);
+    }
+}
+
+void UserManager::DelFriendsToDB(const std::string &strUserID, const std::list<std::string> &FriendIDList, const int iStatus)
+{
+    if (FriendIDList.empty())
+    {
+        LOG_ERROR_RLD("Delete friends id list is empty and user id is " << strUserID);
+        return;
+    }
+
+    //update t_user_relation set status = 2 where userid = 'sss' and relation_userid in ('xxx', 'mmm', 'aaw');
+
+    std::string strSql;
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "update t_user_relation set status = '%d' where userid = '%s' and relation_userid in (";
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strUserID.c_str());
+    strSql = sql;
+
+    auto itBegin = FriendIDList.begin();
+    auto itEnd = FriendIDList.end();
+    while (itBegin != itEnd)
+    {
+        std::string strTmp;
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), "'%s'", itBegin->c_str());
+        strTmp = cTmp;
+
+        auto itTmp = itBegin;
+        ++itTmp;
+        if (itTmp != itEnd)
+        {
+            strTmp += ", ";
+        }
+
+        strSql += strTmp;
+
+        ++itBegin;
+    }
+
+    strSql += ")";
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Delete t_user_relation sql exec failed, sql is " << strSql);
+    }
+
+}
+
+bool UserManager::QueryUserRelationExist(const std::string &strUserID, const std::string &strFriendsID, const int iRelation, bool &blExist, const bool IsNeedCache /*= true*/)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select count(id) from t_user_relation where userid = '%s' and relation_userid = '%s' and relation = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strFriendsID.c_str(), iRelation);
+    std::string strSql = sql;
+
+    std::list<boost::any> ResultList;
+    if (IsNeedCache && m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        unsigned int uiResult = boost::any_cast<unsigned int>(ResultList.front());
+        blExist = 0 < uiResult;
+
+        LOG_INFO_RLD("Query user relation exist get result from cache and sql is " << strSql << " and result is " << uiResult);
+    }
+    else
+    {
+        unsigned int uiResult = 0;
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)//, unsigned int &uiResult)
+        {
+            uiResult = boost::lexical_cast<unsigned int>(strColumn);
+            LOG_INFO_RLD("The user relation count number that from db  is " << uiResult);
+        };
+
+        if (!m_pMysql->QueryExec(strSql, FuncTmp)) //boost::bind(FuncTmp, _1, _2, _3, uiResult)))
+        {
+            LOG_ERROR_RLD("Query user relation failed and user id is " << strUserID << " and friends id is " << strFriendsID << " and relation is " << iRelation);
+            return false;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(uiResult);
+
+        blExist = 0 < uiResult;
+
+        if (IsNeedCache)
+        {
+            m_DBCache.SetResult(strSql, pResultList);
+        }
+
+        LOG_INFO_RLD("Query user relation exist get result from db and sql is " << strSql << " and result is " << uiResult);
+    }
+
+    return true;
+}
+
+bool UserManager::QueryUserRelationInfoToDB(const std::string &strUserID, RelationOfUsr &relation, const bool IsNeedCache /*= true*/)
+{
+
 
     return true;
 }
