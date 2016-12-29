@@ -40,6 +40,7 @@ private:
     std::string QueryDevInfoReq();
     std::string AddFriendsReq();
     std::string DelFriendsReq();
+    std::string QueryFriendsReq();
 
     void MsgProcess(const std::string &strMsgReceived, void *pValue);
 

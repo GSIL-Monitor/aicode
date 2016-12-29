@@ -1045,8 +1045,9 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       sizeof(DelFriendsRsp_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DelFriendsRsp_USR, _internal_metadata_));
   QueryFriendsReq_USR_descriptor_ = file->message_type(54);
-  static const int QueryFriendsReq_USR_offsets_[2] = {
+  static const int QueryFriendsReq_USR_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, struserid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, uibeginindex_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, strvalue_),
   };
   QueryFriendsReq_USR_reflection_ =
@@ -1060,9 +1061,8 @@ void protobuf_AssignDesc_InteractiveProtocol_2eproto() {
       sizeof(QueryFriendsReq_USR),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsReq_USR, _internal_metadata_));
   QueryFriendsRsp_USR_descriptor_ = file->message_type(55);
-  static const int QueryFriendsRsp_USR_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, allfrienduserinfo_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, strvalue_),
+  static const int QueryFriendsRsp_USR_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFriendsRsp_USR, strallfrienduserid_),
   };
   QueryFriendsRsp_USR_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -1845,180 +1845,180 @@ void protobuf_AddDesc_InteractiveProtocol_2eproto_impl() {
     "trValue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\tst"
     "rUserID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\"D"
     "\n\021DelFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n"
-    "\025strFriendUserIDFailed\030\002 \003(\t\":\n\023QueryFri"
-    "endsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVal"
-    "ue\030\002 \001(\t\"]\n\023QueryFriendsRsp_USR\0224\n\021allFr"
-    "iendUserInfo\030\001 \003(\0132\031.Interactive.Message"
-    ".User\022\020\n\010strValue\030\002 \001(\t\"-\n\031GetOnlineDevI"
-    "nfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnl"
-    "ineDevInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.I"
-    "nteractive.Message.Device\022\020\n\010strValue\030\002 "
-    "\001(\t\"^\n\034BroadcastOnlineDevInfo_INNER\022,\n\007d"
-    "evInfo\030\001 \003(\0132\033.Interactive.Message.Devic"
-    "e\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineUserInfo"
-    "Req_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnline"
-    "UserInfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.In"
-    "teractive.Message.User\022\020\n\010strValue\030\002 \001(\t"
-    "\"^\n\035BroadcastOnlineUserInfo_INNER\022+\n\010use"
-    "rInfo\030\001 \003(\0132\031.Interactive.Message.User\022\020"
-    "\n\010strValue\030\002 \001(\t\"\350\021\n\003Req\022S\n\035GetAccessAdd"
-    "ressReq_DEV_Value\030\n \001(\0132,.Interactive.Me"
-    "ssage.GetAccessAddressReq_DEV\022=\n\022LoginRe"
-    "q_DEV_Value\030\024 \001(\0132!.Interactive.Message."
-    "LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value\030\036 \001("
-    "\0132\".Interactive.Message.LogoutReq_DEV\022E\n"
-    "\026ShakehandReq_DEV_Value\030( \001(\0132%.Interact"
-    "ive.Message.ShakehandReq_DEV\022G\n\027ConfigIn"
-    "foReq_DEV_Value\0302 \001(\0132&.Interactive.Mess"
-    "age.ConfigInfoReq_DEV\022;\n\021AuthReq_DEV_Val"
-    "ue\030< \001(\0132 .Interactive.Message.AuthReq_D"
-    "EV\022M\n\032MsgPreHandlerReq_USR_Value\030A \001(\0132)"
-    ".Interactive.Message.MsgPreHandlerReq_US"
-    "R\022S\n\035GetAccessAddressReq_USR_Value\030F \001(\013"
-    "2,.Interactive.Message.GetAccessAddressR"
-    "eq_USR\022K\n\031RegisterUserReq_USR_Value\030P \001("
-    "\0132(.Interactive.Message.RegisterUserReq_"
-    "USR\022O\n\033UnRegisterUserReq_USR_Value\030Z \001(\013"
-    "2*.Interactive.Message.UnRegisterUserReq"
-    "_USR\022K\n\031QueryUsrInfoReq_USR_Value\030d \001(\0132"
-    "(.Interactive.Message.QueryUsrInfoReq_US"
-    "R\022=\n\022LoginReq_USR_Value\030n \001(\0132!.Interact"
-    "ive.Message.LoginReq_USR\022\?\n\023LogoutReq_US"
-    "R_Value\030x \001(\0132\".Interactive.Message.Logo"
-    "utReq_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 \001"
-    "(\0132%.Interactive.Message.ShakehandReq_US"
-    "R\022H\n\027ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.In"
-    "teractive.Message.ConfigInfoReq_USR\022@\n\023A"
-    "ddDevReq_USR_Value\030\226\001 \001(\0132\".Interactive."
-    "Message.AddDevReq_USR\022@\n\023DelDevReq_USR_V"
-    "alue\030\240\001 \001(\0132\".Interactive.Message.DelDev"
-    "Req_USR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001(\013"
-    "2%.Interactive.Message.ModifyDevReq_USR\022"
-    "L\n\031QueryDevInfoReq_USR_Value\030\264\001 \001(\0132(.In"
-    "teractive.Message.QueryDevInfoReq_USR\022D\n"
-    "\025QueryDevReq_USR_Value\030\276\001 \001(\0132$.Interact"
-    "ive.Message.QueryDevReq_USR\022F\n\026QueryUser"
-    "Req_USR_Value\030\310\001 \001(\0132%.Interactive.Messa"
-    "ge.QueryUserReq_USR\022H\n\027SharingDevReq_USR"
-    "_Value\030\322\001 \001(\0132&.Interactive.Message.Shar"
-    "ingDevReq_USR\022R\n\034CancelSharedDevReq_USR_"
-    "Value\030\334\001 \001(\0132+.Interactive.Message.Cance"
-    "lSharedDevReq_USR\022H\n\027AddFriendsReq_USR_V"
-    "alue\030\346\001 \001(\0132&.Interactive.Message.AddFri"
-    "endsReq_USR\022H\n\027DelFriendsReq_USR_Value\030\360"
-    "\001 \001(\0132&.Interactive.Message.DelFriendsRe"
-    "q_USR\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001("
-    "\0132(.Interactive.Message.QueryFriendsReq_"
-    "USR\022X\n\037GetOnlineDevInfoReq_INNER_Value\030\204"
-    "\002 \001(\0132..Interactive.Message.GetOnlineDev"
-    "InfoReq_INNER\022^\n\"BroadcastOnlineDevInfo_"
-    "INNER_Value\030\216\002 \001(\01321.Interactive.Message"
-    ".BroadcastOnlineDevInfo_INNER\022Z\n GetOnli"
-    "neUserInfoReq_INNER_Value\030\230\002 \001(\0132/.Inter"
-    "active.Message.GetOnlineUserInfoReq_INNE"
-    "R\022`\n#BroadcastOnlineUserInfo_INNER_Value"
-    "\030\242\002 \001(\01322.Interactive.Message.BroadcastO"
-    "nlineUserInfo_INNER\"\315\020\n\003Rsp\022\020\n\010iRetcode\030"
-    "\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035GetAccessAdd"
-    "ressRsp_DEV_Value\030\036 \001(\0132,.Interactive.Me"
-    "ssage.GetAccessAddressRsp_DEV\022=\n\022LoginRs"
-    "p_DEV_Value\030( \001(\0132!.Interactive.Message."
-    "LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_Value\0302 \001("
-    "\0132\".Interactive.Message.LogoutRsp_DEV\022E\n"
-    "\026ShakehandRsp_DEV_Value\030< \001(\0132%.Interact"
-    "ive.Message.ShakehandRsp_DEV\022G\n\027ConfigIn"
-    "foRsp_DEV_Value\030F \001(\0132&.Interactive.Mess"
-    "age.ConfigInfoRsp_DEV\022;\n\021AuthRsp_DEV_Val"
-    "ue\030P \001(\0132 .Interactive.Message.AuthRsp_D"
-    "EV\022M\n\032MsgPreHandlerRsp_USR_Value\030U \001(\0132)"
-    ".Interactive.Message.MsgPreHandlerRsp_US"
-    "R\022S\n\035GetAccessAddressRsp_USR_Value\030Z \001(\013"
-    "2,.Interactive.Message.GetAccessAddressR"
-    "sp_USR\022K\n\031RegisterUserRsp_USR_Value\030d \001("
-    "\0132(.Interactive.Message.RegisterUserRsp_"
-    "USR\022O\n\033UnRegisterUserRsp_USR_Value\030n \001(\013"
-    "2*.Interactive.Message.UnRegisterUserRsp"
-    "_USR\022K\n\031QueryUsrInfoRsp_USR_Value\030x \001(\0132"
-    "(.Interactive.Message.QueryUsrInfoRsp_US"
-    "R\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Interac"
-    "tive.Message.LoginRsp_USR\022@\n\023LogoutRsp_U"
-    "SR_Value\030\214\001 \001(\0132\".Interactive.Message.Lo"
-    "goutRsp_USR\022F\n\026ShakehandRsp_USR_Value\030\226\001"
-    " \001(\0132%.Interactive.Message.ShakehandRsp_"
-    "USR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001(\0132&."
-    "Interactive.Message.ConfigInfoRsp_USR\022@\n"
-    "\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".Interactiv"
-    "e.Message.AddDevRsp_USR\022@\n\023DelDevRsp_USR"
-    "_Value\030\264\001 \001(\0132\".Interactive.Message.DelD"
-    "evRsp_USR\022F\n\026ModifyDevRsp_USR_Value\030\276\001 \001"
-    "(\0132%.Interactive.Message.ModifyDevRsp_US"
-    "R\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001(\0132(."
-    "Interactive.Message.QueryDevInfoRsp_USR\022"
-    "D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.Intera"
-    "ctive.Message.QueryDevRsp_USR\022F\n\026QueryUs"
-    "erRsp_USR_Value\030\334\001 \001(\0132%.Interactive.Mes"
-    "sage.QueryUserRsp_USR\022H\n\027SharingDevRsp_U"
-    "SR_Value\030\346\001 \001(\0132&.Interactive.Message.Sh"
-    "aringDevRsp_USR\022R\n\034CancelSharedDevRsp_US"
-    "R_Value\030\360\001 \001(\0132+.Interactive.Message.Can"
-    "celSharedDevRsp_USR\022H\n\027AddFriendsRsp_USR"
-    "_Value\030\372\001 \001(\0132&.Interactive.Message.AddF"
-    "riendsRsp_USR\022H\n\027DelFriendsRsp_USR_Value"
-    "\030\204\002 \001(\0132&.Interactive.Message.DelFriends"
-    "Rsp_USR\022L\n\031QueryFriendsRsp_USR_Value\030\216\002 "
-    "\001(\0132(.Interactive.Message.QueryFriendsRs"
-    "p_USR\022X\n\037GetOnlineDevInfoRsp_INNER_Value"
-    "\030\230\002 \001(\0132..Interactive.Message.GetOnlineD"
-    "evInfoRsp_INNER\022Z\n GetOnlineUserInfoRsp_"
-    "INNER_Value\030\242\002 \001(\0132/.Interactive.Message"
-    ".GetOnlineUserInfoRsp_INNER\"\272\001\n\022Interact"
-    "iveMessage\022*\n\004type\030\001 \001(\0162\034.Interactive.M"
-    "essage.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strS"
-    "ID\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive"
-    ".Message.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interac"
-    "tive.Message.Rsp*\220\r\n\007MsgType\022\n\n\006Init_T\020\000"
-    "\022\036\n\031GetAccessAddressReq_DEV_T\020\220N\022\036\n\031GetA"
-    "ccessAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV"
-    "_T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_"
-    "DEV_T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022Shakeh"
-    "andReq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N"
-    "\022\030\n\023ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfo"
-    "Rsp_DEV_T\020\352N\022\022\n\rAuthReq_DEV_T\020\364N\022\022\n\rAuth"
-    "Rsp_DEV_T\020\376N\022\034\n\026MsgPreHandlerReq_USR_T\020\226"
-    "\234\001\022\034\n\026MsgPreHandlerRsp_USR_T\020\227\234\001\022\037\n\031GetA"
-    "ccessAddressReq_USR_T\020\240\234\001\022\037\n\031GetAccessAd"
-    "dressRsp_USR_T\020\252\234\001\022\033\n\025RegisterUserReq_US"
-    "R_T\020\264\234\001\022\033\n\025RegisterUserRsp_USR_T\020\276\234\001\022\035\n\027"
-    "UnRegisterUserReq_USR_T\020\310\234\001\022\035\n\027UnRegiste"
-    "rUserRsp_USR_T\020\322\234\001\022\033\n\025QueryUsrInfoReq_US"
-    "R_T\020\323\234\001\022\033\n\025QueryUsrInfoRsp_USR_T\020\324\234\001\022\024\n\016"
-    "LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234\001"
-    "\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_USR"
-    "_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Shak"
-    "ehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR_"
-    "T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017AddD"
-    "evReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022\025"
-    "\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_T"
-    "\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022Modify"
-    "DevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq_USR_"
-    "T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022\027\n\021Qu"
-    "eryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_USR_T"
-    "\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022QueryU"
-    "serRsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_USR_T\020"
-    "\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030Cancel"
-    "SharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelSharedDe"
-    "vRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR_T\020\244\236"
-    "\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023DelFrien"
-    "dsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_USR_T\020\302"
-    "\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n\026Modi"
-    "fyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFriendsRe"
-    "q_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_T\020\352\236\001"
-    "\022!\n\033GetOnlineDevInfoReq_INNER_T\020\260\352\001\022!\n\033G"
-    "etOnlineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036Broadc"
-    "astOnlineDevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlin"
-    "eUserInfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnlineUse"
-    "rInfoRsp_INNER_T\020\330\352\001\022%\n\037BroadcastOnlineU"
-    "serInfo_INNER_T\020\342\352\001b\006proto3", 10627);
+    "\025strFriendUserIDFailed\030\002 \003(\t\"P\n\023QueryFri"
+    "endsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBegi"
+    "nIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"1\n\023QueryF"
+    "riendsRsp_USR\022\032\n\022strAllFriendUserID\030\001 \003("
+    "\t\"-\n\031GetOnlineDevInfoReq_INNER\022\020\n\010strVal"
+    "ue\030\001 \001(\t\"[\n\031GetOnlineDevInfoRsp_INNER\022,\n"
+    "\007devInfo\030\001 \003(\0132\033.Interactive.Message.Dev"
+    "ice\022\020\n\010strValue\030\002 \001(\t\"^\n\034BroadcastOnline"
+    "DevInfo_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Interac"
+    "tive.Message.Device\022\020\n\010strValue\030\002 \001(\t\".\n"
+    "\032GetOnlineUserInfoReq_INNER\022\020\n\010strValue\030"
+    "\001 \001(\t\"[\n\032GetOnlineUserInfoRsp_INNER\022+\n\010u"
+    "serInfo\030\001 \003(\0132\031.Interactive.Message.User"
+    "\022\020\n\010strValue\030\002 \001(\t\"^\n\035BroadcastOnlineUse"
+    "rInfo_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interact"
+    "ive.Message.User\022\020\n\010strValue\030\002 \001(\t\"\350\021\n\003R"
+    "eq\022S\n\035GetAccessAddressReq_DEV_Value\030\n \001("
+    "\0132,.Interactive.Message.GetAccessAddress"
+    "Req_DEV\022=\n\022LoginReq_DEV_Value\030\024 \001(\0132!.In"
+    "teractive.Message.LoginReq_DEV\022\?\n\023Logout"
+    "Req_DEV_Value\030\036 \001(\0132\".Interactive.Messag"
+    "e.LogoutReq_DEV\022E\n\026ShakehandReq_DEV_Valu"
+    "e\030( \001(\0132%.Interactive.Message.ShakehandR"
+    "eq_DEV\022G\n\027ConfigInfoReq_DEV_Value\0302 \001(\0132"
+    "&.Interactive.Message.ConfigInfoReq_DEV\022"
+    ";\n\021AuthReq_DEV_Value\030< \001(\0132 .Interactive"
+    ".Message.AuthReq_DEV\022M\n\032MsgPreHandlerReq"
+    "_USR_Value\030A \001(\0132).Interactive.Message.M"
+    "sgPreHandlerReq_USR\022S\n\035GetAccessAddressR"
+    "eq_USR_Value\030F \001(\0132,.Interactive.Message"
+    ".GetAccessAddressReq_USR\022K\n\031RegisterUser"
+    "Req_USR_Value\030P \001(\0132(.Interactive.Messag"
+    "e.RegisterUserReq_USR\022O\n\033UnRegisterUserR"
+    "eq_USR_Value\030Z \001(\0132*.Interactive.Message"
+    ".UnRegisterUserReq_USR\022K\n\031QueryUsrInfoRe"
+    "q_USR_Value\030d \001(\0132(.Interactive.Message."
+    "QueryUsrInfoReq_USR\022=\n\022LoginReq_USR_Valu"
+    "e\030n \001(\0132!.Interactive.Message.LoginReq_U"
+    "SR\022\?\n\023LogoutReq_USR_Value\030x \001(\0132\".Intera"
+    "ctive.Message.LogoutReq_USR\022F\n\026Shakehand"
+    "Req_USR_Value\030\202\001 \001(\0132%.Interactive.Messa"
+    "ge.ShakehandReq_USR\022H\n\027ConfigInfoReq_USR"
+    "_Value\030\214\001 \001(\0132&.Interactive.Message.Conf"
+    "igInfoReq_USR\022@\n\023AddDevReq_USR_Value\030\226\001 "
+    "\001(\0132\".Interactive.Message.AddDevReq_USR\022"
+    "@\n\023DelDevReq_USR_Value\030\240\001 \001(\0132\".Interact"
+    "ive.Message.DelDevReq_USR\022F\n\026ModifyDevRe"
+    "q_USR_Value\030\252\001 \001(\0132%.Interactive.Message"
+    ".ModifyDevReq_USR\022L\n\031QueryDevInfoReq_USR"
+    "_Value\030\264\001 \001(\0132(.Interactive.Message.Quer"
+    "yDevInfoReq_USR\022D\n\025QueryDevReq_USR_Value"
+    "\030\276\001 \001(\0132$.Interactive.Message.QueryDevRe"
+    "q_USR\022F\n\026QueryUserReq_USR_Value\030\310\001 \001(\0132%"
+    ".Interactive.Message.QueryUserReq_USR\022H\n"
+    "\027SharingDevReq_USR_Value\030\322\001 \001(\0132&.Intera"
+    "ctive.Message.SharingDevReq_USR\022R\n\034Cance"
+    "lSharedDevReq_USR_Value\030\334\001 \001(\0132+.Interac"
+    "tive.Message.CancelSharedDevReq_USR\022H\n\027A"
+    "ddFriendsReq_USR_Value\030\346\001 \001(\0132&.Interact"
+    "ive.Message.AddFriendsReq_USR\022H\n\027DelFrie"
+    "ndsReq_USR_Value\030\360\001 \001(\0132&.Interactive.Me"
+    "ssage.DelFriendsReq_USR\022L\n\031QueryFriendsR"
+    "eq_USR_Value\030\372\001 \001(\0132(.Interactive.Messag"
+    "e.QueryFriendsReq_USR\022X\n\037GetOnlineDevInf"
+    "oReq_INNER_Value\030\204\002 \001(\0132..Interactive.Me"
+    "ssage.GetOnlineDevInfoReq_INNER\022^\n\"Broad"
+    "castOnlineDevInfo_INNER_Value\030\216\002 \001(\01321.I"
+    "nteractive.Message.BroadcastOnlineDevInf"
+    "o_INNER\022Z\n GetOnlineUserInfoReq_INNER_Va"
+    "lue\030\230\002 \001(\0132/.Interactive.Message.GetOnli"
+    "neUserInfoReq_INNER\022`\n#BroadcastOnlineUs"
+    "erInfo_INNER_Value\030\242\002 \001(\01322.Interactive."
+    "Message.BroadcastOnlineUserInfo_INNER\"\315\020"
+    "\n\003Rsp\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001"
+    "(\t\022S\n\035GetAccessAddressRsp_DEV_Value\030\036 \001("
+    "\0132,.Interactive.Message.GetAccessAddress"
+    "Rsp_DEV\022=\n\022LoginRsp_DEV_Value\030( \001(\0132!.In"
+    "teractive.Message.LoginRsp_DEV\022\?\n\023Logout"
+    "Rsp_DEV_Value\0302 \001(\0132\".Interactive.Messag"
+    "e.LogoutRsp_DEV\022E\n\026ShakehandRsp_DEV_Valu"
+    "e\030< \001(\0132%.Interactive.Message.ShakehandR"
+    "sp_DEV\022G\n\027ConfigInfoRsp_DEV_Value\030F \001(\0132"
+    "&.Interactive.Message.ConfigInfoRsp_DEV\022"
+    ";\n\021AuthRsp_DEV_Value\030P \001(\0132 .Interactive"
+    ".Message.AuthRsp_DEV\022M\n\032MsgPreHandlerRsp"
+    "_USR_Value\030U \001(\0132).Interactive.Message.M"
+    "sgPreHandlerRsp_USR\022S\n\035GetAccessAddressR"
+    "sp_USR_Value\030Z \001(\0132,.Interactive.Message"
+    ".GetAccessAddressRsp_USR\022K\n\031RegisterUser"
+    "Rsp_USR_Value\030d \001(\0132(.Interactive.Messag"
+    "e.RegisterUserRsp_USR\022O\n\033UnRegisterUserR"
+    "sp_USR_Value\030n \001(\0132*.Interactive.Message"
+    ".UnRegisterUserRsp_USR\022K\n\031QueryUsrInfoRs"
+    "p_USR_Value\030x \001(\0132(.Interactive.Message."
+    "QueryUsrInfoRsp_USR\022>\n\022LoginRsp_USR_Valu"
+    "e\030\202\001 \001(\0132!.Interactive.Message.LoginRsp_"
+    "USR\022@\n\023LogoutRsp_USR_Value\030\214\001 \001(\0132\".Inte"
+    "ractive.Message.LogoutRsp_USR\022F\n\026Shakeha"
+    "ndRsp_USR_Value\030\226\001 \001(\0132%.Interactive.Mes"
+    "sage.ShakehandRsp_USR\022H\n\027ConfigInfoRsp_U"
+    "SR_Value\030\240\001 \001(\0132&.Interactive.Message.Co"
+    "nfigInfoRsp_USR\022@\n\023AddDevRsp_USR_Value\030\252"
+    "\001 \001(\0132\".Interactive.Message.AddDevRsp_US"
+    "R\022@\n\023DelDevRsp_USR_Value\030\264\001 \001(\0132\".Intera"
+    "ctive.Message.DelDevRsp_USR\022F\n\026ModifyDev"
+    "Rsp_USR_Value\030\276\001 \001(\0132%.Interactive.Messa"
+    "ge.ModifyDevRsp_USR\022L\n\031QueryDevInfoRsp_U"
+    "SR_Value\030\310\001 \001(\0132(.Interactive.Message.Qu"
+    "eryDevInfoRsp_USR\022D\n\025QueryDevRsp_USR_Val"
+    "ue\030\322\001 \001(\0132$.Interactive.Message.QueryDev"
+    "Rsp_USR\022F\n\026QueryUserRsp_USR_Value\030\334\001 \001(\013"
+    "2%.Interactive.Message.QueryUserRsp_USR\022"
+    "H\n\027SharingDevRsp_USR_Value\030\346\001 \001(\0132&.Inte"
+    "ractive.Message.SharingDevRsp_USR\022R\n\034Can"
+    "celSharedDevRsp_USR_Value\030\360\001 \001(\0132+.Inter"
+    "active.Message.CancelSharedDevRsp_USR\022H\n"
+    "\027AddFriendsRsp_USR_Value\030\372\001 \001(\0132&.Intera"
+    "ctive.Message.AddFriendsRsp_USR\022H\n\027DelFr"
+    "iendsRsp_USR_Value\030\204\002 \001(\0132&.Interactive."
+    "Message.DelFriendsRsp_USR\022L\n\031QueryFriend"
+    "sRsp_USR_Value\030\216\002 \001(\0132(.Interactive.Mess"
+    "age.QueryFriendsRsp_USR\022X\n\037GetOnlineDevI"
+    "nfoRsp_INNER_Value\030\230\002 \001(\0132..Interactive."
+    "Message.GetOnlineDevInfoRsp_INNER\022Z\n Get"
+    "OnlineUserInfoRsp_INNER_Value\030\242\002 \001(\0132/.I"
+    "nteractive.Message.GetOnlineUserInfoRsp_"
+    "INNER\"\272\001\n\022InteractiveMessage\022*\n\004type\030\001 \001"
+    "(\0162\034.Interactive.Message.MsgType\022\020\n\010uiMs"
+    "gSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010ReqValue\030\004"
+    " \001(\0132\030.Interactive.Message.Req\022*\n\010RspVal"
+    "ue\030\005 \001(\0132\030.Interactive.Message.Rsp*\220\r\n\007M"
+    "sgType\022\n\n\006Init_T\020\000\022\036\n\031GetAccessAddressRe"
+    "q_DEV_T\020\220N\022\036\n\031GetAccessAddressRsp_DEV_T\020"
+    "\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016LoginRsp_DEV_"
+    "T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017LogoutRsp_"
+    "DEV_T\020\302N\022\027\n\022ShakehandReq_DEV_T\020\314N\022\027\n\022Sha"
+    "kehandRsp_DEV_T\020\326N\022\030\n\023ConfigInfoReq_DEV_"
+    "T\020\340N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N\022\022\n\rAuthRe"
+    "q_DEV_T\020\364N\022\022\n\rAuthRsp_DEV_T\020\376N\022\034\n\026MsgPre"
+    "HandlerReq_USR_T\020\226\234\001\022\034\n\026MsgPreHandlerRsp"
+    "_USR_T\020\227\234\001\022\037\n\031GetAccessAddressReq_USR_T\020"
+    "\240\234\001\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n\025"
+    "RegisterUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUse"
+    "rRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR_"
+    "T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\033\n\025"
+    "QueryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025QueryUsrInf"
+    "oRsp_USR_T\020\324\234\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016"
+    "LoginRsp_USR_T\020\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234"
+    "\001\022\025\n\017LogoutRsp_USR_T\020\372\234\001\022\030\n\022ShakehandReq"
+    "_USR_T\020\204\235\001\022\030\n\022ShakehandRsp_USR_T\020\216\235\001\022\031\n\023"
+    "ConfigInfoReq_USR_T\020\230\235\001\022\031\n\023ConfigInfoRsp"
+    "_USR_T\020\242\235\001\022\025\n\017AddDevReq_USR_T\020\254\235\001\022\025\n\017Add"
+    "DevRsp_USR_T\020\266\235\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022"
+    "\025\n\017DelDevRsp_USR_T\020\312\235\001\022\030\n\022ModifyDevReq_U"
+    "SR_T\020\324\235\001\022\030\n\022ModifyDevRsp_USR_T\020\336\235\001\022\033\n\025Qu"
+    "eryDevInfoReq_USR_T\020\337\235\001\022\033\n\025QueryDevInfoR"
+    "sp_USR_T\020\340\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n"
+    "\021QueryDevRsp_USR_T\020\362\235\001\022\030\n\022QueryUserReq_U"
+    "SR_T\020\363\235\001\022\030\n\022QueryUserRsp_USR_T\020\364\235\001\022\031\n\023Sh"
+    "aringDevReq_USR_T\020\374\235\001\022\031\n\023SharingDevRsp_U"
+    "SR_T\020\206\236\001\022\036\n\030CancelSharedDevReq_USR_T\020\220\236\001"
+    "\022\036\n\030CancelSharedDevRsp_USR_T\020\232\236\001\022\031\n\023AddF"
+    "riendsReq_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR"
+    "_T\020\256\236\001\022\031\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023Del"
+    "FriendsRsp_USR_T\020\302\236\001\022\034\n\026ModifyFriendsReq"
+    "_USR_T\020\314\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020\326\236\001"
+    "\022\033\n\025QueryFriendsReq_USR_T\020\340\236\001\022\033\n\025QueryFr"
+    "iendsRsp_USR_T\020\352\236\001\022!\n\033GetOnlineDevInfoRe"
+    "q_INNER_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_INN"
+    "ER_T\020\272\352\001\022$\n\036BroadcastOnlineDevInfo_INNER"
+    "_T\020\304\352\001\022\"\n\034GetOnlineUserInfoReq_INNER_T\020\316"
+    "\352\001\022\"\n\034GetOnlineUserInfoRsp_INNER_T\020\330\352\001\022%"
+    "\n\037BroadcastOnlineUserInfo_INNER_T\020\342\352\001b\006p"
+    "roto3", 10605);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_InteractiveProtocol_2eproto);
@@ -23012,6 +23012,7 @@ inline const DelFriendsRsp_USR* DelFriendsRsp_USR::internal_default_instance() {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int QueryFriendsReq_USR::kStrUserIDFieldNumber;
+const int QueryFriendsReq_USR::kUiBeginIndexFieldNumber;
 const int QueryFriendsReq_USR::kStrValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -23036,6 +23037,7 @@ QueryFriendsReq_USR::QueryFriendsReq_USR(const QueryFriendsReq_USR& from)
 void QueryFriendsReq_USR::SharedCtor() {
   struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uibeginindex_ = 0u;
   _cached_size_ = 0;
 }
 
@@ -23077,6 +23079,7 @@ QueryFriendsReq_USR* QueryFriendsReq_USR::New(::google::protobuf::Arena* arena) 
 void QueryFriendsReq_USR::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryFriendsReq_USR)
   struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uibeginindex_ = 0u;
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -23102,13 +23105,28 @@ bool QueryFriendsReq_USR::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_strValue;
+        if (input->ExpectTag(16)) goto parse_uiBeginIndex;
         break;
       }
 
-      // optional string strValue = 2;
+      // optional uint32 uiBeginIndex = 2;
       case 2: {
-        if (tag == 18) {
+        if (tag == 16) {
+         parse_uiBeginIndex:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uibeginindex_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_strValue;
+        break;
+      }
+
+      // optional string strValue = 3;
+      case 3: {
+        if (tag == 26) {
          parse_strValue:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strvalue()));
@@ -23157,14 +23175,19 @@ void QueryFriendsReq_USR::SerializeWithCachedSizes(
       1, this->struserid(), output);
   }
 
-  // optional string strValue = 2;
+  // optional uint32 uiBeginIndex = 2;
+  if (this->uibeginindex() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->uibeginindex(), output);
+  }
+
+  // optional string strValue = 3;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.QueryFriendsReq_USR.strValue");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->strvalue(), output);
+      3, this->strvalue(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryFriendsReq_USR)
@@ -23185,7 +23208,12 @@ void QueryFriendsReq_USR::SerializeWithCachedSizes(
         1, this->struserid(), target);
   }
 
-  // optional string strValue = 2;
+  // optional uint32 uiBeginIndex = 2;
+  if (this->uibeginindex() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->uibeginindex(), target);
+  }
+
+  // optional string strValue = 3;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
@@ -23193,7 +23221,7 @@ void QueryFriendsReq_USR::SerializeWithCachedSizes(
       "Interactive.Message.QueryFriendsReq_USR.strValue");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->strvalue(), target);
+        3, this->strvalue(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryFriendsReq_USR)
@@ -23211,7 +23239,14 @@ size_t QueryFriendsReq_USR::ByteSizeLong() const {
         this->struserid());
   }
 
-  // optional string strValue = 2;
+  // optional uint32 uiBeginIndex = 2;
+  if (this->uibeginindex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uibeginindex());
+  }
+
+  // optional string strValue = 3;
   if (this->strvalue().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -23255,6 +23290,9 @@ void QueryFriendsReq_USR::UnsafeMergeFrom(const QueryFriendsReq_USR& from) {
 
     struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
   }
+  if (from.uibeginindex() != 0) {
+    set_uibeginindex(from.uibeginindex());
+  }
   if (from.strvalue().size() > 0) {
 
     strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
@@ -23286,6 +23324,7 @@ void QueryFriendsReq_USR::Swap(QueryFriendsReq_USR* other) {
 }
 void QueryFriendsReq_USR::InternalSwap(QueryFriendsReq_USR* other) {
   struserid_.Swap(&other->struserid_);
+  std::swap(uibeginindex_, other->uibeginindex_);
   strvalue_.Swap(&other->strvalue_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -23346,7 +23385,21 @@ void QueryFriendsReq_USR::set_allocated_struserid(::std::string* struserid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFriendsReq_USR.strUserID)
 }
 
-// optional string strValue = 2;
+// optional uint32 uiBeginIndex = 2;
+void QueryFriendsReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+::google::protobuf::uint32 QueryFriendsReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+void QueryFriendsReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsReq_USR.uiBeginIndex)
+}
+
+// optional string strValue = 3;
 void QueryFriendsReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -23398,8 +23451,7 @@ inline const QueryFriendsReq_USR* QueryFriendsReq_USR::internal_default_instance
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int QueryFriendsRsp_USR::kAllFriendUserInfoFieldNumber;
-const int QueryFriendsRsp_USR::kStrValueFieldNumber;
+const int QueryFriendsRsp_USR::kStrAllFriendUserIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 QueryFriendsRsp_USR::QueryFriendsRsp_USR()
@@ -23421,7 +23473,6 @@ QueryFriendsRsp_USR::QueryFriendsRsp_USR(const QueryFriendsRsp_USR& from)
 }
 
 void QueryFriendsRsp_USR::SharedCtor() {
-  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -23431,7 +23482,6 @@ QueryFriendsRsp_USR::~QueryFriendsRsp_USR() {
 }
 
 void QueryFriendsRsp_USR::SharedDtor() {
-  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void QueryFriendsRsp_USR::SetCachedSize(int size) const {
@@ -23461,8 +23511,7 @@ QueryFriendsRsp_USR* QueryFriendsRsp_USR::New(::google::protobuf::Arena* arena) 
 
 void QueryFriendsRsp_USR::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryFriendsRsp_USR)
-  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  allfrienduserinfo_.Clear();
+  strallfrienduserid_.Clear();
 }
 
 bool QueryFriendsRsp_USR::MergePartialFromCodedStream(
@@ -23475,35 +23524,21 @@ bool QueryFriendsRsp_USR::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .Interactive.Message.User allFriendUserInfo = 1;
+      // repeated string strAllFriendUserID = 1;
       case 1: {
         if (tag == 10) {
-          DO_(input->IncrementRecursionDepth());
-         parse_loop_allFriendUserInfo:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
-                input, add_allfrienduserinfo()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(10)) goto parse_loop_allFriendUserInfo;
-        input->UnsafeDecrementRecursionDepth();
-        if (input->ExpectTag(18)) goto parse_strValue;
-        break;
-      }
-
-      // optional string strValue = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_strValue:
+         parse_strAllFriendUserID:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_strvalue()));
+                input, this->add_strallfrienduserid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->strvalue().data(), this->strvalue().length(),
+            this->strallfrienduserid(this->strallfrienduserid_size() - 1).data(),
+            this->strallfrienduserid(this->strallfrienduserid_size() - 1).length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Interactive.Message.QueryFriendsRsp_USR.strValue"));
+            "Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID"));
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(10)) goto parse_strAllFriendUserID;
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -23532,20 +23567,14 @@ failure:
 void QueryFriendsRsp_USR::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Interactive.Message.QueryFriendsRsp_USR)
-  // repeated .Interactive.Message.User allFriendUserInfo = 1;
-  for (unsigned int i = 0, n = this->allfrienduserinfo_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->allfrienduserinfo(i), output);
-  }
-
-  // optional string strValue = 2;
-  if (this->strvalue().size() > 0) {
+  // repeated string strAllFriendUserID = 1;
+  for (int i = 0; i < this->strallfrienduserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strvalue().data(), this->strvalue().length(),
+      this->strallfrienduserid(i).data(), this->strallfrienduserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Interactive.Message.QueryFriendsRsp_USR.strValue");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->strvalue(), output);
+      "Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->strallfrienduserid(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryFriendsRsp_USR)
@@ -23555,22 +23584,14 @@ void QueryFriendsRsp_USR::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
   // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.QueryFriendsRsp_USR)
-  // repeated .Interactive.Message.User allFriendUserInfo = 1;
-  for (unsigned int i = 0, n = this->allfrienduserinfo_size(); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        1, this->allfrienduserinfo(i), false, target);
-  }
-
-  // optional string strValue = 2;
-  if (this->strvalue().size() > 0) {
+  // repeated string strAllFriendUserID = 1;
+  for (int i = 0; i < this->strallfrienduserid_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strvalue().data(), this->strvalue().length(),
+      this->strallfrienduserid(i).data(), this->strallfrienduserid(i).length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Interactive.Message.QueryFriendsRsp_USR.strValue");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->strvalue(), target);
+      "Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(1, this->strallfrienduserid(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryFriendsRsp_USR)
@@ -23581,22 +23602,12 @@ size_t QueryFriendsRsp_USR::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Interactive.Message.QueryFriendsRsp_USR)
   size_t total_size = 0;
 
-  // optional string strValue = 2;
-  if (this->strvalue().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->strvalue());
-  }
-
-  // repeated .Interactive.Message.User allFriendUserInfo = 1;
-  {
-    unsigned int count = this->allfrienduserinfo_size();
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->allfrienduserinfo(i));
-    }
+  // repeated string strAllFriendUserID = 1;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->strallfrienduserid_size());
+  for (int i = 0; i < this->strallfrienduserid_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->strallfrienduserid(i));
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -23632,11 +23643,7 @@ void QueryFriendsRsp_USR::MergeFrom(const QueryFriendsRsp_USR& from) {
 
 void QueryFriendsRsp_USR::UnsafeMergeFrom(const QueryFriendsRsp_USR& from) {
   GOOGLE_DCHECK(&from != this);
-  allfrienduserinfo_.MergeFrom(from.allfrienduserinfo_);
-  if (from.strvalue().size() > 0) {
-
-    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
-  }
+  strallfrienduserid_.UnsafeMergeFrom(from.strallfrienduserid_);
 }
 
 void QueryFriendsRsp_USR::CopyFrom(const ::google::protobuf::Message& from) {
@@ -23663,8 +23670,7 @@ void QueryFriendsRsp_USR::Swap(QueryFriendsRsp_USR* other) {
   InternalSwap(other);
 }
 void QueryFriendsRsp_USR::InternalSwap(QueryFriendsRsp_USR* other) {
-  allfrienduserinfo_.UnsafeArenaSwap(&other->allfrienduserinfo_);
-  strvalue_.Swap(&other->strvalue_);
+  strallfrienduserid_.UnsafeArenaSwap(&other->strallfrienduserid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -23680,78 +23686,59 @@ void QueryFriendsRsp_USR::InternalSwap(QueryFriendsRsp_USR* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // QueryFriendsRsp_USR
 
-// repeated .Interactive.Message.User allFriendUserInfo = 1;
-int QueryFriendsRsp_USR::allfrienduserinfo_size() const {
-  return allfrienduserinfo_.size();
+// repeated string strAllFriendUserID = 1;
+int QueryFriendsRsp_USR::strallfrienduserid_size() const {
+  return strallfrienduserid_.size();
 }
-void QueryFriendsRsp_USR::clear_allfrienduserinfo() {
-  allfrienduserinfo_.Clear();
+void QueryFriendsRsp_USR::clear_strallfrienduserid() {
+  strallfrienduserid_.Clear();
 }
-const ::Interactive::Message::User& QueryFriendsRsp_USR::allfrienduserinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Get(index);
+const ::std::string& QueryFriendsRsp_USR::strallfrienduserid(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Get(index);
 }
-::Interactive::Message::User* QueryFriendsRsp_USR::mutable_allfrienduserinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Mutable(index);
+::std::string* QueryFriendsRsp_USR::mutable_strallfrienduserid(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Mutable(index);
 }
-::Interactive::Message::User* QueryFriendsRsp_USR::add_allfrienduserinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Add();
+void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  strallfrienduserid_.Mutable(index)->assign(value);
 }
-::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
-QueryFriendsRsp_USR::mutable_allfrienduserinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return &allfrienduserinfo_;
+void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const char* value) {
+  strallfrienduserid_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
-QueryFriendsRsp_USR::allfrienduserinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_;
+void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const char* value, size_t size) {
+  strallfrienduserid_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-
-// optional string strValue = 2;
-void QueryFriendsRsp_USR::clear_strvalue() {
-  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+::std::string* QueryFriendsRsp_USR::add_strallfrienduserid() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Add();
 }
-const ::std::string& QueryFriendsRsp_USR::strvalue() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void QueryFriendsRsp_USR::add_strallfrienduserid(const ::std::string& value) {
+  strallfrienduserid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-void QueryFriendsRsp_USR::set_strvalue(const ::std::string& value) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsRsp_USR.strValue)
+void QueryFriendsRsp_USR::add_strallfrienduserid(const char* value) {
+  strallfrienduserid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-void QueryFriendsRsp_USR::set_strvalue(const char* value) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFriendsRsp_USR.strValue)
+void QueryFriendsRsp_USR::add_strallfrienduserid(const char* value, size_t size) {
+  strallfrienduserid_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-void QueryFriendsRsp_USR::set_strvalue(const char* value, size_t size) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFriendsRsp_USR.strValue)
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+QueryFriendsRsp_USR::strallfrienduserid() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_;
 }
-::std::string* QueryFriendsRsp_USR::mutable_strvalue() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* QueryFriendsRsp_USR::release_strvalue() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  
-  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void QueryFriendsRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
-  if (strvalue != NULL) {
-    
-  } else {
-    
-  }
-  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFriendsRsp_USR.strValue)
+::google::protobuf::RepeatedPtrField< ::std::string>*
+QueryFriendsRsp_USR::mutable_strallfrienduserid() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return &strallfrienduserid_;
 }
 
 inline const QueryFriendsRsp_USR* QueryFriendsRsp_USR::internal_default_instance() {

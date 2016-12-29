@@ -1095,6 +1095,61 @@ bool UserManager::DelFriendsReq(const std::string &strMsg, const std::string &st
     return blResult;
 }
 
+bool UserManager::QueryFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryFriendsReq_USR req;
+    std::list<std::string> strRelationIDList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strRelationIDList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryFriendsRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryFriendsRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_allFriendUserIDList.swap(strRelationIDList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user friends rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query user friends rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query friends req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryUserRelationInfoToDB(req.m_strUserID, RELATION_OF_FRIENDS, strRelationIDList))
+    {
+        LOG_ERROR_RLD("Query friends failed and user id is " << req.m_strUserID);
+        return false;
+    }
+
+
+    blResult = true;
+    
+    return blResult;
+
+}
+
 void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
@@ -1967,10 +2022,75 @@ bool UserManager::QueryUserRelationExist(const std::string &strUserID, const std
     return true;
 }
 
-bool UserManager::QueryUserRelationInfoToDB(const std::string &strUserID, RelationOfUsr &relation, const bool IsNeedCache /*= true*/)
+bool UserManager::QueryUserRelationInfoToDB(const std::string &strUserID, const int iRelation, std::list<std::string> &strRelationIDList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/, const bool IsNeedCache /*= true*/)
 {
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select relation_userid from t_user_relation where userid = '%s' and relation = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), iRelation);
 
+    std::string strSql;
+    char cTmp[128] = { 0 };
+    snprintf(cTmp, sizeof(cTmp), " limit %u, %u", uiBeginIndex, uiPageSize);
+    strSql = std::string(sql) + std::string(cTmp);
+
+    std::list<boost::any> ResultList;
+    if (IsNeedCache && m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        boost::shared_ptr<std::list<std::string> > pRelationIDList;
+        pRelationIDList = boost::any_cast<boost::shared_ptr<std::list<std::string> >>(ResultList.front());
+
+        auto itBegin = pRelationIDList->begin();
+        auto itEnd = pRelationIDList->end();
+        while (itBegin != itEnd)
+        {
+            strRelationIDList.push_back(*itBegin);
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query user relation get result from cache and sql is " << strSql);
+    }
+    else
+    {
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+        {
+            strRelationIDList.push_back(strColumn);
+        };
+
+        if (!m_pMysql->QueryExec(strSql, FuncTmp))
+        {
+            LOG_ERROR_RLD("Query user relation failed and user id is " << strUserID);
+            return false;
+        }
+
+        if (strRelationIDList.empty())
+        {
+            LOG_INFO_RLD("QueryUserRelationInfoToDB result is empty and user id is " << strUserID);
+            return true;
+        }
+
+
+        boost::shared_ptr<std::list<std::string> > pRelationList(new std::list<std::string>);
+        auto itBeginRel = strRelationIDList.begin();
+        auto itEndRel = strRelationIDList.end();
+        while (itBeginRel != itEndRel)
+        {
+            pRelationList->push_back(*itBeginRel);
+            ++itBeginRel;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(pRelationList);
+
+        if (IsNeedCache)
+        {
+            m_DBCache.SetResult(strSql, pResultList);
+        }
+
+        LOG_INFO_RLD("Query user relation get result from db and sql is " << strSql);
+    }
 
     return true;
+
 }
 

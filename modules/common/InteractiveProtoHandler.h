@@ -555,6 +555,7 @@ public:
     {
 
         std::string m_strUserID;
+        unsigned int m_uiBeginIndex;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -565,8 +566,7 @@ public:
     struct QueryFriendsRsp_USR : Rsp
     {
 
-        std::list<User> m_allFriendUserInfoList;
-        std::string m_strValue;
+        std::list<std::string> m_allFriendUserIDList;
         
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

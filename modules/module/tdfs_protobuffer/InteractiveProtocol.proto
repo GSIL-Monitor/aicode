@@ -444,13 +444,13 @@ message DelFriendsRsp_USR                       //删除好友响应
 message QueryFriendsReq_USR                     //查询好友请求
 {
   string strUserID = 1;
-  string strValue = 2;
+  uint32 uiBeginIndex = 2;
+  string strValue = 3;
 }
 
 message QueryFriendsRsp_USR                     //查询好友响应
 {
-  repeated User allFriendUserInfo = 1;
-  string strValue = 2;
+  repeated string strAllFriendUserID = 1;
 }
 
 

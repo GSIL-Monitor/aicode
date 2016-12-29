@@ -5851,9 +5851,15 @@ class QueryFriendsReq_USR : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_struserid();
   void set_allocated_struserid(::std::string* struserid);
 
-  // optional string strValue = 2;
+  // optional uint32 uiBeginIndex = 2;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 2;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // optional string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   void set_strvalue(const char* value);
@@ -5868,6 +5874,7 @@ class QueryFriendsReq_USR : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uibeginindex_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -5943,35 +5950,27 @@ class QueryFriendsRsp_USR : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // repeated .Interactive.Message.User allFriendUserInfo = 1;
-  int allfrienduserinfo_size() const;
-  void clear_allfrienduserinfo();
-  static const int kAllFriendUserInfoFieldNumber = 1;
-  const ::Interactive::Message::User& allfrienduserinfo(int index) const;
-  ::Interactive::Message::User* mutable_allfrienduserinfo(int index);
-  ::Interactive::Message::User* add_allfrienduserinfo();
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
-      mutable_allfrienduserinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
-      allfrienduserinfo() const;
-
-  // optional string strValue = 2;
-  void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
-  const ::std::string& strvalue() const;
-  void set_strvalue(const ::std::string& value);
-  void set_strvalue(const char* value);
-  void set_strvalue(const char* value, size_t size);
-  ::std::string* mutable_strvalue();
-  ::std::string* release_strvalue();
-  void set_allocated_strvalue(::std::string* strvalue);
+  // repeated string strAllFriendUserID = 1;
+  int strallfrienduserid_size() const;
+  void clear_strallfrienduserid();
+  static const int kStrAllFriendUserIDFieldNumber = 1;
+  const ::std::string& strallfrienduserid(int index) const;
+  ::std::string* mutable_strallfrienduserid(int index);
+  void set_strallfrienduserid(int index, const ::std::string& value);
+  void set_strallfrienduserid(int index, const char* value);
+  void set_strallfrienduserid(int index, const char* value, size_t size);
+  ::std::string* add_strallfrienduserid();
+  void add_strallfrienduserid(const ::std::string& value);
+  void add_strallfrienduserid(const char* value);
+  void add_strallfrienduserid(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strallfrienduserid() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strallfrienduserid();
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFriendsRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User > allfrienduserinfo_;
-  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strallfrienduserid_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
   friend void  protobuf_AddDesc_InteractiveProtocol_2eproto_impl();
@@ -12568,7 +12567,21 @@ inline void QueryFriendsReq_USR::set_allocated_struserid(::std::string* struseri
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFriendsReq_USR.strUserID)
 }
 
-// optional string strValue = 2;
+// optional uint32 uiBeginIndex = 2;
+inline void QueryFriendsReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFriendsReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryFriendsReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsReq_USR.uiBeginIndex)
+}
+
+// optional string strValue = 3;
 inline void QueryFriendsReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -12619,78 +12632,59 @@ inline const QueryFriendsReq_USR* QueryFriendsReq_USR::internal_default_instance
 
 // QueryFriendsRsp_USR
 
-// repeated .Interactive.Message.User allFriendUserInfo = 1;
-inline int QueryFriendsRsp_USR::allfrienduserinfo_size() const {
-  return allfrienduserinfo_.size();
+// repeated string strAllFriendUserID = 1;
+inline int QueryFriendsRsp_USR::strallfrienduserid_size() const {
+  return strallfrienduserid_.size();
 }
-inline void QueryFriendsRsp_USR::clear_allfrienduserinfo() {
-  allfrienduserinfo_.Clear();
+inline void QueryFriendsRsp_USR::clear_strallfrienduserid() {
+  strallfrienduserid_.Clear();
 }
-inline const ::Interactive::Message::User& QueryFriendsRsp_USR::allfrienduserinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Get(index);
+inline const ::std::string& QueryFriendsRsp_USR::strallfrienduserid(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Get(index);
 }
-inline ::Interactive::Message::User* QueryFriendsRsp_USR::mutable_allfrienduserinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Mutable(index);
+inline ::std::string* QueryFriendsRsp_USR::mutable_strallfrienduserid(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Mutable(index);
 }
-inline ::Interactive::Message::User* QueryFriendsRsp_USR::add_allfrienduserinfo() {
-  // @@protoc_insertion_point(field_add:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_.Add();
+inline void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  strallfrienduserid_.Mutable(index)->assign(value);
 }
-inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >*
-QueryFriendsRsp_USR::mutable_allfrienduserinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return &allfrienduserinfo_;
+inline void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const char* value) {
+  strallfrienduserid_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::User >&
-QueryFriendsRsp_USR::allfrienduserinfo() const {
-  // @@protoc_insertion_point(field_list:Interactive.Message.QueryFriendsRsp_USR.allFriendUserInfo)
-  return allfrienduserinfo_;
+inline void QueryFriendsRsp_USR::set_strallfrienduserid(int index, const char* value, size_t size) {
+  strallfrienduserid_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-
-// optional string strValue = 2;
-inline void QueryFriendsRsp_USR::clear_strvalue() {
-  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline ::std::string* QueryFriendsRsp_USR::add_strallfrienduserid() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_.Add();
 }
-inline const ::std::string& QueryFriendsRsp_USR::strvalue() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  return strvalue_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void QueryFriendsRsp_USR::add_strallfrienduserid(const ::std::string& value) {
+  strallfrienduserid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-inline void QueryFriendsRsp_USR::set_strvalue(const ::std::string& value) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFriendsRsp_USR.strValue)
+inline void QueryFriendsRsp_USR::add_strallfrienduserid(const char* value) {
+  strallfrienduserid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-inline void QueryFriendsRsp_USR::set_strvalue(const char* value) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFriendsRsp_USR.strValue)
+inline void QueryFriendsRsp_USR::add_strallfrienduserid(const char* value, size_t size) {
+  strallfrienduserid_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
 }
-inline void QueryFriendsRsp_USR::set_strvalue(const char* value, size_t size) {
-  
-  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFriendsRsp_USR.strValue)
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+QueryFriendsRsp_USR::strallfrienduserid() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return strallfrienduserid_;
 }
-inline ::std::string* QueryFriendsRsp_USR::mutable_strvalue() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* QueryFriendsRsp_USR::release_strvalue() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFriendsRsp_USR.strValue)
-  
-  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void QueryFriendsRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
-  if (strvalue != NULL) {
-    
-  } else {
-    
-  }
-  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFriendsRsp_USR.strValue)
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+QueryFriendsRsp_USR::mutable_strallfrienduserid() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryFriendsRsp_USR.strAllFriendUserID)
+  return &strallfrienduserid_;
 }
 
 inline const QueryFriendsRsp_USR* QueryFriendsRsp_USR::internal_default_instance() {

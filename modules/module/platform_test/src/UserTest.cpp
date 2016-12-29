@@ -581,6 +581,29 @@ std::string UserTest::DelFriendsReq()
 
 }
 
+std::string UserTest::QueryFriendsReq()
+{
+    InteractiveProtoHandler::QueryFriendsReq_USR req;
+    req.m_MsgType = InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T;
+    req.m_uiMsgSeq = 8;
+    req.m_strSID = g_strUserSessionID;
+    req.m_strUserID = g_strUserID;
+    req.m_uiBeginIndex = 0;
+    req.m_strValue = "value";
+
+
+    std::string strSerializeOutPut;
+
+    if (!m_pHandler->SerializeReq(req, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Query friends req serialize failed.");
+        return "";
+    }
+
+    return strSerializeOutPut;
+
+}
+
 void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
 {
     InteractiveProtoHandler::MsgType mtype;
@@ -644,15 +667,25 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
             ++itBegin;
         }
 
-        //…æ≥˝∫√”—
-        const std::string &strMsg = DelFriendsReq();
+        //≤È—Ø∫√”—
+        const std::string &strMsg = QueryFriendsReq();
         if (strMsg.empty())
         {
-            LOG_ERROR_RLD("Delete friends req msg is empty.");
+            LOG_ERROR_RLD("Query friends req msg is empty.");
             return;
         }
 
         m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
+
+        ////…æ≥˝∫√”—
+        //const std::string &strMsg = DelFriendsReq();
+        //if (strMsg.empty())
+        //{
+        //    LOG_ERROR_RLD("Delete friends req msg is empty.");
+        //    return;
+        //}
+
+        //m_pClient->AsyncWrite(g_strSessionID, "0", "0", strMsg.c_str(), strMsg.size(), true, pValue);
 
         //// ÃÌº”∫√”—
         //const std::string &strMsg = AddFriendsReq();
@@ -1043,6 +1076,29 @@ void UserTest::MsgProcess(const std::string &strMsgReceived, void *pValue)
         LOG_INFO_RLD("Delete friends rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
             " and user session id is " << rsp.m_strSID);
     }
+    else if (InteractiveProtoHandler::MsgType::QueryFriendsRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::QueryFriendsRsp_USR rsp;
+
+        if (!m_pHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Query friends rsp unserialize failed.");
+            return;
+        }
+
+        auto itBegin = rsp.m_allFriendUserIDList.begin();
+        auto itEnd = rsp.m_allFriendUserIDList.end();
+        while (itBegin != itEnd)
+        {
+
+            LOG_INFO_RLD("Query friend id is " << *itBegin);
+
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query friends rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+    }    
     else
     {
         LOG_ERROR_RLD("Unknown message type is " << mtype);

@@ -1871,6 +1871,7 @@ void InteractiveProtoHandler::QueryFriendsReq_USR::UnSerializer(const Interactiv
 {
     Req::UnSerializer(InteractiveMsg);
     m_strUserID = InteractiveMsg.reqvalue().queryfriendsreq_usr_value().struserid();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().queryfriendsreq_usr_value().uibeginindex();
     m_strValue = InteractiveMsg.reqvalue().queryfriendsreq_usr_value().strvalue();
 
 }
@@ -1880,6 +1881,7 @@ void InteractiveProtoHandler::QueryFriendsReq_USR::Serializer(InteractiveMessage
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFriendsReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfriendsreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfriendsreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfriendsreq_usr_value()->set_strvalue(m_strValue);
 
 }
@@ -1887,24 +1889,12 @@ void InteractiveProtoHandler::QueryFriendsReq_USR::Serializer(InteractiveMessage
 void InteractiveProtoHandler::QueryFriendsRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
-    m_strValue = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().strvalue();
 
-    m_allFriendUserInfoList.clear();
-    int iCountTmp = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().allfrienduserinfo_size();
+    m_allFriendUserIDList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().strallfrienduserid_size();
     for (int i = 0; i < iCountTmp; ++i)
-    {
-        auto ItUser = InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().allfrienduserinfo(i);
-
-        User usr;
-        usr.m_strUserID = ItUser.struserid();
-        usr.m_strUserName = ItUser.strusername();
-        usr.m_strUserPassword = ItUser.struserpassword();
-        usr.m_uiTypeInfo = ItUser.uitypeinfo();
-        usr.m_strCreatedate = ItUser.strcreatedate();
-        usr.m_uiStatus = ItUser.uistatus();
-        usr.m_strExtend = ItUser.strextend();
-
-        m_allFriendUserInfoList.push_back(usr);
+    {                
+        m_allFriendUserIDList.push_back(InteractiveMsg.rspvalue().queryfriendsrsp_usr_value().strallfrienduserid(i));
     }
 
 }
@@ -1913,27 +1903,18 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage
 {
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFriendsRsp_USR_T);
-    InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->set_strvalue(m_strValue);
 
-    for (unsigned int i = 0; i < m_allFriendUserInfoList.size(); ++i)
+    for (unsigned int i = 0; i < m_allFriendUserIDList.size(); ++i)
     {
-        InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->add_allfrienduserinfo();
+        InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->add_strallfrienduserid();
     }
-    auto itBegin = m_allFriendUserInfoList.begin();
-    auto itEnd = m_allFriendUserInfoList.end();
+    auto itBegin = m_allFriendUserIDList.begin();
+    auto itEnd = m_allFriendUserIDList.end();
     int iUser = 0;
     while (itBegin != itEnd)
     {
-        auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->mutable_allfrienduserinfo(iUser);
-
-        uinfo->set_struserid(itBegin->m_strUserID);
-        uinfo->set_strusername(itBegin->m_strUserName);
-        uinfo->set_struserpassword(itBegin->m_strUserPassword);
-        uinfo->set_uitypeinfo(itBegin->m_uiTypeInfo);
-        uinfo->set_strcreatedate(itBegin->m_strCreatedate);
-        uinfo->set_uistatus(itBegin->m_uiStatus);
-        uinfo->set_strextend(itBegin->m_strExtend);
-
+        InteractiveMsg.mutable_rspvalue()->mutable_queryfriendsrsp_usr_value()->set_strallfrienduserid(iUser, *itBegin);
+        
         ++iUser;
         ++itBegin;
     }
