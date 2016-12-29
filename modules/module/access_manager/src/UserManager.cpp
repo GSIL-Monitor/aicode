@@ -116,6 +116,11 @@ bool UserManager::PreCommonHandler(const std::string &strMsg, const std::string 
         return blResult;
     }
 
+    //普通命令（非握手命令）重置Session
+    if (InteractiveProtoHandler::MsgType::ShakehandReq_USR_T != req.m_MsgType)
+    {
+        m_SessionMgr.Reset(req.m_strSID);
+    }
 
     blResult = true;
 
@@ -571,8 +576,6 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     relation.m_strUsrID = req.m_strUserID;
 
     m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
-
-    m_SessionMgr.Reset(req.m_strSID); //普通命令的处理也需要重置Session
 
     blResult = true;
     
