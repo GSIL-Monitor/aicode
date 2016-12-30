@@ -12,12 +12,7 @@
 #define BUFFER_SIZE (64 * 1024)
 #include <boost/weak_ptr.hpp>
 
-namespace roiland
-{
-    class MemcacheClient;
-}
-
-using namespace roiland;
+class MemcacheClient;
 
 typedef std::unordered_map<std::string, boost::shared_ptr<std::list<std::string> > > PendingMap;
 
