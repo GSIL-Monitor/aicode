@@ -55,25 +55,9 @@ private:
 
     bool MemCacheReset(const std::string &strKey, const std::string &strValue, const unsigned int uiThreshold);
 
+    bool MemCacheGet(const std::string &strKey, std::string &strValue);
+
 private:
-
-    struct Session 
-    {
-        std::string m_strSessionID;
-        unsigned int m_uiThreshold;
-        std::string m_strValue;
-        boost::atomic_uint64_t m_uiTickNum;
-        TMOUT_CB m_TimeoutCB;
-    };
-
-    typedef std::unordered_map<std::string, boost::shared_ptr<Session> > SessionMap;
-
-    SessionMap m_SessionMap;
-    boost::shared_mutex m_SessionnMapMutex;
-
-    TimeOutHandler m_TickTM;
-
-    Runner m_TMRunner;
 
     std::string m_strMemAddress;
     std::string m_strMemPort;

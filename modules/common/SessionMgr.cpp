@@ -3,8 +3,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "libcacheclient.h"
 #include "time.h"
+#include "json/json.h"
 
-SessionMgr::SessionMgr() : m_TickTM(boost::bind(&SessionMgr::TimeoutCB, this, _1), 1), m_TMRunner(1), m_pMemCl(NULL)
+SessionMgr::SessionMgr() : m_pMemCl(NULL)
 {
 
 }
@@ -45,16 +46,13 @@ bool SessionMgr::Init()
 
 void SessionMgr::Run()
 {
-    m_TMRunner.Run();
-    m_TickTM.Run();
+
 }
 
 
 void SessionMgr::Stop()
 {
-    m_TickTM.Stop();
-    m_TMRunner.Stop();
-
+    
     MemcacheClient::destoy(m_pMemCl);
     m_pMemCl = NULL;
 }
@@ -67,32 +65,20 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
         return false;
     }
 
-    if (!MemCacheCreate(strSessionID, strValue, uiThreshold))
+    Json::Value jsBody;
+    jsBody["sid"] = strSessionID;
+    jsBody["threshold"] = uiThreshold;
+    jsBody["value"] = strValue;
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+    if (!MemCacheCreate(strSessionID, strBody, uiThreshold))
     {
         LOG_ERROR_RLD("Create session failed because memcache error.");
         return false;
     }
-
-    {
-        boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-        auto itFind = m_SessionMap.find(strSessionID);
-        if (m_SessionMap.end() != itFind)
-        {
-            LOG_ERROR_RLD("Create session failed becasue session id already exists, sessid is " << strSessionID);
-            return false;
-        }
-
-        boost::shared_ptr<Session> pSession(new Session);
-        pSession->m_strSessionID = strSessionID;
-        pSession->m_uiTickNum = 0;
-        pSession->m_uiThreshold = uiThreshold;
-        pSession->m_strValue = strValue;
-        pSession->m_TimeoutCB = tcb;
-
-        m_SessionMap.insert(std::make_pair(strSessionID, pSession));
-    }
-    
-    LOG_INFO_RLD("Session was created and session id is " << strSessionID);
+        
+    LOG_INFO_RLD("Session was created and session id is " << strSessionID << " and vaule is " << strValue);
 
     return true;
 
@@ -100,17 +86,7 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
 
 bool SessionMgr::Exist(const std::string &strSessionID)
 {
-    {
-
-        boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-        auto itFind = m_SessionMap.find(strSessionID);
-        if (m_SessionMap.end() == itFind)
-        {
-            LOG_ERROR_RLD("Session id not found in local and session id is " << strSessionID);
-            return false;
-        }
-    }
-        
+    
     if (!MemCacheExist(strSessionID))
     {
         LOG_ERROR_RLD("Session id not found in memcache and session id is " << strSessionID);
@@ -123,41 +99,56 @@ bool SessionMgr::Exist(const std::string &strSessionID)
 
 bool SessionMgr::Reset(const std::string &strSessionID)
 {
-    boost::shared_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-    auto itFind = m_SessionMap.find(strSessionID);
-    if (m_SessionMap.end() == itFind)
+    std::string strValue;
+    if (!MemCacheGet(strSessionID, strValue))
     {
-        LOG_ERROR_RLD("Rest session failed becasue session id not exists, sessid is " << strSessionID);
+        LOG_ERROR_RLD("Reset session failed beacuse key not found from memcached and key is " << strSessionID);
         return false;
     }
 
-    itFind->second->m_uiTickNum = 0;
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Reset session failed beacuse value parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
 
-    if (!MemCacheReset(strSessionID, itFind->second->m_strValue, itFind->second->m_uiThreshold))
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Reset session failed beacuse json root parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jThreshold = root["threshold"];
+
+    if (jThreshold.isNull())
+    {
+        LOG_ERROR_RLD("Reset session failed beacuse json threshold  json value is null and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    ////
+    //if (!jThreshold.isUInt())
+    //{
+    //    LOG_ERROR_RLD("Reset session failed beacuse json threshold parsed as uint is invalid and key is " << strSessionID << " and value is " << strValue);
+    //    return false;
+    //}
+    
+
+    if (!MemCacheReset(strSessionID, strValue, jThreshold.asUInt()))
     {
         LOG_ERROR_RLD("Rest session failed becasue memecache failed, sessid is " << strSessionID);
         return false;
     }
     
-    LOG_INFO_RLD("Session was reseted and session id is " << strSessionID);
+    LOG_INFO_RLD("Session was reseted and session id is " << strSessionID << " and threshold is " << jThreshold.asUInt());
     return true;
 }
 
 bool SessionMgr::Remove(const std::string &strSessionID)
 {
-    {
-        boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-        auto itFind = m_SessionMap.find(strSessionID);
-        if (m_SessionMap.end() == itFind)
-        {
-            LOG_ERROR_RLD("Remove session failed becasue session id not exists, sessid is " << strSessionID);
-            return false;
-        }
-
-        m_SessionMap.erase(strSessionID);
-    }
-
-    if (!MemCacheRemove(strSessionID)) //删除时，先经过本地Session的过滤处理
+    if (!MemCacheRemove(strSessionID))
     {
         LOG_ERROR_RLD("Remove session failed becasue memcache failed, sessid is " << strSessionID);
         return false;
@@ -165,48 +156,6 @@ bool SessionMgr::Remove(const std::string &strSessionID)
 
     LOG_INFO_RLD("Session was removed and session id is " << strSessionID);
     return true;
-}
-
-void SessionMgr::TimeoutCB(const boost::system::error_code &ec)
-{
-    //LOG_INFO_RLD("Session mgr check all session status");
-
-    boost::unique_lock<boost::shared_mutex> lock(m_SessionnMapMutex);
-    auto itBegin = m_SessionMap.begin();
-    auto itEnd = m_SessionMap.end();
-    while (itBegin != itEnd)
-    {
-        ++(itBegin->second->m_uiTickNum);
-
-        if (itBegin->second->m_uiThreshold < itBegin->second->m_uiTickNum)
-        {
-            LOG_INFO_RLD("Timout was reached and session id is " << itBegin->second->m_strSessionID << " and threshold is " <<
-                itBegin->second->m_uiThreshold << " and tick number is " << itBegin->second->m_uiTickNum);
-
-            m_TMRunner.Post(boost::bind(&SessionMgr::TimoutProcess, this, itBegin->second->m_strSessionID, itBegin->second->m_TimeoutCB));
-            m_SessionMap.erase(itBegin++);
-            
-            continue;
-        }
-
-        ++itBegin;
-    }
-        
-}
-
-void SessionMgr::TimoutProcess(const std::string &strSessionID, TMOUT_CB tcb)
-{
-    if (!MemCacheRemove(strSessionID))
-    {
-        LOG_ERROR_RLD("Timout remove memcached failed.");
-    }
-
-    if (NULL != tcb)
-    {
-        tcb(strSessionID);
-    }
-    
-    LOG_INFO_RLD("Timout processed and session id is " << strSessionID);
 }
 
 bool SessionMgr::MemCacheRemove(const std::string &strKey)
@@ -267,5 +216,19 @@ bool SessionMgr::MemCacheReset(const std::string &strKey, const std::string &str
     LOG_INFO_RLD("Mem cache reset and key is " << strKey << " and value is " << strValue << " and threshold is " << uiThreshold);
 
     return MemCacheCreate(strKey, strValue, uiThreshold);
+}
+
+bool SessionMgr::MemCacheGet(const std::string &strKey, std::string &strValue)
+{
+    boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
+
+    int iRet = 0;
+    if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->get(strKey.c_str(), strValue)))
+    {
+        LOG_ERROR_RLD("Memcache get failed, key is " << strKey << " and result code is " << iRet);
+        return false;
+    }
+
+    return true;
 }
 
