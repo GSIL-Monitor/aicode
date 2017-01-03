@@ -62,6 +62,8 @@ private:
 
     void MsgWrite(const std::string &strDstID, const std::string &strDataToBeWriting);
 
+    void MsgWriteInner(const std::string &strDstID, const std::string &strDataToBeWriting);
+
 private:
     boost::shared_ptr<InteractiveProtoHandler> m_pProtoHandler;
 
@@ -75,11 +77,12 @@ private:
 
     std::list<MsgHandler> m_MsgPreHandlerList;
 
+    Runner m_MsgWriterRunner;
+    boost::mutex m_MsgWriterMutex;
+
 private:
     bool ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue);
     void ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string &strData, const std::string &strSrcID, const int iMsgType, void *pValue);
-        
-
 
 };
 

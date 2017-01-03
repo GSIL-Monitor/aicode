@@ -31,7 +31,7 @@ private:
         
     inline boost::shared_ptr<CacheObj> Get(const std::string &strKey)
     {
-        boost::shared_lock<boost::shared_mutex> lock(m_CacheMutex);
+        boost::unique_lock<boost::shared_mutex> lock(m_CacheMutex);
         return m_pCacheContainer->Get(strKey);
     }
 

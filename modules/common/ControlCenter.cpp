@@ -4,7 +4,8 @@
 
 std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t uiSize);
 
-ControlCenter::ControlCenter(const ParamInfo &pinfo) : m_pProtoHandler(new InteractiveProtoHandler), m_ParamInfo(pinfo), m_MsgHandlerRunner(1)
+ControlCenter::ControlCenter(const ParamInfo &pinfo) : m_pProtoHandler(new InteractiveProtoHandler), m_ParamInfo(pinfo), 
+m_MsgHandlerRunner(pinfo.uiThreadOfWorking), m_MsgWriterRunner(1)
 {
 
 
@@ -32,12 +33,15 @@ void ControlCenter::Run(const bool isWaitRunFinished)
     m_pClient.reset(pClient);
 
     LOG_INFO_RLD("Control center begin running...");
+    m_MsgWriterRunner.Run();
     m_MsgHandlerRunner.Run(isWaitRunFinished);
+        
 }
 
 void ControlCenter::Stop()
 {
     m_MsgHandlerRunner.Stop();
+    m_MsgWriterRunner.Stop();
     m_pClient->Close();
     ClientCommInterface::Stop();
 }
@@ -78,11 +82,20 @@ void ControlCenter::WriteCB(const boost::system::error_code &ec, void *pValue)
     if (ec)
     {
         LOG_ERROR_RLD("Write msg failed, error is " << ec.message());
-        Reconnect();
+        //return;
+    }
+    
+
+    static bool IsAuthMsg = true;
+
+    if (IsAuthMsg)
+    {
+        IsAuthMsg = false;
+        m_pClient->AsyncRead(pValue);
         return;
     }
-
-    m_pClient->AsyncRead(pValue);
+    
+    m_MsgWriterMutex.unlock();
 
 }
 
@@ -156,6 +169,8 @@ void ControlCenter::ReadCB(const boost::system::error_code &ec, std::list<Client
         ++itBegin;
     }
         
+    m_pClient->AsyncRead(pValue);
+        
 }
 
 void ControlCenter::Reconnect()
@@ -167,9 +182,16 @@ void ControlCenter::Reconnect()
 
 void ControlCenter::MsgWrite(const std::string &strDstID, const std::string &strDataToBeWriting)
 {
-    //char *pBuffer = new char[strDataToBeWriting.size()];
-    //memcpy(pBuffer, strDataToBeWriting.data(), strDataToBeWriting.size());
+    m_MsgWriterRunner.Post(boost::bind(&ControlCenter::MsgWriteInner, this, strDstID, strDataToBeWriting));
+    //m_pClient->AsyncWrite("0", strDstID, "0", strDataToBeWriting.data(), strDataToBeWriting.size(), true);
+}
+
+void ControlCenter::MsgWriteInner(const std::string &strDstID, const std::string &strDataToBeWriting)
+{
+    //LOG_INFO_RLD("MsgWriteInner before =================");
+    m_MsgWriterMutex.lock();
     m_pClient->AsyncWrite("0", strDstID, "0", strDataToBeWriting.data(), strDataToBeWriting.size(), true);
+    //LOG_INFO_RLD("MsgWriteInner after =================");
 }
 
 bool ControlCenter::ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue)
@@ -227,59 +249,5 @@ void ControlCenter::ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string 
         LOG_INFO_RLD("Receive msg handler success and type is " << iMsgType << " src id is " << strSrcID);
     }
 
-    //m_pClient->AsyncRead(pValue);
-
 }
 
-//bool ControlCenter::LoginReqMsgHandler(const std::string &strData, const std::string &strSrcID)
-//{
-//    ProtoHandler::LoginReq req;
-//    if (!m_pProtoHandler->UnSerializeReq(strData, req))
-//    {
-//        LOG_ERROR_RLD("Unserialize login req failed and srcid is " << strSrcID);
-//        return false;
-//    }
-//
-//    LOG_INFO_RLD("login req info, syncservice name is " << req.m_strSyncServiceName << ", storage ip is " << req.m_strStorageIP << ", storage port is " 
-//        << req.m_strStoragePort);
-//
-//    uuid_t uu;
-//    uuid_generate(uu);
-//    const std::string &strUUID = ConvertCharValueToLex((unsigned char *)uu, sizeof(uu));
-//    
-//    ProtoHandler::LoginRsp rsp;
-//    rsp.m_MsgType = ProtoHandler::MsgType::LoginRsp_T;
-//    rsp.m_uiMsgSeq = req.m_uiMsgSeq;
-//    rsp.m_strSID = strUUID;
-//    rsp.m_iRetcode = 0;
-//    rsp.m_strRetMsg = "success";
-//    
-//    rsp.m_strLoginSID = strUUID;
-//
-//
-//    boost::shared_ptr<SyncService> pSyncService(new SyncService);
-//    pSyncService->m_strSID = rsp.m_strSID;
-//    pSyncService->m_strSyncServiceName = req.m_strSyncServiceName;
-//    pSyncService->m_strPassword = req.m_strPassword;
-//    pSyncService->m_strStorageIP = req.m_strStorageIP;
-//    pSyncService->m_strStoragePort = req.m_strStoragePort;
-//    pSyncService->m_Status = SyncService::SyncServiceStatus::IDLE;
-//    pSyncService->m_strAddress = strSrcID;
-//    pSyncService->m_Type = SyncService::NodeType::Sync;
-//    pSyncService->m_strAreaID = "0";
-//    pSyncService->m_uiTMTickCount = 0;
-//    pSyncService->m_pTMHander = m_TMEX.Create(boost::bind(&SyncService::TimeOutCB, pSyncService, _1), m_ParamInfo.uiSyncShakehandTimeout);
-//    pSyncService->m_uiMaxTickCount = m_ParamInfo.uiSyncShakehandTimeoutCount;
-//    pSyncService->m_TMFunc = boost::bind(&ControlCenter::DeleteSyncService, this, pSyncService->m_strSID);
-//
-//    pSyncService->m_pTMHander->Begin();
-//    
-//    AddSyncService(pSyncService->m_strSID, pSyncService);
-//
-//    std::string strOutput;
-//    m_pProtoHandler->SerializeRsp(rsp, strOutput);
-//
-//    m_pClient->AsyncWrite("0", strSrcID, "0", strOutput.data(), strOutput.size(), true);
-//
-//    return true;
-//}
