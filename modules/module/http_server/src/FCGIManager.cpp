@@ -76,6 +76,8 @@ void FCGIManager::FCGILoopHandler()
         if (0 != ret)
         {
             LOG_ERROR_RLD("FCGI init req error and return code is " << ret);
+            delete pRequest;
+            pRequest = NULL;
             continue;
         }
 
