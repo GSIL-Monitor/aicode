@@ -85,11 +85,6 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool IsError)
 {
-    if (MsgMap.empty())
-    {
-        return;
-    }
-
     Json::Value jsBody;
     auto itBegin = MsgMap.begin();
     auto itEnd = MsgMap.end();
@@ -108,7 +103,7 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
     std::string strOutputMsg;
     if (IsError)
     {
-        strOutputMsg = "Status: 500  Error\r\nContent-Type: text/html\r\n\r\nMessage:\r\n";
+        strOutputMsg = "Status: 500  Error\r\nContent-Type: text/html\r\n\r\n";
     }
     else
     {

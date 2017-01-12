@@ -50,6 +50,7 @@ private:
     
     unsigned int m_uiTdNum;
     Runner m_MsgLoopRunner;
+    Runner m_MsgHandleRunner;
 
     std::map<std::string, ParseMsgFunc> m_ParseFuncMap;
 

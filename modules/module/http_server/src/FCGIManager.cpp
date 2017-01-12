@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "util.h"
 #include "LogRLD.h"
+#include <boost/scope_exit.hpp>
 
 const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
 
@@ -19,7 +20,7 @@ const std::string FCGIManager::CONTENT_TYPE = "CONTENT_TYPE";
 
 const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
 
-FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum)
+FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum), m_MsgHandleRunner(uiRunTdNum)
 {
     int iRet = 0;
     if (0 != (iRet = FCGX_Init()))
@@ -42,7 +43,8 @@ FCGIManager::~FCGIManager()
 
 void FCGIManager::Run(bool isWaitRunFinished /*= false*/)
 {
-    
+    m_MsgHandleRunner.Run(false);
+
     for (unsigned int i = 0; i < m_uiTdNum; ++i)
     {
         m_MsgLoopRunner.Post(boost::bind(&FCGIManager::FCGILoopHandler, this));
@@ -64,11 +66,11 @@ void FCGIManager::SetMsgHandler(const std::string &strKey, MsgHandler msghdr)
 
 void FCGIManager::FCGILoopHandler()
 {
-    FCGX_Request request;
-    FCGX_Request	*pRequest = &request;
+    FCGX_Request	*pRequest = NULL;
 
     while (true)
     {
+        pRequest = new FCGX_Request;
         int ret = FCGX_InitRequest(pRequest, 0, 0);
 
         if (0 != ret)
@@ -84,18 +86,14 @@ void FCGIManager::FCGILoopHandler()
             //释放资源
             FCGX_Detach(pRequest);
             FCGX_Finish_r(pRequest);
-
+            delete pRequest;
+            pRequest = NULL;
             LOG_ERROR_RLD("FCGI accept error and return code is " << ret);
             continue;
         }
 
-        ParseAndHandleMsg(pRequest);
-
-        //LOG_INFO_RLD("===================before sleep================");
-        //boost::this_thread::sleep(boost::posix_time::seconds(2));
-        //LOG_INFO_RLD("===================end sleep================");
-
-        FCGX_Finish_r(pRequest);
+        m_MsgHandleRunner.Post(boost::bind(&FCGIManager::ParseAndHandleMsg, this, pRequest));
+                
     }
 }
 
@@ -117,6 +115,16 @@ void FCGIManager::MsgWrite(const char *pBuffer, const unsigned int uiSize, const
 
 void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
 {
+    BOOST_SCOPE_EXIT(&pRequest, this_)
+    {
+        LOG_INFO_RLD("Parse msg and handle completed, request was freed.");
+        FCGX_Finish_r(pRequest);
+        delete pRequest;
+        pRequest = NULL;
+    }
+    BOOST_SCOPE_EXIT_END
+
+
     boost::shared_ptr<MsgInfoMap> pMsgInfoMap(new MsgInfoMap);
 
     std::string strQueryStr = FCGX_GetParam(QUERY_STRING.c_str(), pRequest->envp);
@@ -219,7 +227,7 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
     std::string	sTmpBuf;
     std::string strBoundary;
 
-    if (string::npos == (iPos = strContendType.find("boundary=")))
+    if (std::string::npos == (iPos = strContendType.find("boundary=")))
     {
         LOG_ERROR_RLD("Contend type " << strContendType << " error");
         return;
@@ -227,7 +235,7 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
 
     sTmpBuf = strContendType.substr(iPos + 9);
 
-    if (string::npos == (iPos = sTmpBuf.find(";")))
+    if (std::string::npos == (iPos = sTmpBuf.find(";")))
     {
         strBoundary = sTmpBuf;
     }
@@ -251,8 +259,8 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
     bool	bIsValue = false;
     bool	bIsHead = false;
 
-    string	sBoundaryEnd;
-    string	sTmpData;
+    std::string	sBoundaryEnd;
+    std::string	sTmpData;
 
     //m_sBoundry		=	"--" + m_sBoundry;
     sBoundaryEnd += strBoundary + "--";
@@ -319,17 +327,7 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
 
         memset(szLineBuf, 0x00, sizeof(szLineBuf));
     }
-
-    //确保businessid值一定存在
-    auto itFindBusiness = pMsgInfoMap->find("businessid");
-    if (pMsgInfoMap->end() == itFindBusiness)
-    {
-        pMsgInfoMap->insert(MsgInfoMap::value_type("businessid", "0"));
-
-    }
-
-    pMsgInfoMap->insert(MsgInfoMap::value_type("speedupload", "1"));
-    pMsgInfoMap->insert(MsgInfoMap::value_type("speeduploadmodel", "1"));
+        
 }
 
 void FCGIManager::ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
