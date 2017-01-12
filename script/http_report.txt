@@ -1,0 +1,42 @@
+curl -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload  http://172.20.122.252/access.cgi?action=register_user
+curl -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload -x 172.20.122.175:8888  http://172.20.122.252/access.cgi?action=register_user
+curl -k  -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload  https://172.20.122.252/access.cgi?action=register_user
+
+
+POST http://172.20.122.252/access.cgi?action=register_user HTTP/1.1
+User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.21 Basic ECC zlib/1.2.3 libidn/1.18 libssh2/1.4.2
+Host: 172.20.122.252
+Accept: */*
+Connection: Keep-Alive
+Content-Length: 443
+Expect: 100-continue
+Content-Type: multipart/form-data; boundary=----------------------------bb6616565040
+
+------------------------------bb6616565040
+Content-Disposition: form-data; name="username"
+
+yinbin
+------------------------------bb6616565040
+Content-Disposition: form-data; name="userpwd"
+
+ppp
+------------------------------bb6616565040
+Content-Disposition: form-data; name="type"
+
+1
+------------------------------bb6616565040
+Content-Disposition: form-data; name="value"
+
+payload
+------------------------------bb6616565040--
+
+HTTP/1.1 200 OK
+Server: nginx/1.10.2
+Date: Thu, 12 Jan 2017 05:49:22 GMT
+Content-Type: text/html
+Connection: keep-alive
+Content-Length: 63
+
+{"retcode":"0","retmsg":"Ok","userid":"123456","value":"xx"}
+
+

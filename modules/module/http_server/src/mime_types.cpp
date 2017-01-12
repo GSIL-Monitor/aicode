@@ -71,7 +71,7 @@ bool add_mime_type(MIME_TYPE_MAP &MimeMap, char *line)
 
 bool load_mime_types(const char *filename)
 {
-	int len = 0;
+	//int len = 0;
 	char line[1024 * 4];
 	FILE *fp = NULL;
 		
@@ -87,7 +87,7 @@ bool load_mime_types(const char *filename)
 	bzero(line, sizeof(line));
 	
 	while(fgets(line, sizeof(line), fp) != NULL){
-		len = strlen(line);
+		//len = strlen(line);
 		//1:去掉注释
 		char *p = strchr(line, '#');
 		if (p != NULL)
@@ -95,7 +95,7 @@ bool load_mime_types(const char *filename)
 	
 		//2：去掉两头的不可见字符
 		clean_line(line);
-		len = strlen(line);
+		//len = strlen(line);
 		if (line[0] == '#' || strlen(line) < 3)
 			continue;
 			

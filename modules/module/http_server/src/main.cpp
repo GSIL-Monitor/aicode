@@ -4,18 +4,18 @@
 #include <boost/filesystem.hpp> 
 #include "fcgiapp.h"
 #include "FCGIManager.h"
-#include "FileHandler.h"
+#include "HttpMsgHandler.h"
 #include "ConfigSt.h"
 #include "LogRLD.h"
+#include "boost/lexical_cast.hpp"
 
-std::string g_sUploadFilePath;
-
-#define PROCESS_NAME     "file_cgi"
-#define FILE_VERSION     "v[1.0.6] "
+#define CONFIG_FILE_NAME "http_server.ini"
+#define PROCESS_NAME     "access_cgi"
+#define FILE_VERSION     "v[1.0.0] "
 
 void InitLog(ConfigSt& cfg)
 {
-    std::string strHost = "http_server(127.0.0.1)";
+    std::string strHost = "access_cgi(127.0.0.1)";
     std::string strLogPath = "./logs/";
     std::string strLogInnerShowName = PROCESS_NAME;
     int iLoglevel = LogRLD::INFO_LOG_LEVEL;
@@ -107,45 +107,128 @@ void InitLog(ConfigSt& cfg)
 
 int main(int argc, char *argv[])
 {
-    if( 2 > argc )
-    {
-        return -1;
-    }
+    boost::filesystem::path currentPath = boost::filesystem::current_path() / CONFIG_FILE_NAME;
 
-    boost::filesystem::path currentPath(argv[1]);
+    //判断配置文件是否存在
     if (!boost::filesystem::exists(currentPath))
     {
-        return -1;
+        printf("Log config file not found and path is %s\n", currentPath.string().c_str());
+        return 0;
     }
-
+    
     ConfigSt cfg(currentPath.string());
 
     InitLog(cfg);
-    LOG_INFO_RLD("http_server begin runing...");
+    LOG_INFO_RLD("http_server begin runing and config file is " << currentPath.string());
 
-    FileHandler filehdr(cfg);
-    if (!filehdr.Init())
+    const std::string &strDBHost = cfg.GetItem("DB.DBHost");
+    if (strDBHost.empty())
     {
-        LOG_ERROR_RLD("FileHandler Init failed...");
-        return -1;
+        LOG_ERROR_RLD("DBHost config item not found.");
+        return 0;
     }
 
-    unsigned int thread_count = 2;
-    std::string strThreadCount = cfg.GetItem("sys.thread_count");
-    if (!strThreadCount.empty())
+    const std::string &strDBPort = cfg.GetItem("DB.DBPort");
+    if (strDBPort.empty())
     {
-        thread_count = atoi(strThreadCount.c_str());
-        if (thread_count > 128)
-        {
-            thread_count = 2;
-        }
+        LOG_ERROR_RLD("DBPort config item not found.");
+        return 0;
     }
 
-    FCGIManager fcgimgr(cfg, thread_count);
-    fcgimgr.SetUploadMsgHandler(boost::bind(&FileHandler::UploadHandler, &filehdr, _1, _2));
-    fcgimgr.SetSpeedUploadMsgHandler(boost::bind(&FileHandler::SpeedUploadHandler, &filehdr, _1, _2));
-    fcgimgr.SetDeleteMsgHandler(boost::bind(&FileHandler::DeleteHandler, &filehdr, _1, _2));
-    fcgimgr.SetDownloadMsgHandler(boost::bind(&FileHandler::DownloadHandler, &filehdr, _1, _2));
+    const std::string &strDBUser = cfg.GetItem("DB.DBUser");
+    if (strDBUser.empty())
+    {
+        LOG_ERROR_RLD("DBUser config item not found.");
+        return 0;
+    }
+
+    const std::string &strDBPassword = cfg.GetItem("DB.DBPassword");
+    if (strDBPassword.empty())
+    {
+        LOG_ERROR_RLD("DBPassword config item not found.");
+        return 0;
+    }
+
+    const std::string &strDBName = cfg.GetItem("DB.DBName");
+    if (strDBName.empty())
+    {
+        LOG_ERROR_RLD("DBName config item not found.");
+        return 0;
+    }
+
+    const std::string &strRemoteAddress = cfg.GetItem("Channel.RemoteAddress");
+    if (strRemoteAddress.empty())
+    {
+
+        LOG_ERROR_RLD("RemoteAddress config item not found.");
+        return 0;
+    }
+
+    const std::string &strRemotePort = cfg.GetItem("Channel.RemotePort");
+    if (strRemotePort.empty())
+    {
+
+        LOG_ERROR_RLD("RemotePort config item not found.");
+        return 0;
+    }
+
+    const std::string &strShakehandOfChannelInterval = cfg.GetItem("Channel.ShakehandOfChannelInterval");
+    if (strShakehandOfChannelInterval.empty())
+    {
+        LOG_ERROR_RLD("ShakehandOfChannelInterval config item not found.");
+        return 0;
+    }
+
+    const std::string &strSelfID = cfg.GetItem("General.SelfID");
+    if (strSelfID.empty())
+    {
+        LOG_ERROR_RLD("SelfID config item not found.");
+        return 0;
+    }
+
+    const std::string &strThreadOfWorking = cfg.GetItem("General.ThreadOfWorking");
+    if (strThreadOfWorking.empty())
+    {
+        LOG_ERROR_RLD("ThreadOfWorking config item not found.");
+        return 0;
+    }
+
+    const std::string &CallFuncTimeout = cfg.GetItem("General.CallFuncTimeout");
+    if (CallFuncTimeout.empty())
+    {
+        LOG_ERROR_RLD("Session timout threshold config item not found.");
+        return 0;
+    }
+
+    const std::string &strMemcachedAddress = cfg.GetItem("MemCached.MemAddress");
+    if (strMemcachedAddress.empty())
+    {
+        LOG_ERROR_RLD("Memcached address config item not found.");
+        return 0;
+    }
+
+    const std::string &strMemcachedPort = cfg.GetItem("MemCached.MemPort");
+    if (strMemcachedPort.empty())
+    {
+        LOG_ERROR_RLD("Memcached port config item not found.");
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////
+    HttpMsgHandler::ParamInfo pm;
+    pm.m_strRemoteAddress = strRemoteAddress;
+    pm.m_strRemotePort = strRemotePort;
+    pm.m_strSelfID = strSelfID;
+    pm.m_uiCallFuncTimeout = boost::lexical_cast<unsigned int>(CallFuncTimeout);
+    pm.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
+    pm.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
+
+
+    HttpMsgHandler filehdr(pm);
+        
+    FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
+    fcgimgr.SetMsgHandler("register_user", boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
+    
 
     fcgimgr.Run(true);
     return 0;

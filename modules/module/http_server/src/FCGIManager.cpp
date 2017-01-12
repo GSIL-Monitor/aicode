@@ -3,15 +3,36 @@
 #include "util.h"
 #include "LogRLD.h"
 
-FCGIManager::FCGIManager(ConfigSt& cfg, const unsigned int uiRunTdNum) : m_cfg(cfg), m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum)
+const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
+
+const std::string FCGIManager::REQUEST_METHOD = "REQUEST_METHOD";
+
+const std::string FCGIManager::REQUEST_URI = "REQUEST_URI";
+
+const std::string FCGIManager::CGI_NAME = "CGI_NAME";
+
+const std::string FCGIManager::ACTION = "ACTION";
+
+const std::string FCGIManager::CONTENT_LENGTH = "CONTENT_LENGTH";
+
+const std::string FCGIManager::CONTENT_TYPE = "CONTENT_TYPE";
+
+const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
+
+FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum)
 {
-    FCGX_Init();
+    int iRet = 0;
+    if (0 != (iRet = FCGX_Init()))
+    {
+        LOG_ERROR_RLD("FCGI init failed and return code is " << iRet);
+        return;
+    }
+    
+    LOG_INFO_RLD("FCGI init success.");
 
-    m_ParseFuncMap.insert(std::map<std::string, ParseMsgFunc>::value_type("upload_file", boost::bind(&FCGIManager::ParseMsgOfUpload, this, _1, _2)));
-    m_ParseFuncMap.insert(std::map<std::string, ParseMsgFunc>::value_type("speed_upload_file", boost::bind(&FCGIManager::ParseMsgOfSpeedUpload, this, _1, _2)));
-    m_ParseFuncMap.insert(std::map<std::string, ParseMsgFunc>::value_type("delete_file", boost::bind(&FCGIManager::ParseMsgOfDelete, this, _1, _2)));
-    m_ParseFuncMap.insert(std::map<std::string, ParseMsgFunc>::value_type("download_file", boost::bind(&FCGIManager::ParseMsgOfDownload, this, _1, _2)));
-
+    SetParseMsgFunc("POST", boost::bind(&FCGIManager::ParseMsgOfPost, this, _1, _2));
+    SetParseMsgFunc("GET", boost::bind(&FCGIManager::ParseMsgOfGet, this, _1, _2));
+    
 }
 
 FCGIManager::~FCGIManager()
@@ -31,74 +52,50 @@ void FCGIManager::Run(bool isWaitRunFinished /*= false*/)
 
 }
 
-
-
-void FCGIManager::SetUploadMsgHandler(MsgHandler msghdr)
+void FCGIManager::SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn)
 {
-    m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type("upload_file", msghdr));
+    m_ParseFuncMap.insert(std::map<std::string, ParseMsgFunc>::value_type(strKey, fn));
 }
 
-void FCGIManager::SetSpeedUploadMsgHandler(MsgHandler msghdr)
+void FCGIManager::SetMsgHandler(const std::string &strKey, MsgHandler msghdr)
 {
-    m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type("speed_upload_file", msghdr));
+    m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type(strKey, msghdr));
 }
-
-void FCGIManager::SetDeleteMsgHandler(MsgHandler msghdr)
-{
-    m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type("delete_file", msghdr));
-}
-
-void FCGIManager::SetDownloadMsgHandler(MsgHandler msghdr)
-{
-    m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type("download_file", msghdr));
-}
-
-const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
-
-const std::string FCGIManager::REQUEST_METHOD = "REQUEST_METHOD";
-
-const std::string FCGIManager::REQUEST_URI = "REQUEST_URI";
-
-const std::string FCGIManager::CGI_NAME = "CGI_NAME";
-
-const std::string FCGIManager::ACTION = "ACTION";
-
-const std::string FCGIManager::CONTENT_LENGTH = "CONTENT_LENGTH";
-
-const std::string FCGIManager::CONTENT_TYPE = "CONTENT_TYPE";
-
-const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
 
 void FCGIManager::FCGILoopHandler()
 {
-    FCGX_Request	*pRequest = NULL;
+    FCGX_Request request;
+    FCGX_Request	*pRequest = &request;
 
     while (true)
     {
-        pRequest = new FCGX_Request;
+        int ret = FCGX_InitRequest(pRequest, 0, 0);
 
-        FCGX_InitRequest(pRequest, 0, 0);
+        if (0 != ret)
+        {
+            LOG_ERROR_RLD("FCGI init req error and return code is " << ret);
+            continue;
+        }
 
-        //FCGX_Detach( pRequest );
-        //pthread_mutex_lock(&accept_mutex);
+        ret = FCGX_Accept_r(pRequest);
 
-        int ret = FCGX_Accept_r(pRequest);
-        //pthread_mutex_unlock(&accept_mutex);
-
-        if (0 > ret)
+        if (0 != ret)
         {
             //释放资源
             FCGX_Detach(pRequest);
             FCGX_Finish_r(pRequest);
-            delete pRequest;
-            pRequest = NULL;
+
+            LOG_ERROR_RLD("FCGI accept error and return code is " << ret);
+            continue;
         }
 
         ParseAndHandleMsg(pRequest);
 
+        //LOG_INFO_RLD("===================before sleep================");
+        //boost::this_thread::sleep(boost::posix_time::seconds(2));
+        //LOG_INFO_RLD("===================end sleep================");
+
         FCGX_Finish_r(pRequest);
-        delete pRequest;
-        pRequest = NULL;
     }
 }
 
@@ -125,32 +122,31 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     std::string strQueryStr = FCGX_GetParam(QUERY_STRING.c_str(), pRequest->envp);
     std::string strAction;
     getURIRequestData(strQueryStr.c_str(), ACTION.c_str(), strAction);
-        
+            
     std::string strMethod = FCGX_GetParam(REQUEST_METHOD.c_str(), pRequest->envp);
     std::string strRequestUri = FCGX_GetParam(REQUEST_URI.c_str(), pRequest->envp);
-    std::string strCgiName;
-
-    if (!strRequestUri.empty())
+    if (strRequestUri.empty())
     {
-        string::size_type iPos = 0;
-
-        if (string::npos == (iPos = strRequestUri.find_first_of('?')))
-        {
-            LOG_ERROR_RLD("Request url error : " << strRequestUri);
-            return;
-        }
-        else
-        {
-            std::string	sTmpBuf;
-            sTmpBuf = strRequestUri.substr(0, iPos);
-            if (string::npos == (iPos = sTmpBuf.find_last_of('/')))
-            {
-                LOG_ERROR_RLD("Request url error : " << strRequestUri);
-                return;
-            }
-            strCgiName = sTmpBuf.substr(iPos + 1);
-        }
+        LOG_ERROR_RLD("FCGI get request url is empty.");
+        return;
     }
+    
+    std::string strCgiName;
+    string::size_type iPos = 0;
+    if (string::npos == (iPos = strRequestUri.find_first_of('?')))
+    {
+        LOG_ERROR_RLD("Request url error : " << strRequestUri);
+        return;
+    }
+    
+    std::string	sTmpBuf;
+    sTmpBuf = strRequestUri.substr(0, iPos);
+    if (string::npos == (iPos = sTmpBuf.find_last_of('/')))
+    {
+        LOG_ERROR_RLD("Request url error : " << strRequestUri);
+        return;
+    }
+    strCgiName = sTmpBuf.substr(iPos + 1);
 
     std::string strContentLen = FCGX_GetParam(CONTENT_LENGTH.c_str(), pRequest->envp);
 
@@ -166,15 +162,27 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     if (strContentLen != "")  pMsgInfoMap->insert(MsgInfoMap::value_type(CONTENT_LENGTH, strContentLen));
     if (strContentType != "") pMsgInfoMap->insert(MsgInfoMap::value_type(CONTENT_TYPE, strContentType));
     if (strHttpRange != "")   pMsgInfoMap->insert(MsgInfoMap::value_type(HTTP_RANGE, strHttpRange));
-    
-    std::map<std::string, ParseMsgFunc>::iterator itFind;
-    if (m_ParseFuncMap.end() == (itFind = m_ParseFuncMap.find(strAction)))
+
+    //首先根据method来解析处理
     {
-        LOG_ERROR_RLD("Not found parse msg handler, action error: " << strAction);
-        return;
+        std::map<std::string, ParseMsgFunc>::iterator itFind;
+        if (m_ParseFuncMap.end() == (itFind = m_ParseFuncMap.find(strMethod)))
+        {
+            LOG_ERROR_RLD("Not found parse msg handler, method is " << strMethod);
+            return;
+        }
+
+        itFind->second(pMsgInfoMap, pRequest);
     }
 
-    itFind->second(pMsgInfoMap, pRequest); //由具体业务再次解析得到具体的业务参数
+    //然后开始根据业务注册的action函数来继续解析
+    {        
+        std::map<std::string, ParseMsgFunc>::iterator itFind;
+        if (m_ParseFuncMap.end() != (itFind = m_ParseFuncMap.find(strAction)))
+        {
+            itFind->second(pMsgInfoMap, pRequest); //由具体业务再次解析得到具体的业务参数
+        }        
+    }
 
     auto itBegin = pMsgInfoMap->begin();
     auto itEnd = pMsgInfoMap->end();
@@ -183,8 +191,7 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
         LOG_INFO_RLD("Param info: key=[" << itBegin->first << "],value=[" << itBegin->second << "]");
         ++itBegin;
     }
-
-    
+        
     //根据具体业务调用对应的Handler来进行处理。
     std::map<std::string, MsgHandler>::iterator itFindHandler;
     if (m_MsgHandlerMap.end() == (itFindHandler = m_MsgHandlerMap.find(strAction)))
@@ -197,7 +204,7 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
         
 }
 
-void FCGIManager::ParseMsgOfUpload(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
+void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
 {
     auto itFind = pMsgInfoMap->find(CONTENT_TYPE);
     if (pMsgInfoMap->end() == itFind)
@@ -325,17 +332,7 @@ void FCGIManager::ParseMsgOfUpload(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FC
     pMsgInfoMap->insert(MsgInfoMap::value_type("speeduploadmodel", "1"));
 }
 
-void FCGIManager::ParseMsgOfSpeedUpload(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
-{
-    ParseMsgOfDownload(pMsgInfoMap, pRequest);  //解析规则和download相同，GET方式参数
-}
-
-void FCGIManager::ParseMsgOfDelete(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
-{
-
-}
-
-void FCGIManager::ParseMsgOfDownload(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
+void FCGIManager::ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
 {
     auto itFind = pMsgInfoMap->find(QUERY_STRING);
     if (pMsgInfoMap->end() == itFind)

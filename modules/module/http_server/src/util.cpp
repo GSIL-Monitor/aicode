@@ -257,10 +257,22 @@ char *trim( char *str )
         char *p = str;
         char *q = str;
  
-        while( *q++ ); q -= 2;
-        while( p <= q && isspace(*q) ) q--;
-        while( p <= q && isspace(*p) ) p++;
-        while( p <= q ) *str++ = *p++;
+        while (*q++){};
+
+        q -= 2;
+
+        while( p <= q && isspace(*q) )
+        {
+            q--;
+        }
+        while( p <= q && isspace(*p) )
+        {
+            p++;
+        }
+        while( p <= q )
+        {
+            *str++ = *p++;
+        }
  
         *str = '\0';
  
