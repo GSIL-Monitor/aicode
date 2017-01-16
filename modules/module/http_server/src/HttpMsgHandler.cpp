@@ -27,14 +27,27 @@ HttpMsgHandler::~HttpMsgHandler()
 
 void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));                   
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+        
     auto itFind = pMsgInfoMap->find("username");
     if (pMsgInfoMap->end() == itFind)
     {
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
-
         LOG_ERROR_RLD("User name not found.");
         return;
     }
@@ -43,26 +56,26 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
     itFind = pMsgInfoMap->find("userpwd");
     if (pMsgInfoMap->end() == itFind)
-    {
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
-
+    {        
         LOG_ERROR_RLD("User password not found.");
         return;
     }
     const std::string strUserPwd = itFind->second;
-
-
+    
     itFind = pMsgInfoMap->find("type");    
     if (pMsgInfoMap->end() == itFind)
-    {
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
-        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
-
+    {        
         LOG_ERROR_RLD("User type not found.");
         return;
     }
     const int iType = boost::lexical_cast<int>(itFind->second);
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
 
     std::string strValue;
     itFind = pMsgInfoMap->find("value");
@@ -71,19 +84,25 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         strValue = itFind->second;
     }
 
-    LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << iType);
+    LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << iType
+         << " and extend is [" << strExtend << "] and strValue is [" <<   strValue << "]");
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
     
-    WriteMsg(ResultInfoMap, writer);
+    blResult = true;
+
+}
+
+void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
 
 
 }
 
-void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool IsError)
+void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult)
 {
     Json::Value jsBody;
     auto itBegin = MsgMap.begin();
@@ -101,7 +120,7 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
     //writer(strBody.c_str(), strBody.size(), MsgWriterModel::PRINT_MODEL);
 
     std::string strOutputMsg;
-    if (IsError)
+    if (!blResult)
     {
         strOutputMsg = "Status: 500  Error\r\nContent-Type: text/html\r\n\r\n";
     }

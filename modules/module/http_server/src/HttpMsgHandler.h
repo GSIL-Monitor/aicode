@@ -31,8 +31,10 @@ public:
 
     void RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    void UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 private:
-    void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool IsError = false);
+    void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true);
     
 private:
     ParamInfo m_ParamInfo;

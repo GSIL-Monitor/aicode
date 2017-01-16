@@ -3,6 +3,7 @@
 #include "util.h"
 #include "LogRLD.h"
 #include <boost/scope_exit.hpp>
+#include <boost/algorithm/string.hpp>
 
 const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
 
@@ -248,88 +249,53 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
 
     strBoundary = "--" + strBoundary;
 
-    //根据boundary，获取其他各个参数
-    char	szKey[256] = { 0 };
-    //char	szFileName[512];
-    char	szLineBuf[1024] = { 0 };
-    char	*p = NULL;
-    char	*p1 = NULL;
-    char	*p2 = NULL;
-
-    int		iLineLen = 0;
-
-    bool	bIsValue = false;
-    bool	bIsHead = false;
-
-    std::string	sBoundaryEnd;
-    std::string	sTmpData;
-
-    //m_sBoundry		=	"--" + m_sBoundry;
-    sBoundaryEnd += strBoundary + "--";
-
-    memset(szLineBuf, 0x00, sizeof(szLineBuf));
-
-    while (FCGX_GetLine(szLineBuf, sizeof(szLineBuf) - 1, pRequest->in))
+    std::string strReadBuffer;
+    std::string strKey;
+    std::string strValue;
+    char cReadBuffer[1024] = { 0 };
+    while (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
     {
-        trim(szLineBuf);
-        iLineLen = strlen(szLineBuf);
-        if (0 == iLineLen)
-        {
-            memset(szLineBuf, 0x00, sizeof(szLineBuf));
-            if (bIsHead)
-            {
-                bIsValue = true;
-                bIsHead = false;
-            }
-            continue;
-        }
-        p = szLineBuf;
+        strReadBuffer = cReadBuffer;
 
-        if (strBoundary == p)
-        {
-            if (bIsValue)
-            {
-                std::transform(szKey, szKey + strlen(szKey), szKey, ::tolower);
-                pMsgInfoMap->insert(MsgInfoMap::value_type(szKey, sTmpData));
+        LOG_INFO_RLD("FCGI get line is " << strReadBuffer);
 
-                sTmpData = "";
-                bIsValue = false;
-            }
-            memset(szLineBuf, 0x00, sizeof(szLineBuf));
-            continue;
-        }
-
-        if (!strncasecmp(p, "Content-Disposition:", 20))  // title
+        if (std::string::npos != strReadBuffer.find("Content-Disposition: form-data;"))
         {
-            if (NULL == (p1 = strstr(p, "name=\"")))
+            if ((std::string::npos != strReadBuffer.find("filename")) && (std::string::npos != strReadBuffer.find("name")))
             {
-                return;
+                LOG_ERROR_RLD("Invalid read line " << strReadBuffer);
+                continue;
             }
 
-            p1 += 6;
-
-            if (NULL == (p2 = strchr(p1, '\"')))
+            std::size_t PosFind = 0;
+            if (std::string::npos != (PosFind = strReadBuffer.find("name=\"")))
             {
-                return;
+                PosFind += 6;
+
+                std::size_t PosFind2 = strReadBuffer.find("\"", PosFind);
+                strKey = strReadBuffer.substr(PosFind, (PosFind2 - PosFind));
+                
+                boost::algorithm::trim_if(strKey, boost::algorithm::is_any_of(" \n\r"));
             }
 
-            memset(szKey, 0x00, sizeof(szKey));
-            snprintf(szKey, p2 - p1 + 1, p1);
-
-            //bIsValue = true;
-            bIsHead = true;
-        }
-        else   //value
-        {
-            if (bIsValue)
+            if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
             {
-                sTmpData += p;
+                LOG_INFO_RLD("FCGI get line is " << cReadBuffer);
+                if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
+                {
+                    LOG_INFO_RLD("FCGI get line2 is " << cReadBuffer);
+
+                    strValue = cReadBuffer;
+
+                    boost::algorithm::trim_if(strValue, boost::algorithm::is_any_of(" \n\r"));
+
+                    pMsgInfoMap->insert(MsgInfoMap::value_type(strKey, strValue));
+
+                    LOG_INFO_RLD("FCGI insert param map key is " << strKey << " and value is " << strValue);
+                }
             }
         }
-
-        memset(szLineBuf, 0x00, sizeof(szLineBuf));
-    }
-        
+    }        
 }
 
 void FCGIManager::ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest)
