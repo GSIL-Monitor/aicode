@@ -228,6 +228,7 @@ int main(int argc, char *argv[])
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     fcgimgr.SetMsgHandler("register_user", boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("unregister_user", boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));
     
 
     fcgimgr.Run(true);

@@ -98,8 +98,66 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
 void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("username");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User name not found.");
+        return;
+    }
+    const std::string strUserName = itFind->second;
 
 
+    itFind = pMsgInfoMap->find("userpwd");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User password not found.");
+        return;
+    }
+    const std::string strUserPwd = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserid = itFind->second;
+
+    std::string strValue;
+    itFind = pMsgInfoMap->find("value");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strValue = itFind->second;
+    }
+
+    LOG_INFO_RLD("Unregister user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user id is " << strUserid
+        << " and strValue is [" << strValue << "]");
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+
+    blResult = true;
+        
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult)
