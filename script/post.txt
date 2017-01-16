@@ -1,0 +1,18 @@
+------------------------------bb6616565040
+Content-Disposition: form-data; name="username"
+
+yinbin
+------------------------------bb6616565040
+Content-Disposition: form-data; name="userpwd"
+
+ppp
+------------------------------bb6616565040
+Content-Disposition: form-data; name="type"
+
+1
+------------------------------bb6616565040
+Content-Disposition: form-data; name="value"
+
+payload
+------------------------------bb6616565040--
+

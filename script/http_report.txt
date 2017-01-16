@@ -2,6 +2,7 @@ curl -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload  http://172.20
 curl -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload -x 172.20.122.175:8888  http://172.20.122.252/access.cgi?action=register_user
 curl -k  -F username=yinbin -F userpwd=ppp -F type=1 -F value=payload  https://172.20.122.252/access.cgi?action=register_user
 
+ab -c 10 -n 100000 -p 'post.txt' -T 'multipart/form-data; boundary=----------------------------bb6616565040' http://172.20.122.252/access.cgi?action=register_user
 
 POST http://172.20.122.252/access.cgi?action=register_user HTTP/1.1
 User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.21 Basic ECC zlib/1.2.3 libidn/1.18 libssh2/1.4.2
