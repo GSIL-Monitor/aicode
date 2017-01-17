@@ -187,7 +187,7 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     }
 
     //然后开始根据业务注册的action函数来继续解析
-    {        
+    {
         std::map<std::string, ParseMsgFunc>::iterator itFind;
         if (m_ParseFuncMap.end() != (itFind = m_ParseFuncMap.find(strAction)))
         {
