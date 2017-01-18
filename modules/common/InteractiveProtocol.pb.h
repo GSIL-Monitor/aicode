@@ -3137,10 +3137,21 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated .Interactive.Message.Relation relationInfo = 1;
+  // optional string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // repeated .Interactive.Message.Relation relationInfo = 2;
   int relationinfo_size() const;
   void clear_relationinfo();
-  static const int kRelationInfoFieldNumber = 1;
+  static const int kRelationInfoFieldNumber = 2;
   const ::Interactive::Message::Relation& relationinfo(int index) const;
   ::Interactive::Message::Relation* mutable_relationinfo(int index);
   ::Interactive::Message::Relation* add_relationinfo();
@@ -3149,9 +3160,9 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
       relationinfo() const;
 
-  // optional string strValue = 2;
+  // optional string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   void set_strvalue(const char* value);
@@ -3165,6 +3176,7 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > relationinfo_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend void  protobuf_InitDefaults_InteractiveProtocol_2eproto_impl();
@@ -10343,7 +10355,51 @@ inline const LoginReq_USR* LoginReq_USR::internal_default_instance() {
 
 // LoginRsp_USR
 
-// repeated .Interactive.Message.Relation relationInfo = 1;
+// optional string strUserID = 1;
+inline void LoginRsp_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginRsp_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginRsp_USR.strUserID)
+  return struserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginRsp_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginRsp_USR.strUserID)
+}
+inline void LoginRsp_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginRsp_USR.strUserID)
+}
+inline void LoginRsp_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginRsp_USR.strUserID)
+}
+inline ::std::string* LoginRsp_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginRsp_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginRsp_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginRsp_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginRsp_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginRsp_USR.strUserID)
+}
+
+// repeated .Interactive.Message.Relation relationInfo = 2;
 inline int LoginRsp_USR::relationinfo_size() const {
   return relationinfo_.size();
 }
@@ -10373,7 +10429,7 @@ LoginRsp_USR::relationinfo() const {
   return relationinfo_;
 }
 
-// optional string strValue = 2;
+// optional string strValue = 3;
 inline void LoginRsp_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

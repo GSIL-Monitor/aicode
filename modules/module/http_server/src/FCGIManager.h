@@ -34,7 +34,7 @@ public:
     void SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn); //消息解析处理
 
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
-        
+    
 private:
     void FCGILoopHandler();
 

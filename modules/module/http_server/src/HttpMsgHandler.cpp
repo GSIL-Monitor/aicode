@@ -315,11 +315,13 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     jsRelationList.append(jsRelation);
     jsRelationList.append(jsRelation2);
 
-        
+    
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sid", "jkjkdjk89892s"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "yudyuayuyudyuabn"));
+
 
     blResult = true;
 
@@ -328,7 +330,702 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
 void HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
 
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+        
+    std::string strValue;
+    itFind = pMsgInfoMap->find("value");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strValue = itFind->second;
+    }
+
+    LOG_INFO_RLD("Logout user info received and  user id is " << strUserID << " and strValue is [" << strValue << "]" 
+        << " and session id is " << strSid);
+
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+}
+
+void HttpMsgHandler::ConfigInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+
+
+}
+
+void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devname");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device name not found.");
+        return;
+    }
+    const std::string strDevName = itFind->second;
+
+    std::string strDevPwd;
+    itFind = pMsgInfoMap->find("devpwd");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevPwd = itFind->second;
+    }
+    
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return;
+    }
+    const std::string strDevType = itFind->second;
+
+    std::string strDevExtend;
+    itFind = pMsgInfoMap->find("devextend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevExtend = itFind->second;
+    }
+    
+    std::string strDevInnerInfo;
+    itFind = pMsgInfoMap->find("devinnerinfo");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevInnerInfo = itFind->second;
+    }
+
+    LOG_INFO_RLD("Add device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
+        << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
+        << " and device inner info is [" << strDevInnerInfo << "]"
+        << " and session id is " << strSid);
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+
+}
+
+void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+    
+    LOG_INFO_RLD("Delete device info received and  user id is " << strUserID << " and devcie id is " << strDevID 
+        << " and session id is " << strSid);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+}
+
+void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devname");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device name not found.");
+        return;
+    }
+    const std::string strDevName = itFind->second;
+
+    std::string strDevPwd;
+    itFind = pMsgInfoMap->find("devpwd");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevPwd = itFind->second;
+    }
+
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return;
+    }
+    const std::string strDevType = itFind->second;
+
+    std::string strDevExtend;
+    itFind = pMsgInfoMap->find("devextend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevExtend = itFind->second;
+    }
+
+    std::string strDevInnerInfo;
+    itFind = pMsgInfoMap->find("devinnerinfo");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevInnerInfo = itFind->second;
+    }
+
+    LOG_INFO_RLD("Modify device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
+        << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
+        << " and device inner info is [" << strDevInnerInfo << "]"
+        << " and session id is " << strSid);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+
+}
+
+void HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    LOG_INFO_RLD("Query device info received and  devcie id is " << strDevID
+        << " and session id is " << strSid);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devid", "jkdjkajk"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devname", "yuieuiw"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devpwd", "pwd"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devtype", "0"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devextend", "extend"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devinnerinfo", "jkdi893kdsjksjk"));
+
+    blResult = true;
+
+}
+
+void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsRelationList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsRelationList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsRelationList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }        
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Begin index not found.");
+        return;
+    }
+    const std::string strBeginIndex = itFind->second;
+        
+    LOG_INFO_RLD("Query device of user info received and  user id is " << strUserID
+        << " and begin index is " << strBeginIndex
+        << " and session id is " << strSid);
+
+
+    Json::Value jsRelation;
+    jsRelation["userid"] = "dlklkalk";
+    jsRelation["devid"] = "wuiesd89";
+    jsRelation["relation"] = "0";
+    jsRelation["begindate"] = "2010-08-08";
+    jsRelation["enddate"] = "2013-08-11";
+    jsRelation["value"] = "testvalue";
+
+    Json::Value jsRelation2;
+    jsRelation2["userid"] = "drtertrty";
+    jsRelation2["devid"] = "546546redf";
+    jsRelation2["relation"] = "1";
+    jsRelation2["begindate"] = "2010-08-08";
+    jsRelation2["enddate"] = "2013-08-11";
+    jsRelation2["value"] = "testvalue";
+
+
+
+    jsRelationList.append(jsRelation);
+    jsRelationList.append(jsRelation2);
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+
+    blResult = true;
+
+}
+
+void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsRelationList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsRelationList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsRelationList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Begin index not found.");
+        return;
+    }
+    const std::string strBeginIndex = itFind->second;
+
+    LOG_INFO_RLD("Query user of device info received and  device id is " << strDevID
+        << " and begin index is " << strBeginIndex
+        << " and session id is " << strSid);
+
+
+    Json::Value jsRelation;
+    jsRelation["userid"] = "dlklkalk";
+    jsRelation["devid"] = "wuiesd89";
+    jsRelation["relation"] = "0";
+    jsRelation["begindate"] = "2010-08-08";
+    jsRelation["enddate"] = "2013-08-11";
+    jsRelation["value"] = "testvalue";
+
+    Json::Value jsRelation2;
+    jsRelation2["userid"] = "drtertrty";
+    jsRelation2["devid"] = "546546redf";
+    jsRelation2["relation"] = "1";
+    jsRelation2["begindate"] = "2010-08-08";
+    jsRelation2["enddate"] = "2013-08-11";
+    jsRelation2["value"] = "testvalue";
+
+
+
+    jsRelationList.append(jsRelation);
+    jsRelationList.append(jsRelation2);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+
+    blResult = true;
+}
+
+void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("relation");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Relation not found.");
+        return;
+    }
+    const std::string strRelation = itFind->second;
+
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Begin date not found.");
+        return;
+    }
+    const std::string strBeginDate = itFind->second;
+
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("End date not found.");
+        return;
+    }
+    const std::string strEndDate = itFind->second;
+    
+    std::string strValue;
+    itFind = pMsgInfoMap->find("value");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strValue = itFind->second;
+    }
+
+    LOG_INFO_RLD("Sharing device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and relation is " << strRelation
+        << " and begin date is [" << strBeginDate << "]" << " and end date is " << strEndDate << " and value is [" << strValue << "]"
+        << " and session id is " << strSid);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+}
+
+void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("relation");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Relation not found.");
+        return;
+    }
+    const std::string strRelation = itFind->second;
+
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Begin date not found.");
+        return;
+    }
+    const std::string strBeginDate = itFind->second;
+
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("End date not found.");
+        return;
+    }
+    const std::string strEndDate = itFind->second;
+
+    std::string strValue;
+    itFind = pMsgInfoMap->find("value");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strValue = itFind->second;
+    }
+
+    LOG_INFO_RLD("Cancel shared device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and relation is " << strRelation
+        << " and begin date is [" << strBeginDate << "]" << " and end date is " << strEndDate << " and value is [" << strValue << "]"
+        << " and session id is " << strSid);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)

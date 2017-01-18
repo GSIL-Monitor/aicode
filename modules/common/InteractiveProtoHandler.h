@@ -264,7 +264,7 @@ public:
 
     struct LoginRsp_USR : Rsp
     {
-
+        std::string m_strUserID; //系统返回用户ID，这个ID后续用来代表用户的身份来进行后续的操作
         std::list<Relation> m_reInfoList; //用户登录之后返回用户所关联的设备信息，包括了拥有、分享中、被分享的所有设备，这些类型在Device中有字段表示
         std::string m_strValue;
 

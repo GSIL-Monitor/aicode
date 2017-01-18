@@ -231,7 +231,16 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler("unregister_user", boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler("query_userinfo", boost::bind(&HttpMsgHandler::QueryUserInfoHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler("user_login", boost::bind(&HttpMsgHandler::UserLoginHandler, &filehdr, _1, _2));
-    
+    fcgimgr.SetMsgHandler("user_logout", boost::bind(&HttpMsgHandler::UserLogoutHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("add_device", boost::bind(&HttpMsgHandler::AddDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("delete_device", boost::bind(&HttpMsgHandler::DeleteDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("modify_device", boost::bind(&HttpMsgHandler::ModifyDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("query_device", boost::bind(&HttpMsgHandler::QueryDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("query_device_of_user", boost::bind(&HttpMsgHandler::QueryDevicesOfUserHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("query_user_of_device", boost::bind(&HttpMsgHandler::QueryUsersOfDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("sharing_device", boost::bind(&HttpMsgHandler::SharingDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("cancelshared_device", boost::bind(&HttpMsgHandler::CancelSharedDeviceHandler, &filehdr, _1, _2));
+
     fcgimgr.Run(true);
     return 0;
 }

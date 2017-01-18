@@ -1239,6 +1239,7 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
 void InteractiveProtoHandler::LoginRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.rspvalue().loginrsp_usr_value().struserid();
     UnSerializeRelationList(m_reInfoList, InteractiveMsg.rspvalue().loginrsp_usr_value().relationinfo());
     m_strValue = InteractiveMsg.rspvalue().loginrsp_usr_value().strvalue();
 
@@ -1250,6 +1251,7 @@ void InteractiveProtoHandler::LoginRsp_USR::Serializer(InteractiveMessage &Inter
     InteractiveMsg.set_type(Interactive::Message::MsgType::LoginRsp_USR_T);
 
     InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->set_strvalue(m_strValue);
+    InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->set_struserid(m_strUserID);
 
     auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->mutable_relationinfo();
     SerializeRelationList(m_reInfoList, uinfo);
