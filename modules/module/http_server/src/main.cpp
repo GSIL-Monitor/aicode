@@ -240,6 +240,10 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler("query_user_of_device", boost::bind(&HttpMsgHandler::QueryUsersOfDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler("sharing_device", boost::bind(&HttpMsgHandler::SharingDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler("cancelshared_device", boost::bind(&HttpMsgHandler::CancelSharedDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("add_friend", boost::bind(&HttpMsgHandler::AddFriendsHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("delete_friend", boost::bind(&HttpMsgHandler::DeleteFriendsHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler("query_friend", boost::bind(&HttpMsgHandler::QueryFriendHandler, &filehdr, _1, _2));
+
 
     fcgimgr.Run(true);
     return 0;
