@@ -16,6 +16,23 @@
 class HttpMsgHandler : public boost::noncopyable
 {
 public:
+    static const std::string REGISTER_USER_ACTION;
+    static const std::string UNREGISTER_USER_ACTION;
+    static const std::string QUERY_USER_INFO_ACTION;
+    static const std::string USER_LOGIN_ACTION;
+    static const std::string USER_LOGOUT_ACTION;
+    static const std::string ADD_DEVICE_ACTION;
+    static const std::string DELETE_DEVICE_ACTION;
+    static const std::string MODIFY_DEVICE_ACTION;
+    static const std::string QUERY_DEVICE_INFO_ACTION;
+    static const std::string QUERY_DEVICE_OF_USER_ACTION;
+    static const std::string QUERY_USER_OF_DEVICE_ACTION;
+    static const std::string SHARING_DEVICE_ACTION;
+    static const std::string CANCELSHARED_DEVICE_ACTION;
+    static const std::string ADD_FRIEND_ACTION;
+    static const std::string DELETE_FRIEND_ACTION;
+    static const std::string QUERY_FRIEND_ACTION;
+    
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;

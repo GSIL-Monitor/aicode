@@ -227,22 +227,22 @@ int main(int argc, char *argv[])
     HttpMsgHandler filehdr(pm);
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
-    fcgimgr.SetMsgHandler("register_user", boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("unregister_user", boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("query_userinfo", boost::bind(&HttpMsgHandler::QueryUserInfoHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("user_login", boost::bind(&HttpMsgHandler::UserLoginHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("user_logout", boost::bind(&HttpMsgHandler::UserLogoutHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("add_device", boost::bind(&HttpMsgHandler::AddDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("delete_device", boost::bind(&HttpMsgHandler::DeleteDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("modify_device", boost::bind(&HttpMsgHandler::ModifyDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("query_device", boost::bind(&HttpMsgHandler::QueryDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("query_device_of_user", boost::bind(&HttpMsgHandler::QueryDevicesOfUserHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("query_user_of_device", boost::bind(&HttpMsgHandler::QueryUsersOfDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("sharing_device", boost::bind(&HttpMsgHandler::SharingDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("cancelshared_device", boost::bind(&HttpMsgHandler::CancelSharedDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("add_friend", boost::bind(&HttpMsgHandler::AddFriendsHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("delete_friend", boost::bind(&HttpMsgHandler::DeleteFriendsHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler("query_friend", boost::bind(&HttpMsgHandler::QueryFriendHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::REGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::UNREGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_INFO_ACTION, boost::bind(&HttpMsgHandler::QueryUserInfoHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::USER_LOGIN_ACTION, boost::bind(&HttpMsgHandler::UserLoginHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::USER_LOGOUT_ACTION, boost::bind(&HttpMsgHandler::UserLogoutHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_DEVICE_ACTION, boost::bind(&HttpMsgHandler::AddDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_DEVICE_ACTION, boost::bind(&HttpMsgHandler::DeleteDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::MODIFY_DEVICE_ACTION, boost::bind(&HttpMsgHandler::ModifyDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_INFO_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_OF_USER_ACTION, boost::bind(&HttpMsgHandler::QueryDevicesOfUserHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_OF_DEVICE_ACTION, boost::bind(&HttpMsgHandler::QueryUsersOfDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::SHARING_DEVICE_ACTION, boost::bind(&HttpMsgHandler::SharingDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::CANCELSHARED_DEVICE_ACTION, boost::bind(&HttpMsgHandler::CancelSharedDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_FRIEND_ACTION, boost::bind(&HttpMsgHandler::AddFriendsHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_FRIEND_ACTION, boost::bind(&HttpMsgHandler::DeleteFriendsHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_FRIEND_ACTION, boost::bind(&HttpMsgHandler::QueryFriendHandler, &filehdr, _1, _2));
 
 
     fcgimgr.Run(true);

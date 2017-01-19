@@ -15,6 +15,38 @@ const std::string HttpMsgHandler::SUCCESS_MSG = "Ok";
 const std::string HttpMsgHandler::FAILED_CODE = "-1";
 const std::string HttpMsgHandler::FAILED_MSG = "Inner failed";
 
+const std::string HttpMsgHandler::REGISTER_USER_ACTION("register_user");
+
+const std::string HttpMsgHandler::UNREGISTER_USER_ACTION("unregister_user");
+
+const std::string HttpMsgHandler::QUERY_USER_INFO_ACTION("query_userinfo");
+
+const std::string HttpMsgHandler::USER_LOGIN_ACTION("user_login");
+
+const std::string HttpMsgHandler::USER_LOGOUT_ACTION("user_logout");
+
+const std::string HttpMsgHandler::ADD_DEVICE_ACTION("add_device");
+
+const std::string HttpMsgHandler::DELETE_DEVICE_ACTION("delete_device");
+
+const std::string HttpMsgHandler::MODIFY_DEVICE_ACTION("modify_device");
+
+const std::string HttpMsgHandler::QUERY_DEVICE_INFO_ACTION("query_deviceinfo");
+
+const std::string HttpMsgHandler::QUERY_DEVICE_OF_USER_ACTION("query_device_of_user");
+
+const std::string HttpMsgHandler::QUERY_USER_OF_DEVICE_ACTION("query_user_of_device");
+
+const std::string HttpMsgHandler::SHARING_DEVICE_ACTION("sharing_device");
+
+const std::string HttpMsgHandler::CANCELSHARED_DEVICE_ACTION("cancelshared_device");
+
+const std::string HttpMsgHandler::ADD_FRIEND_ACTION("add_friend");
+
+const std::string HttpMsgHandler::DELETE_FRIEND_ACTION("delete_friend");
+
+const std::string HttpMsgHandler::QUERY_FRIEND_ACTION("query_friend");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo) : m_ParamInfo(parminfo)
 {
 
