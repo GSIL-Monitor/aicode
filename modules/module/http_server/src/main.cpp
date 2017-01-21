@@ -8,6 +8,7 @@
 #include "ConfigSt.h"
 #include "LogRLD.h"
 #include "boost/lexical_cast.hpp"
+#include "CommMsgHandler.h"
 
 #define CONFIG_FILE_NAME "http_server.ini"
 #define PROCESS_NAME     "access_cgi"
@@ -223,6 +224,8 @@ int main(int argc, char *argv[])
     pm.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
     pm.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
 
+    CommMsgHandler::SetCommRunningThreads(pm.m_uiThreadOfWorking);
+    CommMsgHandler::SetTimeoutRunningThreads(pm.m_uiThreadOfWorking);
 
     HttpMsgHandler filehdr(pm);
         

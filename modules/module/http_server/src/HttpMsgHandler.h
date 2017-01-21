@@ -13,6 +13,9 @@
  *调用接口实现用户注册的业务动作。*/
 /************************************************************************/
 
+class InteractiveProtoHandler;
+class CommMsgHandler;
+
 class HttpMsgHandler : public boost::noncopyable
 {
 public:
@@ -83,16 +86,19 @@ public:
 
 private:
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
+
+    bool RegisterUser(const std::string &strUserName, const std::string &strUserPwd, 
+        const std::string &strType, const std::string &strExtend, std::string &strUserID);
     
 private:
     ParamInfo m_ParamInfo;
-    
+    boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
+
+private:
     static const std::string SUCCESS_CODE;
     static const std::string SUCCESS_MSG;
     static const std::string FAILED_CODE;
     static const std::string FAILED_MSG;
-
-
 
 };
 

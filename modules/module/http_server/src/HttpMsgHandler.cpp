@@ -8,6 +8,9 @@
 #include "util.h"
 #include "mime_types.h"
 #include "LogRLD.h"
+#include "InteractiveProtoHandler.h"
+#include "CommMsgHandler.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
@@ -47,7 +50,9 @@ const std::string HttpMsgHandler::DELETE_FRIEND_ACTION("delete_friend");
 
 const std::string HttpMsgHandler::QUERY_FRIEND_ACTION("query_friend");
 
-HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo) : m_ParamInfo(parminfo)
+HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
+m_ParamInfo(parminfo),
+m_pInteractiveProtoHandler(new InteractiveProtoHandler)
 {
 
 }
@@ -100,7 +105,7 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         LOG_ERROR_RLD("User type not found.");
         return;
     }
-    const int iType = boost::lexical_cast<int>(itFind->second);
+    const std::string strType = itFind->second;
 
     std::string strExtend;
     itFind = pMsgInfoMap->find("extend");
@@ -109,20 +114,19 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         strExtend = itFind->second;
     }
 
-    std::string strValue;
-    itFind = pMsgInfoMap->find("value");
-    if (pMsgInfoMap->end() != itFind)
-    {
-        strValue = itFind->second;
-    }
+    LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << strType
+         << " and extend is [" << strExtend << "]");
 
-    LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << iType
-         << " and extend is [" << strExtend << "] and strValue is [" <<   strValue << "]");
+    std::string strUserID;
+    if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strUserID))
+    {
+        LOG_ERROR_RLD("Register user handle failed");
+        return;
+    }
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", strUserID));
     
     blResult = true;
 
@@ -1287,5 +1291,74 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
 
 }
 
+bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::string &strUserPwd, const std::string &strType, const std::string &strExtend, std::string &strUserID)
+{    
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        unsigned int uiTypeInfo = 0;
+
+        try
+        {
+            uiTypeInfo = boost::lexical_cast<unsigned int>(strType);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Register user type info is invalid and error msg is " << e.what());
+            return false;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Register user type info is invalid");
+            return false;
+        }
+
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
+        RegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T;
+        RegUsrReq.m_uiMsgSeq = 1;
+        RegUsrReq.m_strSID = "";
+        RegUsrReq.m_strValue = "";
+        RegUsrReq.m_userInfo.m_uiStatus = 0;
+        RegUsrReq.m_userInfo.m_strUserID = "";
+        RegUsrReq.m_userInfo.m_strUserName = strUserName;
+        RegUsrReq.m_userInfo.m_strUserPassword = strUserPwd;
+        RegUsrReq.m_userInfo.m_uiTypeInfo = uiTypeInfo;
+        RegUsrReq.m_userInfo.m_strCreatedate = strCurrentTime;
+        RegUsrReq.m_userInfo.m_strExtend = strExtend;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RegUsrReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Register user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RegUsrRsp))
+        {
+            LOG_ERROR_RLD("Register user rsp unserialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+        
+        strUserID = RegUsrRsp.m_strUserID;
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
+
+    chr.SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == chr.Start(m_ParamInfo.m_strRemoteAddress, m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval);
+}
 
 
