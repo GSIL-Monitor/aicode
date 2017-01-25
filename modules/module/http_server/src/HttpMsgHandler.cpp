@@ -1354,11 +1354,12 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         return CommMsgHandler::SUCCEED;
     };
 
-    CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
 
-    chr.SetReqAndRspHandler(ReqFunc, RspFunc);
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
-    return CommMsgHandler::SUCCEED == chr.Start(m_ParamInfo.m_strRemoteAddress, m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval);
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval);
 }
 
 

@@ -49,8 +49,8 @@ CREATE TABLE `t_user_device_relation` (
   `status` int(11) NOT NULL DEFAULT '0',
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX index_ref1(userid, ownerid),
-  INDEX index_ref2(deviceid),
+  INDEX index_ref1(userid, deviceid),
+  INDEX index_ref2(deviceid, userid),
   INDEX index_ref3(userid, createdate),
   INDEX index_ref4(status),
   INDEX index_ref5(createdate)

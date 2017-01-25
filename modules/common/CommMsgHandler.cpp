@@ -3,6 +3,7 @@
 #include "CommMsgHandler.h"
 #include "CommonUtility.h"
 #include "json/json.h"
+#include "LogRLD.h"
 
 
 boost::mutex CommMsgHandler::sm_TimeOutObjMutex;
@@ -37,6 +38,7 @@ m_strID(strID), m_iOperationStatus(SUCCEED), m_nTimeout(iTimeout)
 CommMsgHandler::~CommMsgHandler()
 {
     m_Client->Close();
+    LOG_INFO_RLD("CommMsgHandler was freed and id is " << m_strID << " and session id is " << m_strSessionID);
 }
 
 int CommMsgHandler::Start(const std::string& strIpAddr, const std::string& strPort, unsigned int uiSSLEnabled, unsigned int  uiHandShakeInterval)
@@ -52,8 +54,11 @@ int CommMsgHandler::Start(const std::string& strIpAddr, const std::string& strPo
 
     if ((errcode = SyncConnect()) != SUCCEED)
     {
+        LOG_ERROR_RLD("Connect failed and remote ip is " << strIpAddr << " and remote port is " <<strPort);
         return errcode;
     }
+
+    LOG_INFO_RLD("Connect succeed and remote ip is " << strIpAddr << " and remote port is " << strPort);
 
     return StartTask(); 
 }
@@ -89,6 +94,9 @@ int CommMsgHandler::AccRequest(SendWriter writer)
 
     const std::string& strLoginBody = root.toStyledString();
     const std::string& strLoginBodyBase64 = Encode64((unsigned char const*)strLoginBody.c_str(), strLoginBody.length());
+
+    LOG_INFO_RLD("Acc req body is " << strLoginBodyBase64 << " and self id is " << m_strID);
+
     return writer("0", "1", strLoginBodyBase64.c_str(), strLoginBodyBase64.length());
 }
 
@@ -114,9 +122,17 @@ int CommMsgHandler::AccReply(Packet& pkt)
         }
         else
         {
+            LOG_ERROR_RLD("Acc rsp failed to get session id and self id is " << m_strID);
             return FAILED;
         }
     }
+    else
+    {
+        LOG_ERROR_RLD("Acc rsp parse error and self id is " << m_strID);
+        return FAILED;
+    }
+
+    LOG_INFO_RLD("Acc rsp succeed and session id is " << m_strSessionID << " and self id is " << m_strID);
     return SUCCEED;
 }
 
@@ -147,7 +163,13 @@ int CommMsgHandler::StartTask()
         errcode = func();
         if (errcode != SUCCEED)
         {
-            //std::swap(m_func, std::queue<boost::function<int()> >());            
+            //std::swap(m_func, std::queue<boost::function<int()> >());
+            {
+                while (!m_func.empty()) //clear func queue
+                {
+                    m_func.pop();
+                }
+            }
             return errcode;
         }
     }
@@ -160,6 +182,7 @@ int CommMsgHandler::SyncConnect()
     boost::mutex::scoped_lock lock(m_mtx);
     m_Client->AsyncConnect();
     m_cond.wait(lock);
+
     return m_iOperationStatus;
 }
 
@@ -173,12 +196,16 @@ int CommMsgHandler::SyncRead(Packet &pt)
         {
             pLocalValue->pTimer = sm_TimeOutObj.Create(boost::bind(&CommMsgHandler::TimeOutCB, shared_from_this(), _1), m_nTimeout, false);
             pLocalValue->pTimer->Begin();
+
+            LOG_INFO_RLD("Read timer was created and timeout value is " << m_nTimeout);
         }
         
         m_Client->AsyncRead(pLocalValue.get());
         m_cond.wait(lock);
         if (SUCCEED != pLocalValue->errcode)
         {
+            LOG_ERROR_RLD("Read msg failed and error code is " << pLocalValue->errcode);
+
             return pLocalValue->errcode;
         }
     }
@@ -198,12 +225,22 @@ int CommMsgHandler::SyncWrite(const std::string& src, const std::string& dst, co
     {
         pLocalValue->pTimer = sm_TimeOutObj.Create(boost::bind(&CommMsgHandler::TimeOutCB, shared_from_this(), _1), m_nTimeout, false);
         pLocalValue->pTimer->Begin();
+
+        LOG_INFO_RLD("Write timer was created and timeout value is " << m_nTimeout);
     }
 
     boost::mutex::scoped_lock lock(m_mtx);
     m_Client->AsyncWrite(src, dst, type, buff, len, true, pLocalValue.get());
     m_cond.wait(lock);
-    return pLocalValue->errcode;
+
+    if (SUCCEED != pLocalValue->errcode)
+    {
+        LOG_ERROR_RLD("Write msg failed and error code is " << pLocalValue->errcode);
+
+        return pLocalValue->errcode;
+    }
+    
+    return SUCCEED;
 }
 
 void CommMsgHandler::ConnectCB(const boost::system::error_code& e)
@@ -223,9 +260,12 @@ void CommMsgHandler::ReadCB(const boost::system::error_code& e, std::list<Client
         if (NULL != pCBValue->pTimer)
         {
             pCBValue->pTimer->End();
+            LOG_INFO_RLD("ReadCB error and timer is ended.");
         }
 
         pCBValue->errcode = FAILED;
+
+        LOG_ERROR_RLD("ReadCB error and msg is " << e.message());
 
         boost::mutex::scoped_lock lock(m_mtx);
         m_cond.notify_one();
@@ -236,6 +276,8 @@ void CommMsgHandler::ReadCB(const boost::system::error_code& e, std::list<Client
     {        
         pCBValue->errcode = TIMEOUT_FAILED;
 
+        LOG_ERROR_RLD("ReadCB timeout error and msg is " << e.message());
+
         boost::mutex::scoped_lock lock(m_mtx);
         m_cond.notify_one();
         return;
@@ -245,6 +287,12 @@ void CommMsgHandler::ReadCB(const boost::system::error_code& e, std::list<Client
     for (auto msg = pClientMsgList->begin(); msg != pClientMsgList->end(); ++msg)
     {
         m_ReadBuff.push(std::make_pair(msg->pContentBuffer, msg->uiContentBufferLen));
+    }
+
+    if (NULL != pCBValue->pTimer)
+    {
+        pCBValue->pTimer->End();
+        LOG_INFO_RLD("ReadCB timer is ended.");
     }
 
     m_iOperationStatus = SUCCEED;
@@ -262,9 +310,12 @@ void CommMsgHandler::WriteCB(const boost::system::error_code& e, void* pLocalVal
         if (NULL != pCBValue->pTimer)
         {
             pCBValue->pTimer->End();
+            LOG_INFO_RLD("WriteCB error and timer is ended.");
         }
 
         pCBValue->errcode = FAILED;
+
+        LOG_ERROR_RLD("WriteCB error and msg is " << e.message());
 
         boost::mutex::scoped_lock lock(m_mtx);
         m_cond.notify_one();
@@ -275,9 +326,17 @@ void CommMsgHandler::WriteCB(const boost::system::error_code& e, void* pLocalVal
     {        
         pCBValue->errcode = TIMEOUT_FAILED;
 
+        LOG_ERROR_RLD("WriteCB timeout error and msg is " << e.message());
+
         boost::mutex::scoped_lock lock(m_mtx);
         m_cond.notify_one();
         return;
+    }
+    
+    if (NULL != pCBValue->pTimer)
+    {
+        pCBValue->pTimer->End();
+        LOG_INFO_RLD("WriteCB timer is ended.");
     }
 
     m_iOperationStatus = SUCCEED;
@@ -291,10 +350,13 @@ void CommMsgHandler::TimeOutCB(const boost::system::error_code& e)
 {
     if (e)
     {
+        LOG_INFO_RLD("TimeoutCB was canceled and msg is " << e.message());
         return;
     }
 
     m_iOperationStatus = TIMEOUT_FAILED;
     m_Client->Close();
+
+    LOG_ERROR_RLD("TimeoutCB is called and timeout value is " << m_nTimeout);
 }
 
