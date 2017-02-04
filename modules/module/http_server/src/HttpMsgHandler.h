@@ -14,7 +14,6 @@
 /************************************************************************/
 
 class InteractiveProtoHandler;
-class CommMsgHandler;
 
 class HttpMsgHandler : public boost::noncopyable
 {
@@ -89,6 +88,12 @@ private:
 
     bool RegisterUser(const std::string &strUserName, const std::string &strUserPwd, 
         const std::string &strType, const std::string &strExtend, std::string &strUserID);
+
+    bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
+    
+    template<typename T> bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
+        std::string &strUserID, std::string &strSid);
+
     
 private:
     ParamInfo m_ParamInfo;

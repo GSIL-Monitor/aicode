@@ -131,7 +131,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
 {
     bool blResult = false;
 
-    const std::string &strUserID = CreateUUID();
+    std::string strUserID;
     BOOST_SCOPE_EXIT(&blResult, this_, &strUserID, &writer, &strSrcID)
     {
         InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
@@ -162,6 +162,15 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
         LOG_ERROR_RLD("Register user req unserialize failed, src id is " << strSrcID);
         return false;
     }
+    
+    //User info already exists
+    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName,
+        RegUsrReq.m_userInfo.m_strUserPassword, RegUsrReq.m_userInfo.m_uiTypeInfo))
+    {
+        LOG_ERROR_RLD("Register user failed and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
+            " and user id is " << RegUsrReq.m_userInfo.m_strUserID << " and user pwd is " << RegUsrReq.m_userInfo.m_strUserPassword);
+        return false;
+    }
 
     //注册用户是无需到数据库中校验的，用户名是可以重复的。
     //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
@@ -171,7 +180,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     strCurrentTime.replace(pos, 1, std::string(" "));
 
     InteractiveProtoHandler::User UsrInfo;
-    UsrInfo.m_strUserID = strUserID;
+    UsrInfo.m_strUserID = strUserID = CreateUUID();
     UsrInfo.m_strUserName = RegUsrReq.m_userInfo.m_strUserName;
     UsrInfo.m_strUserPassword = RegUsrReq.m_userInfo.m_strUserPassword;
     UsrInfo.m_uiTypeInfo = RegUsrReq.m_userInfo.m_uiTypeInfo;
@@ -325,6 +334,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
         LoginRspUsr.m_strSID = strSessionID;
         LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        LoginRspUsr.m_strUserID = LoginReqUsr.m_userInfo.m_strUserID;
         LoginRspUsr.m_strValue = "value";
 
         if (blResult)
@@ -340,7 +350,8 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID << " and user id is " << LoginReqUsr.m_userInfo.m_strUserID << 
+        LOG_INFO_RLD("User login rsp already send, dst id is " << strSrcID << " and user id is " << LoginRspUsr.m_strUserID <<
+            " and user name is " << LoginReqUsr.m_userInfo.m_strUserName <<
             " and user password is " << LoginReqUsr.m_userInfo.m_strUserPassword <<
             " and result is " << blResult);
 
@@ -353,18 +364,19 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
         LOG_ERROR_RLD("Login user req unserialize failed, src id is " << strSrcID);
         return false;
     }
-
-    if (LoginReqUsr.m_userInfo.m_strUserID.empty())
+    
+    if (LoginReqUsr.m_userInfo.m_strUserID.empty() && LoginReqUsr.m_userInfo.m_strUserName.empty())
     {
-        LOG_ERROR_RLD("Login user req user id is empty.");
+        LOG_ERROR_RLD("Login user req both user id and user name is empty.");
         return false;
     }
 
-    if (LoginReqUsr.m_userInfo.m_strUserPassword.empty())
-    {
-        LOG_ERROR_RLD("Login user req user password is empty.");
-        return false;
-    }
+    ////
+    //if (LoginReqUsr.m_userInfo.m_strUserPassword.empty())
+    //{
+    //    LOG_ERROR_RLD("Login user req user password is empty.");
+    //    return false;
+    //}
     
     if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, 
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
@@ -382,6 +394,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     Json::Value jsBody;
     jsBody["logindate"] = strCurrentTime;
     jsBody["userid"] = LoginReqUsr.m_userInfo.m_strUserID;
+    jsBody["username"] = LoginReqUsr.m_userInfo.m_strUserName;
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
@@ -1401,12 +1414,14 @@ bool UserManager::QueryRelationByDevID(const std::string &strDevID, std::list<In
     return true;
 }
 
-bool UserManager::ValidUser(const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo)
+bool UserManager::ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo)
 {
     //Valid user id
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    const char* sqlfmt = !strUserID.empty() ? "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s'"
+        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s'";
+
+    snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str());
 
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(std::string(sql), ResultList))
@@ -1425,6 +1440,24 @@ bool UserManager::ValidUser(const std::string &strUserID, const std::string &str
     {
         LOG_INFO_RLD("Valid user success and sql is " << sql);
         return true;
+    }
+
+    {
+        std::string strType = strUserID.empty() ? "userid" : "username";
+        std::string &strValue = strUserID.empty() ? strUserID : strUserName;
+        auto itBegin = ResultList.begin();
+        auto itEnd = ResultList.end();
+        while (itBegin != itEnd)
+        {
+            auto Result = boost::any_cast<ValueInDB>(*itBegin);
+            if (Result.strType == strType)
+            {
+                strValue = Result.strValue;
+                break;
+            }           
+
+            ++itBegin;
+        }
     }
     
     std::string strUserPwdInDB;
@@ -1449,7 +1482,7 @@ bool UserManager::ValidUser(const std::string &strUserID, const std::string &str
         return false;
     }
 
-    LOG_INFO_RLD("Valid user success and user id is " << strUserName << " and user password is " << strUserPwd);
+    LOG_INFO_RLD("Valid user success and user id is " << strUserID << " and user name is " << strUserName << " and user password is " << strUserPwd);
 
     return true;
 }

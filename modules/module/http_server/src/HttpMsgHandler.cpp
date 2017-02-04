@@ -195,10 +195,16 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     LOG_INFO_RLD("Unregister user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user id is " << strUserid
         << " and strValue is [" << strValue << "]" << " and session id is " << strSid);
 
+    if (!UnRegisterUser(strSid, strUserid, strUserName, strUserPwd))
+    {
+        LOG_ERROR_RLD("Unregister user handle failed and user id is " << strUserid << " and user name is " << strUserName << " and user pwd is " << strUserPwd
+             << " and sid is " << strSid);
+        return;
+    }
+
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", strUserid));
 
     blResult = true;
     
@@ -298,13 +304,14 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     BOOST_SCOPE_EXIT_END
 
     auto itFind = pMsgInfoMap->find("username");
-    if (pMsgInfoMap->end() == itFind)
+    auto itFind2 = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind && pMsgInfoMap->end() == itFind2)
     {
-        LOG_ERROR_RLD("User name not found.");
+        LOG_ERROR_RLD("User name and user id not found.");
         return;
     }
-    const std::string strUsername = itFind->second;
-
+    const std::string strUsername = pMsgInfoMap->end() == itFind ? "" : itFind->second;
+    
     itFind = pMsgInfoMap->find("userpwd");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -327,36 +334,43 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strValue = itFind->second;
     }
 
-    LOG_INFO_RLD("Login user info received and  user name is " << strUsername << " and user pwd is " << strUserpwd
-        << " and strExtend is [" << strExtend << "]" << " and strValue is [" << strValue << "]");
-    
-    Json::Value jsRelation;
-    jsRelation["userid"] = "dlklkalk";
-    jsRelation["devid"] = "wuiesd89";
-    jsRelation["relation"] = "0";
-    jsRelation["begindate"] = "2010-08-08";
-    jsRelation["enddate"] = "2013-08-11";
-    jsRelation["value"] = "testvalue";
+    std::string strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
 
-    Json::Value jsRelation2;
-    jsRelation2["userid"] = "drtertrty";
-    jsRelation2["devid"] = "546546redf";
-    jsRelation2["relation"] = "1";
-    jsRelation2["begindate"] = "2010-08-08";
-    jsRelation2["enddate"] = "2013-08-11";
-    jsRelation2["value"] = "testvalue";
+    LOG_INFO_RLD("Login user info received and  user name is " << strUsername <<
+        " and user id is " << strUserID << 
+        " and user pwd is " << strUserpwd <<
+        " and strExtend is [" << strExtend << "]" << " and strValue is [" << strValue << "]");
+        
+    std::string strSid;
+    std::list<boost::shared_ptr<InteractiveProtoHandler::Relation> > relist;
+    if (!UserLogin<boost::shared_ptr<InteractiveProtoHandler::Relation> >(strUsername, strUserpwd, relist, strUserID, strSid))
+    {
+        LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
+        return;
+    }
 
-    
-    
-    jsRelationList.append(jsRelation);
-    jsRelationList.append(jsRelation2);
+    auto itBegin = relist.begin();
+    auto itEnd = relist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsRelation;
+        jsRelation["userid"] = (*itBegin)->m_strUserID;
+        jsRelation["devid"] = (*itBegin)->m_strDevID;
+        jsRelation["relation"] = (*itBegin)->m_uiRelation;
+        jsRelation["begindate"] = (*itBegin)->m_strBeginDate;
+        jsRelation["enddate"] = (*itBegin)->m_strEndDate;
+        jsRelation["value"] = (*itBegin)->m_strValue;
 
+        jsRelationList.append(jsRelation);
+
+        ++itBegin;
+    }
+        
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sid", "jkjkdjk89892s"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "yudyuayuyudyuabn"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sid", strSid));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", strUserID));
 
 
     blResult = true;
@@ -1339,6 +1353,7 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
     };
 
+    int iRet = CommMsgHandler::SUCCEED;
     auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
     {
         const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
@@ -1350,6 +1365,10 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         }
         
         strUserID = RegUsrRsp.m_strUserID;
+        iRet = RegUsrRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Register user id is " << strUserID << " and return code is " << RegUsrRsp.m_iRetcode <<
+            " and return msg is " << RegUsrRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
@@ -1359,7 +1378,151 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
 
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval);
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 
+bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::UnRegisterUserReq_USR UnRegUsrReq;
+        UnRegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T;
+        UnRegUsrReq.m_uiMsgSeq = 1;
+        UnRegUsrReq.m_strSID = strSid;
+        UnRegUsrReq.m_strValue = "";
+        UnRegUsrReq.m_userInfo.m_uiStatus = 0;
+        UnRegUsrReq.m_userInfo.m_strUserID = strUserID;
+        UnRegUsrReq.m_userInfo.m_strUserName = strUserName;
+        UnRegUsrReq.m_userInfo.m_strUserPassword = strUserPwd;
+        UnRegUsrReq.m_userInfo.m_uiTypeInfo = 0;
+        UnRegUsrReq.m_userInfo.m_strCreatedate = strCurrentTime;
+        UnRegUsrReq.m_userInfo.m_strExtend = "";
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UnRegUsrReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("UnRegister user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        InteractiveProtoHandler::UnRegisterUserRsp_USR UnRegUsrRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UnRegUsrRsp))
+        {
+            LOG_ERROR_RLD("UnRegister user rsp unserialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+        
+        iRet = UnRegUsrRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Unregister user id is " << UnRegUsrRsp.m_strUserID << " and return code is " << UnRegUsrRsp.m_iRetcode <<
+            " and return msg is " << UnRegUsrRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
+
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+    
+}
+
+template<typename T>
+bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
+    std::string &strUserID, std::string &strSid)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::LoginReq_USR UsrLoginReq;
+        UsrLoginReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_USR_T;
+        UsrLoginReq.m_uiMsgSeq = 1;
+        UsrLoginReq.m_strSID = "";
+        UsrLoginReq.m_strValue = "";
+        UsrLoginReq.m_userInfo.m_uiStatus = 0;
+        UsrLoginReq.m_userInfo.m_strUserID = strUserID;
+        UsrLoginReq.m_userInfo.m_strUserName = strUserName;
+        UsrLoginReq.m_userInfo.m_strUserPassword = strUserPwd;
+        UsrLoginReq.m_userInfo.m_uiTypeInfo = 0;
+        UsrLoginReq.m_userInfo.m_strCreatedate = strCurrentTime;
+        UsrLoginReq.m_userInfo.m_strExtend = "";
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UsrLoginReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Login user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        InteractiveProtoHandler::LoginRsp_USR UsrLoginRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UsrLoginRsp))
+        {
+            LOG_ERROR_RLD("Login user rsp unserialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        //strUserID = UnRegUsrRsp.m_strUserID;
+
+        RelationList.clear();
+        auto itBegin = UsrLoginRsp.m_reInfoList.begin();
+        auto itEnd = UsrLoginRsp.m_reInfoList.end();
+        while (itBegin != itEnd)
+        {
+            boost::shared_ptr<InteractiveProtoHandler::Relation> pRelTmp(new InteractiveProtoHandler::Relation);
+            (*pRelTmp) = *itBegin;
+            RelationList.push_back(pRelTmp);
+
+            ++itBegin;
+        }
+
+        strUserID = UsrLoginRsp.m_strUserID;
+        strSid = UsrLoginRsp.m_strSID;
+        iRet = UsrLoginRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Login user id is " << UsrLoginRsp.m_strUserID << " and session id is " << UsrLoginRsp.m_strSID << 
+            " and return code is " << UsrLoginRsp.m_iRetcode <<
+            " and return msg is " << UsrLoginRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
+
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
 

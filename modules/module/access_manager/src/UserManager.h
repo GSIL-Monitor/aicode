@@ -130,7 +130,7 @@ private:
     bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool ValidUser(const std::string &strUserID, const std::string &strUserName = "", const std::string &strUserPwd = "", const int iTypeInfo = 0);
+    bool ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd = "", const int iTypeInfo = 0);
 
     void UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
 
