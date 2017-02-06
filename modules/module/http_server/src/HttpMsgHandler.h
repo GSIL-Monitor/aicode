@@ -93,8 +93,13 @@ private:
 
     bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
     
-    template<typename T> bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
+    template<typename T>
+    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
         std::string &strUserID, std::string &strSid);
+
+    template<typename T>
+    bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
+
 
     
 private:

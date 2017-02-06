@@ -258,15 +258,22 @@ bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
 
     LOG_INFO_RLD("Query user info received and  user id is " << strUserid << " and strValue is [" << strValue << "]"
         << " and session id is " << strSid);
-        
+
+    InteractiveProtoHandler::User userinfo;
+    if (!QueryUserInfo<InteractiveProtoHandler::User>(strSid, strUserid, userinfo))
+    {
+        LOG_ERROR_RLD("Query user info handle failed and user id is " << strUserid << " and user name is " << " and sid is " << strSid);
+        return blResult;
+    }
+
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("username", "xxxx"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", "x"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", "2010-02-03"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", "xxxx"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", userinfo.m_strUserID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("username", userinfo.m_strUserName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", boost::lexical_cast<std::string>(userinfo.m_uiTypeInfo)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", userinfo.m_strCreatedate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", userinfo.m_strExtend));
+    //ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
 
     blResult = true;
 
@@ -345,8 +352,8 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         " and strExtend is [" << strExtend << "]" << " and strValue is [" << strValue << "]");
         
     std::string strSid;
-    std::list<boost::shared_ptr<InteractiveProtoHandler::Relation> > relist;
-    if (!UserLogin<boost::shared_ptr<InteractiveProtoHandler::Relation> >(strUsername, strUserpwd, relist, strUserID, strSid))
+    std::list<InteractiveProtoHandler::Relation> relist;
+    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, relist, strUserID, strSid))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
         return blResult;
@@ -357,12 +364,12 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     while (itBegin != itEnd)
     {
         Json::Value jsRelation;
-        jsRelation["userid"] = (*itBegin)->m_strUserID;
-        jsRelation["devid"] = (*itBegin)->m_strDevID;
-        jsRelation["relation"] = (*itBegin)->m_uiRelation;
-        jsRelation["begindate"] = (*itBegin)->m_strBeginDate;
-        jsRelation["enddate"] = (*itBegin)->m_strEndDate;
-        jsRelation["value"] = (*itBegin)->m_strValue;
+        jsRelation["userid"] = itBegin->m_strUserID;
+        jsRelation["devid"] = itBegin->m_strDevID;
+        jsRelation["relation"] = itBegin->m_uiRelation;
+        jsRelation["begindate"] = itBegin->m_strBeginDate;
+        jsRelation["enddate"] = itBegin->m_strEndDate;
+        jsRelation["value"] = itBegin->m_strValue;
 
         jsRelationList.append(jsRelation);
 
@@ -1565,9 +1572,12 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         auto itEnd = UsrLoginRsp.m_reInfoList.end();
         while (itBegin != itEnd)
         {
-            boost::shared_ptr<InteractiveProtoHandler::Relation> pRelTmp(new InteractiveProtoHandler::Relation);
-            (*pRelTmp) = *itBegin;
-            RelationList.push_back(pRelTmp);
+            //boost::shared_ptr<InteractiveProtoHandler::Relation> pRelTmp(new InteractiveProtoHandler::Relation);
+            //(*pRelTmp) = *itBegin;
+            //RelationList.push_back(pRelTmp);
+            // 
+
+            RelationList.push_back(*itBegin);
 
             ++itBegin;
         }
@@ -1587,6 +1597,67 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+template<typename T>
+bool HttpMsgHandler::QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::QueryUsrInfoReq_USR QueryUsrInfoReq;
+        QueryUsrInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T;
+        QueryUsrInfoReq.m_uiMsgSeq = 1;
+        QueryUsrInfoReq.m_strSID = strSid;
+        QueryUsrInfoReq.m_strValue = "";
+        QueryUsrInfoReq.m_strUserID = strUserID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUsrInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryUsrInfoRsp_USR QueryUsrInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUsrInfoRsp))
+        {
+            LOG_ERROR_RLD("Query user info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        UserInfo = QueryUsrInfoRsp.m_userInfo;
+
+        iRet = QueryUsrInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query user info  return code is " << QueryUsrInfoRsp.m_iRetcode <<
+            " and return msg is " << QueryUsrInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
 }

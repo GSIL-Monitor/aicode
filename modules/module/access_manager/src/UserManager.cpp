@@ -1418,8 +1418,8 @@ bool UserManager::ValidUser(std::string &strUserID, std::string &strUserName, co
 {
     //Valid user id
     char sql[1024] = { 0 };
-    const char* sqlfmt = !strUserID.empty() ? "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s'"
-        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s'";
+    const char* sqlfmt = !strUserID.empty() ? "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s' and status = 0"
+        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s' and status = 0";
 
     snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str());
 
