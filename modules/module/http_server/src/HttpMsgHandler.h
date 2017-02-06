@@ -100,6 +100,10 @@ private:
     template<typename T>
     bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
 
+    bool UserLogout(const std::string &strSid, const std::string &strUserID);
+
+    bool AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName, 
+        const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);
 
     
 private:
