@@ -62,7 +62,8 @@ HttpMsgHandler::~HttpMsgHandler()
 
 }
 
-void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+
+bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -86,7 +87,7 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User name not found.");
-        return;
+        return blResult;
     }
     const std::string strUserName = itFind->second;
 
@@ -95,7 +96,7 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {        
         LOG_ERROR_RLD("User password not found.");
-        return;
+        return blResult;
     }
     const std::string strUserPwd = itFind->second;
     
@@ -103,7 +104,7 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {        
         LOG_ERROR_RLD("User type not found.");
-        return;
+        return blResult;
     }
     const std::string strType = itFind->second;
 
@@ -121,7 +122,7 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strUserID))
     {
         LOG_ERROR_RLD("Register user handle failed");
-        return;
+        return blResult;
     }
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
@@ -130,9 +131,10 @@ void HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     
     blResult = true;
 
+    return blResult;
 }
 
-void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -156,7 +158,7 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -164,7 +166,7 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User name not found.");
-        return;
+        return blResult;
     }
     const std::string strUserName = itFind->second;
 
@@ -173,7 +175,7 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User password not found.");
-        return;
+        return blResult;
     }
     const std::string strUserPwd = itFind->second;
 
@@ -181,7 +183,7 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserid = itFind->second;
 
@@ -199,7 +201,7 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     {
         LOG_ERROR_RLD("Unregister user handle failed and user id is " << strUserid << " and user name is " << strUserName << " and user pwd is " << strUserPwd
              << " and sid is " << strSid);
-        return;
+        return blResult;
     }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
@@ -208,9 +210,10 @@ void HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
 
     blResult = true;
     
+    return blResult;
 }
 
-void HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -234,7 +237,7 @@ void HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -242,7 +245,7 @@ void HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserid = itFind->second;
 
@@ -255,9 +258,7 @@ void HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
 
     LOG_INFO_RLD("Query user info received and  user id is " << strUserid << " and strValue is [" << strValue << "]"
         << " and session id is " << strSid);
-
-
-
+        
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", "123456"));
@@ -268,9 +269,11 @@ void HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -308,7 +311,7 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind && pMsgInfoMap->end() == itFind2)
     {
         LOG_ERROR_RLD("User name and user id not found.");
-        return;
+        return blResult;
     }
     const std::string strUsername = pMsgInfoMap->end() == itFind ? "" : itFind->second;
     
@@ -316,7 +319,7 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User pwd not found.");
-        return;
+        return blResult;
     }
     const std::string strUserpwd = itFind->second;
 
@@ -346,7 +349,7 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (!UserLogin<boost::shared_ptr<InteractiveProtoHandler::Relation> >(strUsername, strUserpwd, relist, strUserID, strSid))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
-        return;
+        return blResult;
     }
 
     auto itBegin = relist.begin();
@@ -375,10 +378,10 @@ void HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
     blResult = true;
 
-
+    return blResult;
 }
 
-void HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -402,7 +405,7 @@ void HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -410,7 +413,7 @@ void HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
         
@@ -429,15 +432,20 @@ void HttpMsgHandler::UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::ConfigInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::ConfigInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    bool blResult = false;
 
 
+    blResult = true;
+    return blResult;
 }
 
-void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -461,7 +469,7 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -469,7 +477,7 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -477,7 +485,7 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -485,7 +493,7 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device name not found.");
-        return;
+        return blResult;
     }
     const std::string strDevName = itFind->second;
 
@@ -500,7 +508,7 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device type not found.");
-        return;
+        return blResult;
     }
     const std::string strDevType = itFind->second;
 
@@ -528,10 +536,10 @@ void HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
     blResult = true;
 
-
+    return blResult;
 }
 
-void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -555,7 +563,7 @@ void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -563,7 +571,7 @@ void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -571,7 +579,7 @@ void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
     
@@ -582,9 +590,11 @@ void HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -608,7 +618,7 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -616,7 +626,7 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -624,7 +634,7 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -632,7 +642,7 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device name not found.");
-        return;
+        return blResult;
     }
     const std::string strDevName = itFind->second;
 
@@ -647,7 +657,7 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device type not found.");
-        return;
+        return blResult;
     }
     const std::string strDevType = itFind->second;
 
@@ -675,10 +685,10 @@ void HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
     blResult = true;
 
-
+    return blResult;
 }
 
-void HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -702,7 +712,7 @@ void HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -710,7 +720,7 @@ void HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -728,9 +738,10 @@ void HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
     blResult = true;
 
+    return blResult;
 }
 
-void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -765,7 +776,7 @@ void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -773,7 +784,7 @@ void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -781,7 +792,7 @@ void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Begin index not found.");
-        return;
+        return blResult;
     }
     const std::string strBeginIndex = itFind->second;
         
@@ -817,9 +828,10 @@ void HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
 
     blResult = true;
 
+    return blResult;
 }
 
-void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -854,7 +866,7 @@ void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -862,7 +874,7 @@ void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -870,7 +882,7 @@ void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Begin index not found.");
-        return;
+        return blResult;
     }
     const std::string strBeginIndex = itFind->second;
 
@@ -905,9 +917,11 @@ void HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
 
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -931,7 +945,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -939,7 +953,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -947,7 +961,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -955,7 +969,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Relation not found.");
-        return;
+        return blResult;
     }
     const std::string strRelation = itFind->second;
 
@@ -963,7 +977,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Begin date not found.");
-        return;
+        return blResult;
     }
     const std::string strBeginDate = itFind->second;
 
@@ -971,7 +985,7 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("End date not found.");
-        return;
+        return blResult;
     }
     const std::string strEndDate = itFind->second;
     
@@ -991,9 +1005,10 @@ void HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
 
     blResult = true;
 
+    return blResult;
 }
 
-void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -1017,7 +1032,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -1025,7 +1040,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -1033,7 +1048,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
-        return;
+        return blResult;
     }
     const std::string strDevID = itFind->second;
 
@@ -1041,7 +1056,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Relation not found.");
-        return;
+        return blResult;
     }
     const std::string strRelation = itFind->second;
 
@@ -1049,7 +1064,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Begin date not found.");
-        return;
+        return blResult;
     }
     const std::string strBeginDate = itFind->second;
 
@@ -1057,7 +1072,7 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("End date not found.");
-        return;
+        return blResult;
     }
     const std::string strEndDate = itFind->second;
 
@@ -1076,9 +1091,11 @@ void HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -1102,7 +1119,7 @@ void HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -1110,7 +1127,7 @@ void HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -1118,7 +1135,7 @@ void HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Friend id not found.");
-        return;
+        return blResult;
     }
     const std::string strFriendID = itFind->second;
 
@@ -1130,9 +1147,11 @@ void HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -1156,7 +1175,7 @@ void HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -1164,7 +1183,7 @@ void HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -1172,7 +1191,7 @@ void HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Friend id not found.");
-        return;
+        return blResult;
     }
     const std::string strFriendID = itFind->second;
 
@@ -1184,9 +1203,11 @@ void HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
+
+    return blResult;
 }
 
-void HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
@@ -1221,7 +1242,7 @@ void HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
-        return;
+        return blResult;
     }
     const std::string strSid = itFind->second;
 
@@ -1229,7 +1250,7 @@ void HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("User id not found.");
-        return;
+        return blResult;
     }
     const std::string strUserID = itFind->second;
 
@@ -1237,7 +1258,7 @@ void HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Begin index not found.");
-        return;
+        return blResult;
     }
     const std::string strBeginIndex = itFind->second;
 
@@ -1260,6 +1281,8 @@ void HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
 
     blResult = true;
+
+    return blResult;
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -1303,6 +1326,37 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
     //writer("Content-type: text/*\r\n\r\n", 0, MsgWriterModel::PRINT_MODEL);
     //writer("<title>FastCGI Hello! (C, fcgi_stdio library)</title>\n", 0, MsgWriterModel::PRINT_MODEL);
 
+}
+
+bool HttpMsgHandler::PreCommonHandler(const std::string &strMsgReceived)
+{
+    InteractiveProtoHandler::MsgType mtype;
+    if (!m_pInteractiveProtoHandler->GetMsgType(strMsgReceived, mtype))
+    {
+        LOG_ERROR_RLD("Get msg type failed.");
+        return false;
+    }
+
+    if (InteractiveProtoHandler::MsgType::MsgPreHandlerRsp_USR_T == mtype)
+    {
+        InteractiveProtoHandler::MsgPreHandlerRsp_USR rsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, rsp))
+        {
+            LOG_ERROR_RLD("Msg prehandler rsp unserialize failed.");
+            return false;
+        }
+
+        LOG_INFO_RLD("Msg prehandler rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
+            " and user session id is " << rsp.m_strSID);
+
+        if (CommMsgHandler::SUCCEED != rsp.m_iRetcode)
+        {
+            LOG_ERROR_RLD("Msg prehandler rsp return failed.");
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::string &strUserPwd, const std::string &strType, const std::string &strExtend, std::string &strUserID)
@@ -1357,11 +1411,17 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
     auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
     {
         const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
         InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
         if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RegUsrRsp))
         {
             LOG_ERROR_RLD("Register user rsp unserialize failed.");
-            return CommMsgHandler::FAILED;
+            return iRet = CommMsgHandler::FAILED;
         }
         
         strUserID = RegUsrRsp.m_strUserID;
@@ -1372,10 +1432,8 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
 
         return CommMsgHandler::SUCCEED;
     };
-
+    
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
-
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
@@ -1419,11 +1477,17 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
     auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
     {
         const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
         InteractiveProtoHandler::UnRegisterUserRsp_USR UnRegUsrRsp;
         if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UnRegUsrRsp))
         {
             LOG_ERROR_RLD("UnRegister user rsp unserialize failed.");
-            return CommMsgHandler::FAILED;
+            return iRet = CommMsgHandler::FAILED;
         }
         
         iRet = UnRegUsrRsp.m_iRetcode;
@@ -1433,10 +1497,8 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
 
         return CommMsgHandler::SUCCEED;
     };
-
+    
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
-
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
@@ -1483,11 +1545,17 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
     auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
     {
         const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
         InteractiveProtoHandler::LoginRsp_USR UsrLoginRsp;
         if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UsrLoginRsp))
         {
             LOG_ERROR_RLD("Login user rsp unserialize failed.");
-            return CommMsgHandler::FAILED;
+            return iRet = CommMsgHandler::FAILED;
         }
 
         //strUserID = UnRegUsrRsp.m_strUserID;
@@ -1516,13 +1584,10 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
     };
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    //CommMsgHandler chr(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout);
-
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
-
 }
 

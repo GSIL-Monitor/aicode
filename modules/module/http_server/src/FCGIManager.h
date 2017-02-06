@@ -19,7 +19,7 @@ typedef enum
 } MsgWriterModel;
 
 typedef std::map<std::string, std::string> MsgInfoMap;
-typedef boost::function<void(boost::shared_ptr<MsgInfoMap>, MsgWriter)> MsgHandler;
+typedef boost::function<bool(boost::shared_ptr<MsgInfoMap>, MsgWriter)> MsgHandler;
 
 typedef boost::function<void(boost::shared_ptr<MsgInfoMap>, FCGX_Request *)> ParseMsgFunc;
 
@@ -34,6 +34,8 @@ public:
     void SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn); //消息解析处理
 
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
+
+    void SetMsgPreHandler(MsgHandler msghdr); //消息预处理
     
 private:
     void FCGILoopHandler();
@@ -55,6 +57,8 @@ private:
     std::map<std::string, ParseMsgFunc> m_ParseFuncMap;
 
     std::map<std::string, MsgHandler> m_MsgHandlerMap;
+
+    std::list<MsgHandler> m_MsgPreHandlerList;
 
 private:
     static const std::string QUERY_STRING;

@@ -65,6 +65,11 @@ void FCGIManager::SetMsgHandler(const std::string &strKey, MsgHandler msghdr)
     m_MsgHandlerMap.insert(std::map<std::string, MsgHandler>::value_type(strKey, msghdr));
 }
 
+void FCGIManager::SetMsgPreHandler(MsgHandler msghdr)
+{
+    m_MsgPreHandlerList.push_back(msghdr);
+}
+
 void FCGIManager::FCGILoopHandler()
 {
     FCGX_Request	*pRequest = NULL;
@@ -209,6 +214,21 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     {
         LOG_ERROR_RLD("Not found action handler, action error: " << strAction);
         return;
+    }
+
+    {
+        auto itBegin = m_MsgPreHandlerList.begin();
+        auto itEnd = m_MsgPreHandlerList.end();
+        while (itBegin != itEnd)
+        {
+            if (!(*itBegin)(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest)))
+            {
+                LOG_ERROR_RLD("Receive msg prehandler failed.");
+                return;
+            }
+
+            ++itBegin;
+        }
     }
 
     itFindHandler->second(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest));
