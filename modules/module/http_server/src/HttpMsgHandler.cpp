@@ -28,6 +28,8 @@ const std::string HttpMsgHandler::USER_LOGIN_ACTION("user_login");
 
 const std::string HttpMsgHandler::USER_LOGOUT_ACTION("user_logout");
 
+const std::string HttpMsgHandler::USER_SHAKEHAND_ACTION("user_shakehand");
+
 const std::string HttpMsgHandler::ADD_DEVICE_ACTION("add_device");
 
 const std::string HttpMsgHandler::DELETE_DEVICE_ACTION("delete_device");
@@ -454,6 +456,59 @@ bool HttpMsgHandler::ConfigInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
 
 
     blResult = true;
+    return blResult;
+}
+
+bool HttpMsgHandler::ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    
+    const std::string strUserID = itFind->second;
+
+    LOG_INFO_RLD("Shakehand info received and  user id is " << strUserID << " and session id is " << strSid);
+
+    if (!Shakehand(strSid, strUserID))
+    {
+        LOG_ERROR_RLD("Shakehand handle failed and user id is " << strUserID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
     return blResult;
 }
 
@@ -1727,6 +1782,66 @@ bool HttpMsgHandler::UserLogout(const std::string &strSid, const std::string &st
         LOG_INFO_RLD("Logout user id is " << strUserID << " and session id is " << strSid <<
             " and return code is " << UsrLogoutRsp.m_iRetcode <<
             " and return msg is " << UsrLogoutRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::Shakehand(const std::string &strSid, const std::string &strUserID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::ShakehandReq_USR ShakehandReq;
+        ShakehandReq.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandReq_USR_T;
+        ShakehandReq.m_uiMsgSeq = 1;
+        ShakehandReq.m_strSID = strSid;
+        ShakehandReq.m_strValue = "";
+        ShakehandReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ShakehandReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Shakehand req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ShakehandRsp_USR ShakehandRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ShakehandRsp))
+        {
+            LOG_ERROR_RLD("Shakehand rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ShakehandRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Shakehand user id is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << ShakehandRsp.m_iRetcode <<
+            " and return msg is " << ShakehandRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

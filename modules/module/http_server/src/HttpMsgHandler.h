@@ -23,6 +23,7 @@ public:
     static const std::string QUERY_USER_INFO_ACTION;
     static const std::string USER_LOGIN_ACTION;
     static const std::string USER_LOGOUT_ACTION;
+    static const std::string USER_SHAKEHAND_ACTION;
     static const std::string ADD_DEVICE_ACTION;
     static const std::string DELETE_DEVICE_ACTION;
     static const std::string MODIFY_DEVICE_ACTION;
@@ -59,6 +60,8 @@ public:
     bool UserLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool ConfigInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -101,6 +104,8 @@ private:
     bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
 
     bool UserLogout(const std::string &strSid, const std::string &strUserID);
+
+    bool Shakehand(const std::string &strSid, const std::string &strUserID);
 
     bool AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName, 
         const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);

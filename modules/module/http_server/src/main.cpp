@@ -235,6 +235,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_INFO_ACTION, boost::bind(&HttpMsgHandler::QueryUserInfoHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::USER_LOGIN_ACTION, boost::bind(&HttpMsgHandler::UserLoginHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::USER_LOGOUT_ACTION, boost::bind(&HttpMsgHandler::UserLogoutHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::USER_SHAKEHAND_ACTION, boost::bind(&HttpMsgHandler::ShakehandHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_DEVICE_ACTION, boost::bind(&HttpMsgHandler::AddDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_DEVICE_ACTION, boost::bind(&HttpMsgHandler::DeleteDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::MODIFY_DEVICE_ACTION, boost::bind(&HttpMsgHandler::ModifyDeviceHandler, &filehdr, _1, _2));
