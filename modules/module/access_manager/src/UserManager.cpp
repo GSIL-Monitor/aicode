@@ -676,18 +676,7 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
         return false;
     }
 
-
-    InteractiveProtoHandler::Device DevInfo;
-    DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
-    DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
-    DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
-    DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
-    DevInfo.m_strCreatedate = req.m_devInfo.m_strCreatedate;
-    DevInfo.m_uiStatus = req.m_devInfo.m_uiStatus;
-    DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
-    DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
-
-    m_DBRuner.Post(boost::bind(&UserManager::ModDeviceToDB, this, DevInfo));
+    m_DBRuner.Post(boost::bind(&UserManager::ModDeviceToDB, this, req.m_devInfo));
 
     blResult = true;
 

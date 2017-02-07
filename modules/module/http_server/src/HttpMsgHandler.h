@@ -107,10 +107,24 @@ private:
 
     bool Shakehand(const std::string &strSid, const std::string &strUserID);
 
-    bool AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName, 
+    bool AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName,
         const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);
 
+    bool DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID);
+
+    bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName,
+        const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);
+
+    template<typename T>
+    bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo);
+
+    template<typename T>
+    bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList);
     
+    template<typename T>
+    bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList);
+
+
 private:
     ParamInfo m_ParamInfo;
     boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
@@ -122,6 +136,5 @@ private:
     static const std::string FAILED_MSG;
 
 };
-
 
 #endif

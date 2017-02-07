@@ -264,7 +264,7 @@ bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     InteractiveProtoHandler::User userinfo;
     if (!QueryUserInfo<InteractiveProtoHandler::User>(strSid, strUserid, userinfo))
     {
-        LOG_ERROR_RLD("Query user info handle failed and user id is " << strUserid << " and user name is " << " and sid is " << strSid);
+        LOG_ERROR_RLD("Query user info handle failed and user id is " << strUserid << " and sid is " << strSid);
         return blResult;
     }
 
@@ -659,6 +659,12 @@ bool HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     LOG_INFO_RLD("Delete device info received and  user id is " << strUserID << " and devcie id is " << strDevID 
         << " and session id is " << strSid);
 
+    if (!DeleteDevice(strSid, strUserID, strDevID))
+    {
+        LOG_ERROR_RLD("Delete device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
+        return blResult;
+    }
+
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -726,14 +732,13 @@ bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         strDevPwd = itFind->second;
     }
 
+    std::string strDevType;
     itFind = pMsgInfoMap->find("devtype");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Device type not found.");
-        return blResult;
+        strDevType = itFind->second;
     }
-    const std::string strDevType = itFind->second;
-
+    
     std::string strDevExtend;
     itFind = pMsgInfoMap->find("devextend");
     if (pMsgInfoMap->end() != itFind)
@@ -746,6 +751,12 @@ bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (pMsgInfoMap->end() != itFind)
     {
         strDevInnerInfo = itFind->second;
+    }
+
+    if (!ModifyDevice(strSid, strUserID, strDevID, strDevName, strDevPwd, strDevType, strDevExtend, strDevInnerInfo))
+    {
+        LOG_ERROR_RLD("Modify device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
+        return blResult;
     }
 
     LOG_INFO_RLD("Modify device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
@@ -800,14 +811,23 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     LOG_INFO_RLD("Query device info received and  devcie id is " << strDevID
         << " and session id is " << strSid);
 
+    InteractiveProtoHandler::Device devinfo;
+    if (!QueryDeviceInfo<InteractiveProtoHandler::Device>(strSid, strDevID, devinfo))
+    {
+        LOG_ERROR_RLD("Query device info handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devid", "jkdjkajk"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devname", "yuieuiw"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devpwd", "pwd"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devtype", "0"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devextend", "extend"));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devinnerinfo", "jkdi893kdsjksjk"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devid", devinfo.m_strDevID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devname", devinfo.m_strDevName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devpwd", devinfo.m_strDevPassword));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devtype", boost::lexical_cast<std::string>(devinfo.m_uiTypeInfo)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devextend", devinfo.m_strExtend));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devinnerinfo", devinfo.m_strInnerinfo));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", devinfo.m_strCreatedate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("status", boost::lexical_cast<std::string>(devinfo.m_uiStatus)));
 
     blResult = true;
 
@@ -867,38 +887,55 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
         LOG_ERROR_RLD("Begin index not found.");
         return blResult;
     }
-    const std::string strBeginIndex = itFind->second;
-        
-    LOG_INFO_RLD("Query device of user info received and  user id is " << strUserID
-        << " and begin index is " << strBeginIndex
+    
+    unsigned int uiBeginIndex = 0;
+
+    try
+    {
+        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Query devices of user info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Query devices of user info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+            
+    LOG_INFO_RLD("Query devices of user info received and  user id is " << strUserID
+        << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
 
+    std::list<InteractiveProtoHandler::Relation> relist;
+    if (!QueryDevicesOfUser<InteractiveProtoHandler::Relation>(strSid, strUserID, uiBeginIndex, relist))
+    {
+        LOG_ERROR_RLD("Query devices of user handle failed and user id is " << strUserID << " and session id is " << strSid);
+        return blResult;
+    }
+    
+    auto itBegin = relist.begin();
+    auto itEnd = relist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsRelation;
+        jsRelation["userid"] = itBegin->m_strUserID;
+        jsRelation["devid"] = itBegin->m_strDevID;
+        jsRelation["relation"] = itBegin->m_uiRelation;
+        jsRelation["begindate"] = itBegin->m_strBeginDate;
+        jsRelation["enddate"] = itBegin->m_strEndDate;
+        jsRelation["extend"] = itBegin->m_strValue;
 
-    Json::Value jsRelation;
-    jsRelation["userid"] = "dlklkalk";
-    jsRelation["devid"] = "wuiesd89";
-    jsRelation["relation"] = "0";
-    jsRelation["begindate"] = "2010-08-08";
-    jsRelation["enddate"] = "2013-08-11";
-    jsRelation["value"] = "testvalue";
+        jsRelationList.append(jsRelation);
 
-    Json::Value jsRelation2;
-    jsRelation2["userid"] = "drtertrty";
-    jsRelation2["devid"] = "546546redf";
-    jsRelation2["relation"] = "1";
-    jsRelation2["begindate"] = "2010-08-08";
-    jsRelation2["enddate"] = "2013-08-11";
-    jsRelation2["value"] = "testvalue";
-
-
-
-    jsRelationList.append(jsRelation);
-    jsRelationList.append(jsRelation2);
+        ++itBegin;
+    }
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     
-
     blResult = true;
 
     return blResult;
@@ -957,38 +994,55 @@ bool HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
         LOG_ERROR_RLD("Begin index not found.");
         return blResult;
     }
-    const std::string strBeginIndex = itFind->second;
 
-    LOG_INFO_RLD("Query user of device info received and  device id is " << strDevID
-        << " and begin index is " << strBeginIndex
+    unsigned int uiBeginIndex = 0;
+
+    try
+    {
+        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Query users of device info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Query users of device info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Query users of device info received and  user id is " << strDevID
+        << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
 
+    std::list<InteractiveProtoHandler::Relation> relist;
+    if (!QueryUsersOfDevice<InteractiveProtoHandler::Relation>(strSid, strDevID, uiBeginIndex, relist))
+    {
+        LOG_ERROR_RLD("Query users of device handle failed and device id is " << strDevID << " and session id is " << strSid);
+        return blResult;
+    }
 
-    Json::Value jsRelation;
-    jsRelation["userid"] = "dlklkalk";
-    jsRelation["devid"] = "wuiesd89";
-    jsRelation["relation"] = "0";
-    jsRelation["begindate"] = "2010-08-08";
-    jsRelation["enddate"] = "2013-08-11";
-    jsRelation["value"] = "testvalue";
+    auto itBegin = relist.begin();
+    auto itEnd = relist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsRelation;
+        jsRelation["userid"] = itBegin->m_strUserID;
+        jsRelation["devid"] = itBegin->m_strDevID;
+        jsRelation["relation"] = itBegin->m_uiRelation;
+        jsRelation["begindate"] = itBegin->m_strBeginDate;
+        jsRelation["enddate"] = itBegin->m_strEndDate;
+        jsRelation["extend"] = itBegin->m_strValue;
 
-    Json::Value jsRelation2;
-    jsRelation2["userid"] = "drtertrty";
-    jsRelation2["devid"] = "546546redf";
-    jsRelation2["relation"] = "1";
-    jsRelation2["begindate"] = "2010-08-08";
-    jsRelation2["enddate"] = "2013-08-11";
-    jsRelation2["value"] = "testvalue";
+        jsRelationList.append(jsRelation);
 
-
-
-    jsRelationList.append(jsRelation);
-    jsRelationList.append(jsRelation2);
+        ++itBegin;
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-
-
+    
     blResult = true;
 
     return blResult;
@@ -1445,12 +1499,12 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         catch (boost::bad_lexical_cast & e)
         {
             LOG_ERROR_RLD("Register user type info is invalid and error msg is " << e.what() << " and input type is " << strType);
-            return false;
+            return CommMsgHandler::FAILED;
         }
         catch (...)
         {
             LOG_ERROR_RLD("Register user type info is invalid" << " and input type is " << strType);
-            return false;
+            return CommMsgHandler::FAILED;
         }
 
         std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
@@ -1631,22 +1685,8 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
             return iRet = CommMsgHandler::FAILED;
         }
 
-        //strUserID = UnRegUsrRsp.m_strUserID;
-
         RelationList.clear();
-        auto itBegin = UsrLoginRsp.m_reInfoList.begin();
-        auto itEnd = UsrLoginRsp.m_reInfoList.end();
-        while (itBegin != itEnd)
-        {
-            //boost::shared_ptr<InteractiveProtoHandler::Relation> pRelTmp(new InteractiveProtoHandler::Relation);
-            //(*pRelTmp) = *itBegin;
-            //RelationList.push_back(pRelTmp);
-            // 
-
-            RelationList.push_back(*itBegin);
-
-            ++itBegin;
-        }
+        RelationList.swap(UsrLoginRsp.m_reInfoList);
 
         strUserID = UsrLoginRsp.m_strUserID;
         strSid = UsrLoginRsp.m_strSID;
@@ -1672,10 +1712,6 @@ bool HttpMsgHandler::QueryUserInfo(const std::string &strSid, const std::string 
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
-        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-        std::string::size_type pos = strCurrentTime.find('T');
-        strCurrentTime.replace(pos, 1, std::string(" "));
-
         InteractiveProtoHandler::QueryUsrInfoReq_USR QueryUsrInfoReq;
         QueryUsrInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T;
         QueryUsrInfoReq.m_uiMsgSeq = 1;
@@ -1798,11 +1834,6 @@ bool HttpMsgHandler::Shakehand(const std::string &strSid, const std::string &str
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
-
-        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-        std::string::size_type pos = strCurrentTime.find('T');
-        strCurrentTime.replace(pos, 1, std::string(" "));
-
         InteractiveProtoHandler::ShakehandReq_USR ShakehandReq;
         ShakehandReq.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandReq_USR_T;
         ShakehandReq.m_uiMsgSeq = 1;
@@ -1868,12 +1899,12 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
         catch (boost::bad_lexical_cast & e)
         {
             LOG_ERROR_RLD("Add device type info is invalid and error msg is " << e.what() << " and input type is " << strDevType);
-            return false;
+            return CommMsgHandler::FAILED;
         }
         catch (...)
         {
             LOG_ERROR_RLD("Add device type info is invalid" << " and input type is " << strDevType);
-            return false;
+            return CommMsgHandler::FAILED;
         }
 
         std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
@@ -1937,4 +1968,328 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
 }
+
+bool HttpMsgHandler::DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DelDevReq_USR DelDevReq;
+        DelDevReq.m_MsgType = InteractiveProtoHandler::MsgType::DelDevReq_USR_T;
+        DelDevReq.m_uiMsgSeq = 1;
+        DelDevReq.m_strSID = strSid;
+        DelDevReq.m_strDevIDList.push_back(strDevID);
+        DelDevReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DelDevRsp_USR DelDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelDevRsp))
+        {
+            LOG_ERROR_RLD("Delete device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete device info user id is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << DelDevRsp.m_iRetcode <<
+            " and return msg is " << DelDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
+    const std::string &strDevName, const std::string &strDevPwd, const std::string &strDevType, 
+    const std::string &strDevExtend, const std::string &strDevInnerInfo)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        unsigned int uiTypeInfo = 0xFFFFFFFF;
+        if (!strDevType.empty())
+        {
+            try
+            {
+                uiTypeInfo = boost::lexical_cast<unsigned int>(strDevType);
+            }
+            catch (boost::bad_lexical_cast & e)
+            {
+                LOG_ERROR_RLD("Modify device type info is invalid and error msg is " << e.what() << " and input type is " << strDevType);
+                return CommMsgHandler::FAILED;
+            }
+            catch (...)
+            {
+                LOG_ERROR_RLD("Modify device type info is invalid" << " and input type is " << strDevType);
+                return CommMsgHandler::FAILED;
+            }
+        }        
+
+        InteractiveProtoHandler::ModifyDevReq_USR ModifyDevReq;
+        ModifyDevReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T;
+        ModifyDevReq.m_uiMsgSeq = 1;
+        ModifyDevReq.m_strSID = strSid;
+        ModifyDevReq.m_strUserID = strUserID;
+        ModifyDevReq.m_devInfo.m_strCreatedate = "";
+        ModifyDevReq.m_devInfo.m_strDevID = strDevID;
+        ModifyDevReq.m_devInfo.m_strDevName = strDevName;
+        ModifyDevReq.m_devInfo.m_strDevPassword = strDevPwd;
+        ModifyDevReq.m_devInfo.m_strExtend = strDevExtend;
+        ModifyDevReq.m_devInfo.m_strInnerinfo = strDevInnerInfo;
+        ModifyDevReq.m_devInfo.m_uiStatus = 0xFFFFFFFF;
+        ModifyDevReq.m_devInfo.m_uiTypeInfo = uiTypeInfo;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ModifyDevRsp_USR ModifyDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyDevRsp))
+        {
+            LOG_ERROR_RLD("Modify device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModifyDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify device is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << ModifyDevRsp.m_iRetcode <<
+            " and return msg is " << ModifyDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+template<typename T>
+bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryDevInfoReq_USR QueryDevInfoReq;
+        QueryDevInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevInfoReq_USR_T;
+        QueryDevInfoReq.m_uiMsgSeq = 1;
+        QueryDevInfoReq.m_strSID = strSid;
+        QueryDevInfoReq.m_strValue = "";
+        QueryDevInfoReq.m_strDevID = strDevID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryDevInfoRsp_USR QueryDevInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevInfoRsp))
+        {
+            LOG_ERROR_RLD("Query device info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        DevInfo = QueryDevInfoRsp.m_devInfo;
+
+        iRet = QueryDevInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device info  return code is " << QueryDevInfoRsp.m_iRetcode <<
+            " and return msg is " << QueryDevInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+template<typename T>
+bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {        
+        InteractiveProtoHandler::QueryDevReq_USR QueryDevReq;
+        QueryDevReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevReq_USR_T;
+        QueryDevReq.m_uiMsgSeq = 1;
+        QueryDevReq.m_strSID = strSid;
+        QueryDevReq.m_strValue = "";
+        QueryDevReq.m_strUserID = strUserID;
+        QueryDevReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query devices of user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryDevRsp_USR QueryDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevRsp))
+        {
+            LOG_ERROR_RLD("Query devices of user rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        RelationList.clear();
+        RelationList.swap(QueryDevRsp.m_allRelationInfoList);
+
+        iRet = QueryDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query devices of user id is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << QueryDevRsp.m_iRetcode <<
+            " and return msg is " << QueryDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+
+template<typename T>
+bool HttpMsgHandler::QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryUserReq_USR QueryUserReq;
+        QueryUserReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUserReq_USR_T;
+        QueryUserReq.m_uiMsgSeq = 1;
+        QueryUserReq.m_strSID = strSid;
+        QueryUserReq.m_strValue = "";
+        QueryUserReq.m_strDevID = strDevID;
+        QueryUserReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query users of device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryUserRsp_USR QueryUserRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUserRsp))
+        {
+            LOG_ERROR_RLD("Query users of device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        RelationList.clear();
+        RelationList.swap(QueryUserRsp.m_allRelationInfoList);
+
+        iRet = QueryUserRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query users of device id is " << strDevID << " and session id is " << strSid <<
+            " and return code is " << QueryUserRsp.m_iRetcode <<
+            " and return msg is " << QueryUserRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+
+}
+
+
+
 
