@@ -84,8 +84,7 @@ public:
     bool DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-
-
+    
 private:
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -127,6 +126,13 @@ private:
     bool SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation, 
         const std::string &strBeginDate, const std::string &strEndDate);
    
+    bool CancelSharedDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation);
+
+    bool AddFriends(const std::string &strSid, const std::string &strUserID, const std::string &strFriendID);
+
+    bool DeleteFriends(const std::string &strSid, const std::string &strUserID, const std::string &strFriendID);
+
+    bool QueryFriends(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<std::string> &FriendList);
 
 private:
     ParamInfo m_ParamInfo;

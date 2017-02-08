@@ -1172,7 +1172,7 @@ bool HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     BOOST_SCOPE_EXIT_END
 
-        auto itFind = pMsgInfoMap->find("sid");
+    auto itFind = pMsgInfoMap->find("sid");
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Sid not found.");
@@ -1188,6 +1188,14 @@ bool HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     const std::string strUserID = itFind->second;
 
+    itFind = pMsgInfoMap->find("userid_shared");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id of shared not found.");
+        return blResult;
+    }
+    const std::string strUserIDShared = itFind->second;
+
     itFind = pMsgInfoMap->find("devid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -1196,40 +1204,16 @@ bool HttpMsgHandler::CancelSharedDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     const std::string strDevID = itFind->second;
 
-    itFind = pMsgInfoMap->find("relation");
-    if (pMsgInfoMap->end() == itFind)
+    const std::string strRelation("1");
+
+    LOG_INFO_RLD("Cancel shared device info received and  user id is " << strUserID << " and user id of shared is " << strUserIDShared <<
+        " and devcie id is " << strDevID << " and session id is " << strSid);
+
+    if (!CancelSharedDevice(strSid, strUserIDShared, strDevID, strRelation))
     {
-        LOG_ERROR_RLD("Relation not found.");
+        LOG_ERROR_RLD("Canecl shared device handle failed and device id is " << strDevID << " and user id of shared is " << strUserIDShared << " and session id is " << strSid);
         return blResult;
     }
-    const std::string strRelation = itFind->second;
-
-    itFind = pMsgInfoMap->find("begindate");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Begin date not found.");
-        return blResult;
-    }
-    const std::string strBeginDate = itFind->second;
-
-    itFind = pMsgInfoMap->find("enddate");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("End date not found.");
-        return blResult;
-    }
-    const std::string strEndDate = itFind->second;
-
-    std::string strValue;
-    itFind = pMsgInfoMap->find("value");
-    if (pMsgInfoMap->end() != itFind)
-    {
-        strValue = itFind->second;
-    }
-
-    LOG_INFO_RLD("Cancel shared device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and relation is " << strRelation
-        << " and begin date is [" << strBeginDate << "]" << " and end date is " << strEndDate << " and value is [" << strValue << "]"
-        << " and session id is " << strSid);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -1282,10 +1266,15 @@ bool HttpMsgHandler::AddFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
         return blResult;
     }
     const std::string strFriendID = itFind->second;
-
-    
+        
     LOG_INFO_RLD("Add friend info received and  user id is " << strUserID << " and friend id is " << strFriendID 
         << " and session id is " << strSid);
+
+    if (!AddFriends(strSid, strUserID, strFriendID))
+    {
+        LOG_ERROR_RLD("Add friend handle failed and user id is " << strUserID << " and friend is " << strFriendID << " and session id is " << strSid);
+        return blResult;
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -1338,10 +1327,15 @@ bool HttpMsgHandler::DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         return blResult;
     }
     const std::string strFriendID = itFind->second;
-
-
+    
     LOG_INFO_RLD("Delete friend info received and  user id is " << strUserID << " and friend id is " << strFriendID
         << " and session id is " << strSid);
+
+    if (!DeleteFriends(strSid, strUserID, strFriendID))
+    {
+        LOG_ERROR_RLD("Delete friend handle failed and user id is " << strUserID << " and friend is " << strFriendID << " and session id is " << strSid);
+        return blResult;
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -1404,25 +1398,49 @@ bool HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
         LOG_ERROR_RLD("Begin index not found.");
         return blResult;
     }
-    const std::string strBeginIndex = itFind->second;
+
+    unsigned int uiBeginIndex = 0;
+
+    try
+    {
+        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Query friend info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Query friend info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
 
     LOG_INFO_RLD("Query user friend info received and  user id is " << strUserID
-        << " and begin index is " << strBeginIndex
+        << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
 
+    std::list<std::string> FriendsList;
+    if (!QueryFriends(strSid, strUserID, uiBeginIndex, FriendsList))
+    {
+        LOG_ERROR_RLD("Delete friend handle failed and user id is " << strUserID << " and begin index is " << uiBeginIndex << " and session id is " << strSid);
+        return blResult;
+    }
+    
+    auto itBegin = FriendsList.begin();
+    auto itEnd = FriendsList.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsRelation;
+        jsRelation["userid"] = *itBegin;
+        
+        jsFriendIDList.append(jsRelation);
 
-    Json::Value jsRelation;
-    jsRelation["userid"] = "dlklkalk";
-    
-    Json::Value jsRelation2;
-    jsRelation2["userid"] = "8989uijklkd";
-    
-    jsFriendIDList.append(jsRelation);
-    jsFriendIDList.append(jsRelation2);
+        ++itBegin;
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-
 
     blResult = true;
 
@@ -2302,8 +2320,7 @@ bool HttpMsgHandler::QueryUsersOfDevice(const std::string &strSid, const std::st
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
-
-
+    
 }
 
 bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
@@ -2407,5 +2424,255 @@ bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string 
 
 }
 
+bool HttpMsgHandler::CancelSharedDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        unsigned int uiRelation = 0;
+        if (!strRelation.empty())
+        {
+            try
+            {
+                uiRelation = boost::lexical_cast<unsigned int>(strRelation);
+            }
+            catch (boost::bad_lexical_cast & e)
+            {
+                LOG_ERROR_RLD("Cancel shared device relation info is invalid and error msg is " << e.what() << " and input relation is " << strRelation);
+                return CommMsgHandler::FAILED;
+            }
+            catch (...)
+            {
+                LOG_ERROR_RLD("Cancel shared device relation info is invalid" << " and input relation is " << strRelation);
+                return CommMsgHandler::FAILED;
+            }
+        }
+        
+        InteractiveProtoHandler::CancelSharedDevReq_USR CancelShardDevReq;
+        CancelShardDevReq.m_MsgType = InteractiveProtoHandler::MsgType::CancelSharedDevReq_USR_T;
+        CancelShardDevReq.m_uiMsgSeq = 1;
+        CancelShardDevReq.m_strSID = strSid;
+        CancelShardDevReq.m_strValue = "";
+        CancelShardDevReq.m_relationInfo.m_strBeginDate = "";
+        CancelShardDevReq.m_relationInfo.m_strEndDate = "";
+        CancelShardDevReq.m_relationInfo.m_strDevID = strDevID;
+        CancelShardDevReq.m_relationInfo.m_strUserID = strUserID;
+        CancelShardDevReq.m_relationInfo.m_strValue = "";
+        CancelShardDevReq.m_relationInfo.m_uiRelation = uiRelation;
 
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(CancelShardDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Cancel shared device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::CancelSharedDevRsp_USR CancelSharedDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, CancelSharedDevRsp))
+        {
+            LOG_ERROR_RLD("Cancel shared device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = CancelSharedDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Cancel shared device info user id is " << strUserID << " and device id is " << strDevID << " and session id is " << strSid <<
+            " and return code is " << CancelSharedDevRsp.m_iRetcode <<
+            " and return msg is " << CancelSharedDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+    
+}
+
+bool HttpMsgHandler::AddFriends(const std::string &strSid, const std::string &strUserID, const std::string &strFriendID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {        
+        InteractiveProtoHandler::AddFriendsReq_USR AddFriendsReq;
+        AddFriendsReq.m_MsgType = InteractiveProtoHandler::MsgType::AddFriendsReq_USR_T;
+        AddFriendsReq.m_uiMsgSeq = 1;
+        AddFriendsReq.m_strSID = strSid;
+        AddFriendsReq.m_strUserID = strUserID;
+        AddFriendsReq.m_strFriendUserID = strFriendID;        
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddFriendsReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add friend req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::AddFriendsRsp_USR AddFriendsRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddFriendsRsp))
+        {
+            LOG_ERROR_RLD("Add friend rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddFriendsRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add friend info user id is " << strUserID << " and friend id is " << strFriendID << " and session id is " << strSid <<
+            " and return code is " << AddFriendsRsp.m_iRetcode <<
+            " and return msg is " << AddFriendsRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+bool HttpMsgHandler::DeleteFriends(const std::string &strSid, const std::string &strUserID, const std::string &strFriendID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DelFriendsReq_USR DelFriendsReq;
+        DelFriendsReq.m_MsgType = InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T;
+        DelFriendsReq.m_uiMsgSeq = 1;
+        DelFriendsReq.m_strSID = strSid;
+        DelFriendsReq.m_strUserID = strUserID;
+        DelFriendsReq.m_strFriendUserIDList.push_back(strFriendID);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelFriendsReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete friend req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DelFriendsRsp_USR DelFriendsRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelFriendsRsp))
+        {
+            LOG_ERROR_RLD("Delete friend rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelFriendsRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete friend info user id is " << strUserID << " and friend id is " << strFriendID << " and session id is " << strSid <<
+            " and return code is " << DelFriendsRsp.m_iRetcode <<
+            " and return msg is " << DelFriendsRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+bool HttpMsgHandler::QueryFriends(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<std::string> &FriendList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryFriendsReq_USR QueryFriendsReq;
+        QueryFriendsReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T;
+        QueryFriendsReq.m_uiMsgSeq = 1;
+        QueryFriendsReq.m_strSID = strSid;
+        QueryFriendsReq.m_strValue = "";
+        QueryFriendsReq.m_uiBeginIndex = uiBeginIndex;
+        QueryFriendsReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryFriendsReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query friend req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryFriendsRsp_USR QueryFriendsRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryFriendsRsp))
+        {
+            LOG_ERROR_RLD("Query friend rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        FriendList.clear();
+        FriendList.swap(QueryFriendsRsp.m_allFriendUserIDList);
+
+        iRet = QueryFriendsRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query friend user id is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << QueryFriendsRsp.m_iRetcode <<
+            " and return msg is " << QueryFriendsRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
 
