@@ -11,6 +11,7 @@
 #include "InteractiveProtoHandler.h"
 #include "CommMsgHandler.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "boost/regex.hpp"
 
 
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
@@ -1084,6 +1085,14 @@ bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strUserID = itFind->second;
 
+    itFind = pMsgInfoMap->find("userid_shared");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id of shared not found.");
+        return blResult;
+    }
+    const std::string strUserIDShared = itFind->second;
+
     itFind = pMsgInfoMap->find("devid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -1092,13 +1101,14 @@ bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strDevID = itFind->second;
 
-    itFind = pMsgInfoMap->find("relation");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Relation not found.");
-        return blResult;
-    }
-    const std::string strRelation = itFind->second;
+    ////
+    //itFind = pMsgInfoMap->find("relation");
+    //if (pMsgInfoMap->end() == itFind)
+    //{
+    //    LOG_ERROR_RLD("Relation not found.");
+    //    return blResult;
+    //}
+    const std::string strRelation("1");
 
     itFind = pMsgInfoMap->find("begindate");
     if (pMsgInfoMap->end() == itFind)
@@ -1123,9 +1133,16 @@ bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         strValue = itFind->second;
     }
 
-    LOG_INFO_RLD("Sharing device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and relation is " << strRelation
+    LOG_INFO_RLD("Sharing device info received and  user id is " << strUserID << " and user id of shared is " << strUserIDShared 
+        << " and devcie id is " << strDevID << " and relation is " << strRelation
         << " and begin date is [" << strBeginDate << "]" << " and end date is " << strEndDate << " and value is [" << strValue << "]"
         << " and session id is " << strSid);
+
+    if (!SharingDevice(strSid, strUserIDShared, strDevID, strRelation, strBeginDate, strEndDate))
+    {
+        LOG_ERROR_RLD("Sharing device handle failed and device id is " << strDevID << " and user id of shared is " << strUserIDShared << " and session id is " << strSid);
+        return blResult;
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2022,7 +2039,6 @@ bool HttpMsgHandler::DeleteDevice(const std::string &strSid, const std::string &
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
-
 }
 
 bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
@@ -2048,7 +2064,7 @@ bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &
                 LOG_ERROR_RLD("Modify device type info is invalid" << " and input type is " << strDevType);
                 return CommMsgHandler::FAILED;
             }
-        }        
+        }
 
         InteractiveProtoHandler::ModifyDevReq_USR ModifyDevReq;
         ModifyDevReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T;
@@ -2290,6 +2306,106 @@ bool HttpMsgHandler::QueryUsersOfDevice(const std::string &strSid, const std::st
 
 }
 
+bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
+    const std::string &strRelation, const std::string &strBeginDate, const std::string &strEndDate)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        unsigned int uiRelation = 0;
+        if (!strRelation.empty())
+        {
+            try
+            {
+                uiRelation = boost::lexical_cast<unsigned int>(strRelation);
+            }
+            catch (boost::bad_lexical_cast & e)
+            {
+                LOG_ERROR_RLD("Sharing device relation info is invalid and error msg is " << e.what() << " and input relation is " << strRelation);
+                return CommMsgHandler::FAILED;
+            }
+            catch (...)
+            {
+                LOG_ERROR_RLD("Sharing device relation info is invalid" << " and input relation is " << strRelation);
+                return CommMsgHandler::FAILED;
+            }
+        }
+        
+        boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
+        boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
+        boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
+        boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
+        boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
+        
+        if (!boost::regex_match(strBeginDate, reg0) && !boost::regex_match(strBeginDate, reg1) && !boost::regex_match(strBeginDate, reg2) &&
+            !boost::regex_match(strBeginDate, reg3) && !boost::regex_match(strBeginDate, reg4))
+        {
+            LOG_ERROR_RLD("Sharing device begin date is invalid and input begin date is " << strBeginDate);
+            return CommMsgHandler::FAILED;
+        }
+
+        if (!boost::regex_match(strEndDate, reg0) && !boost::regex_match(strEndDate, reg1) && !boost::regex_match(strEndDate, reg2) &&
+            !boost::regex_match(strEndDate, reg3) && !boost::regex_match(strEndDate, reg4))
+        {
+            LOG_ERROR_RLD("Sharing device end date is invalid and input end date is " << strEndDate);
+            return CommMsgHandler::FAILED;
+        }
+        
+        InteractiveProtoHandler::SharingDevReq_USR SharingDevReq;
+        SharingDevReq.m_MsgType = InteractiveProtoHandler::MsgType::SharingDevReq_USR_T;
+        SharingDevReq.m_uiMsgSeq = 1;
+        SharingDevReq.m_strSID = strSid;
+        SharingDevReq.m_strValue = "";
+        SharingDevReq.m_relationInfo.m_strBeginDate = strBeginDate;
+        SharingDevReq.m_relationInfo.m_strEndDate = strEndDate;
+        SharingDevReq.m_relationInfo.m_strDevID = strDevID;
+        SharingDevReq.m_relationInfo.m_strUserID = strUserID;
+        SharingDevReq.m_relationInfo.m_strValue = "";
+        SharingDevReq.m_relationInfo.m_uiRelation = uiRelation;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(SharingDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Sharing device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::SharingDevRsp_USR SharingDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, SharingDevRsp))
+        {
+            LOG_ERROR_RLD("Sharing device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = SharingDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Sharing device info user id is " << strUserID << " and device id is " << strDevID << " and session id is " << strSid <<
+            " and return code is " << SharingDevRsp.m_iRetcode <<
+            " and return msg is " << SharingDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
 
 
 

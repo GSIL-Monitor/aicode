@@ -124,6 +124,9 @@ private:
     template<typename T>
     bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList);
 
+    bool SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation, 
+        const std::string &strBeginDate, const std::string &strEndDate);
+   
 
 private:
     ParamInfo m_ParamInfo;
