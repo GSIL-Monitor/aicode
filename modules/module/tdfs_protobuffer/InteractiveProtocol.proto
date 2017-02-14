@@ -8,6 +8,11 @@
 //日期：2016-12-22
 //修改内容：增加单独的用户查询和设备查询命令
 //版本：1.0.1
+//
+//修订：尹宾
+//日期：2017-2-13
+//修改内容：完善设备相关命令
+//版本：1.0.2
 /////////////////////////////////////////////////
 
 ///////////////传输协议格式介绍//////////////////
@@ -52,8 +57,7 @@ enum MsgType
   ShakehandRsp_DEV_T = 10070;  
   ConfigInfoReq_DEV_T = 10080;       //设备请求配置信息
   ConfigInfoRsp_DEV_T = 10090;
-  AuthReq_DEV_T = 10100;             //平台请求设备鉴权
-  AuthRsp_DEV_T = 10110;
+
   
   ////////////////////////////////////////////////////////
   
@@ -215,16 +219,7 @@ message ConfigInfoRsp_DEV                       //设备配置信息响应
   repeated string strItems = 2;
 }
 
-message AuthReq_DEV                             //设备授权请求
-{
-  string strPassword = 1;
-  string strValue = 2;
-}
 
-message AuthRsp_DEV                             //设备授权响应
-{
-  string strValue = 1;
-}
 
 ////////////////////////////////////////////////////////
 
@@ -512,7 +507,7 @@ message Req
   LogoutReq_DEV LogoutReq_DEV_Value = 30;                          //设备登出接入管理服务器
   ShakehandReq_DEV ShakehandReq_DEV_Value = 40;                    //设备与接入管理服务器握手
   ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;                  //设备请求配置信息
-  AuthReq_DEV AuthReq_DEV_Value = 60;                              //平台请求设备鉴权
+
   
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
@@ -556,7 +551,7 @@ message Rsp
   LogoutRsp_DEV LogoutRsp_DEV_Value = 50;                          //设备登出接入管理服务器
   ShakehandRsp_DEV ShakehandRsp_DEV_Value = 60;                    //设备与接入管理服务器握手
   ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;                  //设备请求配置信息
-  AuthRsp_DEV AuthRsp_DEV_Value = 80;                              //平台请求设备鉴权
+  
   
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
   GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
