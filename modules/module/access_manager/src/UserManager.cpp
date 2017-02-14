@@ -171,7 +171,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     
     //User info already exists
     if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName,
-        RegUsrReq.m_userInfo.m_strUserPassword, RegUsrReq.m_userInfo.m_uiTypeInfo, true))
+        "", RegUsrReq.m_userInfo.m_uiTypeInfo, true))
     {
         LOG_ERROR_RLD("Register user failed and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
             " and user id is " << RegUsrReq.m_userInfo.m_strUserID << " and user pwd is " << RegUsrReq.m_userInfo.m_strUserPassword);
