@@ -387,13 +387,13 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, 
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
     {
-		if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserPassword,
-			m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key))
-		{
-			LOG_ERROR_RLD("LoginLTUserSiteReq failed, login userID: " << LoginReqUsr.m_userInfo.m_strUserID);
-			return false;
-		}
-		LOG_INFO_RLD("LoginLTUserSiteReq seccessful");
+        if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
+            m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID))
+        {
+            LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+            return false;
+        }
+        LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
     }
 
     //用户登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是用户信息，json格式字符串，格式如下：
@@ -429,33 +429,37 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
 }
 
 bool UserManager::LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
-	const std::string &strLTUserSite, const std::string &strLTRC4Key)
+    const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID)
 {
-	UserLoginLTUserSite userLogin(strLTUserSite, strLTRC4Key);
-	if (userLogin.Login(strUserName, strPassword) != LOGIN_OK)
-	{
-		return false;
-	}
+    UserLoginLTUserSite userLogin(strLTUserSite, strLTRC4Key);
+    if (userLogin.Login(strUserName, strPassword) != LOGIN_OK)
+    {
+        return false;
+    }
 
-	//登录成功后将用户数据插入到本地数据库
-	std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-	std::string::size_type pos = strCurrentTime.find('T');
-	strCurrentTime.replace(pos, 1, std::string(" "));
+    //登录成功后将用户数据插入到本地数据库
+    InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
+    RegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T;
+    RegUsrReq.m_uiMsgSeq = 0;
+    RegUsrReq.m_strSID = "";
+    RegUsrReq.m_userInfo.m_strUserID = "";
+    RegUsrReq.m_userInfo.m_strUserName = strUserName;
+    RegUsrReq.m_userInfo.m_strUserPassword = strPassword;
+    RegUsrReq.m_userInfo.m_strCreatedate = "";
+    RegUsrReq.m_userInfo.m_uiTypeInfo = 0;
+    RegUsrReq.m_userInfo.m_uiStatus = NORMAL_STATUS;
+    RegUsrReq.m_userInfo.m_strExtend = "";
+    RegUsrReq.m_strValue = "";
 
-	InteractiveProtoHandler::User UsrInfo;
-	UsrInfo.m_strUserID = CreateUUID();
-	UsrInfo.m_strUserName = strUserName;
-	UsrInfo.m_strUserPassword = strPassword;
-	UsrInfo.m_uiTypeInfo = 0;
-	UsrInfo.m_strCreatedate = strCurrentTime;
-	UsrInfo.m_uiStatus = NORMAL_STATUS;
-	//UsrInfo.m_strExtend = "";
+    std::string strSerializeLoginReq;
+    if (!m_pProtoHandler->SerializeReq(RegUsrReq, strSerializeLoginReq))
+    {
+        LOG_ERROR_RLD("Insert register user info failed, user name: " << strUserName);
+        return false;
+    }
 
-	InsertUserToDB(UsrInfo);
-	LOG_INFO_RLD("Insert user db successful from LT user site, userID: " << UsrInfo.m_strUserID << "user name: "
-		<< UsrInfo.m_strUserName);
-	
-	return true;
+    LOG_INFO_RLD("Insert register user info, user name: " << strUserName);
+    return RegisterUserReq(strSerializeLoginReq, strSrcID, NULL);
 }
 
 bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
