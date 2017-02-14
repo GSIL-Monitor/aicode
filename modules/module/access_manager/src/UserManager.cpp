@@ -5,6 +5,7 @@
 #include "mysql_impl.h"
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
+#include "UserLoginLTUserSite.h"
 
 const std::string UserManager::MAX_DATE = "2199-01-01 00:00:00";
 
@@ -381,7 +382,13 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, 
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
     {
-        return false;
+		if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserPassword,
+			m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key))
+		{
+			LOG_ERROR_RLD("LoginLTUserSiteReq failed, login userID: " << LoginReqUsr.m_userInfo.m_strUserID);
+			return false;
+		}
+		LOG_INFO_RLD("LoginLTUserSiteReq seccessful");
     }
 
     //用户登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是用户信息，json格式字符串，格式如下：
@@ -414,6 +421,36 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     
     
     return blResult;
+}
+
+bool UserManager::LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
+	const std::string &strLTUserSite, const std::string &strLTRC4Key)
+{
+	UserLoginLTUserSite userLogin(strLTUserSite, strLTRC4Key);
+	if (userLogin.Login(strUserName, strPassword) != LOGIN_OK)
+	{
+		return false;
+	}
+
+	//登录成功后将用户数据插入到本地数据库
+	std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+	std::string::size_type pos = strCurrentTime.find('T');
+	strCurrentTime.replace(pos, 1, std::string(" "));
+
+	InteractiveProtoHandler::User UsrInfo;
+	UsrInfo.m_strUserID = CreateUUID();
+	UsrInfo.m_strUserName = strUserName;
+	UsrInfo.m_strUserPassword = strPassword;
+	UsrInfo.m_uiTypeInfo = 0;
+	UsrInfo.m_strCreatedate = strCurrentTime;
+	UsrInfo.m_uiStatus = NORMAL_STATUS;
+	//UsrInfo.m_strExtend = "";
+
+	InsertUserToDB(UsrInfo);
+	LOG_INFO_RLD("Insert user db successful from LT user site, userID: " << UsrInfo.m_strUserID << "user name: "
+		<< UsrInfo.m_strUserName);
+	
+	return true;
 }
 
 bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)

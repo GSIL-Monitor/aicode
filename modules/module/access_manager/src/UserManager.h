@@ -69,6 +69,8 @@ public:
         std::string m_strMemAddress;
         std::string m_strMemPort;
         std::string m_strSessionTimeoutCountThreshold;
+		std::string m_strLTUserSite;
+		std::string m_strLTUserSiteRC4Key;
 
     } ParamInfo;
     
@@ -90,6 +92,9 @@ public:
     bool QueryUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+	bool LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
+		const std::string &strLTUserSite, const std::string &strLTRC4Key);
 
     bool LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
