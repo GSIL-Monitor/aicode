@@ -135,6 +135,11 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     std::string strUserID;
     BOOST_SCOPE_EXIT(&blResult, this_, &strUserID, &writer, &strSrcID)
     {
+        if (NULL == writer)
+        {
+            return;
+        }
+
         InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
         RegUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T;
         RegUsrRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
