@@ -56,6 +56,8 @@ public:
         UnRegisterUserRsp_USR_T = 20050,
         QueryUsrInfoReq_USR_T = 20051,
         QueryUsrInfoRsp_USR_T = 20052,
+        ModifyUserInfoReq_USR_T = 20055,      //用户修改
+        ModifyUserInfoRsp_USR_T = 20056,
         LoginReq_USR_T = 20060,                      //用户登录用户设备管理服务器
         LoginRsp_USR_T = 20070,
         LogoutReq_USR_T = 20080,                   //用户登出用户设备管理服务器
@@ -244,6 +246,26 @@ public:
     {
 
         User m_userInfo;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyUserInfoReq_USR : Req
+    {
+
+        User m_userInfo;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyUserInfoRsp_USR : Rsp
+    {
+
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -669,6 +691,12 @@ private:
     bool QueryUsrInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryUsrInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryUsrInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ModifyUserInfoReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool ModifyUserInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ModifyUserInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool ModifyUserInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
     bool LoginReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool LoginReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);

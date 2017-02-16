@@ -21,6 +21,7 @@ public:
     static const std::string REGISTER_USER_ACTION;
     static const std::string UNREGISTER_USER_ACTION;
     static const std::string QUERY_USER_INFO_ACTION;
+    static const std::string MODIFY_USER_INFO_ACTION;
     static const std::string USER_LOGIN_ACTION;
     static const std::string USER_LOGOUT_ACTION;
     static const std::string USER_SHAKEHAND_ACTION;
@@ -54,6 +55,8 @@ public:
     bool UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -101,6 +104,9 @@ private:
 
     template<typename T>
     bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
+
+    bool ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, 
+        const unsigned int uiType, const std::string &strExtend);
 
     bool UserLogout(const std::string &strSid, const std::string &strUserID);
 

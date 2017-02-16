@@ -173,7 +173,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName,
         "", RegUsrReq.m_userInfo.m_uiTypeInfo, true))
     {
-        LOG_ERROR_RLD("Register user failed and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
+        LOG_ERROR_RLD("Register user failed because user already exist and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
             " and user id is " << RegUsrReq.m_userInfo.m_strUserID << " and user pwd is " << RegUsrReq.m_userInfo.m_strUserPassword);
         return false;
     }
@@ -255,7 +255,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
 
 
     //异步更新数据库内容
-    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, DELETE_STATUS));
+    m_DBRuner.Post(boost::bind(&UserManager::UnregisterUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, DELETE_STATUS));
 
     blResult = true;
 
@@ -321,6 +321,67 @@ bool UserManager::QueryUsrInfoReq(const std::string &strMsg, const std::string &
 
     return blResult;
 
+}
+
+bool UserManager::ModifyUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ModifyUserInfoReq_USR ModifyUsrReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &ModifyUsrReq, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::ModifyUserInfoRsp_USR ModifyUsrRsp;
+        ModifyUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyUserInfoRsp_USR_T;
+        ModifyUsrRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        ModifyUsrRsp.m_strSID = ModifyUsrReq.m_strSID;
+        ModifyUsrRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        ModifyUsrRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        ModifyUsrRsp.m_strValue = "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(ModifyUsrRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify user rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("User modify rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+    
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, ModifyUsrReq))
+    {
+        LOG_ERROR_RLD("Modify user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (ModifyUsrReq.m_userInfo.m_strUserID.empty())
+    {
+        LOG_ERROR_RLD("Modify user id is empty, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!ValidUser(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_userInfo.m_strUserName,
+        "", ModifyUsrReq.m_userInfo.m_uiTypeInfo))
+    {
+        LOG_ERROR_RLD("Modify user failed because user is invalid and user name is " << ModifyUsrReq.m_userInfo.m_strUserName <<
+            " and user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword);
+        return false;
+    }
+    
+    LOG_INFO_RLD("Modify user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " session id is " << ModifyUsrReq.m_strSID 
+        << " and user name is " << ModifyUsrReq.m_userInfo.m_strUserName << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword
+        << " and user type is " << ModifyUsrReq.m_userInfo.m_uiTypeInfo << " and user extend is " << ModifyUsrReq.m_userInfo.m_strExtend);
+
+    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo));
+
+    blResult = true;
+
+    return blResult;
 }
 
 bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -1217,7 +1278,79 @@ void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
     }
 }
 
-void UserManager::UpdateUserToDB(const std::string &strUserID, const int iStatus)
+void UserManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)
+{
+    std::list<std::string> strItemList;
+    if (!UsrInfo.m_strUserName.empty())
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "username = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserName.c_str());
+        strItemList.push_back(sql);
+    }
+
+    if (!UsrInfo.m_strUserPassword.empty())
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "userpassword = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserPassword.c_str());
+        strItemList.push_back(sql);
+    }
+
+    if (0xFFFFFFFF != UsrInfo.m_uiTypeInfo)
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "typeinfo = %d";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_uiTypeInfo);
+        strItemList.push_back(sql);
+    }
+
+    if (!UsrInfo.m_strExtend.empty())
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "extend = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strExtend.c_str());
+        strItemList.push_back(sql);
+    }
+
+    if (strItemList.empty())
+    {
+        LOG_INFO_RLD("No need to update user info to db.");
+        return;
+    }
+
+    std::string strTmp;
+    auto itBegin = strItemList.begin();
+    auto itEnd = strItemList.end();
+    while (itBegin != itEnd)
+    {
+
+        strTmp += *itBegin;
+
+        auto itTmp = itBegin;
+        ++itTmp;
+        if (itTmp != itEnd)
+        {
+            strTmp += ", ";
+        }
+        
+        ++itBegin;
+    }
+        
+    char sql[1024] = { 0 };
+    const char *sqlfmt = " where userid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserID.c_str());
+    std::string strWhereSql = sql;
+    std::string strBeginSql = "update t_user_info set ";
+    std::string strSql = strBeginSql + strTmp + strWhereSql;
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << strSql);
+    }
+}
+
+void UserManager::UnregisterUserToDB(const std::string &strUserID, const int iStatus)
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_user_info set status = '%d' where userid = '%s'";

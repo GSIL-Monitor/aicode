@@ -203,6 +203,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
 
     /////////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyUserInfoReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyUserInfoReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyUserInfoReq_USR_T, handler));
+
+    ////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyUserInfoRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyUserInfoRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyUserInfoRsp_USR_T, handler));
+
+    ////////////////////////////////////////////////////////
     
     handler.Szr = boost::bind(&InteractiveProtoHandler::LoginReq_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::LoginReq_USR_UnSerializer, this, _1, _2);
@@ -597,6 +611,26 @@ bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_Serializer(const Req &rsp, std
 bool InteractiveProtoHandler::QueryUsrInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryUsrInfoRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::ModifyUserInfoReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ModifyUserInfoReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyUserInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ModifyUserInfoReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ModifyUserInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyUserInfoRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyUserInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ModifyUserInfoRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::LoginReq_USR_Serializer(const Req &req, std::string &strOutput)
@@ -1202,6 +1236,46 @@ void InteractiveProtoHandler::QueryUsrInfoRsp_USR::Serializer(InteractiveMessage
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
 
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::ModifyUserInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_userInfo.m_strUserID = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().struserid();
+    m_userInfo.m_strUserName = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strusername();
+    m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().struserpassword();
+    m_userInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strcreatedate();
+    m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().uistatus();
+    m_userInfo.m_strExtend = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strextend();
+}
+
+void InteractiveProtoHandler::ModifyUserInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyUserInfoReq_USR_T);
+
+    auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_modifyuserinforeq_usr_value()->mutable_userinfo();
+    uinfo->set_struserid(m_userInfo.m_strUserID);
+    uinfo->set_strusername(m_userInfo.m_strUserName);
+    uinfo->set_struserpassword(m_userInfo.m_strUserPassword);
+    uinfo->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
+    uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
+    uinfo->set_uistatus(m_userInfo.m_uiStatus);
+    uinfo->set_strextend(m_userInfo.m_strExtend);
+}
+
+void InteractiveProtoHandler::ModifyUserInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().modifyuserinforsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::ModifyUserInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyUserInfoRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_modifyuserinforsp_usr_value()->set_strvalue(m_strValue);
 }
 
 void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

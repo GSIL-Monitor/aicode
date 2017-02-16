@@ -57,7 +57,11 @@ enum MsgType
   ShakehandRsp_DEV_T = 10070;  
   ConfigInfoReq_DEV_T = 10080;       //设备请求配置信息
   ConfigInfoRsp_DEV_T = 10090;
-
+  StorageAddressReq_DEV_T = 10100;   //设备获取存储的地址
+  StorageAddressRsp_DEV_T = 10110;
+  
+  P2pInfoReq_DEV_T = 10220;          //P2P服务器信息
+  P2pInfoRsp_DEV_T = 10230;
   
   ////////////////////////////////////////////////////////
   
@@ -71,6 +75,8 @@ enum MsgType
   UnRegisterUserRsp_USR_T = 20050;
   QueryUsrInfoReq_USR_T = 20051;     //用户查询
   QueryUsrInfoRsp_USR_T = 20052;
+  ModifyUserInfoReq_USR_T = 20055;   //用户修改
+  ModifyUserInfoRsp_USR_T = 20056;
   LoginReq_USR_T = 20060;            //用户登录用户设备管理服务器
   LoginRsp_USR_T = 20070; 
   LogoutReq_USR_T = 20080;           //用户登出用户设备管理服务器
@@ -105,7 +111,10 @@ enum MsgType
   ModifyFriendsRsp_USR_T = 20310;
   QueryFriendsReq_USR_T = 20320;     //用户查询好友
   QueryFriendsRsp_USR_T = 20330;
-   
+  
+  P2pInfoReq_USR_T = 20340;          //P2P服务器信息
+  P2pInfoRsp_USR_T = 20350;
+  
   ///////////////////////////////////////////////////////
   
   GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
@@ -182,7 +191,6 @@ message LoginReq_DEV                            //设备登陆请求
 
 message LoginRsp_DEV                            //设备登陆响应
 {
-  string strConfigInfo = 1;                     //设备配置信息
   string strValue = 2;
 }
 
@@ -200,7 +208,6 @@ message LogoutRsp_DEV                           //设备登出响应
 message ShakehandReq_DEV                        //设备握手请求
 {
   string strDevID = 1;
-  string strDevCurrentStatusInfo = 2;           //设备当前状态信息
   string strValue = 3;
 }
 
@@ -220,6 +227,24 @@ message ConfigInfoRsp_DEV                       //设备配置信息响应
   string strConfigInfo = 1;                     //设备配置信息
   string strValue = 2;
 }
+
+message StorageAddressReq_DEV                   //设备获取存储的地址请求
+{
+  string strDevID = 1;
+  uint32 uiStorageType = 2;                     //存储类型：0，日志；1，照片；2，视频；3，固件；4，证书
+  uint32 uiStorageAction = 3;                   //存储动作：0，上传；1，下载
+  string strFileID = 4;                         //文件ID，下载时提供
+}
+
+message StorageAddressRsp_DEV                   //设备获取存储的地址响应
+{
+  string strAddress = 1;                        //上传、下载时使用的地址
+  uint32 uiPort = 2;
+}
+
+
+
+
 
 
 
@@ -282,6 +307,16 @@ message QueryUsrInfoRsp_USR                     //查询用户信息响应
 {
   User userInfo = 1;
   string strValue = 2;
+}
+
+message ModifyUserInfoReq_USR                   //用户修改信息
+{
+  User userInfo = 1;
+}
+
+message ModifyUserInfoRsp_USR                   //用户修改信息响应
+{
+  string strValue = 1;
 }
 
 message LoginReq_USR                            //用户登录请求
@@ -516,6 +551,7 @@ message Req
   RegisterUserReq_USR RegisterUserReq_USR_Value = 80;              //用户注册
   UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;          //用户注销
   QueryUsrInfoReq_USR QueryUsrInfoReq_USR_Value = 100;             //用户查询
+  ModifyUserInfoReq_USR ModifyUserInfoReq_USR_Value = 102;         //用户修改
   LoginReq_USR LoginReq_USR_Value = 110;                           //用户登录用户设备管理服务器
   LogoutReq_USR LogoutReq_USR_Value = 120;                         //用户登出用户设备管理服务器
   ShakehandReq_USR ShakehandReq_USR_Value = 130;                   //用户与用户设备管理服务器握手
@@ -560,6 +596,7 @@ message Rsp
   RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;             //用户注册
   UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;         //用户注销
   QueryUsrInfoRsp_USR QueryUsrInfoRsp_USR_Value = 120;             //用户查询
+  ModifyUserInfoRsp_USR ModifyUserInfoRsp_USR_Value = 122;         //用户修改
   LoginRsp_USR LoginRsp_USR_Value = 130;                           //用户登录用户设备管理服务器
   LogoutRsp_USR LogoutRsp_USR_Value = 140;                         //用户登出用户设备管理服务器
   ShakehandRsp_USR ShakehandRsp_USR_Value = 150;                   //用户与用户设备管理服务器握手

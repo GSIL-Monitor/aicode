@@ -25,6 +25,8 @@ const std::string HttpMsgHandler::UNREGISTER_USER_ACTION("unregister_user");
 
 const std::string HttpMsgHandler::QUERY_USER_INFO_ACTION("query_userinfo");
 
+const std::string HttpMsgHandler::MODIFY_USER_INFO_ACTION("modify_userinfo");
+
 const std::string HttpMsgHandler::USER_LOGIN_ACTION("user_login");
 
 const std::string HttpMsgHandler::USER_LOGOUT_ACTION("user_logout");
@@ -277,6 +279,101 @@ bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", userinfo.m_strCreatedate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", userinfo.m_strExtend));
     //ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserid = itFind->second;
+
+    std::string strUserName;
+    itFind = pMsgInfoMap->find("username");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserName = itFind->second;
+    }
+
+    std::string strUserPwd;
+    itFind = pMsgInfoMap->find("userpwd");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserPwd = itFind->second;
+    }
+
+    unsigned int uiType = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Modify user info type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Modify user info type is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+    
+    LOG_INFO_RLD("Modify user info received and  user id is " << strUserid << " and user name is " << strUserName 
+        << " and user pwd is " << strUserPwd << " and user type is " << uiType << " and extend is " << strExtend
+        << " and session id is " << strSid);
+
+    if (!ModifyUserInfo(strSid, strUserid, strUserName, strUserPwd, uiType, strExtend))
+    {
+        LOG_ERROR_RLD("Modify user info handle failed and user id is " << strUserid << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
 
@@ -1787,6 +1884,66 @@ bool HttpMsgHandler::QueryUserInfo(const std::string &strSid, const std::string 
 
         LOG_INFO_RLD("Query user info  return code is " << QueryUsrInfoRsp.m_iRetcode <<
             " and return msg is " << QueryUsrInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, 
+    const std::string &strUserPwd, const unsigned int uiType, const std::string &strExtend)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::ModifyUserInfoReq_USR ModifyUsrInfoReq;
+        ModifyUsrInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyUserInfoReq_USR_T;
+        ModifyUsrInfoReq.m_uiMsgSeq = 1;
+        ModifyUsrInfoReq.m_strSID = strSid;
+        ModifyUsrInfoReq.m_userInfo.m_strCreatedate = "";
+        ModifyUsrInfoReq.m_userInfo.m_strExtend = strExtend;
+        ModifyUsrInfoReq.m_userInfo.m_strUserID = strUserID;
+        ModifyUsrInfoReq.m_userInfo.m_strUserName = strUserName;
+        ModifyUsrInfoReq.m_userInfo.m_strUserPassword = strUserPwd;
+        ModifyUsrInfoReq.m_userInfo.m_uiStatus = 0;
+        ModifyUsrInfoReq.m_userInfo.m_uiTypeInfo = uiType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyUsrInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify user info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ModifyUserInfoRsp_USR ModifyUsrInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyUsrInfoRsp))
+        {
+            LOG_ERROR_RLD("Modify user info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModifyUsrInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify user info  return code is " << ModifyUsrInfoRsp.m_iRetcode <<
+            " and return msg is " << ModifyUsrInfoRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

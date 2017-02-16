@@ -91,6 +91,8 @@ public:
 
     bool QueryUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool ModifyUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
@@ -125,7 +127,9 @@ public:
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
-    void UpdateUserToDB(const std::string &strUserID, const int iStatus);
+    void UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo);
+
+    void UnregisterUserToDB(const std::string &strUserID, const int iStatus);
 
     bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
 

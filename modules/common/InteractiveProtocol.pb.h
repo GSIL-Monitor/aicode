@@ -140,6 +140,12 @@ extern ModifyDevReq_USRDefaultTypeInternal _ModifyDevReq_USR_default_instance_;
 class ModifyDevRsp_USR;
 class ModifyDevRsp_USRDefaultTypeInternal;
 extern ModifyDevRsp_USRDefaultTypeInternal _ModifyDevRsp_USR_default_instance_;
+class ModifyUserInfoReq_USR;
+class ModifyUserInfoReq_USRDefaultTypeInternal;
+extern ModifyUserInfoReq_USRDefaultTypeInternal _ModifyUserInfoReq_USR_default_instance_;
+class ModifyUserInfoRsp_USR;
+class ModifyUserInfoRsp_USRDefaultTypeInternal;
+extern ModifyUserInfoRsp_USRDefaultTypeInternal _ModifyUserInfoRsp_USR_default_instance_;
 class MsgPreHandlerReq_USR;
 class MsgPreHandlerReq_USRDefaultTypeInternal;
 extern MsgPreHandlerReq_USRDefaultTypeInternal _MsgPreHandlerReq_USR_default_instance_;
@@ -212,6 +218,12 @@ extern SharingDevReq_USRDefaultTypeInternal _SharingDevReq_USR_default_instance_
 class SharingDevRsp_USR;
 class SharingDevRsp_USRDefaultTypeInternal;
 extern SharingDevRsp_USRDefaultTypeInternal _SharingDevRsp_USR_default_instance_;
+class StorageAddressReq_DEV;
+class StorageAddressReq_DEVDefaultTypeInternal;
+extern StorageAddressReq_DEVDefaultTypeInternal _StorageAddressReq_DEV_default_instance_;
+class StorageAddressRsp_DEV;
+class StorageAddressRsp_DEVDefaultTypeInternal;
+extern StorageAddressRsp_DEVDefaultTypeInternal _StorageAddressRsp_DEV_default_instance_;
 class UnRegisterUserReq_USR;
 class UnRegisterUserReq_USRDefaultTypeInternal;
 extern UnRegisterUserReq_USRDefaultTypeInternal _UnRegisterUserReq_USR_default_instance_;
@@ -250,6 +262,10 @@ enum MsgType {
   ShakehandRsp_DEV_T = 10070,
   ConfigInfoReq_DEV_T = 10080,
   ConfigInfoRsp_DEV_T = 10090,
+  StorageAddressReq_DEV_T = 10100,
+  StorageAddressRsp_DEV_T = 10110,
+  P2pInfoReq_DEV_T = 10220,
+  P2pInfoRsp_DEV_T = 10230,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -260,6 +276,8 @@ enum MsgType {
   UnRegisterUserRsp_USR_T = 20050,
   QueryUsrInfoReq_USR_T = 20051,
   QueryUsrInfoRsp_USR_T = 20052,
+  ModifyUserInfoReq_USR_T = 20055,
+  ModifyUserInfoRsp_USR_T = 20056,
   LoginReq_USR_T = 20060,
   LoginRsp_USR_T = 20070,
   LogoutReq_USR_T = 20080,
@@ -292,6 +310,8 @@ enum MsgType {
   ModifyFriendsRsp_USR_T = 20310,
   QueryFriendsReq_USR_T = 20320,
   QueryFriendsRsp_USR_T = 20330,
+  P2pInfoReq_USR_T = 20340,
+  P2pInfoRsp_USR_T = 20350,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -1326,20 +1346,6 @@ class LoginRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // string strConfigInfo = 1;
-  void clear_strconfiginfo();
-  static const int kStrConfigInfoFieldNumber = 1;
-  const ::std::string& strconfiginfo() const;
-  void set_strconfiginfo(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strconfiginfo(::std::string&& value);
-  #endif
-  void set_strconfiginfo(const char* value);
-  void set_strconfiginfo(const char* value, size_t size);
-  ::std::string* mutable_strconfiginfo();
-  ::std::string* release_strconfiginfo();
-  void set_allocated_strconfiginfo(::std::string* strconfiginfo);
-
   // string strValue = 2;
   void clear_strvalue();
   static const int kStrValueFieldNumber = 2;
@@ -1358,7 +1364,6 @@ class LoginRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr strconfiginfo_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -1643,20 +1648,6 @@ class ShakehandReq_DEV : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_strdevid();
   void set_allocated_strdevid(::std::string* strdevid);
 
-  // string strDevCurrentStatusInfo = 2;
-  void clear_strdevcurrentstatusinfo();
-  static const int kStrDevCurrentStatusInfoFieldNumber = 2;
-  const ::std::string& strdevcurrentstatusinfo() const;
-  void set_strdevcurrentstatusinfo(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strdevcurrentstatusinfo(::std::string&& value);
-  #endif
-  void set_strdevcurrentstatusinfo(const char* value);
-  void set_strdevcurrentstatusinfo(const char* value, size_t size);
-  ::std::string* mutable_strdevcurrentstatusinfo();
-  ::std::string* release_strdevcurrentstatusinfo();
-  void set_allocated_strdevcurrentstatusinfo(::std::string* strdevcurrentstatusinfo);
-
   // string strValue = 3;
   void clear_strvalue();
   static const int kStrValueFieldNumber = 3;
@@ -1676,7 +1667,6 @@ class ShakehandReq_DEV : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
-  ::google::protobuf::internal::ArenaStringPtr strdevcurrentstatusinfo_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -1981,6 +1971,224 @@ class ConfigInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strconfiginfo_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class StorageAddressReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.StorageAddressReq_DEV) */ {
+ public:
+  StorageAddressReq_DEV();
+  virtual ~StorageAddressReq_DEV();
+
+  StorageAddressReq_DEV(const StorageAddressReq_DEV& from);
+
+  inline StorageAddressReq_DEV& operator=(const StorageAddressReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StorageAddressReq_DEV& default_instance();
+
+  static inline const StorageAddressReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const StorageAddressReq_DEV*>(
+               &_StorageAddressReq_DEV_default_instance_);
+  }
+
+  void Swap(StorageAddressReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline StorageAddressReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  StorageAddressReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const StorageAddressReq_DEV& from);
+  void MergeFrom(const StorageAddressReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(StorageAddressReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strFileID = 4;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 4;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // uint32 uiStorageType = 2;
+  void clear_uistoragetype();
+  static const int kUiStorageTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uistoragetype() const;
+  void set_uistoragetype(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageAction = 3;
+  void clear_uistorageaction();
+  static const int kUiStorageActionFieldNumber = 3;
+  ::google::protobuf::uint32 uistorageaction() const;
+  void set_uistorageaction(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.StorageAddressReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::uint32 uistoragetype_;
+  ::google::protobuf::uint32 uistorageaction_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class StorageAddressRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.StorageAddressRsp_DEV) */ {
+ public:
+  StorageAddressRsp_DEV();
+  virtual ~StorageAddressRsp_DEV();
+
+  StorageAddressRsp_DEV(const StorageAddressRsp_DEV& from);
+
+  inline StorageAddressRsp_DEV& operator=(const StorageAddressRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StorageAddressRsp_DEV& default_instance();
+
+  static inline const StorageAddressRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const StorageAddressRsp_DEV*>(
+               &_StorageAddressRsp_DEV_default_instance_);
+  }
+
+  void Swap(StorageAddressRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline StorageAddressRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  StorageAddressRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const StorageAddressRsp_DEV& from);
+  void MergeFrom(const StorageAddressRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(StorageAddressRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAddress = 1;
+  void clear_straddress();
+  static const int kStrAddressFieldNumber = 1;
+  const ::std::string& straddress() const;
+  void set_straddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straddress(::std::string&& value);
+  #endif
+  void set_straddress(const char* value);
+  void set_straddress(const char* value, size_t size);
+  ::std::string* mutable_straddress();
+  ::std::string* release_straddress();
+  void set_allocated_straddress(::std::string* straddress);
+
+  // uint32 uiPort = 2;
+  void clear_uiport();
+  static const int kUiPortFieldNumber = 2;
+  ::google::protobuf::uint32 uiport() const;
+  void set_uiport(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.StorageAddressRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straddress_;
+  ::google::protobuf::uint32 uiport_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -3011,6 +3219,183 @@ class QueryUsrInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_inser
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::Interactive::Message::User* userinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyUserInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyUserInfoReq_USR) */ {
+ public:
+  ModifyUserInfoReq_USR();
+  virtual ~ModifyUserInfoReq_USR();
+
+  ModifyUserInfoReq_USR(const ModifyUserInfoReq_USR& from);
+
+  inline ModifyUserInfoReq_USR& operator=(const ModifyUserInfoReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyUserInfoReq_USR& default_instance();
+
+  static inline const ModifyUserInfoReq_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyUserInfoReq_USR*>(
+               &_ModifyUserInfoReq_USR_default_instance_);
+  }
+
+  void Swap(ModifyUserInfoReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyUserInfoReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyUserInfoReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyUserInfoReq_USR& from);
+  void MergeFrom(const ModifyUserInfoReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyUserInfoReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.User userInfo = 1;
+  bool has_userinfo() const;
+  void clear_userinfo();
+  static const int kUserInfoFieldNumber = 1;
+  const ::Interactive::Message::User& userinfo() const;
+  ::Interactive::Message::User* mutable_userinfo();
+  ::Interactive::Message::User* release_userinfo();
+  void set_allocated_userinfo(::Interactive::Message::User* userinfo);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyUserInfoReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::User* userinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyUserInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyUserInfoRsp_USR) */ {
+ public:
+  ModifyUserInfoRsp_USR();
+  virtual ~ModifyUserInfoRsp_USR();
+
+  ModifyUserInfoRsp_USR(const ModifyUserInfoRsp_USR& from);
+
+  inline ModifyUserInfoRsp_USR& operator=(const ModifyUserInfoRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyUserInfoRsp_USR& default_instance();
+
+  static inline const ModifyUserInfoRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyUserInfoRsp_USR*>(
+               &_ModifyUserInfoRsp_USR_default_instance_);
+  }
+
+  void Swap(ModifyUserInfoRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyUserInfoRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyUserInfoRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyUserInfoRsp_USR& from);
+  void MergeFrom(const ModifyUserInfoRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyUserInfoRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyUserInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -6808,6 +7193,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUsrInfoReq_USR* release_queryusrinforeq_usr_value();
   void set_allocated_queryusrinforeq_usr_value(::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value);
 
+  // .Interactive.Message.ModifyUserInfoReq_USR ModifyUserInfoReq_USR_Value = 102;
+  bool has_modifyuserinforeq_usr_value() const;
+  void clear_modifyuserinforeq_usr_value();
+  static const int kModifyUserInfoReqUSRValueFieldNumber = 102;
+  const ::Interactive::Message::ModifyUserInfoReq_USR& modifyuserinforeq_usr_value() const;
+  ::Interactive::Message::ModifyUserInfoReq_USR* mutable_modifyuserinforeq_usr_value();
+  ::Interactive::Message::ModifyUserInfoReq_USR* release_modifyuserinforeq_usr_value();
+  void set_allocated_modifyuserinforeq_usr_value(::Interactive::Message::ModifyUserInfoReq_USR* modifyuserinforeq_usr_value);
+
   // .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
   bool has_loginreq_usr_value() const;
   void clear_loginreq_usr_value();
@@ -6993,6 +7387,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
   ::Interactive::Message::UnRegisterUserReq_USR* unregisteruserreq_usr_value_;
   ::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value_;
+  ::Interactive::Message::ModifyUserInfoReq_USR* modifyuserinforeq_usr_value_;
   ::Interactive::Message::LoginReq_USR* loginreq_usr_value_;
   ::Interactive::Message::LogoutReq_USR* logoutreq_usr_value_;
   ::Interactive::Message::ShakehandReq_USR* shakehandreq_usr_value_;
@@ -7188,6 +7583,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUsrInfoRsp_USR* release_queryusrinforsp_usr_value();
   void set_allocated_queryusrinforsp_usr_value(::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value);
 
+  // .Interactive.Message.ModifyUserInfoRsp_USR ModifyUserInfoRsp_USR_Value = 122;
+  bool has_modifyuserinforsp_usr_value() const;
+  void clear_modifyuserinforsp_usr_value();
+  static const int kModifyUserInfoRspUSRValueFieldNumber = 122;
+  const ::Interactive::Message::ModifyUserInfoRsp_USR& modifyuserinforsp_usr_value() const;
+  ::Interactive::Message::ModifyUserInfoRsp_USR* mutable_modifyuserinforsp_usr_value();
+  ::Interactive::Message::ModifyUserInfoRsp_USR* release_modifyuserinforsp_usr_value();
+  void set_allocated_modifyuserinforsp_usr_value(::Interactive::Message::ModifyUserInfoRsp_USR* modifyuserinforsp_usr_value);
+
   // .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
   bool has_loginrsp_usr_value() const;
   void clear_loginrsp_usr_value();
@@ -7362,6 +7766,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
   ::Interactive::Message::UnRegisterUserRsp_USR* unregisteruserrsp_usr_value_;
   ::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value_;
+  ::Interactive::Message::ModifyUserInfoRsp_USR* modifyuserinforsp_usr_value_;
   ::Interactive::Message::LoginRsp_USR* loginrsp_usr_value_;
   ::Interactive::Message::LogoutRsp_USR* logoutrsp_usr_value_;
   ::Interactive::Message::ShakehandRsp_USR* shakehandrsp_usr_value_;
@@ -8890,58 +9295,6 @@ inline void LoginReq_DEV::set_allocated_strvalue(::std::string* strvalue) {
 
 // LoginRsp_DEV
 
-// string strConfigInfo = 1;
-inline void LoginRsp_DEV::clear_strconfiginfo() {
-  strconfiginfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& LoginRsp_DEV::strconfiginfo() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-  return strconfiginfo_.GetNoArena();
-}
-inline void LoginRsp_DEV::set_strconfiginfo(const ::std::string& value) {
-  
-  strconfiginfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-}
-#if LANG_CXX11
-inline void LoginRsp_DEV::set_strconfiginfo(::std::string&& value) {
-  
-  strconfiginfo_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-}
-#endif
-inline void LoginRsp_DEV::set_strconfiginfo(const char* value) {
-  
-  strconfiginfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-}
-inline void LoginRsp_DEV::set_strconfiginfo(const char* value, size_t size) {
-  
-  strconfiginfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-}
-inline ::std::string* LoginRsp_DEV::mutable_strconfiginfo() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-  return strconfiginfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* LoginRsp_DEV::release_strconfiginfo() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-  
-  return strconfiginfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void LoginRsp_DEV::set_allocated_strconfiginfo(::std::string* strconfiginfo) {
-  if (strconfiginfo != NULL) {
-    
-  } else {
-    
-  }
-  strconfiginfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strconfiginfo);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginRsp_DEV.strConfigInfo)
-}
-
 // string strValue = 2;
 inline void LoginRsp_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -9212,58 +9565,6 @@ inline void ShakehandReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
   }
   strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ShakehandReq_DEV.strDevID)
-}
-
-// string strDevCurrentStatusInfo = 2;
-inline void ShakehandReq_DEV::clear_strdevcurrentstatusinfo() {
-  strdevcurrentstatusinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ShakehandReq_DEV::strdevcurrentstatusinfo() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-  return strdevcurrentstatusinfo_.GetNoArena();
-}
-inline void ShakehandReq_DEV::set_strdevcurrentstatusinfo(const ::std::string& value) {
-  
-  strdevcurrentstatusinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-}
-#if LANG_CXX11
-inline void ShakehandReq_DEV::set_strdevcurrentstatusinfo(::std::string&& value) {
-  
-  strdevcurrentstatusinfo_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-}
-#endif
-inline void ShakehandReq_DEV::set_strdevcurrentstatusinfo(const char* value) {
-  
-  strdevcurrentstatusinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-}
-inline void ShakehandReq_DEV::set_strdevcurrentstatusinfo(const char* value, size_t size) {
-  
-  strdevcurrentstatusinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-}
-inline ::std::string* ShakehandReq_DEV::mutable_strdevcurrentstatusinfo() {
-  
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-  return strdevcurrentstatusinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ShakehandReq_DEV::release_strdevcurrentstatusinfo() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
-  
-  return strdevcurrentstatusinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ShakehandReq_DEV::set_allocated_strdevcurrentstatusinfo(::std::string* strdevcurrentstatusinfo) {
-  if (strdevcurrentstatusinfo != NULL) {
-    
-  } else {
-    
-  }
-  strdevcurrentstatusinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevcurrentstatusinfo);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ShakehandReq_DEV.strDevCurrentStatusInfo)
 }
 
 // string strValue = 3;
@@ -9588,6 +9889,212 @@ inline void ConfigInfoRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ConfigInfoRsp_DEV.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// StorageAddressReq_DEV
+
+// string strDevID = 1;
+inline void StorageAddressReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void StorageAddressReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void StorageAddressReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressReq_DEV.strDevID)
+}
+#endif
+inline void StorageAddressReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressReq_DEV.strDevID)
+}
+inline void StorageAddressReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressReq_DEV.strDevID)
+}
+inline ::std::string* StorageAddressReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressReq_DEV.strDevID)
+}
+
+// uint32 uiStorageType = 2;
+inline void StorageAddressReq_DEV::clear_uistoragetype() {
+  uistoragetype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressReq_DEV::uistoragetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_DEV.uiStorageType)
+  return uistoragetype_;
+}
+inline void StorageAddressReq_DEV::set_uistoragetype(::google::protobuf::uint32 value) {
+  
+  uistoragetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_DEV.uiStorageType)
+}
+
+// uint32 uiStorageAction = 3;
+inline void StorageAddressReq_DEV::clear_uistorageaction() {
+  uistorageaction_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressReq_DEV::uistorageaction() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_DEV.uiStorageAction)
+  return uistorageaction_;
+}
+inline void StorageAddressReq_DEV::set_uistorageaction(::google::protobuf::uint32 value) {
+  
+  uistorageaction_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_DEV.uiStorageAction)
+}
+
+// string strFileID = 4;
+inline void StorageAddressReq_DEV::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressReq_DEV::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_DEV.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void StorageAddressReq_DEV::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_DEV.strFileID)
+}
+#if LANG_CXX11
+inline void StorageAddressReq_DEV::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressReq_DEV.strFileID)
+}
+#endif
+inline void StorageAddressReq_DEV::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressReq_DEV.strFileID)
+}
+inline void StorageAddressReq_DEV::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressReq_DEV.strFileID)
+}
+inline ::std::string* StorageAddressReq_DEV::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressReq_DEV.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressReq_DEV::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressReq_DEV.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressReq_DEV::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressReq_DEV.strFileID)
+}
+
+// -------------------------------------------------------------------
+
+// StorageAddressRsp_DEV
+
+// string strAddress = 1;
+inline void StorageAddressRsp_DEV::clear_straddress() {
+  straddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressRsp_DEV::straddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+  return straddress_.GetNoArena();
+}
+inline void StorageAddressRsp_DEV::set_straddress(const ::std::string& value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+}
+#if LANG_CXX11
+inline void StorageAddressRsp_DEV::set_straddress(::std::string&& value) {
+  
+  straddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+}
+#endif
+inline void StorageAddressRsp_DEV::set_straddress(const char* value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+}
+inline void StorageAddressRsp_DEV::set_straddress(const char* value, size_t size) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+}
+inline ::std::string* StorageAddressRsp_DEV::mutable_straddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+  return straddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressRsp_DEV::release_straddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+  
+  return straddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressRsp_DEV::set_allocated_straddress(::std::string* straddress) {
+  if (straddress != NULL) {
+    
+  } else {
+    
+  }
+  straddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressRsp_DEV.strAddress)
+}
+
+// uint32 uiPort = 2;
+inline void StorageAddressRsp_DEV::clear_uiport() {
+  uiport_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressRsp_DEV::uiport() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressRsp_DEV.uiPort)
+  return uiport_;
+}
+inline void StorageAddressRsp_DEV::set_uiport(::google::protobuf::uint32 value) {
+  
+  uiport_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressRsp_DEV.uiPort)
 }
 
 // -------------------------------------------------------------------
@@ -10577,6 +11084,105 @@ inline void QueryUsrInfoRsp_USR::set_allocated_strvalue(::std::string* strvalue)
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUsrInfoRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyUserInfoReq_USR
+
+// .Interactive.Message.User userInfo = 1;
+inline bool ModifyUserInfoReq_USR::has_userinfo() const {
+  return this != internal_default_instance() && userinfo_ != NULL;
+}
+inline void ModifyUserInfoReq_USR::clear_userinfo() {
+  if (GetArenaNoVirtual() == NULL && userinfo_ != NULL) delete userinfo_;
+  userinfo_ = NULL;
+}
+inline const ::Interactive::Message::User& ModifyUserInfoReq_USR::userinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyUserInfoReq_USR.userInfo)
+  return userinfo_ != NULL ? *userinfo_
+                         : *::Interactive::Message::User::internal_default_instance();
+}
+inline ::Interactive::Message::User* ModifyUserInfoReq_USR::mutable_userinfo() {
+  
+  if (userinfo_ == NULL) {
+    userinfo_ = new ::Interactive::Message::User;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyUserInfoReq_USR.userInfo)
+  return userinfo_;
+}
+inline ::Interactive::Message::User* ModifyUserInfoReq_USR::release_userinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyUserInfoReq_USR.userInfo)
+  
+  ::Interactive::Message::User* temp = userinfo_;
+  userinfo_ = NULL;
+  return temp;
+}
+inline void ModifyUserInfoReq_USR::set_allocated_userinfo(::Interactive::Message::User* userinfo) {
+  delete userinfo_;
+  userinfo_ = userinfo;
+  if (userinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyUserInfoReq_USR.userInfo)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyUserInfoRsp_USR
+
+// string strValue = 1;
+inline void ModifyUserInfoRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyUserInfoRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyUserInfoRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void ModifyUserInfoRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+}
+#endif
+inline void ModifyUserInfoRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+}
+inline void ModifyUserInfoRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+}
+inline ::std::string* ModifyUserInfoRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyUserInfoRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyUserInfoRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -14104,6 +14710,45 @@ inline void Req::set_allocated_queryusrinforeq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUsrInfoReq_USR_Value)
 }
 
+// .Interactive.Message.ModifyUserInfoReq_USR ModifyUserInfoReq_USR_Value = 102;
+inline bool Req::has_modifyuserinforeq_usr_value() const {
+  return this != internal_default_instance() && modifyuserinforeq_usr_value_ != NULL;
+}
+inline void Req::clear_modifyuserinforeq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifyuserinforeq_usr_value_ != NULL) delete modifyuserinforeq_usr_value_;
+  modifyuserinforeq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyUserInfoReq_USR& Req::modifyuserinforeq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.ModifyUserInfoReq_USR_Value)
+  return modifyuserinforeq_usr_value_ != NULL ? *modifyuserinforeq_usr_value_
+                         : *::Interactive::Message::ModifyUserInfoReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyUserInfoReq_USR* Req::mutable_modifyuserinforeq_usr_value() {
+  
+  if (modifyuserinforeq_usr_value_ == NULL) {
+    modifyuserinforeq_usr_value_ = new ::Interactive::Message::ModifyUserInfoReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.ModifyUserInfoReq_USR_Value)
+  return modifyuserinforeq_usr_value_;
+}
+inline ::Interactive::Message::ModifyUserInfoReq_USR* Req::release_modifyuserinforeq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.ModifyUserInfoReq_USR_Value)
+  
+  ::Interactive::Message::ModifyUserInfoReq_USR* temp = modifyuserinforeq_usr_value_;
+  modifyuserinforeq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_modifyuserinforeq_usr_value(::Interactive::Message::ModifyUserInfoReq_USR* modifyuserinforeq_usr_value) {
+  delete modifyuserinforeq_usr_value_;
+  modifyuserinforeq_usr_value_ = modifyuserinforeq_usr_value;
+  if (modifyuserinforeq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyUserInfoReq_USR_Value)
+}
+
 // .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
 inline bool Req::has_loginreq_usr_value() const {
   return this != internal_default_instance() && loginreq_usr_value_ != NULL;
@@ -15305,6 +15950,45 @@ inline void Rsp::set_allocated_queryusrinforsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUsrInfoRsp_USR_Value)
 }
 
+// .Interactive.Message.ModifyUserInfoRsp_USR ModifyUserInfoRsp_USR_Value = 122;
+inline bool Rsp::has_modifyuserinforsp_usr_value() const {
+  return this != internal_default_instance() && modifyuserinforsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_modifyuserinforsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifyuserinforsp_usr_value_ != NULL) delete modifyuserinforsp_usr_value_;
+  modifyuserinforsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyUserInfoRsp_USR& Rsp::modifyuserinforsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.ModifyUserInfoRsp_USR_Value)
+  return modifyuserinforsp_usr_value_ != NULL ? *modifyuserinforsp_usr_value_
+                         : *::Interactive::Message::ModifyUserInfoRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyUserInfoRsp_USR* Rsp::mutable_modifyuserinforsp_usr_value() {
+  
+  if (modifyuserinforsp_usr_value_ == NULL) {
+    modifyuserinforsp_usr_value_ = new ::Interactive::Message::ModifyUserInfoRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.ModifyUserInfoRsp_USR_Value)
+  return modifyuserinforsp_usr_value_;
+}
+inline ::Interactive::Message::ModifyUserInfoRsp_USR* Rsp::release_modifyuserinforsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.ModifyUserInfoRsp_USR_Value)
+  
+  ::Interactive::Message::ModifyUserInfoRsp_USR* temp = modifyuserinforsp_usr_value_;
+  modifyuserinforsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_modifyuserinforsp_usr_value(::Interactive::Message::ModifyUserInfoRsp_USR* modifyuserinforsp_usr_value) {
+  delete modifyuserinforsp_usr_value_;
+  modifyuserinforsp_usr_value_ = modifyuserinforsp_usr_value;
+  if (modifyuserinforsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyUserInfoRsp_USR_Value)
+}
+
 // .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
 inline bool Rsp::has_loginrsp_usr_value() const {
   return this != internal_default_instance() && loginrsp_usr_value_ != NULL;
@@ -16131,6 +16815,14 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
