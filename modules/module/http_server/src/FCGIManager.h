@@ -69,6 +69,8 @@ private:
     static const std::string CONTENT_LENGTH;
     static const std::string CONTENT_TYPE;
     static const std::string HTTP_RANGE;
+    static const std::string REMOTE_ADDR;
+
 
 };
 

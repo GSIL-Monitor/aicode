@@ -152,6 +152,18 @@ extern MsgPreHandlerReq_USRDefaultTypeInternal _MsgPreHandlerReq_USR_default_ins
 class MsgPreHandlerRsp_USR;
 class MsgPreHandlerRsp_USRDefaultTypeInternal;
 extern MsgPreHandlerRsp_USRDefaultTypeInternal _MsgPreHandlerRsp_USR_default_instance_;
+class P2pInfoReq_DEV;
+class P2pInfoReq_DEVDefaultTypeInternal;
+extern P2pInfoReq_DEVDefaultTypeInternal _P2pInfoReq_DEV_default_instance_;
+class P2pInfoReq_USR;
+class P2pInfoReq_USRDefaultTypeInternal;
+extern P2pInfoReq_USRDefaultTypeInternal _P2pInfoReq_USR_default_instance_;
+class P2pInfoRsp_DEV;
+class P2pInfoRsp_DEVDefaultTypeInternal;
+extern P2pInfoRsp_DEVDefaultTypeInternal _P2pInfoRsp_DEV_default_instance_;
+class P2pInfoRsp_USR;
+class P2pInfoRsp_USRDefaultTypeInternal;
+extern P2pInfoRsp_USRDefaultTypeInternal _P2pInfoRsp_USR_default_instance_;
 class PermissionOfUser;
 class PermissionOfUserDefaultTypeInternal;
 extern PermissionOfUserDefaultTypeInternal _PermissionOfUser_default_instance_;
@@ -221,9 +233,15 @@ extern SharingDevRsp_USRDefaultTypeInternal _SharingDevRsp_USR_default_instance_
 class StorageAddressReq_DEV;
 class StorageAddressReq_DEVDefaultTypeInternal;
 extern StorageAddressReq_DEVDefaultTypeInternal _StorageAddressReq_DEV_default_instance_;
+class StorageAddressReq_USR;
+class StorageAddressReq_USRDefaultTypeInternal;
+extern StorageAddressReq_USRDefaultTypeInternal _StorageAddressReq_USR_default_instance_;
 class StorageAddressRsp_DEV;
 class StorageAddressRsp_DEVDefaultTypeInternal;
 extern StorageAddressRsp_DEVDefaultTypeInternal _StorageAddressRsp_DEV_default_instance_;
+class StorageAddressRsp_USR;
+class StorageAddressRsp_USRDefaultTypeInternal;
+extern StorageAddressRsp_USRDefaultTypeInternal _StorageAddressRsp_USR_default_instance_;
 class UnRegisterUserReq_USR;
 class UnRegisterUserReq_USRDefaultTypeInternal;
 extern UnRegisterUserReq_USRDefaultTypeInternal _UnRegisterUserReq_USR_default_instance_;
@@ -310,8 +328,10 @@ enum MsgType {
   ModifyFriendsRsp_USR_T = 20310,
   QueryFriendsReq_USR_T = 20320,
   QueryFriendsRsp_USR_T = 20330,
-  P2pInfoReq_USR_T = 20340,
-  P2pInfoRsp_USR_T = 20350,
+  StorageAddressReq_USR_T = 20340,
+  StorageAddressRsp_USR_T = 20350,
+  P2pInfoReq_USR_T = 20360,
+  P2pInfoRsp_USR_T = 20370,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -2189,6 +2209,225 @@ class StorageAddressRsp_DEV : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr straddress_;
   ::google::protobuf::uint32 uiport_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class P2pInfoReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.P2pInfoReq_DEV) */ {
+ public:
+  P2pInfoReq_DEV();
+  virtual ~P2pInfoReq_DEV();
+
+  P2pInfoReq_DEV(const P2pInfoReq_DEV& from);
+
+  inline P2pInfoReq_DEV& operator=(const P2pInfoReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const P2pInfoReq_DEV& default_instance();
+
+  static inline const P2pInfoReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const P2pInfoReq_DEV*>(
+               &_P2pInfoReq_DEV_default_instance_);
+  }
+
+  void Swap(P2pInfoReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline P2pInfoReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  P2pInfoReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const P2pInfoReq_DEV& from);
+  void MergeFrom(const P2pInfoReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(P2pInfoReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strDevIpAddress = 2;
+  void clear_strdevipaddress();
+  static const int kStrDevIpAddressFieldNumber = 2;
+  const ::std::string& strdevipaddress() const;
+  void set_strdevipaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevipaddress(::std::string&& value);
+  #endif
+  void set_strdevipaddress(const char* value);
+  void set_strdevipaddress(const char* value, size_t size);
+  ::std::string* mutable_strdevipaddress();
+  ::std::string* release_strdevipaddress();
+  void set_allocated_strdevipaddress(::std::string* strdevipaddress);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.P2pInfoRsp_DEV) */ {
+ public:
+  P2pInfoRsp_DEV();
+  virtual ~P2pInfoRsp_DEV();
+
+  P2pInfoRsp_DEV(const P2pInfoRsp_DEV& from);
+
+  inline P2pInfoRsp_DEV& operator=(const P2pInfoRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const P2pInfoRsp_DEV& default_instance();
+
+  static inline const P2pInfoRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const P2pInfoRsp_DEV*>(
+               &_P2pInfoRsp_DEV_default_instance_);
+  }
+
+  void Swap(P2pInfoRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline P2pInfoRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  P2pInfoRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const P2pInfoRsp_DEV& from);
+  void MergeFrom(const P2pInfoRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(P2pInfoRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strP2pServer = 1;
+  void clear_strp2pserver();
+  static const int kStrP2PServerFieldNumber = 1;
+  const ::std::string& strp2pserver() const;
+  void set_strp2pserver(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pserver(::std::string&& value);
+  #endif
+  void set_strp2pserver(const char* value);
+  void set_strp2pserver(const char* value, size_t size);
+  ::std::string* mutable_strp2pserver();
+  ::std::string* release_strp2pserver();
+  void set_allocated_strp2pserver(::std::string* strp2pserver);
+
+  // string strP2pID = 2;
+  void clear_strp2pid();
+  static const int kStrP2PIDFieldNumber = 2;
+  const ::std::string& strp2pid() const;
+  void set_strp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pid(::std::string&& value);
+  #endif
+  void set_strp2pid(const char* value);
+  void set_strp2pid(const char* value, size_t size);
+  ::std::string* mutable_strp2pid();
+  ::std::string* release_strp2pid();
+  void set_allocated_strp2pid(::std::string* strp2pid);
+
+  // uint32 strLease = 3;
+  void clear_strlease();
+  static const int kStrLeaseFieldNumber = 3;
+  ::google::protobuf::uint32 strlease() const;
+  void set_strlease(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::uint32 strlease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -6438,6 +6677,458 @@ class QueryFriendsRsp_USR : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class StorageAddressReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.StorageAddressReq_USR) */ {
+ public:
+  StorageAddressReq_USR();
+  virtual ~StorageAddressReq_USR();
+
+  StorageAddressReq_USR(const StorageAddressReq_USR& from);
+
+  inline StorageAddressReq_USR& operator=(const StorageAddressReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StorageAddressReq_USR& default_instance();
+
+  static inline const StorageAddressReq_USR* internal_default_instance() {
+    return reinterpret_cast<const StorageAddressReq_USR*>(
+               &_StorageAddressReq_USR_default_instance_);
+  }
+
+  void Swap(StorageAddressReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline StorageAddressReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  StorageAddressReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const StorageAddressReq_USR& from);
+  void MergeFrom(const StorageAddressReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(StorageAddressReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strFileID = 4;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 4;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // uint32 uiStorageType = 2;
+  void clear_uistoragetype();
+  static const int kUiStorageTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uistoragetype() const;
+  void set_uistoragetype(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageAction = 3;
+  void clear_uistorageaction();
+  static const int kUiStorageActionFieldNumber = 3;
+  ::google::protobuf::uint32 uistorageaction() const;
+  void set_uistorageaction(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.StorageAddressReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::uint32 uistoragetype_;
+  ::google::protobuf::uint32 uistorageaction_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class StorageAddressRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.StorageAddressRsp_USR) */ {
+ public:
+  StorageAddressRsp_USR();
+  virtual ~StorageAddressRsp_USR();
+
+  StorageAddressRsp_USR(const StorageAddressRsp_USR& from);
+
+  inline StorageAddressRsp_USR& operator=(const StorageAddressRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StorageAddressRsp_USR& default_instance();
+
+  static inline const StorageAddressRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const StorageAddressRsp_USR*>(
+               &_StorageAddressRsp_USR_default_instance_);
+  }
+
+  void Swap(StorageAddressRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline StorageAddressRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  StorageAddressRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const StorageAddressRsp_USR& from);
+  void MergeFrom(const StorageAddressRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(StorageAddressRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAddress = 1;
+  void clear_straddress();
+  static const int kStrAddressFieldNumber = 1;
+  const ::std::string& straddress() const;
+  void set_straddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straddress(::std::string&& value);
+  #endif
+  void set_straddress(const char* value);
+  void set_straddress(const char* value, size_t size);
+  ::std::string* mutable_straddress();
+  ::std::string* release_straddress();
+  void set_allocated_straddress(::std::string* straddress);
+
+  // uint32 uiPort = 2;
+  void clear_uiport();
+  static const int kUiPortFieldNumber = 2;
+  ::google::protobuf::uint32 uiport() const;
+  void set_uiport(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.StorageAddressRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straddress_;
+  ::google::protobuf::uint32 uiport_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class P2pInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.P2pInfoReq_USR) */ {
+ public:
+  P2pInfoReq_USR();
+  virtual ~P2pInfoReq_USR();
+
+  P2pInfoReq_USR(const P2pInfoReq_USR& from);
+
+  inline P2pInfoReq_USR& operator=(const P2pInfoReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const P2pInfoReq_USR& default_instance();
+
+  static inline const P2pInfoReq_USR* internal_default_instance() {
+    return reinterpret_cast<const P2pInfoReq_USR*>(
+               &_P2pInfoReq_USR_default_instance_);
+  }
+
+  void Swap(P2pInfoReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline P2pInfoReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  P2pInfoReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const P2pInfoReq_USR& from);
+  void MergeFrom(const P2pInfoReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(P2pInfoReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strUserIpAddress = 2;
+  void clear_struseripaddress();
+  static const int kStrUserIpAddressFieldNumber = 2;
+  const ::std::string& struseripaddress() const;
+  void set_struseripaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struseripaddress(::std::string&& value);
+  #endif
+  void set_struseripaddress(const char* value);
+  void set_struseripaddress(const char* value, size_t size);
+  ::std::string* mutable_struseripaddress();
+  ::std::string* release_struseripaddress();
+  void set_allocated_struseripaddress(::std::string* struseripaddress);
+
+  // string strDevID = 3;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 3;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr struseripaddress_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.P2pInfoRsp_USR) */ {
+ public:
+  P2pInfoRsp_USR();
+  virtual ~P2pInfoRsp_USR();
+
+  P2pInfoRsp_USR(const P2pInfoRsp_USR& from);
+
+  inline P2pInfoRsp_USR& operator=(const P2pInfoRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const P2pInfoRsp_USR& default_instance();
+
+  static inline const P2pInfoRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const P2pInfoRsp_USR*>(
+               &_P2pInfoRsp_USR_default_instance_);
+  }
+
+  void Swap(P2pInfoRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline P2pInfoRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  P2pInfoRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const P2pInfoRsp_USR& from);
+  void MergeFrom(const P2pInfoRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(P2pInfoRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strP2pServer = 1;
+  void clear_strp2pserver();
+  static const int kStrP2PServerFieldNumber = 1;
+  const ::std::string& strp2pserver() const;
+  void set_strp2pserver(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pserver(::std::string&& value);
+  #endif
+  void set_strp2pserver(const char* value);
+  void set_strp2pserver(const char* value, size_t size);
+  ::std::string* mutable_strp2pserver();
+  ::std::string* release_strp2pserver();
+  void set_allocated_strp2pserver(::std::string* strp2pserver);
+
+  // string strP2pID = 2;
+  void clear_strp2pid();
+  static const int kStrP2PIDFieldNumber = 2;
+  const ::std::string& strp2pid() const;
+  void set_strp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pid(::std::string&& value);
+  #endif
+  void set_strp2pid(const char* value);
+  void set_strp2pid(const char* value, size_t size);
+  ::std::string* mutable_strp2pid();
+  ::std::string* release_strp2pid();
+  void set_allocated_strp2pid(::std::string* strp2pid);
+
+  // uint32 strLease = 3;
+  void clear_strlease();
+  static const int kStrLeaseFieldNumber = 3;
+  ::google::protobuf::uint32 strlease() const;
+  void set_strlease(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::uint32 strlease_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class GetOnlineDevInfoReq_INNER : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.GetOnlineDevInfoReq_INNER) */ {
  public:
   GetOnlineDevInfoReq_INNER();
@@ -7148,6 +7839,24 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ConfigInfoReq_DEV* release_configinforeq_dev_value();
   void set_allocated_configinforeq_dev_value(::Interactive::Message::ConfigInfoReq_DEV* configinforeq_dev_value);
 
+  // .Interactive.Message.StorageAddressReq_DEV StorageAddressReq_DEV_Value = 52;
+  bool has_storageaddressreq_dev_value() const;
+  void clear_storageaddressreq_dev_value();
+  static const int kStorageAddressReqDEVValueFieldNumber = 52;
+  const ::Interactive::Message::StorageAddressReq_DEV& storageaddressreq_dev_value() const;
+  ::Interactive::Message::StorageAddressReq_DEV* mutable_storageaddressreq_dev_value();
+  ::Interactive::Message::StorageAddressReq_DEV* release_storageaddressreq_dev_value();
+  void set_allocated_storageaddressreq_dev_value(::Interactive::Message::StorageAddressReq_DEV* storageaddressreq_dev_value);
+
+  // .Interactive.Message.P2pInfoReq_DEV P2pInfoReq_DEV_Value = 54;
+  bool has_p2pinforeq_dev_value() const;
+  void clear_p2pinforeq_dev_value();
+  static const int kP2PInfoReqDEVValueFieldNumber = 54;
+  const ::Interactive::Message::P2pInfoReq_DEV& p2pinforeq_dev_value() const;
+  ::Interactive::Message::P2pInfoReq_DEV* mutable_p2pinforeq_dev_value();
+  ::Interactive::Message::P2pInfoReq_DEV* release_p2pinforeq_dev_value();
+  void set_allocated_p2pinforeq_dev_value(::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -7337,6 +8046,24 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFriendsReq_USR* release_queryfriendsreq_usr_value();
   void set_allocated_queryfriendsreq_usr_value(::Interactive::Message::QueryFriendsReq_USR* queryfriendsreq_usr_value);
 
+  // .Interactive.Message.StorageAddressReq_USR StorageAddressReq_USR_Value = 252;
+  bool has_storageaddressreq_usr_value() const;
+  void clear_storageaddressreq_usr_value();
+  static const int kStorageAddressReqUSRValueFieldNumber = 252;
+  const ::Interactive::Message::StorageAddressReq_USR& storageaddressreq_usr_value() const;
+  ::Interactive::Message::StorageAddressReq_USR* mutable_storageaddressreq_usr_value();
+  ::Interactive::Message::StorageAddressReq_USR* release_storageaddressreq_usr_value();
+  void set_allocated_storageaddressreq_usr_value(::Interactive::Message::StorageAddressReq_USR* storageaddressreq_usr_value);
+
+  // .Interactive.Message.P2pInfoReq_USR P2pInfoReq_USR_Value = 254;
+  bool has_p2pinforeq_usr_value() const;
+  void clear_p2pinforeq_usr_value();
+  static const int kP2PInfoReqUSRValueFieldNumber = 254;
+  const ::Interactive::Message::P2pInfoReq_USR& p2pinforeq_usr_value() const;
+  ::Interactive::Message::P2pInfoReq_USR* mutable_p2pinforeq_usr_value();
+  ::Interactive::Message::P2pInfoReq_USR* release_p2pinforeq_usr_value();
+  void set_allocated_p2pinforeq_usr_value(::Interactive::Message::P2pInfoReq_USR* p2pinforeq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -7382,6 +8109,8 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::LogoutReq_DEV* logoutreq_dev_value_;
   ::Interactive::Message::ShakehandReq_DEV* shakehandreq_dev_value_;
   ::Interactive::Message::ConfigInfoReq_DEV* configinforeq_dev_value_;
+  ::Interactive::Message::StorageAddressReq_DEV* storageaddressreq_dev_value_;
+  ::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -7403,6 +8132,8 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFriendsReq_USR* addfriendsreq_usr_value_;
   ::Interactive::Message::DelFriendsReq_USR* delfriendsreq_usr_value_;
   ::Interactive::Message::QueryFriendsReq_USR* queryfriendsreq_usr_value_;
+  ::Interactive::Message::StorageAddressReq_USR* storageaddressreq_usr_value_;
+  ::Interactive::Message::P2pInfoReq_USR* p2pinforeq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -7537,6 +8268,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ConfigInfoRsp_DEV* mutable_configinforsp_dev_value();
   ::Interactive::Message::ConfigInfoRsp_DEV* release_configinforsp_dev_value();
   void set_allocated_configinforsp_dev_value(::Interactive::Message::ConfigInfoRsp_DEV* configinforsp_dev_value);
+
+  // .Interactive.Message.StorageAddressRsp_DEV StorageAddressRsp_DEV_Value = 72;
+  bool has_storageaddressrsp_dev_value() const;
+  void clear_storageaddressrsp_dev_value();
+  static const int kStorageAddressRspDEVValueFieldNumber = 72;
+  const ::Interactive::Message::StorageAddressRsp_DEV& storageaddressrsp_dev_value() const;
+  ::Interactive::Message::StorageAddressRsp_DEV* mutable_storageaddressrsp_dev_value();
+  ::Interactive::Message::StorageAddressRsp_DEV* release_storageaddressrsp_dev_value();
+  void set_allocated_storageaddressrsp_dev_value(::Interactive::Message::StorageAddressRsp_DEV* storageaddressrsp_dev_value);
+
+  // .Interactive.Message.P2pInfoRsp_DEV P2pInfoRsp_DEV_Value = 74;
+  bool has_p2pinforsp_dev_value() const;
+  void clear_p2pinforsp_dev_value();
+  static const int kP2PInfoRspDEVValueFieldNumber = 74;
+  const ::Interactive::Message::P2pInfoRsp_DEV& p2pinforsp_dev_value() const;
+  ::Interactive::Message::P2pInfoRsp_DEV* mutable_p2pinforsp_dev_value();
+  ::Interactive::Message::P2pInfoRsp_DEV* release_p2pinforsp_dev_value();
+  void set_allocated_p2pinforsp_dev_value(::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -7727,6 +8476,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFriendsRsp_USR* release_queryfriendsrsp_usr_value();
   void set_allocated_queryfriendsrsp_usr_value(::Interactive::Message::QueryFriendsRsp_USR* queryfriendsrsp_usr_value);
 
+  // .Interactive.Message.StorageAddressRsp_USR StorageAddressReq_USR_Value = 272;
+  bool has_storageaddressreq_usr_value() const;
+  void clear_storageaddressreq_usr_value();
+  static const int kStorageAddressReqUSRValueFieldNumber = 272;
+  const ::Interactive::Message::StorageAddressRsp_USR& storageaddressreq_usr_value() const;
+  ::Interactive::Message::StorageAddressRsp_USR* mutable_storageaddressreq_usr_value();
+  ::Interactive::Message::StorageAddressRsp_USR* release_storageaddressreq_usr_value();
+  void set_allocated_storageaddressreq_usr_value(::Interactive::Message::StorageAddressRsp_USR* storageaddressreq_usr_value);
+
+  // .Interactive.Message.P2pInfoRsp_USR P2pInfoRsp_USR_Value = 274;
+  bool has_p2pinforsp_usr_value() const;
+  void clear_p2pinforsp_usr_value();
+  static const int kP2PInfoRspUSRValueFieldNumber = 274;
+  const ::Interactive::Message::P2pInfoRsp_USR& p2pinforsp_usr_value() const;
+  ::Interactive::Message::P2pInfoRsp_USR* mutable_p2pinforsp_usr_value();
+  ::Interactive::Message::P2pInfoRsp_USR* release_p2pinforsp_usr_value();
+  void set_allocated_p2pinforsp_usr_value(::Interactive::Message::P2pInfoRsp_USR* p2pinforsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -7761,6 +8528,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::LogoutRsp_DEV* logoutrsp_dev_value_;
   ::Interactive::Message::ShakehandRsp_DEV* shakehandrsp_dev_value_;
   ::Interactive::Message::ConfigInfoRsp_DEV* configinforsp_dev_value_;
+  ::Interactive::Message::StorageAddressRsp_DEV* storageaddressrsp_dev_value_;
+  ::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -7782,6 +8551,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFriendsRsp_USR* addfriendsrsp_usr_value_;
   ::Interactive::Message::DelFriendsRsp_USR* delfriendsrsp_usr_value_;
   ::Interactive::Message::QueryFriendsRsp_USR* queryfriendsrsp_usr_value_;
+  ::Interactive::Message::StorageAddressRsp_USR* storageaddressreq_usr_value_;
+  ::Interactive::Message::P2pInfoRsp_USR* p2pinforsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::google::protobuf::int32 iretcode_;
@@ -10095,6 +10866,236 @@ inline void StorageAddressRsp_DEV::set_uiport(::google::protobuf::uint32 value) 
   
   uiport_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressRsp_DEV.uiPort)
+}
+
+// -------------------------------------------------------------------
+
+// P2pInfoReq_DEV
+
+// string strDevID = 1;
+inline void P2pInfoReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void P2pInfoReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_DEV.strDevID)
+}
+#endif
+inline void P2pInfoReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_DEV.strDevID)
+}
+inline void P2pInfoReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_DEV.strDevID)
+}
+inline ::std::string* P2pInfoReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_DEV.strDevID)
+}
+
+// string strDevIpAddress = 2;
+inline void P2pInfoReq_DEV::clear_strdevipaddress() {
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_DEV::strdevipaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+  return strdevipaddress_.GetNoArena();
+}
+inline void P2pInfoReq_DEV::set_strdevipaddress(const ::std::string& value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_DEV::set_strdevipaddress(::std::string&& value) {
+  
+  strdevipaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+}
+#endif
+inline void P2pInfoReq_DEV::set_strdevipaddress(const char* value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+}
+inline void P2pInfoReq_DEV::set_strdevipaddress(const char* value, size_t size) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+}
+inline ::std::string* P2pInfoReq_DEV::mutable_strdevipaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+  return strdevipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_DEV::release_strdevipaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+  
+  return strdevipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_DEV::set_allocated_strdevipaddress(::std::string* strdevipaddress) {
+  if (strdevipaddress != NULL) {
+    
+  } else {
+    
+  }
+  strdevipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevipaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
+}
+
+// -------------------------------------------------------------------
+
+// P2pInfoRsp_DEV
+
+// string strP2pServer = 1;
+inline void P2pInfoRsp_DEV::clear_strp2pserver() {
+  strp2pserver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_DEV::strp2pserver() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+  return strp2pserver_.GetNoArena();
+}
+inline void P2pInfoRsp_DEV::set_strp2pserver(const ::std::string& value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_DEV::set_strp2pserver(::std::string&& value) {
+  
+  strp2pserver_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+}
+#endif
+inline void P2pInfoRsp_DEV::set_strp2pserver(const char* value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+}
+inline void P2pInfoRsp_DEV::set_strp2pserver(const char* value, size_t size) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+}
+inline ::std::string* P2pInfoRsp_DEV::mutable_strp2pserver() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+  return strp2pserver_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_DEV::release_strp2pserver() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+  
+  return strp2pserver_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_DEV::set_allocated_strp2pserver(::std::string* strp2pserver) {
+  if (strp2pserver != NULL) {
+    
+  } else {
+    
+  }
+  strp2pserver_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pserver);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strP2pServer)
+}
+
+// string strP2pID = 2;
+inline void P2pInfoRsp_DEV::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_DEV::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+inline void P2pInfoRsp_DEV::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_DEV::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+}
+#endif
+inline void P2pInfoRsp_DEV::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+}
+inline void P2pInfoRsp_DEV::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+}
+inline ::std::string* P2pInfoRsp_DEV::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_DEV::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_DEV::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
+}
+
+// uint32 strLease = 3;
+inline void P2pInfoRsp_DEV::clear_strlease() {
+  strlease_ = 0u;
+}
+inline ::google::protobuf::uint32 P2pInfoRsp_DEV::strlease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strLease)
+  return strlease_;
+}
+inline void P2pInfoRsp_DEV::set_strlease(::google::protobuf::uint32 value) {
+  
+  strlease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strLease)
 }
 
 // -------------------------------------------------------------------
@@ -13862,6 +14863,494 @@ QueryFriendsRsp_USR::mutable_strallfrienduserid() {
 
 // -------------------------------------------------------------------
 
+// StorageAddressReq_USR
+
+// string strUserID = 1;
+inline void StorageAddressReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void StorageAddressReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void StorageAddressReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressReq_USR.strUserID)
+}
+#endif
+inline void StorageAddressReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressReq_USR.strUserID)
+}
+inline void StorageAddressReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressReq_USR.strUserID)
+}
+inline ::std::string* StorageAddressReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressReq_USR.strUserID)
+}
+
+// uint32 uiStorageType = 2;
+inline void StorageAddressReq_USR::clear_uistoragetype() {
+  uistoragetype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressReq_USR::uistoragetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_USR.uiStorageType)
+  return uistoragetype_;
+}
+inline void StorageAddressReq_USR::set_uistoragetype(::google::protobuf::uint32 value) {
+  
+  uistoragetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_USR.uiStorageType)
+}
+
+// uint32 uiStorageAction = 3;
+inline void StorageAddressReq_USR::clear_uistorageaction() {
+  uistorageaction_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressReq_USR::uistorageaction() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_USR.uiStorageAction)
+  return uistorageaction_;
+}
+inline void StorageAddressReq_USR::set_uistorageaction(::google::protobuf::uint32 value) {
+  
+  uistorageaction_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_USR.uiStorageAction)
+}
+
+// string strFileID = 4;
+inline void StorageAddressReq_USR::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressReq_USR::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressReq_USR.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void StorageAddressReq_USR::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressReq_USR.strFileID)
+}
+#if LANG_CXX11
+inline void StorageAddressReq_USR::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressReq_USR.strFileID)
+}
+#endif
+inline void StorageAddressReq_USR::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressReq_USR.strFileID)
+}
+inline void StorageAddressReq_USR::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressReq_USR.strFileID)
+}
+inline ::std::string* StorageAddressReq_USR::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressReq_USR.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressReq_USR::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressReq_USR.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressReq_USR::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressReq_USR.strFileID)
+}
+
+// -------------------------------------------------------------------
+
+// StorageAddressRsp_USR
+
+// string strAddress = 1;
+inline void StorageAddressRsp_USR::clear_straddress() {
+  straddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageAddressRsp_USR::straddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressRsp_USR.strAddress)
+  return straddress_.GetNoArena();
+}
+inline void StorageAddressRsp_USR::set_straddress(const ::std::string& value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressRsp_USR.strAddress)
+}
+#if LANG_CXX11
+inline void StorageAddressRsp_USR::set_straddress(::std::string&& value) {
+  
+  straddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageAddressRsp_USR.strAddress)
+}
+#endif
+inline void StorageAddressRsp_USR::set_straddress(const char* value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageAddressRsp_USR.strAddress)
+}
+inline void StorageAddressRsp_USR::set_straddress(const char* value, size_t size) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageAddressRsp_USR.strAddress)
+}
+inline ::std::string* StorageAddressRsp_USR::mutable_straddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageAddressRsp_USR.strAddress)
+  return straddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageAddressRsp_USR::release_straddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageAddressRsp_USR.strAddress)
+  
+  return straddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageAddressRsp_USR::set_allocated_straddress(::std::string* straddress) {
+  if (straddress != NULL) {
+    
+  } else {
+    
+  }
+  straddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageAddressRsp_USR.strAddress)
+}
+
+// uint32 uiPort = 2;
+inline void StorageAddressRsp_USR::clear_uiport() {
+  uiport_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageAddressRsp_USR::uiport() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageAddressRsp_USR.uiPort)
+  return uiport_;
+}
+inline void StorageAddressRsp_USR::set_uiport(::google::protobuf::uint32 value) {
+  
+  uiport_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageAddressRsp_USR.uiPort)
+}
+
+// -------------------------------------------------------------------
+
+// P2pInfoReq_USR
+
+// string strUserID = 1;
+inline void P2pInfoReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void P2pInfoReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_USR.strUserID)
+}
+#endif
+inline void P2pInfoReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_USR.strUserID)
+}
+inline void P2pInfoReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_USR.strUserID)
+}
+inline ::std::string* P2pInfoReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_USR.strUserID)
+}
+
+// string strUserIpAddress = 2;
+inline void P2pInfoReq_USR::clear_struseripaddress() {
+  struseripaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_USR::struseripaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+  return struseripaddress_.GetNoArena();
+}
+inline void P2pInfoReq_USR::set_struseripaddress(const ::std::string& value) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_USR::set_struseripaddress(::std::string&& value) {
+  
+  struseripaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+}
+#endif
+inline void P2pInfoReq_USR::set_struseripaddress(const char* value) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+}
+inline void P2pInfoReq_USR::set_struseripaddress(const char* value, size_t size) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+}
+inline ::std::string* P2pInfoReq_USR::mutable_struseripaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+  return struseripaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_USR::release_struseripaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+  
+  return struseripaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_USR::set_allocated_struseripaddress(::std::string* struseripaddress) {
+  if (struseripaddress != NULL) {
+    
+  } else {
+    
+  }
+  struseripaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struseripaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_USR.strUserIpAddress)
+}
+
+// string strDevID = 3;
+inline void P2pInfoReq_USR::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_USR::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_USR.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void P2pInfoReq_USR::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_USR::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+#endif
+inline void P2pInfoReq_USR::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+inline void P2pInfoReq_USR::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+inline ::std::string* P2pInfoReq_USR::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_USR.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_USR::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_USR.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_USR::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+
+// -------------------------------------------------------------------
+
+// P2pInfoRsp_USR
+
+// string strP2pServer = 1;
+inline void P2pInfoRsp_USR::clear_strp2pserver() {
+  strp2pserver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_USR::strp2pserver() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+  return strp2pserver_.GetNoArena();
+}
+inline void P2pInfoRsp_USR::set_strp2pserver(const ::std::string& value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_USR::set_strp2pserver(::std::string&& value) {
+  
+  strp2pserver_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+}
+#endif
+inline void P2pInfoRsp_USR::set_strp2pserver(const char* value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+}
+inline void P2pInfoRsp_USR::set_strp2pserver(const char* value, size_t size) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+}
+inline ::std::string* P2pInfoRsp_USR::mutable_strp2pserver() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+  return strp2pserver_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_USR::release_strp2pserver() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+  
+  return strp2pserver_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_USR::set_allocated_strp2pserver(::std::string* strp2pserver) {
+  if (strp2pserver != NULL) {
+    
+  } else {
+    
+  }
+  strp2pserver_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pserver);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strP2pServer)
+}
+
+// string strP2pID = 2;
+inline void P2pInfoRsp_USR::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_USR::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+inline void P2pInfoRsp_USR::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_USR::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+}
+#endif
+inline void P2pInfoRsp_USR::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+}
+inline void P2pInfoRsp_USR::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+}
+inline ::std::string* P2pInfoRsp_USR::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_USR::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_USR::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strP2pID)
+}
+
+// uint32 strLease = 3;
+inline void P2pInfoRsp_USR::clear_strlease() {
+  strlease_ = 0u;
+}
+inline ::google::protobuf::uint32 P2pInfoRsp_USR::strlease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strLease)
+  return strlease_;
+}
+inline void P2pInfoRsp_USR::set_strlease(::google::protobuf::uint32 value) {
+  
+  strlease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strLease)
+}
+
+// -------------------------------------------------------------------
+
 // GetOnlineDevInfoReq_INNER
 
 // string strValue = 1;
@@ -14513,6 +16002,84 @@ inline void Req::set_allocated_configinforeq_dev_value(::Interactive::Message::C
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ConfigInfoReq_DEV_Value)
+}
+
+// .Interactive.Message.StorageAddressReq_DEV StorageAddressReq_DEV_Value = 52;
+inline bool Req::has_storageaddressreq_dev_value() const {
+  return this != internal_default_instance() && storageaddressreq_dev_value_ != NULL;
+}
+inline void Req::clear_storageaddressreq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && storageaddressreq_dev_value_ != NULL) delete storageaddressreq_dev_value_;
+  storageaddressreq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::StorageAddressReq_DEV& Req::storageaddressreq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.StorageAddressReq_DEV_Value)
+  return storageaddressreq_dev_value_ != NULL ? *storageaddressreq_dev_value_
+                         : *::Interactive::Message::StorageAddressReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::StorageAddressReq_DEV* Req::mutable_storageaddressreq_dev_value() {
+  
+  if (storageaddressreq_dev_value_ == NULL) {
+    storageaddressreq_dev_value_ = new ::Interactive::Message::StorageAddressReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.StorageAddressReq_DEV_Value)
+  return storageaddressreq_dev_value_;
+}
+inline ::Interactive::Message::StorageAddressReq_DEV* Req::release_storageaddressreq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.StorageAddressReq_DEV_Value)
+  
+  ::Interactive::Message::StorageAddressReq_DEV* temp = storageaddressreq_dev_value_;
+  storageaddressreq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_storageaddressreq_dev_value(::Interactive::Message::StorageAddressReq_DEV* storageaddressreq_dev_value) {
+  delete storageaddressreq_dev_value_;
+  storageaddressreq_dev_value_ = storageaddressreq_dev_value;
+  if (storageaddressreq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.StorageAddressReq_DEV_Value)
+}
+
+// .Interactive.Message.P2pInfoReq_DEV P2pInfoReq_DEV_Value = 54;
+inline bool Req::has_p2pinforeq_dev_value() const {
+  return this != internal_default_instance() && p2pinforeq_dev_value_ != NULL;
+}
+inline void Req::clear_p2pinforeq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && p2pinforeq_dev_value_ != NULL) delete p2pinforeq_dev_value_;
+  p2pinforeq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::P2pInfoReq_DEV& Req::p2pinforeq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.P2pInfoReq_DEV_Value)
+  return p2pinforeq_dev_value_ != NULL ? *p2pinforeq_dev_value_
+                         : *::Interactive::Message::P2pInfoReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::P2pInfoReq_DEV* Req::mutable_p2pinforeq_dev_value() {
+  
+  if (p2pinforeq_dev_value_ == NULL) {
+    p2pinforeq_dev_value_ = new ::Interactive::Message::P2pInfoReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.P2pInfoReq_DEV_Value)
+  return p2pinforeq_dev_value_;
+}
+inline ::Interactive::Message::P2pInfoReq_DEV* Req::release_p2pinforeq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.P2pInfoReq_DEV_Value)
+  
+  ::Interactive::Message::P2pInfoReq_DEV* temp = p2pinforeq_dev_value_;
+  p2pinforeq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_p2pinforeq_dev_value(::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value) {
+  delete p2pinforeq_dev_value_;
+  p2pinforeq_dev_value_ = p2pinforeq_dev_value;
+  if (p2pinforeq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.P2pInfoReq_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -15334,6 +16901,84 @@ inline void Req::set_allocated_queryfriendsreq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFriendsReq_USR_Value)
 }
 
+// .Interactive.Message.StorageAddressReq_USR StorageAddressReq_USR_Value = 252;
+inline bool Req::has_storageaddressreq_usr_value() const {
+  return this != internal_default_instance() && storageaddressreq_usr_value_ != NULL;
+}
+inline void Req::clear_storageaddressreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && storageaddressreq_usr_value_ != NULL) delete storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::StorageAddressReq_USR& Req::storageaddressreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.StorageAddressReq_USR_Value)
+  return storageaddressreq_usr_value_ != NULL ? *storageaddressreq_usr_value_
+                         : *::Interactive::Message::StorageAddressReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::StorageAddressReq_USR* Req::mutable_storageaddressreq_usr_value() {
+  
+  if (storageaddressreq_usr_value_ == NULL) {
+    storageaddressreq_usr_value_ = new ::Interactive::Message::StorageAddressReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.StorageAddressReq_USR_Value)
+  return storageaddressreq_usr_value_;
+}
+inline ::Interactive::Message::StorageAddressReq_USR* Req::release_storageaddressreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.StorageAddressReq_USR_Value)
+  
+  ::Interactive::Message::StorageAddressReq_USR* temp = storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_storageaddressreq_usr_value(::Interactive::Message::StorageAddressReq_USR* storageaddressreq_usr_value) {
+  delete storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = storageaddressreq_usr_value;
+  if (storageaddressreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.StorageAddressReq_USR_Value)
+}
+
+// .Interactive.Message.P2pInfoReq_USR P2pInfoReq_USR_Value = 254;
+inline bool Req::has_p2pinforeq_usr_value() const {
+  return this != internal_default_instance() && p2pinforeq_usr_value_ != NULL;
+}
+inline void Req::clear_p2pinforeq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && p2pinforeq_usr_value_ != NULL) delete p2pinforeq_usr_value_;
+  p2pinforeq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::P2pInfoReq_USR& Req::p2pinforeq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.P2pInfoReq_USR_Value)
+  return p2pinforeq_usr_value_ != NULL ? *p2pinforeq_usr_value_
+                         : *::Interactive::Message::P2pInfoReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::P2pInfoReq_USR* Req::mutable_p2pinforeq_usr_value() {
+  
+  if (p2pinforeq_usr_value_ == NULL) {
+    p2pinforeq_usr_value_ = new ::Interactive::Message::P2pInfoReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.P2pInfoReq_USR_Value)
+  return p2pinforeq_usr_value_;
+}
+inline ::Interactive::Message::P2pInfoReq_USR* Req::release_p2pinforeq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.P2pInfoReq_USR_Value)
+  
+  ::Interactive::Message::P2pInfoReq_USR* temp = p2pinforeq_usr_value_;
+  p2pinforeq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_p2pinforeq_usr_value(::Interactive::Message::P2pInfoReq_USR* p2pinforeq_usr_value) {
+  delete p2pinforeq_usr_value_;
+  p2pinforeq_usr_value_ = p2pinforeq_usr_value;
+  if (p2pinforeq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.P2pInfoReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -15753,6 +17398,84 @@ inline void Rsp::set_allocated_configinforsp_dev_value(::Interactive::Message::C
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ConfigInfoRsp_DEV_Value)
+}
+
+// .Interactive.Message.StorageAddressRsp_DEV StorageAddressRsp_DEV_Value = 72;
+inline bool Rsp::has_storageaddressrsp_dev_value() const {
+  return this != internal_default_instance() && storageaddressrsp_dev_value_ != NULL;
+}
+inline void Rsp::clear_storageaddressrsp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && storageaddressrsp_dev_value_ != NULL) delete storageaddressrsp_dev_value_;
+  storageaddressrsp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::StorageAddressRsp_DEV& Rsp::storageaddressrsp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.StorageAddressRsp_DEV_Value)
+  return storageaddressrsp_dev_value_ != NULL ? *storageaddressrsp_dev_value_
+                         : *::Interactive::Message::StorageAddressRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::StorageAddressRsp_DEV* Rsp::mutable_storageaddressrsp_dev_value() {
+  
+  if (storageaddressrsp_dev_value_ == NULL) {
+    storageaddressrsp_dev_value_ = new ::Interactive::Message::StorageAddressRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.StorageAddressRsp_DEV_Value)
+  return storageaddressrsp_dev_value_;
+}
+inline ::Interactive::Message::StorageAddressRsp_DEV* Rsp::release_storageaddressrsp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.StorageAddressRsp_DEV_Value)
+  
+  ::Interactive::Message::StorageAddressRsp_DEV* temp = storageaddressrsp_dev_value_;
+  storageaddressrsp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_storageaddressrsp_dev_value(::Interactive::Message::StorageAddressRsp_DEV* storageaddressrsp_dev_value) {
+  delete storageaddressrsp_dev_value_;
+  storageaddressrsp_dev_value_ = storageaddressrsp_dev_value;
+  if (storageaddressrsp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.StorageAddressRsp_DEV_Value)
+}
+
+// .Interactive.Message.P2pInfoRsp_DEV P2pInfoRsp_DEV_Value = 74;
+inline bool Rsp::has_p2pinforsp_dev_value() const {
+  return this != internal_default_instance() && p2pinforsp_dev_value_ != NULL;
+}
+inline void Rsp::clear_p2pinforsp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && p2pinforsp_dev_value_ != NULL) delete p2pinforsp_dev_value_;
+  p2pinforsp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::P2pInfoRsp_DEV& Rsp::p2pinforsp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.P2pInfoRsp_DEV_Value)
+  return p2pinforsp_dev_value_ != NULL ? *p2pinforsp_dev_value_
+                         : *::Interactive::Message::P2pInfoRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::P2pInfoRsp_DEV* Rsp::mutable_p2pinforsp_dev_value() {
+  
+  if (p2pinforsp_dev_value_ == NULL) {
+    p2pinforsp_dev_value_ = new ::Interactive::Message::P2pInfoRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.P2pInfoRsp_DEV_Value)
+  return p2pinforsp_dev_value_;
+}
+inline ::Interactive::Message::P2pInfoRsp_DEV* Rsp::release_p2pinforsp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.P2pInfoRsp_DEV_Value)
+  
+  ::Interactive::Message::P2pInfoRsp_DEV* temp = p2pinforsp_dev_value_;
+  p2pinforsp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_p2pinforsp_dev_value(::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value) {
+  delete p2pinforsp_dev_value_;
+  p2pinforsp_dev_value_ = p2pinforsp_dev_value;
+  if (p2pinforsp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.P2pInfoRsp_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -16574,6 +18297,84 @@ inline void Rsp::set_allocated_queryfriendsrsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFriendsRsp_USR_Value)
 }
 
+// .Interactive.Message.StorageAddressRsp_USR StorageAddressReq_USR_Value = 272;
+inline bool Rsp::has_storageaddressreq_usr_value() const {
+  return this != internal_default_instance() && storageaddressreq_usr_value_ != NULL;
+}
+inline void Rsp::clear_storageaddressreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && storageaddressreq_usr_value_ != NULL) delete storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::StorageAddressRsp_USR& Rsp::storageaddressreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.StorageAddressReq_USR_Value)
+  return storageaddressreq_usr_value_ != NULL ? *storageaddressreq_usr_value_
+                         : *::Interactive::Message::StorageAddressRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::StorageAddressRsp_USR* Rsp::mutable_storageaddressreq_usr_value() {
+  
+  if (storageaddressreq_usr_value_ == NULL) {
+    storageaddressreq_usr_value_ = new ::Interactive::Message::StorageAddressRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.StorageAddressReq_USR_Value)
+  return storageaddressreq_usr_value_;
+}
+inline ::Interactive::Message::StorageAddressRsp_USR* Rsp::release_storageaddressreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.StorageAddressReq_USR_Value)
+  
+  ::Interactive::Message::StorageAddressRsp_USR* temp = storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_storageaddressreq_usr_value(::Interactive::Message::StorageAddressRsp_USR* storageaddressreq_usr_value) {
+  delete storageaddressreq_usr_value_;
+  storageaddressreq_usr_value_ = storageaddressreq_usr_value;
+  if (storageaddressreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.StorageAddressReq_USR_Value)
+}
+
+// .Interactive.Message.P2pInfoRsp_USR P2pInfoRsp_USR_Value = 274;
+inline bool Rsp::has_p2pinforsp_usr_value() const {
+  return this != internal_default_instance() && p2pinforsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_p2pinforsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && p2pinforsp_usr_value_ != NULL) delete p2pinforsp_usr_value_;
+  p2pinforsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::P2pInfoRsp_USR& Rsp::p2pinforsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.P2pInfoRsp_USR_Value)
+  return p2pinforsp_usr_value_ != NULL ? *p2pinforsp_usr_value_
+                         : *::Interactive::Message::P2pInfoRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::P2pInfoRsp_USR* Rsp::mutable_p2pinforsp_usr_value() {
+  
+  if (p2pinforsp_usr_value_ == NULL) {
+    p2pinforsp_usr_value_ = new ::Interactive::Message::P2pInfoRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.P2pInfoRsp_USR_Value)
+  return p2pinforsp_usr_value_;
+}
+inline ::Interactive::Message::P2pInfoRsp_USR* Rsp::release_p2pinforsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.P2pInfoRsp_USR_Value)
+  
+  ::Interactive::Message::P2pInfoRsp_USR* temp = p2pinforsp_usr_value_;
+  p2pinforsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_p2pinforsp_usr_value(::Interactive::Message::P2pInfoRsp_USR* p2pinforsp_usr_value) {
+  delete p2pinforsp_usr_value_;
+  p2pinforsp_usr_value_ = p2pinforsp_usr_value;
+  if (p2pinforsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.P2pInfoRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -16815,6 +18616,18 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

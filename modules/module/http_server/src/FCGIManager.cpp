@@ -21,6 +21,8 @@ const std::string FCGIManager::CONTENT_TYPE = "CONTENT_TYPE";
 
 const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
 
+const std::string FCGIManager::REMOTE_ADDR = "REMOTE_ADDR";
+
 FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum), m_MsgHandleRunner(uiRunTdNum)
 {
     int iRet = 0;
@@ -170,6 +172,8 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
 
     std::string strHttpRange = FCGX_GetParam(HTTP_RANGE.c_str(), pRequest->envp);
 
+    std::string strRemoteAddr = FCGX_GetParam(REMOTE_ADDR.c_str(), pRequest->envp);
+
     if (strAction != "")      pMsgInfoMap->insert(MsgInfoMap::value_type(ACTION, strAction));
     if (strQueryStr != "")    pMsgInfoMap->insert(MsgInfoMap::value_type(QUERY_STRING, strQueryStr));
     if (strMethod != "")      pMsgInfoMap->insert(MsgInfoMap::value_type(REQUEST_METHOD, strMethod));
@@ -178,6 +182,8 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     if (strContentLen != "")  pMsgInfoMap->insert(MsgInfoMap::value_type(CONTENT_LENGTH, strContentLen));
     if (strContentType != "") pMsgInfoMap->insert(MsgInfoMap::value_type(CONTENT_TYPE, strContentType));
     if (strHttpRange != "")   pMsgInfoMap->insert(MsgInfoMap::value_type(HTTP_RANGE, strHttpRange));
+    if (strRemoteAddr != "")   pMsgInfoMap->insert(MsgInfoMap::value_type(REMOTE_ADDR, strRemoteAddr));
+
 
     //首先根据method来解析处理
     {

@@ -57,6 +57,7 @@ enum MsgType
   ShakehandRsp_DEV_T = 10070;  
   ConfigInfoReq_DEV_T = 10080;       //设备请求配置信息
   ConfigInfoRsp_DEV_T = 10090;
+  
   StorageAddressReq_DEV_T = 10100;   //设备获取存储的地址
   StorageAddressRsp_DEV_T = 10110;
   
@@ -112,8 +113,11 @@ enum MsgType
   QueryFriendsReq_USR_T = 20320;     //用户查询好友
   QueryFriendsRsp_USR_T = 20330;
   
-  P2pInfoReq_USR_T = 20340;          //P2P服务器信息
-  P2pInfoRsp_USR_T = 20350;
+  StorageAddressReq_USR_T = 20340;   //设备获取存储的地址
+  StorageAddressRsp_USR_T = 20350;
+  
+  P2pInfoReq_USR_T = 20360;          //P2P服务器信息
+  P2pInfoRsp_USR_T = 20370;
   
   ///////////////////////////////////////////////////////
   
@@ -242,8 +246,18 @@ message StorageAddressRsp_DEV                   //设备获取存储的地址响
   uint32 uiPort = 2;
 }
 
+message P2pInfoReq_DEV                          //p2p服务器信息请求
+{
+  string strDevID = 1;
+  string strDevIpAddress = 2;  
+}
 
-
+message P2pInfoRsp_DEV                          //p2p服务器信息响应
+{
+  string strP2pServer = 1;
+  string strP2pID = 2;
+  uint32 strLease = 3;                          //租约，单位为小时
+}
 
 
 
@@ -495,6 +509,34 @@ message QueryFriendsRsp_USR                     //查询好友响应
   repeated string strAllFriendUserID = 1;
 }
 
+message StorageAddressReq_USR                   //用户获取存储的地址请求
+{
+  string strUserID = 1;
+  uint32 uiStorageType = 2;                     //存储类型：0，日志；1，照片；2，视频；3，固件；4，证书
+  uint32 uiStorageAction = 3;                   //存储动作：0，上传；1，下载
+  string strFileID = 4;                         //文件ID，下载时提供
+}
+
+message StorageAddressRsp_USR                   //设备获取存储的地址响应
+{
+  string strAddress = 1;                        //上传、下载时使用的地址
+  uint32 uiPort = 2;
+}
+
+message P2pInfoReq_USR                          //p2p服务器信息请求
+{
+  string strUserID = 1;
+  string strUserIpAddress = 2;
+  string strDevID = 3;                          //用户希望链接的设备ID  
+}
+
+message P2pInfoRsp_USR                          //p2p服务器信息响应
+{
+  string strP2pServer = 1;
+  string strP2pID = 2;
+  uint32 strLease = 3;                          //租约，单位为小时
+}
+
 
 ////////////////////////////////////////////////下面这些都是一些通知、广播类的消息///////////////////
 
@@ -544,7 +586,9 @@ message Req
   LogoutReq_DEV LogoutReq_DEV_Value = 30;                          //设备登出接入管理服务器
   ShakehandReq_DEV ShakehandReq_DEV_Value = 40;                    //设备与接入管理服务器握手
   ConfigInfoReq_DEV ConfigInfoReq_DEV_Value = 50;                  //设备请求配置信息
-
+  
+  StorageAddressReq_DEV StorageAddressReq_DEV_Value = 52;          //设备请求存储地址
+  P2pInfoReq_DEV P2pInfoReq_DEV_Value = 54;                        //设备请求p2p服务器
   
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
@@ -570,6 +614,9 @@ message Req
   DelFriendsReq_USR DelFriendsReq_USR_Value = 240;                 //用户删除好友
   QueryFriendsReq_USR QueryFriendsReq_USR_Value = 250;             //用户查询好友
   
+  StorageAddressReq_USR StorageAddressReq_USR_Value = 252;         //用户请求存储地址
+  P2pInfoReq_USR P2pInfoReq_USR_Value = 254;                       //用户请求p2p服务器
+  
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;                //获取在线设备信息
   BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
   GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;              //获取在线用户信息
@@ -590,6 +637,8 @@ message Rsp
   ShakehandRsp_DEV ShakehandRsp_DEV_Value = 60;                    //设备与接入管理服务器握手
   ConfigInfoRsp_DEV ConfigInfoRsp_DEV_Value = 70;                  //设备请求配置信息
   
+  StorageAddressRsp_DEV StorageAddressRsp_DEV_Value = 72;          //设备请求存储地址
+  P2pInfoRsp_DEV P2pInfoRsp_DEV_Value = 74;                        //设备请求p2p服务器 
   
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
   GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
@@ -614,6 +663,9 @@ message Rsp
   AddFriendsRsp_USR AddFriendsRsp_USR_Value = 250;                 //用户添加好友
   DelFriendsRsp_USR DelFriendsRsp_USR_Value = 260;                 //用户删除好友
   QueryFriendsRsp_USR QueryFriendsRsp_USR_Value = 270;             //用户查询好友
+  
+  StorageAddressRsp_USR StorageAddressReq_USR_Value = 272;         //用户请求存储地址
+  P2pInfoRsp_USR P2pInfoRsp_USR_Value = 274;                       //用户请求p2p服务器
   
   GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
   GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息
