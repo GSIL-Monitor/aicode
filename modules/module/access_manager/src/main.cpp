@@ -7,7 +7,7 @@
 #include "ConfigSt.h"
 #include <boost/filesystem.hpp> 
 #include <boost/lexical_cast.hpp>
-#include "UserManager.h"
+#include "AccessManager.h"
 #include "ControlCenter.h"
 
 #define CONFIG_FILE_NAME "access_manager.ini"
@@ -275,7 +275,7 @@ int main(int argc, char* argv[])
 
     ////////////////////////////////////////////////////////////////////////////
 
-    UserManager::ParamInfo UmgParam;
+    AccessManager::ParamInfo UmgParam;
     UmgParam.m_strDBHost = strDBHost;
     UmgParam.m_strDBName = strDBName;
     UmgParam.m_strDBPassword = strDBPassword;
@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
 
 
-    UserManager Umg(UmgParam);
+    AccessManager Umg(UmgParam);
     if (!Umg.Init())
     {
         LOG_ERROR_RLD("Failed to init user manager.");
@@ -305,26 +305,26 @@ int main(int argc, char* argv[])
 
     ControlCenter ccenter(pinfo);
 
-    ccenter.SetupMsgPreHandler(boost::bind(&UserManager::PreCommonHandler, &Umg, _1, _2, _3));
+    ccenter.SetupMsgPreHandler(boost::bind(&AccessManager::PreCommonHandler, &Umg, _1, _2, _3));
 
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&UserManager::RegisterUserReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T, boost::bind(&UserManager::UnRegisterUserReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T, boost::bind(&UserManager::QueryUsrInfoReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyUserInfoReq_USR_T, boost::bind(&UserManager::ModifyUsrInfoReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_USR_T, boost::bind(&UserManager::LoginReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LogoutReq_USR_T, boost::bind(&UserManager::LogoutReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_USR_T, boost::bind(&UserManager::ShakehandReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddDevReq_USR_T, boost::bind(&UserManager::AddDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelDevReq_USR_T, boost::bind(&UserManager::DelDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T, boost::bind(&UserManager::ModDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevInfoReq_USR_T, boost::bind(&UserManager::QueryDevInfoReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevReq_USR_T, boost::bind(&UserManager::QueryDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUserReq_USR_T, boost::bind(&UserManager::QueryUserReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::SharingDevReq_USR_T, boost::bind(&UserManager::SharingDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::CancelSharedDevReq_USR_T, boost::bind(&UserManager::CancelSharedDeviceReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddFriendsReq_USR_T, boost::bind(&UserManager::AddFriendsReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T, boost::bind(&UserManager::DelFriendsReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T, boost::bind(&UserManager::QueryFriendsReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&AccessManager::RegisterUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T, boost::bind(&AccessManager::UnRegisterUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T, boost::bind(&AccessManager::QueryUsrInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyUserInfoReq_USR_T, boost::bind(&AccessManager::ModifyUsrInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_USR_T, boost::bind(&AccessManager::LoginReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LogoutReq_USR_T, boost::bind(&AccessManager::LogoutReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_USR_T, boost::bind(&AccessManager::ShakehandReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddDevReq_USR_T, boost::bind(&AccessManager::AddDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelDevReq_USR_T, boost::bind(&AccessManager::DelDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevReq_USR_T, boost::bind(&AccessManager::ModDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevInfoReq_USR_T, boost::bind(&AccessManager::QueryDevInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDevReq_USR_T, boost::bind(&AccessManager::QueryDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUserReq_USR_T, boost::bind(&AccessManager::QueryUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::SharingDevReq_USR_T, boost::bind(&AccessManager::SharingDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::CancelSharedDevReq_USR_T, boost::bind(&AccessManager::CancelSharedDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddFriendsReq_USR_T, boost::bind(&AccessManager::AddFriendsReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T, boost::bind(&AccessManager::DelFriendsReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T, boost::bind(&AccessManager::QueryFriendsReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

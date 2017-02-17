@@ -1,4 +1,4 @@
-#include "UserManager.h"
+#include "AccessManager.h"
 #include <boost/scope_exit.hpp>
 #include "CommonUtility.h"
 #include "ReturnCode.h"
@@ -7,16 +7,16 @@
 #include "json/json.h"
 #include "UserLoginLTUserSite.h"
 
-const std::string UserManager::MAX_DATE = "2199-01-01 00:00:00";
+const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
-UserManager::UserManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
+AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0)
 {
     
 }
 
 
-UserManager::~UserManager()
+AccessManager::~AccessManager()
 {
     m_SessionMgr.Stop();
 
@@ -27,7 +27,7 @@ UserManager::~UserManager()
 
 }
 
-bool UserManager::Init()
+bool AccessManager::Init()
 {
     if (!m_pMysql->Init(m_ParamInfo.m_strDBHost.c_str(), m_ParamInfo.m_strDBUser.c_str(), m_ParamInfo.m_strDBPassword.c_str(), m_ParamInfo.m_strDBName.c_str()))
     {
@@ -45,7 +45,7 @@ bool UserManager::Init()
     }
 
 
-    m_DBCache.SetSqlCB(boost::bind(&UserManager::UserInfoSqlCB, this, _1, _2, _3, _4));
+    m_DBCache.SetSqlCB(boost::bind(&AccessManager::UserInfoSqlCB, this, _1, _2, _3, _4));
     
     m_DBRuner.Run();
 
@@ -56,7 +56,7 @@ bool UserManager::Init()
     return true;
 }
 
-bool UserManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -128,7 +128,7 @@ bool UserManager::PreCommonHandler(const std::string &strMsg, const std::string 
     return blResult;
 }
 
-bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -194,7 +194,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     UsrInfo.m_uiStatus = NORMAL_STATUS;
     UsrInfo.m_strExtend = RegUsrReq.m_userInfo.m_strExtend;
     
-    m_DBRuner.Post(boost::bind(&UserManager::InsertUserToDB, this, UsrInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertUserToDB, this, UsrInfo));
 
 
     blResult = true;
@@ -203,7 +203,7 @@ bool UserManager::RegisterUserReq(const std::string &strMsg, const std::string &
     return blResult;
 }
 
-bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     //注销用户之前，用户必须已经登录系统
     //注销用户之后，系统默认将该用户登出系统
@@ -255,7 +255,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
 
 
     //异步更新数据库内容
-    m_DBRuner.Post(boost::bind(&UserManager::UnregisterUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, DELETE_STATUS));
+    m_DBRuner.Post(boost::bind(&AccessManager::UnregisterUserToDB, this, UnRegUsrReq.m_userInfo.m_strUserID, DELETE_STATUS));
 
     blResult = true;
 
@@ -263,7 +263,7 @@ bool UserManager::UnRegisterUserReq(const std::string &strMsg, const std::string
     return blResult;
 }
 
-bool UserManager::QueryUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::QueryUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -323,7 +323,7 @@ bool UserManager::QueryUsrInfoReq(const std::string &strMsg, const std::string &
 
 }
 
-bool UserManager::ModifyUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -377,14 +377,14 @@ bool UserManager::ModifyUsrInfoReq(const std::string &strMsg, const std::string 
         << " and user name is " << ModifyUsrReq.m_userInfo.m_strUserName << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword
         << " and user type is " << ModifyUsrReq.m_userInfo.m_uiTypeInfo << " and user extend is " << ModifyUsrReq.m_userInfo.m_strExtend);
 
-    m_DBRuner.Post(boost::bind(&UserManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo));
 
     blResult = true;
 
     return blResult;
 }
 
-bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -472,7 +472,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold), 
-        boost::bind(&UserManager::SessionTimeoutProcessCB, this, _1));
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1));
         
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList))
     {
@@ -489,7 +489,7 @@ bool UserManager::LoginReq(const std::string &strMsg, const std::string &strSrcI
     return blResult;
 }
 
-bool UserManager::LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
+bool AccessManager::LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
     const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID)
 {
     UserLoginLTUserSite userLogin(strLTUserSite, strLTRC4Key);
@@ -523,7 +523,7 @@ bool UserManager::LoginLTUserSiteReq(const std::string &strUserName, const std::
     return RegisterUserReq(strSerializeLoginReq, strSrcID, NULL);
 }
 
-bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -581,7 +581,7 @@ bool UserManager::LogoutReq(const std::string &strMsg, const std::string &strSrc
     return blResult;
 }
 
-bool UserManager::ShakehandReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::ShakehandReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     //这里根据SessionID值来进行握手，SID值以memcached中的数据为参考源
     
@@ -632,7 +632,7 @@ bool UserManager::ShakehandReq(const std::string &strMsg, const std::string &str
 
 }
 
-bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::AddDevReq_USR req;
@@ -683,7 +683,7 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
 
-    m_DBRuner.Post(boost::bind(&UserManager::InsertDeviceToDB, this, DevInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceToDB, this, DevInfo));
 
     RelationOfUsrAndDev relation;
     relation.m_iRelation = RELATION_OF_OWNER;
@@ -695,14 +695,14 @@ bool UserManager::AddDeviceReq(const std::string &strMsg, const std::string &str
     relation.m_strExtend = req.m_devInfo.m_strExtend;
     relation.m_strUsrID = req.m_strUserID;
 
-    m_DBRuner.Post(boost::bind(&UserManager::InsertRelationToDB, this, relation));
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, relation));
 
     blResult = true;
     
     return blResult;
 }
 
-bool UserManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::DelDevReq_USR req;
@@ -740,14 +740,14 @@ bool UserManager::DelDeviceReq(const std::string &strMsg, const std::string &str
     }
 
     
-    m_DBRuner.Post(boost::bind(&UserManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
+    m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
 
     blResult = true;
 
     return blResult;
 }
 
-bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::ModDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::ModifyDevReq_USR req;
@@ -783,7 +783,7 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
         return false;
     }
 
-    m_DBRuner.Post(boost::bind(&UserManager::ModDeviceToDB, this, req.m_devInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::ModDeviceToDB, this, req.m_devInfo));
 
     blResult = true;
 
@@ -791,7 +791,7 @@ bool UserManager::ModDeviceReq(const std::string &strMsg, const std::string &str
     return blResult;    
 }
 
-bool UserManager::QueryDevInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -849,7 +849,7 @@ bool UserManager::QueryDevInfoReq(const std::string &strMsg, const std::string &
     return blResult;
 }
 
-bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::QueryDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::QueryDevReq_USR req;
@@ -905,7 +905,7 @@ bool UserManager::QueryDeviceReq(const std::string &strMsg, const std::string &s
     return blResult;
 }
 
-bool UserManager::QueryUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::QueryUserReq_USR req;
@@ -960,7 +960,7 @@ bool UserManager::QueryUserReq(const std::string &strMsg, const std::string &str
     return blResult;
 }
 
-bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::SharingDevReq_USR req;
@@ -1012,14 +1012,14 @@ bool UserManager::SharingDeviceReq(const std::string &strMsg, const std::string 
     relation.m_strExtend = req.m_relationInfo.m_strValue;
     relation.m_strUsrID = req.m_relationInfo.m_strUserID;
 
-    m_DBRuner.Post(boost::bind(&UserManager::SharingRelationToDB, this, relation));
+    m_DBRuner.Post(boost::bind(&AccessManager::SharingRelationToDB, this, relation));
     
 
     blResult = true;
     return blResult;
 }
 
-bool UserManager::CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::CancelSharedDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::CancelSharedDevReq_USR req;
@@ -1070,14 +1070,14 @@ bool UserManager::CancelSharedDeviceReq(const std::string &strMsg, const std::st
     relation.m_strExtend = req.m_relationInfo.m_strValue;
     relation.m_strUsrID = req.m_relationInfo.m_strUserID;
 
-    m_DBRuner.Post(boost::bind(&UserManager::CancelSharedRelationToDB, this, relation));
+    m_DBRuner.Post(boost::bind(&AccessManager::CancelSharedRelationToDB, this, relation));
 
     blResult = true;
 
     return blResult;
 }
 
-bool UserManager::AddFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::AddFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
     InteractiveProtoHandler::AddFriendsReq_USR req;
@@ -1156,14 +1156,14 @@ bool UserManager::AddFriendsReq(const std::string &strMsg, const std::string &st
     relation.m_strRelationOfUsrID = req.m_strFriendUserID;
     relation.m_strUsrID = req.m_strUserID;
 
-    m_DBRuner.Post(boost::bind(&UserManager::AddFriendsToDB, this, relation));
+    m_DBRuner.Post(boost::bind(&AccessManager::AddFriendsToDB, this, relation));
 
     blResult = true;
 
     return blResult;
 }
 
-bool UserManager::DelFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::DelFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -1200,14 +1200,14 @@ bool UserManager::DelFriendsReq(const std::string &strMsg, const std::string &st
         return false;
     }
     
-    m_DBRuner.Post(boost::bind(&UserManager::DelFriendsToDB, this, req.m_strUserID, req.m_strFriendUserIDList, DELETE_STATUS));
+    m_DBRuner.Post(boost::bind(&AccessManager::DelFriendsToDB, this, req.m_strUserID, req.m_strFriendUserIDList, DELETE_STATUS));
     
     blResult = true;
 
     return blResult;
 }
 
-bool UserManager::QueryFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::QueryFriendsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -1262,7 +1262,7 @@ bool UserManager::QueryFriendsReq(const std::string &strMsg, const std::string &
 
 }
 
-void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
+void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
     char sql[1024] = { 0 };
@@ -1278,7 +1278,7 @@ void UserManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
     }
 }
 
-void UserManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)
+void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     std::list<std::string> strItemList;
     if (!UsrInfo.m_strUserName.empty())
@@ -1350,7 +1350,7 @@ void UserManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInf
     }
 }
 
-void UserManager::UnregisterUserToDB(const std::string &strUserID, const int iStatus)
+void AccessManager::UnregisterUserToDB(const std::string &strUserID, const int iStatus)
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_user_info set status = '%d' where userid = '%s'";
@@ -1363,7 +1363,7 @@ void UserManager::UnregisterUserToDB(const std::string &strUserID, const int iSt
 
 }
 
-bool UserManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache)
+bool AccessManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
@@ -1409,7 +1409,7 @@ bool UserManager::QueryRelationExist(const std::string &strUserID, const std::st
     return true;
 }
 
-bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList,
+bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
@@ -1441,7 +1441,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
     }
     else
     {        
-        if (!m_pMysql->QueryExec(strSql, boost::bind(&UserManager::DevInfoRelationSqlCB, this, _1, _2, _3, &RelationList)))
+        if (!m_pMysql->QueryExec(strSql, boost::bind(&AccessManager::DevInfoRelationSqlCB, this, _1, _2, _3, &RelationList)))
         {
             LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
             return false;
@@ -1474,7 +1474,7 @@ bool UserManager::QueryRelationByUserID(const std::string &strUserID, std::list<
     return true;
 }
 
-bool UserManager::QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
+bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
@@ -1582,7 +1582,7 @@ bool UserManager::QueryRelationByDevID(const std::string &strDevID, std::list<In
     return true;
 }
 
-bool UserManager::ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
+bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
 {
     //Valid user id
     char sql[1024] = { 0 };
@@ -1655,7 +1655,7 @@ bool UserManager::ValidUser(std::string &strUserID, std::string &strUserName, co
     return true;
 }
 
-void UserManager::UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+void AccessManager::UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
 {
     ValueInDB value;
     value.strValue = strColumn;
@@ -1692,7 +1692,7 @@ void UserManager::UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uin
 
 }
 
-void UserManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
+void AccessManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
     std::list<InteractiveProtoHandler::Relation> *pRelationList)
 {
     //select dev.deviceid, dev.devicename, dev.devicepassword, dev.typeinfo, dev.createdate, dev.status, dev.innerinfo, dev.extend        
@@ -1738,7 +1738,7 @@ void UserManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boo
 
 
 
-void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
+void AccessManager::SessionTimeoutProcessCB(const std::string &strSessionID)
 {
         
     //广播消息表示用户会话超时
@@ -1747,7 +1747,7 @@ void UserManager::SessionTimeoutProcessCB(const std::string &strSessionID)
     LOG_INFO_RLD("Session timeout and session id is " << strSessionID);
 }
 
-void UserManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+void AccessManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
 {
     //这里考虑到设备内部信息可能不一定是可打印字符，为了后续日志打印和维护方便，这里就将其内容文本化之后再存储到数据库中
     const std::string &strInner = DevInfo.m_strInnerinfo.empty() ? 
@@ -1766,7 +1766,7 @@ void UserManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInf
     }
 }
 
-void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
+void AccessManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_device_relation("
@@ -1781,7 +1781,7 @@ void UserManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
     }
 }
 
-void UserManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
+void AccessManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "update t_user_device_relation set status = %d where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
@@ -1794,7 +1794,7 @@ void UserManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
 
 }
 
-void UserManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus)
+void AccessManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus)
 {
     if (strDevIDList.empty())
     {
@@ -1837,7 +1837,7 @@ void UserManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, cons
     }
 }
 
-void UserManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
 {
     //注意，只有给Device对象的字段赋过值的才需要更新到数据库中。
     //"update t_device_info set status = '%d' where deviceid = '%s'";
@@ -1922,7 +1922,7 @@ void UserManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
     
 }
 
-void UserManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
+void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
 {
     bool blExist = false;
     if (!QueryRelationExist(relation.m_strUsrID, relation.m_strDevID, relation.m_iRelation, blExist, false))
@@ -1942,7 +1942,7 @@ void UserManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
     InsertRelationToDB(relation);
 }
 
-void UserManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)
+void AccessManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)
 {
     bool blExist = false;
     if (!QueryRelationExist(relation.m_strUsrID, relation.m_strDevID, relation.m_iRelation, blExist, false))
@@ -1963,7 +1963,7 @@ void UserManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)
 
 }
 
-bool UserManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache)
+bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select userid, username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s' and status = 0";
@@ -2040,7 +2040,7 @@ bool UserManager::QueryUserInfoToDB(const std::string &strUserID, InteractivePro
 
 }
 
-bool UserManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
+bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend from t_device_info where deviceid = '%s' and status = 0";
@@ -2119,7 +2119,7 @@ bool UserManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProto
     return true;
 }
 
-void UserManager::AddFriendsToDB(const RelationOfUsr &relation)
+void AccessManager::AddFriendsToDB(const RelationOfUsr &relation)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_relation("
@@ -2134,7 +2134,7 @@ void UserManager::AddFriendsToDB(const RelationOfUsr &relation)
     }
 }
 
-void UserManager::DelFriendsToDB(const std::string &strUserID, const std::list<std::string> &FriendIDList, const int iStatus)
+void AccessManager::DelFriendsToDB(const std::string &strUserID, const std::list<std::string> &FriendIDList, const int iStatus)
 {
     if (FriendIDList.empty())
     {
@@ -2180,7 +2180,7 @@ void UserManager::DelFriendsToDB(const std::string &strUserID, const std::list<s
 
 }
 
-bool UserManager::QueryUserRelationExist(const std::string &strUserID, const std::string &strFriendsID, const int iRelation, bool &blExist, const bool IsNeedCache /*= true*/)
+bool AccessManager::QueryUserRelationExist(const std::string &strUserID, const std::string &strFriendsID, const int iRelation, bool &blExist, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select count(id) from t_user_relation where userid = '%s' and relation_userid = '%s' and relation = %d and status = 0";
@@ -2226,7 +2226,7 @@ bool UserManager::QueryUserRelationExist(const std::string &strUserID, const std
     return true;
 }
 
-bool UserManager::QueryUserRelationInfoToDB(const std::string &strUserID, const int iRelation, std::list<std::string> &strRelationIDList,
+bool AccessManager::QueryUserRelationInfoToDB(const std::string &strUserID, const int iRelation, std::list<std::string> &strRelationIDList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };

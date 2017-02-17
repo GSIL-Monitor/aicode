@@ -21,7 +21,7 @@ class MysqlImpl;
  * Author£ºÒü±ö
  * Date£º2016-12-1*/
 /************************************************************************/
-class UserManager : public boost::noncopyable
+class AccessManager : public boost::noncopyable
 {
 public:
     static const int NORMAL_STATUS = 0;    
@@ -79,8 +79,8 @@ public:
         m_ParamInfo = pinfo;
     };
 
-    UserManager(const ParamInfo &pinfo);
-    ~UserManager();
+    AccessManager(const ParamInfo &pinfo);
+    ~AccessManager();
     bool Init();
 
     bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -189,8 +189,6 @@ private:
         std::string strType;
         std::string strValue;
     } ValueInDB;
-
-    boost::mutex m_MemcachedMutex;
     
     boost::atomic_uint64_t m_uiMsgSeq;
     
