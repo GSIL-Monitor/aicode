@@ -659,6 +659,29 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct LoginReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strPassword;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct LoginRsp_DEV : Rsp
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -790,7 +813,10 @@ private:
     bool BroadcastOnlineUserInfo_INNER_Serializer(const Req &req, std::string &strOutput);
     bool BroadcastOnlineUserInfo_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
 
-
+    bool LoginReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool LoginReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool LoginRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool LoginRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

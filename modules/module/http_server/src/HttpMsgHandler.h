@@ -36,6 +36,8 @@ public:
     static const std::string ADD_FRIEND_ACTION;
     static const std::string DELETE_FRIEND_ACTION;
     static const std::string QUERY_FRIEND_ACTION;
+
+    static const std::string DEVICE_LOGIN_ACTION;
     
     typedef struct _ParamInfo
     {
@@ -87,6 +89,9 @@ public:
     bool DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
     
 private:
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
@@ -139,6 +144,9 @@ private:
     bool DeleteFriends(const std::string &strSid, const std::string &strUserID, const std::string &strFriendID);
 
     bool QueryFriends(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<std::string> &FriendList);
+
+
+    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, std::string &strSid);
 
 private:
     ParamInfo m_ParamInfo;

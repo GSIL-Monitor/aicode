@@ -101,7 +101,8 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
     
     if (InteractiveProtoHandler::MsgType::LoginReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::LoginReq_DEV_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -1259,6 +1260,91 @@ bool AccessManager::QueryFriendsReq(const std::string &strMsg, const std::string
     blResult = true;
     
     return blResult;
+
+}
+
+bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::LoginReq_DEV LoginReqDev;
+    const std::string &strSessionID = CreateUUID();
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSessionID, &LoginReqDev, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::LoginRsp_DEV LoginRspUsr;
+
+        LoginRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_DEV_T;
+        LoginRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        LoginRspUsr.m_strSID = strSessionID;
+        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        LoginRspUsr.m_strValue = "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(LoginRspUsr, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Login device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Device login rsp already send, dst id is " << strSrcID << " and device id is " << LoginReqDev.m_strDevID <<
+            " and device password is " << LoginReqDev.m_strPassword <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+        
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, LoginReqDev))
+    {
+        LOG_ERROR_RLD("Login device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (LoginReqDev.m_strDevID.empty() && LoginReqDev.m_strPassword.empty())
+    {
+        LOG_ERROR_RLD("Login device req both id and pwd is empty.");
+        return false;
+    }
+    
+    ////校验设备
+    //if (!ValidUser(LoginReqDev.m_userInfo.m_strUserID, LoginReqDev.m_userInfo.m_strUserName,
+    //    LoginReqDev.m_userInfo.m_strUserPassword, LoginReqDev.m_userInfo.m_uiTypeInfo))
+    //{
+    //    if (!LoginLTUserSiteReq(LoginReqDev.m_userInfo.m_strUserName, LoginReqDev.m_userInfo.m_strUserPassword,
+    //        m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID))
+    //    {
+    //        LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqDev.m_userInfo.m_strUserName);
+    //        return false;
+    //    }
+    //    LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqDev.m_userInfo.m_strUserName);
+    //}
+
+    //登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是信息，json格式字符串，格式如下：
+    //{"logindate":"2016-11-30 15:30:20","userid":"5167F842BB3AFF4C8CC1F2557E6EFB82"}
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+
+    Json::Value jsBody;
+    jsBody["logindate"] = strCurrentTime;
+    jsBody["devid"] = LoginReqDev.m_strDevID;
+    jsBody["devpwd"] = LoginReqDev.m_strPassword;
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold),
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1));
+
+  
+
+    blResult = true;
+
+
+    return blResult;
+
 
 }
 

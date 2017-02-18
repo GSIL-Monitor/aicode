@@ -452,6 +452,19 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineUserInfo_INNER_T, handler));
     
+    //////////////////////////////////////////////////
+    
+    handler.Szr = boost::bind(&InteractiveProtoHandler::LoginReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::LoginReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LoginReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::LoginRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::LoginRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LoginRsp_DEV_T, handler));
 
 }
 
@@ -993,7 +1006,25 @@ bool InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER_UnSerializer(const I
     return UnSerializerT<BroadcastOnlineUserInfo_INNER, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::LoginReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<LoginReq_DEV, Req>(req, strOutput);
+}
 
+bool InteractiveProtoHandler::LoginReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<LoginReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::LoginRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<LoginRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::LoginRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<LoginRsp_DEV, Req>(InteractiveMsg, rsp);
+}
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -2175,3 +2206,32 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
 }
 
 
+void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().loginreq_dev_value().strvalue();
+    m_strDevID = InteractiveMsg.reqvalue().loginreq_dev_value().strdevid();
+    m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strpassword();
+}
+
+void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::LoginReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strvalue(m_strValue);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strpassword(m_strPassword);
+}
+
+void InteractiveProtoHandler::LoginRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().loginrsp_dev_value().strvalue();    
+}
+
+void InteractiveProtoHandler::LoginRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::LoginRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_dev_value()->set_strvalue(m_strValue);
+}

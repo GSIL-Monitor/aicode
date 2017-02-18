@@ -326,6 +326,8 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DelFriendsReq_USR_T, boost::bind(&AccessManager::DelFriendsReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T, boost::bind(&AccessManager::QueryFriendsReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_DEV_T, boost::bind(&AccessManager::LoginReqDevice, &Umg, _1, _2, _3));
+
     ccenter.Run(true);
 
     return 0;
