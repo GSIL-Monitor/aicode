@@ -480,6 +480,19 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoRsp_DEV_T, handler));
 
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ShakehandReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ShakehandReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ShakehandReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ShakehandRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ShakehandRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ShakehandRsp_DEV_T, handler));
 
 }
 
@@ -1059,6 +1072,26 @@ bool InteractiveProtoHandler::P2pInfoRsp_DEV_Serializer(const Req &rsp, std::str
 bool InteractiveProtoHandler::P2pInfoRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<P2pInfoRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::ShakehandReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ShakehandReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ShakehandReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ShakehandReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ShakehandRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ShakehandRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ShakehandRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ShakehandRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2301,4 +2334,32 @@ void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pserver(m_strP2pServer);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_uilease(m_uiLease);
+}
+
+void InteractiveProtoHandler::ShakehandReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().shakehandreq_dev_value().strdevid();
+    m_strValue = InteractiveMsg.reqvalue().shakehandreq_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::ShakehandReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ShakehandReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_shakehandreq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_shakehandreq_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::ShakehandRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().shakehandrsp_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::ShakehandRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ShakehandRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_shakehandrsp_dev_value()->set_strvalue(m_strValue);
 }

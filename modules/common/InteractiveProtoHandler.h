@@ -705,6 +705,27 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct ShakehandReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ShakehandRsp_DEV : Rsp
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -845,6 +866,11 @@ private:
     bool P2pInfoReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool P2pInfoRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool P2pInfoRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ShakehandReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool ShakehandReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ShakehandRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool ShakehandRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

@@ -251,6 +251,7 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_LOGIN_ACTION, boost::bind(&HttpMsgHandler::DeviceLoginHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_P2P_INFO_ACTION, boost::bind(&HttpMsgHandler::DeviceP2pInfoHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_SHAKEHAND_ACTION, boost::bind(&HttpMsgHandler::DeviceShakehandHandler, &filehdr, _1, _2));
 
 
     fcgimgr.Run(true);

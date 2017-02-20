@@ -327,7 +327,9 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFriendsReq_USR_T, boost::bind(&AccessManager::QueryFriendsReq, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_DEV_T, boost::bind(&AccessManager::LoginReqDevice, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T, boost::bind(&AccessManager::P2pInfoDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T, boost::bind(&AccessManager::P2pInfoReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ShakehandReq_DEV_T, boost::bind(&AccessManager::ShakehandReqDevice, &Umg, _1, _2, _3));
+
 
     ccenter.Run(true);
 

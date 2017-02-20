@@ -39,6 +39,8 @@ public:
 
     static const std::string DEVICE_LOGIN_ACTION;
     static const std::string DEVICE_P2P_INFO_ACTION;
+    static const std::string DEVICE_SHAKEHAND_ACTION;
+
     
     typedef struct _ParamInfo
     {
@@ -95,6 +97,8 @@ public:
     bool DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeviceShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 private:
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
@@ -153,6 +157,8 @@ private:
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);
+
+    bool DeviceShakehand(const std::string &strSid, const std::string &strDevID);
 
 private:
     ParamInfo m_ParamInfo;

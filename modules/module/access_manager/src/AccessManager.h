@@ -126,7 +126,9 @@ public:
 
     bool LoginReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
-    bool P2pInfoDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    bool P2pInfoReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ShakehandReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);

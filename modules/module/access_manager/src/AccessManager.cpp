@@ -1348,7 +1348,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
 
 }
 
-bool AccessManager::P2pInfoDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
 
@@ -1401,6 +1401,52 @@ bool AccessManager::P2pInfoDevice(const std::string &strMsg, const std::string &
     return blResult;
 
 
+}
+
+bool AccessManager::ShakehandReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ShakehandReq_DEV ShakehandReqDev;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &ShakehandReqDev, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::ShakehandRsp_DEV ShakehandRspDev;
+        ShakehandRspDev.m_MsgType = InteractiveProtoHandler::MsgType::ShakehandRsp_DEV_T;
+        ShakehandRspDev.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        ShakehandRspDev.m_strSID = ShakehandReqDev.m_strSID;
+        ShakehandRspDev.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        ShakehandRspDev.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        ShakehandRspDev.m_strValue = "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(ShakehandRspDev, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Shakehand device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User shakehand of device rsp already send, dst id is " << strSrcID << " and device id is " << ShakehandReqDev.m_strDevID <<
+            " and session id is " << ShakehandReqDev.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, ShakehandReqDev))
+    {
+        LOG_ERROR_RLD("Shakehand device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_SessionMgr.Reset(ShakehandReqDev.m_strSID);
+
+    LOG_INFO_RLD("Shakehand device received and device id is " << ShakehandReqDev.m_strDevID << " and session id is " << ShakehandReqDev.m_strSID);
+
+    blResult = true;
+
+    return blResult;
 }
 
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
