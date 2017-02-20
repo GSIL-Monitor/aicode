@@ -1449,6 +1449,59 @@ bool AccessManager::ShakehandReqDevice(const std::string &strMsg, const std::str
     return blResult;
 }
 
+bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::LogoutReq_DEV LogoutReqDev;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &LogoutReqDev, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::LogoutRsp_DEV LogoutRspDev;
+        LogoutRspDev.m_MsgType = InteractiveProtoHandler::MsgType::LogoutRsp_DEV_T;
+        LogoutRspDev.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        LogoutRspDev.m_strSID = LogoutReqDev.m_strSID;
+        LogoutRspDev.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        LogoutRspDev.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        LogoutRspDev.m_strValue = "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(LogoutRspDev, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Logout device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Device logout rsp already send, dst id is " << strSrcID << " and device id is " << LogoutReqDev.m_strDevID <<
+            " and session id is " << LogoutReqDev.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, LogoutReqDev))
+    {
+        LOG_ERROR_RLD("Logout device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+
+    if (LogoutReqDev.m_strSID.empty())
+    {
+        LOG_ERROR_RLD("Logout device req session id is empty and src id is " << strSrcID);
+        return false;
+    }
+
+    //检查SessionID是否存在
+    m_SessionMgr.Remove(LogoutReqDev.m_strSID); //移除会话
+    
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     

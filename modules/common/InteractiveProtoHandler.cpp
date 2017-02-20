@@ -494,6 +494,19 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ShakehandRsp_DEV_T, handler));
 
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::LogoutReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::LogoutReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LogoutReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::LogoutRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::LogoutRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LogoutRsp_DEV_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1092,6 +1105,26 @@ bool InteractiveProtoHandler::ShakehandRsp_DEV_Serializer(const Req &rsp, std::s
 bool InteractiveProtoHandler::ShakehandRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<ShakehandRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::LogoutReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<LogoutReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::LogoutReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<LogoutReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::LogoutRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<LogoutRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::LogoutRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<LogoutRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2362,4 +2395,32 @@ void InteractiveProtoHandler::ShakehandRsp_DEV::Serializer(InteractiveMessage &I
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::ShakehandRsp_DEV_T);
     InteractiveMsg.mutable_rspvalue()->mutable_shakehandrsp_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::LogoutReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().logoutreq_dev_value().strdevid();
+    m_strValue = InteractiveMsg.reqvalue().logoutreq_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::LogoutReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::LogoutReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_logoutreq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_logoutreq_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::LogoutRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().logoutrsp_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::LogoutRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::LogoutRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_logoutrsp_dev_value()->set_strvalue(m_strValue);
 }

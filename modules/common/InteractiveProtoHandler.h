@@ -726,6 +726,27 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct LogoutReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct LogoutRsp_DEV : Rsp
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -871,6 +892,12 @@ private:
     bool ShakehandReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool ShakehandRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool ShakehandRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool LogoutReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool LogoutReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool LogoutRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool LogoutRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

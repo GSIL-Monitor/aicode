@@ -61,6 +61,8 @@ const std::string HttpMsgHandler::DEVICE_P2P_INFO_ACTION("device_query_p2pserver
 
 const std::string HttpMsgHandler::DEVICE_SHAKEHAND_ACTION("device_shakehand");
 
+const std::string HttpMsgHandler::DEVICE_LOGOUT_ACTION("device_logout");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1726,6 +1728,58 @@ bool HttpMsgHandler::DeviceShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
 
 }
 
+bool HttpMsgHandler::DeviceLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    LOG_INFO_RLD("Logout user info received and  device id is " << strDevID << " and session id is " << strSid);
+
+    if (!DeviceLogout(strSid, strDevID))
+    {
+        LOG_ERROR_RLD("Logout device handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -3176,6 +3230,61 @@ bool HttpMsgHandler::DeviceShakehand(const std::string &strSid, const std::strin
         LOG_INFO_RLD("Shakehand device id is " << strDevID << " and session id is " << strSid <<
             " and return code is " << ShakehandRspDev.m_iRetcode <<
             " and return msg is " << ShakehandRspDev.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeviceLogout(const std::string &strSid, const std::string &strDevID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::LogoutReq_DEV LogoutReqDev;
+        LogoutReqDev.m_MsgType = InteractiveProtoHandler::MsgType::LogoutReq_DEV_T;
+        LogoutReqDev.m_uiMsgSeq = 1;
+        LogoutReqDev.m_strSID = strSid;
+        LogoutReqDev.m_strValue = "";
+        LogoutReqDev.m_strDevID = strDevID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(LogoutReqDev, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Logout device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::LogoutRsp_DEV LogoutRspDev;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, LogoutRspDev))
+        {
+            LOG_ERROR_RLD("Logout device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = LogoutRspDev.m_iRetcode;
+
+        LOG_INFO_RLD("Logout device id is " << strDevID << " and session id is " << strSid <<
+            " and return code is " << LogoutRspDev.m_iRetcode <<
+            " and return msg is " << LogoutRspDev.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
