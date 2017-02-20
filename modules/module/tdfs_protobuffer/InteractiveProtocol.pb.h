@@ -2415,11 +2415,11 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strp2pid();
   void set_allocated_strp2pid(::std::string* strp2pid);
 
-  // uint32 strLease = 3;
-  void clear_strlease();
-  static const int kStrLeaseFieldNumber = 3;
-  ::google::protobuf::uint32 strlease() const;
-  void set_strlease(::google::protobuf::uint32 value);
+  // uint32 uiLease = 3;
+  void clear_uilease();
+  static const int kUiLeaseFieldNumber = 3;
+  ::google::protobuf::uint32 uilease() const;
+  void set_uilease(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoRsp_DEV)
  private:
@@ -2427,7 +2427,7 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
-  ::google::protobuf::uint32 strlease_;
+  ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -7111,11 +7111,11 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strp2pid();
   void set_allocated_strp2pid(::std::string* strp2pid);
 
-  // uint32 strLease = 3;
-  void clear_strlease();
-  static const int kStrLeaseFieldNumber = 3;
-  ::google::protobuf::uint32 strlease() const;
-  void set_strlease(::google::protobuf::uint32 value);
+  // uint32 uiLease = 3;
+  void clear_uilease();
+  static const int kUiLeaseFieldNumber = 3;
+  ::google::protobuf::uint32 uilease() const;
+  void set_uilease(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoRsp_USR)
  private:
@@ -7123,7 +7123,7 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
-  ::google::protobuf::uint32 strlease_;
+  ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -11084,18 +11084,18 @@ inline void P2pInfoRsp_DEV::set_allocated_strp2pid(::std::string* strp2pid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strP2pID)
 }
 
-// uint32 strLease = 3;
-inline void P2pInfoRsp_DEV::clear_strlease() {
-  strlease_ = 0u;
+// uint32 uiLease = 3;
+inline void P2pInfoRsp_DEV::clear_uilease() {
+  uilease_ = 0u;
 }
-inline ::google::protobuf::uint32 P2pInfoRsp_DEV::strlease() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strLease)
-  return strlease_;
+inline ::google::protobuf::uint32 P2pInfoRsp_DEV::uilease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.uiLease)
+  return uilease_;
 }
-inline void P2pInfoRsp_DEV::set_strlease(::google::protobuf::uint32 value) {
+inline void P2pInfoRsp_DEV::set_uilease(::google::protobuf::uint32 value) {
   
-  strlease_ = value;
-  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strLease)
+  uilease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.uiLease)
 }
 
 // -------------------------------------------------------------------
@@ -15335,18 +15335,18 @@ inline void P2pInfoRsp_USR::set_allocated_strp2pid(::std::string* strp2pid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strP2pID)
 }
 
-// uint32 strLease = 3;
-inline void P2pInfoRsp_USR::clear_strlease() {
-  strlease_ = 0u;
+// uint32 uiLease = 3;
+inline void P2pInfoRsp_USR::clear_uilease() {
+  uilease_ = 0u;
 }
-inline ::google::protobuf::uint32 P2pInfoRsp_USR::strlease() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strLease)
-  return strlease_;
+inline ::google::protobuf::uint32 P2pInfoRsp_USR::uilease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.uiLease)
+  return uilease_;
 }
-inline void P2pInfoRsp_USR::set_strlease(::google::protobuf::uint32 value) {
+inline void P2pInfoRsp_USR::set_uilease(::google::protobuf::uint32 value) {
   
-  strlease_ = value;
-  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strLease)
+  uilease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.uiLease)
 }
 
 // -------------------------------------------------------------------

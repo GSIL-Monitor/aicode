@@ -57,6 +57,8 @@ const std::string HttpMsgHandler::QUERY_FRIEND_ACTION("query_friend");
 
 const std::string HttpMsgHandler::DEVICE_LOGIN_ACTION("device_login");
 
+const std::string HttpMsgHandler::DEVICE_P2P_INFO_ACTION("device_query_p2pserver");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1601,6 +1603,73 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     return blResult;
 }
 
+bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device remote ip not found.");
+        return blResult;
+    }
+    const std::string strRemoteIP = itFind->second;
+
+
+    LOG_INFO_RLD("Device p2p info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP);
+
+    std::string strP2pServer;
+    std::string strP2pID;
+    unsigned int uiLease = 0;
+    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease))
+    {
+        LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pserver", strP2pServer));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", strP2pID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", boost::lexical_cast<std::string>(uiLease)));
+    
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -2894,11 +2963,6 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
-
-        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-        std::string::size_type pos = strCurrentTime.find('T');
-        strCurrentTime.replace(pos, 1, std::string(" "));
-
         InteractiveProtoHandler::LoginReq_DEV DevLoginReq;
         DevLoginReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_DEV_T;
         DevLoginReq.m_uiMsgSeq = 1;
@@ -2940,6 +3004,67 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         LOG_INFO_RLD("Login device id is " << strDevID << " and session id is " << DevLoginRsp.m_strSID <<
             " and return code is " << DevLoginRsp.m_iRetcode <<
             " and return msg is " << DevLoginRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
+    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::P2pInfoReq_DEV DevP2pInfoReq;
+        DevP2pInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T;
+        DevP2pInfoReq.m_uiMsgSeq = 1;
+        DevP2pInfoReq.m_strSID = strSid;
+        DevP2pInfoReq.m_strDevID = strDevID;
+        DevP2pInfoReq.m_strDevIpAddress = strDevIpAddress;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DevP2pInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("P2p info of device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::P2pInfoRsp_DEV DevP2pInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DevP2pInfoRsp))
+        {
+            LOG_ERROR_RLD("P2p info of device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strP2pServer = DevP2pInfoRsp.m_strP2pServer;
+        strP2pID = DevP2pInfoRsp.m_strP2pID;
+        uiLease = DevP2pInfoRsp.m_uiLease;
+
+        iRet = DevP2pInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("P2p info of device id is " << strDevID << " and session id is " << DevP2pInfoRsp.m_strSID <<
+            " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease <<
+            " and return code is " << DevP2pInfoRsp.m_iRetcode <<
+            " and return msg is " << DevP2pInfoRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

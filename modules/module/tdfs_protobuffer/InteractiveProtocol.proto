@@ -256,7 +256,7 @@ message P2pInfoRsp_DEV                          //p2p服务器信息响应
 {
   string strP2pServer = 1;
   string strP2pID = 2;
-  uint32 strLease = 3;                          //租约，单位为小时
+  uint32 uiLease = 3;                          //租约，单位为小时
 }
 
 
@@ -534,7 +534,7 @@ message P2pInfoRsp_USR                          //p2p服务器信息响应
 {
   string strP2pServer = 1;
   string strP2pID = 2;
-  uint32 strLease = 3;                          //租约，单位为小时
+  uint32 uiLease = 3;                          //租约，单位为小时
 }
 
 

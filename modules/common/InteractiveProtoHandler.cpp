@@ -466,6 +466,21 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LoginRsp_DEV_T, handler));
 
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::P2pInfoReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::P2pInfoReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::P2pInfoRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::P2pInfoRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoRsp_DEV_T, handler));
+
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1024,6 +1039,26 @@ bool InteractiveProtoHandler::LoginRsp_DEV_Serializer(const Req &rsp, std::strin
 bool InteractiveProtoHandler::LoginRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<LoginRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::P2pInfoReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<P2pInfoReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::P2pInfoReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<P2pInfoReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::P2pInfoRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<P2pInfoRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::P2pInfoRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<P2pInfoRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2225,13 +2260,45 @@ void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &Inter
 
 void InteractiveProtoHandler::LoginRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
-    Req::UnSerializer(InteractiveMsg);
-    m_strValue = InteractiveMsg.rspvalue().loginrsp_dev_value().strvalue();    
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().loginrsp_dev_value().strvalue();
 }
 
 void InteractiveProtoHandler::LoginRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
 {
-    Req::Serializer(InteractiveMsg);
+    Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::LoginRsp_DEV_T);
     InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::P2pInfoReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevid();
+    m_strDevIpAddress = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevipaddress();
+}
+
+void InteractiveProtoHandler::P2pInfoReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::P2pInfoReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+}
+
+void InteractiveProtoHandler::P2pInfoRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strP2pID = InteractiveMsg.rspvalue().p2pinforsp_dev_value().strp2pid();
+    m_strP2pServer = InteractiveMsg.rspvalue().p2pinforsp_dev_value().strp2pserver();
+    m_uiLease = InteractiveMsg.rspvalue().p2pinforsp_dev_value().uilease();
+}
+
+void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::P2pInfoRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pserver(m_strP2pServer);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_uilease(m_uiLease);
 }

@@ -60,7 +60,7 @@ private:
 
     std::list<MsgHandler> m_MsgPreHandlerList;
 
-private:
+public:
     static const std::string QUERY_STRING;
     static const std::string REQUEST_METHOD;
     static const std::string REQUEST_URI;

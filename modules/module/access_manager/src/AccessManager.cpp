@@ -1348,6 +1348,61 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
 
 }
 
+bool AccessManager::P2pInfoDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::P2pInfoReq_DEV req;
+
+    std::string strP2pServer;
+    std::string strP2pID;
+    unsigned int uiLease = 0;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease)
+    {
+        InteractiveProtoHandler::P2pInfoRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strP2pID = blResult ? strP2pID : "";
+        rsp.m_strP2pServer = blResult ? strP2pServer : "";
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("P2p info of device rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("P2p info of device rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
+            " and device ip is " << req.m_strDevIpAddress << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("P2p info of device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //»ñÈ¡p2pidºÍp2pserver
+    strP2pID = "test_p2p_id";
+    strP2pServer = "test_p2p_server";
+    
+
+    blResult = true;
+
+    return blResult;
+
+
+}
+
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     

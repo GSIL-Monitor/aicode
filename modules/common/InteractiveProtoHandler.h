@@ -41,8 +41,9 @@ public:
         ShakehandRsp_DEV_T = 10070,
         ConfigInfoReq_DEV_T = 10080,               //设备请求配置信息
         ConfigInfoRsp_DEV_T = 10090,
-        AuthReq_DEV_T = 10100,                        //平台请求设备鉴权
-        AuthRsp_DEV_T = 10110,
+        
+        P2pInfoReq_DEV_T = 10220,          //P2P服务器信息
+        P2pInfoRsp_DEV_T = 10230,
 
         ////////////////////////////////////////////////////////
 
@@ -681,6 +682,28 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct P2pInfoReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strDevIpAddress;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct P2pInfoRsp_DEV : Rsp
+    {
+
+        std::string m_strP2pServer;
+        std::string m_strP2pID;
+        unsigned int m_uiLease;  //租约，单位为小时
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
 
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
@@ -817,6 +840,11 @@ private:
     bool LoginReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool LoginRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool LoginRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool P2pInfoReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool P2pInfoReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool P2pInfoRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool P2pInfoRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;
