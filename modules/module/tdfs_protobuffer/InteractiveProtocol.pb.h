@@ -1112,19 +1112,19 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strremotefileid();
   void set_allocated_strremotefileid(::std::string* strremotefileid);
 
-  // string strFileUrl = 5;
-  void clear_strfileurl();
-  static const int kStrFileUrlFieldNumber = 5;
-  const ::std::string& strfileurl() const;
-  void set_strfileurl(const ::std::string& value);
+  // string strDownloadUrl = 5;
+  void clear_strdownloadurl();
+  static const int kStrDownloadUrlFieldNumber = 5;
+  const ::std::string& strdownloadurl() const;
+  void set_strdownloadurl(const ::std::string& value);
   #if LANG_CXX11
-  void set_strfileurl(::std::string&& value);
+  void set_strdownloadurl(::std::string&& value);
   #endif
-  void set_strfileurl(const char* value);
-  void set_strfileurl(const char* value, size_t size);
-  ::std::string* mutable_strfileurl();
-  ::std::string* release_strfileurl();
-  void set_allocated_strfileurl(::std::string* strfileurl);
+  void set_strdownloadurl(const char* value);
+  void set_strdownloadurl(const char* value, size_t size);
+  ::std::string* mutable_strdownloadurl();
+  ::std::string* release_strdownloadurl();
+  void set_allocated_strdownloadurl(::std::string* strdownloadurl);
 
   // string strFileName = 6;
   void clear_strfilename();
@@ -1139,6 +1139,20 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* mutable_strfilename();
   ::std::string* release_strfilename();
   void set_allocated_strfilename(::std::string* strfilename);
+
+  // string strSuffixName = 7;
+  void clear_strsuffixname();
+  static const int kStrSuffixNameFieldNumber = 7;
+  const ::std::string& strsuffixname() const;
+  void set_strsuffixname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsuffixname(::std::string&& value);
+  #endif
+  void set_strsuffixname(const char* value);
+  void set_strsuffixname(const char* value, size_t size);
+  ::std::string* mutable_strsuffixname();
+  ::std::string* release_strsuffixname();
+  void set_allocated_strsuffixname(::std::string* strsuffixname);
 
   // string strFileCreatedate = 9;
   void clear_strfilecreatedate();
@@ -1188,12 +1202,6 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 uifilesize() const;
   void set_uifilesize(::google::protobuf::uint64 value);
 
-  // uint32 uiFileType = 7;
-  void clear_uifiletype();
-  static const int kUiFileTypeFieldNumber = 7;
-  ::google::protobuf::uint32 uifiletype() const;
-  void set_uifiletype(::google::protobuf::uint32 value);
-
   // uint32 uiStatus = 11;
   void clear_uistatus();
   static const int kUiStatusFieldNumber = 11;
@@ -1208,13 +1216,13 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strremotefileid_;
-  ::google::protobuf::internal::ArenaStringPtr strfileurl_;
+  ::google::protobuf::internal::ArenaStringPtr strdownloadurl_;
   ::google::protobuf::internal::ArenaStringPtr strfilename_;
+  ::google::protobuf::internal::ArenaStringPtr strsuffixname_;
   ::google::protobuf::internal::ArenaStringPtr strfilecreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint64 uifilesize_;
-  ::google::protobuf::uint32 uifiletype_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -11189,56 +11197,56 @@ inline void File::set_allocated_strremotefileid(::std::string* strremotefileid) 
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strRemoteFileID)
 }
 
-// string strFileUrl = 5;
-inline void File::clear_strfileurl() {
-  strfileurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// string strDownloadUrl = 5;
+inline void File::clear_strdownloadurl() {
+  strdownloadurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& File::strfileurl() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.File.strFileUrl)
-  return strfileurl_.GetNoArena();
+inline const ::std::string& File::strdownloadurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strDownloadUrl)
+  return strdownloadurl_.GetNoArena();
 }
-inline void File::set_strfileurl(const ::std::string& value) {
+inline void File::set_strdownloadurl(const ::std::string& value) {
   
-  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Interactive.Message.File.strFileUrl)
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strDownloadUrl)
 }
 #if LANG_CXX11
-inline void File::set_strfileurl(::std::string&& value) {
+inline void File::set_strdownloadurl(::std::string&& value) {
   
-  strfileurl_.SetNoArena(
+  strdownloadurl_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strFileUrl)
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strDownloadUrl)
 }
 #endif
-inline void File::set_strfileurl(const char* value) {
+inline void File::set_strdownloadurl(const char* value) {
   
-  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strFileUrl)
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strDownloadUrl)
 }
-inline void File::set_strfileurl(const char* value, size_t size) {
+inline void File::set_strdownloadurl(const char* value, size_t size) {
   
-  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strFileUrl)
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strDownloadUrl)
 }
-inline ::std::string* File::mutable_strfileurl() {
+inline ::std::string* File::mutable_strdownloadurl() {
   
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strFileUrl)
-  return strfileurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strDownloadUrl)
+  return strdownloadurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* File::release_strfileurl() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.File.strFileUrl)
+inline ::std::string* File::release_strdownloadurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strDownloadUrl)
   
-  return strfileurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return strdownloadurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void File::set_allocated_strfileurl(::std::string* strfileurl) {
-  if (strfileurl != NULL) {
+inline void File::set_allocated_strdownloadurl(::std::string* strdownloadurl) {
+  if (strdownloadurl != NULL) {
     
   } else {
     
   }
-  strfileurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileurl);
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileUrl)
+  strdownloadurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdownloadurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strDownloadUrl)
 }
 
 // string strFileName = 6;
@@ -11293,18 +11301,56 @@ inline void File::set_allocated_strfilename(::std::string* strfilename) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileName)
 }
 
-// uint32 uiFileType = 7;
-inline void File::clear_uifiletype() {
-  uifiletype_ = 0u;
+// string strSuffixName = 7;
+inline void File::clear_strsuffixname() {
+  strsuffixname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::uint32 File::uifiletype() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiFileType)
-  return uifiletype_;
+inline const ::std::string& File::strsuffixname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strSuffixName)
+  return strsuffixname_.GetNoArena();
 }
-inline void File::set_uifiletype(::google::protobuf::uint32 value) {
+inline void File::set_strsuffixname(const ::std::string& value) {
   
-  uifiletype_ = value;
-  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiFileType)
+  strsuffixname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strSuffixName)
+}
+#if LANG_CXX11
+inline void File::set_strsuffixname(::std::string&& value) {
+  
+  strsuffixname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strSuffixName)
+}
+#endif
+inline void File::set_strsuffixname(const char* value) {
+  
+  strsuffixname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strSuffixName)
+}
+inline void File::set_strsuffixname(const char* value, size_t size) {
+  
+  strsuffixname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strSuffixName)
+}
+inline ::std::string* File::mutable_strsuffixname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strSuffixName)
+  return strsuffixname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strsuffixname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strSuffixName)
+  
+  return strsuffixname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strsuffixname(::std::string* strsuffixname) {
+  if (strsuffixname != NULL) {
+    
+  } else {
+    
+  }
+  strsuffixname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsuffixname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strSuffixName)
 }
 
 // uint64 uiFileSize = 8;

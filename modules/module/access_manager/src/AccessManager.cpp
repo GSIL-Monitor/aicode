@@ -1263,6 +1263,215 @@ bool AccessManager::QueryFriendsReq(const std::string &strMsg, const std::string
 
 }
 
+bool AccessManager::AddFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::AddFileReq_DEV req;
+    std::list<std::string> strFileIDFailedList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strFileIDFailedList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::AddFileRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddFileRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        if (blResult)
+        {
+            rsp.m_strFileIDFailedList.swap(strFileIDFailedList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add file rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add file rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add file req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::AddFileToDB, this, req.m_strDevID, req.m_fileList, strFileIDFailedList));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DeleteFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DeleteFileReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::DeleteFileRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeleteFileRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete file rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User delete file rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete file req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::DeleteFileToDB, this, req.m_strUserID, req.m_strFileIDList, DELETE_STATUS));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DownloadFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DownloadFileReq_USR req;
+    std::list<InteractiveProtoHandler::FileUrl> fileUrlList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &fileUrlList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::DownloadFileRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DownloadFileRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        if (blResult)
+        {
+            rsp.m_fileUrlList.swap(fileUrlList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Download file rsp serialize failed.");
+            return; //false;
+        }
+
+        LOG_ERROR_RLD("---DEBUG File url list size is " << rsp.m_fileUrlList.size());
+        for (auto filUrl : rsp.m_fileUrlList)
+        {
+            LOG_ERROR_RLD("---DEBUG file id is " << filUrl.m_strFileID);
+            LOG_ERROR_RLD("---DEBUG download url is " << filUrl.m_strDownloadUrl);
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Download file rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Download file req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!DownloadFileToDB(req.m_strUserID, req.m_strFileIDList, fileUrlList))
+    {
+        LOG_ERROR_RLD("Download file failed and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryFileReq_USR req;
+    std::list<InteractiveProtoHandler::File> fileInfoList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &fileInfoList, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryFileRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryFileRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        if (blResult)
+        {
+            rsp.m_fileList.swap(fileInfoList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query file rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query file rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query file req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryFileToDB(req.m_strUserID, req.m_strDevID, fileInfoList))
+    {
+        LOG_ERROR_RLD("Query file failed and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
@@ -1501,6 +1710,288 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
 
     return blResult;
 }
+
+void AccessManager::AddFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
+    std::list<std::string> &FileIDFailedList)
+{
+    std::string strUserID;
+    if (!QueryUserIDByDeviceID(strDevID, strUserID))
+    {
+        return;
+    }
+
+    FileIDFailedList.clear();
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    auto itBegin = FileInfoList.begin();
+    auto itEnd = FileInfoList.end();
+    while (itBegin != itEnd)
+    {
+        InteractiveProtoHandler::File fileInfo;
+        fileInfo.m_strFileID = CreateUUID();
+        fileInfo.m_strUserID = strUserID;
+        fileInfo.m_strDevID = itBegin->m_strDevID;
+        fileInfo.m_strRemoteFileID = itBegin->m_strRemoteFileID;
+        fileInfo.m_strDownloadUrl = itBegin->m_strDownloadUrl;
+        fileInfo.m_strFileName = itBegin->m_strFileName;
+        fileInfo.m_strSuffixName = itBegin->m_strSuffixName;
+        fileInfo.m_uiFileSize = itBegin->m_uiFileSize;
+        fileInfo.m_strFileCreatedate = itBegin->m_strFileCreatedate;
+        fileInfo.m_strCreatedate = strCurrentTime;
+        fileInfo.m_uiStatus = NORMAL_STATUS;
+        fileInfo.m_strExtend = itBegin->m_strExtend;
+
+        if (!InsertFileToDB(fileInfo))
+        {
+            FileIDFailedList.push_back(itBegin->m_strFileID);
+        }
+
+        itBegin++;
+    }
+}
+
+void AccessManager::DeleteFileToDB(const std::string &strUserID, const std::list<std::string> &FileIDList, const int iStatus)
+{
+    if (FileIDList.empty())
+    {
+        LOG_ERROR_RLD("Delete file id list is empty and user id is " << strUserID);
+        return;
+    }
+
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "update t_file_info set status = %d where userid = '%s' and fileid in (";
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strUserID.c_str());
+    std::string strSql(sql);
+
+    for (std::string fileID : FileIDList)
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), "'%s',", fileID.c_str());
+        strSql.append(cTmp);
+    }
+
+    strSql.replace(strSql.length() - 1, 1, ")");
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Delete t_file_info sql exec failed, sql is " << strSql);
+    }
+}
+
+bool AccessManager::DownloadFileToDB(const std::string &strUserID, const std::list<std::string> &FileIDList,
+    std::list<InteractiveProtoHandler::FileUrl> &FileUrlList, const bool IsNeedCache)
+{
+    if (FileIDList.empty())
+    {
+        LOG_ERROR_RLD("Download file id list is empty.");
+        return true;
+    }
+
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select fileid, downloadurl from t_file_info where userid = '%s' and status = 0 and fileid in(";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    std::string strSql(sql);
+    
+    for (std::string fileID : FileIDList)
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), "'%s',", fileID.c_str());
+        strSql.append(cTmp);
+    }
+
+    strSql.replace(strSql.length() - 1, 1, ")");
+
+    std::list<boost::any> ResultList;
+    if (IsNeedCache && m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> > pFileUrlList;
+        pFileUrlList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> >>(ResultList.front());
+
+        auto itBegin = pFileUrlList->begin();
+        auto itEnd = pFileUrlList->end();
+        while (itBegin != itEnd)
+        {
+            FileUrlList.push_back(*itBegin);
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Download file get result from cache and sql is " << strSql);
+    }
+    else
+    {
+        std::list<InteractiveProtoHandler::FileUrl> *pFileUrlList = &FileUrlList;
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+        {
+            if (pFileUrlList->empty() || (pFileUrlList->size() < (1 + uiRowNum)))
+            {
+                InteractiveProtoHandler::FileUrl urlTmp;
+                pFileUrlList->push_back(std::move(urlTmp));
+            }
+
+            InteractiveProtoHandler::FileUrl &fileUrl = pFileUrlList->back();
+
+            switch (uiColumnNum)
+            {
+            case 0:
+                fileUrl.m_strFileID = strColumn;
+                break;
+            case 1:
+                fileUrl.m_strDownloadUrl = strColumn;
+                break;
+            default:
+                LOG_ERROR_RLD("FileUrlSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+                break;
+            }
+        };
+
+        if (!m_pMysql->QueryExec(strSql, FuncTmp))
+        {
+            LOG_ERROR_RLD("Download file failed and user id is " << strUserID);
+            return false;
+        }
+
+        if (FileUrlList.empty())
+        {
+            LOG_INFO_RLD("DownloadFileToDB result is empty and user id is " << strUserID);
+            return true;
+        }
+
+        boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> > pFileUrlListTmp(new std::list<InteractiveProtoHandler::FileUrl>);
+        for (auto fileUrl : FileUrlList)
+        {
+            pFileUrlListTmp->push_back(fileUrl);
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(pFileUrlListTmp);
+
+        if (IsNeedCache)
+        {
+            m_DBCache.SetResult(strSql, pResultList);
+        }
+
+        LOG_INFO_RLD("Download file get result from db and sql is " << strSql);
+    }
+
+    return true;
+}
+
+bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
+    const unsigned int uiBeginIndex, const unsigned int uiPageSize, const bool IsNeedCache)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+
+    const char* sqlfmt = "select fileid, userid, deviceid, downloadurl, filename, suffixname, filesize, filecreatedate"
+        " from t_file_info where userid = '%s' and status = 0";
+    snprintf(sql, size, sqlfmt, strUserID.c_str());
+
+    if (!strDevID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and deviceid = '%s'", strDevID.c_str());
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " limit %u, %u", uiBeginIndex, uiPageSize);
+    std::string strSql(sql);
+
+    std::list<boost::any> ResultList;
+    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    {
+        boost::shared_ptr<std::list<InteractiveProtoHandler::File> > pFileInfoList;
+        pFileInfoList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::File> >>(ResultList.front());
+
+        auto itBegin = pFileInfoList->begin();
+        auto itEnd = pFileInfoList->end();
+        while (itBegin != itEnd)
+        {
+            FileInfoList.push_back(*itBegin);
+            ++itBegin;
+        }
+
+        LOG_INFO_RLD("Query file get result from cache and sql is " << strSql);
+    }
+    else
+    {
+        if (!m_pMysql->QueryExec(strSql, boost::bind(&AccessManager::FileInfoSqlCB, this, _1, _2, _3, &FileInfoList)))
+        {
+            LOG_ERROR_RLD("Query file failed and user id is " << strUserID);
+            return false;
+        }
+
+        if (FileInfoList.empty())
+        {
+            LOG_INFO_RLD("Query file result is empty and user id is " << strUserID);
+            return true;
+        }
+
+        boost::shared_ptr<std::list<InteractiveProtoHandler::File> > pFileInfoList(new std::list<InteractiveProtoHandler::File>);
+        auto itBeginFile = FileInfoList.begin();
+        auto itEndFile = FileInfoList.end();
+        while (itBeginFile != itEndFile)
+        {
+            pFileInfoList->push_back(*itBeginFile);
+            ++itBeginFile;
+        }
+
+        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+        pResultList->push_back(pFileInfoList);
+
+        m_DBCache.SetResult(strSql, pResultList);
+
+        LOG_INFO_RLD("Query file get result from db and sql is " << strSql);
+    }
+
+    return true;
+}
+
+bool AccessManager::QueryUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, unsigned int uiRelation)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select userid from t_user_device_relation where deviceid = '%s' and relation = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), uiRelation);
+    std::string strSql(sql);
+
+    auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+    {
+        strUserID = strColumn;
+        LOG_INFO_RLD("The device's owner from db is " << strUserID);
+    };
+
+    if (!m_pMysql->QueryExec(strSql, FuncTmp))
+    {
+        LOG_ERROR_RLD("Query user id by device id failed and device id is " << strDevID);
+        return false;
+    }
+
+    return true;
+}
+
+bool AccessManager::InsertFileToDB(const InteractiveProtoHandler::File &FileInfo)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "insert into t_file_info ("
+        "id, fileid, userid, deviceid, remotefileid, downloadurl, filename, suffixname, filesize, filecreatedate, createdate, status, extend)"
+        " values(uuid(), '%s', '%s', '%s', '%s', %s, '%s', '%s', '%ld', '%s', '%s', '%d', '%s')";
+
+    snprintf(sql, sizeof(sql), sqlfmt, FileInfo.m_strFileID.c_str(), FileInfo.m_strUserID.c_str(), FileInfo.m_strDevID.c_str(), FileInfo.m_strRemoteFileID.c_str(),
+        FileInfo.m_strDownloadUrl.c_str(), FileInfo.m_strFileName.c_str(), FileInfo.m_strSuffixName.c_str(), FileInfo.m_uiFileSize, FileInfo.m_strFileCreatedate.c_str(),
+        FileInfo.m_strCreatedate.c_str(), FileInfo.m_uiStatus, FileInfo.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Insert t_file_info sql exec failed, sql is " << sql);
+        return false;
+    }
+
+    return true;
+}
+
 
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
@@ -1976,6 +2467,49 @@ void AccessManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const b
     }
 }
 
+void AccessManager::FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
+    std::list<InteractiveProtoHandler::File> *pFileInfoList)
+{
+    //select fileid, userid, deviceid, filename, suffixname, filesize, filecreatedate from t_file_info
+    if (pFileInfoList->empty() || (pFileInfoList->size() < (1 + uiRowNum)))
+    {
+        InteractiveProtoHandler::File fileInfoTmp;
+        pFileInfoList->push_back(std::move(fileInfoTmp));
+    }
+
+    InteractiveProtoHandler::File &fileInfo = pFileInfoList->back();
+
+    switch (uiColumnNum)
+    {
+    case 0:
+        fileInfo.m_strFileID = strColumn;
+        break;
+    case 1:
+        fileInfo.m_strUserID = strColumn;
+        break;
+    case 2:
+        fileInfo.m_strDevID = strColumn;
+        break;
+    case 3:
+        fileInfo.m_strDownloadUrl = strColumn;
+        break;
+    case 4:
+        fileInfo.m_strFileName = strColumn;
+        break;
+    case 5:
+        fileInfo.m_strSuffixName = strColumn;
+        break;
+    case 6:
+        fileInfo.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
+        break;
+    case 7:
+        fileInfo.m_strFileCreatedate = strColumn;
+        break;
+    default:
+        LOG_ERROR_RLD("DevInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+        break;
+    }
+}
 
 
 void AccessManager::SessionTimeoutProcessCB(const std::string &strSessionID)

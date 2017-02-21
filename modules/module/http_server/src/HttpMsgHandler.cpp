@@ -63,6 +63,12 @@ const std::string HttpMsgHandler::DEVICE_SHAKEHAND_ACTION("device_shakehand");
 
 const std::string HttpMsgHandler::DEVICE_LOGOUT_ACTION("device_logout");
 
+const std::string HttpMsgHandler::QUERY_USER_FILE_ACTION("query_file");
+
+const std::string HttpMsgHandler::DOWNLOAD_USER_FILE_ACTION("download_file");
+
+const std::string HttpMsgHandler::DELETE_USER_FILE_ACTION("delete_file");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1764,11 +1770,250 @@ bool HttpMsgHandler::DeviceLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     }
     const std::string strDevID = itFind->second;
 
-    LOG_INFO_RLD("Logout user info received and  device id is " << strDevID << " and session id is " << strSid);
+    LOG_INFO_RLD("Logout device info received and  device id is " << strDevID << " and session id is " << strSid);
 
     if (!DeviceLogout(strSid, strDevID))
     {
         LOG_ERROR_RLD("Logout device handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsFileList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsFileList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsFileList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");   
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    std::string strDevID;
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevID = itFind->second;
+    }
+
+    unsigned int uiBeginIndex = 0;    
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query file begin index info of user is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query file begin index info of user is invalid and input index is " << itFind->second);
+            return blResult;
+        }        
+    }
+    
+    LOG_INFO_RLD("Query user file info received and  session id is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
+        << " and begin index is " << uiBeginIndex);
+    
+    std::list<InteractiveProtoHandler::File> filelist;
+    if (!QueryUserFile<InteractiveProtoHandler::File>(strSid, strUserID, strDevID, uiBeginIndex, filelist))
+    {
+        LOG_ERROR_RLD("Query user file failed and user id is " << strUserID << " and device id is " << strDevID);
+        return blResult;
+    }
+
+    auto itBegin = filelist.begin();
+    auto itEnd = filelist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsFile;
+        jsFile["fileid"] = itBegin->m_strFileID;
+        jsFile["name"] = itBegin->m_strFileName;
+        jsFile["size"] = itBegin->m_uiFileSize;
+        jsFile["type"] = itBegin->m_strSuffixName;
+        jsFile["createdate"] = itBegin->m_strFileCreatedate;
+        jsFile["url"] = itBegin->m_strDownloadUrl;
+
+        jsFileList.append(jsFile);
+
+        ++itBegin;
+    }
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DownloadUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+    
+    LOG_INFO_RLD("Download file info received and  user id is " << strUserID << " and session id is " << strSid <<
+        " and file id is " << strFileID);
+
+    std::string strFileUrl;
+    if (!DownloadUserFile(strSid, strUserID, strFileID, strFileUrl))
+    {
+        LOG_ERROR_RLD("Download file info failed and user id is " << strUserID << " and sid is " << strSid <<
+            " and file id is " << strFileID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("address", strFileUrl));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::DeleteUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+
+    LOG_INFO_RLD("Delete file info received and  user id is " << strUserID << " and session id is " << strSid <<
+        " and file id is " << strFileID);
+
+
+    if (!DeleteUserFile(strSid, strUserID, strFileID))
+    {
+        LOG_ERROR_RLD("Delete file info failed and user id is " << strUserID << " and sid is " << strSid <<
+            " and file id is " << strFileID);
         return blResult;
     }
 
@@ -3295,5 +3540,192 @@ bool HttpMsgHandler::DeviceLogout(const std::string &strSid, const std::string &
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+
+
+template<typename T>
+bool HttpMsgHandler::QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &FileList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryFileReq_USR QueryUserFileReq;
+        QueryUserFileReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryFileReq_USR_T;
+        QueryUserFileReq.m_uiMsgSeq = 1;
+        QueryUserFileReq.m_strSID = strSid;
+        QueryUserFileReq.m_strValue = "";
+        QueryUserFileReq.m_strDevID = strDevID;
+        QueryUserFileReq.m_uiBeginIndex = uiBeginIndex;
+        QueryUserFileReq.m_strUserID = strUserID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserFileReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query files of user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryFileRsp_USR QueryUserFileRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUserFileRsp))
+        {
+            LOG_ERROR_RLD("Query files of user rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        FileList.clear();
+        FileList.swap(QueryUserFileRsp.m_fileList);
+
+        iRet = QueryUserFileRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query files of user and user id is " << strUserID << " and device id is " << strDevID << 
+            " and begin index is " << uiBeginIndex <<
+            " and session id is " << strSid <<
+            " and return code is " << QueryUserFileRsp.m_iRetcode <<
+            " and return msg is " << QueryUserFileRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+    
+}
+
+bool HttpMsgHandler::DownloadUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID, std::string &strFileUrl)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DownloadFileReq_USR DownloadUserFileReq;
+        DownloadUserFileReq.m_MsgType = InteractiveProtoHandler::MsgType::DownloadFileReq_USR_T;
+        DownloadUserFileReq.m_uiMsgSeq = 1;
+        DownloadUserFileReq.m_strSID = strSid;
+        DownloadUserFileReq.m_strUserID = strUserID;
+        DownloadUserFileReq.m_strFileIDList.push_back(strFileID);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DownloadUserFileReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Download files of user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DownloadFileRsp_USR DownloadUserFileRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DownloadUserFileRsp))
+        {
+            LOG_ERROR_RLD("Download files of user rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        if (!DownloadUserFileRsp.m_fileUrlList.empty())
+        {
+            auto FileUrl = DownloadUserFileRsp.m_fileUrlList.front();
+            strFileUrl = FileUrl.m_strDownloadUrl;
+        }
+        
+        iRet = DownloadUserFileRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query files of user and user id is " << strUserID <<
+            " and file url is " << strFileUrl <<
+            " and session id is " << strSid <<
+            " and return code is " << DownloadUserFileRsp.m_iRetcode <<
+            " and return msg is " << DownloadUserFileRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeleteUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DeleteFileReq_USR DeleteUserFileReq;
+        DeleteUserFileReq.m_MsgType = InteractiveProtoHandler::MsgType::DeleteFileReq_USR_T;
+        DeleteUserFileReq.m_uiMsgSeq = 1;
+        DeleteUserFileReq.m_strSID = strSid;
+        DeleteUserFileReq.m_strUserID = strUserID;
+        DeleteUserFileReq.m_strFileIDList.push_back(strFileID);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DeleteUserFileReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete files of user req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DeleteFileRsp_USR DeleteUserFileRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DeleteUserFileRsp))
+        {
+            LOG_ERROR_RLD("Delete files of user rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DeleteUserFileRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete files of user and user id is " << strUserID <<
+            " and file id is " << strFileID <<
+            " and session id is " << strSid <<
+            " and return code is " << DeleteUserFileRsp.m_iRetcode <<
+            " and return msg is " << DeleteUserFileRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
 }
 

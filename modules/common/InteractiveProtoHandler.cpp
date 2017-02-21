@@ -152,9 +152,9 @@ void UnSerializeFileList(std::list<InteractiveProtoHandler::File> &fileInfoList,
         fileInfo.m_strUserID = srcFileInfo.struserid();
         fileInfo.m_strDevID = srcFileInfo.strdevid();
         fileInfo.m_strRemoteFileID = srcFileInfo.strremotefileid();
-        fileInfo.m_strFileUrl = srcFileInfo.strfileurl();
+        fileInfo.m_strDownloadUrl = srcFileInfo.strdownloadurl();
         fileInfo.m_strFileName = srcFileInfo.strfilename();
-        fileInfo.m_uiFileType = srcFileInfo.uifiletype();
+        fileInfo.m_strSuffixName = srcFileInfo.strsuffixname();
         fileInfo.m_uiFileSize = srcFileInfo.uifilesize();
         fileInfo.m_strFileCreatedate = srcFileInfo.strfilecreatedate();
         fileInfo.m_strCreatedate = srcFileInfo.strcreatedate();
@@ -184,9 +184,9 @@ void SerializeFileList(const std::list<InteractiveProtoHandler::File> &fileInfoL
         pDstFileInfo->set_struserid(itBegin->m_strUserID);
         pDstFileInfo->set_strdevid(itBegin->m_strDevID);
         pDstFileInfo->set_strremotefileid(itBegin->m_strRemoteFileID);
-        pDstFileInfo->set_strfileurl(itBegin->m_strFileUrl);
+        pDstFileInfo->set_strdownloadurl(itBegin->m_strDownloadUrl);
         pDstFileInfo->set_strfilename(itBegin->m_strFileName);
-        pDstFileInfo->set_uifiletype(itBegin->m_uiFileType);
+        pDstFileInfo->set_strsuffixname(itBegin->m_strSuffixName);
         pDstFileInfo->set_uifilesize(itBegin->m_uiFileSize);
         pDstFileInfo->set_strfilecreatedate(itBegin->m_strFileCreatedate);
         pDstFileInfo->set_strcreatedate(itBegin->m_strCreatedate);
@@ -1115,14 +1115,14 @@ bool InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer(const Interactive
     return UnSerializerT<QueryFriendsRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-bool InteractiveProtoHandler::DeleteFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+bool InteractiveProtoHandler::DeleteFileReq_USR_Serializer(const Req &req, std::string &strOutput)
 {
-    return SerializerT<DeleteFileReq_USR, Req>(rsp, strOutput);
+    return SerializerT<DeleteFileReq_USR, Req>(req, strOutput);
 }
 
-bool InteractiveProtoHandler::DeleteFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+bool InteractiveProtoHandler::DeleteFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
 {
-    return UnSerializerT<DeleteFileReq_USR, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<DeleteFileReq_USR, Req>(InteractiveMsg, req);
 }
 
 bool InteractiveProtoHandler::DeleteFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
@@ -1135,14 +1135,14 @@ bool InteractiveProtoHandler::DeleteFileRsp_USR_UnSerializer(const InteractiveMe
     return UnSerializerT<DeleteFileRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-bool InteractiveProtoHandler::DownloadFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+bool InteractiveProtoHandler::DownloadFileReq_USR_Serializer(const Req &req, std::string &strOutput)
 {
-    return SerializerT<DownloadFileReq_USR, Req>(rsp, strOutput);
+    return SerializerT<DownloadFileReq_USR, Req>(req, strOutput);
 }
 
-bool InteractiveProtoHandler::DownloadFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+bool InteractiveProtoHandler::DownloadFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
 {
-    return UnSerializerT<DownloadFileReq_USR, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<DownloadFileReq_USR, Req>(InteractiveMsg, req);
 }
 
 bool InteractiveProtoHandler::DownloadFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
@@ -1155,14 +1155,14 @@ bool InteractiveProtoHandler::DownloadFileRsp_USR_UnSerializer(const Interactive
     return UnSerializerT<DownloadFileRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-bool InteractiveProtoHandler::QueryFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+bool InteractiveProtoHandler::QueryFileReq_USR_Serializer(const Req &req, std::string &strOutput)
 {
-    return SerializerT<QueryFileReq_USR, Req>(rsp, strOutput);
+    return SerializerT<QueryFileReq_USR, Req>(req, strOutput);
 }
 
-bool InteractiveProtoHandler::QueryFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+bool InteractiveProtoHandler::QueryFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
 {
-    return UnSerializerT<QueryFileReq_USR, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<QueryFileReq_USR, Req>(InteractiveMsg, req);
 }
 
 bool InteractiveProtoHandler::QueryFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
@@ -1175,24 +1175,24 @@ bool InteractiveProtoHandler::QueryFileRsp_USR_UnSerializer(const InteractiveMes
     return UnSerializerT<QueryFileRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
-bool InteractiveProtoHandler::AddFileReq_DEV_Serializer(const Req &rsp, std::string &strOutput)
+bool InteractiveProtoHandler::AddFileReq_DEV_Serializer(const Req &req, std::string &strOutput)
 {
-    return SerializerT<GetOnlineUserInfoReq_INNER, Req>(rsp, strOutput);
+    return SerializerT<AddFileReq_DEV, Req>(req, strOutput);
 }
 
-bool InteractiveProtoHandler::AddFileReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+bool InteractiveProtoHandler::AddFileReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
 {
-    return UnSerializerT<GetOnlineUserInfoReq_INNER, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<AddFileReq_DEV, Req>(InteractiveMsg, req);
 }
 
 bool InteractiveProtoHandler::AddFileRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
 {
-    return SerializerT<GetOnlineUserInfoRsp_INNER, Req>(rsp, strOutput);
+    return SerializerT<AddFileRsp_DEV, Req>(rsp, strOutput);
 }
 
 bool InteractiveProtoHandler::AddFileRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
-    return UnSerializerT<GetOnlineUserInfoRsp_INNER, Req>(InteractiveMsg, rsp);
+    return UnSerializerT<AddFileRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 

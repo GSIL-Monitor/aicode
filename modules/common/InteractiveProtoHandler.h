@@ -155,9 +155,9 @@ public:
         std::string m_strUserID;
         std::string m_strDevID;
         std::string m_strRemoteFileID;           //服务器文件ID，与fileid一一对应
-        std::string m_strFileUrl;                //文件URL地址
+        std::string m_strDownloadUrl;            //文件URL地址
         std::string m_strFileName;
-        unsigned int m_uiFileType;               //文件类型，0-照片，1-视频，2-设备固件，3-证书
+        std::string m_strSuffixName;             //文件后缀名称
         unsigned int m_uiFileSize;               //文件大小，单位Byte
         std::string m_strFileCreatedate;
         std::string m_strCreatedate;

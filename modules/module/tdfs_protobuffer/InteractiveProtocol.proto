@@ -187,12 +187,12 @@ message File                                    //文件信息
   string strUserID = 2;
   string strDevID = 3;
   string strRemoteFileID = 4;                   //服务器文件ID，与fileid一一对应
-  string strFileUrl = 5;                        //文件URL地址
+  string strDownloadUrl = 5;                    //文件URL地址
   string strFileName = 6;
-  uint32 uiFileType = 7;                        //文件类型，0-照片,1-视频,3-设备固件,4-证书
+  string strSuffixName = 7;                     //文件后缀名称
   uint64 uiFileSize = 8;                        //文件大小，单位Byte
   string strFileCreatedate = 9;                 //文件创建日期
-  string strCreatedate = 10;                     //本条记录生成日期
+  string strCreatedate = 10;                    //本条记录生成日期
   uint32 uiStatus = 11;                         //0正常，1永久删除，2回收站
   string strExtend = 12;
 }

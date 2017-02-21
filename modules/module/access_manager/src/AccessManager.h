@@ -132,6 +132,14 @@ public:
 
     bool LogoutReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DownloadFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -182,6 +190,24 @@ private:
 
     bool QueryUserRelationInfoToDB(const std::string &strUserID, const int iRelation, std::list<std::string> &strRelationIDList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
+
+    void AddFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
+        std::list<std::string> &FileIDFailedList);
+
+    void DeleteFileToDB(const std::string &strUserID, const std::list<std::string> &FileIDList, const int iStatus);
+
+    bool DownloadFileToDB(const std::string &strUserID, const std::list<std::string> &FileIDList,
+        std::list<InteractiveProtoHandler::FileUrl> &FileUrlList, const bool IsNeedCache = true);
+
+    bool QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
+
+    bool QueryUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, unsigned int uiRelation = RELATION_OF_OWNER);
+
+    bool InsertFileToDB(const InteractiveProtoHandler::File &FileInfo);
+
+    void FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
+        std::list<InteractiveProtoHandler::File> *pFileInfoList);
 
 private:
     ParamInfo m_ParamInfo;
