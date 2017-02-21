@@ -64,6 +64,9 @@ enum MsgType
   P2pInfoReq_DEV_T = 10220;          //P2P服务器信息
   P2pInfoRsp_DEV_T = 10230;
   
+  AddFileReq_DEV_T = 10300;          //设备添加文件
+  AddFileRsp_DEV_T = 10310;
+
   ////////////////////////////////////////////////////////
   
   MsgPreHandlerReq_USR_T = 19990;    //消息预处理
@@ -119,6 +122,13 @@ enum MsgType
   P2pInfoReq_USR_T = 20360;          //P2P服务器信息
   P2pInfoRsp_USR_T = 20370;
   
+  DeleteFileReq_USR_T = 20500;       //用户删除文件
+  DeleteFileRsp_USR_T = 20510;
+  DownloadFileReq_USR_T = 20520;     //用户下载文件
+  DownloadFileRsp_USR_T = 20530;
+  QueryFileReq_USR_T = 20540;        //用户查询文件
+  QueryFileRsp_USR_T = 20550;
+
   ///////////////////////////////////////////////////////
   
   GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
@@ -170,6 +180,29 @@ message Relation                                //用户与设备关系（设备
   string strEndDate = 5;
   string strValue = 6;
 }
+
+message File                                    //文件信息
+{
+  string strFileID = 1;
+  string strUserID = 2;
+  string strDevID = 3;
+  string strRemoteFileID = 4;                   //服务器文件ID，与fileid一一对应
+  string strFileUrl = 5;                        //文件URL地址
+  string strFileName = 6;
+  uint32 uiFileType = 7;                        //文件类型，0-照片,1-视频,3-设备固件,4-证书
+  uint64 uiFileSize = 8;                        //文件大小，单位Byte
+  string strFileCreatedate = 9;                 //文件创建日期
+  string strCreatedate = 10;                     //本条记录生成日期
+  uint32 uiStatus = 11;                         //0正常，1永久删除，2回收站
+  string strExtend = 12;
+}
+
+message FileUrl                                 //文件下载URL地址
+{
+  string strFileID = 1;
+  string strDownloadUrl = 2;
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -259,6 +292,18 @@ message P2pInfoRsp_DEV                          //p2p服务器信息响应
   uint32 uiLease = 3;                          //租约，单位为小时
 }
 
+message AddFileReq_DEV                          //设备添加文件请求
+{
+  string strDevID = 1;
+  repeated File fileInfo = 2;                     //支持批量添加文件
+  string strValue = 3;
+}
+
+message AddFileRsp_DEV                          //设备添加文件响应
+{
+  string strValue = 1;
+  repeated string strFileIDFailed = 2;                  //添加失败的文件
+}
 
 
 
@@ -536,6 +581,44 @@ message P2pInfoRsp_USR                          //p2p服务器信息响应
   string strP2pID = 2;
   uint32 uiLease = 3;                          //租约，单位为小时
 }
+message DeleteFileReq_USR                       //用户删除文件请求
+{
+  string strUserID = 1;
+  repeated string strFileID = 2;                 //支持批量删除文件
+}
+
+message DeleteFileRsp_USR                       //用户删除文件响应
+{
+  string strValue = 1;
+  repeated string strFileIDFailed = 2;            //删除失败的文件
+}
+
+message DownloadFileReq_USR                     //用户下载文件请求
+{
+  string strUserID = 1;
+  repeated string strFileID = 2;                 //支持批量下载文件
+}
+
+message DownloadFileRsp_USR                     //用户下载文件响应
+{
+  string strValue = 1;
+  repeated FileUrl fileUrl = 2;                   //文件下载地址
+}
+
+//用户查询其存储的所有文件，考虑分页处理
+message QueryFileReq_USR                        //用户查询文件请求
+{
+  string strUserID = 1;
+  string strDevID = 2;
+  uint32 uiBeginIndex = 3;
+  string strValue = 4;
+}
+
+message QueryFileRsp_USR                        //用户查询文件响应
+{
+  string strValue = 1;
+  repeated File fileInfo = 2;
+}
 
 
 ////////////////////////////////////////////////下面这些都是一些通知、广播类的消息///////////////////
@@ -590,6 +673,8 @@ message Req
   StorageAddressReq_DEV StorageAddressReq_DEV_Value = 52;          //设备请求存储地址
   P2pInfoReq_DEV P2pInfoReq_DEV_Value = 54;                        //设备请求p2p服务器
   
+  AddFileReq_DEV AddFileReq_DEV_Value = 60;                        //设备添加文件
+  
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
   RegisterUserReq_USR RegisterUserReq_USR_Value = 80;              //用户注册
@@ -616,6 +701,11 @@ message Req
   
   StorageAddressReq_USR StorageAddressReq_USR_Value = 252;         //用户请求存储地址
   P2pInfoReq_USR P2pInfoReq_USR_Value = 254;                       //用户请求p2p服务器
+
+  DeleteFileReq_USR DeleteFileReq_USR_Value = 310;                 //用户删除文件
+  DownloadFileReq_USR DownloadFileReq_USR_Value = 320;             //用户下载文件
+  QueryFileReq_USR QueryFileReq_USR_Value = 330;                   //用户查询文件
+  
   
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;                //获取在线设备信息
   BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
@@ -640,6 +730,9 @@ message Rsp
   StorageAddressRsp_DEV StorageAddressRsp_DEV_Value = 72;          //设备请求存储地址
   P2pInfoRsp_DEV P2pInfoRsp_DEV_Value = 74;                        //设备请求p2p服务器 
   
+  AddFileRsp_DEV AddFileRsp_DEV_Value = 80;                        //设备添加文件
+
+
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
   GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
   RegisterUserRsp_USR RegisterUserRsp_USR_Value = 100;             //用户注册
@@ -666,6 +759,11 @@ message Rsp
   
   StorageAddressRsp_USR StorageAddressReq_USR_Value = 272;         //用户请求存储地址
   P2pInfoRsp_USR P2pInfoRsp_USR_Value = 274;                       //用户请求p2p服务器
+
+  DeleteFileRsp_USR DeleteFileRsp_USR_Value = 310;                 //用户删除文件
+  DownloadFileRsp_USR DownloadFileRsp_USR_Value = 320;             //用户下载文件
+  QueryFileRsp_USR QueryFileRsp_USR_Value = 330;                   //用户查询文件
+  
   
   GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
   GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息

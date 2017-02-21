@@ -38,6 +38,12 @@ extern AddDevReq_USRDefaultTypeInternal _AddDevReq_USR_default_instance_;
 class AddDevRsp_USR;
 class AddDevRsp_USRDefaultTypeInternal;
 extern AddDevRsp_USRDefaultTypeInternal _AddDevRsp_USR_default_instance_;
+class AddFileReq_DEV;
+class AddFileReq_DEVDefaultTypeInternal;
+extern AddFileReq_DEVDefaultTypeInternal _AddFileReq_DEV_default_instance_;
+class AddFileRsp_DEV;
+class AddFileRsp_DEVDefaultTypeInternal;
+extern AddFileRsp_DEVDefaultTypeInternal _AddFileRsp_DEV_default_instance_;
 class AddFriendsReq_USR;
 class AddFriendsReq_USRDefaultTypeInternal;
 extern AddFriendsReq_USRDefaultTypeInternal _AddFriendsReq_USR_default_instance_;
@@ -80,9 +86,27 @@ extern DelFriendsReq_USRDefaultTypeInternal _DelFriendsReq_USR_default_instance_
 class DelFriendsRsp_USR;
 class DelFriendsRsp_USRDefaultTypeInternal;
 extern DelFriendsRsp_USRDefaultTypeInternal _DelFriendsRsp_USR_default_instance_;
+class DeleteFileReq_USR;
+class DeleteFileReq_USRDefaultTypeInternal;
+extern DeleteFileReq_USRDefaultTypeInternal _DeleteFileReq_USR_default_instance_;
+class DeleteFileRsp_USR;
+class DeleteFileRsp_USRDefaultTypeInternal;
+extern DeleteFileRsp_USRDefaultTypeInternal _DeleteFileRsp_USR_default_instance_;
 class Device;
 class DeviceDefaultTypeInternal;
 extern DeviceDefaultTypeInternal _Device_default_instance_;
+class DownloadFileReq_USR;
+class DownloadFileReq_USRDefaultTypeInternal;
+extern DownloadFileReq_USRDefaultTypeInternal _DownloadFileReq_USR_default_instance_;
+class DownloadFileRsp_USR;
+class DownloadFileRsp_USRDefaultTypeInternal;
+extern DownloadFileRsp_USRDefaultTypeInternal _DownloadFileRsp_USR_default_instance_;
+class File;
+class FileDefaultTypeInternal;
+extern FileDefaultTypeInternal _File_default_instance_;
+class FileUrl;
+class FileUrlDefaultTypeInternal;
+extern FileUrlDefaultTypeInternal _FileUrl_default_instance_;
 class GetAccessAddressReq_DEV;
 class GetAccessAddressReq_DEVDefaultTypeInternal;
 extern GetAccessAddressReq_DEVDefaultTypeInternal _GetAccessAddressReq_DEV_default_instance_;
@@ -179,6 +203,12 @@ extern QueryDevReq_USRDefaultTypeInternal _QueryDevReq_USR_default_instance_;
 class QueryDevRsp_USR;
 class QueryDevRsp_USRDefaultTypeInternal;
 extern QueryDevRsp_USRDefaultTypeInternal _QueryDevRsp_USR_default_instance_;
+class QueryFileReq_USR;
+class QueryFileReq_USRDefaultTypeInternal;
+extern QueryFileReq_USRDefaultTypeInternal _QueryFileReq_USR_default_instance_;
+class QueryFileRsp_USR;
+class QueryFileRsp_USRDefaultTypeInternal;
+extern QueryFileRsp_USRDefaultTypeInternal _QueryFileRsp_USR_default_instance_;
 class QueryFriendsReq_USR;
 class QueryFriendsReq_USRDefaultTypeInternal;
 extern QueryFriendsReq_USRDefaultTypeInternal _QueryFriendsReq_USR_default_instance_;
@@ -284,6 +314,8 @@ enum MsgType {
   StorageAddressRsp_DEV_T = 10110,
   P2pInfoReq_DEV_T = 10220,
   P2pInfoRsp_DEV_T = 10230,
+  AddFileReq_DEV_T = 10300,
+  AddFileRsp_DEV_T = 10310,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -332,6 +364,12 @@ enum MsgType {
   StorageAddressRsp_USR_T = 20350,
   P2pInfoReq_USR_T = 20360,
   P2pInfoRsp_USR_T = 20370,
+  DeleteFileReq_USR_T = 20500,
+  DeleteFileRsp_USR_T = 20510,
+  DownloadFileReq_USR_T = 20520,
+  DownloadFileRsp_USR_T = 20530,
+  QueryFileReq_USR_T = 20540,
+  QueryFileRsp_USR_T = 20550,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -946,6 +984,344 @@ class Relation : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::ArenaStringPtr strenddate_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uirelation_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class File : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.File) */ {
+ public:
+  File();
+  virtual ~File();
+
+  File(const File& from);
+
+  inline File& operator=(const File& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const File& default_instance();
+
+  static inline const File* internal_default_instance() {
+    return reinterpret_cast<const File*>(
+               &_File_default_instance_);
+  }
+
+  void Swap(File* other);
+
+  // implements Message ----------------------------------------------
+
+  inline File* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  File* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const File& from);
+  void MergeFrom(const File& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(File* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strFileID = 1;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 1;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strDevID = 3;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 3;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strRemoteFileID = 4;
+  void clear_strremotefileid();
+  static const int kStrRemoteFileIDFieldNumber = 4;
+  const ::std::string& strremotefileid() const;
+  void set_strremotefileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strremotefileid(::std::string&& value);
+  #endif
+  void set_strremotefileid(const char* value);
+  void set_strremotefileid(const char* value, size_t size);
+  ::std::string* mutable_strremotefileid();
+  ::std::string* release_strremotefileid();
+  void set_allocated_strremotefileid(::std::string* strremotefileid);
+
+  // string strFileUrl = 5;
+  void clear_strfileurl();
+  static const int kStrFileUrlFieldNumber = 5;
+  const ::std::string& strfileurl() const;
+  void set_strfileurl(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileurl(::std::string&& value);
+  #endif
+  void set_strfileurl(const char* value);
+  void set_strfileurl(const char* value, size_t size);
+  ::std::string* mutable_strfileurl();
+  ::std::string* release_strfileurl();
+  void set_allocated_strfileurl(::std::string* strfileurl);
+
+  // string strFileName = 6;
+  void clear_strfilename();
+  static const int kStrFileNameFieldNumber = 6;
+  const ::std::string& strfilename() const;
+  void set_strfilename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfilename(::std::string&& value);
+  #endif
+  void set_strfilename(const char* value);
+  void set_strfilename(const char* value, size_t size);
+  ::std::string* mutable_strfilename();
+  ::std::string* release_strfilename();
+  void set_allocated_strfilename(::std::string* strfilename);
+
+  // string strFileCreatedate = 9;
+  void clear_strfilecreatedate();
+  static const int kStrFileCreatedateFieldNumber = 9;
+  const ::std::string& strfilecreatedate() const;
+  void set_strfilecreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfilecreatedate(::std::string&& value);
+  #endif
+  void set_strfilecreatedate(const char* value);
+  void set_strfilecreatedate(const char* value, size_t size);
+  ::std::string* mutable_strfilecreatedate();
+  ::std::string* release_strfilecreatedate();
+  void set_allocated_strfilecreatedate(::std::string* strfilecreatedate);
+
+  // string strCreatedate = 10;
+  void clear_strcreatedate();
+  static const int kStrCreatedateFieldNumber = 10;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // string strExtend = 12;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 12;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint64 uiFileSize = 8;
+  void clear_uifilesize();
+  static const int kUiFileSizeFieldNumber = 8;
+  ::google::protobuf::uint64 uifilesize() const;
+  void set_uifilesize(::google::protobuf::uint64 value);
+
+  // uint32 uiFileType = 7;
+  void clear_uifiletype();
+  static const int kUiFileTypeFieldNumber = 7;
+  ::google::protobuf::uint32 uifiletype() const;
+  void set_uifiletype(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 11;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 11;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.File)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strremotefileid_;
+  ::google::protobuf::internal::ArenaStringPtr strfileurl_;
+  ::google::protobuf::internal::ArenaStringPtr strfilename_;
+  ::google::protobuf::internal::ArenaStringPtr strfilecreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint64 uifilesize_;
+  ::google::protobuf::uint32 uifiletype_;
+  ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class FileUrl : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.FileUrl) */ {
+ public:
+  FileUrl();
+  virtual ~FileUrl();
+
+  FileUrl(const FileUrl& from);
+
+  inline FileUrl& operator=(const FileUrl& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FileUrl& default_instance();
+
+  static inline const FileUrl* internal_default_instance() {
+    return reinterpret_cast<const FileUrl*>(
+               &_FileUrl_default_instance_);
+  }
+
+  void Swap(FileUrl* other);
+
+  // implements Message ----------------------------------------------
+
+  inline FileUrl* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  FileUrl* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const FileUrl& from);
+  void MergeFrom(const FileUrl& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(FileUrl* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strFileID = 1;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 1;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // string strDownloadUrl = 2;
+  void clear_strdownloadurl();
+  static const int kStrDownloadUrlFieldNumber = 2;
+  const ::std::string& strdownloadurl() const;
+  void set_strdownloadurl(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdownloadurl(::std::string&& value);
+  #endif
+  void set_strdownloadurl(const char* value);
+  void set_strdownloadurl(const char* value, size_t size);
+  ::std::string* mutable_strdownloadurl();
+  ::std::string* release_strdownloadurl();
+  void set_allocated_strdownloadurl(::std::string* strdownloadurl);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.FileUrl)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr strdownloadurl_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -2428,6 +2804,233 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
   ::google::protobuf::uint32 uilease_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddFileReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddFileReq_DEV) */ {
+ public:
+  AddFileReq_DEV();
+  virtual ~AddFileReq_DEV();
+
+  AddFileReq_DEV(const AddFileReq_DEV& from);
+
+  inline AddFileReq_DEV& operator=(const AddFileReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddFileReq_DEV& default_instance();
+
+  static inline const AddFileReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const AddFileReq_DEV*>(
+               &_AddFileReq_DEV_default_instance_);
+  }
+
+  void Swap(AddFileReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddFileReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddFileReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddFileReq_DEV& from);
+  void MergeFrom(const AddFileReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddFileReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.File fileInfo = 2;
+  int fileinfo_size() const;
+  void clear_fileinfo();
+  static const int kFileInfoFieldNumber = 2;
+  const ::Interactive::Message::File& fileinfo(int index) const;
+  ::Interactive::Message::File* mutable_fileinfo(int index);
+  ::Interactive::Message::File* add_fileinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >*
+      mutable_fileinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >&
+      fileinfo() const;
+
+  // string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strValue = 3;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 3;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddFileReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File > fileinfo_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddFileRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddFileRsp_DEV) */ {
+ public:
+  AddFileRsp_DEV();
+  virtual ~AddFileRsp_DEV();
+
+  AddFileRsp_DEV(const AddFileRsp_DEV& from);
+
+  inline AddFileRsp_DEV& operator=(const AddFileRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddFileRsp_DEV& default_instance();
+
+  static inline const AddFileRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const AddFileRsp_DEV*>(
+               &_AddFileRsp_DEV_default_instance_);
+  }
+
+  void Swap(AddFileRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddFileRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddFileRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddFileRsp_DEV& from);
+  void MergeFrom(const AddFileRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddFileRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strFileIDFailed = 2;
+  int strfileidfailed_size() const;
+  void clear_strfileidfailed();
+  static const int kStrFileIDFailedFieldNumber = 2;
+  const ::std::string& strfileidfailed(int index) const;
+  ::std::string* mutable_strfileidfailed(int index);
+  void set_strfileidfailed(int index, const ::std::string& value);
+  void set_strfileidfailed(int index, const char* value);
+  void set_strfileidfailed(int index, const char* value, size_t size);
+  ::std::string* add_strfileidfailed();
+  void add_strfileidfailed(const ::std::string& value);
+  void add_strfileidfailed(const char* value);
+  void add_strfileidfailed(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strfileidfailed() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strfileidfailed();
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddFileRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strfileidfailed_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -7129,6 +7732,666 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
 };
 // -------------------------------------------------------------------
 
+class DeleteFileReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteFileReq_USR) */ {
+ public:
+  DeleteFileReq_USR();
+  virtual ~DeleteFileReq_USR();
+
+  DeleteFileReq_USR(const DeleteFileReq_USR& from);
+
+  inline DeleteFileReq_USR& operator=(const DeleteFileReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteFileReq_USR& default_instance();
+
+  static inline const DeleteFileReq_USR* internal_default_instance() {
+    return reinterpret_cast<const DeleteFileReq_USR*>(
+               &_DeleteFileReq_USR_default_instance_);
+  }
+
+  void Swap(DeleteFileReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteFileReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteFileReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteFileReq_USR& from);
+  void MergeFrom(const DeleteFileReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteFileReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strFileID = 2;
+  int strfileid_size() const;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 2;
+  const ::std::string& strfileid(int index) const;
+  ::std::string* mutable_strfileid(int index);
+  void set_strfileid(int index, const ::std::string& value);
+  void set_strfileid(int index, const char* value);
+  void set_strfileid(int index, const char* value, size_t size);
+  ::std::string* add_strfileid();
+  void add_strfileid(const ::std::string& value);
+  void add_strfileid(const char* value);
+  void add_strfileid(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strfileid() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strfileid();
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteFileReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteFileRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteFileRsp_USR) */ {
+ public:
+  DeleteFileRsp_USR();
+  virtual ~DeleteFileRsp_USR();
+
+  DeleteFileRsp_USR(const DeleteFileRsp_USR& from);
+
+  inline DeleteFileRsp_USR& operator=(const DeleteFileRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteFileRsp_USR& default_instance();
+
+  static inline const DeleteFileRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const DeleteFileRsp_USR*>(
+               &_DeleteFileRsp_USR_default_instance_);
+  }
+
+  void Swap(DeleteFileRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteFileRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteFileRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteFileRsp_USR& from);
+  void MergeFrom(const DeleteFileRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteFileRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strFileIDFailed = 2;
+  int strfileidfailed_size() const;
+  void clear_strfileidfailed();
+  static const int kStrFileIDFailedFieldNumber = 2;
+  const ::std::string& strfileidfailed(int index) const;
+  ::std::string* mutable_strfileidfailed(int index);
+  void set_strfileidfailed(int index, const ::std::string& value);
+  void set_strfileidfailed(int index, const char* value);
+  void set_strfileidfailed(int index, const char* value, size_t size);
+  ::std::string* add_strfileidfailed();
+  void add_strfileidfailed(const ::std::string& value);
+  void add_strfileidfailed(const char* value);
+  void add_strfileidfailed(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strfileidfailed() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strfileidfailed();
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteFileRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strfileidfailed_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DownloadFileReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DownloadFileReq_USR) */ {
+ public:
+  DownloadFileReq_USR();
+  virtual ~DownloadFileReq_USR();
+
+  DownloadFileReq_USR(const DownloadFileReq_USR& from);
+
+  inline DownloadFileReq_USR& operator=(const DownloadFileReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DownloadFileReq_USR& default_instance();
+
+  static inline const DownloadFileReq_USR* internal_default_instance() {
+    return reinterpret_cast<const DownloadFileReq_USR*>(
+               &_DownloadFileReq_USR_default_instance_);
+  }
+
+  void Swap(DownloadFileReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DownloadFileReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DownloadFileReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DownloadFileReq_USR& from);
+  void MergeFrom(const DownloadFileReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DownloadFileReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strFileID = 2;
+  int strfileid_size() const;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 2;
+  const ::std::string& strfileid(int index) const;
+  ::std::string* mutable_strfileid(int index);
+  void set_strfileid(int index, const ::std::string& value);
+  void set_strfileid(int index, const char* value);
+  void set_strfileid(int index, const char* value, size_t size);
+  ::std::string* add_strfileid();
+  void add_strfileid(const ::std::string& value);
+  void add_strfileid(const char* value);
+  void add_strfileid(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strfileid() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strfileid();
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DownloadFileReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DownloadFileRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DownloadFileRsp_USR) */ {
+ public:
+  DownloadFileRsp_USR();
+  virtual ~DownloadFileRsp_USR();
+
+  DownloadFileRsp_USR(const DownloadFileRsp_USR& from);
+
+  inline DownloadFileRsp_USR& operator=(const DownloadFileRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DownloadFileRsp_USR& default_instance();
+
+  static inline const DownloadFileRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const DownloadFileRsp_USR*>(
+               &_DownloadFileRsp_USR_default_instance_);
+  }
+
+  void Swap(DownloadFileRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DownloadFileRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DownloadFileRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DownloadFileRsp_USR& from);
+  void MergeFrom(const DownloadFileRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DownloadFileRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.FileUrl fileUrl = 2;
+  int fileurl_size() const;
+  void clear_fileurl();
+  static const int kFileUrlFieldNumber = 2;
+  const ::Interactive::Message::FileUrl& fileurl(int index) const;
+  ::Interactive::Message::FileUrl* mutable_fileurl(int index);
+  ::Interactive::Message::FileUrl* add_fileurl();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl >*
+      mutable_fileurl();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl >&
+      fileurl() const;
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DownloadFileRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl > fileurl_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryFileReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryFileReq_USR) */ {
+ public:
+  QueryFileReq_USR();
+  virtual ~QueryFileReq_USR();
+
+  QueryFileReq_USR(const QueryFileReq_USR& from);
+
+  inline QueryFileReq_USR& operator=(const QueryFileReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryFileReq_USR& default_instance();
+
+  static inline const QueryFileReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryFileReq_USR*>(
+               &_QueryFileReq_USR_default_instance_);
+  }
+
+  void Swap(QueryFileReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryFileReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryFileReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryFileReq_USR& from);
+  void MergeFrom(const QueryFileReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryFileReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strDevID = 2;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 2;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strValue = 4;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 4;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // uint32 uiBeginIndex = 3;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 3;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFileReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uibeginindex_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryFileRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryFileRsp_USR) */ {
+ public:
+  QueryFileRsp_USR();
+  virtual ~QueryFileRsp_USR();
+
+  QueryFileRsp_USR(const QueryFileRsp_USR& from);
+
+  inline QueryFileRsp_USR& operator=(const QueryFileRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryFileRsp_USR& default_instance();
+
+  static inline const QueryFileRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryFileRsp_USR*>(
+               &_QueryFileRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryFileRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryFileRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryFileRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryFileRsp_USR& from);
+  void MergeFrom(const QueryFileRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryFileRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.File fileInfo = 2;
+  int fileinfo_size() const;
+  void clear_fileinfo();
+  static const int kFileInfoFieldNumber = 2;
+  const ::Interactive::Message::File& fileinfo(int index) const;
+  ::Interactive::Message::File* mutable_fileinfo(int index);
+  ::Interactive::Message::File* add_fileinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >*
+      mutable_fileinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >&
+      fileinfo() const;
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFileRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File > fileinfo_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class GetOnlineDevInfoReq_INNER : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.GetOnlineDevInfoReq_INNER) */ {
  public:
   GetOnlineDevInfoReq_INNER();
@@ -7857,6 +9120,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoReq_DEV* release_p2pinforeq_dev_value();
   void set_allocated_p2pinforeq_dev_value(::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value);
 
+  // .Interactive.Message.AddFileReq_DEV AddFileReq_DEV_Value = 60;
+  bool has_addfilereq_dev_value() const;
+  void clear_addfilereq_dev_value();
+  static const int kAddFileReqDEVValueFieldNumber = 60;
+  const ::Interactive::Message::AddFileReq_DEV& addfilereq_dev_value() const;
+  ::Interactive::Message::AddFileReq_DEV* mutable_addfilereq_dev_value();
+  ::Interactive::Message::AddFileReq_DEV* release_addfilereq_dev_value();
+  void set_allocated_addfilereq_dev_value(::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -8064,6 +9336,33 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoReq_USR* release_p2pinforeq_usr_value();
   void set_allocated_p2pinforeq_usr_value(::Interactive::Message::P2pInfoReq_USR* p2pinforeq_usr_value);
 
+  // .Interactive.Message.DeleteFileReq_USR DeleteFileReq_USR_Value = 310;
+  bool has_deletefilereq_usr_value() const;
+  void clear_deletefilereq_usr_value();
+  static const int kDeleteFileReqUSRValueFieldNumber = 310;
+  const ::Interactive::Message::DeleteFileReq_USR& deletefilereq_usr_value() const;
+  ::Interactive::Message::DeleteFileReq_USR* mutable_deletefilereq_usr_value();
+  ::Interactive::Message::DeleteFileReq_USR* release_deletefilereq_usr_value();
+  void set_allocated_deletefilereq_usr_value(::Interactive::Message::DeleteFileReq_USR* deletefilereq_usr_value);
+
+  // .Interactive.Message.DownloadFileReq_USR DownloadFileReq_USR_Value = 320;
+  bool has_downloadfilereq_usr_value() const;
+  void clear_downloadfilereq_usr_value();
+  static const int kDownloadFileReqUSRValueFieldNumber = 320;
+  const ::Interactive::Message::DownloadFileReq_USR& downloadfilereq_usr_value() const;
+  ::Interactive::Message::DownloadFileReq_USR* mutable_downloadfilereq_usr_value();
+  ::Interactive::Message::DownloadFileReq_USR* release_downloadfilereq_usr_value();
+  void set_allocated_downloadfilereq_usr_value(::Interactive::Message::DownloadFileReq_USR* downloadfilereq_usr_value);
+
+  // .Interactive.Message.QueryFileReq_USR QueryFileReq_USR_Value = 330;
+  bool has_queryfilereq_usr_value() const;
+  void clear_queryfilereq_usr_value();
+  static const int kQueryFileReqUSRValueFieldNumber = 330;
+  const ::Interactive::Message::QueryFileReq_USR& queryfilereq_usr_value() const;
+  ::Interactive::Message::QueryFileReq_USR* mutable_queryfilereq_usr_value();
+  ::Interactive::Message::QueryFileReq_USR* release_queryfilereq_usr_value();
+  void set_allocated_queryfilereq_usr_value(::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -8111,6 +9410,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ConfigInfoReq_DEV* configinforeq_dev_value_;
   ::Interactive::Message::StorageAddressReq_DEV* storageaddressreq_dev_value_;
   ::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value_;
+  ::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -8134,6 +9434,9 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFriendsReq_USR* queryfriendsreq_usr_value_;
   ::Interactive::Message::StorageAddressReq_USR* storageaddressreq_usr_value_;
   ::Interactive::Message::P2pInfoReq_USR* p2pinforeq_usr_value_;
+  ::Interactive::Message::DeleteFileReq_USR* deletefilereq_usr_value_;
+  ::Interactive::Message::DownloadFileReq_USR* downloadfilereq_usr_value_;
+  ::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -8286,6 +9589,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoRsp_DEV* mutable_p2pinforsp_dev_value();
   ::Interactive::Message::P2pInfoRsp_DEV* release_p2pinforsp_dev_value();
   void set_allocated_p2pinforsp_dev_value(::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value);
+
+  // .Interactive.Message.AddFileRsp_DEV AddFileRsp_DEV_Value = 80;
+  bool has_addfilersp_dev_value() const;
+  void clear_addfilersp_dev_value();
+  static const int kAddFileRspDEVValueFieldNumber = 80;
+  const ::Interactive::Message::AddFileRsp_DEV& addfilersp_dev_value() const;
+  ::Interactive::Message::AddFileRsp_DEV* mutable_addfilersp_dev_value();
+  ::Interactive::Message::AddFileRsp_DEV* release_addfilersp_dev_value();
+  void set_allocated_addfilersp_dev_value(::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -8494,6 +9806,33 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoRsp_USR* release_p2pinforsp_usr_value();
   void set_allocated_p2pinforsp_usr_value(::Interactive::Message::P2pInfoRsp_USR* p2pinforsp_usr_value);
 
+  // .Interactive.Message.DeleteFileRsp_USR DeleteFileRsp_USR_Value = 310;
+  bool has_deletefilersp_usr_value() const;
+  void clear_deletefilersp_usr_value();
+  static const int kDeleteFileRspUSRValueFieldNumber = 310;
+  const ::Interactive::Message::DeleteFileRsp_USR& deletefilersp_usr_value() const;
+  ::Interactive::Message::DeleteFileRsp_USR* mutable_deletefilersp_usr_value();
+  ::Interactive::Message::DeleteFileRsp_USR* release_deletefilersp_usr_value();
+  void set_allocated_deletefilersp_usr_value(::Interactive::Message::DeleteFileRsp_USR* deletefilersp_usr_value);
+
+  // .Interactive.Message.DownloadFileRsp_USR DownloadFileRsp_USR_Value = 320;
+  bool has_downloadfilersp_usr_value() const;
+  void clear_downloadfilersp_usr_value();
+  static const int kDownloadFileRspUSRValueFieldNumber = 320;
+  const ::Interactive::Message::DownloadFileRsp_USR& downloadfilersp_usr_value() const;
+  ::Interactive::Message::DownloadFileRsp_USR* mutable_downloadfilersp_usr_value();
+  ::Interactive::Message::DownloadFileRsp_USR* release_downloadfilersp_usr_value();
+  void set_allocated_downloadfilersp_usr_value(::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value);
+
+  // .Interactive.Message.QueryFileRsp_USR QueryFileRsp_USR_Value = 330;
+  bool has_queryfilersp_usr_value() const;
+  void clear_queryfilersp_usr_value();
+  static const int kQueryFileRspUSRValueFieldNumber = 330;
+  const ::Interactive::Message::QueryFileRsp_USR& queryfilersp_usr_value() const;
+  ::Interactive::Message::QueryFileRsp_USR* mutable_queryfilersp_usr_value();
+  ::Interactive::Message::QueryFileRsp_USR* release_queryfilersp_usr_value();
+  void set_allocated_queryfilersp_usr_value(::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -8530,6 +9869,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ConfigInfoRsp_DEV* configinforsp_dev_value_;
   ::Interactive::Message::StorageAddressRsp_DEV* storageaddressrsp_dev_value_;
   ::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value_;
+  ::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -8553,6 +9893,9 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFriendsRsp_USR* queryfriendsrsp_usr_value_;
   ::Interactive::Message::StorageAddressRsp_USR* storageaddressreq_usr_value_;
   ::Interactive::Message::P2pInfoRsp_USR* p2pinforsp_usr_value_;
+  ::Interactive::Message::DeleteFileRsp_USR* deletefilersp_usr_value_;
+  ::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value_;
+  ::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::google::protobuf::int32 iretcode_;
@@ -9632,6 +10975,628 @@ inline void Relation::set_allocated_strvalue(::std::string* strvalue) {
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Relation.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// File
+
+// string strFileID = 1;
+inline void File::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void File::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strFileID)
+}
+#if LANG_CXX11
+inline void File::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strFileID)
+}
+#endif
+inline void File::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strFileID)
+}
+inline void File::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strFileID)
+}
+inline ::std::string* File::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileID)
+}
+
+// string strUserID = 2;
+inline void File::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void File::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strUserID)
+}
+#if LANG_CXX11
+inline void File::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strUserID)
+}
+#endif
+inline void File::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strUserID)
+}
+inline void File::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strUserID)
+}
+inline ::std::string* File::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strUserID)
+}
+
+// string strDevID = 3;
+inline void File::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void File::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strDevID)
+}
+#if LANG_CXX11
+inline void File::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strDevID)
+}
+#endif
+inline void File::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strDevID)
+}
+inline void File::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strDevID)
+}
+inline ::std::string* File::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strDevID)
+}
+
+// string strRemoteFileID = 4;
+inline void File::clear_strremotefileid() {
+  strremotefileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strremotefileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strRemoteFileID)
+  return strremotefileid_.GetNoArena();
+}
+inline void File::set_strremotefileid(const ::std::string& value) {
+  
+  strremotefileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strRemoteFileID)
+}
+#if LANG_CXX11
+inline void File::set_strremotefileid(::std::string&& value) {
+  
+  strremotefileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strRemoteFileID)
+}
+#endif
+inline void File::set_strremotefileid(const char* value) {
+  
+  strremotefileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strRemoteFileID)
+}
+inline void File::set_strremotefileid(const char* value, size_t size) {
+  
+  strremotefileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strRemoteFileID)
+}
+inline ::std::string* File::mutable_strremotefileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strRemoteFileID)
+  return strremotefileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strremotefileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strRemoteFileID)
+  
+  return strremotefileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strremotefileid(::std::string* strremotefileid) {
+  if (strremotefileid != NULL) {
+    
+  } else {
+    
+  }
+  strremotefileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strremotefileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strRemoteFileID)
+}
+
+// string strFileUrl = 5;
+inline void File::clear_strfileurl() {
+  strfileurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strfileurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strFileUrl)
+  return strfileurl_.GetNoArena();
+}
+inline void File::set_strfileurl(const ::std::string& value) {
+  
+  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strFileUrl)
+}
+#if LANG_CXX11
+inline void File::set_strfileurl(::std::string&& value) {
+  
+  strfileurl_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strFileUrl)
+}
+#endif
+inline void File::set_strfileurl(const char* value) {
+  
+  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strFileUrl)
+}
+inline void File::set_strfileurl(const char* value, size_t size) {
+  
+  strfileurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strFileUrl)
+}
+inline ::std::string* File::mutable_strfileurl() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strFileUrl)
+  return strfileurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strfileurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strFileUrl)
+  
+  return strfileurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strfileurl(::std::string* strfileurl) {
+  if (strfileurl != NULL) {
+    
+  } else {
+    
+  }
+  strfileurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileUrl)
+}
+
+// string strFileName = 6;
+inline void File::clear_strfilename() {
+  strfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strfilename() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strFileName)
+  return strfilename_.GetNoArena();
+}
+inline void File::set_strfilename(const ::std::string& value) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strFileName)
+}
+#if LANG_CXX11
+inline void File::set_strfilename(::std::string&& value) {
+  
+  strfilename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strFileName)
+}
+#endif
+inline void File::set_strfilename(const char* value) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strFileName)
+}
+inline void File::set_strfilename(const char* value, size_t size) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strFileName)
+}
+inline ::std::string* File::mutable_strfilename() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strFileName)
+  return strfilename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strfilename() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strFileName)
+  
+  return strfilename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strfilename(::std::string* strfilename) {
+  if (strfilename != NULL) {
+    
+  } else {
+    
+  }
+  strfilename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfilename);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileName)
+}
+
+// uint32 uiFileType = 7;
+inline void File::clear_uifiletype() {
+  uifiletype_ = 0u;
+}
+inline ::google::protobuf::uint32 File::uifiletype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiFileType)
+  return uifiletype_;
+}
+inline void File::set_uifiletype(::google::protobuf::uint32 value) {
+  
+  uifiletype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiFileType)
+}
+
+// uint64 uiFileSize = 8;
+inline void File::clear_uifilesize() {
+  uifilesize_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 File::uifilesize() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiFileSize)
+  return uifilesize_;
+}
+inline void File::set_uifilesize(::google::protobuf::uint64 value) {
+  
+  uifilesize_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiFileSize)
+}
+
+// string strFileCreatedate = 9;
+inline void File::clear_strfilecreatedate() {
+  strfilecreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strfilecreatedate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strFileCreatedate)
+  return strfilecreatedate_.GetNoArena();
+}
+inline void File::set_strfilecreatedate(const ::std::string& value) {
+  
+  strfilecreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strFileCreatedate)
+}
+#if LANG_CXX11
+inline void File::set_strfilecreatedate(::std::string&& value) {
+  
+  strfilecreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strFileCreatedate)
+}
+#endif
+inline void File::set_strfilecreatedate(const char* value) {
+  
+  strfilecreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strFileCreatedate)
+}
+inline void File::set_strfilecreatedate(const char* value, size_t size) {
+  
+  strfilecreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strFileCreatedate)
+}
+inline ::std::string* File::mutable_strfilecreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strFileCreatedate)
+  return strfilecreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strfilecreatedate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strFileCreatedate)
+  
+  return strfilecreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strfilecreatedate(::std::string* strfilecreatedate) {
+  if (strfilecreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strfilecreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfilecreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileCreatedate)
+}
+
+// string strCreatedate = 10;
+inline void File::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strCreatedate)
+  return strcreatedate_.GetNoArena();
+}
+inline void File::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strCreatedate)
+}
+#if LANG_CXX11
+inline void File::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strCreatedate)
+}
+#endif
+inline void File::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strCreatedate)
+}
+inline void File::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strCreatedate)
+}
+inline ::std::string* File::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strCreatedate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strCreatedate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strCreatedate)
+}
+
+// uint32 uiStatus = 11;
+inline void File::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 File::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiStatus)
+  return uistatus_;
+}
+inline void File::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiStatus)
+}
+
+// string strExtend = 12;
+inline void File::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& File::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void File::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.strExtend)
+}
+#if LANG_CXX11
+inline void File::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.File.strExtend)
+}
+#endif
+inline void File::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.File.strExtend)
+}
+inline void File::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.File.strExtend)
+}
+inline ::std::string* File::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.File.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* File::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.File.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void File::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strExtend)
+}
+
+// -------------------------------------------------------------------
+
+// FileUrl
+
+// string strFileID = 1;
+inline void FileUrl::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& FileUrl::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.FileUrl.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void FileUrl::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.FileUrl.strFileID)
+}
+#if LANG_CXX11
+inline void FileUrl::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.FileUrl.strFileID)
+}
+#endif
+inline void FileUrl::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.FileUrl.strFileID)
+}
+inline void FileUrl::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.FileUrl.strFileID)
+}
+inline ::std::string* FileUrl::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.FileUrl.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* FileUrl::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.FileUrl.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void FileUrl::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.FileUrl.strFileID)
+}
+
+// string strDownloadUrl = 2;
+inline void FileUrl::clear_strdownloadurl() {
+  strdownloadurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& FileUrl::strdownloadurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.FileUrl.strDownloadUrl)
+  return strdownloadurl_.GetNoArena();
+}
+inline void FileUrl::set_strdownloadurl(const ::std::string& value) {
+  
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.FileUrl.strDownloadUrl)
+}
+#if LANG_CXX11
+inline void FileUrl::set_strdownloadurl(::std::string&& value) {
+  
+  strdownloadurl_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.FileUrl.strDownloadUrl)
+}
+#endif
+inline void FileUrl::set_strdownloadurl(const char* value) {
+  
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.FileUrl.strDownloadUrl)
+}
+inline void FileUrl::set_strdownloadurl(const char* value, size_t size) {
+  
+  strdownloadurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.FileUrl.strDownloadUrl)
+}
+inline ::std::string* FileUrl::mutable_strdownloadurl() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.FileUrl.strDownloadUrl)
+  return strdownloadurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* FileUrl::release_strdownloadurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.FileUrl.strDownloadUrl)
+  
+  return strdownloadurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void FileUrl::set_allocated_strdownloadurl(::std::string* strdownloadurl) {
+  if (strdownloadurl != NULL) {
+    
+  } else {
+    
+  }
+  strdownloadurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdownloadurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.FileUrl.strDownloadUrl)
 }
 
 // -------------------------------------------------------------------
@@ -11096,6 +13061,255 @@ inline void P2pInfoRsp_DEV::set_uilease(::google::protobuf::uint32 value) {
   
   uilease_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.uiLease)
+}
+
+// -------------------------------------------------------------------
+
+// AddFileReq_DEV
+
+// string strDevID = 1;
+inline void AddFileReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddFileReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddFileReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void AddFileReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddFileReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void AddFileReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddFileReq_DEV.strDevID)
+}
+#endif
+inline void AddFileReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddFileReq_DEV.strDevID)
+}
+inline void AddFileReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddFileReq_DEV.strDevID)
+}
+inline ::std::string* AddFileReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddFileReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddFileReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddFileReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddFileReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddFileReq_DEV.strDevID)
+}
+
+// repeated .Interactive.Message.File fileInfo = 2;
+inline int AddFileReq_DEV::fileinfo_size() const {
+  return fileinfo_.size();
+}
+inline void AddFileReq_DEV::clear_fileinfo() {
+  fileinfo_.Clear();
+}
+inline const ::Interactive::Message::File& AddFileReq_DEV::fileinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddFileReq_DEV.fileInfo)
+  return fileinfo_.Get(index);
+}
+inline ::Interactive::Message::File* AddFileReq_DEV::mutable_fileinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddFileReq_DEV.fileInfo)
+  return fileinfo_.Mutable(index);
+}
+inline ::Interactive::Message::File* AddFileReq_DEV::add_fileinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.AddFileReq_DEV.fileInfo)
+  return fileinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >*
+AddFileReq_DEV::mutable_fileinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.AddFileReq_DEV.fileInfo)
+  return &fileinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >&
+AddFileReq_DEV::fileinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.AddFileReq_DEV.fileInfo)
+  return fileinfo_;
+}
+
+// string strValue = 3;
+inline void AddFileReq_DEV::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddFileReq_DEV::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddFileReq_DEV.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddFileReq_DEV::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddFileReq_DEV.strValue)
+}
+#if LANG_CXX11
+inline void AddFileReq_DEV::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddFileReq_DEV.strValue)
+}
+#endif
+inline void AddFileReq_DEV::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddFileReq_DEV.strValue)
+}
+inline void AddFileReq_DEV::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddFileReq_DEV.strValue)
+}
+inline ::std::string* AddFileReq_DEV::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddFileReq_DEV.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddFileReq_DEV::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddFileReq_DEV.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddFileReq_DEV::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddFileReq_DEV.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// AddFileRsp_DEV
+
+// string strValue = 1;
+inline void AddFileRsp_DEV::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddFileRsp_DEV::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddFileRsp_DEV.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddFileRsp_DEV::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddFileRsp_DEV.strValue)
+}
+#if LANG_CXX11
+inline void AddFileRsp_DEV::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddFileRsp_DEV.strValue)
+}
+#endif
+inline void AddFileRsp_DEV::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddFileRsp_DEV.strValue)
+}
+inline void AddFileRsp_DEV::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddFileRsp_DEV.strValue)
+}
+inline ::std::string* AddFileRsp_DEV::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddFileRsp_DEV.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddFileRsp_DEV::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddFileRsp_DEV.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddFileRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddFileRsp_DEV.strValue)
+}
+
+// repeated string strFileIDFailed = 2;
+inline int AddFileRsp_DEV::strfileidfailed_size() const {
+  return strfileidfailed_.size();
+}
+inline void AddFileRsp_DEV::clear_strfileidfailed() {
+  strfileidfailed_.Clear();
+}
+inline const ::std::string& AddFileRsp_DEV::strfileidfailed(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  return strfileidfailed_.Get(index);
+}
+inline ::std::string* AddFileRsp_DEV::mutable_strfileidfailed(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  return strfileidfailed_.Mutable(index);
+}
+inline void AddFileRsp_DEV::set_strfileidfailed(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  strfileidfailed_.Mutable(index)->assign(value);
+}
+inline void AddFileRsp_DEV::set_strfileidfailed(int index, const char* value) {
+  strfileidfailed_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+}
+inline void AddFileRsp_DEV::set_strfileidfailed(int index, const char* value, size_t size) {
+  strfileidfailed_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+}
+inline ::std::string* AddFileRsp_DEV::add_strfileidfailed() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  return strfileidfailed_.Add();
+}
+inline void AddFileRsp_DEV::add_strfileidfailed(const ::std::string& value) {
+  strfileidfailed_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+}
+inline void AddFileRsp_DEV::add_strfileidfailed(const char* value) {
+  strfileidfailed_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+}
+inline void AddFileRsp_DEV::add_strfileidfailed(const char* value, size_t size) {
+  strfileidfailed_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+AddFileRsp_DEV::strfileidfailed() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  return strfileidfailed_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+AddFileRsp_DEV::mutable_strfileidfailed() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
+  return &strfileidfailed_;
 }
 
 // -------------------------------------------------------------------
@@ -15351,6 +17565,685 @@ inline void P2pInfoRsp_USR::set_uilease(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
+// DeleteFileReq_USR
+
+// string strUserID = 1;
+inline void DeleteFileReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteFileReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteFileReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void DeleteFileReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteFileReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void DeleteFileReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteFileReq_USR.strUserID)
+}
+#endif
+inline void DeleteFileReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteFileReq_USR.strUserID)
+}
+inline void DeleteFileReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteFileReq_USR.strUserID)
+}
+inline ::std::string* DeleteFileReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteFileReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteFileReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteFileReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteFileReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteFileReq_USR.strUserID)
+}
+
+// repeated string strFileID = 2;
+inline int DeleteFileReq_USR::strfileid_size() const {
+  return strfileid_.size();
+}
+inline void DeleteFileReq_USR::clear_strfileid() {
+  strfileid_.Clear();
+}
+inline const ::std::string& DeleteFileReq_USR::strfileid(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteFileReq_USR.strFileID)
+  return strfileid_.Get(index);
+}
+inline ::std::string* DeleteFileReq_USR::mutable_strfileid(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteFileReq_USR.strFileID)
+  return strfileid_.Mutable(index);
+}
+inline void DeleteFileReq_USR::set_strfileid(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteFileReq_USR.strFileID)
+  strfileid_.Mutable(index)->assign(value);
+}
+inline void DeleteFileReq_USR::set_strfileid(int index, const char* value) {
+  strfileid_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteFileReq_USR.strFileID)
+}
+inline void DeleteFileReq_USR::set_strfileid(int index, const char* value, size_t size) {
+  strfileid_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteFileReq_USR.strFileID)
+}
+inline ::std::string* DeleteFileReq_USR::add_strfileid() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.DeleteFileReq_USR.strFileID)
+  return strfileid_.Add();
+}
+inline void DeleteFileReq_USR::add_strfileid(const ::std::string& value) {
+  strfileid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.DeleteFileReq_USR.strFileID)
+}
+inline void DeleteFileReq_USR::add_strfileid(const char* value) {
+  strfileid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.DeleteFileReq_USR.strFileID)
+}
+inline void DeleteFileReq_USR::add_strfileid(const char* value, size_t size) {
+  strfileid_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.DeleteFileReq_USR.strFileID)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+DeleteFileReq_USR::strfileid() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.DeleteFileReq_USR.strFileID)
+  return strfileid_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+DeleteFileReq_USR::mutable_strfileid() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.DeleteFileReq_USR.strFileID)
+  return &strfileid_;
+}
+
+// -------------------------------------------------------------------
+
+// DeleteFileRsp_USR
+
+// string strValue = 1;
+inline void DeleteFileRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteFileRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteFileRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteFileRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteFileRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void DeleteFileRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteFileRsp_USR.strValue)
+}
+#endif
+inline void DeleteFileRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteFileRsp_USR.strValue)
+}
+inline void DeleteFileRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteFileRsp_USR.strValue)
+}
+inline ::std::string* DeleteFileRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteFileRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteFileRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteFileRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteFileRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteFileRsp_USR.strValue)
+}
+
+// repeated string strFileIDFailed = 2;
+inline int DeleteFileRsp_USR::strfileidfailed_size() const {
+  return strfileidfailed_.size();
+}
+inline void DeleteFileRsp_USR::clear_strfileidfailed() {
+  strfileidfailed_.Clear();
+}
+inline const ::std::string& DeleteFileRsp_USR::strfileidfailed(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  return strfileidfailed_.Get(index);
+}
+inline ::std::string* DeleteFileRsp_USR::mutable_strfileidfailed(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  return strfileidfailed_.Mutable(index);
+}
+inline void DeleteFileRsp_USR::set_strfileidfailed(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  strfileidfailed_.Mutable(index)->assign(value);
+}
+inline void DeleteFileRsp_USR::set_strfileidfailed(int index, const char* value) {
+  strfileidfailed_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+}
+inline void DeleteFileRsp_USR::set_strfileidfailed(int index, const char* value, size_t size) {
+  strfileidfailed_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+}
+inline ::std::string* DeleteFileRsp_USR::add_strfileidfailed() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  return strfileidfailed_.Add();
+}
+inline void DeleteFileRsp_USR::add_strfileidfailed(const ::std::string& value) {
+  strfileidfailed_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+}
+inline void DeleteFileRsp_USR::add_strfileidfailed(const char* value) {
+  strfileidfailed_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+}
+inline void DeleteFileRsp_USR::add_strfileidfailed(const char* value, size_t size) {
+  strfileidfailed_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+DeleteFileRsp_USR::strfileidfailed() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  return strfileidfailed_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+DeleteFileRsp_USR::mutable_strfileidfailed() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.DeleteFileRsp_USR.strFileIDFailed)
+  return &strfileidfailed_;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadFileReq_USR
+
+// string strUserID = 1;
+inline void DownloadFileReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DownloadFileReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DownloadFileReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void DownloadFileReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DownloadFileReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void DownloadFileReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DownloadFileReq_USR.strUserID)
+}
+#endif
+inline void DownloadFileReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DownloadFileReq_USR.strUserID)
+}
+inline void DownloadFileReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DownloadFileReq_USR.strUserID)
+}
+inline ::std::string* DownloadFileReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DownloadFileReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DownloadFileReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DownloadFileReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DownloadFileReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DownloadFileReq_USR.strUserID)
+}
+
+// repeated string strFileID = 2;
+inline int DownloadFileReq_USR::strfileid_size() const {
+  return strfileid_.size();
+}
+inline void DownloadFileReq_USR::clear_strfileid() {
+  strfileid_.Clear();
+}
+inline const ::std::string& DownloadFileReq_USR::strfileid(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DownloadFileReq_USR.strFileID)
+  return strfileid_.Get(index);
+}
+inline ::std::string* DownloadFileReq_USR::mutable_strfileid(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DownloadFileReq_USR.strFileID)
+  return strfileid_.Mutable(index);
+}
+inline void DownloadFileReq_USR::set_strfileid(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.DownloadFileReq_USR.strFileID)
+  strfileid_.Mutable(index)->assign(value);
+}
+inline void DownloadFileReq_USR::set_strfileid(int index, const char* value) {
+  strfileid_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DownloadFileReq_USR.strFileID)
+}
+inline void DownloadFileReq_USR::set_strfileid(int index, const char* value, size_t size) {
+  strfileid_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DownloadFileReq_USR.strFileID)
+}
+inline ::std::string* DownloadFileReq_USR::add_strfileid() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.DownloadFileReq_USR.strFileID)
+  return strfileid_.Add();
+}
+inline void DownloadFileReq_USR::add_strfileid(const ::std::string& value) {
+  strfileid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.DownloadFileReq_USR.strFileID)
+}
+inline void DownloadFileReq_USR::add_strfileid(const char* value) {
+  strfileid_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.DownloadFileReq_USR.strFileID)
+}
+inline void DownloadFileReq_USR::add_strfileid(const char* value, size_t size) {
+  strfileid_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.DownloadFileReq_USR.strFileID)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+DownloadFileReq_USR::strfileid() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.DownloadFileReq_USR.strFileID)
+  return strfileid_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+DownloadFileReq_USR::mutable_strfileid() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.DownloadFileReq_USR.strFileID)
+  return &strfileid_;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadFileRsp_USR
+
+// string strValue = 1;
+inline void DownloadFileRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DownloadFileRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DownloadFileRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DownloadFileRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DownloadFileRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void DownloadFileRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DownloadFileRsp_USR.strValue)
+}
+#endif
+inline void DownloadFileRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DownloadFileRsp_USR.strValue)
+}
+inline void DownloadFileRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DownloadFileRsp_USR.strValue)
+}
+inline ::std::string* DownloadFileRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DownloadFileRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DownloadFileRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DownloadFileRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DownloadFileRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DownloadFileRsp_USR.strValue)
+}
+
+// repeated .Interactive.Message.FileUrl fileUrl = 2;
+inline int DownloadFileRsp_USR::fileurl_size() const {
+  return fileurl_.size();
+}
+inline void DownloadFileRsp_USR::clear_fileurl() {
+  fileurl_.Clear();
+}
+inline const ::Interactive::Message::FileUrl& DownloadFileRsp_USR::fileurl(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DownloadFileRsp_USR.fileUrl)
+  return fileurl_.Get(index);
+}
+inline ::Interactive::Message::FileUrl* DownloadFileRsp_USR::mutable_fileurl(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DownloadFileRsp_USR.fileUrl)
+  return fileurl_.Mutable(index);
+}
+inline ::Interactive::Message::FileUrl* DownloadFileRsp_USR::add_fileurl() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.DownloadFileRsp_USR.fileUrl)
+  return fileurl_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl >*
+DownloadFileRsp_USR::mutable_fileurl() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.DownloadFileRsp_USR.fileUrl)
+  return &fileurl_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl >&
+DownloadFileRsp_USR::fileurl() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.DownloadFileRsp_USR.fileUrl)
+  return fileurl_;
+}
+
+// -------------------------------------------------------------------
+
+// QueryFileReq_USR
+
+// string strUserID = 1;
+inline void QueryFileReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryFileReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryFileReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strUserID)
+}
+#endif
+inline void QueryFileReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strUserID)
+}
+inline void QueryFileReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strUserID)
+}
+inline ::std::string* QueryFileReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strUserID)
+}
+
+// string strDevID = 2;
+inline void QueryFileReq_USR::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileReq_USR::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void QueryFileReq_USR::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strDevID)
+}
+#if LANG_CXX11
+inline void QueryFileReq_USR::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strDevID)
+}
+#endif
+inline void QueryFileReq_USR::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strDevID)
+}
+inline void QueryFileReq_USR::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strDevID)
+}
+inline ::std::string* QueryFileReq_USR::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileReq_USR::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileReq_USR::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strDevID)
+}
+
+// uint32 uiBeginIndex = 3;
+inline void QueryFileReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFileReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryFileReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.uiBeginIndex)
+}
+
+// string strValue = 4;
+inline void QueryFileReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryFileReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strValue)
+}
+#if LANG_CXX11
+inline void QueryFileReq_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strValue)
+}
+#endif
+inline void QueryFileReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strValue)
+}
+inline void QueryFileReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strValue)
+}
+inline ::std::string* QueryFileReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryFileRsp_USR
+
+// string strValue = 1;
+inline void QueryFileRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryFileRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void QueryFileRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileRsp_USR.strValue)
+}
+#endif
+inline void QueryFileRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileRsp_USR.strValue)
+}
+inline void QueryFileRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileRsp_USR.strValue)
+}
+inline ::std::string* QueryFileRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileRsp_USR.strValue)
+}
+
+// repeated .Interactive.Message.File fileInfo = 2;
+inline int QueryFileRsp_USR::fileinfo_size() const {
+  return fileinfo_.size();
+}
+inline void QueryFileRsp_USR::clear_fileinfo() {
+  fileinfo_.Clear();
+}
+inline const ::Interactive::Message::File& QueryFileRsp_USR::fileinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileRsp_USR.fileInfo)
+  return fileinfo_.Get(index);
+}
+inline ::Interactive::Message::File* QueryFileRsp_USR::mutable_fileinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileRsp_USR.fileInfo)
+  return fileinfo_.Mutable(index);
+}
+inline ::Interactive::Message::File* QueryFileRsp_USR::add_fileinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryFileRsp_USR.fileInfo)
+  return fileinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >*
+QueryFileRsp_USR::mutable_fileinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryFileRsp_USR.fileInfo)
+  return &fileinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >&
+QueryFileRsp_USR::fileinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryFileRsp_USR.fileInfo)
+  return fileinfo_;
+}
+
+// -------------------------------------------------------------------
+
 // GetOnlineDevInfoReq_INNER
 
 // string strValue = 1;
@@ -16080,6 +18973,45 @@ inline void Req::set_allocated_p2pinforeq_dev_value(::Interactive::Message::P2pI
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.P2pInfoReq_DEV_Value)
+}
+
+// .Interactive.Message.AddFileReq_DEV AddFileReq_DEV_Value = 60;
+inline bool Req::has_addfilereq_dev_value() const {
+  return this != internal_default_instance() && addfilereq_dev_value_ != NULL;
+}
+inline void Req::clear_addfilereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && addfilereq_dev_value_ != NULL) delete addfilereq_dev_value_;
+  addfilereq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::AddFileReq_DEV& Req::addfilereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.AddFileReq_DEV_Value)
+  return addfilereq_dev_value_ != NULL ? *addfilereq_dev_value_
+                         : *::Interactive::Message::AddFileReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::AddFileReq_DEV* Req::mutable_addfilereq_dev_value() {
+  
+  if (addfilereq_dev_value_ == NULL) {
+    addfilereq_dev_value_ = new ::Interactive::Message::AddFileReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.AddFileReq_DEV_Value)
+  return addfilereq_dev_value_;
+}
+inline ::Interactive::Message::AddFileReq_DEV* Req::release_addfilereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.AddFileReq_DEV_Value)
+  
+  ::Interactive::Message::AddFileReq_DEV* temp = addfilereq_dev_value_;
+  addfilereq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_addfilereq_dev_value(::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value) {
+  delete addfilereq_dev_value_;
+  addfilereq_dev_value_ = addfilereq_dev_value;
+  if (addfilereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddFileReq_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -16979,6 +19911,123 @@ inline void Req::set_allocated_p2pinforeq_usr_value(::Interactive::Message::P2pI
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.P2pInfoReq_USR_Value)
 }
 
+// .Interactive.Message.DeleteFileReq_USR DeleteFileReq_USR_Value = 310;
+inline bool Req::has_deletefilereq_usr_value() const {
+  return this != internal_default_instance() && deletefilereq_usr_value_ != NULL;
+}
+inline void Req::clear_deletefilereq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && deletefilereq_usr_value_ != NULL) delete deletefilereq_usr_value_;
+  deletefilereq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteFileReq_USR& Req::deletefilereq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.DeleteFileReq_USR_Value)
+  return deletefilereq_usr_value_ != NULL ? *deletefilereq_usr_value_
+                         : *::Interactive::Message::DeleteFileReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteFileReq_USR* Req::mutable_deletefilereq_usr_value() {
+  
+  if (deletefilereq_usr_value_ == NULL) {
+    deletefilereq_usr_value_ = new ::Interactive::Message::DeleteFileReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.DeleteFileReq_USR_Value)
+  return deletefilereq_usr_value_;
+}
+inline ::Interactive::Message::DeleteFileReq_USR* Req::release_deletefilereq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.DeleteFileReq_USR_Value)
+  
+  ::Interactive::Message::DeleteFileReq_USR* temp = deletefilereq_usr_value_;
+  deletefilereq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_deletefilereq_usr_value(::Interactive::Message::DeleteFileReq_USR* deletefilereq_usr_value) {
+  delete deletefilereq_usr_value_;
+  deletefilereq_usr_value_ = deletefilereq_usr_value;
+  if (deletefilereq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeleteFileReq_USR_Value)
+}
+
+// .Interactive.Message.DownloadFileReq_USR DownloadFileReq_USR_Value = 320;
+inline bool Req::has_downloadfilereq_usr_value() const {
+  return this != internal_default_instance() && downloadfilereq_usr_value_ != NULL;
+}
+inline void Req::clear_downloadfilereq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && downloadfilereq_usr_value_ != NULL) delete downloadfilereq_usr_value_;
+  downloadfilereq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DownloadFileReq_USR& Req::downloadfilereq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.DownloadFileReq_USR_Value)
+  return downloadfilereq_usr_value_ != NULL ? *downloadfilereq_usr_value_
+                         : *::Interactive::Message::DownloadFileReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DownloadFileReq_USR* Req::mutable_downloadfilereq_usr_value() {
+  
+  if (downloadfilereq_usr_value_ == NULL) {
+    downloadfilereq_usr_value_ = new ::Interactive::Message::DownloadFileReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.DownloadFileReq_USR_Value)
+  return downloadfilereq_usr_value_;
+}
+inline ::Interactive::Message::DownloadFileReq_USR* Req::release_downloadfilereq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.DownloadFileReq_USR_Value)
+  
+  ::Interactive::Message::DownloadFileReq_USR* temp = downloadfilereq_usr_value_;
+  downloadfilereq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_downloadfilereq_usr_value(::Interactive::Message::DownloadFileReq_USR* downloadfilereq_usr_value) {
+  delete downloadfilereq_usr_value_;
+  downloadfilereq_usr_value_ = downloadfilereq_usr_value;
+  if (downloadfilereq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DownloadFileReq_USR_Value)
+}
+
+// .Interactive.Message.QueryFileReq_USR QueryFileReq_USR_Value = 330;
+inline bool Req::has_queryfilereq_usr_value() const {
+  return this != internal_default_instance() && queryfilereq_usr_value_ != NULL;
+}
+inline void Req::clear_queryfilereq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryfilereq_usr_value_ != NULL) delete queryfilereq_usr_value_;
+  queryfilereq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryFileReq_USR& Req::queryfilereq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryFileReq_USR_Value)
+  return queryfilereq_usr_value_ != NULL ? *queryfilereq_usr_value_
+                         : *::Interactive::Message::QueryFileReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryFileReq_USR* Req::mutable_queryfilereq_usr_value() {
+  
+  if (queryfilereq_usr_value_ == NULL) {
+    queryfilereq_usr_value_ = new ::Interactive::Message::QueryFileReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryFileReq_USR_Value)
+  return queryfilereq_usr_value_;
+}
+inline ::Interactive::Message::QueryFileReq_USR* Req::release_queryfilereq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryFileReq_USR_Value)
+  
+  ::Interactive::Message::QueryFileReq_USR* temp = queryfilereq_usr_value_;
+  queryfilereq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryfilereq_usr_value(::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value) {
+  delete queryfilereq_usr_value_;
+  queryfilereq_usr_value_ = queryfilereq_usr_value;
+  if (queryfilereq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFileReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -17476,6 +20525,45 @@ inline void Rsp::set_allocated_p2pinforsp_dev_value(::Interactive::Message::P2pI
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.P2pInfoRsp_DEV_Value)
+}
+
+// .Interactive.Message.AddFileRsp_DEV AddFileRsp_DEV_Value = 80;
+inline bool Rsp::has_addfilersp_dev_value() const {
+  return this != internal_default_instance() && addfilersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_addfilersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && addfilersp_dev_value_ != NULL) delete addfilersp_dev_value_;
+  addfilersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::AddFileRsp_DEV& Rsp::addfilersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
+  return addfilersp_dev_value_ != NULL ? *addfilersp_dev_value_
+                         : *::Interactive::Message::AddFileRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::AddFileRsp_DEV* Rsp::mutable_addfilersp_dev_value() {
+  
+  if (addfilersp_dev_value_ == NULL) {
+    addfilersp_dev_value_ = new ::Interactive::Message::AddFileRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
+  return addfilersp_dev_value_;
+}
+inline ::Interactive::Message::AddFileRsp_DEV* Rsp::release_addfilersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
+  
+  ::Interactive::Message::AddFileRsp_DEV* temp = addfilersp_dev_value_;
+  addfilersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_addfilersp_dev_value(::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value) {
+  delete addfilersp_dev_value_;
+  addfilersp_dev_value_ = addfilersp_dev_value;
+  if (addfilersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -18375,6 +21463,123 @@ inline void Rsp::set_allocated_p2pinforsp_usr_value(::Interactive::Message::P2pI
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.P2pInfoRsp_USR_Value)
 }
 
+// .Interactive.Message.DeleteFileRsp_USR DeleteFileRsp_USR_Value = 310;
+inline bool Rsp::has_deletefilersp_usr_value() const {
+  return this != internal_default_instance() && deletefilersp_usr_value_ != NULL;
+}
+inline void Rsp::clear_deletefilersp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && deletefilersp_usr_value_ != NULL) delete deletefilersp_usr_value_;
+  deletefilersp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteFileRsp_USR& Rsp::deletefilersp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.DeleteFileRsp_USR_Value)
+  return deletefilersp_usr_value_ != NULL ? *deletefilersp_usr_value_
+                         : *::Interactive::Message::DeleteFileRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteFileRsp_USR* Rsp::mutable_deletefilersp_usr_value() {
+  
+  if (deletefilersp_usr_value_ == NULL) {
+    deletefilersp_usr_value_ = new ::Interactive::Message::DeleteFileRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.DeleteFileRsp_USR_Value)
+  return deletefilersp_usr_value_;
+}
+inline ::Interactive::Message::DeleteFileRsp_USR* Rsp::release_deletefilersp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.DeleteFileRsp_USR_Value)
+  
+  ::Interactive::Message::DeleteFileRsp_USR* temp = deletefilersp_usr_value_;
+  deletefilersp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_deletefilersp_usr_value(::Interactive::Message::DeleteFileRsp_USR* deletefilersp_usr_value) {
+  delete deletefilersp_usr_value_;
+  deletefilersp_usr_value_ = deletefilersp_usr_value;
+  if (deletefilersp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeleteFileRsp_USR_Value)
+}
+
+// .Interactive.Message.DownloadFileRsp_USR DownloadFileRsp_USR_Value = 320;
+inline bool Rsp::has_downloadfilersp_usr_value() const {
+  return this != internal_default_instance() && downloadfilersp_usr_value_ != NULL;
+}
+inline void Rsp::clear_downloadfilersp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && downloadfilersp_usr_value_ != NULL) delete downloadfilersp_usr_value_;
+  downloadfilersp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DownloadFileRsp_USR& Rsp::downloadfilersp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.DownloadFileRsp_USR_Value)
+  return downloadfilersp_usr_value_ != NULL ? *downloadfilersp_usr_value_
+                         : *::Interactive::Message::DownloadFileRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DownloadFileRsp_USR* Rsp::mutable_downloadfilersp_usr_value() {
+  
+  if (downloadfilersp_usr_value_ == NULL) {
+    downloadfilersp_usr_value_ = new ::Interactive::Message::DownloadFileRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.DownloadFileRsp_USR_Value)
+  return downloadfilersp_usr_value_;
+}
+inline ::Interactive::Message::DownloadFileRsp_USR* Rsp::release_downloadfilersp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.DownloadFileRsp_USR_Value)
+  
+  ::Interactive::Message::DownloadFileRsp_USR* temp = downloadfilersp_usr_value_;
+  downloadfilersp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_downloadfilersp_usr_value(::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value) {
+  delete downloadfilersp_usr_value_;
+  downloadfilersp_usr_value_ = downloadfilersp_usr_value;
+  if (downloadfilersp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DownloadFileRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryFileRsp_USR QueryFileRsp_USR_Value = 330;
+inline bool Rsp::has_queryfilersp_usr_value() const {
+  return this != internal_default_instance() && queryfilersp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryfilersp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryfilersp_usr_value_ != NULL) delete queryfilersp_usr_value_;
+  queryfilersp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryFileRsp_USR& Rsp::queryfilersp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryFileRsp_USR_Value)
+  return queryfilersp_usr_value_ != NULL ? *queryfilersp_usr_value_
+                         : *::Interactive::Message::QueryFileRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryFileRsp_USR* Rsp::mutable_queryfilersp_usr_value() {
+  
+  if (queryfilersp_usr_value_ == NULL) {
+    queryfilersp_usr_value_ = new ::Interactive::Message::QueryFileRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryFileRsp_USR_Value)
+  return queryfilersp_usr_value_;
+}
+inline ::Interactive::Message::QueryFileRsp_USR* Rsp::release_queryfilersp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryFileRsp_USR_Value)
+  
+  ::Interactive::Message::QueryFileRsp_USR* temp = queryfilersp_usr_value_;
+  queryfilersp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryfilersp_usr_value(::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value) {
+  delete queryfilersp_usr_value_;
+  queryfilersp_usr_value_ = queryfilersp_usr_value;
+  if (queryfilersp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFileRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -18616,6 +21821,26 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

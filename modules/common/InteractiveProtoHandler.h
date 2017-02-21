@@ -45,6 +45,9 @@ public:
         P2pInfoReq_DEV_T = 10220,          //P2P服务器信息
         P2pInfoRsp_DEV_T = 10230,
 
+        AddFileReq_DEV_T = 10300,               //设备添加文件
+        AddFileRsp_DEV_T = 10310,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -94,6 +97,13 @@ public:
         QueryFriendsReq_USR_T = 20320,          //用户查询好友
         QueryFriendsRsp_USR_T = 20330,
 
+        DeleteFileReq_USR_T = 20500,            //用户删除文件
+        DeleteFileRsp_USR_T = 20510,        
+        DownloadFileReq_USR_T = 20520,          //用户下载文件
+        DownloadFileRsp_USR_T = 20530,      
+        QueryFileReq_USR_T = 20540,             //用户查询文件
+        QueryFileRsp_USR_T = 20550,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -138,6 +148,28 @@ public:
         std::string m_strEndDate;
         std::string m_strValue;
     };
+
+    struct File                                    //文件信息
+    {
+        std::string m_strFileID;
+        std::string m_strUserID;
+        std::string m_strDevID;
+        std::string m_strRemoteFileID;           //服务器文件ID，与fileid一一对应
+        std::string m_strFileUrl;                //文件URL地址
+        std::string m_strFileName;
+        unsigned int m_uiFileType;               //文件类型，0-照片，1-视频，2-设备固件，3-证书
+        unsigned int m_uiFileSize;               //文件大小，单位Byte
+        std::string m_strFileCreatedate;
+        std::string m_strCreatedate;
+        unsigned int m_uiStatus;
+        std::string m_strExtend;
+    };
+
+    struct FileUrl
+    {
+        std::string m_strFileID;
+        std::string m_strDownloadUrl;
+    };
     
     struct Req
     {
@@ -166,6 +198,7 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+  
     struct MsgPreHandlerReq_USR : Req
     {
 
@@ -596,6 +629,91 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct DeleteFileReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::list<std::string> m_strFileIDList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteFileRsp_USR : Rsp
+    {
+        std::string m_strValue;
+        std::list<std::string> m_strFileIDFailedList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DownloadFileReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::list<std::string> m_strFileIDList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DownloadFileRsp_USR : Rsp
+    {
+        std::string m_strValue;
+        std::list<FileUrl> m_fileUrlList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryFileReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::string m_strDevID;
+        unsigned int m_uiBeginIndex;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryFileRsp_USR : Rsp
+    {
+        std::string m_strValue;
+        std::list<File> m_fileList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
+    struct AddFileReq_DEV : Req
+    {
+        std::string m_strDevID;
+        std::list<File> m_fileList;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct AddFileRsp_DEV : Rsp
+    {
+        std::string m_strValue;
+        std::list<std::string> m_strFileIDFailedList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
     struct GetOnlineDevInfoReq_INNER : Req
     {
 
@@ -861,6 +979,27 @@ private:
     bool QueryFriendsReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryFriendsRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryFriendsRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DeleteFileReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool DeleteFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DeleteFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool DeleteFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DownloadFileReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool DownloadFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DownloadFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool DownloadFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryFileReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool AddFileReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool AddFileReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool AddFileRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool AddFileRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
     bool GetOnlineDevInfoReq_INNER_Serializer(const Req &req, std::string &strOutput);
     bool GetOnlineDevInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);

@@ -138,7 +138,105 @@ void SerializeRelationList(const std::list<InteractiveProtoHandler::Relation> &r
      }
  }
 
+void UnSerializeFileList(std::list<InteractiveProtoHandler::File> &fileInfoList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File > &srcFileInfoList)
+{
+    fileInfoList.clear();
 
+    unsigned int iCount = srcFileInfoList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        auto srcFileInfo = srcFileInfoList.Get(i);
+        InteractiveProtoHandler::File fileInfo;
+        fileInfo.m_strFileID = srcFileInfo.strfileid();
+        fileInfo.m_strUserID = srcFileInfo.struserid();
+        fileInfo.m_strDevID = srcFileInfo.strdevid();
+        fileInfo.m_strRemoteFileID = srcFileInfo.strremotefileid();
+        fileInfo.m_strFileUrl = srcFileInfo.strfileurl();
+        fileInfo.m_strFileName = srcFileInfo.strfilename();
+        fileInfo.m_uiFileType = srcFileInfo.uifiletype();
+        fileInfo.m_uiFileSize = srcFileInfo.uifilesize();
+        fileInfo.m_strFileCreatedate = srcFileInfo.strfilecreatedate();
+        fileInfo.m_strCreatedate = srcFileInfo.strcreatedate();
+        fileInfo.m_uiStatus = srcFileInfo.uistatus();
+        fileInfo.m_strExtend = srcFileInfo.strextend();
+
+        fileInfoList.push_back(std::move(fileInfo));
+    }
+}
+
+void SerializeFileList(const std::list<InteractiveProtoHandler::File> &fileInfoList,
+    ::google::protobuf::RepeatedPtrField< ::Interactive::Message::File >* pDstFileInfoList)
+{
+    unsigned int iCount = fileInfoList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstFileInfoList->Add();
+    }
+
+    auto itBegin = fileInfoList.begin();
+    auto itEnd = fileInfoList.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstFileInfo = pDstFileInfoList->Mutable(i);
+        pDstFileInfo->set_strfileid(itBegin->m_strFileID);
+        pDstFileInfo->set_struserid(itBegin->m_strUserID);
+        pDstFileInfo->set_strdevid(itBegin->m_strDevID);
+        pDstFileInfo->set_strremotefileid(itBegin->m_strRemoteFileID);
+        pDstFileInfo->set_strfileurl(itBegin->m_strFileUrl);
+        pDstFileInfo->set_strfilename(itBegin->m_strFileName);
+        pDstFileInfo->set_uifiletype(itBegin->m_uiFileType);
+        pDstFileInfo->set_uifilesize(itBegin->m_uiFileSize);
+        pDstFileInfo->set_strfilecreatedate(itBegin->m_strFileCreatedate);
+        pDstFileInfo->set_strcreatedate(itBegin->m_strCreatedate);
+        pDstFileInfo->set_uistatus(itBegin->m_uiStatus);
+        pDstFileInfo->set_strextend(itBegin->m_strExtend);
+
+        ++i;
+        ++itBegin;
+    }
+}
+
+void UnSerializeFileUrlList(std::list<InteractiveProtoHandler::FileUrl> &fileUrlList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl > &srcFileUrlList)
+{
+    fileUrlList.clear();
+
+    unsigned int iCount = srcFileUrlList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        auto srcFileUrl = srcFileUrlList.Get(i);
+        InteractiveProtoHandler::FileUrl fileUrl;
+        fileUrl.m_strFileID = srcFileUrl.strfileid();
+        fileUrl.m_strDownloadUrl = srcFileUrl.strdownloadurl();
+
+        fileUrlList.push_back(std::move(fileUrl));
+    }
+}
+
+void SerializeFileUrlList(const std::list<InteractiveProtoHandler::FileUrl> &fileUrlList,
+    ::google::protobuf::RepeatedPtrField< ::Interactive::Message::FileUrl >* pDstFileUrlList)
+{
+    unsigned int iCount = fileUrlList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstFileUrlList->Add();
+    }
+
+    auto itBegin = fileUrlList.begin();
+    auto itEnd = fileUrlList.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstFileUrl = pDstFileUrlList->Mutable(i);
+        pDstFileUrl->set_strfileid(itBegin->m_strFileID);
+        pDstFileUrl->set_strdownloadurl(itBegin->m_strDownloadUrl);
+
+        ++i;
+        ++itBegin;
+    }
+}
 
 
 InteractiveProtoHandler::InteractiveProtoHandler()
@@ -436,6 +534,36 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::BroadcastOnlineDevInfo_INNER_T, handler));
 
     ///////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteFileReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteFileReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteFileReq_USR_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteFileRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteFileRsp_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteFileRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DownloadFileReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DownloadFileReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DownloadFileReq_USR_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DownloadFileRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DownloadFileRsp_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DownloadFileRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFileReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFileReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFileReq_USR_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryFileRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFileRsp_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFileRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
 
     handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer, this, _1, _2);
@@ -986,6 +1114,88 @@ bool InteractiveProtoHandler::QueryFriendsRsp_USR_UnSerializer(const Interactive
 {
     return UnSerializerT<QueryFriendsRsp_USR, Req>(InteractiveMsg, rsp);
 }
+
+bool InteractiveProtoHandler::DeleteFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteFileReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DeleteFileReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DeleteFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteFileRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DeleteFileRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DownloadFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DownloadFileReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DownloadFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DownloadFileReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DownloadFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DownloadFileRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DownloadFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DownloadFileRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryFileReq_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryFileReq_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryFileReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryFileReq_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryFileRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryFileRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryFileRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryFileRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::AddFileReq_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineUserInfoReq_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddFileReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineUserInfoReq_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::AddFileRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetOnlineUserInfoRsp_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddFileRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetOnlineUserInfoRsp_INNER, Req>(InteractiveMsg, rsp);
+}
+
+
 
 bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
 {
@@ -2127,6 +2337,222 @@ void InteractiveProtoHandler::QueryFriendsRsp_USR::Serializer(InteractiveMessage
         ++itBegin;
     }
 }
+
+void InteractiveProtoHandler::DeleteFileReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().deletefilereq_usr_value().struserid();
+
+    m_strFileIDList.clear();
+    int iCountTmp = InteractiveMsg.reqvalue().deletefilereq_usr_value().strfileid_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFileIDList.push_back(InteractiveMsg.reqvalue().deletefilereq_usr_value().strfileid(i));
+    }
+}
+
+void InteractiveProtoHandler::DeleteFileReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteFileReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletefilereq_usr_value()->set_struserid(m_strUserID);
+
+    for (unsigned int i = 0; i < m_strFileIDList.size(); ++i)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_deletefilereq_usr_value()->add_strfileid();
+    }
+    auto itBegin = m_strFileIDList.begin();
+    auto itEnd = m_strFileIDList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_deletefilereq_usr_value()->set_strfileid(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+void InteractiveProtoHandler::DeleteFileRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().deletefilersp_usr_value().strvalue();
+
+    m_strFileIDFailedList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().deletefilersp_usr_value().strfileidfailed_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFileIDFailedList.push_back(InteractiveMsg.rspvalue().deletefilersp_usr_value().strfileidfailed(i));
+    }
+}
+
+void InteractiveProtoHandler::DeleteFileRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteFileRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_deletefilersp_usr_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_strFileIDFailedList.size(); ++i)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_deletefilersp_usr_value()->add_strfileidfailed();
+    }
+    auto itBegin = m_strFileIDFailedList.begin();
+    auto itEnd = m_strFileIDFailedList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_deletefilersp_usr_value()->set_strfileidfailed(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+void InteractiveProtoHandler::DownloadFileReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().downloadfilereq_usr_value().struserid();
+
+    m_strFileIDList.clear();
+    int iCountTmp = InteractiveMsg.reqvalue().downloadfilereq_usr_value().strfileid_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFileIDList.push_back(InteractiveMsg.reqvalue().downloadfilereq_usr_value().strfileid(i));
+    }
+}
+
+void InteractiveProtoHandler::DownloadFileReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DownloadFileReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_downloadfilereq_usr_value()->set_struserid(m_strUserID);
+
+    for (unsigned int i = 0; i < m_strFileIDList.size(); ++i)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_downloadfilereq_usr_value()->add_strfileid();
+    }
+    auto itBegin = m_strFileIDList.begin();
+    auto itEnd = m_strFileIDList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_downloadfilereq_usr_value()->set_strfileid(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
+void InteractiveProtoHandler::DownloadFileRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().downloadfilersp_usr_value().strvalue();
+
+    UnSerializeFileUrlList(m_fileUrlList, InteractiveMsg.rspvalue().downloadfilersp_usr_value().fileurl());
+}
+
+void InteractiveProtoHandler::DownloadFileRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DownloadFileRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_downloadfilersp_usr_value()->set_strvalue(m_strValue);
+
+    auto uurl = InteractiveMsg.mutable_rspvalue()->mutable_downloadfilersp_usr_value()->mutable_fileurl();
+    SerializeFileUrlList(m_fileUrlList, uurl);
+}
+
+void InteractiveProtoHandler::QueryFileReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryfilereq_usr_value().struserid();
+    m_strDevID = InteractiveMsg.reqvalue().queryfilereq_usr_value().strdevid();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().queryfilereq_usr_value().uibeginindex();
+    m_strValue = InteractiveMsg.reqvalue().queryfilereq_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryFileReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFileReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryFileRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().queryfilersp_usr_value().strvalue();
+
+    UnSerializeFileList(m_fileList, InteractiveMsg.rspvalue().queryfilersp_usr_value().fileinfo());
+}
+
+void InteractiveProtoHandler::QueryFileRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryFileRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryfilersp_usr_value()->set_strvalue(m_strValue);
+
+    auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryfilersp_usr_value()->mutable_fileinfo();
+    SerializeFileList(m_fileList, uinfo);
+}
+
+void InteractiveProtoHandler::AddFileReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().addfilereq_dev_value().strdevid();
+    m_strValue = InteractiveMsg.reqvalue().addfilereq_dev_value().strvalue();
+
+    UnSerializeFileList(m_fileList, InteractiveMsg.reqvalue().addfilereq_dev_value().fileinfo());
+}
+
+void InteractiveProtoHandler::AddFileReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddFileReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_addfilereq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_addfilereq_dev_value()->set_strvalue(m_strValue);
+
+    auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_addfilereq_dev_value()->mutable_fileinfo();
+    SerializeFileList(m_fileList, uinfo);
+}
+
+void InteractiveProtoHandler::AddFileRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().addfilersp_dev_value().strvalue();
+
+    m_strFileIDFailedList.clear();
+    int iCountTmp = InteractiveMsg.rspvalue().addfilersp_dev_value().strfileidfailed_size();
+    for (int i = 0; i < iCountTmp; ++i)
+    {
+        m_strFileIDFailedList.push_back(InteractiveMsg.rspvalue().addfilersp_dev_value().strfileidfailed(i));
+    }
+}
+
+void InteractiveProtoHandler::AddFileRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddFileRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_addfilersp_dev_value()->set_strvalue(m_strValue);
+
+    for (unsigned int i = 0; i < m_strFileIDFailedList.size(); ++i)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_addfilersp_dev_value()->add_strfileidfailed();
+    }
+    auto itBegin = m_strFileIDFailedList.begin();
+    auto itEnd = m_strFileIDFailedList.end();
+    int iUser = 0;
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_addfilersp_dev_value()->set_strfileidfailed(iUser, *itBegin);
+
+        ++iUser;
+        ++itBegin;
+    }
+}
+
 
 void InteractiveProtoHandler::GetOnlineDevInfoReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
