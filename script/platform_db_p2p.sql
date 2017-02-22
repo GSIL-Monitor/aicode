@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS PlatformDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+﻿CREATE DATABASE IF NOT EXISTS PlatformDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
 use PlatformDB;
 
@@ -87,43 +87,92 @@ CREATE TABLE `t_user_operation_log` (
   INDEX index_ref5(createdate)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `t_file_info`;
-CREATE TABLE `t_file_info` (
-  `id` varchar(36) NOT NULL,
-  `fileid` varchar(100) NOT NULL,
-  `userid` varchar(100),
-  `deviceid` varchar(100),
-  `remotefileid` varchar(100) NOT NULL, #服务器文件ID，与fileid一一对应
-  `downloadurl` varchar(1024) NOT NULL, #文件URL地址
-  `filename` varchar(256) NOT NULL,
-  `suffixname` varchar(32), #文件后缀名称
-  `filesize` bigint(24) NOT NULL, #文件大小，单位Byte
-  `filecreatedate` datetime NOT NULL, #文件创建日期
-  `createdate` datetime NOT NULL, #本条记录生成日期
-  `status` int(11) NOT NULL DEFAULT '0', #0正常，1回收站，2永久删除
-  `extend` varchar(4000) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX index_ref1(fileid),
-  INDEX index_ref2(fileid, userid),
-  INDEX index_ref3(fileid, deviceid),
-  INDEX index_ref4(status),
-  INDEX index_ref5(createdate)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE `t_ip_country` (
+	`id` VARCHAR(36) NOT NULL,
+	`ip` VARCHAR(46) NOT NULL,
+	`countrycode` VARCHAR(8) NOT NULL,
+	`createtime` DATETIME NOT NULL,
+	`updatetime` DATETIME NOT NULL,
+	`status` INT(11) NOT NULL DEFAULT '0',
+	`visitecount` INT(11) NOT NULL DEFAULT '0',
+	`extend` VARCHAR(4000) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `ip` (`ip`),
+	INDEX `createtime` (`createtime`),
+	INDEX `updatetime` (`updatetime`),
+	INDEX `status` (`status`),
+	INDEX `visitecount` (`visitecount`)
+)
+COMMENT='ip与地区对应表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
 
-DROP TABLE IF EXISTS `t_configuration_info`;
-CREATE TABLE `t_configuration_info` (
-  `id` varchar(36) NOT NULL,
-  `category` int(11) NOT NULL, #配置类别，0-用户，1-门铃，2-IPC，3-camera
-  `subcategory` int(11) NOT NULL, #配置类别子项目，1-设备固件，2-证书
-  `content` varchar(1000), #配置内容
-  `description` varchar(2000), #配置内容描述
-  `fileid` varchar(100),
-  `createdate` datetime NOT NULL,
-  `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
-  `extend` varchar(4000) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX index_ref1(category),
-  INDEX index_ref2(category, subcategory)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE `t_timezone_info` (
+	`id` VARCHAR(36) NOT NULL,
+	`countrycode` VARCHAR(8) NOT NULL COMMENT '国家代码',
+	`country_en` VARCHAR(50) NOT NULL COMMENT '国家英文名称',
+	`country_cn` VARCHAR(50) NOT NULL COMMENT '国家中文名称',
+	`countryphone` VARCHAR(8) NOT NULL COMMENT '国家电话号码前缀',
+	`countrySC` INT(11) NOT NULL,
+	`countrySQ` INT(11) NOT NULL,
+	`createtime` DATETIME NOT NULL,
+	`updatetime` DATETIME NOT NULL,
+	`status` INT(11) NOT NULL DEFAULT '0',
+	`extend` VARCHAR(4000) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `countrycode` (`countrycode`),
+	INDEX `country_en` (`country_en`),
+	INDEX `createtime` (`createtime`),
+	INDEX `updatetime` (`updatetime`),
+	INDEX `status` (`status`)
+)
+COMMENT='时区信息表'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `t_p2pserver_info` (
+	`id` VARCHAR(36) NOT NULL,
+	`serverip` VARCHAR(46) NOT NULL COMMENT '服务器ip',
+	`port` INT(11) NOT NULL COMMENT '服务器端口',
+	`domain` VARCHAR(50) NOT NULL COMMENT '服务器域名',
+	`countrycode` VARCHAR(50) NOT NULL COMMENT '国家代码',
+	`cluster` VARCHAR(50) NOT NULL COMMENT '所属服务器集群编号（用于分配p2pid）',
+	`flag` VARCHAR(50) NOT NULL COMMENT 'P2P技术提供者标志',
+	`connectparams` VARCHAR(2000) NOT NULL COMMENT 'P2P连接参数，以|分隔',
+	`createtime` DATETIME NOT NULL,
+	`updatetime` DATETIME NOT NULL,
+	`status` INT(11) NOT NULL DEFAULT '0',
+	`extend` VARCHAR(4000) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `serverip` (`serverip`),
+	INDEX `flag` (`flag`)
+)
+COMMENT='p2p服务器信息'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `t_p2pid_sy` (
+	`id` VARCHAR(36) NOT NULL,
+	`p2pid` VARCHAR(50) NOT NULL,
+	`deviceid` VARCHAR(100) NULL DEFAULT NULL,
+	`cluster` VARCHAR(100) NOT NULL COMMENT '所属服务器集群',
+	`createtime` DATETIME NOT NULL,
+	`updatetime` DATETIME NOT NULL,
+	`status` INT(11) NOT NULL DEFAULT '0',
+	`extend` VARCHAR(4000) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `p2pid` (`p2pid`),
+	INDEX `createtime` (`createtime`),
+	INDEX `updatetime` (`updatetime`),
+	INDEX `status` (`status`)
+)
+COMMENT='尚云P2Pid库'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
 
 
