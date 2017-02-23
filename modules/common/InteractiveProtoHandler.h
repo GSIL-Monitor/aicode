@@ -104,8 +104,8 @@ public:
         QueryFileReq_USR_T = 20540,             //用户查询文件
         QueryFileRsp_USR_T = 20550,
 
-        P2pInfoReq_USR_T = 20800,               //用户P2P服务器信息
-        P2pInfoRsp_USR_T = 20810,
+        P2pInfoReq_USR_T = 20360,               //用户P2P服务器信息
+        P2pInfoRsp_USR_T = 20370,
 
         ///////////////////////////////////////////////////////
 

@@ -248,7 +248,8 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_FRIEND_ACTION, boost::bind(&HttpMsgHandler::AddFriendsHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_FRIEND_ACTION, boost::bind(&HttpMsgHandler::DeleteFriendsHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_FRIEND_ACTION, boost::bind(&HttpMsgHandler::QueryFriendHandler, &filehdr, _1, _2));
-
+    fcgimgr.SetMsgHandler(HttpMsgHandler::P2P_INFO_ACTION, boost::bind(&HttpMsgHandler::P2pInfoHandler, &filehdr, _1, _2));
+    
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_LOGIN_ACTION, boost::bind(&HttpMsgHandler::DeviceLoginHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_P2P_INFO_ACTION, boost::bind(&HttpMsgHandler::DeviceP2pInfoHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_SHAKEHAND_ACTION, boost::bind(&HttpMsgHandler::DeviceShakehandHandler, &filehdr, _1, _2));

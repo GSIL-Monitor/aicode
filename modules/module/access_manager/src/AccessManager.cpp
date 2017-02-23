@@ -2385,7 +2385,7 @@ bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, 
 
     if (ResultList.empty())
     {
-        LOG_ERROR_RLD("Valid user info not found, sql is " << sql);
+        LOG_INFO_RLD("Valid user info not found, sql is " << sql);
         return false;
     }
 

@@ -36,6 +36,8 @@ public:
     static const std::string ADD_FRIEND_ACTION;
     static const std::string DELETE_FRIEND_ACTION;
     static const std::string QUERY_FRIEND_ACTION;
+    static const std::string P2P_INFO_ACTION;
+
 
     static const std::string DEVICE_LOGIN_ACTION;
     static const std::string DEVICE_P2P_INFO_ACTION;
@@ -98,6 +100,8 @@ public:
     bool DeleteFriendsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     bool DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
@@ -176,6 +180,8 @@ private:
 
     bool QueryFriends(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<std::string> &FriendList);
 
+    bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
+        std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);
 
     bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, std::string &strSid);
 
