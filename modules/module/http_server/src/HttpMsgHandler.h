@@ -193,14 +193,15 @@ private:
     bool DeviceLogout(const std::string &strSid, const std::string &strDevID);
 
     template<typename T>
-    bool QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &FileList);
+    bool QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, 
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBussinessType, std::list<T> &FileList);
 
     bool DownloadUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID, std::string &strFileUrl);
 
     bool DeleteUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID);
 
     bool AddDeviceFile(const std::string &strDevID, const std::string &strRemoteFileID, const std::string &strDownloadUrl, const std::string &strFileName,
-        const std::string &strSuffixName, const unsigned long int uiFileSize, const std::string &strFileCreatedate, const std::string &strExtend);
+        const std::string &strSuffixName, const unsigned long int uiFileSize, const std::string &strFileCreatedate, const std::string &strExtend, const unsigned int uiBussinessType);
 
 private:
     ParamInfo m_ParamInfo;

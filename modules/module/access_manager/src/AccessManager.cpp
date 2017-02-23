@@ -675,40 +675,62 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    std::string strUuid;
-    if (!GetMySqlUUID(strUuid))
+    std::string strUserID;
+    if (!QueryOwnerUserIDByDeviceID(req.m_devInfo.m_strDevID, strUserID))
     {
-        LOG_ERROR_RLD("Add device get mysql uuid failed, src id is " << strSrcID);
+        LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
     }
-
-    InteractiveProtoHandler::Device DevInfo;
-    DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
-    DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
-    DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
-    DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
-    DevInfo.m_strCreatedate = strCurrentTime;
-    DevInfo.m_uiStatus = NORMAL_STATUS;
-    DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
-    DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
-
-    m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceToDB, this, strUuid, DevInfo));
-
-    RelationOfUsrAndDev relation;
-    relation.m_iRelation = RELATION_OF_OWNER;
-    relation.m_iStatus = NORMAL_STATUS;
-    relation.m_strBeginDate = strCurrentTime;
-    relation.m_strEndDate = MAX_DATE;
-    relation.m_strCreateDate = strCurrentTime;
-    relation.m_strDevID = req.m_devInfo.m_strDevID;
-    relation.m_strExtend = req.m_devInfo.m_strExtend;
-    relation.m_strUsrID = req.m_strUserID;
-
-    m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
-
-    blResult = true;
     
-    return blResult;
+    if (strUserID.empty())
+    {
+        std::string strUuid;
+        if (!GetMySqlUUID(strUuid))
+        {
+            LOG_ERROR_RLD("Add device get mysql uuid failed, src id is " << strSrcID);
+            return false;
+        }
+
+        InteractiveProtoHandler::Device DevInfo;
+        DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
+        DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
+        DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
+        DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
+        DevInfo.m_strCreatedate = strCurrentTime;
+        DevInfo.m_uiStatus = NORMAL_STATUS;
+        DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
+        DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
+
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceToDB, this, strUuid, DevInfo));
+
+        RelationOfUsrAndDev relation;
+        relation.m_iRelation = RELATION_OF_OWNER;
+        relation.m_iStatus = NORMAL_STATUS;
+        relation.m_strBeginDate = strCurrentTime;
+        relation.m_strEndDate = MAX_DATE;
+        relation.m_strCreateDate = strCurrentTime;
+        relation.m_strDevID = req.m_devInfo.m_strDevID;
+        relation.m_strExtend = req.m_devInfo.m_strExtend;
+        relation.m_strUsrID = req.m_strUserID;
+
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
+
+        blResult = true;
+    
+        return blResult;
+    }
+    else if (strUserID == req.m_strUserID)
+    {
+        LOG_INFO_RLD("Add devcice successful, the device has been added by current user, user id is" << strUserID);
+        blResult = true;
+
+        return blResult;
+    } 
+    else
+    {
+        LOG_ERROR_RLD("Add device failed, the device has been added, owner user id is " << strUserID << " and src id is " << strSrcID);
+        return blResult;
+    }
 }
 
 bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -1462,7 +1484,7 @@ bool AccessManager::QueryFileReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
-    if (!QueryFileToDB(req.m_strUserID, req.m_strDevID, fileInfoList))
+    if (!QueryFileToDB(req.m_strUserID, req.m_strDevID, fileInfoList, req.m_uiBusinessType, req.m_strBeginDate, req.m_strEndDate))
     {
         LOG_ERROR_RLD("Query file failed and user id is " << req.m_strUserID);
         return false;
@@ -1776,7 +1798,7 @@ void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::li
     }
 
     std::string strUserID;
-    if (!QueryUserIDByDeviceIDOwner(strDevID, strUserID))
+    if (!QueryOwnerUserIDByDeviceID(strDevID, strUserID))
     {
         LOG_ERROR_RLD("Add device file to db failed and device id " << strDevID);
         return;
@@ -1799,6 +1821,7 @@ void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::li
         fileInfoTmp.m_strFileName = fileInfo.m_strFileName;
         fileInfoTmp.m_strSuffixName = fileInfo.m_strSuffixName;
         fileInfoTmp.m_ulFileSize = fileInfo.m_ulFileSize;
+        fileInfoTmp.m_uiBusinessType = fileInfo.m_uiBusinessType;
         fileInfoTmp.m_strFileCreatedate = fileInfo.m_strFileCreatedate;
         fileInfoTmp.m_strCreatedate = strCurrentTime;
         fileInfoTmp.m_uiStatus = NORMAL_STATUS;
@@ -1934,13 +1957,14 @@ bool AccessManager::DownloadFileToDB(const std::string &strUserID, const std::li
 }
 
 bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
+    unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
 
-    const char* sqlfmt = "select fileid, userid, deviceid, downloadurl, filename, suffixname, filesize, filecreatedate"
+    const char* sqlfmt = "select fileid, userid, deviceid, downloadurl, filename, suffixname, filesize, businesstype, filecreatedate"
         " from t_file_info where userid = '%s' and status = 0";
     snprintf(sql, size, sqlfmt, strUserID.c_str());
 
@@ -1948,6 +1972,24 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, " and deviceid = '%s'", strDevID.c_str());
+    }
+
+    if (0xFFFFFFFF != uiBusinessType)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and businesstype = %d", uiBusinessType);
+    }
+
+    if (!strBeginDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and unix_timestamp(filecreatedate) >= unix_timestamp('%s')", strBeginDate.c_str());
+    }
+
+    if (!strEndDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and unix_timestamp(filecreatedate) <= unix_timestamp('%s')", strEndDate.c_str());
     }
 
     len = strlen(sql);
@@ -1999,17 +2041,23 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
     return true;
 }
 
-bool AccessManager::QueryUserIDByDeviceIDOwner(const std::string &strDevID, std::string &strUserID)
+bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select userid from t_user_device_relation where deviceid = '%s' and relation = %d and status = 0";
+    const char* sqlfmt = "select rel.userid from"
+        " t_user_info usr, t_device_info dev, t_user_device_relation rel"
+        " where usr.userid = rel.userid and usr.status = 0 and"
+        " dev.deviceid = '%s' and dev.id = rel.devicekeyid and dev.status = 0 and"
+        " rel.relation = %d and rel.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), RELATION_OF_OWNER);
     std::string strSql(sql);
+
+    strUserID.clear();
 
     auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
         strUserID = strColumn;
-        LOG_INFO_RLD("The device's owner from db is " << strUserID);
+        LOG_INFO_RLD("Query user id by device id from db is " << strUserID);
     };
 
     if (!m_pMysql->QueryExec(strSql, FuncTmp))
@@ -2030,12 +2078,12 @@ bool AccessManager::InsertFileToDB(const InteractiveProtoHandler::File &FileInfo
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_file_info ("
-        "id, fileid, userid, deviceid, remotefileid, downloadurl, filename, suffixname, filesize, filecreatedate, createdate, status, extend)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %ld, '%s', '%s', %d, '%s')";
+        "id, fileid, userid, deviceid, remotefileid, downloadurl, filename, suffixname, filesize, businesstype, filecreatedate, createdate, status, extend)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %ld, %d, '%s', '%s', %d, '%s')";
 
     snprintf(sql, sizeof(sql), sqlfmt, FileInfo.m_strFileID.c_str(), FileInfo.m_strUserID.c_str(), FileInfo.m_strDevID.c_str(), FileInfo.m_strRemoteFileID.c_str(),
-        FileInfo.m_strDownloadUrl.c_str(), FileInfo.m_strFileName.c_str(), FileInfo.m_strSuffixName.c_str(), FileInfo.m_ulFileSize, FileInfo.m_strFileCreatedate.c_str(),
-        FileInfo.m_strCreatedate.c_str(), FileInfo.m_uiStatus, FileInfo.m_strExtend.c_str());
+        FileInfo.m_strDownloadUrl.c_str(), FileInfo.m_strFileName.c_str(), FileInfo.m_strSuffixName.c_str(), FileInfo.m_ulFileSize, FileInfo.m_uiBusinessType,
+        FileInfo.m_strFileCreatedate.c_str(), FileInfo.m_strCreatedate.c_str(), FileInfo.m_uiStatus, FileInfo.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -2045,7 +2093,6 @@ bool AccessManager::InsertFileToDB(const InteractiveProtoHandler::File &FileInfo
 
     return true;
 }
-
 
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
@@ -2542,7 +2589,7 @@ void AccessManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const b
 void AccessManager::FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
     std::list<InteractiveProtoHandler::File> *pFileInfoList)
 {
-    //select fileid, userid, deviceid, filename, suffixname, filesize, filecreatedate from t_file_info
+    //select fileid, userid, deviceid, filename, suffixname, filesize, businesstype, filecreatedate from t_file_info
     if (pFileInfoList->empty() || (pFileInfoList->size() < (1 + uiRowNum)))
     {
         InteractiveProtoHandler::File fileInfoTmp;
@@ -2575,6 +2622,8 @@ void AccessManager::FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::u
         fileInfo.m_ulFileSize = boost::lexical_cast<unsigned long int>(strColumn);
         break;
     case 7:
+        fileInfo.m_uiBusinessType = boost::lexical_cast<unsigned int>(strColumn);
+    case 8:
         fileInfo.m_strFileCreatedate = strColumn;
         break;
     default:

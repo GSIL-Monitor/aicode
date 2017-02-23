@@ -1,0 +1,83 @@
+﻿用户注册
+curl -F username=czydebug@anni.com -F userpwd=123456 -F type=0 -F extend="debug extend" http://172.20.122.250:8090/access.cgi?action=register_user
+
+用户注销
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 http://172.20.122.250:8090/access.cgi?action=unregister_user
+
+查询用户信息
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=BEC47831D076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=query_userinfo
+
+修改用户信息
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F username=czydebug@anni.com -F userpwd=123456 -F type=2 -F extend="test test test" http://172.20.122.250:8090/access.cgi?action=modify_userinfo
+
+用户登录
+curl -F username=czydebug@anni.com -F userpwd=123456 http://172.20.122.250:8090/access.cgi?action=user_login
+
+用户登出
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 http://172.20.122.250:8090/access.cgi?action=user_logout
+
+用户握手
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 http://172.20.122.250:8090/access.cgi?action=user_shakehand
+
+用户增加设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F devid=czy_test_id_005 -F devname=czy_device_name_005 -F devpwd=123456 -F devtype=4 http://172.20.122.250:8090/access.cgi?action=add_device
+
+用户删除设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=delete_device
+
+用户修改设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F devid=czy_test_id_005 -F devname=czy_device_005 -F devpwd=123456789 -F devtype=2 http://172.20.122.250:8090/access.cgi?action=modify_device
+
+用户查询设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=query_deviceinfo
+
+用户查询用户绑定的设备关系
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F beginindex=0 http://172.20.122.250:8090/access.cgi?action=query_device_of_user
+
+用户查询设备绑定的用户关系
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F devid=czy_test_id_005 -F beginindex=0 http://172.20.122.250:8090/access.cgi?action=query_user_of_device
+
+用户分享设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F userid_shared=BEC47831D076BC44BCBAD44938B690B6 -F devid=czy_test_id_005 -F begindate="2017-02-22 10:30:30" -F enddate="2199-12-31 23:59:59" http://172.20.122.250:8090/access.cgi?action=sharing_device
+
+用户取消分享设备
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F userid_shared=BEC47831D076BC44BCBAD44938B690B6 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=cancelshared_device
+
+用户添加好友
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F friendid=BEC47831D076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=add_friend
+
+用户删除好友
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F friendid=BEC47831D076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=delete_friend
+
+用户查询好友
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F beginindex=0 http://172.20.122.250:8090/access.cgi?action=query_friend
+
+用户查询p2p服务
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=F618B31276AF0D4EAA5D5841FBF30064 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=query_p2pserver
+
+用户添加文件
+curl -F id=testuploadid -F type=1 -F fileid=testfileid -F url=http://testurl -F name=testfile -F suffixname=mp4 -F size=100 -F createdate=2010-03-10 -F extend=testextend http://172.20.122.250:8090/access.cgi?action=add_file
+
+用户查询文件
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=BEC47831D076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=query_file
+
+用户下载文件
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=BEC47831D076BC44BCBAD44938B690B6 -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=download_file
+
+用户删除文件
+curl -F sid=D749CC1870EFB84286DDE343E91A870F -F userid=BEC47831D076BC44BCBAD44938B690B6 -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.250:8090/access.cgi?action=delete_file
+
+设备登录
+curl -F devid=czy_test_id_005 -F devpwd=123456789 http://172.20.122.250:8090/access.cgi?action=device_login
+
+设备登出
+curl -F sid=D8E310337B8AF64FABEC6067A1E49B68 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=device_logout
+
+设备握手
+curl -F sid=D8E310337B8AF64FABEC6067A1E49B68 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=device_shakehand
+
+设备查询p2p服务
+curl -F sid=D8E310337B8AF64FABEC6067A1E49B68 -F devid=czy_test_id_005 http://172.20.122.250:8090/access.cgi?action=device_query_p2pserver
+
+
+

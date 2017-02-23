@@ -191,10 +191,11 @@ message File                                    //文件信息
   string strFileName = 6;
   string strSuffixName = 7;                     //文件后缀名称
   uint64 uiFileSize = 8;                        //文件大小，单位Byte
-  string strFileCreatedate = 9;                 //文件创建日期
-  string strCreatedate = 10;                    //本条记录生成日期
-  uint32 uiStatus = 11;                         //0正常，1永久删除，2回收站
-  string strExtend = 12;
+  uint32 uiBusinessType = 9;                    //文件业务类型
+  string strFileCreatedate = 10;                //文件创建日期
+  string strCreatedate = 11;                    //本条记录生成日期
+  uint32 uiStatus = 12;                         //0正常，1永久删除，2回收站
+  string strExtend = 13;
 }
 
 message FileUrl                                 //文件下载URL地址
@@ -611,7 +612,10 @@ message QueryFileReq_USR                        //用户查询文件请求
   string strUserID = 1;
   string strDevID = 2;
   uint32 uiBeginIndex = 3;
-  string strValue = 4;
+  string strBeginDate = 4;
+  string strEndDate = 5;
+  uint32 uiBusinessType = 6;
+  string strValue = 7;
 }
 
 message QueryFileRsp_USR                        //用户查询文件响应

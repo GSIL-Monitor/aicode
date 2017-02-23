@@ -156,6 +156,7 @@ void UnSerializeFileList(std::list<InteractiveProtoHandler::File> &fileInfoList,
         fileInfo.m_strFileName = srcFileInfo.strfilename();
         fileInfo.m_strSuffixName = srcFileInfo.strsuffixname();
         fileInfo.m_ulFileSize = srcFileInfo.uifilesize();
+        fileInfo.m_uiBusinessType = srcFileInfo.uibusinesstype();
         fileInfo.m_strFileCreatedate = srcFileInfo.strfilecreatedate();
         fileInfo.m_strCreatedate = srcFileInfo.strcreatedate();
         fileInfo.m_uiStatus = srcFileInfo.uistatus();
@@ -188,6 +189,7 @@ void SerializeFileList(const std::list<InteractiveProtoHandler::File> &fileInfoL
         pDstFileInfo->set_strfilename(itBegin->m_strFileName);
         pDstFileInfo->set_strsuffixname(itBegin->m_strSuffixName);
         pDstFileInfo->set_uifilesize(itBegin->m_ulFileSize);
+        pDstFileInfo->set_uibusinesstype(itBegin->m_uiBusinessType);
         pDstFileInfo->set_strfilecreatedate(itBegin->m_strFileCreatedate);
         pDstFileInfo->set_strcreatedate(itBegin->m_strCreatedate);
         pDstFileInfo->set_uistatus(itBegin->m_uiStatus);
@@ -2511,6 +2513,9 @@ void InteractiveProtoHandler::QueryFileReq_USR::UnSerializer(const InteractiveMe
     m_strUserID = InteractiveMsg.reqvalue().queryfilereq_usr_value().struserid();
     m_strDevID = InteractiveMsg.reqvalue().queryfilereq_usr_value().strdevid();
     m_uiBeginIndex = InteractiveMsg.reqvalue().queryfilereq_usr_value().uibeginindex();
+    m_strBeginDate = InteractiveMsg.reqvalue().queryfilereq_usr_value().strbegindate();
+    m_strEndDate = InteractiveMsg.reqvalue().queryfilereq_usr_value().strenddate();
+    m_uiBusinessType = InteractiveMsg.reqvalue().queryfilereq_usr_value().uibusinesstype();
     m_strValue = InteractiveMsg.reqvalue().queryfilereq_usr_value().strvalue();
 }
 
@@ -2521,6 +2526,9 @@ void InteractiveProtoHandler::QueryFileReq_USR::Serializer(InteractiveMessage &I
     InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_struserid(m_strUserID);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strdevid(m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strbegindate(m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strenddate(m_strEndDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_uibusinesstype(m_uiBusinessType);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfilereq_usr_value()->set_strvalue(m_strValue);
 }
 

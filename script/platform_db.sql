@@ -99,6 +99,7 @@ CREATE TABLE `t_file_info` (
   `filename` varchar(256) NOT NULL,
   `suffixname` varchar(32), #文件后缀名称
   `filesize` bigint(24) NOT NULL, #文件大小，单位Byte
+  `businesstype` int(11) NOT NULL, #文件业务类型
   `filecreatedate` datetime NOT NULL, #文件创建日期
   `createdate` datetime NOT NULL, #本条记录生成日期
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1回收站，2永久删除

@@ -1154,9 +1154,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strsuffixname();
   void set_allocated_strsuffixname(::std::string* strsuffixname);
 
-  // string strFileCreatedate = 9;
+  // string strFileCreatedate = 10;
   void clear_strfilecreatedate();
-  static const int kStrFileCreatedateFieldNumber = 9;
+  static const int kStrFileCreatedateFieldNumber = 10;
   const ::std::string& strfilecreatedate() const;
   void set_strfilecreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1168,9 +1168,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strfilecreatedate();
   void set_allocated_strfilecreatedate(::std::string* strfilecreatedate);
 
-  // string strCreatedate = 10;
+  // string strCreatedate = 11;
   void clear_strcreatedate();
-  static const int kStrCreatedateFieldNumber = 10;
+  static const int kStrCreatedateFieldNumber = 11;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1182,9 +1182,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // string strExtend = 12;
+  // string strExtend = 13;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 12;
+  static const int kStrExtendFieldNumber = 13;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -1202,9 +1202,15 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 uifilesize() const;
   void set_uifilesize(::google::protobuf::uint64 value);
 
-  // uint32 uiStatus = 11;
+  // uint32 uiBusinessType = 9;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 9;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 12;
   void clear_uistatus();
-  static const int kUiStatusFieldNumber = 11;
+  static const int kUiStatusFieldNumber = 12;
   ::google::protobuf::uint32 uistatus() const;
   void set_uistatus(::google::protobuf::uint32 value);
 
@@ -1223,6 +1229,7 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint64 uifilesize_;
+  ::google::protobuf::uint32 uibusinesstype_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -8263,9 +8270,37 @@ class QueryFileReq_USR : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_strdevid();
   void set_allocated_strdevid(::std::string* strdevid);
 
-  // string strValue = 4;
+  // string strBeginDate = 4;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 4;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbegindate(::std::string&& value);
+  #endif
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // string strEndDate = 5;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 5;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strenddate(::std::string&& value);
+  #endif
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
+  // string strValue = 7;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 4;
+  static const int kStrValueFieldNumber = 7;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -8283,14 +8318,23 @@ class QueryFileReq_USR : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
 
+  // uint32 uiBusinessType = 6;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 6;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFileReq_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uibeginindex_;
+  ::google::protobuf::uint32 uibusinesstype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -11367,7 +11411,21 @@ inline void File::set_uifilesize(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.File.uiFileSize)
 }
 
-// string strFileCreatedate = 9;
+// uint32 uiBusinessType = 9;
+inline void File::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 File::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void File::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiBusinessType)
+}
+
+// string strFileCreatedate = 10;
 inline void File::clear_strfilecreatedate() {
   strfilecreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -11419,7 +11477,7 @@ inline void File::set_allocated_strfilecreatedate(::std::string* strfilecreateda
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileCreatedate)
 }
 
-// string strCreatedate = 10;
+// string strCreatedate = 11;
 inline void File::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -11471,7 +11529,7 @@ inline void File::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strCreatedate)
 }
 
-// uint32 uiStatus = 11;
+// uint32 uiStatus = 12;
 inline void File::clear_uistatus() {
   uistatus_ = 0u;
 }
@@ -11485,7 +11543,7 @@ inline void File::set_uistatus(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.File.uiStatus)
 }
 
-// string strExtend = 12;
+// string strExtend = 13;
 inline void File::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18150,7 +18208,125 @@ inline void QueryFileReq_USR::set_uibeginindex(::google::protobuf::uint32 value)
   // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.uiBeginIndex)
 }
 
-// string strValue = 4;
+// string strBeginDate = 4;
+inline void QueryFileReq_USR::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileReq_USR::strbegindate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+inline void QueryFileReq_USR::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+#if LANG_CXX11
+inline void QueryFileReq_USR::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+#endif
+inline void QueryFileReq_USR::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+inline void QueryFileReq_USR::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+inline ::std::string* QueryFileReq_USR::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileReq_USR::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileReq_USR::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+
+// string strEndDate = 5;
+inline void QueryFileReq_USR::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFileReq_USR::strenddate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strEndDate)
+  return strenddate_.GetNoArena();
+}
+inline void QueryFileReq_USR::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+#if LANG_CXX11
+inline void QueryFileReq_USR::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+#endif
+inline void QueryFileReq_USR::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+inline void QueryFileReq_USR::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+inline ::std::string* QueryFileReq_USR::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFileReq_USR::release_strenddate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFileReq_USR::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+
+// uint32 uiBusinessType = 6;
+inline void QueryFileReq_USR::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFileReq_USR::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void QueryFileReq_USR::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.uiBusinessType)
+}
+
+// string strValue = 7;
 inline void QueryFileReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

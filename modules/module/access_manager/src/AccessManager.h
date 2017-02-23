@@ -204,9 +204,10 @@ private:
         std::list<InteractiveProtoHandler::FileUrl> &FileUrlList, const bool IsNeedCache = true);
 
     bool QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
+        unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
 
-    bool QueryUserIDByDeviceIDOwner(const std::string &strDevID, std::string &strUserID);
+    bool QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID);
 
     bool InsertFileToDB(const InteractiveProtoHandler::File &FileInfo);
 

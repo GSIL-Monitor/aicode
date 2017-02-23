@@ -162,6 +162,7 @@ public:
         std::string m_strFileName;
         std::string m_strSuffixName;             //文件后缀名称
         unsigned long int m_ulFileSize;          //文件大小，单位Byte
+        unsigned int m_uiBusinessType;           //文件业务类型
         std::string m_strFileCreatedate;
         std::string m_strCreatedate;
         unsigned int m_uiStatus;
@@ -677,6 +678,9 @@ public:
         std::string m_strUserID;
         std::string m_strDevID;
         unsigned int m_uiBeginIndex;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiBusinessType;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

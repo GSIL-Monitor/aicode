@@ -997,30 +997,26 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     const std::string strUserID = itFind->second;
 
-    itFind = pMsgInfoMap->find("beginindex");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Begin index not found.");
-        return blResult;
-    }
-    
     unsigned int uiBeginIndex = 0;
-
-    try
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
     {
-        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query devices of user info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query devices of user info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
     }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Query devices of user info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Query devices of user info is invalid and input index is " << itFind->second);
-        return blResult;
-    }
-            
+                    
     LOG_INFO_RLD("Query devices of user info received and  user id is " << strUserID
         << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
@@ -1104,30 +1100,26 @@ bool HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     const std::string strDevID = itFind->second;
 
-    itFind = pMsgInfoMap->find("beginindex");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Begin index not found.");
-        return blResult;
-    }
-
     unsigned int uiBeginIndex = 0;
-
-    try
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
     {
-        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query users of device info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query users of device info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
     }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Query users of device info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Query users of device info is invalid and input index is " << itFind->second);
-        return blResult;
-    }
-
+       
     LOG_INFO_RLD("Query users of device info received and  user id is " << strDevID
         << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
@@ -1507,28 +1499,24 @@ bool HttpMsgHandler::QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
     const std::string strUserID = itFind->second;
 
-    itFind = pMsgInfoMap->find("beginindex");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Begin index not found.");
-        return blResult;
-    }
-
     unsigned int uiBeginIndex = 0;
-
-    try
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
     {
-        uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
-    }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Query friend info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Query friend info is invalid and input index is " << itFind->second);
-        return blResult;
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query friend info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query friend info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
     }
 
     LOG_INFO_RLD("Query user friend info received and  user id is " << strUserID
@@ -1943,12 +1931,73 @@ bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
             return blResult;
         }        
     }
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+
+        boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
+        boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
+        boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
+        boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
+        boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
+
+        if (!boost::regex_match(strBeginDate, reg0) && !boost::regex_match(strBeginDate, reg1) && !boost::regex_match(strBeginDate, reg2) &&
+            !boost::regex_match(strBeginDate, reg3) && !boost::regex_match(strBeginDate, reg4))
+        {
+            LOG_ERROR_RLD("File begin date is invalid and input date is " << strBeginDate);
+            return blResult;
+        }
+    }
+
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+
+        boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
+        boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
+        boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
+        boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
+        boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
+
+        if (!boost::regex_match(strEndDate, reg0) && !boost::regex_match(strEndDate, reg1) && !boost::regex_match(strEndDate, reg2) &&
+            !boost::regex_match(strEndDate, reg3) && !boost::regex_match(strEndDate, reg4))
+        {
+            LOG_ERROR_RLD("File end date is invalid and input date is " << strEndDate);
+            return blResult;
+        }
+    }
+
+    unsigned int uiBussinessType = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("businesstype");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBussinessType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query file business type info of user is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query file business type info of user is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
     
     LOG_INFO_RLD("Query user file info received and  session id is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
-        << " and begin index is " << uiBeginIndex);
+        << " and begin index is " << uiBeginIndex << " and begin date is " << strBeginDate 
+        << " and end date is " << strEndDate  << " and business type is " << uiBussinessType);
     
     std::list<InteractiveProtoHandler::File> filelist;
-    if (!QueryUserFile<InteractiveProtoHandler::File>(strSid, strUserID, strDevID, uiBeginIndex, filelist))
+    if (!QueryUserFile<InteractiveProtoHandler::File>(strSid, strUserID, strDevID, uiBeginIndex, strBeginDate, strEndDate, uiBussinessType, filelist))
     {
         LOG_ERROR_RLD("Query user file failed and user id is " << strUserID << " and device id is " << strDevID);
         return blResult;
@@ -1963,6 +2012,7 @@ bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         jsFile["name"] = itBegin->m_strFileName;
         jsFile["size"] = boost::lexical_cast<std::string>(itBegin->m_ulFileSize);
         jsFile["type"] = itBegin->m_strSuffixName;
+        jsFile["businesstype"] = itBegin->m_uiBusinessType;
         jsFile["createdate"] = itBegin->m_strFileCreatedate;
         jsFile["url"] = itBegin->m_strDownloadUrl;
 
@@ -2218,13 +2268,37 @@ bool HttpMsgHandler::AddDeviceFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     {
         strExtend = itFind->second;
     }
-    
+
+    itFind = pMsgInfoMap->find("businesstype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File businesstype not found.");
+        return blResult;
+    }
+
+    unsigned int uiBussinessType = 0xFFFFFFFF;
+
+    try
+    {
+        uiBussinessType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Add device file business type info of user is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Add device file business type info of user is invalid and input is " << itFind->second);
+        return blResult;
+    }
+        
     LOG_INFO_RLD("Add device file info received and  device id is " << strDevID << " and file id is " << strFileID <<
         " and url is " << strFileUrl << " and file name is " << strFileName << " and suffix name is " << strSuffixName <<
         " and file size is " << strFileSize << " and create date is " << strCreateDate <<
-        " and extend is " << strExtend);
+        " and extend is " << strExtend << " and bussiness type is " << uiBussinessType);
     
-    if (!AddDeviceFile(strDevID, strFileID, strFileUrl, strFileName, strSuffixName, ulFileSize, strCreateDate, strExtend))
+    if (!AddDeviceFile(strDevID, strFileID, strFileUrl, strFileName, strSuffixName, ulFileSize, strCreateDate, strExtend, uiBussinessType))
     {
         LOG_ERROR_RLD("Add device file info failed and device id is " << strDevID << " and file id is " << strFileID);
         return blResult;
@@ -3911,7 +3985,8 @@ bool HttpMsgHandler::DeviceLogout(const std::string &strSid, const std::string &
 
 
 template<typename T>
-bool HttpMsgHandler::QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &FileList)
+bool HttpMsgHandler::QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, 
+    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBussinessType, std::list<T> &FileList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -3923,6 +3998,9 @@ bool HttpMsgHandler::QueryUserFile(const std::string &strSid, const std::string 
         QueryUserFileReq.m_strDevID = strDevID;
         QueryUserFileReq.m_uiBeginIndex = uiBeginIndex;
         QueryUserFileReq.m_strUserID = strUserID;
+        QueryUserFileReq.m_strBeginDate = strBeginDate;
+        QueryUserFileReq.m_strEndDate = strEndDate;
+        QueryUserFileReq.m_uiBusinessType = uiBussinessType;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserFileReq, strSerializeOutPut))
@@ -4097,7 +4175,7 @@ bool HttpMsgHandler::DeleteUserFile(const std::string &strSid, const std::string
 
 bool HttpMsgHandler::AddDeviceFile(const std::string &strDevID, const std::string &strRemoteFileID, const std::string &strDownloadUrl, 
     const std::string &strFileName, const std::string &strSuffixName, const unsigned long int uiFileSize, 
-    const std::string &strFileCreatedate, const std::string &strExtend)
+    const std::string &strFileCreatedate, const std::string &strExtend, const unsigned int uiBussinessType)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -4117,6 +4195,7 @@ bool HttpMsgHandler::AddDeviceFile(const std::string &strDevID, const std::strin
         FileInfo.m_strRemoteFileID = strRemoteFileID;
         FileInfo.m_strSuffixName = strSuffixName;
         FileInfo.m_ulFileSize = uiFileSize;
+        FileInfo.m_uiBusinessType = uiBussinessType;
         
         AddDevFileReq.m_fileList.push_back(FileInfo);
 

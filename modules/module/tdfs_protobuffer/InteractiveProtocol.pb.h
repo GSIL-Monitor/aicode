@@ -1154,9 +1154,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strsuffixname();
   void set_allocated_strsuffixname(::std::string* strsuffixname);
 
-  // string strFileCreatedate = 9;
+  // string strFileCreatedate = 10;
   void clear_strfilecreatedate();
-  static const int kStrFileCreatedateFieldNumber = 9;
+  static const int kStrFileCreatedateFieldNumber = 10;
   const ::std::string& strfilecreatedate() const;
   void set_strfilecreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1168,9 +1168,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strfilecreatedate();
   void set_allocated_strfilecreatedate(::std::string* strfilecreatedate);
 
-  // string strCreatedate = 10;
+  // string strCreatedate = 11;
   void clear_strcreatedate();
-  static const int kStrCreatedateFieldNumber = 10;
+  static const int kStrCreatedateFieldNumber = 11;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1182,9 +1182,9 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // string strExtend = 12;
+  // string strExtend = 13;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 12;
+  static const int kStrExtendFieldNumber = 13;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -1202,9 +1202,15 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::uint64 uifilesize() const;
   void set_uifilesize(::google::protobuf::uint64 value);
 
-  // uint32 uiStatus = 11;
+  // uint32 uiBusinessType = 9;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 9;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 12;
   void clear_uistatus();
-  static const int kUiStatusFieldNumber = 11;
+  static const int kUiStatusFieldNumber = 12;
   ::google::protobuf::uint32 uistatus() const;
   void set_uistatus(::google::protobuf::uint32 value);
 
@@ -1223,6 +1229,7 @@ class File : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint64 uifilesize_;
+  ::google::protobuf::uint32 uibusinesstype_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -11367,7 +11374,21 @@ inline void File::set_uifilesize(::google::protobuf::uint64 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.File.uiFileSize)
 }
 
-// string strFileCreatedate = 9;
+// uint32 uiBusinessType = 9;
+inline void File::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 File::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.File.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void File::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.File.uiBusinessType)
+}
+
+// string strFileCreatedate = 10;
 inline void File::clear_strfilecreatedate() {
   strfilecreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -11419,7 +11440,7 @@ inline void File::set_allocated_strfilecreatedate(::std::string* strfilecreateda
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strFileCreatedate)
 }
 
-// string strCreatedate = 10;
+// string strCreatedate = 11;
 inline void File::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -11471,7 +11492,7 @@ inline void File::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.File.strCreatedate)
 }
 
-// uint32 uiStatus = 11;
+// uint32 uiStatus = 12;
 inline void File::clear_uistatus() {
   uistatus_ = 0u;
 }
@@ -11485,7 +11506,7 @@ inline void File::set_uistatus(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.File.uiStatus)
 }
 
-// string strExtend = 12;
+// string strExtend = 13;
 inline void File::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
