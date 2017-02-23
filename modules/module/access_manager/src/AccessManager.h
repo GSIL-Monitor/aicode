@@ -132,7 +132,7 @@ public:
 
     bool LogoutReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
-    bool AddFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    bool AddFileReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool DeleteFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
@@ -191,7 +191,7 @@ private:
     bool QueryUserRelationInfoToDB(const std::string &strUserID, const int iRelation, std::list<std::string> &strRelationIDList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
 
-    void AddFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
+    void AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
         std::list<std::string> &FileIDFailedList);
 
     void DeleteFileToDB(const std::string &strUserID, const std::list<std::string> &FileIDList, const int iStatus);
@@ -202,7 +202,7 @@ private:
     bool QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
 
-    bool QueryUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, unsigned int uiRelation = RELATION_OF_OWNER);
+    bool QueryUserIDByDeviceIDOwner(const std::string &strDevID, std::string &strUserID);
 
     bool InsertFileToDB(const InteractiveProtoHandler::File &FileInfo);
 

@@ -69,6 +69,8 @@ const std::string HttpMsgHandler::DOWNLOAD_USER_FILE_ACTION("download_file");
 
 const std::string HttpMsgHandler::DELETE_USER_FILE_ACTION("delete_file");
 
+const std::string HttpMsgHandler::ADD_FILE_ACTION("add_file");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1879,7 +1881,7 @@ bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         Json::Value jsFile;
         jsFile["fileid"] = itBegin->m_strFileID;
         jsFile["name"] = itBegin->m_strFileName;
-        jsFile["size"] = itBegin->m_uiFileSize;
+        jsFile["size"] = boost::lexical_cast<std::string>(itBegin->m_ulFileSize);
         jsFile["type"] = itBegin->m_strSuffixName;
         jsFile["createdate"] = itBegin->m_strFileCreatedate;
         jsFile["url"] = itBegin->m_strDownloadUrl;
@@ -2023,6 +2025,227 @@ bool HttpMsgHandler::DeleteUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     blResult = true;
 
     return blResult;
+}
+
+bool HttpMsgHandler::AddDeviceFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+
+    itFind = pMsgInfoMap->find("url");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File url not found.");
+        return blResult;
+    }
+    const std::string strFileUrl = itFind->second;
+
+    itFind = pMsgInfoMap->find("name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File name not found.");
+        return blResult;
+    }
+    const std::string strFileName = itFind->second;
+
+    std::string strSuffixName;
+    itFind = pMsgInfoMap->find("suffixname");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strSuffixName = itFind->second;
+    }
+
+    itFind = pMsgInfoMap->find("size");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File size not found.");
+        return blResult;
+    }
+    const std::string strFileSize = itFind->second;
+
+    unsigned long int ulFileSize = 0;
+
+    try
+    {
+        ulFileSize = boost::lexical_cast<unsigned long int>(strFileSize);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Add device file size info is invalid and error msg is " << e.what() << " and input size is " << strFileSize);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Add device file size info is invalid" << " and input size is " << strFileSize);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("createdate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File create date not found.");
+        return blResult;
+    }
+    const std::string strCreateDate = itFind->second;
+
+    boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
+    boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
+    boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
+    boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
+    boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
+
+    if (!boost::regex_match(strCreateDate, reg0) && !boost::regex_match(strCreateDate, reg1) && !boost::regex_match(strCreateDate, reg2) &&
+        !boost::regex_match(strCreateDate, reg3) && !boost::regex_match(strCreateDate, reg4))
+    {
+        LOG_ERROR_RLD("File create date is invalid and input date is " << strCreateDate);
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+    
+    LOG_INFO_RLD("Add device file info received and  device id is " << strDevID << " and file id is " << strFileID <<
+        " and url is " << strFileUrl << " and file name is " << strFileName << " and suffix name is " << strSuffixName <<
+        " and file size is " << strFileSize << " and create date is " << strCreateDate <<
+        " and extend is " << strExtend);
+    
+    if (!AddDeviceFile(strDevID, strFileID, strFileUrl, strFileName, strSuffixName, ulFileSize, strCreateDate, strExtend))
+    {
+        LOG_ERROR_RLD("Add device file info failed and device id is " << strDevID << " and file id is " << strFileID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::AddUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    //目前未实现，暂时返回为真
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return true;
+}
+
+bool HttpMsgHandler::AddFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type not found.");
+        return blResult;
+    }
+    const std::string strType = itFind->second;
+
+    unsigned int uiTypeInfo = 0; //0：用户，1：设备
+
+    try
+    {
+        uiTypeInfo = boost::lexical_cast<unsigned int>(strType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Add file type info is invalid and error msg is " << e.what() << " and input type is " << strType);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Add file type info is invalid" << " and input type is " << strType);
+        return blResult;
+    }
+
+    switch (uiTypeInfo)
+    {
+    case 0: //用户
+        blResult = true;
+        return AddUserFileHandler(pMsgInfoMap, writer);
+    case 1: //设备
+        blResult = true;
+        return AddDeviceFileHandler(pMsgInfoMap, writer);
+    default:
+        LOG_ERROR_RLD("Unknown file type and type is " << uiTypeInfo);
+        break;
+    }
+
+    return blResult;    
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -3727,5 +3950,75 @@ bool HttpMsgHandler::DeleteUserFile(const std::string &strSid, const std::string
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
 
+}
+
+bool HttpMsgHandler::AddDeviceFile(const std::string &strDevID, const std::string &strRemoteFileID, const std::string &strDownloadUrl, 
+    const std::string &strFileName, const std::string &strSuffixName, const unsigned long int uiFileSize, 
+    const std::string &strFileCreatedate, const std::string &strExtend)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::AddFileReq_DEV AddDevFileReq;
+        AddDevFileReq.m_MsgType = InteractiveProtoHandler::MsgType::AddFileReq_DEV_T;
+        AddDevFileReq.m_uiMsgSeq = 1;
+        AddDevFileReq.m_strSID = "";
+        AddDevFileReq.m_strDevID = strDevID;
+        AddDevFileReq.m_strValue = "";
+
+        InteractiveProtoHandler::File FileInfo;
+        FileInfo.m_strFileCreatedate = strFileCreatedate;
+        FileInfo.m_strDevID = strDevID;
+        FileInfo.m_strDownloadUrl = strDownloadUrl;
+        FileInfo.m_strExtend = strExtend;
+        FileInfo.m_strFileName = strFileName;
+        FileInfo.m_strRemoteFileID = strRemoteFileID;
+        FileInfo.m_strSuffixName = strSuffixName;
+        FileInfo.m_ulFileSize = uiFileSize;
+        
+        AddDevFileReq.m_fileList.push_back(FileInfo);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddDevFileReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add device file req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::AddFileRsp_DEV AddDevFileRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddDevFileRsp))
+        {
+            LOG_ERROR_RLD("Add device file rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddDevFileRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add device file device id is " << strDevID <<
+            " and file remote id is " << strRemoteFileID <<
+            " and return code is " << AddDevFileRsp.m_iRetcode <<
+            " and return msg is " << AddDevFileRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 

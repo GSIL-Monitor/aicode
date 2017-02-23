@@ -155,7 +155,7 @@ void UnSerializeFileList(std::list<InteractiveProtoHandler::File> &fileInfoList,
         fileInfo.m_strDownloadUrl = srcFileInfo.strdownloadurl();
         fileInfo.m_strFileName = srcFileInfo.strfilename();
         fileInfo.m_strSuffixName = srcFileInfo.strsuffixname();
-        fileInfo.m_uiFileSize = srcFileInfo.uifilesize();
+        fileInfo.m_ulFileSize = srcFileInfo.uifilesize();
         fileInfo.m_strFileCreatedate = srcFileInfo.strfilecreatedate();
         fileInfo.m_strCreatedate = srcFileInfo.strcreatedate();
         fileInfo.m_uiStatus = srcFileInfo.uistatus();
@@ -187,7 +187,7 @@ void SerializeFileList(const std::list<InteractiveProtoHandler::File> &fileInfoL
         pDstFileInfo->set_strdownloadurl(itBegin->m_strDownloadUrl);
         pDstFileInfo->set_strfilename(itBegin->m_strFileName);
         pDstFileInfo->set_strsuffixname(itBegin->m_strSuffixName);
-        pDstFileInfo->set_uifilesize(itBegin->m_uiFileSize);
+        pDstFileInfo->set_uifilesize(itBegin->m_ulFileSize);
         pDstFileInfo->set_strfilecreatedate(itBegin->m_strFileCreatedate);
         pDstFileInfo->set_strcreatedate(itBegin->m_strCreatedate);
         pDstFileInfo->set_uistatus(itBegin->m_uiStatus);
@@ -607,6 +607,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::P2pInfoRsp_DEV_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddFileReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFileReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFileReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddFileRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFileRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddFileRsp_DEV_T, handler));
 
     //////////////////////////////////////////////////
 

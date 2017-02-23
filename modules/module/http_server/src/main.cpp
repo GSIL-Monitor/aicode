@@ -257,6 +257,8 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::QueryUserFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DOWNLOAD_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::DownloadUserFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::DeleteUserFileHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_FILE_ACTION, boost::bind(&HttpMsgHandler::AddFileHandler, &filehdr, _1, _2));
+
 
 
 

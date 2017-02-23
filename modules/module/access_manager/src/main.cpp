@@ -328,7 +328,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteFileReq_USR_T, boost::bind(&AccessManager::DeleteFileReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DownloadFileReq_USR_T, boost::bind(&AccessManager::DownloadFileReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFileReq_USR_T, boost::bind(&AccessManager::QueryFileReq, &Umg, _1, _2, _3));
-    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddFileReq_DEV_T, boost::bind(&AccessManager::AddFileReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddFileReq_DEV_T, boost::bind(&AccessManager::AddFileReqDevice, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_DEV_T, boost::bind(&AccessManager::LoginReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T, boost::bind(&AccessManager::P2pInfoReqDevice, &Umg, _1, _2, _3));

@@ -158,7 +158,7 @@ public:
         std::string m_strDownloadUrl;            //文件URL地址
         std::string m_strFileName;
         std::string m_strSuffixName;             //文件后缀名称
-        unsigned int m_uiFileSize;               //文件大小，单位Byte
+        unsigned long int m_ulFileSize;          //文件大小，单位Byte
         std::string m_strFileCreatedate;
         std::string m_strCreatedate;
         unsigned int m_uiStatus;

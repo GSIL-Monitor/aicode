@@ -45,6 +45,7 @@ public:
     static const std::string QUERY_USER_FILE_ACTION;
     static const std::string DOWNLOAD_USER_FILE_ACTION;
     static const std::string DELETE_USER_FILE_ACTION;
+    static const std::string ADD_FILE_ACTION;
 
     
     typedef struct _ParamInfo
@@ -113,8 +114,17 @@ public:
     bool DownloadUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeleteUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    
+    bool AddFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 private:
+
+    bool AddDeviceFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool AddUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+private:
+
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
     bool PreCommonHandler(const std::string &strMsgReceived);
@@ -182,6 +192,9 @@ private:
     bool DownloadUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID, std::string &strFileUrl);
 
     bool DeleteUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strFileID);
+
+    bool AddDeviceFile(const std::string &strDevID, const std::string &strRemoteFileID, const std::string &strDownloadUrl, const std::string &strFileName,
+        const std::string &strSuffixName, const unsigned long int uiFileSize, const std::string &strFileCreatedate, const std::string &strExtend);
 
 private:
     ParamInfo m_ParamInfo;
