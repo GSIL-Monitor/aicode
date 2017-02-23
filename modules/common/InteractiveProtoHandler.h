@@ -104,6 +104,9 @@ public:
         QueryFileReq_USR_T = 20540,             //用户查询文件
         QueryFileRsp_USR_T = 20550,
 
+        P2pInfoReq_USR_T = 20800,               //用户P2P服务器信息
+        P2pInfoRsp_USR_T = 20810,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -713,6 +716,28 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct P2pInfoReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::string m_strUserIpAddress;
+        std::string m_strDevID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct P2pInfoRsp_USR : Rsp
+    {
+        std::string m_strP2pServer;
+        std::string m_strP2pID;
+        unsigned int m_uiLease;  //租约，单位为小时
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct GetOnlineDevInfoReq_INNER : Req
     {
@@ -999,6 +1024,11 @@ private:
     bool AddFileReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool AddFileRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool AddFileRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool P2pInfoReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool P2pInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool P2pInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool P2pInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
     bool GetOnlineDevInfoReq_INNER_Serializer(const Req &req, std::string &strOutput);

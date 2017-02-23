@@ -140,6 +140,8 @@ public:
 
     bool QueryFileReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool P2pInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -157,6 +159,8 @@ private:
 
     bool ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo = 0, const bool IsForceFromDB = false);
 
+    bool GetMySqlUUID(std::string &strUuid);
+
     void UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
 
     void DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
@@ -164,9 +168,9 @@ private:
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 
-    void InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
+    void InsertDeviceToDB(const std::string &strUuid, const InteractiveProtoHandler::Device &DevInfo);
 
-    void InsertRelationToDB(const RelationOfUsrAndDev &relation);
+    void InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation);
 
     void RemoveRelationToDB(const RelationOfUsrAndDev &relation);
 

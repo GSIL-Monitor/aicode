@@ -43,6 +43,7 @@ CREATE TABLE `t_user_device_relation` (
   `userid` varchar(100) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
   `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
+  `devicekeyid` varchar(36) NOT NULL, #设备信息表主键-id
   `begindate` datetime NOT NULL,
   `enddate` datetime NOT NULL,
   `createdate` datetime NOT NULL,

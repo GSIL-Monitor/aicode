@@ -675,6 +675,13 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
+    std::string strUuid;
+    if (!GetMySqlUUID(strUuid))
+    {
+        LOG_ERROR_RLD("Add device get mysql uuid failed, src id is " << strSrcID);
+        return false;
+    }
+
     InteractiveProtoHandler::Device DevInfo;
     DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
     DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
@@ -685,7 +692,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
     DevInfo.m_strExtend = req.m_devInfo.m_strExtend;
 
-    m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceToDB, this, DevInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceToDB, this, strUuid, DevInfo));
 
     RelationOfUsrAndDev relation;
     relation.m_iRelation = RELATION_OF_OWNER;
@@ -697,7 +704,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     relation.m_strExtend = req.m_devInfo.m_strExtend;
     relation.m_strUsrID = req.m_strUserID;
 
-    m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, relation));
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
 
     blResult = true;
     
@@ -1705,6 +1712,60 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
     return blResult;
 }
 
+bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::P2pInfoReq_USR req;
+
+    std::string strP2pServer;
+    std::string strP2pID;
+    unsigned int uiLease = 0;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease)
+    {
+        InteractiveProtoHandler::P2pInfoRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strP2pID = blResult ? strP2pID : "";
+        rsp.m_strP2pServer = blResult ? strP2pServer : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("P2p info of user rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("P2p info of user rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and device id is " << req.m_strDevID << " and user ip is " << req.m_strUserIpAddress <<
+            " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("P2p info of user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //获取p2pid和p2pserver
+    strP2pID = "test_p2p_id_user";
+    strP2pServer = "test_p2p_server_user";
+
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -1970,7 +2031,7 @@ bool AccessManager::InsertFileToDB(const InteractiveProtoHandler::File &FileInfo
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_file_info ("
         "id, fileid, userid, deviceid, remotefileid, downloadurl, filename, suffixname, filesize, filecreatedate, createdate, status, extend)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%ld', '%s', '%s', %d, '%s')";
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %ld, '%s', '%s', %d, '%s')";
 
     snprintf(sql, sizeof(sql), sqlfmt, FileInfo.m_strFileID.c_str(), FileInfo.m_strUserID.c_str(), FileInfo.m_strDevID.c_str(), FileInfo.m_strRemoteFileID.c_str(),
         FileInfo.m_strDownloadUrl.c_str(), FileInfo.m_strFileName.c_str(), FileInfo.m_strSuffixName.c_str(), FileInfo.m_ulFileSize, FileInfo.m_strFileCreatedate.c_str(),
@@ -2139,7 +2200,7 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
     char sql[1024] = { 0 };
     const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
-        " where dev.deviceid = rel.deviceid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
+        " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
     std::string strSql;
@@ -2205,7 +2266,7 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     memset(sql, 0, sizeof(sql));
     const char *sqlft = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
-        " where dev.deviceid = rel.deviceid and usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
+        " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
     snprintf(sql, sizeof(sql), sqlft, strDevID.c_str());
 
     std::string strSql;
@@ -2379,6 +2440,24 @@ bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, 
     return true;
 }
 
+bool AccessManager::GetMySqlUUID(std::string &strUuid)
+{
+    std::string strSql = "select uuid()";
+    auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+    {
+        strUuid = strColumn;
+        LOG_INFO_RLD("Mysql uuid from db is " << strUuid);
+    };
+
+    if (!m_pMysql->QueryExec(strSql, FuncTmp))
+    {
+        LOG_ERROR_RLD("Get mysql uuid sql exec failed, sql is " << strSql);
+        return false;
+    }
+
+    return true;
+}
+
 void AccessManager::UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
 {
     ValueInDB value;
@@ -2514,7 +2593,7 @@ void AccessManager::SessionTimeoutProcessCB(const std::string &strSessionID)
     LOG_INFO_RLD("Session timeout and session id is " << strSessionID);
 }
 
-void AccessManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
+void AccessManager::InsertDeviceToDB(const std::string &strUuid, const InteractiveProtoHandler::Device &DevInfo)
 {
     //这里考虑到设备内部信息可能不一定是可打印字符，为了后续日志打印和维护方便，这里就将其内容文本化之后再存储到数据库中
     const std::string &strInner = DevInfo.m_strInnerinfo.empty() ? 
@@ -2522,9 +2601,9 @@ void AccessManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevI
 
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_device_info("
-        "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend) values(uuid(),"
+        "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend) values('%s',"
         "'%s','%s','%s','%d','%s', '%d','%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, DevInfo.m_strDevID.c_str(), DevInfo.m_strDevName.c_str(), DevInfo.m_strDevPassword.c_str(), DevInfo.m_uiTypeInfo,
+    snprintf(sql, sizeof(sql), sqlfmt, strUuid.c_str(), DevInfo.m_strDevID.c_str(), DevInfo.m_strDevName.c_str(), DevInfo.m_strDevPassword.c_str(), DevInfo.m_uiTypeInfo,
         DevInfo.m_strCreatedate.c_str(), DevInfo.m_uiStatus, strInner.c_str(), DevInfo.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -2533,13 +2612,13 @@ void AccessManager::InsertDeviceToDB(const InteractiveProtoHandler::Device &DevI
     }
 }
 
-void AccessManager::InsertRelationToDB(const RelationOfUsrAndDev &relation)
+void AccessManager::InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_device_relation("
-        "id, userid, deviceid, relation, begindate, enddate, createdate, status, extend) values(uuid(),"
-        "'%s','%s', '%d','%s', '%s', '%s','%d', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation,
+        "id, userid, deviceid, relation, devicekeyid, begindate, enddate, createdate, status, extend) values(uuid(),"
+        "'%s','%s', '%d', '%s', '%s', '%s', '%s','%d', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation, strUuid.c_str(),
         relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -2706,7 +2785,14 @@ void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
         return;
     }
         
-    InsertRelationToDB(relation);
+    std::string strUuid;
+    if (!GetMySqlUUID(strUuid))
+    {
+        LOG_ERROR_RLD("Sharing relation get mysql uuid failed, user id is " << relation.m_strUsrID);
+        return;
+    }
+
+    InsertRelationToDB(strUuid, relation);
 }
 
 void AccessManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)

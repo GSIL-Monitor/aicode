@@ -565,6 +565,16 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&InteractiveProtoHandler::P2pInfoReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::P2pInfoReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoReq_USR_T, handler));
+    
+    handler.Szr = boost::bind(&InteractiveProtoHandler::P2pInfoRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::P2pInfoRsp_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer, this, _1, _2);
 
@@ -1207,6 +1217,26 @@ bool InteractiveProtoHandler::AddFileRsp_DEV_Serializer(const Req &rsp, std::str
 bool InteractiveProtoHandler::AddFileRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<AddFileRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::P2pInfoReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<P2pInfoReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::P2pInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<P2pInfoReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::P2pInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<P2pInfoRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::P2pInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<P2pInfoRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 
@@ -2565,6 +2595,40 @@ void InteractiveProtoHandler::AddFileRsp_DEV::Serializer(InteractiveMessage &Int
         ++iUser;
         ++itBegin;
     }
+}
+
+void InteractiveProtoHandler::P2pInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().p2pinforeq_usr_value().struserid();
+    m_strUserIpAddress = InteractiveMsg.reqvalue().p2pinforeq_usr_value().struseripaddress();
+    m_strDevID = InteractiveMsg.reqvalue().p2pinforeq_usr_value().strdevid();
+}
+
+void InteractiveProtoHandler::P2pInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::P2pInfoReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_struseripaddress(m_strUserIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_strdevid(m_strDevID);
+}
+
+void InteractiveProtoHandler::P2pInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strP2pID = InteractiveMsg.rspvalue().p2pinforsp_usr_value().strp2pid();
+    m_strP2pServer = InteractiveMsg.rspvalue().p2pinforsp_usr_value().strp2pserver();
+    m_uiLease = InteractiveMsg.rspvalue().p2pinforsp_usr_value().uilease();
+}
+
+void InteractiveProtoHandler::P2pInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::P2pInfoRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strp2pserver(m_strP2pServer);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_uilease(m_uiLease);
 }
 
 
