@@ -158,7 +158,7 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
          << " and extend is [" << strExtend << "]" << " and alias name is " << strAliasName << " and email is " << strEmail);
 
     std::string strUserID;
-    if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strUserID))
+    if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strAliasName, strEmail, strUserID))
     {
         LOG_ERROR_RLD("Register user handle failed");
         return blResult;
