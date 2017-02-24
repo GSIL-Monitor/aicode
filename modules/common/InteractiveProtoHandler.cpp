@@ -661,6 +661,21 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::LogoutRsp_DEV_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::LogoutRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RetrievePwdReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RetrievePwdReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RetrievePwdReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RetrievePwdRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RetrievePwdRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RetrievePwdRsp_USR_T, handler));
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1383,6 +1398,26 @@ bool InteractiveProtoHandler::LogoutRsp_DEV_UnSerializer(const InteractiveMessag
     return UnSerializerT<LogoutRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::RetrievePwdReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<RetrievePwdReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::RetrievePwdReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<RetrievePwdReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::RetrievePwdRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<RetrievePwdRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::RetrievePwdRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<RetrievePwdRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     m_MsgType = (MsgType)InteractiveMsg.type();
@@ -1603,6 +1638,8 @@ void InteractiveProtoHandler::QueryUsrInfoRsp_USR::Serializer(InteractiveMessage
 void InteractiveProtoHandler::ModifyUserInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
+    m_strOldPwd = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().stroldpwd();
+
     m_userInfo.m_strUserID = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().struserid();
     m_userInfo.m_strUserName = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strusername();
     m_userInfo.m_strUserPassword = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().struserpassword();
@@ -1619,6 +1656,8 @@ void InteractiveProtoHandler::ModifyUserInfoReq_USR::Serializer(InteractiveMessa
 {
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyUserInfoReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_modifyuserinforeq_usr_value()->set_stroldpwd(m_strOldPwd);
 
     auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_modifyuserinforeq_usr_value()->mutable_userinfo();
     uinfo->set_struserid(m_userInfo.m_strUserID);
@@ -2931,4 +2970,32 @@ void InteractiveProtoHandler::LogoutRsp_DEV::Serializer(InteractiveMessage &Inte
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::LogoutRsp_DEV_T);
     InteractiveMsg.mutable_rspvalue()->mutable_logoutrsp_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::RetrievePwdReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserName = InteractiveMsg.reqvalue().retrievepwdreq_usr_value().strusername();
+    m_strEmail = InteractiveMsg.reqvalue().retrievepwdreq_usr_value().stremail();
+}
+
+void InteractiveProtoHandler::RetrievePwdReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RetrievePwdReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_retrievepwdreq_usr_value()->set_strusername(m_strUserName);
+    InteractiveMsg.mutable_reqvalue()->mutable_retrievepwdreq_usr_value()->set_stremail(m_strEmail);
+}
+
+void InteractiveProtoHandler::RetrievePwdRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().retrievepwdrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::RetrievePwdRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RetrievePwdRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_retrievepwdrsp_usr_value()->set_strvalue(m_strValue);
 }

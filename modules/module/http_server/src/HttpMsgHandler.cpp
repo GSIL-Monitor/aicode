@@ -419,7 +419,8 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     }
 
     LOG_INFO_RLD("Modify user info received and  user id is " << strUserid << " and user name is " << strAliasName 
-        << " and user pwd is " << strNewUserPwd << " and user type is " << uiType << " and extend is " << strExtend
+        << " and user new pwd is " << strNewUserPwd << " and user old pwd is " << strOldUserPwd << " and user type is " << uiType 
+        << " and extend is " << strExtend
         << " and alias name is " << strAliasName << " and email is " << strEmail
         << " and session id is " << strSid);
 
@@ -435,6 +436,60 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     blResult = true;
 
     return blResult;
+}
+
+bool HttpMsgHandler::RetrievePwdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("username");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User name not found.");
+        return blResult;
+    }
+    const std::string strUserName = itFind->second;
+
+    itFind = pMsgInfoMap->find("email");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Email not found.");
+        return blResult;
+    }
+    const std::string strEmail = itFind->second;
+
+
+    LOG_INFO_RLD("Retrieve pwd info received and  user name is " << strUserName << " and email is " << strEmail);
+
+    if (!RetrievePwd(strUserName, strEmail))
+    {
+        LOG_ERROR_RLD("Retrieve pwd handle failed and user name is " << strUserName << " and email is " << strEmail);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
 }
 
 bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
@@ -2802,7 +2857,7 @@ bool HttpMsgHandler::QueryUserInfo(const std::string &strSid, const std::string 
 }
 
 bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, 
-    const std::string &strOldUserPwd, const std::string &strUserPwd, const unsigned int uiType, const std::string &strExtend, 
+    const std::string &strNewUserPwd, const std::string &strOldUserPwd, const unsigned int uiType, const std::string &strExtend,
     const std::string &strAliasName, const std::string &strEmail)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -2815,13 +2870,14 @@ bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string
         ModifyUsrInfoReq.m_userInfo.m_strExtend = strExtend;
         ModifyUsrInfoReq.m_userInfo.m_strUserID = strUserID;
         ModifyUsrInfoReq.m_userInfo.m_strUserName = strUserName;
-        ModifyUsrInfoReq.m_userInfo.m_strUserPassword = strUserPwd;
+        ModifyUsrInfoReq.m_userInfo.m_strUserPassword = strNewUserPwd;
         ModifyUsrInfoReq.m_userInfo.m_uiStatus = 0;
         ModifyUsrInfoReq.m_userInfo.m_uiTypeInfo = uiType;
         ModifyUsrInfoReq.m_userInfo.m_strAliasName = strAliasName;
         ModifyUsrInfoReq.m_userInfo.m_strEmail = strEmail;
 
-
+        ModifyUsrInfoReq.m_strOldPwd = strOldUserPwd;
+        
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModifyUsrInfoReq, strSerializeOutPut))
         {
@@ -4295,5 +4351,61 @@ bool HttpMsgHandler::AddDeviceFile(const std::string &strDevID, const std::strin
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::RetrievePwd(const std::string &strUserName, const std::string &strEmail)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::RetrievePwdReq_USR RetrievePwdReq;
+        RetrievePwdReq.m_MsgType = InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T;
+        RetrievePwdReq.m_uiMsgSeq = 1;
+        RetrievePwdReq.m_strSID = "";
+        RetrievePwdReq.m_strEmail = strEmail;
+        RetrievePwdReq.m_strUserName = strUserName;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RetrievePwdReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Retrieve pwd req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::RetrievePwdRsp_USR RetrievePwdRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RetrievePwdRsp))
+        {
+            LOG_ERROR_RLD("Retrieve pwd rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = RetrievePwdRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Retrieve pwd info user name is " << strUserName << " and email is " << strEmail <<
+            " and return code is " << RetrievePwdRsp.m_iRetcode <<
+            " and return msg is " << RetrievePwdRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
 }
 

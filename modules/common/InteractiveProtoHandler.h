@@ -62,6 +62,8 @@ public:
         QueryUsrInfoRsp_USR_T = 20052,
         ModifyUserInfoReq_USR_T = 20055,      //用户修改
         ModifyUserInfoRsp_USR_T = 20056,
+        RetrievePwdReq_USR_T = 20057,           //用户取回密码
+        RetrievePwdRsp_USR_T = 20058,
         LoginReq_USR_T = 20060,                      //用户登录用户设备管理服务器
         LoginRsp_USR_T = 20070,
         LogoutReq_USR_T = 20080,                   //用户登出用户设备管理服务器
@@ -295,7 +297,7 @@ public:
 
     struct ModifyUserInfoReq_USR : Req
     {
-
+        std::string m_strOldPwd;
         User m_userInfo;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -312,6 +314,28 @@ public:
 
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
+
+    struct RetrievePwdReq_USR : Req
+    {
+        std::string m_strUserName;
+        std::string m_strEmail;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct RetrievePwdRsp_USR : Rsp
+    {
+
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
 
     struct LoginReq_USR : Req
     {
@@ -1072,6 +1096,12 @@ private:
     bool LogoutReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool LogoutRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool LogoutRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool RetrievePwdReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool RetrievePwdReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool RetrievePwdRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool RetrievePwdRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
 
 private:    

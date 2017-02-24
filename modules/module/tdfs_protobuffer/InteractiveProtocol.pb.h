@@ -239,6 +239,12 @@ extern RelationDefaultTypeInternal _Relation_default_instance_;
 class Req;
 class ReqDefaultTypeInternal;
 extern ReqDefaultTypeInternal _Req_default_instance_;
+class RetrievePwdReq_USR;
+class RetrievePwdReq_USRDefaultTypeInternal;
+extern RetrievePwdReq_USRDefaultTypeInternal _RetrievePwdReq_USR_default_instance_;
+class RetrievePwdRsp_USR;
+class RetrievePwdRsp_USRDefaultTypeInternal;
+extern RetrievePwdRsp_USRDefaultTypeInternal _RetrievePwdRsp_USR_default_instance_;
 class Rsp;
 class RspDefaultTypeInternal;
 extern RspDefaultTypeInternal _Rsp_default_instance_;
@@ -328,6 +334,8 @@ enum MsgType {
   QueryUsrInfoRsp_USR_T = 20052,
   ModifyUserInfoReq_USR_T = 20055,
   ModifyUserInfoRsp_USR_T = 20056,
+  RetrievePwdReq_USR_T = 20057,
+  RetrievePwdRsp_USR_T = 20058,
   LoginReq_USR_T = 20060,
   LoginRsp_USR_T = 20070,
   LogoutReq_USR_T = 20080,
@@ -4178,10 +4186,24 @@ class ModifyUserInfoReq_USR : public ::google::protobuf::Message /* @@protoc_ins
 
   // accessors -------------------------------------------------------
 
-  // .Interactive.Message.User userInfo = 1;
+  // string strOldPwd = 1;
+  void clear_stroldpwd();
+  static const int kStrOldPwdFieldNumber = 1;
+  const ::std::string& stroldpwd() const;
+  void set_stroldpwd(const ::std::string& value);
+  #if LANG_CXX11
+  void set_stroldpwd(::std::string&& value);
+  #endif
+  void set_stroldpwd(const char* value);
+  void set_stroldpwd(const char* value, size_t size);
+  ::std::string* mutable_stroldpwd();
+  ::std::string* release_stroldpwd();
+  void set_allocated_stroldpwd(::std::string* stroldpwd);
+
+  // .Interactive.Message.User userInfo = 2;
   bool has_userinfo() const;
   void clear_userinfo();
-  static const int kUserInfoFieldNumber = 1;
+  static const int kUserInfoFieldNumber = 2;
   const ::Interactive::Message::User& userinfo() const;
   ::Interactive::Message::User* mutable_userinfo();
   ::Interactive::Message::User* release_userinfo();
@@ -4191,6 +4213,7 @@ class ModifyUserInfoReq_USR : public ::google::protobuf::Message /* @@protoc_ins
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr stroldpwd_;
   ::Interactive::Message::User* userinfo_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -4279,6 +4302,203 @@ class ModifyUserInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_ins
   void set_allocated_strvalue(::std::string* strvalue);
 
   // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyUserInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RetrievePwdReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RetrievePwdReq_USR) */ {
+ public:
+  RetrievePwdReq_USR();
+  virtual ~RetrievePwdReq_USR();
+
+  RetrievePwdReq_USR(const RetrievePwdReq_USR& from);
+
+  inline RetrievePwdReq_USR& operator=(const RetrievePwdReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RetrievePwdReq_USR& default_instance();
+
+  static inline const RetrievePwdReq_USR* internal_default_instance() {
+    return reinterpret_cast<const RetrievePwdReq_USR*>(
+               &_RetrievePwdReq_USR_default_instance_);
+  }
+
+  void Swap(RetrievePwdReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RetrievePwdReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RetrievePwdReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RetrievePwdReq_USR& from);
+  void MergeFrom(const RetrievePwdReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RetrievePwdReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserName = 1;
+  void clear_strusername();
+  static const int kStrUserNameFieldNumber = 1;
+  const ::std::string& strusername() const;
+  void set_strusername(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strusername(::std::string&& value);
+  #endif
+  void set_strusername(const char* value);
+  void set_strusername(const char* value, size_t size);
+  ::std::string* mutable_strusername();
+  ::std::string* release_strusername();
+  void set_allocated_strusername(::std::string* strusername);
+
+  // string strEmail = 2;
+  void clear_stremail();
+  static const int kStrEmailFieldNumber = 2;
+  const ::std::string& stremail() const;
+  void set_stremail(const ::std::string& value);
+  #if LANG_CXX11
+  void set_stremail(::std::string&& value);
+  #endif
+  void set_stremail(const char* value);
+  void set_stremail(const char* value, size_t size);
+  ::std::string* mutable_stremail();
+  ::std::string* release_stremail();
+  void set_allocated_stremail(::std::string* stremail);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RetrievePwdReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strusername_;
+  ::google::protobuf::internal::ArenaStringPtr stremail_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RetrievePwdRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RetrievePwdRsp_USR) */ {
+ public:
+  RetrievePwdRsp_USR();
+  virtual ~RetrievePwdRsp_USR();
+
+  RetrievePwdRsp_USR(const RetrievePwdRsp_USR& from);
+
+  inline RetrievePwdRsp_USR& operator=(const RetrievePwdRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RetrievePwdRsp_USR& default_instance();
+
+  static inline const RetrievePwdRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const RetrievePwdRsp_USR*>(
+               &_RetrievePwdRsp_USR_default_instance_);
+  }
+
+  void Swap(RetrievePwdRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RetrievePwdRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RetrievePwdRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RetrievePwdRsp_USR& from);
+  void MergeFrom(const RetrievePwdRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RetrievePwdRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RetrievePwdRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -9265,6 +9485,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ModifyUserInfoReq_USR* release_modifyuserinforeq_usr_value();
   void set_allocated_modifyuserinforeq_usr_value(::Interactive::Message::ModifyUserInfoReq_USR* modifyuserinforeq_usr_value);
 
+  // .Interactive.Message.RetrievePwdReq_USR RetrievePwdReq_USR_Value = 104;
+  bool has_retrievepwdreq_usr_value() const;
+  void clear_retrievepwdreq_usr_value();
+  static const int kRetrievePwdReqUSRValueFieldNumber = 104;
+  const ::Interactive::Message::RetrievePwdReq_USR& retrievepwdreq_usr_value() const;
+  ::Interactive::Message::RetrievePwdReq_USR* mutable_retrievepwdreq_usr_value();
+  ::Interactive::Message::RetrievePwdReq_USR* release_retrievepwdreq_usr_value();
+  void set_allocated_retrievepwdreq_usr_value(::Interactive::Message::RetrievePwdReq_USR* retrievepwdreq_usr_value);
+
   // .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
   bool has_loginreq_usr_value() const;
   void clear_loginreq_usr_value();
@@ -9499,6 +9728,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::UnRegisterUserReq_USR* unregisteruserreq_usr_value_;
   ::Interactive::Message::QueryUsrInfoReq_USR* queryusrinforeq_usr_value_;
   ::Interactive::Message::ModifyUserInfoReq_USR* modifyuserinforeq_usr_value_;
+  ::Interactive::Message::RetrievePwdReq_USR* retrievepwdreq_usr_value_;
   ::Interactive::Message::LoginReq_USR* loginreq_usr_value_;
   ::Interactive::Message::LogoutReq_USR* logoutreq_usr_value_;
   ::Interactive::Message::ShakehandReq_USR* shakehandreq_usr_value_;
@@ -9735,6 +9965,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ModifyUserInfoRsp_USR* release_modifyuserinforsp_usr_value();
   void set_allocated_modifyuserinforsp_usr_value(::Interactive::Message::ModifyUserInfoRsp_USR* modifyuserinforsp_usr_value);
 
+  // .Interactive.Message.RetrievePwdRsp_USR RetrievePwdRsp_USR_Value = 124;
+  bool has_retrievepwdrsp_usr_value() const;
+  void clear_retrievepwdrsp_usr_value();
+  static const int kRetrievePwdRspUSRValueFieldNumber = 124;
+  const ::Interactive::Message::RetrievePwdRsp_USR& retrievepwdrsp_usr_value() const;
+  ::Interactive::Message::RetrievePwdRsp_USR* mutable_retrievepwdrsp_usr_value();
+  ::Interactive::Message::RetrievePwdRsp_USR* release_retrievepwdrsp_usr_value();
+  void set_allocated_retrievepwdrsp_usr_value(::Interactive::Message::RetrievePwdRsp_USR* retrievepwdrsp_usr_value);
+
   // .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
   bool has_loginrsp_usr_value() const;
   void clear_loginrsp_usr_value();
@@ -9958,6 +10197,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::UnRegisterUserRsp_USR* unregisteruserrsp_usr_value_;
   ::Interactive::Message::QueryUsrInfoRsp_USR* queryusrinforsp_usr_value_;
   ::Interactive::Message::ModifyUserInfoRsp_USR* modifyuserinforsp_usr_value_;
+  ::Interactive::Message::RetrievePwdRsp_USR* retrievepwdrsp_usr_value_;
   ::Interactive::Message::LoginRsp_USR* loginrsp_usr_value_;
   ::Interactive::Message::LogoutRsp_USR* logoutrsp_usr_value_;
   ::Interactive::Message::ShakehandRsp_USR* shakehandrsp_usr_value_;
@@ -14543,7 +14783,59 @@ inline void QueryUsrInfoRsp_USR::set_allocated_strvalue(::std::string* strvalue)
 
 // ModifyUserInfoReq_USR
 
-// .Interactive.Message.User userInfo = 1;
+// string strOldPwd = 1;
+inline void ModifyUserInfoReq_USR::clear_stroldpwd() {
+  stroldpwd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyUserInfoReq_USR::stroldpwd() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+  return stroldpwd_.GetNoArena();
+}
+inline void ModifyUserInfoReq_USR::set_stroldpwd(const ::std::string& value) {
+  
+  stroldpwd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+}
+#if LANG_CXX11
+inline void ModifyUserInfoReq_USR::set_stroldpwd(::std::string&& value) {
+  
+  stroldpwd_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+}
+#endif
+inline void ModifyUserInfoReq_USR::set_stroldpwd(const char* value) {
+  
+  stroldpwd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+}
+inline void ModifyUserInfoReq_USR::set_stroldpwd(const char* value, size_t size) {
+  
+  stroldpwd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+}
+inline ::std::string* ModifyUserInfoReq_USR::mutable_stroldpwd() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+  return stroldpwd_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyUserInfoReq_USR::release_stroldpwd() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+  
+  return stroldpwd_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyUserInfoReq_USR::set_allocated_stroldpwd(::std::string* stroldpwd) {
+  if (stroldpwd != NULL) {
+    
+  } else {
+    
+  }
+  stroldpwd_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stroldpwd);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyUserInfoReq_USR.strOldPwd)
+}
+
+// .Interactive.Message.User userInfo = 2;
 inline bool ModifyUserInfoReq_USR::has_userinfo() const {
   return this != internal_default_instance() && userinfo_ != NULL;
 }
@@ -14636,6 +14928,170 @@ inline void ModifyUserInfoRsp_USR::set_allocated_strvalue(::std::string* strvalu
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyUserInfoRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// RetrievePwdReq_USR
+
+// string strUserName = 1;
+inline void RetrievePwdReq_USR::clear_strusername() {
+  strusername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RetrievePwdReq_USR::strusername() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RetrievePwdReq_USR.strUserName)
+  return strusername_.GetNoArena();
+}
+inline void RetrievePwdReq_USR::set_strusername(const ::std::string& value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RetrievePwdReq_USR.strUserName)
+}
+#if LANG_CXX11
+inline void RetrievePwdReq_USR::set_strusername(::std::string&& value) {
+  
+  strusername_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RetrievePwdReq_USR.strUserName)
+}
+#endif
+inline void RetrievePwdReq_USR::set_strusername(const char* value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RetrievePwdReq_USR.strUserName)
+}
+inline void RetrievePwdReq_USR::set_strusername(const char* value, size_t size) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RetrievePwdReq_USR.strUserName)
+}
+inline ::std::string* RetrievePwdReq_USR::mutable_strusername() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RetrievePwdReq_USR.strUserName)
+  return strusername_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RetrievePwdReq_USR::release_strusername() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RetrievePwdReq_USR.strUserName)
+  
+  return strusername_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RetrievePwdReq_USR::set_allocated_strusername(::std::string* strusername) {
+  if (strusername != NULL) {
+    
+  } else {
+    
+  }
+  strusername_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strusername);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RetrievePwdReq_USR.strUserName)
+}
+
+// string strEmail = 2;
+inline void RetrievePwdReq_USR::clear_stremail() {
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RetrievePwdReq_USR::stremail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RetrievePwdReq_USR.strEmail)
+  return stremail_.GetNoArena();
+}
+inline void RetrievePwdReq_USR::set_stremail(const ::std::string& value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RetrievePwdReq_USR.strEmail)
+}
+#if LANG_CXX11
+inline void RetrievePwdReq_USR::set_stremail(::std::string&& value) {
+  
+  stremail_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RetrievePwdReq_USR.strEmail)
+}
+#endif
+inline void RetrievePwdReq_USR::set_stremail(const char* value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RetrievePwdReq_USR.strEmail)
+}
+inline void RetrievePwdReq_USR::set_stremail(const char* value, size_t size) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RetrievePwdReq_USR.strEmail)
+}
+inline ::std::string* RetrievePwdReq_USR::mutable_stremail() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RetrievePwdReq_USR.strEmail)
+  return stremail_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RetrievePwdReq_USR::release_stremail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RetrievePwdReq_USR.strEmail)
+  
+  return stremail_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RetrievePwdReq_USR::set_allocated_stremail(::std::string* stremail) {
+  if (stremail != NULL) {
+    
+  } else {
+    
+  }
+  stremail_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stremail);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RetrievePwdReq_USR.strEmail)
+}
+
+// -------------------------------------------------------------------
+
+// RetrievePwdRsp_USR
+
+// string strValue = 1;
+inline void RetrievePwdRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RetrievePwdRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RetrievePwdRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void RetrievePwdRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RetrievePwdRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void RetrievePwdRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RetrievePwdRsp_USR.strValue)
+}
+#endif
+inline void RetrievePwdRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RetrievePwdRsp_USR.strValue)
+}
+inline void RetrievePwdRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RetrievePwdRsp_USR.strValue)
+}
+inline ::std::string* RetrievePwdRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RetrievePwdRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RetrievePwdRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RetrievePwdRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RetrievePwdRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RetrievePwdRsp_USR.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -19604,6 +20060,45 @@ inline void Req::set_allocated_modifyuserinforeq_usr_value(::Interactive::Messag
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyUserInfoReq_USR_Value)
 }
 
+// .Interactive.Message.RetrievePwdReq_USR RetrievePwdReq_USR_Value = 104;
+inline bool Req::has_retrievepwdreq_usr_value() const {
+  return this != internal_default_instance() && retrievepwdreq_usr_value_ != NULL;
+}
+inline void Req::clear_retrievepwdreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && retrievepwdreq_usr_value_ != NULL) delete retrievepwdreq_usr_value_;
+  retrievepwdreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RetrievePwdReq_USR& Req::retrievepwdreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.RetrievePwdReq_USR_Value)
+  return retrievepwdreq_usr_value_ != NULL ? *retrievepwdreq_usr_value_
+                         : *::Interactive::Message::RetrievePwdReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RetrievePwdReq_USR* Req::mutable_retrievepwdreq_usr_value() {
+  
+  if (retrievepwdreq_usr_value_ == NULL) {
+    retrievepwdreq_usr_value_ = new ::Interactive::Message::RetrievePwdReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.RetrievePwdReq_USR_Value)
+  return retrievepwdreq_usr_value_;
+}
+inline ::Interactive::Message::RetrievePwdReq_USR* Req::release_retrievepwdreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.RetrievePwdReq_USR_Value)
+  
+  ::Interactive::Message::RetrievePwdReq_USR* temp = retrievepwdreq_usr_value_;
+  retrievepwdreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_retrievepwdreq_usr_value(::Interactive::Message::RetrievePwdReq_USR* retrievepwdreq_usr_value) {
+  delete retrievepwdreq_usr_value_;
+  retrievepwdreq_usr_value_ = retrievepwdreq_usr_value;
+  if (retrievepwdreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.RetrievePwdReq_USR_Value)
+}
+
 // .Interactive.Message.LoginReq_USR LoginReq_USR_Value = 110;
 inline bool Req::has_loginreq_usr_value() const {
   return this != internal_default_instance() && loginreq_usr_value_ != NULL;
@@ -21156,6 +21651,45 @@ inline void Rsp::set_allocated_modifyuserinforsp_usr_value(::Interactive::Messag
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyUserInfoRsp_USR_Value)
 }
 
+// .Interactive.Message.RetrievePwdRsp_USR RetrievePwdRsp_USR_Value = 124;
+inline bool Rsp::has_retrievepwdrsp_usr_value() const {
+  return this != internal_default_instance() && retrievepwdrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_retrievepwdrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && retrievepwdrsp_usr_value_ != NULL) delete retrievepwdrsp_usr_value_;
+  retrievepwdrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RetrievePwdRsp_USR& Rsp::retrievepwdrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.RetrievePwdRsp_USR_Value)
+  return retrievepwdrsp_usr_value_ != NULL ? *retrievepwdrsp_usr_value_
+                         : *::Interactive::Message::RetrievePwdRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RetrievePwdRsp_USR* Rsp::mutable_retrievepwdrsp_usr_value() {
+  
+  if (retrievepwdrsp_usr_value_ == NULL) {
+    retrievepwdrsp_usr_value_ = new ::Interactive::Message::RetrievePwdRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.RetrievePwdRsp_USR_Value)
+  return retrievepwdrsp_usr_value_;
+}
+inline ::Interactive::Message::RetrievePwdRsp_USR* Rsp::release_retrievepwdrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.RetrievePwdRsp_USR_Value)
+  
+  ::Interactive::Message::RetrievePwdRsp_USR* temp = retrievepwdrsp_usr_value_;
+  retrievepwdrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_retrievepwdrsp_usr_value(::Interactive::Message::RetrievePwdRsp_USR* retrievepwdrsp_usr_value) {
+  delete retrievepwdrsp_usr_value_;
+  retrievepwdrsp_usr_value_ = retrievepwdrsp_usr_value;
+  if (retrievepwdrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.RetrievePwdRsp_USR_Value)
+}
+
 // .Interactive.Message.LoginRsp_USR LoginRsp_USR_Value = 130;
 inline bool Rsp::has_loginrsp_usr_value() const {
   return this != internal_default_instance() && loginrsp_usr_value_ != NULL;
@@ -22177,6 +22711,10 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

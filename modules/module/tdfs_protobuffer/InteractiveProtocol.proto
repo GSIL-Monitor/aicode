@@ -81,6 +81,8 @@ enum MsgType
   QueryUsrInfoRsp_USR_T = 20052;
   ModifyUserInfoReq_USR_T = 20055;   //用户修改
   ModifyUserInfoRsp_USR_T = 20056;
+  RetrievePwdReq_USR_T = 20057;      //用户取回密码
+  RetrievePwdRsp_USR_T = 20058;
   LoginReq_USR_T = 20060;            //用户登录用户设备管理服务器
   LoginRsp_USR_T = 20070; 
   LogoutReq_USR_T = 20080;           //用户登出用户设备管理服务器
@@ -371,15 +373,28 @@ message QueryUsrInfoRsp_USR                     //查询用户信息响应
   string strValue = 2;
 }
 
-message ModifyUserInfoReq_USR                   //用户修改信息
+message ModifyUserInfoReq_USR                   //用户修改信息请求
 {
-  User userInfo = 1;
+  string strOldPwd = 1;
+  User userInfo = 2;
 }
 
 message ModifyUserInfoRsp_USR                   //用户修改信息响应
 {
   string strValue = 1;
 }
+
+message RetrievePwdReq_USR                      //找回密码请求
+{
+  string strUserName = 1;
+  string strEmail = 2;
+}
+
+message RetrievePwdRsp_USR                      //找回密码响应
+{
+  string strValue = 1;
+}
+
 
 message LoginReq_USR                            //用户登录请求
 {
@@ -687,6 +702,7 @@ message Req
   UnRegisterUserReq_USR UnRegisterUserReq_USR_Value = 90;          //用户注销
   QueryUsrInfoReq_USR QueryUsrInfoReq_USR_Value = 100;             //用户查询
   ModifyUserInfoReq_USR ModifyUserInfoReq_USR_Value = 102;         //用户修改
+  RetrievePwdReq_USR RetrievePwdReq_USR_Value = 104;               //用户取回密码
   LoginReq_USR LoginReq_USR_Value = 110;                           //用户登录用户设备管理服务器
   LogoutReq_USR LogoutReq_USR_Value = 120;                         //用户登出用户设备管理服务器
   ShakehandReq_USR ShakehandReq_USR_Value = 130;                   //用户与用户设备管理服务器握手
@@ -745,6 +761,7 @@ message Rsp
   UnRegisterUserRsp_USR UnRegisterUserRsp_USR_Value = 110;         //用户注销
   QueryUsrInfoRsp_USR QueryUsrInfoRsp_USR_Value = 120;             //用户查询
   ModifyUserInfoRsp_USR ModifyUserInfoRsp_USR_Value = 122;         //用户修改
+  RetrievePwdRsp_USR RetrievePwdRsp_USR_Value = 124;               //用户取回密码
   LoginRsp_USR LoginRsp_USR_Value = 130;                           //用户登录用户设备管理服务器
   LogoutRsp_USR LogoutRsp_USR_Value = 140;                         //用户登出用户设备管理服务器
   ShakehandRsp_USR ShakehandRsp_USR_Value = 150;                   //用户与用户设备管理服务器握手
