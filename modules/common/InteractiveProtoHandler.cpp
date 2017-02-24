@@ -1447,48 +1447,11 @@ void InteractiveProtoHandler::RegisterUserReq_USR::UnSerializer(const Interactiv
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strcreatedate();
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().strextend();
-
+    m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().stremail();
+    
     m_strValue = InteractiveMsg.reqvalue().registeruserreq_usr_value().strvalue();
     
-
-    ////¡–±Ì Ù–‘
-    //m_userInfo.m_ownerDevInfoList.clear();
-    //int iCount = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo_size();
-    //for (int i = 0; i < iCount; ++i)
-    //{
-    //    Device devInfo;
-    //    devInfo.m_strDevID = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strdevid();
-    //    devInfo.m_strDevName = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strdevname();
-    //    devInfo.m_strDevPassword = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strdevpassword();
-    //    devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).uitypeinfo();
-    //    devInfo.m_strCreatedate = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strcreatedate();
-    //    devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strinnerinfo();
-    //    devInfo.m_strOwnerUserID = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strowneruserid();
-
-    //    devInfo.m_sharingUserIDList.clear();
-    //    int iCountTmp = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strsharinguserid_size();
-    //    for (int k = 0; k < iCountTmp; ++k)
-    //    {
-    //        devInfo.m_sharingUserIDList.push_back(InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strsharinguserid(k));
-    //    }
-
-    //    devInfo.m_sharedUserIDList.clear();
-    //    int iCountTmp = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strshareduserid_size();
-    //    for (int k = 0; k < iCountTmp; ++k)
-    //    {
-    //        devInfo.m_sharedUserIDList.push_back(InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).strshareduserid(k));
-    //    }
-
-    //    devInfo.m_strItemsList.clear();
-    //    int iCountTmp = InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).stritems_size();
-    //    for (int k = 0; k < iCountTmp; ++k)
-    //    {
-    //        devInfo.m_strItemsList.push_back(InteractiveMsg.reqvalue().registeruserreq_usr_value().userinfo().ownerdevinfo(i).stritems(k));
-    //    }
-    //    
-    //    m_userInfo.m_ownerDevInfoList.push_back(devInfo);
-    //}
-
 }
 
 void InteractiveProtoHandler::RegisterUserReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1506,6 +1469,8 @@ void InteractiveProtoHandler::RegisterUserReq_USR::Serializer(InteractiveMessage
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
+    uinfo->set_straliasname(m_userInfo.m_strAliasName);
+    uinfo->set_stremail(m_userInfo.m_strEmail);
     
 }
 
@@ -1537,6 +1502,8 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::UnSerializer(const Interact
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strcreatedate();
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().strextend();
+    m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().userinfo().stremail();
 
     m_strValue = InteractiveMsg.reqvalue().unregisteruserreq_usr_value().strvalue();
     
@@ -1557,6 +1524,8 @@ void InteractiveProtoHandler::UnRegisterUserReq_USR::Serializer(InteractiveMessa
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
+    uinfo->set_straliasname(m_userInfo.m_strAliasName);
+    uinfo->set_stremail(m_userInfo.m_strEmail);
 
 }
 
@@ -1605,6 +1574,9 @@ void InteractiveProtoHandler::QueryUsrInfoRsp_USR::UnSerializer(const Interactiv
     m_userInfo.m_strUserPassword = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().struserpassword();
     m_userInfo.m_uiStatus = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().uistatus();
     m_userInfo.m_uiTypeInfo = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().uitypeinfo();
+    m_userInfo.m_strAliasName = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().userinfo().stremail();
+
 
     m_strValue = InteractiveMsg.rspvalue().queryusrinforsp_usr_value().strvalue();
 
@@ -1622,7 +1594,9 @@ void InteractiveProtoHandler::QueryUsrInfoRsp_USR::Serializer(InteractiveMessage
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_struserpassword(m_userInfo.m_strUserPassword);
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_uistatus(m_userInfo.m_uiStatus);
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_uitypeinfo(m_userInfo.m_uiTypeInfo);
-
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_straliasname(m_userInfo.m_strAliasName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->mutable_userinfo()->set_stremail(m_userInfo.m_strEmail);
+    
     InteractiveMsg.mutable_rspvalue()->mutable_queryusrinforsp_usr_value()->set_strvalue(m_strValue);
 }
 
@@ -1636,6 +1610,9 @@ void InteractiveProtoHandler::ModifyUserInfoReq_USR::UnSerializer(const Interact
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strcreatedate();
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().strextend();
+    m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.reqvalue().modifyuserinforeq_usr_value().userinfo().stremail();
+
 }
 
 void InteractiveProtoHandler::ModifyUserInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1651,6 +1628,9 @@ void InteractiveProtoHandler::ModifyUserInfoReq_USR::Serializer(InteractiveMessa
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
+    uinfo->set_straliasname(m_userInfo.m_strAliasName);
+    uinfo->set_stremail(m_userInfo.m_strEmail);
+
 }
 
 void InteractiveProtoHandler::ModifyUserInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -1676,6 +1656,8 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strcreatedate();
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().strextend();
+    m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().stremail();
 
     m_strValue = InteractiveMsg.reqvalue().loginreq_usr_value().strvalue();
 }
@@ -1695,6 +1677,8 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
+    uinfo->set_straliasname(m_userInfo.m_strAliasName);
+    uinfo->set_stremail(m_userInfo.m_strEmail);
 
 }
 
@@ -1730,7 +1714,9 @@ void InteractiveProtoHandler::LogoutReq_USR::UnSerializer(const InteractiveMessa
     m_userInfo.m_strCreatedate = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strcreatedate();
     m_userInfo.m_uiStatus = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().uistatus();
     m_userInfo.m_strExtend = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().strextend();
-
+    m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().straliasname();
+    m_userInfo.m_strEmail = InteractiveMsg.reqvalue().logoutreq_usr_value().userinfo().stremail();
+    
     m_strValue = InteractiveMsg.reqvalue().logoutreq_usr_value().strvalue();
 }
 
@@ -1749,6 +1735,8 @@ void InteractiveProtoHandler::LogoutReq_USR::Serializer(InteractiveMessage &Inte
     uinfo->set_strcreatedate(m_userInfo.m_strCreatedate);
     uinfo->set_uistatus(m_userInfo.m_uiStatus);
     uinfo->set_strextend(m_userInfo.m_strExtend);
+    uinfo->set_straliasname(m_userInfo.m_strAliasName);
+    uinfo->set_stremail(m_userInfo.m_strEmail);
 
 }
 
@@ -2727,6 +2715,8 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::UnSerializer(const Int
         usr.m_strCreatedate = ItUser.strcreatedate();
         usr.m_uiStatus = ItUser.uistatus();
         usr.m_strExtend = ItUser.strextend();
+        usr.m_strAliasName = ItUser.straliasname();
+        usr.m_strEmail = ItUser.stremail();
 
         m_userInfoList.push_back(usr);
     }
@@ -2757,7 +2747,9 @@ void InteractiveProtoHandler::GetOnlineUserInfoRsp_INNER::Serializer(Interactive
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
         uinfo->set_uistatus(itBegin->m_uiStatus);
         uinfo->set_strextend(itBegin->m_strExtend);
-
+        uinfo->set_straliasname(itBegin->m_strAliasName);
+        uinfo->set_stremail(itBegin->m_strEmail);
+        
         ++iUser;
         ++itBegin;
     }
@@ -2782,6 +2774,8 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::UnSerializer(const 
         usr.m_strCreatedate = ItUser.strcreatedate();
         usr.m_uiStatus = ItUser.uistatus();
         usr.m_strExtend = ItUser.strextend();
+        usr.m_strAliasName = ItUser.straliasname();
+        usr.m_strEmail = ItUser.stremail();
 
         m_userInfoList.push_back(usr);
     }
@@ -2812,6 +2806,8 @@ void InteractiveProtoHandler::BroadcastOnlineUserInfo_INNER::Serializer(Interact
         uinfo->set_strcreatedate(itBegin->m_strCreatedate);
         uinfo->set_uistatus(itBegin->m_uiStatus);
         uinfo->set_strextend(itBegin->m_strExtend);
+        uinfo->set_straliasname(itBegin->m_strAliasName);
+        uinfo->set_stremail(itBegin->m_strEmail);
         
         ++iUser;
         ++itBegin;

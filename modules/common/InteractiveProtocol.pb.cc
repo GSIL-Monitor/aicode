@@ -226,6 +226,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, uistatus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strextend_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, straliasname_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, stremail_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Relation, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -803,86 +805,86 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(PermissionOfUser)},
   { 6, -1, sizeof(Device)},
   { 18, -1, sizeof(User)},
-  { 29, -1, sizeof(Relation)},
-  { 39, -1, sizeof(File)},
-  { 56, -1, sizeof(FileUrl)},
-  { 62, -1, sizeof(GetAccessAddressReq_DEV)},
-  { 68, -1, sizeof(GetAccessAddressRsp_DEV)},
-  { 75, -1, sizeof(LoginReq_DEV)},
-  { 82, -1, sizeof(LoginRsp_DEV)},
-  { 87, -1, sizeof(LogoutReq_DEV)},
-  { 93, -1, sizeof(LogoutRsp_DEV)},
-  { 98, -1, sizeof(ShakehandReq_DEV)},
-  { 104, -1, sizeof(ShakehandRsp_DEV)},
-  { 109, -1, sizeof(ConfigInfoReq_DEV)},
-  { 115, -1, sizeof(ConfigInfoRsp_DEV)},
-  { 121, -1, sizeof(StorageAddressReq_DEV)},
-  { 129, -1, sizeof(StorageAddressRsp_DEV)},
-  { 135, -1, sizeof(P2pInfoReq_DEV)},
-  { 141, -1, sizeof(P2pInfoRsp_DEV)},
-  { 148, -1, sizeof(AddFileReq_DEV)},
-  { 155, -1, sizeof(AddFileRsp_DEV)},
-  { 161, -1, sizeof(MsgPreHandlerReq_USR)},
-  { 166, -1, sizeof(MsgPreHandlerRsp_USR)},
-  { 171, -1, sizeof(GetAccessAddressReq_USR)},
-  { 177, -1, sizeof(GetAccessAddressRsp_USR)},
-  { 184, -1, sizeof(RegisterUserReq_USR)},
-  { 190, -1, sizeof(RegisterUserRsp_USR)},
-  { 196, -1, sizeof(UnRegisterUserReq_USR)},
-  { 202, -1, sizeof(UnRegisterUserRsp_USR)},
-  { 208, -1, sizeof(QueryUsrInfoReq_USR)},
-  { 214, -1, sizeof(QueryUsrInfoRsp_USR)},
-  { 220, -1, sizeof(ModifyUserInfoReq_USR)},
-  { 225, -1, sizeof(ModifyUserInfoRsp_USR)},
-  { 230, -1, sizeof(LoginReq_USR)},
-  { 236, -1, sizeof(LoginRsp_USR)},
-  { 243, -1, sizeof(LogoutReq_USR)},
-  { 249, -1, sizeof(LogoutRsp_USR)},
-  { 254, -1, sizeof(ShakehandReq_USR)},
-  { 260, -1, sizeof(ShakehandRsp_USR)},
-  { 265, -1, sizeof(ConfigInfoReq_USR)},
-  { 271, -1, sizeof(ConfigInfoRsp_USR)},
-  { 277, -1, sizeof(AddDevReq_USR)},
-  { 283, -1, sizeof(AddDevRsp_USR)},
-  { 288, -1, sizeof(DelDevReq_USR)},
-  { 294, -1, sizeof(DelDevRsp_USR)},
-  { 300, -1, sizeof(ModifyDevReq_USR)},
-  { 306, -1, sizeof(ModifyDevRsp_USR)},
-  { 311, -1, sizeof(QueryDevInfoReq_USR)},
-  { 317, -1, sizeof(QueryDevInfoRsp_USR)},
-  { 323, -1, sizeof(QueryDevReq_USR)},
-  { 330, -1, sizeof(QueryDevRsp_USR)},
-  { 335, -1, sizeof(QueryUserReq_USR)},
-  { 342, -1, sizeof(QueryUserRsp_USR)},
-  { 347, -1, sizeof(SharingDevReq_USR)},
-  { 353, -1, sizeof(SharingDevRsp_USR)},
-  { 358, -1, sizeof(CancelSharedDevReq_USR)},
-  { 364, -1, sizeof(CancelSharedDevRsp_USR)},
-  { 369, -1, sizeof(AddFriendsReq_USR)},
-  { 375, -1, sizeof(AddFriendsRsp_USR)},
-  { 380, -1, sizeof(DelFriendsReq_USR)},
-  { 386, -1, sizeof(DelFriendsRsp_USR)},
-  { 392, -1, sizeof(QueryFriendsReq_USR)},
-  { 399, -1, sizeof(QueryFriendsRsp_USR)},
-  { 404, -1, sizeof(StorageAddressReq_USR)},
-  { 412, -1, sizeof(StorageAddressRsp_USR)},
-  { 418, -1, sizeof(P2pInfoReq_USR)},
-  { 425, -1, sizeof(P2pInfoRsp_USR)},
-  { 432, -1, sizeof(DeleteFileReq_USR)},
-  { 438, -1, sizeof(DeleteFileRsp_USR)},
-  { 444, -1, sizeof(DownloadFileReq_USR)},
-  { 450, -1, sizeof(DownloadFileRsp_USR)},
-  { 456, -1, sizeof(QueryFileReq_USR)},
-  { 467, -1, sizeof(QueryFileRsp_USR)},
-  { 473, -1, sizeof(GetOnlineDevInfoReq_INNER)},
-  { 478, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
-  { 484, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
-  { 490, -1, sizeof(GetOnlineUserInfoReq_INNER)},
-  { 495, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
-  { 501, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
-  { 507, -1, sizeof(Req)},
-  { 549, -1, sizeof(Rsp)},
-  { 591, -1, sizeof(InteractiveMessage)},
+  { 31, -1, sizeof(Relation)},
+  { 41, -1, sizeof(File)},
+  { 58, -1, sizeof(FileUrl)},
+  { 64, -1, sizeof(GetAccessAddressReq_DEV)},
+  { 70, -1, sizeof(GetAccessAddressRsp_DEV)},
+  { 77, -1, sizeof(LoginReq_DEV)},
+  { 84, -1, sizeof(LoginRsp_DEV)},
+  { 89, -1, sizeof(LogoutReq_DEV)},
+  { 95, -1, sizeof(LogoutRsp_DEV)},
+  { 100, -1, sizeof(ShakehandReq_DEV)},
+  { 106, -1, sizeof(ShakehandRsp_DEV)},
+  { 111, -1, sizeof(ConfigInfoReq_DEV)},
+  { 117, -1, sizeof(ConfigInfoRsp_DEV)},
+  { 123, -1, sizeof(StorageAddressReq_DEV)},
+  { 131, -1, sizeof(StorageAddressRsp_DEV)},
+  { 137, -1, sizeof(P2pInfoReq_DEV)},
+  { 143, -1, sizeof(P2pInfoRsp_DEV)},
+  { 150, -1, sizeof(AddFileReq_DEV)},
+  { 157, -1, sizeof(AddFileRsp_DEV)},
+  { 163, -1, sizeof(MsgPreHandlerReq_USR)},
+  { 168, -1, sizeof(MsgPreHandlerRsp_USR)},
+  { 173, -1, sizeof(GetAccessAddressReq_USR)},
+  { 179, -1, sizeof(GetAccessAddressRsp_USR)},
+  { 186, -1, sizeof(RegisterUserReq_USR)},
+  { 192, -1, sizeof(RegisterUserRsp_USR)},
+  { 198, -1, sizeof(UnRegisterUserReq_USR)},
+  { 204, -1, sizeof(UnRegisterUserRsp_USR)},
+  { 210, -1, sizeof(QueryUsrInfoReq_USR)},
+  { 216, -1, sizeof(QueryUsrInfoRsp_USR)},
+  { 222, -1, sizeof(ModifyUserInfoReq_USR)},
+  { 227, -1, sizeof(ModifyUserInfoRsp_USR)},
+  { 232, -1, sizeof(LoginReq_USR)},
+  { 238, -1, sizeof(LoginRsp_USR)},
+  { 245, -1, sizeof(LogoutReq_USR)},
+  { 251, -1, sizeof(LogoutRsp_USR)},
+  { 256, -1, sizeof(ShakehandReq_USR)},
+  { 262, -1, sizeof(ShakehandRsp_USR)},
+  { 267, -1, sizeof(ConfigInfoReq_USR)},
+  { 273, -1, sizeof(ConfigInfoRsp_USR)},
+  { 279, -1, sizeof(AddDevReq_USR)},
+  { 285, -1, sizeof(AddDevRsp_USR)},
+  { 290, -1, sizeof(DelDevReq_USR)},
+  { 296, -1, sizeof(DelDevRsp_USR)},
+  { 302, -1, sizeof(ModifyDevReq_USR)},
+  { 308, -1, sizeof(ModifyDevRsp_USR)},
+  { 313, -1, sizeof(QueryDevInfoReq_USR)},
+  { 319, -1, sizeof(QueryDevInfoRsp_USR)},
+  { 325, -1, sizeof(QueryDevReq_USR)},
+  { 332, -1, sizeof(QueryDevRsp_USR)},
+  { 337, -1, sizeof(QueryUserReq_USR)},
+  { 344, -1, sizeof(QueryUserRsp_USR)},
+  { 349, -1, sizeof(SharingDevReq_USR)},
+  { 355, -1, sizeof(SharingDevRsp_USR)},
+  { 360, -1, sizeof(CancelSharedDevReq_USR)},
+  { 366, -1, sizeof(CancelSharedDevRsp_USR)},
+  { 371, -1, sizeof(AddFriendsReq_USR)},
+  { 377, -1, sizeof(AddFriendsRsp_USR)},
+  { 382, -1, sizeof(DelFriendsReq_USR)},
+  { 388, -1, sizeof(DelFriendsRsp_USR)},
+  { 394, -1, sizeof(QueryFriendsReq_USR)},
+  { 401, -1, sizeof(QueryFriendsRsp_USR)},
+  { 406, -1, sizeof(StorageAddressReq_USR)},
+  { 414, -1, sizeof(StorageAddressRsp_USR)},
+  { 420, -1, sizeof(P2pInfoReq_USR)},
+  { 427, -1, sizeof(P2pInfoRsp_USR)},
+  { 434, -1, sizeof(DeleteFileReq_USR)},
+  { 440, -1, sizeof(DeleteFileRsp_USR)},
+  { 446, -1, sizeof(DownloadFileReq_USR)},
+  { 452, -1, sizeof(DownloadFileRsp_USR)},
+  { 458, -1, sizeof(QueryFileReq_USR)},
+  { 469, -1, sizeof(QueryFileRsp_USR)},
+  { 475, -1, sizeof(GetOnlineDevInfoReq_INNER)},
+  { 480, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
+  { 486, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
+  { 492, -1, sizeof(GetOnlineUserInfoReq_INNER)},
+  { 497, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
+  { 503, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
+  { 509, -1, sizeof(Req)},
+  { 551, -1, sizeof(Rsp)},
+  { 593, -1, sizeof(InteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1440,10 +1442,11 @@ void AddDescriptorsImpl() {
       "trDevPassword\030\003 \001(\t\022\022\n\nuiTypeInfo\030\004 \001(\r\022"
       "\025\n\rstrCreatedate\030\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r"
       "\022\021\n\tstrExtend\030\007 \001(\t\022\024\n\014strInnerinfo\030\010 \001("
-      "\t\"\227\001\n\004User\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strUser"
+      "\t\"\277\001\n\004User\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strUser"
       "Name\030\002 \001(\t\022\027\n\017strUserPassword\030\003 \001(\t\022\022\n\nu"
       "iTypeInfo\030\004 \001(\r\022\025\n\rstrCreatedate\030\005 \001(\t\022\020"
-      "\n\010uiStatus\030\006 \001(\r\022\021\n\tstrExtend\030\007 \001(\t\"\177\n\010R"
+      "\n\010uiStatus\030\006 \001(\r\022\021\n\tstrExtend\030\007 \001(\t\022\024\n\014s"
+      "trAliasName\030\010 \001(\t\022\020\n\010strEmail\030\t \001(\t\"\177\n\010R"
       "elation\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002"
       " \001(\t\022\022\n\nuiRelation\030\003 \001(\r\022\024\n\014strBeginDate"
       "\030\004 \001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\020\n\010strValue\030\006"
@@ -1785,7 +1788,7 @@ void AddDescriptorsImpl() {
       "NNER_T\020\342\352\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 13978);
+      descriptor, 14018);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -3108,6 +3111,8 @@ const int User::kUiTypeInfoFieldNumber;
 const int User::kStrCreatedateFieldNumber;
 const int User::kUiStatusFieldNumber;
 const int User::kStrExtendFieldNumber;
+const int User::kStrAliasNameFieldNumber;
+const int User::kStrEmailFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 User::User()
@@ -3143,6 +3148,14 @@ User::User(const User& from)
   if (from.strextend().size() > 0) {
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  straliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.straliasname().size() > 0) {
+    straliasname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straliasname_);
+  }
+  stremail_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.stremail().size() > 0) {
+    stremail_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stremail_);
+  }
   ::memcpy(&uitypeinfo_, &from.uitypeinfo_,
     reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
@@ -3155,6 +3168,8 @@ void User::SharedCtor() {
   struserpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
   _cached_size_ = 0;
@@ -3171,6 +3186,8 @@ void User::SharedDtor() {
   struserpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void User::SetCachedSize(int size) const {
@@ -3203,6 +3220,8 @@ void User::Clear() {
   struserpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
 }
@@ -3318,6 +3337,36 @@ bool User::MergePartialFromCodedStream(
         break;
       }
 
+      // string strAliasName = 8;
+      case 8: {
+        if (tag == 66u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_straliasname()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->straliasname().data(), this->straliasname().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.User.strAliasName"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strEmail = 9;
+      case 9: {
+        if (tag == 74u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_stremail()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->stremail().data(), this->stremail().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.User.strEmail"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -3402,6 +3451,26 @@ void User::SerializeWithCachedSizes(
       7, this->strextend(), output);
   }
 
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->straliasname().data(), this->straliasname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strAliasName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->straliasname(), output);
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stremail().data(), this->stremail().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strEmail");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->stremail(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Interactive.Message.User)
 }
 
@@ -3474,6 +3543,28 @@ void User::SerializeWithCachedSizes(
         7, this->strextend(), target);
   }
 
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->straliasname().data(), this->straliasname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strAliasName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->straliasname(), target);
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stremail().data(), this->stremail().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strEmail");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->stremail(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.User)
   return target;
 }
@@ -3515,6 +3606,20 @@ size_t User::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strextend());
+  }
+
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->straliasname());
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->stremail());
   }
 
   // uint32 uiTypeInfo = 4;
@@ -3577,6 +3682,14 @@ void User::MergeFrom(const User& from) {
 
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  if (from.straliasname().size() > 0) {
+
+    straliasname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straliasname_);
+  }
+  if (from.stremail().size() > 0) {
+
+    stremail_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stremail_);
+  }
   if (from.uitypeinfo() != 0) {
     set_uitypeinfo(from.uitypeinfo());
   }
@@ -3613,6 +3726,8 @@ void User::InternalSwap(User* other) {
   struserpassword_.Swap(&other->struserpassword_);
   strcreatedate_.Swap(&other->strcreatedate_);
   strextend_.Swap(&other->strextend_);
+  straliasname_.Swap(&other->straliasname_);
+  stremail_.Swap(&other->stremail_);
   std::swap(uitypeinfo_, other->uitypeinfo_);
   std::swap(uistatus_, other->uistatus_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -3912,6 +4027,110 @@ void User::set_allocated_strextend(::std::string* strextend) {
   }
   strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
+}
+
+// string strAliasName = 8;
+void User::clear_straliasname() {
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& User::straliasname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strAliasName)
+  return straliasname_.GetNoArena();
+}
+void User::set_straliasname(const ::std::string& value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strAliasName)
+}
+#if LANG_CXX11
+void User::set_straliasname(::std::string&& value) {
+  
+  straliasname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strAliasName)
+}
+#endif
+void User::set_straliasname(const char* value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strAliasName)
+}
+void User::set_straliasname(const char* value, size_t size) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strAliasName)
+}
+::std::string* User::mutable_straliasname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strAliasName)
+  return straliasname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* User::release_straliasname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strAliasName)
+  
+  return straliasname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_allocated_straliasname(::std::string* straliasname) {
+  if (straliasname != NULL) {
+    
+  } else {
+    
+  }
+  straliasname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straliasname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strAliasName)
+}
+
+// string strEmail = 9;
+void User::clear_stremail() {
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& User::stremail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strEmail)
+  return stremail_.GetNoArena();
+}
+void User::set_stremail(const ::std::string& value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strEmail)
+}
+#if LANG_CXX11
+void User::set_stremail(::std::string&& value) {
+  
+  stremail_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strEmail)
+}
+#endif
+void User::set_stremail(const char* value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strEmail)
+}
+void User::set_stremail(const char* value, size_t size) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strEmail)
+}
+::std::string* User::mutable_stremail() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strEmail)
+  return stremail_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* User::release_stremail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strEmail)
+  
+  return stremail_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_allocated_stremail(::std::string* stremail) {
+  if (stremail != NULL) {
+    
+  } else {
+    
+  }
+  stremail_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stremail);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strEmail)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

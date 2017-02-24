@@ -138,8 +138,24 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         strExtend = itFind->second;
     }
 
+    std::string strAliasName;
+    itFind = pMsgInfoMap->find("aliasname");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strAliasName = itFind->second;
+    }
+
+    itFind = pMsgInfoMap->find("email");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User email not found.");
+        return blResult;
+    }
+    const std::string strEmail = itFind->second;
+
+
     LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << strType
-         << " and extend is [" << strExtend << "]");
+         << " and extend is [" << strExtend << "]" << " and alias name is " << strAliasName << " and email is " << strEmail);
 
     std::string strUserID;
     if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strUserID))
@@ -296,7 +312,8 @@ bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", boost::lexical_cast<std::string>(userinfo.m_uiTypeInfo)));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", userinfo.m_strCreatedate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", userinfo.m_strExtend));
-    //ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", "xx"));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("aliasname", userinfo.m_strAliasName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("email", userinfo.m_strEmail));
 
     blResult = true;
 
@@ -339,19 +356,33 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     }
     const std::string strUserid = itFind->second;
 
-    std::string strUserName;
-    itFind = pMsgInfoMap->find("username");
+    std::string strAliasName;
+    itFind = pMsgInfoMap->find("aliasname");
     if (pMsgInfoMap->end() != itFind)
     {
-        strUserName = itFind->second;
+        strAliasName = itFind->second;
     }
 
-    std::string strUserPwd;
-    itFind = pMsgInfoMap->find("userpwd");
+    std::string strNewUserPwd;
+    itFind = pMsgInfoMap->find("newuserpwd");
     if (pMsgInfoMap->end() != itFind)
     {
-        strUserPwd = itFind->second;
+        strNewUserPwd = itFind->second;
     }
+
+    std::string strOldUserPwd;
+    itFind = pMsgInfoMap->find("olduserpwd");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOldUserPwd = itFind->second;
+    }
+
+    if ((strNewUserPwd.empty() && !strOldUserPwd.empty()) || (!strNewUserPwd.empty() && strOldUserPwd.empty()))
+    {
+        LOG_ERROR_RLD("User new pwd and old pwd were both needed, new pwd is " << strNewUserPwd << " and old pwd is " << strOldUserPwd);
+        return blResult;
+    }
+
 
     unsigned int uiType = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("type");
@@ -380,11 +411,19 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
         strExtend = itFind->second;
     }
     
-    LOG_INFO_RLD("Modify user info received and  user id is " << strUserid << " and user name is " << strUserName 
-        << " and user pwd is " << strUserPwd << " and user type is " << uiType << " and extend is " << strExtend
+    std::string strEmail;
+    itFind = pMsgInfoMap->find("email");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEmail = itFind->second;
+    }
+
+    LOG_INFO_RLD("Modify user info received and  user id is " << strUserid << " and user name is " << strAliasName 
+        << " and user pwd is " << strNewUserPwd << " and user type is " << uiType << " and extend is " << strExtend
+        << " and alias name is " << strAliasName << " and email is " << strEmail
         << " and session id is " << strSid);
 
-    if (!ModifyUserInfo(strSid, strUserid, strUserName, strUserPwd, uiType, strExtend))
+    if (!ModifyUserInfo(strSid, strUserid, strAliasName, strNewUserPwd, strOldUserPwd, uiType, strExtend, strAliasName, strEmail))
     {
         LOG_ERROR_RLD("Modify user info handle failed and user id is " << strUserid << " and sid is " << strSid);
         return blResult;
@@ -2476,7 +2515,8 @@ bool HttpMsgHandler::PreCommonHandler(const std::string &strMsgReceived)
     return true;
 }
 
-bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::string &strUserPwd, const std::string &strType, const std::string &strExtend, std::string &strUserID)
+bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::string &strUserPwd, const std::string &strType, const std::string &strExtend, 
+    const std::string &strAliasName, const std::string &strEmail, std::string &strUserID)
 {    
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -2513,6 +2553,8 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         RegUsrReq.m_userInfo.m_uiTypeInfo = uiTypeInfo;
         RegUsrReq.m_userInfo.m_strCreatedate = strCurrentTime;
         RegUsrReq.m_userInfo.m_strExtend = strExtend;
+        RegUsrReq.m_userInfo.m_strAliasName = strAliasName;
+        RegUsrReq.m_userInfo.m_strEmail = strEmail;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(RegUsrReq, strSerializeOutPut))
@@ -2579,6 +2621,8 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
         UnRegUsrReq.m_userInfo.m_uiTypeInfo = 0;
         UnRegUsrReq.m_userInfo.m_strCreatedate = strCurrentTime;
         UnRegUsrReq.m_userInfo.m_strExtend = "";
+        UnRegUsrReq.m_userInfo.m_strAliasName = "";
+        UnRegUsrReq.m_userInfo.m_strEmail = "";
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UnRegUsrReq, strSerializeOutPut))
@@ -2647,6 +2691,9 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         UsrLoginReq.m_userInfo.m_uiTypeInfo = 0;
         UsrLoginReq.m_userInfo.m_strCreatedate = strCurrentTime;
         UsrLoginReq.m_userInfo.m_strExtend = "";
+        UsrLoginReq.m_userInfo.m_strAliasName = "";
+        UsrLoginReq.m_userInfo.m_strEmail = "";
+
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UsrLoginReq, strSerializeOutPut))
@@ -2755,7 +2802,8 @@ bool HttpMsgHandler::QueryUserInfo(const std::string &strSid, const std::string 
 }
 
 bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, 
-    const std::string &strUserPwd, const unsigned int uiType, const std::string &strExtend)
+    const std::string &strOldUserPwd, const std::string &strUserPwd, const unsigned int uiType, const std::string &strExtend, 
+    const std::string &strAliasName, const std::string &strEmail)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -2770,6 +2818,9 @@ bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string
         ModifyUsrInfoReq.m_userInfo.m_strUserPassword = strUserPwd;
         ModifyUsrInfoReq.m_userInfo.m_uiStatus = 0;
         ModifyUsrInfoReq.m_userInfo.m_uiTypeInfo = uiType;
+        ModifyUsrInfoReq.m_userInfo.m_strAliasName = strAliasName;
+        ModifyUsrInfoReq.m_userInfo.m_strEmail = strEmail;
+
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModifyUsrInfoReq, strSerializeOutPut))
@@ -2835,7 +2886,9 @@ bool HttpMsgHandler::UserLogout(const std::string &strSid, const std::string &st
         UsrLogoutReq.m_userInfo.m_uiTypeInfo = 0;
         UsrLogoutReq.m_userInfo.m_strCreatedate = strCurrentTime;
         UsrLogoutReq.m_userInfo.m_strExtend = "";
-
+        UsrLogoutReq.m_userInfo.m_strAliasName = "";
+        UsrLogoutReq.m_userInfo.m_strEmail = "";
+        
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UsrLogoutReq, strSerializeOutPut))
         {

@@ -226,6 +226,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, uistatus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, strextend_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, straliasname_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, stremail_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Relation, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -660,6 +662,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, struserid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, strdevid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, uibeginindex_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, strbegindate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, strenddate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, uibusinesstype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileReq_USR, strvalue_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryFileRsp_USR, _internal_metadata_),
@@ -800,86 +805,86 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(PermissionOfUser)},
   { 6, -1, sizeof(Device)},
   { 18, -1, sizeof(User)},
-  { 29, -1, sizeof(Relation)},
-  { 39, -1, sizeof(File)},
-  { 56, -1, sizeof(FileUrl)},
-  { 62, -1, sizeof(GetAccessAddressReq_DEV)},
-  { 68, -1, sizeof(GetAccessAddressRsp_DEV)},
-  { 75, -1, sizeof(LoginReq_DEV)},
-  { 82, -1, sizeof(LoginRsp_DEV)},
-  { 87, -1, sizeof(LogoutReq_DEV)},
-  { 93, -1, sizeof(LogoutRsp_DEV)},
-  { 98, -1, sizeof(ShakehandReq_DEV)},
-  { 104, -1, sizeof(ShakehandRsp_DEV)},
-  { 109, -1, sizeof(ConfigInfoReq_DEV)},
-  { 115, -1, sizeof(ConfigInfoRsp_DEV)},
-  { 121, -1, sizeof(StorageAddressReq_DEV)},
-  { 129, -1, sizeof(StorageAddressRsp_DEV)},
-  { 135, -1, sizeof(P2pInfoReq_DEV)},
-  { 141, -1, sizeof(P2pInfoRsp_DEV)},
-  { 148, -1, sizeof(AddFileReq_DEV)},
-  { 155, -1, sizeof(AddFileRsp_DEV)},
-  { 161, -1, sizeof(MsgPreHandlerReq_USR)},
-  { 166, -1, sizeof(MsgPreHandlerRsp_USR)},
-  { 171, -1, sizeof(GetAccessAddressReq_USR)},
-  { 177, -1, sizeof(GetAccessAddressRsp_USR)},
-  { 184, -1, sizeof(RegisterUserReq_USR)},
-  { 190, -1, sizeof(RegisterUserRsp_USR)},
-  { 196, -1, sizeof(UnRegisterUserReq_USR)},
-  { 202, -1, sizeof(UnRegisterUserRsp_USR)},
-  { 208, -1, sizeof(QueryUsrInfoReq_USR)},
-  { 214, -1, sizeof(QueryUsrInfoRsp_USR)},
-  { 220, -1, sizeof(ModifyUserInfoReq_USR)},
-  { 225, -1, sizeof(ModifyUserInfoRsp_USR)},
-  { 230, -1, sizeof(LoginReq_USR)},
-  { 236, -1, sizeof(LoginRsp_USR)},
-  { 243, -1, sizeof(LogoutReq_USR)},
-  { 249, -1, sizeof(LogoutRsp_USR)},
-  { 254, -1, sizeof(ShakehandReq_USR)},
-  { 260, -1, sizeof(ShakehandRsp_USR)},
-  { 265, -1, sizeof(ConfigInfoReq_USR)},
-  { 271, -1, sizeof(ConfigInfoRsp_USR)},
-  { 277, -1, sizeof(AddDevReq_USR)},
-  { 283, -1, sizeof(AddDevRsp_USR)},
-  { 288, -1, sizeof(DelDevReq_USR)},
-  { 294, -1, sizeof(DelDevRsp_USR)},
-  { 300, -1, sizeof(ModifyDevReq_USR)},
-  { 306, -1, sizeof(ModifyDevRsp_USR)},
-  { 311, -1, sizeof(QueryDevInfoReq_USR)},
-  { 317, -1, sizeof(QueryDevInfoRsp_USR)},
-  { 323, -1, sizeof(QueryDevReq_USR)},
-  { 330, -1, sizeof(QueryDevRsp_USR)},
-  { 335, -1, sizeof(QueryUserReq_USR)},
-  { 342, -1, sizeof(QueryUserRsp_USR)},
-  { 347, -1, sizeof(SharingDevReq_USR)},
-  { 353, -1, sizeof(SharingDevRsp_USR)},
-  { 358, -1, sizeof(CancelSharedDevReq_USR)},
-  { 364, -1, sizeof(CancelSharedDevRsp_USR)},
-  { 369, -1, sizeof(AddFriendsReq_USR)},
-  { 375, -1, sizeof(AddFriendsRsp_USR)},
-  { 380, -1, sizeof(DelFriendsReq_USR)},
-  { 386, -1, sizeof(DelFriendsRsp_USR)},
-  { 392, -1, sizeof(QueryFriendsReq_USR)},
-  { 399, -1, sizeof(QueryFriendsRsp_USR)},
-  { 404, -1, sizeof(StorageAddressReq_USR)},
-  { 412, -1, sizeof(StorageAddressRsp_USR)},
-  { 418, -1, sizeof(P2pInfoReq_USR)},
-  { 425, -1, sizeof(P2pInfoRsp_USR)},
-  { 432, -1, sizeof(DeleteFileReq_USR)},
-  { 438, -1, sizeof(DeleteFileRsp_USR)},
-  { 444, -1, sizeof(DownloadFileReq_USR)},
-  { 450, -1, sizeof(DownloadFileRsp_USR)},
-  { 456, -1, sizeof(QueryFileReq_USR)},
-  { 464, -1, sizeof(QueryFileRsp_USR)},
-  { 470, -1, sizeof(GetOnlineDevInfoReq_INNER)},
-  { 475, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
-  { 481, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
-  { 487, -1, sizeof(GetOnlineUserInfoReq_INNER)},
-  { 492, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
-  { 498, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
-  { 504, -1, sizeof(Req)},
-  { 546, -1, sizeof(Rsp)},
-  { 588, -1, sizeof(InteractiveMessage)},
+  { 31, -1, sizeof(Relation)},
+  { 41, -1, sizeof(File)},
+  { 58, -1, sizeof(FileUrl)},
+  { 64, -1, sizeof(GetAccessAddressReq_DEV)},
+  { 70, -1, sizeof(GetAccessAddressRsp_DEV)},
+  { 77, -1, sizeof(LoginReq_DEV)},
+  { 84, -1, sizeof(LoginRsp_DEV)},
+  { 89, -1, sizeof(LogoutReq_DEV)},
+  { 95, -1, sizeof(LogoutRsp_DEV)},
+  { 100, -1, sizeof(ShakehandReq_DEV)},
+  { 106, -1, sizeof(ShakehandRsp_DEV)},
+  { 111, -1, sizeof(ConfigInfoReq_DEV)},
+  { 117, -1, sizeof(ConfigInfoRsp_DEV)},
+  { 123, -1, sizeof(StorageAddressReq_DEV)},
+  { 131, -1, sizeof(StorageAddressRsp_DEV)},
+  { 137, -1, sizeof(P2pInfoReq_DEV)},
+  { 143, -1, sizeof(P2pInfoRsp_DEV)},
+  { 150, -1, sizeof(AddFileReq_DEV)},
+  { 157, -1, sizeof(AddFileRsp_DEV)},
+  { 163, -1, sizeof(MsgPreHandlerReq_USR)},
+  { 168, -1, sizeof(MsgPreHandlerRsp_USR)},
+  { 173, -1, sizeof(GetAccessAddressReq_USR)},
+  { 179, -1, sizeof(GetAccessAddressRsp_USR)},
+  { 186, -1, sizeof(RegisterUserReq_USR)},
+  { 192, -1, sizeof(RegisterUserRsp_USR)},
+  { 198, -1, sizeof(UnRegisterUserReq_USR)},
+  { 204, -1, sizeof(UnRegisterUserRsp_USR)},
+  { 210, -1, sizeof(QueryUsrInfoReq_USR)},
+  { 216, -1, sizeof(QueryUsrInfoRsp_USR)},
+  { 222, -1, sizeof(ModifyUserInfoReq_USR)},
+  { 227, -1, sizeof(ModifyUserInfoRsp_USR)},
+  { 232, -1, sizeof(LoginReq_USR)},
+  { 238, -1, sizeof(LoginRsp_USR)},
+  { 245, -1, sizeof(LogoutReq_USR)},
+  { 251, -1, sizeof(LogoutRsp_USR)},
+  { 256, -1, sizeof(ShakehandReq_USR)},
+  { 262, -1, sizeof(ShakehandRsp_USR)},
+  { 267, -1, sizeof(ConfigInfoReq_USR)},
+  { 273, -1, sizeof(ConfigInfoRsp_USR)},
+  { 279, -1, sizeof(AddDevReq_USR)},
+  { 285, -1, sizeof(AddDevRsp_USR)},
+  { 290, -1, sizeof(DelDevReq_USR)},
+  { 296, -1, sizeof(DelDevRsp_USR)},
+  { 302, -1, sizeof(ModifyDevReq_USR)},
+  { 308, -1, sizeof(ModifyDevRsp_USR)},
+  { 313, -1, sizeof(QueryDevInfoReq_USR)},
+  { 319, -1, sizeof(QueryDevInfoRsp_USR)},
+  { 325, -1, sizeof(QueryDevReq_USR)},
+  { 332, -1, sizeof(QueryDevRsp_USR)},
+  { 337, -1, sizeof(QueryUserReq_USR)},
+  { 344, -1, sizeof(QueryUserRsp_USR)},
+  { 349, -1, sizeof(SharingDevReq_USR)},
+  { 355, -1, sizeof(SharingDevRsp_USR)},
+  { 360, -1, sizeof(CancelSharedDevReq_USR)},
+  { 366, -1, sizeof(CancelSharedDevRsp_USR)},
+  { 371, -1, sizeof(AddFriendsReq_USR)},
+  { 377, -1, sizeof(AddFriendsRsp_USR)},
+  { 382, -1, sizeof(DelFriendsReq_USR)},
+  { 388, -1, sizeof(DelFriendsRsp_USR)},
+  { 394, -1, sizeof(QueryFriendsReq_USR)},
+  { 401, -1, sizeof(QueryFriendsRsp_USR)},
+  { 406, -1, sizeof(StorageAddressReq_USR)},
+  { 414, -1, sizeof(StorageAddressRsp_USR)},
+  { 420, -1, sizeof(P2pInfoReq_USR)},
+  { 427, -1, sizeof(P2pInfoRsp_USR)},
+  { 434, -1, sizeof(DeleteFileReq_USR)},
+  { 440, -1, sizeof(DeleteFileRsp_USR)},
+  { 446, -1, sizeof(DownloadFileReq_USR)},
+  { 452, -1, sizeof(DownloadFileRsp_USR)},
+  { 458, -1, sizeof(QueryFileReq_USR)},
+  { 469, -1, sizeof(QueryFileRsp_USR)},
+  { 475, -1, sizeof(GetOnlineDevInfoReq_INNER)},
+  { 480, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
+  { 486, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
+  { 492, -1, sizeof(GetOnlineUserInfoReq_INNER)},
+  { 497, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
+  { 503, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
+  { 509, -1, sizeof(Req)},
+  { 551, -1, sizeof(Rsp)},
+  { 593, -1, sizeof(InteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1437,10 +1442,11 @@ void AddDescriptorsImpl() {
       "trDevPassword\030\003 \001(\t\022\022\n\nuiTypeInfo\030\004 \001(\r\022"
       "\025\n\rstrCreatedate\030\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r"
       "\022\021\n\tstrExtend\030\007 \001(\t\022\024\n\014strInnerinfo\030\010 \001("
-      "\t\"\227\001\n\004User\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strUser"
+      "\t\"\277\001\n\004User\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strUser"
       "Name\030\002 \001(\t\022\027\n\017strUserPassword\030\003 \001(\t\022\022\n\nu"
       "iTypeInfo\030\004 \001(\r\022\025\n\rstrCreatedate\030\005 \001(\t\022\020"
-      "\n\010uiStatus\030\006 \001(\r\022\021\n\tstrExtend\030\007 \001(\t\"\177\n\010R"
+      "\n\010uiStatus\030\006 \001(\r\022\021\n\tstrExtend\030\007 \001(\t\022\024\n\014s"
+      "trAliasName\030\010 \001(\t\022\020\n\010strEmail\030\t \001(\t\"\177\n\010R"
       "elation\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002"
       " \001(\t\022\022\n\nuiRelation\030\003 \001(\r\022\024\n\014strBeginDate"
       "\030\004 \001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\020\n\010strValue\030\006"
@@ -1562,225 +1568,227 @@ void AddDescriptorsImpl() {
       "loadFileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tst"
       "rFileID\030\002 \003(\t\"V\n\023DownloadFileRsp_USR\022\020\n\010"
       "strValue\030\001 \001(\t\022-\n\007fileUrl\030\002 \003(\0132\034.Intera"
-      "ctive.Message.FileUrl\"_\n\020QueryFileReq_US"
-      "R\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \001(\t\022\024"
-      "\n\014uiBeginIndex\030\003 \001(\r\022\020\n\010strValue\030\004 \001(\t\"Q"
-      "\n\020QueryFileRsp_USR\022\020\n\010strValue\030\001 \001(\t\022+\n\010"
-      "fileInfo\030\002 \003(\0132\031.Interactive.Message.Fil"
-      "e\"-\n\031GetOnlineDevInfoReq_INNER\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"[\n\031GetOnlineDevInfoRsp_INNER\022,\n"
-      "\007devInfo\030\001 \003(\0132\033.Interactive.Message.Dev"
-      "ice\022\020\n\010strValue\030\002 \001(\t\"^\n\034BroadcastOnline"
-      "DevInfo_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Interac"
-      "tive.Message.Device\022\020\n\010strValue\030\002 \001(\t\".\n"
-      "\032GetOnlineUserInfoReq_INNER\022\020\n\010strValue\030"
-      "\001 \001(\t\"[\n\032GetOnlineUserInfoRsp_INNER\022+\n\010u"
-      "serInfo\030\001 \003(\0132\031.Interactive.Message.User"
-      "\022\020\n\010strValue\030\002 \001(\t\"^\n\035BroadcastOnlineUse"
-      "rInfo_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interact"
-      "ive.Message.User\022\020\n\010strValue\030\002 \001(\t\"\311\026\n\003R"
-      "eq\022S\n\035GetAccessAddressReq_DEV_Value\030\n \001("
-      "\0132,.Interactive.Message.GetAccessAddress"
-      "Req_DEV\022=\n\022LoginReq_DEV_Value\030\024 \001(\0132!.In"
-      "teractive.Message.LoginReq_DEV\022\?\n\023Logout"
-      "Req_DEV_Value\030\036 \001(\0132\".Interactive.Messag"
-      "e.LogoutReq_DEV\022E\n\026ShakehandReq_DEV_Valu"
-      "e\030( \001(\0132%.Interactive.Message.ShakehandR"
-      "eq_DEV\022G\n\027ConfigInfoReq_DEV_Value\0302 \001(\0132"
-      "&.Interactive.Message.ConfigInfoReq_DEV\022"
-      "O\n\033StorageAddressReq_DEV_Value\0304 \001(\0132*.I"
-      "nteractive.Message.StorageAddressReq_DEV"
-      "\022A\n\024P2pInfoReq_DEV_Value\0306 \001(\0132#.Interac"
-      "tive.Message.P2pInfoReq_DEV\022A\n\024AddFileRe"
-      "q_DEV_Value\030< \001(\0132#.Interactive.Message."
-      "AddFileReq_DEV\022M\n\032MsgPreHandlerReq_USR_V"
-      "alue\030A \001(\0132).Interactive.Message.MsgPreH"
-      "andlerReq_USR\022S\n\035GetAccessAddressReq_USR"
-      "_Value\030F \001(\0132,.Interactive.Message.GetAc"
-      "cessAddressReq_USR\022K\n\031RegisterUserReq_US"
-      "R_Value\030P \001(\0132(.Interactive.Message.Regi"
-      "sterUserReq_USR\022O\n\033UnRegisterUserReq_USR"
-      "_Value\030Z \001(\0132*.Interactive.Message.UnReg"
-      "isterUserReq_USR\022K\n\031QueryUsrInfoReq_USR_"
-      "Value\030d \001(\0132(.Interactive.Message.QueryU"
-      "srInfoReq_USR\022O\n\033ModifyUserInfoReq_USR_V"
-      "alue\030f \001(\0132*.Interactive.Message.ModifyU"
-      "serInfoReq_USR\022=\n\022LoginReq_USR_Value\030n \001"
-      "(\0132!.Interactive.Message.LoginReq_USR\022\?\n"
-      "\023LogoutReq_USR_Value\030x \001(\0132\".Interactive"
-      ".Message.LogoutReq_USR\022F\n\026ShakehandReq_U"
-      "SR_Value\030\202\001 \001(\0132%.Interactive.Message.Sh"
-      "akehandReq_USR\022H\n\027ConfigInfoReq_USR_Valu"
-      "e\030\214\001 \001(\0132&.Interactive.Message.ConfigInf"
-      "oReq_USR\022@\n\023AddDevReq_USR_Value\030\226\001 \001(\0132\""
-      ".Interactive.Message.AddDevReq_USR\022@\n\023De"
-      "lDevReq_USR_Value\030\240\001 \001(\0132\".Interactive.M"
-      "essage.DelDevReq_USR\022F\n\026ModifyDevReq_USR"
-      "_Value\030\252\001 \001(\0132%.Interactive.Message.Modi"
-      "fyDevReq_USR\022L\n\031QueryDevInfoReq_USR_Valu"
-      "e\030\264\001 \001(\0132(.Interactive.Message.QueryDevI"
-      "nfoReq_USR\022D\n\025QueryDevReq_USR_Value\030\276\001 \001"
-      "(\0132$.Interactive.Message.QueryDevReq_USR"
-      "\022F\n\026QueryUserReq_USR_Value\030\310\001 \001(\0132%.Inte"
-      "ractive.Message.QueryUserReq_USR\022H\n\027Shar"
-      "ingDevReq_USR_Value\030\322\001 \001(\0132&.Interactive"
-      ".Message.SharingDevReq_USR\022R\n\034CancelShar"
-      "edDevReq_USR_Value\030\334\001 \001(\0132+.Interactive."
-      "Message.CancelSharedDevReq_USR\022H\n\027AddFri"
-      "endsReq_USR_Value\030\346\001 \001(\0132&.Interactive.M"
-      "essage.AddFriendsReq_USR\022H\n\027DelFriendsRe"
-      "q_USR_Value\030\360\001 \001(\0132&.Interactive.Message"
-      ".DelFriendsReq_USR\022L\n\031QueryFriendsReq_US"
-      "R_Value\030\372\001 \001(\0132(.Interactive.Message.Que"
-      "ryFriendsReq_USR\022P\n\033StorageAddressReq_US"
-      "R_Value\030\374\001 \001(\0132*.Interactive.Message.Sto"
-      "rageAddressReq_USR\022B\n\024P2pInfoReq_USR_Val"
-      "ue\030\376\001 \001(\0132#.Interactive.Message.P2pInfoR"
-      "eq_USR\022H\n\027DeleteFileReq_USR_Value\030\266\002 \001(\013"
-      "2&.Interactive.Message.DeleteFileReq_USR"
-      "\022L\n\031DownloadFileReq_USR_Value\030\300\002 \001(\0132(.I"
-      "nteractive.Message.DownloadFileReq_USR\022F"
-      "\n\026QueryFileReq_USR_Value\030\312\002 \001(\0132%.Intera"
-      "ctive.Message.QueryFileReq_USR\022X\n\037GetOnl"
-      "ineDevInfoReq_INNER_Value\030\204\002 \001(\0132..Inter"
-      "active.Message.GetOnlineDevInfoReq_INNER"
-      "\022^\n\"BroadcastOnlineDevInfo_INNER_Value\030\216"
-      "\002 \001(\01321.Interactive.Message.BroadcastOnl"
-      "ineDevInfo_INNER\022Z\n GetOnlineUserInfoReq"
-      "_INNER_Value\030\230\002 \001(\0132/.Interactive.Messag"
-      "e.GetOnlineUserInfoReq_INNER\022`\n#Broadcas"
-      "tOnlineUserInfo_INNER_Value\030\242\002 \001(\01322.Int"
-      "eractive.Message.BroadcastOnlineUserInfo"
-      "_INNER\"\256\025\n\003Rsp\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrR"
-      "etMsg\030\024 \001(\t\022S\n\035GetAccessAddressRsp_DEV_V"
-      "alue\030\036 \001(\0132,.Interactive.Message.GetAcce"
-      "ssAddressRsp_DEV\022=\n\022LoginRsp_DEV_Value\030("
-      " \001(\0132!.Interactive.Message.LoginRsp_DEV\022"
-      "\?\n\023LogoutRsp_DEV_Value\0302 \001(\0132\".Interacti"
-      "ve.Message.LogoutRsp_DEV\022E\n\026ShakehandRsp"
-      "_DEV_Value\030< \001(\0132%.Interactive.Message.S"
-      "hakehandRsp_DEV\022G\n\027ConfigInfoRsp_DEV_Val"
-      "ue\030F \001(\0132&.Interactive.Message.ConfigInf"
-      "oRsp_DEV\022O\n\033StorageAddressRsp_DEV_Value\030"
-      "H \001(\0132*.Interactive.Message.StorageAddre"
-      "ssRsp_DEV\022A\n\024P2pInfoRsp_DEV_Value\030J \001(\0132"
-      "#.Interactive.Message.P2pInfoRsp_DEV\022A\n\024"
-      "AddFileRsp_DEV_Value\030P \001(\0132#.Interactive"
-      ".Message.AddFileRsp_DEV\022M\n\032MsgPreHandler"
-      "Rsp_USR_Value\030U \001(\0132).Interactive.Messag"
-      "e.MsgPreHandlerRsp_USR\022S\n\035GetAccessAddre"
-      "ssRsp_USR_Value\030Z \001(\0132,.Interactive.Mess"
-      "age.GetAccessAddressRsp_USR\022K\n\031RegisterU"
-      "serRsp_USR_Value\030d \001(\0132(.Interactive.Mes"
-      "sage.RegisterUserRsp_USR\022O\n\033UnRegisterUs"
-      "erRsp_USR_Value\030n \001(\0132*.Interactive.Mess"
-      "age.UnRegisterUserRsp_USR\022K\n\031QueryUsrInf"
-      "oRsp_USR_Value\030x \001(\0132(.Interactive.Messa"
-      "ge.QueryUsrInfoRsp_USR\022O\n\033ModifyUserInfo"
-      "Rsp_USR_Value\030z \001(\0132*.Interactive.Messag"
-      "e.ModifyUserInfoRsp_USR\022>\n\022LoginRsp_USR_"
-      "Value\030\202\001 \001(\0132!.Interactive.Message.Login"
-      "Rsp_USR\022@\n\023LogoutRsp_USR_Value\030\214\001 \001(\0132\"."
-      "Interactive.Message.LogoutRsp_USR\022F\n\026Sha"
-      "kehandRsp_USR_Value\030\226\001 \001(\0132%.Interactive"
-      ".Message.ShakehandRsp_USR\022H\n\027ConfigInfoR"
-      "sp_USR_Value\030\240\001 \001(\0132&.Interactive.Messag"
-      "e.ConfigInfoRsp_USR\022@\n\023AddDevRsp_USR_Val"
-      "ue\030\252\001 \001(\0132\".Interactive.Message.AddDevRs"
-      "p_USR\022@\n\023DelDevRsp_USR_Value\030\264\001 \001(\0132\".In"
-      "teractive.Message.DelDevRsp_USR\022F\n\026Modif"
-      "yDevRsp_USR_Value\030\276\001 \001(\0132%.Interactive.M"
-      "essage.ModifyDevRsp_USR\022L\n\031QueryDevInfoR"
-      "sp_USR_Value\030\310\001 \001(\0132(.Interactive.Messag"
-      "e.QueryDevInfoRsp_USR\022D\n\025QueryDevRsp_USR"
-      "_Value\030\322\001 \001(\0132$.Interactive.Message.Quer"
-      "yDevRsp_USR\022F\n\026QueryUserRsp_USR_Value\030\334\001"
-      " \001(\0132%.Interactive.Message.QueryUserRsp_"
-      "USR\022H\n\027SharingDevRsp_USR_Value\030\346\001 \001(\0132&."
-      "Interactive.Message.SharingDevRsp_USR\022R\n"
-      "\034CancelSharedDevRsp_USR_Value\030\360\001 \001(\0132+.I"
-      "nteractive.Message.CancelSharedDevRsp_US"
-      "R\022H\n\027AddFriendsRsp_USR_Value\030\372\001 \001(\0132&.In"
-      "teractive.Message.AddFriendsRsp_USR\022H\n\027D"
-      "elFriendsRsp_USR_Value\030\204\002 \001(\0132&.Interact"
-      "ive.Message.DelFriendsRsp_USR\022L\n\031QueryFr"
-      "iendsRsp_USR_Value\030\216\002 \001(\0132(.Interactive."
-      "Message.QueryFriendsRsp_USR\022P\n\033StorageAd"
-      "dressReq_USR_Value\030\220\002 \001(\0132*.Interactive."
-      "Message.StorageAddressRsp_USR\022B\n\024P2pInfo"
-      "Rsp_USR_Value\030\222\002 \001(\0132#.Interactive.Messa"
-      "ge.P2pInfoRsp_USR\022H\n\027DeleteFileRsp_USR_V"
-      "alue\030\266\002 \001(\0132&.Interactive.Message.Delete"
-      "FileRsp_USR\022L\n\031DownloadFileRsp_USR_Value"
-      "\030\300\002 \001(\0132(.Interactive.Message.DownloadFi"
-      "leRsp_USR\022F\n\026QueryFileRsp_USR_Value\030\312\002 \001"
-      "(\0132%.Interactive.Message.QueryFileRsp_US"
-      "R\022X\n\037GetOnlineDevInfoRsp_INNER_Value\030\230\002 "
-      "\001(\0132..Interactive.Message.GetOnlineDevIn"
-      "foRsp_INNER\022Z\n GetOnlineUserInfoRsp_INNE"
-      "R_Value\030\242\002 \001(\0132/.Interactive.Message.Get"
-      "OnlineUserInfoRsp_INNER\"\272\001\n\022InteractiveM"
-      "essage\022*\n\004type\030\001 \001(\0162\034.Interactive.Messa"
-      "ge.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003"
-      " \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interactive.Mes"
-      "sage.Req\022*\n\010RspValue\030\005 \001(\0132\030.Interactive"
-      ".Message.Rsp*\320\020\n\007MsgType\022\n\n\006Init_T\020\000\022\036\n\031"
-      "GetAccessAddressReq_DEV_T\020\220N\022\036\n\031GetAcces"
-      "sAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_T\020\244"
-      "N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutReq_DEV_"
-      "T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022ShakehandR"
-      "eq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022\030\n\023"
-      "ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigInfoRsp_"
-      "DEV_T\020\352N\022\034\n\027StorageAddressReq_DEV_T\020\364N\022\034"
-      "\n\027StorageAddressRsp_DEV_T\020\376N\022\025\n\020P2pInfoR"
-      "eq_DEV_T\020\354O\022\025\n\020P2pInfoRsp_DEV_T\020\366O\022\025\n\020Ad"
-      "dFileReq_DEV_T\020\274P\022\025\n\020AddFileRsp_DEV_T\020\306P"
-      "\022\034\n\026MsgPreHandlerReq_USR_T\020\226\234\001\022\034\n\026MsgPre"
-      "HandlerRsp_USR_T\020\227\234\001\022\037\n\031GetAccessAddress"
-      "Req_USR_T\020\240\234\001\022\037\n\031GetAccessAddressRsp_USR"
-      "_T\020\252\234\001\022\033\n\025RegisterUserReq_USR_T\020\264\234\001\022\033\n\025R"
-      "egisterUserRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUs"
-      "erReq_USR_T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR"
-      "_T\020\322\234\001\022\033\n\025QueryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025Q"
-      "ueryUsrInfoRsp_USR_T\020\324\234\001\022\035\n\027ModifyUserIn"
-      "foReq_USR_T\020\327\234\001\022\035\n\027ModifyUserInfoRsp_USR"
-      "_T\020\330\234\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp"
-      "_USR_T\020\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017Log"
-      "outRsp_USR_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204"
-      "\235\001\022\030\n\022ShakehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigIn"
-      "foReq_USR_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242"
-      "\235\001\022\025\n\017AddDevReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_U"
-      "SR_T\020\266\235\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDe"
-      "vRsp_USR_T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001"
-      "\022\030\n\022ModifyDevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevIn"
-      "foReq_USR_T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T"
-      "\020\340\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDe"
-      "vRsp_USR_T\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001"
-      "\022\030\n\022QueryUserRsp_USR_T\020\364\235\001\022\031\n\023SharingDev"
-      "Req_USR_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001"
-      "\022\036\n\030CancelSharedDevReq_USR_T\020\220\236\001\022\036\n\030Canc"
-      "elSharedDevRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsRe"
-      "q_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031"
-      "\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsR"
-      "sp_USR_T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314"
-      "\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025Quer"
-      "yFriendsReq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp"
-      "_USR_T\020\352\236\001\022\035\n\027StorageAddressReq_USR_T\020\364\236"
-      "\001\022\035\n\027StorageAddressRsp_USR_T\020\376\236\001\022\026\n\020P2pI"
-      "nfoReq_USR_T\020\210\237\001\022\026\n\020P2pInfoRsp_USR_T\020\222\237\001"
-      "\022\031\n\023DeleteFileReq_USR_T\020\224\240\001\022\031\n\023DeleteFil"
-      "eRsp_USR_T\020\236\240\001\022\033\n\025DownloadFileReq_USR_T\020"
-      "\250\240\001\022\033\n\025DownloadFileRsp_USR_T\020\262\240\001\022\030\n\022Quer"
-      "yFileReq_USR_T\020\274\240\001\022\030\n\022QueryFileRsp_USR_T"
-      "\020\306\240\001\022!\n\033GetOnlineDevInfoReq_INNER_T\020\260\352\001\022"
-      "!\n\033GetOnlineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036Br"
-      "oadcastOnlineDevInfo_INNER_T\020\304\352\001\022\"\n\034GetO"
-      "nlineUserInfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnlin"
-      "eUserInfoRsp_INNER_T\020\330\352\001\022%\n\037BroadcastOnl"
-      "ineUserInfo_INNER_T\020\342\352\001b\006proto3"
+      "ctive.Message.FileUrl\"\241\001\n\020QueryFileReq_U"
+      "SR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \001(\t\022"
+      "\024\n\014uiBeginIndex\030\003 \001(\r\022\024\n\014strBeginDate\030\004 "
+      "\001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\026\n\016uiBusinessTyp"
+      "e\030\006 \001(\r\022\020\n\010strValue\030\007 \001(\t\"Q\n\020QueryFileRs"
+      "p_USR\022\020\n\010strValue\030\001 \001(\t\022+\n\010fileInfo\030\002 \003("
+      "\0132\031.Interactive.Message.File\"-\n\031GetOnlin"
+      "eDevInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031G"
+      "etOnlineDevInfoRsp_INNER\022,\n\007devInfo\030\001 \003("
+      "\0132\033.Interactive.Message.Device\022\020\n\010strVal"
+      "ue\030\002 \001(\t\"^\n\034BroadcastOnlineDevInfo_INNER"
+      "\022,\n\007devInfo\030\001 \003(\0132\033.Interactive.Message."
+      "Device\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineUse"
+      "rInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetO"
+      "nlineUserInfoRsp_INNER\022+\n\010userInfo\030\001 \003(\013"
+      "2\031.Interactive.Message.User\022\020\n\010strValue\030"
+      "\002 \001(\t\"^\n\035BroadcastOnlineUserInfo_INNER\022+"
+      "\n\010userInfo\030\001 \003(\0132\031.Interactive.Message.U"
+      "ser\022\020\n\010strValue\030\002 \001(\t\"\311\026\n\003Req\022S\n\035GetAcce"
+      "ssAddressReq_DEV_Value\030\n \001(\0132,.Interacti"
+      "ve.Message.GetAccessAddressReq_DEV\022=\n\022Lo"
+      "ginReq_DEV_Value\030\024 \001(\0132!.Interactive.Mes"
+      "sage.LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value"
+      "\030\036 \001(\0132\".Interactive.Message.LogoutReq_D"
+      "EV\022E\n\026ShakehandReq_DEV_Value\030( \001(\0132%.Int"
+      "eractive.Message.ShakehandReq_DEV\022G\n\027Con"
+      "figInfoReq_DEV_Value\0302 \001(\0132&.Interactive"
+      ".Message.ConfigInfoReq_DEV\022O\n\033StorageAdd"
+      "ressReq_DEV_Value\0304 \001(\0132*.Interactive.Me"
+      "ssage.StorageAddressReq_DEV\022A\n\024P2pInfoRe"
+      "q_DEV_Value\0306 \001(\0132#.Interactive.Message."
+      "P2pInfoReq_DEV\022A\n\024AddFileReq_DEV_Value\030<"
+      " \001(\0132#.Interactive.Message.AddFileReq_DE"
+      "V\022M\n\032MsgPreHandlerReq_USR_Value\030A \001(\0132)."
+      "Interactive.Message.MsgPreHandlerReq_USR"
+      "\022S\n\035GetAccessAddressReq_USR_Value\030F \001(\0132"
+      ",.Interactive.Message.GetAccessAddressRe"
+      "q_USR\022K\n\031RegisterUserReq_USR_Value\030P \001(\013"
+      "2(.Interactive.Message.RegisterUserReq_U"
+      "SR\022O\n\033UnRegisterUserReq_USR_Value\030Z \001(\0132"
+      "*.Interactive.Message.UnRegisterUserReq_"
+      "USR\022K\n\031QueryUsrInfoReq_USR_Value\030d \001(\0132("
+      ".Interactive.Message.QueryUsrInfoReq_USR"
+      "\022O\n\033ModifyUserInfoReq_USR_Value\030f \001(\0132*."
+      "Interactive.Message.ModifyUserInfoReq_US"
+      "R\022=\n\022LoginReq_USR_Value\030n \001(\0132!.Interact"
+      "ive.Message.LoginReq_USR\022\?\n\023LogoutReq_US"
+      "R_Value\030x \001(\0132\".Interactive.Message.Logo"
+      "utReq_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 \001"
+      "(\0132%.Interactive.Message.ShakehandReq_US"
+      "R\022H\n\027ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.In"
+      "teractive.Message.ConfigInfoReq_USR\022@\n\023A"
+      "ddDevReq_USR_Value\030\226\001 \001(\0132\".Interactive."
+      "Message.AddDevReq_USR\022@\n\023DelDevReq_USR_V"
+      "alue\030\240\001 \001(\0132\".Interactive.Message.DelDev"
+      "Req_USR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001(\013"
+      "2%.Interactive.Message.ModifyDevReq_USR\022"
+      "L\n\031QueryDevInfoReq_USR_Value\030\264\001 \001(\0132(.In"
+      "teractive.Message.QueryDevInfoReq_USR\022D\n"
+      "\025QueryDevReq_USR_Value\030\276\001 \001(\0132$.Interact"
+      "ive.Message.QueryDevReq_USR\022F\n\026QueryUser"
+      "Req_USR_Value\030\310\001 \001(\0132%.Interactive.Messa"
+      "ge.QueryUserReq_USR\022H\n\027SharingDevReq_USR"
+      "_Value\030\322\001 \001(\0132&.Interactive.Message.Shar"
+      "ingDevReq_USR\022R\n\034CancelSharedDevReq_USR_"
+      "Value\030\334\001 \001(\0132+.Interactive.Message.Cance"
+      "lSharedDevReq_USR\022H\n\027AddFriendsReq_USR_V"
+      "alue\030\346\001 \001(\0132&.Interactive.Message.AddFri"
+      "endsReq_USR\022H\n\027DelFriendsReq_USR_Value\030\360"
+      "\001 \001(\0132&.Interactive.Message.DelFriendsRe"
+      "q_USR\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001("
+      "\0132(.Interactive.Message.QueryFriendsReq_"
+      "USR\022P\n\033StorageAddressReq_USR_Value\030\374\001 \001("
+      "\0132*.Interactive.Message.StorageAddressRe"
+      "q_USR\022B\n\024P2pInfoReq_USR_Value\030\376\001 \001(\0132#.I"
+      "nteractive.Message.P2pInfoReq_USR\022H\n\027Del"
+      "eteFileReq_USR_Value\030\266\002 \001(\0132&.Interactiv"
+      "e.Message.DeleteFileReq_USR\022L\n\031DownloadF"
+      "ileReq_USR_Value\030\300\002 \001(\0132(.Interactive.Me"
+      "ssage.DownloadFileReq_USR\022F\n\026QueryFileRe"
+      "q_USR_Value\030\312\002 \001(\0132%.Interactive.Message"
+      ".QueryFileReq_USR\022X\n\037GetOnlineDevInfoReq"
+      "_INNER_Value\030\204\002 \001(\0132..Interactive.Messag"
+      "e.GetOnlineDevInfoReq_INNER\022^\n\"Broadcast"
+      "OnlineDevInfo_INNER_Value\030\216\002 \001(\01321.Inter"
+      "active.Message.BroadcastOnlineDevInfo_IN"
+      "NER\022Z\n GetOnlineUserInfoReq_INNER_Value\030"
+      "\230\002 \001(\0132/.Interactive.Message.GetOnlineUs"
+      "erInfoReq_INNER\022`\n#BroadcastOnlineUserIn"
+      "fo_INNER_Value\030\242\002 \001(\01322.Interactive.Mess"
+      "age.BroadcastOnlineUserInfo_INNER\"\256\025\n\003Rs"
+      "p\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S"
+      "\n\035GetAccessAddressRsp_DEV_Value\030\036 \001(\0132,."
+      "Interactive.Message.GetAccessAddressRsp_"
+      "DEV\022=\n\022LoginRsp_DEV_Value\030( \001(\0132!.Intera"
+      "ctive.Message.LoginRsp_DEV\022\?\n\023LogoutRsp_"
+      "DEV_Value\0302 \001(\0132\".Interactive.Message.Lo"
+      "goutRsp_DEV\022E\n\026ShakehandRsp_DEV_Value\030< "
+      "\001(\0132%.Interactive.Message.ShakehandRsp_D"
+      "EV\022G\n\027ConfigInfoRsp_DEV_Value\030F \001(\0132&.In"
+      "teractive.Message.ConfigInfoRsp_DEV\022O\n\033S"
+      "torageAddressRsp_DEV_Value\030H \001(\0132*.Inter"
+      "active.Message.StorageAddressRsp_DEV\022A\n\024"
+      "P2pInfoRsp_DEV_Value\030J \001(\0132#.Interactive"
+      ".Message.P2pInfoRsp_DEV\022A\n\024AddFileRsp_DE"
+      "V_Value\030P \001(\0132#.Interactive.Message.AddF"
+      "ileRsp_DEV\022M\n\032MsgPreHandlerRsp_USR_Value"
+      "\030U \001(\0132).Interactive.Message.MsgPreHandl"
+      "erRsp_USR\022S\n\035GetAccessAddressRsp_USR_Val"
+      "ue\030Z \001(\0132,.Interactive.Message.GetAccess"
+      "AddressRsp_USR\022K\n\031RegisterUserRsp_USR_Va"
+      "lue\030d \001(\0132(.Interactive.Message.Register"
+      "UserRsp_USR\022O\n\033UnRegisterUserRsp_USR_Val"
+      "ue\030n \001(\0132*.Interactive.Message.UnRegiste"
+      "rUserRsp_USR\022K\n\031QueryUsrInfoRsp_USR_Valu"
+      "e\030x \001(\0132(.Interactive.Message.QueryUsrIn"
+      "foRsp_USR\022O\n\033ModifyUserInfoRsp_USR_Value"
+      "\030z \001(\0132*.Interactive.Message.ModifyUserI"
+      "nfoRsp_USR\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132"
+      "!.Interactive.Message.LoginRsp_USR\022@\n\023Lo"
+      "goutRsp_USR_Value\030\214\001 \001(\0132\".Interactive.M"
+      "essage.LogoutRsp_USR\022F\n\026ShakehandRsp_USR"
+      "_Value\030\226\001 \001(\0132%.Interactive.Message.Shak"
+      "ehandRsp_USR\022H\n\027ConfigInfoRsp_USR_Value\030"
+      "\240\001 \001(\0132&.Interactive.Message.ConfigInfoR"
+      "sp_USR\022@\n\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".I"
+      "nteractive.Message.AddDevRsp_USR\022@\n\023DelD"
+      "evRsp_USR_Value\030\264\001 \001(\0132\".Interactive.Mes"
+      "sage.DelDevRsp_USR\022F\n\026ModifyDevRsp_USR_V"
+      "alue\030\276\001 \001(\0132%.Interactive.Message.Modify"
+      "DevRsp_USR\022L\n\031QueryDevInfoRsp_USR_Value\030"
+      "\310\001 \001(\0132(.Interactive.Message.QueryDevInf"
+      "oRsp_USR\022D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\013"
+      "2$.Interactive.Message.QueryDevRsp_USR\022F"
+      "\n\026QueryUserRsp_USR_Value\030\334\001 \001(\0132%.Intera"
+      "ctive.Message.QueryUserRsp_USR\022H\n\027Sharin"
+      "gDevRsp_USR_Value\030\346\001 \001(\0132&.Interactive.M"
+      "essage.SharingDevRsp_USR\022R\n\034CancelShared"
+      "DevRsp_USR_Value\030\360\001 \001(\0132+.Interactive.Me"
+      "ssage.CancelSharedDevRsp_USR\022H\n\027AddFrien"
+      "dsRsp_USR_Value\030\372\001 \001(\0132&.Interactive.Mes"
+      "sage.AddFriendsRsp_USR\022H\n\027DelFriendsRsp_"
+      "USR_Value\030\204\002 \001(\0132&.Interactive.Message.D"
+      "elFriendsRsp_USR\022L\n\031QueryFriendsRsp_USR_"
+      "Value\030\216\002 \001(\0132(.Interactive.Message.Query"
+      "FriendsRsp_USR\022P\n\033StorageAddressReq_USR_"
+      "Value\030\220\002 \001(\0132*.Interactive.Message.Stora"
+      "geAddressRsp_USR\022B\n\024P2pInfoRsp_USR_Value"
+      "\030\222\002 \001(\0132#.Interactive.Message.P2pInfoRsp"
+      "_USR\022H\n\027DeleteFileRsp_USR_Value\030\266\002 \001(\0132&"
+      ".Interactive.Message.DeleteFileRsp_USR\022L"
+      "\n\031DownloadFileRsp_USR_Value\030\300\002 \001(\0132(.Int"
+      "eractive.Message.DownloadFileRsp_USR\022F\n\026"
+      "QueryFileRsp_USR_Value\030\312\002 \001(\0132%.Interact"
+      "ive.Message.QueryFileRsp_USR\022X\n\037GetOnlin"
+      "eDevInfoRsp_INNER_Value\030\230\002 \001(\0132..Interac"
+      "tive.Message.GetOnlineDevInfoRsp_INNER\022Z"
+      "\n GetOnlineUserInfoRsp_INNER_Value\030\242\002 \001("
+      "\0132/.Interactive.Message.GetOnlineUserInf"
+      "oRsp_INNER\"\272\001\n\022InteractiveMessage\022*\n\004typ"
+      "e\030\001 \001(\0162\034.Interactive.Message.MsgType\022\020\n"
+      "\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010ReqVa"
+      "lue\030\004 \001(\0132\030.Interactive.Message.Req\022*\n\010R"
+      "spValue\030\005 \001(\0132\030.Interactive.Message.Rsp*"
+      "\320\020\n\007MsgType\022\n\n\006Init_T\020\000\022\036\n\031GetAccessAddr"
+      "essReq_DEV_T\020\220N\022\036\n\031GetAccessAddressRsp_D"
+      "EV_T\020\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016LoginRsp"
+      "_DEV_T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017Logou"
+      "tRsp_DEV_T\020\302N\022\027\n\022ShakehandReq_DEV_T\020\314N\022\027"
+      "\n\022ShakehandRsp_DEV_T\020\326N\022\030\n\023ConfigInfoReq"
+      "_DEV_T\020\340N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N\022\034\n\027S"
+      "torageAddressReq_DEV_T\020\364N\022\034\n\027StorageAddr"
+      "essRsp_DEV_T\020\376N\022\025\n\020P2pInfoReq_DEV_T\020\354O\022\025"
+      "\n\020P2pInfoRsp_DEV_T\020\366O\022\025\n\020AddFileReq_DEV_"
+      "T\020\274P\022\025\n\020AddFileRsp_DEV_T\020\306P\022\034\n\026MsgPreHan"
+      "dlerReq_USR_T\020\226\234\001\022\034\n\026MsgPreHandlerRsp_US"
+      "R_T\020\227\234\001\022\037\n\031GetAccessAddressReq_USR_T\020\240\234\001"
+      "\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n\025Reg"
+      "isterUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUserRs"
+      "p_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR_T\020\310"
+      "\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\033\n\025Que"
+      "ryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025QueryUsrInfoRs"
+      "p_USR_T\020\324\234\001\022\035\n\027ModifyUserInfoReq_USR_T\020\327"
+      "\234\001\022\035\n\027ModifyUserInfoRsp_USR_T\020\330\234\001\022\024\n\016Log"
+      "inReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234\001\022\025\n"
+      "\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_USR_T\020"
+      "\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Shakeha"
+      "ndRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR_T\020\230"
+      "\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017AddDevR"
+      "eq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022\025\n\017D"
+      "elDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_T\020\312\235"
+      "\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022ModifyDev"
+      "Rsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq_USR_T\020\337"
+      "\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022\027\n\021Query"
+      "DevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_USR_T\020\362\235"
+      "\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022QueryUser"
+      "Rsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_USR_T\020\374\235\001"
+      "\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030CancelSha"
+      "redDevReq_USR_T\020\220\236\001\022\036\n\030CancelSharedDevRs"
+      "p_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR_T\020\244\236\001\022\031"
+      "\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023DelFriendsR"
+      "eq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_USR_T\020\302\236\001\022"
+      "\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n\026ModifyF"
+      "riendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFriendsReq_U"
+      "SR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_T\020\352\236\001\022\035\n"
+      "\027StorageAddressReq_USR_T\020\364\236\001\022\035\n\027StorageA"
+      "ddressRsp_USR_T\020\376\236\001\022\026\n\020P2pInfoReq_USR_T\020"
+      "\210\237\001\022\026\n\020P2pInfoRsp_USR_T\020\222\237\001\022\031\n\023DeleteFil"
+      "eReq_USR_T\020\224\240\001\022\031\n\023DeleteFileRsp_USR_T\020\236\240"
+      "\001\022\033\n\025DownloadFileReq_USR_T\020\250\240\001\022\033\n\025Downlo"
+      "adFileRsp_USR_T\020\262\240\001\022\030\n\022QueryFileReq_USR_"
+      "T\020\274\240\001\022\030\n\022QueryFileRsp_USR_T\020\306\240\001\022!\n\033GetOn"
+      "lineDevInfoReq_INNER_T\020\260\352\001\022!\n\033GetOnlineD"
+      "evInfoRsp_INNER_T\020\272\352\001\022$\n\036BroadcastOnline"
+      "DevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlineUserInfo"
+      "Req_INNER_T\020\316\352\001\022\"\n\034GetOnlineUserInfoRsp_"
+      "INNER_T\020\330\352\001\022%\n\037BroadcastOnlineUserInfo_I"
+      "NNER_T\020\342\352\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 13911);
+      descriptor, 14018);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -3103,6 +3111,8 @@ const int User::kUiTypeInfoFieldNumber;
 const int User::kStrCreatedateFieldNumber;
 const int User::kUiStatusFieldNumber;
 const int User::kStrExtendFieldNumber;
+const int User::kStrAliasNameFieldNumber;
+const int User::kStrEmailFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 User::User()
@@ -3138,6 +3148,14 @@ User::User(const User& from)
   if (from.strextend().size() > 0) {
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  straliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.straliasname().size() > 0) {
+    straliasname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straliasname_);
+  }
+  stremail_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.stremail().size() > 0) {
+    stremail_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stremail_);
+  }
   ::memcpy(&uitypeinfo_, &from.uitypeinfo_,
     reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
@@ -3150,6 +3168,8 @@ void User::SharedCtor() {
   struserpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
   _cached_size_ = 0;
@@ -3166,6 +3186,8 @@ void User::SharedDtor() {
   struserpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void User::SetCachedSize(int size) const {
@@ -3198,6 +3220,8 @@ void User::Clear() {
   struserpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&uitypeinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
     reinterpret_cast<char*>(&uitypeinfo_) + sizeof(uistatus_));
 }
@@ -3313,6 +3337,36 @@ bool User::MergePartialFromCodedStream(
         break;
       }
 
+      // string strAliasName = 8;
+      case 8: {
+        if (tag == 66u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_straliasname()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->straliasname().data(), this->straliasname().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.User.strAliasName"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strEmail = 9;
+      case 9: {
+        if (tag == 74u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_stremail()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->stremail().data(), this->stremail().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.User.strEmail"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -3397,6 +3451,26 @@ void User::SerializeWithCachedSizes(
       7, this->strextend(), output);
   }
 
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->straliasname().data(), this->straliasname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strAliasName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->straliasname(), output);
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stremail().data(), this->stremail().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strEmail");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->stremail(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Interactive.Message.User)
 }
 
@@ -3469,6 +3543,28 @@ void User::SerializeWithCachedSizes(
         7, this->strextend(), target);
   }
 
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->straliasname().data(), this->straliasname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strAliasName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->straliasname(), target);
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stremail().data(), this->stremail().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.User.strEmail");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->stremail(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.User)
   return target;
 }
@@ -3510,6 +3606,20 @@ size_t User::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strextend());
+  }
+
+  // string strAliasName = 8;
+  if (this->straliasname().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->straliasname());
+  }
+
+  // string strEmail = 9;
+  if (this->stremail().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->stremail());
   }
 
   // uint32 uiTypeInfo = 4;
@@ -3572,6 +3682,14 @@ void User::MergeFrom(const User& from) {
 
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  if (from.straliasname().size() > 0) {
+
+    straliasname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straliasname_);
+  }
+  if (from.stremail().size() > 0) {
+
+    stremail_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stremail_);
+  }
   if (from.uitypeinfo() != 0) {
     set_uitypeinfo(from.uitypeinfo());
   }
@@ -3608,6 +3726,8 @@ void User::InternalSwap(User* other) {
   struserpassword_.Swap(&other->struserpassword_);
   strcreatedate_.Swap(&other->strcreatedate_);
   strextend_.Swap(&other->strextend_);
+  straliasname_.Swap(&other->straliasname_);
+  stremail_.Swap(&other->stremail_);
   std::swap(uitypeinfo_, other->uitypeinfo_);
   std::swap(uistatus_, other->uistatus_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -3907,6 +4027,110 @@ void User::set_allocated_strextend(::std::string* strextend) {
   }
   strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
+}
+
+// string strAliasName = 8;
+void User::clear_straliasname() {
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& User::straliasname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strAliasName)
+  return straliasname_.GetNoArena();
+}
+void User::set_straliasname(const ::std::string& value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strAliasName)
+}
+#if LANG_CXX11
+void User::set_straliasname(::std::string&& value) {
+  
+  straliasname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strAliasName)
+}
+#endif
+void User::set_straliasname(const char* value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strAliasName)
+}
+void User::set_straliasname(const char* value, size_t size) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strAliasName)
+}
+::std::string* User::mutable_straliasname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strAliasName)
+  return straliasname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* User::release_straliasname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strAliasName)
+  
+  return straliasname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_allocated_straliasname(::std::string* straliasname) {
+  if (straliasname != NULL) {
+    
+  } else {
+    
+  }
+  straliasname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straliasname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strAliasName)
+}
+
+// string strEmail = 9;
+void User::clear_stremail() {
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& User::stremail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strEmail)
+  return stremail_.GetNoArena();
+}
+void User::set_stremail(const ::std::string& value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strEmail)
+}
+#if LANG_CXX11
+void User::set_stremail(::std::string&& value) {
+  
+  stremail_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strEmail)
+}
+#endif
+void User::set_stremail(const char* value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strEmail)
+}
+void User::set_stremail(const char* value, size_t size) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strEmail)
+}
+::std::string* User::mutable_stremail() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strEmail)
+  return stremail_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* User::release_stremail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strEmail)
+  
+  return stremail_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void User::set_allocated_stremail(::std::string* stremail) {
+  if (stremail != NULL) {
+    
+  } else {
+    
+  }
+  stremail_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stremail);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strEmail)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30882,6 +31106,9 @@ DownloadFileRsp_USR::fileurl() const {
 const int QueryFileReq_USR::kStrUserIDFieldNumber;
 const int QueryFileReq_USR::kStrDevIDFieldNumber;
 const int QueryFileReq_USR::kUiBeginIndexFieldNumber;
+const int QueryFileReq_USR::kStrBeginDateFieldNumber;
+const int QueryFileReq_USR::kStrEndDateFieldNumber;
+const int QueryFileReq_USR::kUiBusinessTypeFieldNumber;
 const int QueryFileReq_USR::kStrValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -30906,19 +31133,32 @@ QueryFileReq_USR::QueryFileReq_USR(const QueryFileReq_USR& from)
   if (from.strdevid().size() > 0) {
     strdevid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevid_);
   }
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strbegindate().size() > 0) {
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strenddate().size() > 0) {
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
   strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.strvalue().size() > 0) {
     strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
   }
-  uibeginindex_ = from.uibeginindex_;
+  ::memcpy(&uibeginindex_, &from.uibeginindex_,
+    reinterpret_cast<char*>(&uibusinesstype_) -
+    reinterpret_cast<char*>(&uibeginindex_) + sizeof(uibusinesstype_));
   // @@protoc_insertion_point(copy_constructor:Interactive.Message.QueryFileReq_USR)
 }
 
 void QueryFileReq_USR::SharedCtor() {
   struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uibeginindex_ = 0u;
+  ::memset(&uibeginindex_, 0, reinterpret_cast<char*>(&uibusinesstype_) -
+    reinterpret_cast<char*>(&uibeginindex_) + sizeof(uibusinesstype_));
   _cached_size_ = 0;
 }
 
@@ -30930,6 +31170,8 @@ QueryFileReq_USR::~QueryFileReq_USR() {
 void QueryFileReq_USR::SharedDtor() {
   struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -30960,8 +31202,11 @@ void QueryFileReq_USR::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryFileReq_USR)
   struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uibeginindex_ = 0u;
+  ::memset(&uibeginindex_, 0, reinterpret_cast<char*>(&uibusinesstype_) -
+    reinterpret_cast<char*>(&uibeginindex_) + sizeof(uibusinesstype_));
 }
 
 bool QueryFileReq_USR::MergePartialFromCodedStream(
@@ -31017,9 +31262,52 @@ bool QueryFileReq_USR::MergePartialFromCodedStream(
         break;
       }
 
-      // string strValue = 4;
+      // string strBeginDate = 4;
       case 4: {
         if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strbegindate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strbegindate().data(), this->strbegindate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryFileReq_USR.strBeginDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strEndDate = 5;
+      case 5: {
+        if (tag == 42u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strenddate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strenddate().data(), this->strenddate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryFileReq_USR.strEndDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiBusinessType = 6;
+      case 6: {
+        if (tag == 48u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uibusinesstype_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strValue = 7;
+      case 7: {
+        if (tag == 58u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strvalue()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -31081,14 +31369,39 @@ void QueryFileReq_USR::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->uibeginindex(), output);
   }
 
-  // string strValue = 4;
+  // string strBeginDate = 4;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryFileReq_USR.strBeginDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strbegindate(), output);
+  }
+
+  // string strEndDate = 5;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryFileReq_USR.strEndDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->strenddate(), output);
+  }
+
+  // uint32 uiBusinessType = 6;
+  if (this->uibusinesstype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uibusinesstype(), output);
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.QueryFileReq_USR.strValue");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->strvalue(), output);
+      7, this->strvalue(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryFileReq_USR)
@@ -31125,7 +31438,34 @@ void QueryFileReq_USR::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->uibeginindex(), target);
   }
 
-  // string strValue = 4;
+  // string strBeginDate = 4;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryFileReq_USR.strBeginDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strbegindate(), target);
+  }
+
+  // string strEndDate = 5;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryFileReq_USR.strEndDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->strenddate(), target);
+  }
+
+  // uint32 uiBusinessType = 6;
+  if (this->uibusinesstype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uibusinesstype(), target);
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
@@ -31133,7 +31473,7 @@ void QueryFileReq_USR::SerializeWithCachedSizes(
       "Interactive.Message.QueryFileReq_USR.strValue");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->strvalue(), target);
+        7, this->strvalue(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryFileReq_USR)
@@ -31158,7 +31498,21 @@ size_t QueryFileReq_USR::ByteSizeLong() const {
         this->strdevid());
   }
 
-  // string strValue = 4;
+  // string strBeginDate = 4;
+  if (this->strbegindate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strbegindate());
+  }
+
+  // string strEndDate = 5;
+  if (this->strenddate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strenddate());
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -31170,6 +31524,13 @@ size_t QueryFileReq_USR::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->uibeginindex());
+  }
+
+  // uint32 uiBusinessType = 6;
+  if (this->uibusinesstype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uibusinesstype());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -31206,12 +31567,23 @@ void QueryFileReq_USR::MergeFrom(const QueryFileReq_USR& from) {
 
     strdevid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevid_);
   }
+  if (from.strbegindate().size() > 0) {
+
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  if (from.strenddate().size() > 0) {
+
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
   if (from.strvalue().size() > 0) {
 
     strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
   }
   if (from.uibeginindex() != 0) {
     set_uibeginindex(from.uibeginindex());
+  }
+  if (from.uibusinesstype() != 0) {
+    set_uibusinesstype(from.uibusinesstype());
   }
 }
 
@@ -31240,8 +31612,11 @@ void QueryFileReq_USR::Swap(QueryFileReq_USR* other) {
 void QueryFileReq_USR::InternalSwap(QueryFileReq_USR* other) {
   struserid_.Swap(&other->struserid_);
   strdevid_.Swap(&other->strdevid_);
+  strbegindate_.Swap(&other->strbegindate_);
+  strenddate_.Swap(&other->strenddate_);
   strvalue_.Swap(&other->strvalue_);
   std::swap(uibeginindex_, other->uibeginindex_);
+  std::swap(uibusinesstype_, other->uibusinesstype_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -31371,7 +31746,125 @@ void QueryFileReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.uiBeginIndex)
 }
 
-// string strValue = 4;
+// string strBeginDate = 4;
+void QueryFileReq_USR::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryFileReq_USR::strbegindate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+void QueryFileReq_USR::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+#if LANG_CXX11
+void QueryFileReq_USR::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+#endif
+void QueryFileReq_USR::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+void QueryFileReq_USR::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+::std::string* QueryFileReq_USR::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryFileReq_USR::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryFileReq_USR::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strBeginDate)
+}
+
+// string strEndDate = 5;
+void QueryFileReq_USR::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryFileReq_USR::strenddate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.strEndDate)
+  return strenddate_.GetNoArena();
+}
+void QueryFileReq_USR::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+#if LANG_CXX11
+void QueryFileReq_USR::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+#endif
+void QueryFileReq_USR::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+void QueryFileReq_USR::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+::std::string* QueryFileReq_USR::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFileReq_USR.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryFileReq_USR::release_strenddate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFileReq_USR.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryFileReq_USR::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFileReq_USR.strEndDate)
+}
+
+// uint32 uiBusinessType = 6;
+void QueryFileReq_USR::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+::google::protobuf::uint32 QueryFileReq_USR::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFileReq_USR.uiBusinessType)
+  return uibusinesstype_;
+}
+void QueryFileReq_USR::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFileReq_USR.uiBusinessType)
+}
+
+// string strValue = 7;
 void QueryFileReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

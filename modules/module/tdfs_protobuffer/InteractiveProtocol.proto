@@ -168,6 +168,8 @@ message User                                    //用户信息对象
   string strCreatedate = 5;
   uint32 uiStatus = 6;
   string strExtend = 7;
+  string strAliasName = 8;                      //别名
+  string strEmail = 9;                          //邮箱
   
 }
 
@@ -195,7 +197,7 @@ message File                                    //文件信息
   string strFileCreatedate = 10;                //文件创建日期
   string strCreatedate = 11;                    //本条记录生成日期
   uint32 uiStatus = 12;                         //0正常，1永久删除，2回收站
-  string strExtend = 13;
+  string strExtend = 13;  
 }
 
 message FileUrl                                 //文件下载URL地址

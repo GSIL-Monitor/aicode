@@ -134,7 +134,7 @@ private:
     bool PreCommonHandler(const std::string &strMsgReceived);
 
     bool RegisterUser(const std::string &strUserName, const std::string &strUserPwd, 
-        const std::string &strType, const std::string &strExtend, std::string &strUserID);
+        const std::string &strType, const std::string &strExtend, const std::string &strAliasName, const std::string &strEmail, std::string &strUserID);
 
     bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
     
@@ -145,8 +145,8 @@ private:
     template<typename T>
     bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
 
-    bool ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd, 
-        const unsigned int uiType, const std::string &strExtend);
+    bool ModifyUserInfo(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strNewUserPwd, 
+        const std::string &strOldUserPwd, const unsigned int uiType, const std::string &strExtend, const std::string &strAliasName, const std::string &strEmail);
 
     bool UserLogout(const std::string &strSid, const std::string &strUserID);
 

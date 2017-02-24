@@ -139,6 +139,8 @@ public:
         std::string m_strCreatedate;
         unsigned int m_uiStatus;
         std::string m_strExtend;
+        std::string m_strAliasName;                     //±ğÃû
+        std::string m_strEmail;
 
     };
 

@@ -803,6 +803,34 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
+  // string strAliasName = 8;
+  void clear_straliasname();
+  static const int kStrAliasNameFieldNumber = 8;
+  const ::std::string& straliasname() const;
+  void set_straliasname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straliasname(::std::string&& value);
+  #endif
+  void set_straliasname(const char* value);
+  void set_straliasname(const char* value, size_t size);
+  ::std::string* mutable_straliasname();
+  ::std::string* release_straliasname();
+  void set_allocated_straliasname(::std::string* straliasname);
+
+  // string strEmail = 9;
+  void clear_stremail();
+  static const int kStrEmailFieldNumber = 9;
+  const ::std::string& stremail() const;
+  void set_stremail(const ::std::string& value);
+  #if LANG_CXX11
+  void set_stremail(::std::string&& value);
+  #endif
+  void set_stremail(const char* value);
+  void set_stremail(const char* value, size_t size);
+  ::std::string* mutable_stremail();
+  ::std::string* release_stremail();
+  void set_allocated_stremail(::std::string* stremail);
+
   // uint32 uiTypeInfo = 4;
   void clear_uitypeinfo();
   static const int kUiTypeInfoFieldNumber = 4;
@@ -824,6 +852,8 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::ArenaStringPtr struserpassword_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::internal::ArenaStringPtr straliasname_;
+  ::google::protobuf::internal::ArenaStringPtr stremail_;
   ::google::protobuf::uint32 uitypeinfo_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
@@ -10749,6 +10779,110 @@ inline void User::set_allocated_strextend(::std::string* strextend) {
   }
   strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strExtend)
+}
+
+// string strAliasName = 8;
+inline void User::clear_straliasname() {
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& User::straliasname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strAliasName)
+  return straliasname_.GetNoArena();
+}
+inline void User::set_straliasname(const ::std::string& value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strAliasName)
+}
+#if LANG_CXX11
+inline void User::set_straliasname(::std::string&& value) {
+  
+  straliasname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strAliasName)
+}
+#endif
+inline void User::set_straliasname(const char* value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strAliasName)
+}
+inline void User::set_straliasname(const char* value, size_t size) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strAliasName)
+}
+inline ::std::string* User::mutable_straliasname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strAliasName)
+  return straliasname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* User::release_straliasname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strAliasName)
+  
+  return straliasname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void User::set_allocated_straliasname(::std::string* straliasname) {
+  if (straliasname != NULL) {
+    
+  } else {
+    
+  }
+  straliasname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straliasname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strAliasName)
+}
+
+// string strEmail = 9;
+inline void User::clear_stremail() {
+  stremail_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& User::stremail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.User.strEmail)
+  return stremail_.GetNoArena();
+}
+inline void User::set_stremail(const ::std::string& value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.User.strEmail)
+}
+#if LANG_CXX11
+inline void User::set_stremail(::std::string&& value) {
+  
+  stremail_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.User.strEmail)
+}
+#endif
+inline void User::set_stremail(const char* value) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.User.strEmail)
+}
+inline void User::set_stremail(const char* value, size_t size) {
+  
+  stremail_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.User.strEmail)
+}
+inline ::std::string* User::mutable_stremail() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.User.strEmail)
+  return stremail_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* User::release_stremail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.User.strEmail)
+  
+  return stremail_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void User::set_allocated_stremail(::std::string* stremail) {
+  if (stremail != NULL) {
+    
+  } else {
+    
+  }
+  stremail_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stremail);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.User.strEmail)
 }
 
 // -------------------------------------------------------------------
