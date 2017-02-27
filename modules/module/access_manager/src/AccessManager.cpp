@@ -103,7 +103,8 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::LoginReq_DEV_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::AddFileReq_DEV_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::AddFileReq_DEV_T == req.m_MsgType || 
+        InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -195,6 +196,8 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     UsrInfo.m_strCreatedate = strCurrentTime;
     UsrInfo.m_uiStatus = NORMAL_STATUS;
     UsrInfo.m_strExtend = RegUsrReq.m_userInfo.m_strExtend;
+    UsrInfo.m_strAliasName = RegUsrReq.m_userInfo.m_strAliasName;
+    UsrInfo.m_strEmail = RegUsrReq.m_userInfo.m_strEmail;
     
     m_DBRuner.Post(boost::bind(&AccessManager::InsertUserToDB, this, UsrInfo));
 
@@ -290,6 +293,8 @@ bool AccessManager::QueryUsrInfoReq(const std::string &strMsg, const std::string
         rsp.m_userInfo.m_strUserPassword = usr.m_strUserPassword;
         rsp.m_userInfo.m_uiStatus = usr.m_uiStatus;
         rsp.m_userInfo.m_uiTypeInfo = usr.m_uiTypeInfo;
+        rsp.m_userInfo.m_strAliasName = usr.m_strAliasName;
+        rsp.m_userInfo.m_strEmail = usr.m_strEmail;
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -378,6 +383,13 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
     LOG_INFO_RLD("Modify user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " session id is " << ModifyUsrReq.m_strSID 
         << " and user name is " << ModifyUsrReq.m_userInfo.m_strUserName << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword
         << " and user type is " << ModifyUsrReq.m_userInfo.m_uiTypeInfo << " and user extend is " << ModifyUsrReq.m_userInfo.m_strExtend);
+
+    if (!ModifyUsrReq.m_strOldPwd.empty() && !IsUserPasswordValid(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_strOldPwd))
+    {
+        LOG_ERROR_RLD("Check user password valid failed, modify password must provide the correct old password, user id is " <<
+            ModifyUsrReq.m_userInfo.m_strUserID << " and src id is " << ModifyUsrReq.m_strSID);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&AccessManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo));
 
@@ -715,22 +727,21 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
         m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
 
+        AddNoOwnerFile(req.m_strUserID, req.m_devInfo.m_strDevID);
+
         blResult = true;
-    
-        return blResult;
     }
     else if (strUserID == req.m_strUserID)
     {
         LOG_INFO_RLD("Add devcice successful, the device has been added by current user, user id is" << strUserID);
         blResult = true;
-
-        return blResult;
     } 
     else
     {
         LOG_ERROR_RLD("Add device failed, the device has been added, owner user id is " << strUserID << " and src id is " << strSrcID);
-        return blResult;
     }
+
+    return blResult;
 }
 
 bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -2094,15 +2105,113 @@ bool AccessManager::InsertFileToDB(const InteractiveProtoHandler::File &FileInfo
     return true;
 }
 
+bool AccessManager::IsUserPasswordValid(const std::string &strUserID, const std::string &strUserPassword)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_user_info where userid = '%s' and userpassword = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strUserPassword.c_str());
+
+    unsigned int uiResult;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiResult = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiResult;
+
+        LOG_INFO_RLD("Query whether password is valid sql count(id) is " << uiResult);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("IsUserPasswordValid sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("The user password is invalid, user id is " << strUserID << " and password is " << strUserPassword);
+        return false;
+    }
+    
+    if (uiResult > 0)
+    {
+        LOG_INFO_RLD("The user password is valid, user id is " << strUserID);
+        return true;
+    }
+    else
+    {
+        LOG_ERROR_RLD("The user password is invalid, user id is " << strUserID << " and password is " << strUserPassword);
+        return false;
+    }
+}
+
+void AccessManager::AddNoOwnerFile(const std::string &strUserID, const std::string &strDevID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select id from t_file_info where deviceid = '%s' and (userid is null or userid = '') and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str());
+
+    std::list <std::string> strIDList;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strIDList.push_back(strColumn);
+        Result = strIDList;
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("AddNoOwnerFile sql failed, sql is " << sql);
+        return;
+    }
+
+    if (strIDList.empty())
+    {
+        LOG_INFO_RLD("Query no owner file is empty, device id is " << strDevID);
+        return;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::UpdateFileUserIDToDB, this, strUserID, strIDList));
+}
+
+void AccessManager::UpdateFileUserIDToDB(const std::string &strUserID, std::list<std::string> &strIDList)
+{
+    if (strIDList.empty())
+    {
+        LOG_INFO_RLD("Update id list is empty, user id is " << strUserID);
+        return;
+    }
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_file_info set userid = '%s' where id in (";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    std::string strSql(sql);
+
+    for (std::string id : strIDList)
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), "'%s',", id.c_str());
+        strSql.append(cTmp);
+    }
+
+    strSql.replace(strSql.length() - 1, 1, std::string(")"));
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("Update t_file_info user id sql exec failed, sql is " << sql);
+        return;
+    }
+}
+
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_info("
-        "id,userid,username, userpassword, typeinfo, createdate, status, extend) values(uuid(),"        
-        "'%s','%s','%s','%d','%s', '%d','%s')";
+        "id,userid,username, userpassword, typeinfo, aliasname, email, createdate, status, extend) values(uuid(),"        
+        " '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d','%s')";
     snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserID.c_str(), UsrInfo.m_strUserName.c_str(), UsrInfo.m_strUserPassword.c_str(), UsrInfo.m_uiTypeInfo, 
-        UsrInfo.m_strCreatedate.c_str(), UsrInfo.m_uiStatus, UsrInfo.m_strExtend.c_str());
+        UsrInfo.m_strAliasName.c_str(), UsrInfo.m_strEmail.c_str(), UsrInfo.m_strCreatedate.c_str(), UsrInfo.m_uiStatus, UsrInfo.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -2113,14 +2222,6 @@ void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     std::list<std::string> strItemList;
-    if (!UsrInfo.m_strUserName.empty())
-    {
-        char sql[1024] = { 0 };
-        const char *sqlfmt = "username = '%s'";
-        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserName.c_str());
-        strItemList.push_back(sql);
-    }
-
     if (!UsrInfo.m_strUserPassword.empty())
     {
         char sql[1024] = { 0 };
@@ -2134,6 +2235,22 @@ void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrI
         char sql[1024] = { 0 };
         const char *sqlfmt = "typeinfo = %d";
         snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_uiTypeInfo);
+        strItemList.push_back(sql);
+    }
+
+    if (!UsrInfo.m_strAliasName.empty())
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "aliasname = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strAliasName.c_str());
+        strItemList.push_back(sql);
+    }
+
+    if (!UsrInfo.m_strEmail.empty())
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "email = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strEmail.c_str());
         strItemList.push_back(sql);
     }
 
@@ -2868,7 +2985,7 @@ void AccessManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation
 bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select userid, username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s' and status = 0";
+    const char* sqlfmt = "select userid, username, userpassword, typeinfo, createdate, status, extend, aliasname, email from t_user_info where userid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
     std::string strSql = sql;
 
@@ -2884,6 +3001,8 @@ bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveP
         usr.m_strUserPassword = Result.m_strUserPassword;
         usr.m_uiStatus = Result.m_uiStatus;
         usr.m_uiTypeInfo = Result.m_uiTypeInfo;
+        usr.m_strAliasName = Result.m_strAliasName;
+        usr.m_strEmail = Result.m_strEmail;
 
         LOG_INFO_RLD("Query user info exist get result from cache and sql is " << strSql << " and user id is " << usr.m_strUserID);
     }
@@ -2914,6 +3033,12 @@ bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveP
                 break;
             case 6:
                 usr.m_strExtend = strColumn;
+                break;
+            case 7:
+                usr.m_strAliasName = strColumn;
+                break;
+            case 8:
+                usr.m_strEmail = strColumn;
                 break;
             default:
                 LOG_ERROR_RLD("UserInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);

@@ -8,7 +8,9 @@ CREATE TABLE `t_user_info` (
   `userid` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `userpassword` varchar(100) DEFAULT NULL,
-  `typeinfo` int(11) NOT NULL DEFAULT '0',   
+  `typeinfo` int(11) NOT NULL DEFAULT '0',
+  `aliasname` varchar(128), #用户别名
+  `email` varchar(128) NOT NULL, #用户邮箱   
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,

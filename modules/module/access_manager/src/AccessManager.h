@@ -209,6 +209,12 @@ private:
 
     bool QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID);
 
+    bool IsUserPasswordValid(const std::string &strUserID, const std::string &strUserPassword);
+
+    void AddNoOwnerFile(const std::string &strUserID, const std::string &strDevID);
+
+    void UpdateFileUserIDToDB(const std::string &strUserID, std::list<std::string> &strIDList);
+
     bool InsertFileToDB(const InteractiveProtoHandler::File &FileInfo);
 
     void FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
