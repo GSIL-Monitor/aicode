@@ -1799,6 +1799,62 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     return blResult;
 }
 
+bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::RetrievePwdReq_USR RetrievePwdReqUsr;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &RetrievePwdReqUsr, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::RetrievePwdRsp_USR RetrievePwdRspUsr;
+        RetrievePwdRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::RetrievePwdRsp_USR_T;
+        RetrievePwdRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        RetrievePwdRspUsr.m_strSID = RetrievePwdReqUsr.m_strSID;
+        RetrievePwdRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        RetrievePwdRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        RetrievePwdRspUsr.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(RetrievePwdRspUsr, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Retrieve user password rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Retrieve user password rsp already send, dst id is " << strSrcID << " and user name is " << RetrievePwdReqUsr.m_strUserName <<
+            " and session id is " << RetrievePwdReqUsr.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, RetrievePwdReqUsr))
+    {
+        LOG_ERROR_RLD("Retrieve user password req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!CheckEmailByUserName(RetrievePwdReqUsr.m_strUserName, RetrievePwdReqUsr.m_strEmail))
+    {
+        LOG_ERROR_RLD("Retrieve user password failed, the user name or email is not correct, user name is " << RetrievePwdReqUsr.m_strUserName <<
+            " and email is " << RetrievePwdReqUsr.m_strEmail);
+    }
+
+    std::string strRandPwd = CreateUUID().erase(8);
+
+    m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd));
+
+    m_DBRuner.Post(boost::bind(&AccessManager::SendUserResetPasswordEmail, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_strEmail));
+
+    LOG_INFO_RLD("Retrieve user password received and user name is " << RetrievePwdReqUsr.m_strUserName << " and session id is " << RetrievePwdReqUsr.m_strSID);
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -2203,6 +2259,63 @@ void AccessManager::UpdateFileUserIDToDB(const std::string &strUserID, std::list
     }
 }
 
+bool AccessManager::CheckEmailByUserName(const std::string &strUserName, const std::string &strEmail)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_user_info where username = '%s' and email = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserName.c_str(), strEmail.c_str());
+    
+    unsigned int uiResult;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiResult = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiResult;
+
+        LOG_INFO_RLD("Check email by user name sql count(id) is " << uiResult);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("CheckEmailByUserName sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("The user name or email is invalid, user name is " << strUserName << " and email is " << strEmail);
+        return false;
+    }
+
+    if (uiResult > 0)
+    {
+        LOG_INFO_RLD("The user email is valid, user name is " << strUserName << " and email is " << strEmail);
+        return true;
+    }
+    else
+    {
+        LOG_ERROR_RLD("The user name or email is invalid, user name is " << strUserName << " and email is " << strEmail);
+        return false;
+    }
+}
+
+void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str());
+
+    //if (!m_pMysql->QueryExec(std::string(sql)))
+    //{
+    //    LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
+    //}
+}
+
+void AccessManager::SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail)
+{
+//TODO
+}
+
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
 {
     
@@ -2541,10 +2654,57 @@ bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, 
     snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str());
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, NULL, IsForceFromDB))
+    if (IsForceFromDB)
     {
-        LOG_ERROR_RLD("Valid user query sql failed, sql is " << sql);
-        return false;
+        auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+        {
+            ValueInDB value;
+            value.strValue = strColumn;
+
+            switch (uiColumnNum)
+            {
+            case 0:
+                value.strType = "userid";
+                break;
+            case 1:
+                value.strType = "username";
+                break;
+            case 2:
+                value.strType = "userpassword";
+                break;
+            case 3:
+                value.strType = "typeinfo";
+                break;
+            case 4:
+                value.strType = "createdate";
+                break;
+            case 5:
+                value.strType = "status";
+                break;
+            case 6:
+                value.strType = "extend";
+                break;
+            default:
+                LOG_ERROR_RLD("UserInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+                break;
+            }
+
+            ResultList.push_back(value);
+        };
+
+        if (!m_pMysql->QueryExec(std::string(sql), FuncTmp))
+        {
+            LOG_ERROR_RLD("Valid user query sql failed, sql is " << sql);
+            return false;
+        }
+    }
+    else
+    {
+        if (!m_DBCache.QuerySql(std::string(sql), ResultList, NULL, IsForceFromDB))
+        {
+            LOG_ERROR_RLD("Valid user query sql failed, sql is " << sql);
+            return false;
+        }
     }
 
     if (ResultList.empty())

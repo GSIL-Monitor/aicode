@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcommonlib.a  CMakeFiles/commonlib.dir/base64.cpp.o CMakeFiles/commonlib.dir/md5.cpp.o
+/usr/bin/ranlib libcommonlib.a

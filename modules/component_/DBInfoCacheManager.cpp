@@ -3,6 +3,7 @@
 #include "LogRLD.h"
 #include "mysql_impl.h"
 
+
 DBInfoCacheManager::DBInfoCacheManager(MysqlImpl *pMysql) : m_pCacheContainer(new CacheManager()), m_pMysql(pMysql)
 {
 }

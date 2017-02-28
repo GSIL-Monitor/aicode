@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/usr/local/src/mail/common/base64.cpp
+base64.h
+/usr/local/src/mail/common/base64.h
+iostream
+-
+
+/usr/local/src/mail/common/base64.h
+string
+-
+
+/usr/local/src/mail/common/md5.cpp
+md5.h
+/usr/local/src/mail/common/md5.h
+assert.h
+-
+string.h
+-
+iostream
+-
+
+/usr/local/src/mail/common/md5.h
+stdio.h
+-
+fstream
+-
+iostream
+-
+

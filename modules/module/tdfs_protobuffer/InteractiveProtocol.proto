@@ -294,20 +294,20 @@ message P2pInfoRsp_DEV                          //p2p服务器信息响应
 {
   string strP2pServer = 1;
   string strP2pID = 2;
-  uint32 uiLease = 3;                          //租约，单位为小时
+  uint32 uiLease = 3;                           //租约，单位为小时
 }
 
 message AddFileReq_DEV                          //设备添加文件请求
 {
   string strDevID = 1;
-  repeated File fileInfo = 2;                     //支持批量添加文件
+  repeated File fileInfo = 2;                   //支持批量添加文件
   string strValue = 3;
 }
 
 message AddFileRsp_DEV                          //设备添加文件响应
 {
   string strValue = 1;
-  repeated string strFileIDFailed = 2;                  //添加失败的文件
+  repeated string strFileIDFailed = 2;          //添加失败的文件
 }
 
 
@@ -597,30 +597,30 @@ message P2pInfoRsp_USR                          //p2p服务器信息响应
 {
   string strP2pServer = 1;
   string strP2pID = 2;
-  uint32 uiLease = 3;                          //租约，单位为小时
+  uint32 uiLease = 3;                           //租约，单位为小时
 }
 message DeleteFileReq_USR                       //用户删除文件请求
 {
   string strUserID = 1;
-  repeated string strFileID = 2;                 //支持批量删除文件
+  repeated string strFileID = 2;                //支持批量删除文件
 }
 
 message DeleteFileRsp_USR                       //用户删除文件响应
 {
   string strValue = 1;
-  repeated string strFileIDFailed = 2;            //删除失败的文件
+  repeated string strFileIDFailed = 2;          //删除失败的文件
 }
 
 message DownloadFileReq_USR                     //用户下载文件请求
 {
   string strUserID = 1;
-  repeated string strFileID = 2;                 //支持批量下载文件
+  repeated string strFileID = 2;                //支持批量下载文件
 }
 
 message DownloadFileRsp_USR                     //用户下载文件响应
 {
   string strValue = 1;
-  repeated FileUrl fileUrl = 2;                   //文件下载地址
+  repeated FileUrl fileUrl = 2;                 //文件下载地址
 }
 
 //用户查询其存储的所有文件，考虑分页处理

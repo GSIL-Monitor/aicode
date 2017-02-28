@@ -142,6 +142,8 @@ public:
 
     bool P2pInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool RetrievePwdReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -219,6 +221,12 @@ private:
 
     void FileInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
         std::list<InteractiveProtoHandler::File> *pFileInfoList);
+
+    bool CheckEmailByUserName(const std::string &strUserName, const std::string &strEmail);
+
+    void ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword);
+
+    void SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail);
 
 private:
     ParamInfo m_ParamInfo;

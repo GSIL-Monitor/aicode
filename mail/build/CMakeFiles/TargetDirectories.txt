@@ -1,0 +1,6 @@
+/usr/local/src/mail/build/CMakeFiles/mailsender.dir
+/usr/local/src/mail/build/CMakeFiles/rebuild_cache.dir
+/usr/local/src/mail/build/CMakeFiles/edit_cache.dir
+/usr/local/src/mail/build/common/CMakeFiles/rebuild_cache.dir
+/usr/local/src/mail/build/common/CMakeFiles/edit_cache.dir
+/usr/local/src/mail/build/common/CMakeFiles/commonlib.dir

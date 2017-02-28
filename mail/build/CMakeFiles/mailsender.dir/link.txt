@@ -1,0 +1,1 @@
+g++   -g3 -std=c++0x -O2 -Wall -Wno-unused-parameter -Wno-strict-aliasing -ldl -lpthread   CMakeFiles/mailsender.dir/src/CSmtp.cpp.o CMakeFiles/mailsender.dir/src/main.cpp.o  -o ../bin/mailsender  -L/usr/local/src/mail/include -Wl,-rpath,/usr/local/src/mail/include -rdynamic common/libcommonlib.a -Wl,-Bstatic -lssl -lcrypto -Wl,-Bdynamic 
