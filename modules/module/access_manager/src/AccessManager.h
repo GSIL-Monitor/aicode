@@ -96,7 +96,7 @@ public:
     bool LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
-        const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID);
+        const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID, std::string &strUserID);
 
     bool LogoutReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 

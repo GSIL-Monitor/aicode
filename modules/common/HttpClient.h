@@ -12,11 +12,11 @@
 class HttpClient
 {
 public:
-	HttpClient();
-	~HttpClient();
+    HttpClient();
+    ~HttpClient();
 
-	int Get(const std::string &url, std::string &response);
-	int Post(const std::string &url, const std::string &request, std::string &response);
+    int Get(const std::string &url, std::string &response);
+    int Post(const std::string &url, const std::string &request, std::string &response);
 
 };
 

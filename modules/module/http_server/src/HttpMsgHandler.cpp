@@ -73,6 +73,8 @@ const std::string HttpMsgHandler::DELETE_USER_FILE_ACTION("delete_file");
 
 const std::string HttpMsgHandler::ADD_FILE_ACTION("add_file");
 
+const std::string HttpMsgHandler::RETRIEVE_PWD_ACTION("retrieve_pwd");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)

@@ -48,6 +48,7 @@ public:
     static const std::string DOWNLOAD_USER_FILE_ACTION;
     static const std::string DELETE_USER_FILE_ACTION;
     static const std::string ADD_FILE_ACTION;
+    static const std::string RETRIEVE_PWD_ACTION;
 
     
     typedef struct _ParamInfo

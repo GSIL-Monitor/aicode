@@ -189,7 +189,7 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     strCurrentTime.replace(pos, 1, std::string(" "));
 
     InteractiveProtoHandler::User UsrInfo;
-    UsrInfo.m_strUserID = strUserID = CreateUUID();
+    UsrInfo.m_strUserID = strUserID = RegUsrReq.m_userInfo.m_strUserID.empty() ? CreateUUID() : RegUsrReq.m_userInfo.m_strUserID;
     UsrInfo.m_strUserName = RegUsrReq.m_userInfo.m_strUserName;
     UsrInfo.m_strUserPassword = RegUsrReq.m_userInfo.m_strUserPassword;
     UsrInfo.m_uiTypeInfo = RegUsrReq.m_userInfo.m_uiTypeInfo;
@@ -463,7 +463,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
     {
         if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
-            m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID))
+            m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID, LoginReqUsr.m_userInfo.m_strUserID))
         {
             LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
             return false;
@@ -504,7 +504,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
 }
 
 bool AccessManager::LoginLTUserSiteReq(const std::string &strUserName, const std::string &strPassword,
-    const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID)
+    const std::string &strLTUserSite, const std::string &strLTRC4Key, const std::string &strSrcID, std::string &strUserID)
 {
     UserLoginLTUserSite userLogin(strLTUserSite, strLTRC4Key);
     if (userLogin.Login(strUserName, strPassword) != LOGIN_OK)
@@ -517,7 +517,7 @@ bool AccessManager::LoginLTUserSiteReq(const std::string &strUserName, const std
     RegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T;
     RegUsrReq.m_uiMsgSeq = 0;
     RegUsrReq.m_strSID = "";
-    RegUsrReq.m_userInfo.m_strUserID = "";
+    RegUsrReq.m_userInfo.m_strUserID = strUserID = CreateUUID();
     RegUsrReq.m_userInfo.m_strUserName = strUserName;
     RegUsrReq.m_userInfo.m_strUserPassword = strPassword;
     RegUsrReq.m_userInfo.m_strCreatedate = "";
@@ -1840,6 +1840,7 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
     {
         LOG_ERROR_RLD("Retrieve user password failed, the user name or email is not correct, user name is " << RetrievePwdReqUsr.m_strUserName <<
             " and email is " << RetrievePwdReqUsr.m_strEmail);
+        return false;
     }
 
     std::string strRandPwd = CreateUUID().erase(8);
@@ -2305,15 +2306,21 @@ void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const 
     const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str());
 
-    //if (!m_pMysql->QueryExec(std::string(sql)))
-    //{
-    //    LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
-    //}
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
+    }
 }
 
 void AccessManager::SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail)
 {
-//TODO
+    char cmd[1024] = { 0 };
+    const char *param = "./mail.sh '%s' '%s' '%s'";
+    snprintf(cmd, sizeof(cmd), param, strEmail.c_str(), strUserName.c_str(), strUserPassword.c_str());
+
+    system(cmd);
+
+    LOG_INFO_RLD("User reset password email has been sended, email address is " << strEmail << " and user name is " << strUserName);
 }
 
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)

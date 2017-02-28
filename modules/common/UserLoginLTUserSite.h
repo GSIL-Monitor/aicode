@@ -17,14 +17,14 @@
 class UserLoginLTUserSite
 {
 public:
-	UserLoginLTUserSite(const std::string &url, const std::string &rc4Key);
-	~UserLoginLTUserSite();
+    UserLoginLTUserSite(const std::string &url, const std::string &rc4Key);
+    ~UserLoginLTUserSite();
 
-	int Login(const std::string &userName, const std::string &password);
+    int Login(const std::string &userName, const std::string &password);
 
 private:
-	std::string LTUserSiteUrl;
-	std::string LTUserSiteRC4Key;
+    std::string LTUserSiteUrl;
+    std::string LTUserSiteRC4Key;
 
 };
 
