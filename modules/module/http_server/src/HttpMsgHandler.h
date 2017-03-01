@@ -213,7 +213,8 @@ private:
 
     bool RetrievePwd(const std::string &strUserName, const std::string &strEmail);
 
-    bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode);
+    bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode,
+        std::string &strCountryNameEn, std::string &strCountryNameZh, std::string &strTimeZone);
 
 private:
     ParamInfo m_ParamInfo;

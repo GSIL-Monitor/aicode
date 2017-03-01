@@ -2548,7 +2548,10 @@ bool HttpMsgHandler::DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pM
     LOG_INFO_RLD("Device query timezone info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP);
 
     std::string strCountrycode;
-    if (!DeviceQueryTimeZone(strSid, strDevID, strRemoteIP, strCountrycode))
+    std::string strCountryNameEn;
+    std::string strCountryNameZh;
+    std::string strTimeZone;
+    if (!DeviceQueryTimeZone(strSid, strDevID, strRemoteIP, strCountrycode, strCountryNameEn, strCountryNameZh, strTimeZone))
     {
         LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -2557,6 +2560,10 @@ bool HttpMsgHandler::DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("countrycode", strCountrycode));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("ountryname_en", strCountryNameEn));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("ountryname_zh", strCountryNameZh));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("timezone", strTimeZone));
+
 
     blResult = true;
 
@@ -4478,7 +4485,8 @@ bool HttpMsgHandler::RetrievePwd(const std::string &strUserName, const std::stri
 
 }
 
-bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode)
+bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode,
+    std::string &strCountryNameEn, std::string &strCountryNameZh, std::string &strTimeZone)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -4517,6 +4525,9 @@ bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::s
         }
 
         strCountrycode = QueryTimeZoneInfoInfoRsp.m_strCountryCode;
+        strCountryNameEn = QueryTimeZoneInfoInfoRsp.m_strCountryNameEn;
+        strCountryNameZh = QueryTimeZoneInfoInfoRsp.m_strCountryNameZh;
+        strTimeZone = QueryTimeZoneInfoInfoRsp.m_strTimeZone;
         
         iRet = QueryTimeZoneInfoInfoRsp.m_iRetcode;
 
