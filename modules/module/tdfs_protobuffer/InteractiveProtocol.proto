@@ -66,6 +66,9 @@ enum MsgType
   
   AddFileReq_DEV_T = 10300;          //设备添加文件
   AddFileRsp_DEV_T = 10310;
+  
+  QueryTimeZoneReq_DEV_T = 10320;    //查询时区
+  QueryTimeZoneRsp_DEV_T = 10330;
 
   ////////////////////////////////////////////////////////
   
@@ -308,6 +311,19 @@ message AddFileRsp_DEV                          //设备添加文件响应
 {
   string strValue = 1;
   repeated string strFileIDFailed = 2;          //添加失败的文件
+}
+
+message QueryTimeZoneReq_DEV                    //查询时区请求
+{
+  string strDevID = 1;
+  string strDevIpAddress = 2;
+}
+
+message QueryTimeZoneRsp_DEV                    //查询时区响应
+{
+  string strCountryCode = 1;
+  string strCountryNameEn = 2;
+  string strCountryNameZh = 3;
 }
 
 
@@ -696,6 +712,8 @@ message Req
   
   AddFileReq_DEV AddFileReq_DEV_Value = 60;                        //设备添加文件
   
+  QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;            //查询时区
+  
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
   RegisterUserReq_USR RegisterUserReq_USR_Value = 80;              //用户注册
@@ -753,6 +771,8 @@ message Rsp
   P2pInfoRsp_DEV P2pInfoRsp_DEV_Value = 74;                        //设备请求p2p服务器 
   
   AddFileRsp_DEV AddFileRsp_DEV_Value = 80;                        //设备添加文件
+  
+  QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;            //查询时区
 
 
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理

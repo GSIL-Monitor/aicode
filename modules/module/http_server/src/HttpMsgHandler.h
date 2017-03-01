@@ -49,6 +49,8 @@ public:
     static const std::string DELETE_USER_FILE_ACTION;
     static const std::string ADD_FILE_ACTION;
     static const std::string RETRIEVE_PWD_ACTION;
+    static const std::string DEVICE_QUERY_TIMEZONE_ACTION;
+
 
     
     typedef struct _ParamInfo
@@ -123,6 +125,9 @@ public:
     bool DeleteUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
     
     bool AddFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
 private:
 
@@ -207,6 +212,8 @@ private:
         const std::string &strSuffixName, const unsigned long int uiFileSize, const std::string &strFileCreatedate, const std::string &strExtend, const unsigned int uiBussinessType);
 
     bool RetrievePwd(const std::string &strUserName, const std::string &strEmail);
+
+    bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode);
 
 private:
     ParamInfo m_ParamInfo;

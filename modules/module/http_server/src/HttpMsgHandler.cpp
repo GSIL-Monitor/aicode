@@ -75,6 +75,8 @@ const std::string HttpMsgHandler::ADD_FILE_ACTION("add_file");
 
 const std::string HttpMsgHandler::RETRIEVE_PWD_ACTION("retrieve_pwd");
 
+const std::string HttpMsgHandler::DEVICE_QUERY_TIMEZONE_ACTION("device_query_timezone");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -2498,6 +2500,71 @@ bool HttpMsgHandler::AddFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
     return blResult;    
 }
 
+bool HttpMsgHandler::DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device remote ip not found.");
+        return blResult;
+    }
+    const std::string strRemoteIP = itFind->second;
+
+
+    LOG_INFO_RLD("Device query timezone info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP);
+
+    std::string strCountrycode;
+    if (!DeviceQueryTimeZone(strSid, strDevID, strRemoteIP, strCountrycode))
+    {
+        LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("countrycode", strCountrycode));
+
+    blResult = true;
+
+    return blResult;
+
+
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -4409,5 +4476,64 @@ bool HttpMsgHandler::RetrievePwd(const std::string &strUserName, const std::stri
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
 
+}
+
+bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryTimeZoneReq_DEV QueryTimeZoneInfoReq;
+        QueryTimeZoneInfoReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryTimeZoneReq_DEV_T;
+        QueryTimeZoneInfoReq.m_uiMsgSeq = 1;
+        QueryTimeZoneInfoReq.m_strSID = strSid;
+        QueryTimeZoneInfoReq.m_strDevID = strDevID;
+        QueryTimeZoneInfoReq.m_strDevIpAddress = strDevIpAddress;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryTimeZoneInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query timezone info of device req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryTimeZoneRsp_DEV QueryTimeZoneInfoInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryTimeZoneInfoInfoRsp))
+        {
+            LOG_ERROR_RLD("Query timezone info of device rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strCountrycode = QueryTimeZoneInfoInfoRsp.m_strCountryCode;
+        
+        iRet = QueryTimeZoneInfoInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query timezone info of device id is " << strDevID << " and device ip is " << strDevIpAddress << 
+            " and country code is " << strCountrycode << " and country name en is " << QueryTimeZoneInfoInfoRsp.m_strCountryNameEn << 
+            " and country name zh is " << QueryTimeZoneInfoInfoRsp.m_strCountryNameZh <<
+            " and return code is " << QueryTimeZoneInfoInfoRsp.m_iRetcode <<
+            " and return msg is " << QueryTimeZoneInfoInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 

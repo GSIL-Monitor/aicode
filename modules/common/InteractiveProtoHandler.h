@@ -48,6 +48,9 @@ public:
         AddFileReq_DEV_T = 10300,               //设备添加文件
         AddFileRsp_DEV_T = 10310,
 
+        QueryTimeZoneReq_DEV_T = 10320,    //查询时区
+        QueryTimeZoneRsp_DEV_T = 10330,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -920,6 +923,29 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryTimeZoneReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strDevIpAddress;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryTimeZoneRsp_DEV : Rsp
+    {
+
+        std::string m_strCountryCode;
+        std::string m_strCountryNameEn;
+        std::string m_strCountryNameZh;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -1101,6 +1127,11 @@ private:
     bool RetrievePwdReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool RetrievePwdRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool RetrievePwdRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryTimeZoneReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryTimeZoneReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryTimeZoneRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryTimeZoneRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 

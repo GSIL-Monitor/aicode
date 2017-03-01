@@ -215,6 +215,12 @@ extern QueryFriendsReq_USRDefaultTypeInternal _QueryFriendsReq_USR_default_insta
 class QueryFriendsRsp_USR;
 class QueryFriendsRsp_USRDefaultTypeInternal;
 extern QueryFriendsRsp_USRDefaultTypeInternal _QueryFriendsRsp_USR_default_instance_;
+class QueryTimeZoneReq_DEV;
+class QueryTimeZoneReq_DEVDefaultTypeInternal;
+extern QueryTimeZoneReq_DEVDefaultTypeInternal _QueryTimeZoneReq_DEV_default_instance_;
+class QueryTimeZoneRsp_DEV;
+class QueryTimeZoneRsp_DEVDefaultTypeInternal;
+extern QueryTimeZoneRsp_DEVDefaultTypeInternal _QueryTimeZoneRsp_DEV_default_instance_;
 class QueryUserReq_USR;
 class QueryUserReq_USRDefaultTypeInternal;
 extern QueryUserReq_USRDefaultTypeInternal _QueryUserReq_USR_default_instance_;
@@ -322,6 +328,8 @@ enum MsgType {
   P2pInfoRsp_DEV_T = 10230,
   AddFileReq_DEV_T = 10300,
   AddFileRsp_DEV_T = 10310,
+  QueryTimeZoneReq_DEV_T = 10320,
+  QueryTimeZoneRsp_DEV_T = 10330,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -3084,6 +3092,233 @@ class AddFileRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> strfileidfailed_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryTimeZoneReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryTimeZoneReq_DEV) */ {
+ public:
+  QueryTimeZoneReq_DEV();
+  virtual ~QueryTimeZoneReq_DEV();
+
+  QueryTimeZoneReq_DEV(const QueryTimeZoneReq_DEV& from);
+
+  inline QueryTimeZoneReq_DEV& operator=(const QueryTimeZoneReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryTimeZoneReq_DEV& default_instance();
+
+  static inline const QueryTimeZoneReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryTimeZoneReq_DEV*>(
+               &_QueryTimeZoneReq_DEV_default_instance_);
+  }
+
+  void Swap(QueryTimeZoneReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryTimeZoneReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryTimeZoneReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryTimeZoneReq_DEV& from);
+  void MergeFrom(const QueryTimeZoneReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryTimeZoneReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strDevIpAddress = 2;
+  void clear_strdevipaddress();
+  static const int kStrDevIpAddressFieldNumber = 2;
+  const ::std::string& strdevipaddress() const;
+  void set_strdevipaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevipaddress(::std::string&& value);
+  #endif
+  void set_strdevipaddress(const char* value);
+  void set_strdevipaddress(const char* value, size_t size);
+  ::std::string* mutable_strdevipaddress();
+  ::std::string* release_strdevipaddress();
+  void set_allocated_strdevipaddress(::std::string* strdevipaddress);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryTimeZoneReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryTimeZoneRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryTimeZoneRsp_DEV) */ {
+ public:
+  QueryTimeZoneRsp_DEV();
+  virtual ~QueryTimeZoneRsp_DEV();
+
+  QueryTimeZoneRsp_DEV(const QueryTimeZoneRsp_DEV& from);
+
+  inline QueryTimeZoneRsp_DEV& operator=(const QueryTimeZoneRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryTimeZoneRsp_DEV& default_instance();
+
+  static inline const QueryTimeZoneRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryTimeZoneRsp_DEV*>(
+               &_QueryTimeZoneRsp_DEV_default_instance_);
+  }
+
+  void Swap(QueryTimeZoneRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryTimeZoneRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryTimeZoneRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryTimeZoneRsp_DEV& from);
+  void MergeFrom(const QueryTimeZoneRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryTimeZoneRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCountryCode = 1;
+  void clear_strcountrycode();
+  static const int kStrCountryCodeFieldNumber = 1;
+  const ::std::string& strcountrycode() const;
+  void set_strcountrycode(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcountrycode(::std::string&& value);
+  #endif
+  void set_strcountrycode(const char* value);
+  void set_strcountrycode(const char* value, size_t size);
+  ::std::string* mutable_strcountrycode();
+  ::std::string* release_strcountrycode();
+  void set_allocated_strcountrycode(::std::string* strcountrycode);
+
+  // string strCountryNameEn = 2;
+  void clear_strcountrynameen();
+  static const int kStrCountryNameEnFieldNumber = 2;
+  const ::std::string& strcountrynameen() const;
+  void set_strcountrynameen(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcountrynameen(::std::string&& value);
+  #endif
+  void set_strcountrynameen(const char* value);
+  void set_strcountrynameen(const char* value, size_t size);
+  ::std::string* mutable_strcountrynameen();
+  ::std::string* release_strcountrynameen();
+  void set_allocated_strcountrynameen(::std::string* strcountrynameen);
+
+  // string strCountryNameZh = 3;
+  void clear_strcountrynamezh();
+  static const int kStrCountryNameZhFieldNumber = 3;
+  const ::std::string& strcountrynamezh() const;
+  void set_strcountrynamezh(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcountrynamezh(::std::string&& value);
+  #endif
+  void set_strcountrynamezh(const char* value);
+  void set_strcountrynamezh(const char* value, size_t size);
+  ::std::string* mutable_strcountrynamezh();
+  ::std::string* release_strcountrynamezh();
+  void set_allocated_strcountrynamezh(::std::string* strcountrynamezh);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryTimeZoneRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcountrycode_;
+  ::google::protobuf::internal::ArenaStringPtr strcountrynameen_;
+  ::google::protobuf::internal::ArenaStringPtr strcountrynamezh_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -9431,6 +9666,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFileReq_DEV* release_addfilereq_dev_value();
   void set_allocated_addfilereq_dev_value(::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value);
 
+  // .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+  bool has_querytimezonereq_dev_value() const;
+  void clear_querytimezonereq_dev_value();
+  static const int kQueryTimeZoneReqDEVValueFieldNumber = 61;
+  const ::Interactive::Message::QueryTimeZoneReq_DEV& querytimezonereq_dev_value() const;
+  ::Interactive::Message::QueryTimeZoneReq_DEV* mutable_querytimezonereq_dev_value();
+  ::Interactive::Message::QueryTimeZoneReq_DEV* release_querytimezonereq_dev_value();
+  void set_allocated_querytimezonereq_dev_value(::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -9722,6 +9966,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::StorageAddressReq_DEV* storageaddressreq_dev_value_;
   ::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value_;
   ::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value_;
+  ::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -9910,6 +10155,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFileRsp_DEV* mutable_addfilersp_dev_value();
   ::Interactive::Message::AddFileRsp_DEV* release_addfilersp_dev_value();
   void set_allocated_addfilersp_dev_value(::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value);
+
+  // .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+  bool has_querytimezonersp_dev_value() const;
+  void clear_querytimezonersp_dev_value();
+  static const int kQueryTimeZoneRspDEVValueFieldNumber = 81;
+  const ::Interactive::Message::QueryTimeZoneRsp_DEV& querytimezonersp_dev_value() const;
+  ::Interactive::Message::QueryTimeZoneRsp_DEV* mutable_querytimezonersp_dev_value();
+  ::Interactive::Message::QueryTimeZoneRsp_DEV* release_querytimezonersp_dev_value();
+  void set_allocated_querytimezonersp_dev_value(::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -10191,6 +10445,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::StorageAddressRsp_DEV* storageaddressrsp_dev_value_;
   ::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value_;
   ::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value_;
+  ::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -13788,6 +14043,274 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 AddFileRsp_DEV::mutable_strfileidfailed() {
   // @@protoc_insertion_point(field_mutable_list:Interactive.Message.AddFileRsp_DEV.strFileIDFailed)
   return &strfileidfailed_;
+}
+
+// -------------------------------------------------------------------
+
+// QueryTimeZoneReq_DEV
+
+// string strDevID = 1;
+inline void QueryTimeZoneReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void QueryTimeZoneReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+#endif
+inline void QueryTimeZoneReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+inline void QueryTimeZoneReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+inline ::std::string* QueryTimeZoneReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+
+// string strDevIpAddress = 2;
+inline void QueryTimeZoneReq_DEV::clear_strdevipaddress() {
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneReq_DEV::strdevipaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  return strdevipaddress_.GetNoArena();
+}
+inline void QueryTimeZoneReq_DEV::set_strdevipaddress(const ::std::string& value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneReq_DEV::set_strdevipaddress(::std::string&& value) {
+  
+  strdevipaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+#endif
+inline void QueryTimeZoneReq_DEV::set_strdevipaddress(const char* value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+inline void QueryTimeZoneReq_DEV::set_strdevipaddress(const char* value, size_t size) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+inline ::std::string* QueryTimeZoneReq_DEV::mutable_strdevipaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  return strdevipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneReq_DEV::release_strdevipaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  
+  return strdevipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneReq_DEV::set_allocated_strdevipaddress(::std::string* strdevipaddress) {
+  if (strdevipaddress != NULL) {
+    
+  } else {
+    
+  }
+  strdevipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevipaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+
+// -------------------------------------------------------------------
+
+// QueryTimeZoneRsp_DEV
+
+// string strCountryCode = 1;
+inline void QueryTimeZoneRsp_DEV::clear_strcountrycode() {
+  strcountrycode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneRsp_DEV::strcountrycode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  return strcountrycode_.GetNoArena();
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrycode(const ::std::string& value) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneRsp_DEV::set_strcountrycode(::std::string&& value) {
+  
+  strcountrycode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+#endif
+inline void QueryTimeZoneRsp_DEV::set_strcountrycode(const char* value) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrycode(const char* value, size_t size) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrycode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  return strcountrycode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::release_strcountrycode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  
+  return strcountrycode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneRsp_DEV::set_allocated_strcountrycode(::std::string* strcountrycode) {
+  if (strcountrycode != NULL) {
+    
+  } else {
+    
+  }
+  strcountrycode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrycode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+
+// string strCountryNameEn = 2;
+inline void QueryTimeZoneRsp_DEV::clear_strcountrynameen() {
+  strcountrynameen_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneRsp_DEV::strcountrynameen() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  return strcountrynameen_.GetNoArena();
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrynameen(const ::std::string& value) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneRsp_DEV::set_strcountrynameen(::std::string&& value) {
+  
+  strcountrynameen_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+#endif
+inline void QueryTimeZoneRsp_DEV::set_strcountrynameen(const char* value) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrynameen(const char* value, size_t size) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrynameen() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  return strcountrynameen_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::release_strcountrynameen() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  
+  return strcountrynameen_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneRsp_DEV::set_allocated_strcountrynameen(::std::string* strcountrynameen) {
+  if (strcountrynameen != NULL) {
+    
+  } else {
+    
+  }
+  strcountrynameen_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrynameen);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+
+// string strCountryNameZh = 3;
+inline void QueryTimeZoneRsp_DEV::clear_strcountrynamezh() {
+  strcountrynamezh_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneRsp_DEV::strcountrynamezh() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  return strcountrynamezh_.GetNoArena();
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const ::std::string& value) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneRsp_DEV::set_strcountrynamezh(::std::string&& value) {
+  
+  strcountrynamezh_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+#endif
+inline void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const char* value) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+inline void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const char* value, size_t size) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrynamezh() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  return strcountrynamezh_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::release_strcountrynamezh() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  
+  return strcountrynamezh_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneRsp_DEV::set_allocated_strcountrynamezh(::std::string* strcountrynamezh) {
+  if (strcountrynamezh != NULL) {
+    
+  } else {
+    
+  }
+  strcountrynamezh_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrynamezh);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
 }
 
 // -------------------------------------------------------------------
@@ -19826,6 +20349,45 @@ inline void Req::set_allocated_addfilereq_dev_value(::Interactive::Message::AddF
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddFileReq_DEV_Value)
 }
 
+// .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+inline bool Req::has_querytimezonereq_dev_value() const {
+  return this != internal_default_instance() && querytimezonereq_dev_value_ != NULL;
+}
+inline void Req::clear_querytimezonereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querytimezonereq_dev_value_ != NULL) delete querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryTimeZoneReq_DEV& Req::querytimezonereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  return querytimezonereq_dev_value_ != NULL ? *querytimezonereq_dev_value_
+                         : *::Interactive::Message::QueryTimeZoneReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryTimeZoneReq_DEV* Req::mutable_querytimezonereq_dev_value() {
+  
+  if (querytimezonereq_dev_value_ == NULL) {
+    querytimezonereq_dev_value_ = new ::Interactive::Message::QueryTimeZoneReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  return querytimezonereq_dev_value_;
+}
+inline ::Interactive::Message::QueryTimeZoneReq_DEV* Req::release_querytimezonereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  
+  ::Interactive::Message::QueryTimeZoneReq_DEV* temp = querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_querytimezonereq_dev_value(::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value) {
+  delete querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = querytimezonereq_dev_value;
+  if (querytimezonereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
 inline bool Req::has_msgprehandlerreq_usr_value() const {
   return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
@@ -21417,6 +21979,45 @@ inline void Rsp::set_allocated_addfilersp_dev_value(::Interactive::Message::AddF
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
 }
 
+// .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+inline bool Rsp::has_querytimezonersp_dev_value() const {
+  return this != internal_default_instance() && querytimezonersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_querytimezonersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querytimezonersp_dev_value_ != NULL) delete querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryTimeZoneRsp_DEV& Rsp::querytimezonersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  return querytimezonersp_dev_value_ != NULL ? *querytimezonersp_dev_value_
+                         : *::Interactive::Message::QueryTimeZoneRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryTimeZoneRsp_DEV* Rsp::mutable_querytimezonersp_dev_value() {
+  
+  if (querytimezonersp_dev_value_ == NULL) {
+    querytimezonersp_dev_value_ = new ::Interactive::Message::QueryTimeZoneRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  return querytimezonersp_dev_value_;
+}
+inline ::Interactive::Message::QueryTimeZoneRsp_DEV* Rsp::release_querytimezonersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryTimeZoneRsp_DEV* temp = querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_querytimezonersp_dev_value(::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value) {
+  delete querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = querytimezonersp_dev_value;
+  if (querytimezonersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
 inline bool Rsp::has_msgprehandlerrsp_usr_value() const {
   return this != internal_default_instance() && msgprehandlerrsp_usr_value_ != NULL;
@@ -22711,6 +23312,10 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

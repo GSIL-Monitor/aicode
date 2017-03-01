@@ -676,6 +676,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RetrievePwdRsp_USR_T, handler));
 
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryTimeZoneReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryTimeZoneReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryTimeZoneReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryTimeZoneRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryTimeZoneRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryTimeZoneRsp_DEV_T, handler));
+    
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1416,6 +1430,26 @@ bool InteractiveProtoHandler::RetrievePwdRsp_USR_Serializer(const Req &rsp, std:
 bool InteractiveProtoHandler::RetrievePwdRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<RetrievePwdRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryTimeZoneReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryTimeZoneReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryTimeZoneReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryTimeZoneReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryTimeZoneRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryTimeZoneRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryTimeZoneRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryTimeZoneRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2998,4 +3032,38 @@ void InteractiveProtoHandler::RetrievePwdRsp_USR::Serializer(InteractiveMessage 
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::RetrievePwdRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_retrievepwdrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryTimeZoneReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().querytimezonereq_dev_value().strdevid();
+    m_strDevIpAddress = InteractiveMsg.reqvalue().querytimezonereq_dev_value().strdevipaddress();
+}
+
+void InteractiveProtoHandler::QueryTimeZoneReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryTimeZoneReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_querytimezonereq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querytimezonereq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+}
+
+void InteractiveProtoHandler::QueryTimeZoneRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strCountryCode = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrycode();
+    m_strCountryNameEn = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrynameen();
+    m_strCountryNameZh = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrynamezh();
+
+}
+
+void InteractiveProtoHandler::QueryTimeZoneRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryTimeZoneRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrycode(m_strCountryCode);
+    InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrynameen(m_strCountryNameEn);
+    InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrynamezh(m_strCountryNameZh);
+
 }

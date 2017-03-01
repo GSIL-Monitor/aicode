@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_FILE_ACTION, boost::bind(&HttpMsgHandler::AddFileHandler, &filehdr, _1, _2));
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::RETRIEVE_PWD_ACTION, boost::bind(&HttpMsgHandler::RetrievePwdHandler, &filehdr, _1, _2));
-
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_TIMEZONE_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryTimeZoneHandler, &filehdr, _1, _2));
 
 
 

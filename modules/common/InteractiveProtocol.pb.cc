@@ -63,6 +63,10 @@ class AddFileReq_DEVDefaultTypeInternal : public ::google::protobuf::internal::E
 } _AddFileReq_DEV_default_instance_;
 class AddFileRsp_DEVDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AddFileRsp_DEV> {
 } _AddFileRsp_DEV_default_instance_;
+class QueryTimeZoneReq_DEVDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryTimeZoneReq_DEV> {
+} _QueryTimeZoneReq_DEV_default_instance_;
+class QueryTimeZoneRsp_DEVDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryTimeZoneRsp_DEV> {
+} _QueryTimeZoneRsp_DEV_default_instance_;
 class MsgPreHandlerReq_USRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerReq_USR> {
 } _MsgPreHandlerReq_USR_default_instance_;
 class MsgPreHandlerRsp_USRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<MsgPreHandlerRsp_USR> {
@@ -195,7 +199,7 @@ namespace protobuf_InteractiveProtocol_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[85];
+::google::protobuf::Metadata file_level_metadata[87];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -364,6 +368,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFileRsp_DEV, strvalue_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddFileRsp_DEV, strfileidfailed_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneReq_DEV, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneReq_DEV, strdevid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneReq_DEV, strdevipaddress_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneRsp_DEV, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneRsp_DEV, strcountrycode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneRsp_DEV, strcountrynameen_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryTimeZoneRsp_DEV, strcountrynamezh_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MsgPreHandlerReq_USR, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -734,6 +751,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, storageaddressreq_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, p2pinforeq_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, addfilereq_dev_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, querytimezonereq_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, msgprehandlerreq_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, getaccessaddressreq_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, registeruserreq_usr_value_),
@@ -779,6 +797,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, storageaddressrsp_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, p2pinforsp_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, addfilersp_dev_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, querytimezonersp_dev_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, msgprehandlerrsp_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getaccessaddressrsp_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, registeruserrsp_usr_value_),
@@ -842,69 +861,71 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 143, -1, sizeof(P2pInfoRsp_DEV)},
   { 150, -1, sizeof(AddFileReq_DEV)},
   { 157, -1, sizeof(AddFileRsp_DEV)},
-  { 163, -1, sizeof(MsgPreHandlerReq_USR)},
-  { 168, -1, sizeof(MsgPreHandlerRsp_USR)},
-  { 173, -1, sizeof(GetAccessAddressReq_USR)},
-  { 179, -1, sizeof(GetAccessAddressRsp_USR)},
-  { 186, -1, sizeof(RegisterUserReq_USR)},
-  { 192, -1, sizeof(RegisterUserRsp_USR)},
-  { 198, -1, sizeof(UnRegisterUserReq_USR)},
-  { 204, -1, sizeof(UnRegisterUserRsp_USR)},
-  { 210, -1, sizeof(QueryUsrInfoReq_USR)},
-  { 216, -1, sizeof(QueryUsrInfoRsp_USR)},
-  { 222, -1, sizeof(ModifyUserInfoReq_USR)},
-  { 228, -1, sizeof(ModifyUserInfoRsp_USR)},
-  { 233, -1, sizeof(RetrievePwdReq_USR)},
-  { 239, -1, sizeof(RetrievePwdRsp_USR)},
-  { 244, -1, sizeof(LoginReq_USR)},
-  { 250, -1, sizeof(LoginRsp_USR)},
-  { 257, -1, sizeof(LogoutReq_USR)},
-  { 263, -1, sizeof(LogoutRsp_USR)},
-  { 268, -1, sizeof(ShakehandReq_USR)},
-  { 274, -1, sizeof(ShakehandRsp_USR)},
-  { 279, -1, sizeof(ConfigInfoReq_USR)},
-  { 285, -1, sizeof(ConfigInfoRsp_USR)},
-  { 291, -1, sizeof(AddDevReq_USR)},
-  { 297, -1, sizeof(AddDevRsp_USR)},
-  { 302, -1, sizeof(DelDevReq_USR)},
-  { 308, -1, sizeof(DelDevRsp_USR)},
-  { 314, -1, sizeof(ModifyDevReq_USR)},
-  { 320, -1, sizeof(ModifyDevRsp_USR)},
-  { 325, -1, sizeof(QueryDevInfoReq_USR)},
-  { 331, -1, sizeof(QueryDevInfoRsp_USR)},
-  { 337, -1, sizeof(QueryDevReq_USR)},
-  { 344, -1, sizeof(QueryDevRsp_USR)},
-  { 349, -1, sizeof(QueryUserReq_USR)},
-  { 356, -1, sizeof(QueryUserRsp_USR)},
-  { 361, -1, sizeof(SharingDevReq_USR)},
-  { 367, -1, sizeof(SharingDevRsp_USR)},
-  { 372, -1, sizeof(CancelSharedDevReq_USR)},
-  { 378, -1, sizeof(CancelSharedDevRsp_USR)},
-  { 383, -1, sizeof(AddFriendsReq_USR)},
-  { 389, -1, sizeof(AddFriendsRsp_USR)},
-  { 394, -1, sizeof(DelFriendsReq_USR)},
-  { 400, -1, sizeof(DelFriendsRsp_USR)},
-  { 406, -1, sizeof(QueryFriendsReq_USR)},
-  { 413, -1, sizeof(QueryFriendsRsp_USR)},
-  { 418, -1, sizeof(StorageAddressReq_USR)},
-  { 426, -1, sizeof(StorageAddressRsp_USR)},
-  { 432, -1, sizeof(P2pInfoReq_USR)},
-  { 439, -1, sizeof(P2pInfoRsp_USR)},
-  { 446, -1, sizeof(DeleteFileReq_USR)},
-  { 452, -1, sizeof(DeleteFileRsp_USR)},
-  { 458, -1, sizeof(DownloadFileReq_USR)},
-  { 464, -1, sizeof(DownloadFileRsp_USR)},
-  { 470, -1, sizeof(QueryFileReq_USR)},
-  { 481, -1, sizeof(QueryFileRsp_USR)},
-  { 487, -1, sizeof(GetOnlineDevInfoReq_INNER)},
-  { 492, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
-  { 498, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
-  { 504, -1, sizeof(GetOnlineUserInfoReq_INNER)},
-  { 509, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
-  { 515, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
-  { 521, -1, sizeof(Req)},
-  { 564, -1, sizeof(Rsp)},
-  { 607, -1, sizeof(InteractiveMessage)},
+  { 163, -1, sizeof(QueryTimeZoneReq_DEV)},
+  { 169, -1, sizeof(QueryTimeZoneRsp_DEV)},
+  { 176, -1, sizeof(MsgPreHandlerReq_USR)},
+  { 181, -1, sizeof(MsgPreHandlerRsp_USR)},
+  { 186, -1, sizeof(GetAccessAddressReq_USR)},
+  { 192, -1, sizeof(GetAccessAddressRsp_USR)},
+  { 199, -1, sizeof(RegisterUserReq_USR)},
+  { 205, -1, sizeof(RegisterUserRsp_USR)},
+  { 211, -1, sizeof(UnRegisterUserReq_USR)},
+  { 217, -1, sizeof(UnRegisterUserRsp_USR)},
+  { 223, -1, sizeof(QueryUsrInfoReq_USR)},
+  { 229, -1, sizeof(QueryUsrInfoRsp_USR)},
+  { 235, -1, sizeof(ModifyUserInfoReq_USR)},
+  { 241, -1, sizeof(ModifyUserInfoRsp_USR)},
+  { 246, -1, sizeof(RetrievePwdReq_USR)},
+  { 252, -1, sizeof(RetrievePwdRsp_USR)},
+  { 257, -1, sizeof(LoginReq_USR)},
+  { 263, -1, sizeof(LoginRsp_USR)},
+  { 270, -1, sizeof(LogoutReq_USR)},
+  { 276, -1, sizeof(LogoutRsp_USR)},
+  { 281, -1, sizeof(ShakehandReq_USR)},
+  { 287, -1, sizeof(ShakehandRsp_USR)},
+  { 292, -1, sizeof(ConfigInfoReq_USR)},
+  { 298, -1, sizeof(ConfigInfoRsp_USR)},
+  { 304, -1, sizeof(AddDevReq_USR)},
+  { 310, -1, sizeof(AddDevRsp_USR)},
+  { 315, -1, sizeof(DelDevReq_USR)},
+  { 321, -1, sizeof(DelDevRsp_USR)},
+  { 327, -1, sizeof(ModifyDevReq_USR)},
+  { 333, -1, sizeof(ModifyDevRsp_USR)},
+  { 338, -1, sizeof(QueryDevInfoReq_USR)},
+  { 344, -1, sizeof(QueryDevInfoRsp_USR)},
+  { 350, -1, sizeof(QueryDevReq_USR)},
+  { 357, -1, sizeof(QueryDevRsp_USR)},
+  { 362, -1, sizeof(QueryUserReq_USR)},
+  { 369, -1, sizeof(QueryUserRsp_USR)},
+  { 374, -1, sizeof(SharingDevReq_USR)},
+  { 380, -1, sizeof(SharingDevRsp_USR)},
+  { 385, -1, sizeof(CancelSharedDevReq_USR)},
+  { 391, -1, sizeof(CancelSharedDevRsp_USR)},
+  { 396, -1, sizeof(AddFriendsReq_USR)},
+  { 402, -1, sizeof(AddFriendsRsp_USR)},
+  { 407, -1, sizeof(DelFriendsReq_USR)},
+  { 413, -1, sizeof(DelFriendsRsp_USR)},
+  { 419, -1, sizeof(QueryFriendsReq_USR)},
+  { 426, -1, sizeof(QueryFriendsRsp_USR)},
+  { 431, -1, sizeof(StorageAddressReq_USR)},
+  { 439, -1, sizeof(StorageAddressRsp_USR)},
+  { 445, -1, sizeof(P2pInfoReq_USR)},
+  { 452, -1, sizeof(P2pInfoRsp_USR)},
+  { 459, -1, sizeof(DeleteFileReq_USR)},
+  { 465, -1, sizeof(DeleteFileRsp_USR)},
+  { 471, -1, sizeof(DownloadFileReq_USR)},
+  { 477, -1, sizeof(DownloadFileRsp_USR)},
+  { 483, -1, sizeof(QueryFileReq_USR)},
+  { 494, -1, sizeof(QueryFileRsp_USR)},
+  { 500, -1, sizeof(GetOnlineDevInfoReq_INNER)},
+  { 505, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
+  { 511, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
+  { 517, -1, sizeof(GetOnlineUserInfoReq_INNER)},
+  { 522, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
+  { 528, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
+  { 534, -1, sizeof(Req)},
+  { 578, -1, sizeof(Rsp)},
+  { 622, -1, sizeof(InteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -930,6 +951,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_P2pInfoRsp_DEV_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddFileReq_DEV_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddFileRsp_DEV_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryTimeZoneReq_DEV_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryTimeZoneRsp_DEV_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_MsgPreHandlerReq_USR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_MsgPreHandlerRsp_USR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_GetAccessAddressReq_USR_default_instance_),
@@ -1013,7 +1036,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 85);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 87);
 }
 
 }  // namespace
@@ -1063,132 +1086,136 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[20].reflection;
   _AddFileRsp_DEV_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
-  _MsgPreHandlerReq_USR_default_instance_.Shutdown();
+  _QueryTimeZoneReq_DEV_default_instance_.Shutdown();
   delete file_level_metadata[22].reflection;
-  _MsgPreHandlerRsp_USR_default_instance_.Shutdown();
+  _QueryTimeZoneRsp_DEV_default_instance_.Shutdown();
   delete file_level_metadata[23].reflection;
-  _GetAccessAddressReq_USR_default_instance_.Shutdown();
+  _MsgPreHandlerReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[24].reflection;
-  _GetAccessAddressRsp_USR_default_instance_.Shutdown();
+  _MsgPreHandlerRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[25].reflection;
-  _RegisterUserReq_USR_default_instance_.Shutdown();
+  _GetAccessAddressReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[26].reflection;
-  _RegisterUserRsp_USR_default_instance_.Shutdown();
+  _GetAccessAddressRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[27].reflection;
-  _UnRegisterUserReq_USR_default_instance_.Shutdown();
+  _RegisterUserReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[28].reflection;
-  _UnRegisterUserRsp_USR_default_instance_.Shutdown();
+  _RegisterUserRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[29].reflection;
-  _QueryUsrInfoReq_USR_default_instance_.Shutdown();
+  _UnRegisterUserReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[30].reflection;
-  _QueryUsrInfoRsp_USR_default_instance_.Shutdown();
+  _UnRegisterUserRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[31].reflection;
-  _ModifyUserInfoReq_USR_default_instance_.Shutdown();
+  _QueryUsrInfoReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[32].reflection;
-  _ModifyUserInfoRsp_USR_default_instance_.Shutdown();
+  _QueryUsrInfoRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[33].reflection;
-  _RetrievePwdReq_USR_default_instance_.Shutdown();
+  _ModifyUserInfoReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[34].reflection;
-  _RetrievePwdRsp_USR_default_instance_.Shutdown();
+  _ModifyUserInfoRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[35].reflection;
-  _LoginReq_USR_default_instance_.Shutdown();
+  _RetrievePwdReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[36].reflection;
-  _LoginRsp_USR_default_instance_.Shutdown();
+  _RetrievePwdRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[37].reflection;
-  _LogoutReq_USR_default_instance_.Shutdown();
+  _LoginReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[38].reflection;
-  _LogoutRsp_USR_default_instance_.Shutdown();
+  _LoginRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[39].reflection;
-  _ShakehandReq_USR_default_instance_.Shutdown();
+  _LogoutReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[40].reflection;
-  _ShakehandRsp_USR_default_instance_.Shutdown();
+  _LogoutRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[41].reflection;
-  _ConfigInfoReq_USR_default_instance_.Shutdown();
+  _ShakehandReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[42].reflection;
-  _ConfigInfoRsp_USR_default_instance_.Shutdown();
+  _ShakehandRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[43].reflection;
-  _AddDevReq_USR_default_instance_.Shutdown();
+  _ConfigInfoReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[44].reflection;
-  _AddDevRsp_USR_default_instance_.Shutdown();
+  _ConfigInfoRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[45].reflection;
-  _DelDevReq_USR_default_instance_.Shutdown();
+  _AddDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[46].reflection;
-  _DelDevRsp_USR_default_instance_.Shutdown();
+  _AddDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[47].reflection;
-  _ModifyDevReq_USR_default_instance_.Shutdown();
+  _DelDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[48].reflection;
-  _ModifyDevRsp_USR_default_instance_.Shutdown();
+  _DelDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[49].reflection;
-  _QueryDevInfoReq_USR_default_instance_.Shutdown();
+  _ModifyDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[50].reflection;
-  _QueryDevInfoRsp_USR_default_instance_.Shutdown();
+  _ModifyDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[51].reflection;
-  _QueryDevReq_USR_default_instance_.Shutdown();
+  _QueryDevInfoReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[52].reflection;
-  _QueryDevRsp_USR_default_instance_.Shutdown();
+  _QueryDevInfoRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[53].reflection;
-  _QueryUserReq_USR_default_instance_.Shutdown();
+  _QueryDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[54].reflection;
-  _QueryUserRsp_USR_default_instance_.Shutdown();
+  _QueryDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[55].reflection;
-  _SharingDevReq_USR_default_instance_.Shutdown();
+  _QueryUserReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[56].reflection;
-  _SharingDevRsp_USR_default_instance_.Shutdown();
+  _QueryUserRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[57].reflection;
-  _CancelSharedDevReq_USR_default_instance_.Shutdown();
+  _SharingDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[58].reflection;
-  _CancelSharedDevRsp_USR_default_instance_.Shutdown();
+  _SharingDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[59].reflection;
-  _AddFriendsReq_USR_default_instance_.Shutdown();
+  _CancelSharedDevReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[60].reflection;
-  _AddFriendsRsp_USR_default_instance_.Shutdown();
+  _CancelSharedDevRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[61].reflection;
-  _DelFriendsReq_USR_default_instance_.Shutdown();
+  _AddFriendsReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[62].reflection;
-  _DelFriendsRsp_USR_default_instance_.Shutdown();
+  _AddFriendsRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[63].reflection;
-  _QueryFriendsReq_USR_default_instance_.Shutdown();
+  _DelFriendsReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[64].reflection;
-  _QueryFriendsRsp_USR_default_instance_.Shutdown();
+  _DelFriendsRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[65].reflection;
-  _StorageAddressReq_USR_default_instance_.Shutdown();
+  _QueryFriendsReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[66].reflection;
-  _StorageAddressRsp_USR_default_instance_.Shutdown();
+  _QueryFriendsRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[67].reflection;
-  _P2pInfoReq_USR_default_instance_.Shutdown();
+  _StorageAddressReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[68].reflection;
-  _P2pInfoRsp_USR_default_instance_.Shutdown();
+  _StorageAddressRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[69].reflection;
-  _DeleteFileReq_USR_default_instance_.Shutdown();
+  _P2pInfoReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[70].reflection;
-  _DeleteFileRsp_USR_default_instance_.Shutdown();
+  _P2pInfoRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[71].reflection;
-  _DownloadFileReq_USR_default_instance_.Shutdown();
+  _DeleteFileReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[72].reflection;
-  _DownloadFileRsp_USR_default_instance_.Shutdown();
+  _DeleteFileRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[73].reflection;
-  _QueryFileReq_USR_default_instance_.Shutdown();
+  _DownloadFileReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[74].reflection;
-  _QueryFileRsp_USR_default_instance_.Shutdown();
+  _DownloadFileRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[75].reflection;
-  _GetOnlineDevInfoReq_INNER_default_instance_.Shutdown();
+  _QueryFileReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[76].reflection;
-  _GetOnlineDevInfoRsp_INNER_default_instance_.Shutdown();
+  _QueryFileRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[77].reflection;
-  _BroadcastOnlineDevInfo_INNER_default_instance_.Shutdown();
+  _GetOnlineDevInfoReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[78].reflection;
-  _GetOnlineUserInfoReq_INNER_default_instance_.Shutdown();
+  _GetOnlineDevInfoRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[79].reflection;
-  _GetOnlineUserInfoRsp_INNER_default_instance_.Shutdown();
+  _BroadcastOnlineDevInfo_INNER_default_instance_.Shutdown();
   delete file_level_metadata[80].reflection;
-  _BroadcastOnlineUserInfo_INNER_default_instance_.Shutdown();
+  _GetOnlineUserInfoReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[81].reflection;
-  _Req_default_instance_.Shutdown();
+  _GetOnlineUserInfoRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[82].reflection;
-  _Rsp_default_instance_.Shutdown();
+  _BroadcastOnlineUserInfo_INNER_default_instance_.Shutdown();
   delete file_level_metadata[83].reflection;
-  _InteractiveMessage_default_instance_.Shutdown();
+  _Req_default_instance_.Shutdown();
   delete file_level_metadata[84].reflection;
+  _Rsp_default_instance_.Shutdown();
+  delete file_level_metadata[85].reflection;
+  _InteractiveMessage_default_instance_.Shutdown();
+  delete file_level_metadata[86].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -1217,6 +1244,8 @@ void TableStruct::InitDefaultsImpl() {
   _P2pInfoRsp_DEV_default_instance_.DefaultConstruct();
   _AddFileReq_DEV_default_instance_.DefaultConstruct();
   _AddFileRsp_DEV_default_instance_.DefaultConstruct();
+  _QueryTimeZoneReq_DEV_default_instance_.DefaultConstruct();
+  _QueryTimeZoneRsp_DEV_default_instance_.DefaultConstruct();
   _MsgPreHandlerReq_USR_default_instance_.DefaultConstruct();
   _MsgPreHandlerRsp_USR_default_instance_.DefaultConstruct();
   _GetAccessAddressReq_USR_default_instance_.DefaultConstruct();
@@ -1318,6 +1347,8 @@ void TableStruct::InitDefaultsImpl() {
       ::Interactive::Message::P2pInfoReq_DEV::internal_default_instance());
   _Req_default_instance_.get_mutable()->addfilereq_dev_value_ = const_cast< ::Interactive::Message::AddFileReq_DEV*>(
       ::Interactive::Message::AddFileReq_DEV::internal_default_instance());
+  _Req_default_instance_.get_mutable()->querytimezonereq_dev_value_ = const_cast< ::Interactive::Message::QueryTimeZoneReq_DEV*>(
+      ::Interactive::Message::QueryTimeZoneReq_DEV::internal_default_instance());
   _Req_default_instance_.get_mutable()->msgprehandlerreq_usr_value_ = const_cast< ::Interactive::Message::MsgPreHandlerReq_USR*>(
       ::Interactive::Message::MsgPreHandlerReq_USR::internal_default_instance());
   _Req_default_instance_.get_mutable()->getaccessaddressreq_usr_value_ = const_cast< ::Interactive::Message::GetAccessAddressReq_USR*>(
@@ -1396,6 +1427,8 @@ void TableStruct::InitDefaultsImpl() {
       ::Interactive::Message::P2pInfoRsp_DEV::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->addfilersp_dev_value_ = const_cast< ::Interactive::Message::AddFileRsp_DEV*>(
       ::Interactive::Message::AddFileRsp_DEV::internal_default_instance());
+  _Rsp_default_instance_.get_mutable()->querytimezonersp_dev_value_ = const_cast< ::Interactive::Message::QueryTimeZoneRsp_DEV*>(
+      ::Interactive::Message::QueryTimeZoneRsp_DEV::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->msgprehandlerrsp_usr_value_ = const_cast< ::Interactive::Message::MsgPreHandlerRsp_USR*>(
       ::Interactive::Message::MsgPreHandlerRsp_USR::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->getaccessaddressrsp_usr_value_ = const_cast< ::Interactive::Message::GetAccessAddressRsp_USR*>(
@@ -1516,319 +1549,329 @@ void AddDescriptorsImpl() {
       "\010strDevID\030\001 \001(\t\022+\n\010fileInfo\030\002 \003(\0132\031.Inte"
       "ractive.Message.File\022\020\n\010strValue\030\003 \001(\t\";"
       "\n\016AddFileRsp_DEV\022\020\n\010strValue\030\001 \001(\t\022\027\n\017st"
-      "rFileIDFailed\030\002 \003(\t\"(\n\024MsgPreHandlerReq_"
-      "USR\022\020\n\010strValue\030\001 \001(\t\"(\n\024MsgPreHandlerRs"
-      "p_USR\022\020\n\010strValue\030\001 \001(\t\"C\n\027GetAccessAddr"
-      "essReq_USR\022\026\n\016strSerializeID\030\001 \001(\t\022\020\n\010st"
-      "rValue\030\002 \001(\t\"\\\n\027GetAccessAddressRsp_USR\022"
-      "\030\n\020strAccessAddress\030\001 \001(\t\022\025\n\rstrAccessPo"
-      "rt\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"T\n\023RegisterUs"
-      "erReq_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactiv"
-      "e.Message.User\022\020\n\010strValue\030\002 \001(\t\":\n\023Regi"
-      "sterUserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010st"
-      "rValue\030\002 \001(\t\"V\n\025UnRegisterUserReq_USR\022+\n"
-      "\010userInfo\030\001 \001(\0132\031.Interactive.Message.Us"
-      "er\022\020\n\010strValue\030\002 \001(\t\"<\n\025UnRegisterUserRs"
-      "p_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001"
-      "(\t\":\n\023QueryUsrInfoReq_USR\022\021\n\tstrUserID\030\001"
-      " \001(\t\022\020\n\010strValue\030\002 \001(\t\"T\n\023QueryUsrInfoRs"
-      "p_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Me"
-      "ssage.User\022\020\n\010strValue\030\002 \001(\t\"W\n\025ModifyUs"
-      "erInfoReq_USR\022\021\n\tstrOldPwd\030\001 \001(\t\022+\n\010user"
-      "Info\030\002 \001(\0132\031.Interactive.Message.User\")\n"
-      "\025ModifyUserInfoRsp_USR\022\020\n\010strValue\030\001 \001(\t"
-      "\";\n\022RetrievePwdReq_USR\022\023\n\013strUserName\030\001 "
-      "\001(\t\022\020\n\010strEmail\030\002 \001(\t\"&\n\022RetrievePwdRsp_"
-      "USR\022\020\n\010strValue\030\001 \001(\t\"M\n\014LoginReq_USR\022+\n"
-      "\010userInfo\030\001 \001(\0132\031.Interactive.Message.Us"
-      "er\022\020\n\010strValue\030\002 \001(\t\"h\n\014LoginRsp_USR\022\021\n\t"
-      "strUserID\030\001 \001(\t\0223\n\014relationInfo\030\002 \003(\0132\035."
-      "Interactive.Message.Relation\022\020\n\010strValue"
-      "\030\003 \001(\t\"N\n\rLogoutReq_USR\022+\n\010userInfo\030\001 \001("
-      "\0132\031.Interactive.Message.User\022\020\n\010strValue"
-      "\030\002 \001(\t\"!\n\rLogoutRsp_USR\022\020\n\010strValue\030\001 \001("
-      "\t\"7\n\020ShakehandReq_USR\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\020\n\010strValue\030\002 \001(\t\"$\n\020ShakehandRsp_USR\022\020"
-      "\n\010strValue\030\001 \001(\t\"8\n\021ConfigInfoReq_USR\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"7\n\021Co"
-      "nfigInfoRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\020\n\010str"
-      "Items\030\002 \003(\t\"P\n\rAddDevReq_USR\022\021\n\tstrUserI"
+      "rFileIDFailed\030\002 \003(\t\"A\n\024QueryTimeZoneReq_"
+      "DEV\022\020\n\010strDevID\030\001 \001(\t\022\027\n\017strDevIpAddress"
+      "\030\002 \001(\t\"b\n\024QueryTimeZoneRsp_DEV\022\026\n\016strCou"
+      "ntryCode\030\001 \001(\t\022\030\n\020strCountryNameEn\030\002 \001(\t"
+      "\022\030\n\020strCountryNameZh\030\003 \001(\t\"(\n\024MsgPreHand"
+      "lerReq_USR\022\020\n\010strValue\030\001 \001(\t\"(\n\024MsgPreHa"
+      "ndlerRsp_USR\022\020\n\010strValue\030\001 \001(\t\"C\n\027GetAcc"
+      "essAddressReq_USR\022\026\n\016strSerializeID\030\001 \001("
+      "\t\022\020\n\010strValue\030\002 \001(\t\"\\\n\027GetAccessAddressR"
+      "sp_USR\022\030\n\020strAccessAddress\030\001 \001(\t\022\025\n\rstrA"
+      "ccessPort\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"T\n\023Reg"
+      "isterUserReq_USR\022+\n\010userInfo\030\001 \001(\0132\031.Int"
+      "eractive.Message.User\022\020\n\010strValue\030\002 \001(\t\""
+      ":\n\023RegisterUserRsp_USR\022\021\n\tstrUserID\030\001 \001("
+      "\t\022\020\n\010strValue\030\002 \001(\t\"V\n\025UnRegisterUserReq"
+      "_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Mes"
+      "sage.User\022\020\n\010strValue\030\002 \001(\t\"<\n\025UnRegiste"
+      "rUserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVa"
+      "lue\030\002 \001(\t\":\n\023QueryUsrInfoReq_USR\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"T\n\023QueryUs"
+      "rInfoRsp_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interac"
+      "tive.Message.User\022\020\n\010strValue\030\002 \001(\t\"W\n\025M"
+      "odifyUserInfoReq_USR\022\021\n\tstrOldPwd\030\001 \001(\t\022"
+      "+\n\010userInfo\030\002 \001(\0132\031.Interactive.Message."
+      "User\")\n\025ModifyUserInfoRsp_USR\022\020\n\010strValu"
+      "e\030\001 \001(\t\";\n\022RetrievePwdReq_USR\022\023\n\013strUser"
+      "Name\030\001 \001(\t\022\020\n\010strEmail\030\002 \001(\t\"&\n\022Retrieve"
+      "PwdRsp_USR\022\020\n\010strValue\030\001 \001(\t\"M\n\014LoginReq"
+      "_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive.Mes"
+      "sage.User\022\020\n\010strValue\030\002 \001(\t\"h\n\014LoginRsp_"
+      "USR\022\021\n\tstrUserID\030\001 \001(\t\0223\n\014relationInfo\030\002"
+      " \003(\0132\035.Interactive.Message.Relation\022\020\n\010s"
+      "trValue\030\003 \001(\t\"N\n\rLogoutReq_USR\022+\n\010userIn"
+      "fo\030\001 \001(\0132\031.Interactive.Message.User\022\020\n\010s"
+      "trValue\030\002 \001(\t\"!\n\rLogoutRsp_USR\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"7\n\020ShakehandReq_USR\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020ShakehandRs"
+      "p_USR\022\020\n\010strValue\030\001 \001(\t\"8\n\021ConfigInfoReq"
+      "_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001("
+      "\t\"7\n\021ConfigInfoRsp_USR\022\020\n\010strValue\030\001 \001(\t"
+      "\022\020\n\010strItems\030\002 \003(\t\"P\n\rAddDevReq_USR\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Intera"
+      "ctive.Message.Device\"!\n\rAddDevRsp_USR\022\020\n"
+      "\010strValue\030\001 \001(\t\"4\n\rDelDevReq_USR\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9\n\rDelDevR"
+      "sp_USR\022\020\n\010strValue\030\001 \001(\t\022\026\n\016strDevIDFail"
+      "ed\030\002 \003(\t\"S\n\020ModifyDevReq_USR\022\021\n\tstrUserI"
       "D\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Interactive.M"
-      "essage.Device\"!\n\rAddDevRsp_USR\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"4\n\rDelDevReq_USR\022\021\n\tstrUserID\030\001"
-      " \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9\n\rDelDevRsp_USR\022"
-      "\020\n\010strValue\030\001 \001(\t\022\026\n\016strDevIDFailed\030\002 \003("
-      "\t\"S\n\020ModifyDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022,\n\007devInfo\030\002 \001(\0132\033.Interactive.Message."
-      "Device\"$\n\020ModifyDevRsp_USR\022\020\n\010strValue\030\001"
-      " \001(\t\"9\n\023QueryDevInfoReq_USR\022\020\n\010strDevID\030"
-      "\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"U\n\023QueryDevInfoR"
-      "sp_USR\022,\n\007devInfo\030\001 \001(\0132\033.Interactive.Me"
-      "ssage.Device\022\020\n\010strValue\030\002 \001(\t\"L\n\017QueryD"
-      "evReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginI"
-      "ndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"I\n\017QueryDev"
-      "Rsp_USR\0226\n\017allRelationInfo\030\001 \003(\0132\035.Inter"
-      "active.Message.Relation\"L\n\020QueryUserReq_"
-      "USR\022\020\n\010strDevID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 "
-      "\001(\r\022\020\n\010strValue\030\003 \001(\t\"J\n\020QueryUserRsp_US"
-      "R\0226\n\017allRelationInfo\030\001 \003(\0132\035.Interactive"
-      ".Message.Relation\"Z\n\021SharingDevReq_USR\0223"
-      "\n\014relationInfo\030\001 \001(\0132\035.Interactive.Messa"
-      "ge.Relation\022\020\n\010strValue\030\002 \001(\t\"%\n\021Sharing"
-      "DevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"_\n\026CancelSh"
-      "aredDevReq_USR\0223\n\014relationInfo\030\001 \001(\0132\035.I"
-      "nteractive.Message.Relation\022\020\n\010strValue\030"
-      "\002 \001(\t\"*\n\026CancelSharedDevRsp_USR\022\020\n\010strVa"
-      "lue\030\001 \001(\t\"\?\n\021AddFriendsReq_USR\022\021\n\tstrUse"
-      "rID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \001(\t\"%\n\021Ad"
-      "dFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021Del"
-      "FriendsReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017str"
-      "FriendUserID\030\002 \003(\t\"D\n\021DelFriendsRsp_USR\022"
-      "\020\n\010strValue\030\001 \001(\t\022\035\n\025strFriendUserIDFail"
-      "ed\030\002 \003(\t\"P\n\023QueryFriendsReq_USR\022\021\n\tstrUs"
-      "erID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strV"
-      "alue\030\003 \001(\t\"1\n\023QueryFriendsRsp_USR\022\032\n\022str"
-      "AllFriendUserID\030\001 \003(\t\"m\n\025StorageAddressR"
-      "eq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\025\n\ruiStorageTy"
-      "pe\030\002 \001(\r\022\027\n\017uiStorageAction\030\003 \001(\r\022\021\n\tstr"
-      "FileID\030\004 \001(\t\";\n\025StorageAddressRsp_USR\022\022\n"
-      "\nstrAddress\030\001 \001(\t\022\016\n\006uiPort\030\002 \001(\r\"O\n\016P2p"
-      "InfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\030\n\020strUse"
-      "rIpAddress\030\002 \001(\t\022\020\n\010strDevID\030\003 \001(\t\"I\n\016P2"
-      "pInfoRsp_USR\022\024\n\014strP2pServer\030\001 \001(\t\022\020\n\010st"
-      "rP2pID\030\002 \001(\t\022\017\n\007uiLease\030\003 \001(\r\"9\n\021DeleteF"
-      "ileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrFile"
-      "ID\030\002 \003(\t\">\n\021DeleteFileRsp_USR\022\020\n\010strValu"
-      "e\030\001 \001(\t\022\027\n\017strFileIDFailed\030\002 \003(\t\";\n\023Down"
-      "loadFileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tst"
-      "rFileID\030\002 \003(\t\"V\n\023DownloadFileRsp_USR\022\020\n\010"
-      "strValue\030\001 \001(\t\022-\n\007fileUrl\030\002 \003(\0132\034.Intera"
-      "ctive.Message.FileUrl\"\241\001\n\020QueryFileReq_U"
-      "SR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \001(\t\022"
-      "\024\n\014uiBeginIndex\030\003 \001(\r\022\024\n\014strBeginDate\030\004 "
-      "\001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\026\n\016uiBusinessTyp"
-      "e\030\006 \001(\r\022\020\n\010strValue\030\007 \001(\t\"Q\n\020QueryFileRs"
-      "p_USR\022\020\n\010strValue\030\001 \001(\t\022+\n\010fileInfo\030\002 \003("
-      "\0132\031.Interactive.Message.File\"-\n\031GetOnlin"
-      "eDevInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031G"
-      "etOnlineDevInfoRsp_INNER\022,\n\007devInfo\030\001 \003("
-      "\0132\033.Interactive.Message.Device\022\020\n\010strVal"
-      "ue\030\002 \001(\t\"^\n\034BroadcastOnlineDevInfo_INNER"
-      "\022,\n\007devInfo\030\001 \003(\0132\033.Interactive.Message."
-      "Device\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineUse"
-      "rInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetO"
-      "nlineUserInfoRsp_INNER\022+\n\010userInfo\030\001 \003(\013"
-      "2\031.Interactive.Message.User\022\020\n\010strValue\030"
-      "\002 \001(\t\"^\n\035BroadcastOnlineUserInfo_INNER\022+"
-      "\n\010userInfo\030\001 \003(\0132\031.Interactive.Message.U"
-      "ser\022\020\n\010strValue\030\002 \001(\t\"\224\027\n\003Req\022S\n\035GetAcce"
-      "ssAddressReq_DEV_Value\030\n \001(\0132,.Interacti"
-      "ve.Message.GetAccessAddressReq_DEV\022=\n\022Lo"
-      "ginReq_DEV_Value\030\024 \001(\0132!.Interactive.Mes"
-      "sage.LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value"
-      "\030\036 \001(\0132\".Interactive.Message.LogoutReq_D"
-      "EV\022E\n\026ShakehandReq_DEV_Value\030( \001(\0132%.Int"
-      "eractive.Message.ShakehandReq_DEV\022G\n\027Con"
-      "figInfoReq_DEV_Value\0302 \001(\0132&.Interactive"
-      ".Message.ConfigInfoReq_DEV\022O\n\033StorageAdd"
-      "ressReq_DEV_Value\0304 \001(\0132*.Interactive.Me"
-      "ssage.StorageAddressReq_DEV\022A\n\024P2pInfoRe"
-      "q_DEV_Value\0306 \001(\0132#.Interactive.Message."
-      "P2pInfoReq_DEV\022A\n\024AddFileReq_DEV_Value\030<"
-      " \001(\0132#.Interactive.Message.AddFileReq_DE"
-      "V\022M\n\032MsgPreHandlerReq_USR_Value\030A \001(\0132)."
-      "Interactive.Message.MsgPreHandlerReq_USR"
-      "\022S\n\035GetAccessAddressReq_USR_Value\030F \001(\0132"
-      ",.Interactive.Message.GetAccessAddressRe"
-      "q_USR\022K\n\031RegisterUserReq_USR_Value\030P \001(\013"
-      "2(.Interactive.Message.RegisterUserReq_U"
-      "SR\022O\n\033UnRegisterUserReq_USR_Value\030Z \001(\0132"
-      "*.Interactive.Message.UnRegisterUserReq_"
-      "USR\022K\n\031QueryUsrInfoReq_USR_Value\030d \001(\0132("
-      ".Interactive.Message.QueryUsrInfoReq_USR"
-      "\022O\n\033ModifyUserInfoReq_USR_Value\030f \001(\0132*."
-      "Interactive.Message.ModifyUserInfoReq_US"
-      "R\022I\n\030RetrievePwdReq_USR_Value\030h \001(\0132\'.In"
-      "teractive.Message.RetrievePwdReq_USR\022=\n\022"
-      "LoginReq_USR_Value\030n \001(\0132!.Interactive.M"
-      "essage.LoginReq_USR\022\?\n\023LogoutReq_USR_Val"
-      "ue\030x \001(\0132\".Interactive.Message.LogoutReq"
-      "_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 \001(\0132%."
-      "Interactive.Message.ShakehandReq_USR\022H\n\027"
-      "ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.Interac"
-      "tive.Message.ConfigInfoReq_USR\022@\n\023AddDev"
-      "Req_USR_Value\030\226\001 \001(\0132\".Interactive.Messa"
-      "ge.AddDevReq_USR\022@\n\023DelDevReq_USR_Value\030"
-      "\240\001 \001(\0132\".Interactive.Message.DelDevReq_U"
-      "SR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001(\0132%.In"
-      "teractive.Message.ModifyDevReq_USR\022L\n\031Qu"
-      "eryDevInfoReq_USR_Value\030\264\001 \001(\0132(.Interac"
-      "tive.Message.QueryDevInfoReq_USR\022D\n\025Quer"
-      "yDevReq_USR_Value\030\276\001 \001(\0132$.Interactive.M"
-      "essage.QueryDevReq_USR\022F\n\026QueryUserReq_U"
-      "SR_Value\030\310\001 \001(\0132%.Interactive.Message.Qu"
-      "eryUserReq_USR\022H\n\027SharingDevReq_USR_Valu"
-      "e\030\322\001 \001(\0132&.Interactive.Message.SharingDe"
-      "vReq_USR\022R\n\034CancelSharedDevReq_USR_Value"
-      "\030\334\001 \001(\0132+.Interactive.Message.CancelShar"
-      "edDevReq_USR\022H\n\027AddFriendsReq_USR_Value\030"
-      "\346\001 \001(\0132&.Interactive.Message.AddFriendsR"
-      "eq_USR\022H\n\027DelFriendsReq_USR_Value\030\360\001 \001(\013"
-      "2&.Interactive.Message.DelFriendsReq_USR"
-      "\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001(\0132(.I"
-      "nteractive.Message.QueryFriendsReq_USR\022P"
-      "\n\033StorageAddressReq_USR_Value\030\374\001 \001(\0132*.I"
-      "nteractive.Message.StorageAddressReq_USR"
-      "\022B\n\024P2pInfoReq_USR_Value\030\376\001 \001(\0132#.Intera"
-      "ctive.Message.P2pInfoReq_USR\022H\n\027DeleteFi"
-      "leReq_USR_Value\030\266\002 \001(\0132&.Interactive.Mes"
-      "sage.DeleteFileReq_USR\022L\n\031DownloadFileRe"
-      "q_USR_Value\030\300\002 \001(\0132(.Interactive.Message"
-      ".DownloadFileReq_USR\022F\n\026QueryFileReq_USR"
-      "_Value\030\312\002 \001(\0132%.Interactive.Message.Quer"
-      "yFileReq_USR\022X\n\037GetOnlineDevInfoReq_INNE"
-      "R_Value\030\204\002 \001(\0132..Interactive.Message.Get"
-      "OnlineDevInfoReq_INNER\022^\n\"BroadcastOnlin"
-      "eDevInfo_INNER_Value\030\216\002 \001(\01321.Interactiv"
-      "e.Message.BroadcastOnlineDevInfo_INNER\022Z"
-      "\n GetOnlineUserInfoReq_INNER_Value\030\230\002 \001("
-      "\0132/.Interactive.Message.GetOnlineUserInf"
-      "oReq_INNER\022`\n#BroadcastOnlineUserInfo_IN"
-      "NER_Value\030\242\002 \001(\01322.Interactive.Message.B"
-      "roadcastOnlineUserInfo_INNER\"\371\025\n\003Rsp\022\020\n\010"
-      "iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035Get"
-      "AccessAddressRsp_DEV_Value\030\036 \001(\0132,.Inter"
-      "active.Message.GetAccessAddressRsp_DEV\022="
-      "\n\022LoginRsp_DEV_Value\030( \001(\0132!.Interactive"
-      ".Message.LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_V"
-      "alue\0302 \001(\0132\".Interactive.Message.LogoutR"
-      "sp_DEV\022E\n\026ShakehandRsp_DEV_Value\030< \001(\0132%"
-      ".Interactive.Message.ShakehandRsp_DEV\022G\n"
-      "\027ConfigInfoRsp_DEV_Value\030F \001(\0132&.Interac"
-      "tive.Message.ConfigInfoRsp_DEV\022O\n\033Storag"
-      "eAddressRsp_DEV_Value\030H \001(\0132*.Interactiv"
-      "e.Message.StorageAddressRsp_DEV\022A\n\024P2pIn"
-      "foRsp_DEV_Value\030J \001(\0132#.Interactive.Mess"
-      "age.P2pInfoRsp_DEV\022A\n\024AddFileRsp_DEV_Val"
-      "ue\030P \001(\0132#.Interactive.Message.AddFileRs"
-      "p_DEV\022M\n\032MsgPreHandlerRsp_USR_Value\030U \001("
-      "\0132).Interactive.Message.MsgPreHandlerRsp"
-      "_USR\022S\n\035GetAccessAddressRsp_USR_Value\030Z "
-      "\001(\0132,.Interactive.Message.GetAccessAddre"
-      "ssRsp_USR\022K\n\031RegisterUserRsp_USR_Value\030d"
-      " \001(\0132(.Interactive.Message.RegisterUserR"
-      "sp_USR\022O\n\033UnRegisterUserRsp_USR_Value\030n "
-      "\001(\0132*.Interactive.Message.UnRegisterUser"
-      "Rsp_USR\022K\n\031QueryUsrInfoRsp_USR_Value\030x \001"
-      "(\0132(.Interactive.Message.QueryUsrInfoRsp"
-      "_USR\022O\n\033ModifyUserInfoRsp_USR_Value\030z \001("
-      "\0132*.Interactive.Message.ModifyUserInfoRs"
-      "p_USR\022I\n\030RetrievePwdRsp_USR_Value\030| \001(\0132"
-      "\'.Interactive.Message.RetrievePwdRsp_USR"
-      "\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Interact"
-      "ive.Message.LoginRsp_USR\022@\n\023LogoutRsp_US"
-      "R_Value\030\214\001 \001(\0132\".Interactive.Message.Log"
-      "outRsp_USR\022F\n\026ShakehandRsp_USR_Value\030\226\001 "
-      "\001(\0132%.Interactive.Message.ShakehandRsp_U"
-      "SR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001(\0132&.I"
-      "nteractive.Message.ConfigInfoRsp_USR\022@\n\023"
-      "AddDevRsp_USR_Value\030\252\001 \001(\0132\".Interactive"
-      ".Message.AddDevRsp_USR\022@\n\023DelDevRsp_USR_"
-      "Value\030\264\001 \001(\0132\".Interactive.Message.DelDe"
-      "vRsp_USR\022F\n\026ModifyDevRsp_USR_Value\030\276\001 \001("
-      "\0132%.Interactive.Message.ModifyDevRsp_USR"
-      "\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001(\0132(.I"
-      "nteractive.Message.QueryDevInfoRsp_USR\022D"
-      "\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.Interac"
-      "tive.Message.QueryDevRsp_USR\022F\n\026QueryUse"
-      "rRsp_USR_Value\030\334\001 \001(\0132%.Interactive.Mess"
-      "age.QueryUserRsp_USR\022H\n\027SharingDevRsp_US"
-      "R_Value\030\346\001 \001(\0132&.Interactive.Message.Sha"
-      "ringDevRsp_USR\022R\n\034CancelSharedDevRsp_USR"
-      "_Value\030\360\001 \001(\0132+.Interactive.Message.Canc"
-      "elSharedDevRsp_USR\022H\n\027AddFriendsRsp_USR_"
-      "Value\030\372\001 \001(\0132&.Interactive.Message.AddFr"
-      "iendsRsp_USR\022H\n\027DelFriendsRsp_USR_Value\030"
-      "\204\002 \001(\0132&.Interactive.Message.DelFriendsR"
-      "sp_USR\022L\n\031QueryFriendsRsp_USR_Value\030\216\002 \001"
-      "(\0132(.Interactive.Message.QueryFriendsRsp"
-      "_USR\022P\n\033StorageAddressReq_USR_Value\030\220\002 \001"
+      "essage.Device\"$\n\020ModifyDevRsp_USR\022\020\n\010str"
+      "Value\030\001 \001(\t\"9\n\023QueryDevInfoReq_USR\022\020\n\010st"
+      "rDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"U\n\023QueryD"
+      "evInfoRsp_USR\022,\n\007devInfo\030\001 \001(\0132\033.Interac"
+      "tive.Message.Device\022\020\n\010strValue\030\002 \001(\t\"L\n"
+      "\017QueryDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014u"
+      "iBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"I\n\017Q"
+      "ueryDevRsp_USR\0226\n\017allRelationInfo\030\001 \003(\0132"
+      "\035.Interactive.Message.Relation\"L\n\020QueryU"
+      "serReq_USR\022\020\n\010strDevID\030\001 \001(\t\022\024\n\014uiBeginI"
+      "ndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"J\n\020QueryUse"
+      "rRsp_USR\0226\n\017allRelationInfo\030\001 \003(\0132\035.Inte"
+      "ractive.Message.Relation\"Z\n\021SharingDevRe"
+      "q_USR\0223\n\014relationInfo\030\001 \001(\0132\035.Interactiv"
+      "e.Message.Relation\022\020\n\010strValue\030\002 \001(\t\"%\n\021"
+      "SharingDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"_\n\026C"
+      "ancelSharedDevReq_USR\0223\n\014relationInfo\030\001 "
+      "\001(\0132\035.Interactive.Message.Relation\022\020\n\010st"
+      "rValue\030\002 \001(\t\"*\n\026CancelSharedDevRsp_USR\022\020"
+      "\n\010strValue\030\001 \001(\t\"\?\n\021AddFriendsReq_USR\022\021\n"
+      "\tstrUserID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \001("
+      "\t\"%\n\021AddFriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t"
+      "\"\?\n\021DelFriendsReq_USR\022\021\n\tstrUserID\030\001 \001(\t"
+      "\022\027\n\017strFriendUserID\030\002 \003(\t\"D\n\021DelFriendsR"
+      "sp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n\025strFriendUse"
+      "rIDFailed\030\002 \003(\t\"P\n\023QueryFriendsReq_USR\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022"
+      "\020\n\010strValue\030\003 \001(\t\"1\n\023QueryFriendsRsp_USR"
+      "\022\032\n\022strAllFriendUserID\030\001 \003(\t\"m\n\025StorageA"
+      "ddressReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\025\n\ruiSt"
+      "orageType\030\002 \001(\r\022\027\n\017uiStorageAction\030\003 \001(\r"
+      "\022\021\n\tstrFileID\030\004 \001(\t\";\n\025StorageAddressRsp"
+      "_USR\022\022\n\nstrAddress\030\001 \001(\t\022\016\n\006uiPort\030\002 \001(\r"
+      "\"O\n\016P2pInfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\030\n"
+      "\020strUserIpAddress\030\002 \001(\t\022\020\n\010strDevID\030\003 \001("
+      "\t\"I\n\016P2pInfoRsp_USR\022\024\n\014strP2pServer\030\001 \001("
+      "\t\022\020\n\010strP2pID\030\002 \001(\t\022\017\n\007uiLease\030\003 \001(\r\"9\n\021"
+      "DeleteFileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\t"
+      "strFileID\030\002 \003(\t\">\n\021DeleteFileRsp_USR\022\020\n\010"
+      "strValue\030\001 \001(\t\022\027\n\017strFileIDFailed\030\002 \003(\t\""
+      ";\n\023DownloadFileReq_USR\022\021\n\tstrUserID\030\001 \001("
+      "\t\022\021\n\tstrFileID\030\002 \003(\t\"V\n\023DownloadFileRsp_"
+      "USR\022\020\n\010strValue\030\001 \001(\t\022-\n\007fileUrl\030\002 \003(\0132\034"
+      ".Interactive.Message.FileUrl\"\241\001\n\020QueryFi"
+      "leReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID"
+      "\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\022\024\n\014strBegin"
+      "Date\030\004 \001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\026\n\016uiBusi"
+      "nessType\030\006 \001(\r\022\020\n\010strValue\030\007 \001(\t\"Q\n\020Quer"
+      "yFileRsp_USR\022\020\n\010strValue\030\001 \001(\t\022+\n\010fileIn"
+      "fo\030\002 \003(\0132\031.Interactive.Message.File\"-\n\031G"
+      "etOnlineDevInfoReq_INNER\022\020\n\010strValue\030\001 \001"
+      "(\t\"[\n\031GetOnlineDevInfoRsp_INNER\022,\n\007devIn"
+      "fo\030\001 \003(\0132\033.Interactive.Message.Device\022\020\n"
+      "\010strValue\030\002 \001(\t\"^\n\034BroadcastOnlineDevInf"
+      "o_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Interactive.M"
+      "essage.Device\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOn"
+      "lineUserInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\""
+      "[\n\032GetOnlineUserInfoRsp_INNER\022+\n\010userInf"
+      "o\030\001 \003(\0132\031.Interactive.Message.User\022\020\n\010st"
+      "rValue\030\002 \001(\t\"^\n\035BroadcastOnlineUserInfo_"
+      "INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interactive.Me"
+      "ssage.User\022\020\n\010strValue\030\002 \001(\t\"\343\027\n\003Req\022S\n\035"
+      "GetAccessAddressReq_DEV_Value\030\n \001(\0132,.In"
+      "teractive.Message.GetAccessAddressReq_DE"
+      "V\022=\n\022LoginReq_DEV_Value\030\024 \001(\0132!.Interact"
+      "ive.Message.LoginReq_DEV\022\?\n\023LogoutReq_DE"
+      "V_Value\030\036 \001(\0132\".Interactive.Message.Logo"
+      "utReq_DEV\022E\n\026ShakehandReq_DEV_Value\030( \001("
+      "\0132%.Interactive.Message.ShakehandReq_DEV"
+      "\022G\n\027ConfigInfoReq_DEV_Value\0302 \001(\0132&.Inte"
+      "ractive.Message.ConfigInfoReq_DEV\022O\n\033Sto"
+      "rageAddressReq_DEV_Value\0304 \001(\0132*.Interac"
+      "tive.Message.StorageAddressReq_DEV\022A\n\024P2"
+      "pInfoReq_DEV_Value\0306 \001(\0132#.Interactive.M"
+      "essage.P2pInfoReq_DEV\022A\n\024AddFileReq_DEV_"
+      "Value\030< \001(\0132#.Interactive.Message.AddFil"
+      "eReq_DEV\022M\n\032QueryTimeZoneReq_DEV_Value\030="
+      " \001(\0132).Interactive.Message.QueryTimeZone"
+      "Req_DEV\022M\n\032MsgPreHandlerReq_USR_Value\030A "
+      "\001(\0132).Interactive.Message.MsgPreHandlerR"
+      "eq_USR\022S\n\035GetAccessAddressReq_USR_Value\030"
+      "F \001(\0132,.Interactive.Message.GetAccessAdd"
+      "ressReq_USR\022K\n\031RegisterUserReq_USR_Value"
+      "\030P \001(\0132(.Interactive.Message.RegisterUse"
+      "rReq_USR\022O\n\033UnRegisterUserReq_USR_Value\030"
+      "Z \001(\0132*.Interactive.Message.UnRegisterUs"
+      "erReq_USR\022K\n\031QueryUsrInfoReq_USR_Value\030d"
+      " \001(\0132(.Interactive.Message.QueryUsrInfoR"
+      "eq_USR\022O\n\033ModifyUserInfoReq_USR_Value\030f "
+      "\001(\0132*.Interactive.Message.ModifyUserInfo"
+      "Req_USR\022I\n\030RetrievePwdReq_USR_Value\030h \001("
+      "\0132\'.Interactive.Message.RetrievePwdReq_U"
+      "SR\022=\n\022LoginReq_USR_Value\030n \001(\0132!.Interac"
+      "tive.Message.LoginReq_USR\022\?\n\023LogoutReq_U"
+      "SR_Value\030x \001(\0132\".Interactive.Message.Log"
+      "outReq_USR\022F\n\026ShakehandReq_USR_Value\030\202\001 "
+      "\001(\0132%.Interactive.Message.ShakehandReq_U"
+      "SR\022H\n\027ConfigInfoReq_USR_Value\030\214\001 \001(\0132&.I"
+      "nteractive.Message.ConfigInfoReq_USR\022@\n\023"
+      "AddDevReq_USR_Value\030\226\001 \001(\0132\".Interactive"
+      ".Message.AddDevReq_USR\022@\n\023DelDevReq_USR_"
+      "Value\030\240\001 \001(\0132\".Interactive.Message.DelDe"
+      "vReq_USR\022F\n\026ModifyDevReq_USR_Value\030\252\001 \001("
+      "\0132%.Interactive.Message.ModifyDevReq_USR"
+      "\022L\n\031QueryDevInfoReq_USR_Value\030\264\001 \001(\0132(.I"
+      "nteractive.Message.QueryDevInfoReq_USR\022D"
+      "\n\025QueryDevReq_USR_Value\030\276\001 \001(\0132$.Interac"
+      "tive.Message.QueryDevReq_USR\022F\n\026QueryUse"
+      "rReq_USR_Value\030\310\001 \001(\0132%.Interactive.Mess"
+      "age.QueryUserReq_USR\022H\n\027SharingDevReq_US"
+      "R_Value\030\322\001 \001(\0132&.Interactive.Message.Sha"
+      "ringDevReq_USR\022R\n\034CancelSharedDevReq_USR"
+      "_Value\030\334\001 \001(\0132+.Interactive.Message.Canc"
+      "elSharedDevReq_USR\022H\n\027AddFriendsReq_USR_"
+      "Value\030\346\001 \001(\0132&.Interactive.Message.AddFr"
+      "iendsReq_USR\022H\n\027DelFriendsReq_USR_Value\030"
+      "\360\001 \001(\0132&.Interactive.Message.DelFriendsR"
+      "eq_USR\022L\n\031QueryFriendsReq_USR_Value\030\372\001 \001"
+      "(\0132(.Interactive.Message.QueryFriendsReq"
+      "_USR\022P\n\033StorageAddressReq_USR_Value\030\374\001 \001"
       "(\0132*.Interactive.Message.StorageAddressR"
-      "sp_USR\022B\n\024P2pInfoRsp_USR_Value\030\222\002 \001(\0132#."
-      "Interactive.Message.P2pInfoRsp_USR\022H\n\027De"
-      "leteFileRsp_USR_Value\030\266\002 \001(\0132&.Interacti"
-      "ve.Message.DeleteFileRsp_USR\022L\n\031Download"
-      "FileRsp_USR_Value\030\300\002 \001(\0132(.Interactive.M"
-      "essage.DownloadFileRsp_USR\022F\n\026QueryFileR"
-      "sp_USR_Value\030\312\002 \001(\0132%.Interactive.Messag"
-      "e.QueryFileRsp_USR\022X\n\037GetOnlineDevInfoRs"
-      "p_INNER_Value\030\230\002 \001(\0132..Interactive.Messa"
-      "ge.GetOnlineDevInfoRsp_INNER\022Z\n GetOnlin"
-      "eUserInfoRsp_INNER_Value\030\242\002 \001(\0132/.Intera"
-      "ctive.Message.GetOnlineUserInfoRsp_INNER"
-      "\"\272\001\n\022InteractiveMessage\022*\n\004type\030\001 \001(\0162\034."
-      "Interactive.Message.MsgType\022\020\n\010uiMsgSeq\030"
-      "\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132"
-      "\030.Interactive.Message.Req\022*\n\010RspValue\030\005 "
-      "\001(\0132\030.Interactive.Message.Rsp*\210\021\n\007MsgTyp"
-      "e\022\n\n\006Init_T\020\000\022\036\n\031GetAccessAddressReq_DEV"
-      "_T\020\220N\022\036\n\031GetAccessAddressRsp_DEV_T\020\232N\022\023\n"
-      "\016LoginReq_DEV_T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022"
-      "\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017LogoutRsp_DEV_T"
-      "\020\302N\022\027\n\022ShakehandReq_DEV_T\020\314N\022\027\n\022Shakehan"
-      "dRsp_DEV_T\020\326N\022\030\n\023ConfigInfoReq_DEV_T\020\340N\022"
-      "\030\n\023ConfigInfoRsp_DEV_T\020\352N\022\034\n\027StorageAddr"
-      "essReq_DEV_T\020\364N\022\034\n\027StorageAddressRsp_DEV"
-      "_T\020\376N\022\025\n\020P2pInfoReq_DEV_T\020\354O\022\025\n\020P2pInfoR"
-      "sp_DEV_T\020\366O\022\025\n\020AddFileReq_DEV_T\020\274P\022\025\n\020Ad"
-      "dFileRsp_DEV_T\020\306P\022\034\n\026MsgPreHandlerReq_US"
-      "R_T\020\226\234\001\022\034\n\026MsgPreHandlerRsp_USR_T\020\227\234\001\022\037\n"
-      "\031GetAccessAddressReq_USR_T\020\240\234\001\022\037\n\031GetAcc"
-      "essAddressRsp_USR_T\020\252\234\001\022\033\n\025RegisterUserR"
-      "eq_USR_T\020\264\234\001\022\033\n\025RegisterUserRsp_USR_T\020\276\234"
-      "\001\022\035\n\027UnRegisterUserReq_USR_T\020\310\234\001\022\035\n\027UnRe"
-      "gisterUserRsp_USR_T\020\322\234\001\022\033\n\025QueryUsrInfoR"
-      "eq_USR_T\020\323\234\001\022\033\n\025QueryUsrInfoRsp_USR_T\020\324\234"
-      "\001\022\035\n\027ModifyUserInfoReq_USR_T\020\327\234\001\022\035\n\027Modi"
-      "fyUserInfoRsp_USR_T\020\330\234\001\022\032\n\024RetrievePwdRe"
-      "q_USR_T\020\331\234\001\022\032\n\024RetrievePwdRsp_USR_T\020\332\234\001\022"
-      "\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020"
-      "\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_"
-      "USR_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022S"
-      "hakehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_U"
-      "SR_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017A"
-      "ddDevReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235"
-      "\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_US"
-      "R_T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022Mod"
-      "ifyDevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq_U"
-      "SR_T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022\027\n"
-      "\021QueryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_US"
-      "R_T\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022Que"
-      "ryUserRsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_USR"
-      "_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030Can"
-      "celSharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelShare"
-      "dDevRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR_T"
-      "\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023DelFr"
-      "iendsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_USR_"
-      "T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n\026M"
-      "odifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFriend"
-      "sReq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_T\020"
-      "\352\236\001\022\035\n\027StorageAddressReq_USR_T\020\364\236\001\022\035\n\027St"
-      "orageAddressRsp_USR_T\020\376\236\001\022\026\n\020P2pInfoReq_"
-      "USR_T\020\210\237\001\022\026\n\020P2pInfoRsp_USR_T\020\222\237\001\022\031\n\023Del"
-      "eteFileReq_USR_T\020\224\240\001\022\031\n\023DeleteFileRsp_US"
-      "R_T\020\236\240\001\022\033\n\025DownloadFileReq_USR_T\020\250\240\001\022\033\n\025"
-      "DownloadFileRsp_USR_T\020\262\240\001\022\030\n\022QueryFileRe"
-      "q_USR_T\020\274\240\001\022\030\n\022QueryFileRsp_USR_T\020\306\240\001\022!\n"
-      "\033GetOnlineDevInfoReq_INNER_T\020\260\352\001\022!\n\033GetO"
-      "nlineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036Broadcast"
-      "OnlineDevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlineUs"
-      "erInfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnlineUserIn"
-      "foRsp_INNER_T\020\330\352\001\022%\n\037BroadcastOnlineUser"
-      "Info_INNER_T\020\342\352\001b\006proto3"
+      "eq_USR\022B\n\024P2pInfoReq_USR_Value\030\376\001 \001(\0132#."
+      "Interactive.Message.P2pInfoReq_USR\022H\n\027De"
+      "leteFileReq_USR_Value\030\266\002 \001(\0132&.Interacti"
+      "ve.Message.DeleteFileReq_USR\022L\n\031Download"
+      "FileReq_USR_Value\030\300\002 \001(\0132(.Interactive.M"
+      "essage.DownloadFileReq_USR\022F\n\026QueryFileR"
+      "eq_USR_Value\030\312\002 \001(\0132%.Interactive.Messag"
+      "e.QueryFileReq_USR\022X\n\037GetOnlineDevInfoRe"
+      "q_INNER_Value\030\204\002 \001(\0132..Interactive.Messa"
+      "ge.GetOnlineDevInfoReq_INNER\022^\n\"Broadcas"
+      "tOnlineDevInfo_INNER_Value\030\216\002 \001(\01321.Inte"
+      "ractive.Message.BroadcastOnlineDevInfo_I"
+      "NNER\022Z\n GetOnlineUserInfoReq_INNER_Value"
+      "\030\230\002 \001(\0132/.Interactive.Message.GetOnlineU"
+      "serInfoReq_INNER\022`\n#BroadcastOnlineUserI"
+      "nfo_INNER_Value\030\242\002 \001(\01322.Interactive.Mes"
+      "sage.BroadcastOnlineUserInfo_INNER\"\310\026\n\003R"
+      "sp\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022"
+      "S\n\035GetAccessAddressRsp_DEV_Value\030\036 \001(\0132,"
+      ".Interactive.Message.GetAccessAddressRsp"
+      "_DEV\022=\n\022LoginRsp_DEV_Value\030( \001(\0132!.Inter"
+      "active.Message.LoginRsp_DEV\022\?\n\023LogoutRsp"
+      "_DEV_Value\0302 \001(\0132\".Interactive.Message.L"
+      "ogoutRsp_DEV\022E\n\026ShakehandRsp_DEV_Value\030<"
+      " \001(\0132%.Interactive.Message.ShakehandRsp_"
+      "DEV\022G\n\027ConfigInfoRsp_DEV_Value\030F \001(\0132&.I"
+      "nteractive.Message.ConfigInfoRsp_DEV\022O\n\033"
+      "StorageAddressRsp_DEV_Value\030H \001(\0132*.Inte"
+      "ractive.Message.StorageAddressRsp_DEV\022A\n"
+      "\024P2pInfoRsp_DEV_Value\030J \001(\0132#.Interactiv"
+      "e.Message.P2pInfoRsp_DEV\022A\n\024AddFileRsp_D"
+      "EV_Value\030P \001(\0132#.Interactive.Message.Add"
+      "FileRsp_DEV\022M\n\032QueryTimeZoneRsp_DEV_Valu"
+      "e\030Q \001(\0132).Interactive.Message.QueryTimeZ"
+      "oneRsp_DEV\022M\n\032MsgPreHandlerRsp_USR_Value"
+      "\030U \001(\0132).Interactive.Message.MsgPreHandl"
+      "erRsp_USR\022S\n\035GetAccessAddressRsp_USR_Val"
+      "ue\030Z \001(\0132,.Interactive.Message.GetAccess"
+      "AddressRsp_USR\022K\n\031RegisterUserRsp_USR_Va"
+      "lue\030d \001(\0132(.Interactive.Message.Register"
+      "UserRsp_USR\022O\n\033UnRegisterUserRsp_USR_Val"
+      "ue\030n \001(\0132*.Interactive.Message.UnRegiste"
+      "rUserRsp_USR\022K\n\031QueryUsrInfoRsp_USR_Valu"
+      "e\030x \001(\0132(.Interactive.Message.QueryUsrIn"
+      "foRsp_USR\022O\n\033ModifyUserInfoRsp_USR_Value"
+      "\030z \001(\0132*.Interactive.Message.ModifyUserI"
+      "nfoRsp_USR\022I\n\030RetrievePwdRsp_USR_Value\030|"
+      " \001(\0132\'.Interactive.Message.RetrievePwdRs"
+      "p_USR\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Int"
+      "eractive.Message.LoginRsp_USR\022@\n\023LogoutR"
+      "sp_USR_Value\030\214\001 \001(\0132\".Interactive.Messag"
+      "e.LogoutRsp_USR\022F\n\026ShakehandRsp_USR_Valu"
+      "e\030\226\001 \001(\0132%.Interactive.Message.Shakehand"
+      "Rsp_USR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001("
+      "\0132&.Interactive.Message.ConfigInfoRsp_US"
+      "R\022@\n\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".Intera"
+      "ctive.Message.AddDevRsp_USR\022@\n\023DelDevRsp"
+      "_USR_Value\030\264\001 \001(\0132\".Interactive.Message."
+      "DelDevRsp_USR\022F\n\026ModifyDevRsp_USR_Value\030"
+      "\276\001 \001(\0132%.Interactive.Message.ModifyDevRs"
+      "p_USR\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001("
+      "\0132(.Interactive.Message.QueryDevInfoRsp_"
+      "USR\022D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.In"
+      "teractive.Message.QueryDevRsp_USR\022F\n\026Que"
+      "ryUserRsp_USR_Value\030\334\001 \001(\0132%.Interactive"
+      ".Message.QueryUserRsp_USR\022H\n\027SharingDevR"
+      "sp_USR_Value\030\346\001 \001(\0132&.Interactive.Messag"
+      "e.SharingDevRsp_USR\022R\n\034CancelSharedDevRs"
+      "p_USR_Value\030\360\001 \001(\0132+.Interactive.Message"
+      ".CancelSharedDevRsp_USR\022H\n\027AddFriendsRsp"
+      "_USR_Value\030\372\001 \001(\0132&.Interactive.Message."
+      "AddFriendsRsp_USR\022H\n\027DelFriendsRsp_USR_V"
+      "alue\030\204\002 \001(\0132&.Interactive.Message.DelFri"
+      "endsRsp_USR\022L\n\031QueryFriendsRsp_USR_Value"
+      "\030\216\002 \001(\0132(.Interactive.Message.QueryFrien"
+      "dsRsp_USR\022P\n\033StorageAddressReq_USR_Value"
+      "\030\220\002 \001(\0132*.Interactive.Message.StorageAdd"
+      "ressRsp_USR\022B\n\024P2pInfoRsp_USR_Value\030\222\002 \001"
+      "(\0132#.Interactive.Message.P2pInfoRsp_USR\022"
+      "H\n\027DeleteFileRsp_USR_Value\030\266\002 \001(\0132&.Inte"
+      "ractive.Message.DeleteFileRsp_USR\022L\n\031Dow"
+      "nloadFileRsp_USR_Value\030\300\002 \001(\0132(.Interact"
+      "ive.Message.DownloadFileRsp_USR\022F\n\026Query"
+      "FileRsp_USR_Value\030\312\002 \001(\0132%.Interactive.M"
+      "essage.QueryFileRsp_USR\022X\n\037GetOnlineDevI"
+      "nfoRsp_INNER_Value\030\230\002 \001(\0132..Interactive."
+      "Message.GetOnlineDevInfoRsp_INNER\022Z\n Get"
+      "OnlineUserInfoRsp_INNER_Value\030\242\002 \001(\0132/.I"
+      "nteractive.Message.GetOnlineUserInfoRsp_"
+      "INNER\"\272\001\n\022InteractiveMessage\022*\n\004type\030\001 \001"
+      "(\0162\034.Interactive.Message.MsgType\022\020\n\010uiMs"
+      "gSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010ReqValue\030\004"
+      " \001(\0132\030.Interactive.Message.Req\022*\n\010RspVal"
+      "ue\030\005 \001(\0132\030.Interactive.Message.Rsp*\302\021\n\007M"
+      "sgType\022\n\n\006Init_T\020\000\022\036\n\031GetAccessAddressRe"
+      "q_DEV_T\020\220N\022\036\n\031GetAccessAddressRsp_DEV_T\020"
+      "\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016LoginRsp_DEV_"
+      "T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017LogoutRsp_"
+      "DEV_T\020\302N\022\027\n\022ShakehandReq_DEV_T\020\314N\022\027\n\022Sha"
+      "kehandRsp_DEV_T\020\326N\022\030\n\023ConfigInfoReq_DEV_"
+      "T\020\340N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N\022\034\n\027Storag"
+      "eAddressReq_DEV_T\020\364N\022\034\n\027StorageAddressRs"
+      "p_DEV_T\020\376N\022\025\n\020P2pInfoReq_DEV_T\020\354O\022\025\n\020P2p"
+      "InfoRsp_DEV_T\020\366O\022\025\n\020AddFileReq_DEV_T\020\274P\022"
+      "\025\n\020AddFileRsp_DEV_T\020\306P\022\033\n\026QueryTimeZoneR"
+      "eq_DEV_T\020\320P\022\033\n\026QueryTimeZoneRsp_DEV_T\020\332P"
+      "\022\034\n\026MsgPreHandlerReq_USR_T\020\226\234\001\022\034\n\026MsgPre"
+      "HandlerRsp_USR_T\020\227\234\001\022\037\n\031GetAccessAddress"
+      "Req_USR_T\020\240\234\001\022\037\n\031GetAccessAddressRsp_USR"
+      "_T\020\252\234\001\022\033\n\025RegisterUserReq_USR_T\020\264\234\001\022\033\n\025R"
+      "egisterUserRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUs"
+      "erReq_USR_T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR"
+      "_T\020\322\234\001\022\033\n\025QueryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025Q"
+      "ueryUsrInfoRsp_USR_T\020\324\234\001\022\035\n\027ModifyUserIn"
+      "foReq_USR_T\020\327\234\001\022\035\n\027ModifyUserInfoRsp_USR"
+      "_T\020\330\234\001\022\032\n\024RetrievePwdReq_USR_T\020\331\234\001\022\032\n\024Re"
+      "trievePwdRsp_USR_T\020\332\234\001\022\024\n\016LoginReq_USR_T"
+      "\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234\001\022\025\n\017LogoutReq_"
+      "USR_T\020\360\234\001\022\025\n\017LogoutRsp_USR_T\020\372\234\001\022\030\n\022Shak"
+      "ehandReq_USR_T\020\204\235\001\022\030\n\022ShakehandRsp_USR_T"
+      "\020\216\235\001\022\031\n\023ConfigInfoReq_USR_T\020\230\235\001\022\031\n\023Confi"
+      "gInfoRsp_USR_T\020\242\235\001\022\025\n\017AddDevReq_USR_T\020\254\235"
+      "\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022\025\n\017DelDevReq_US"
+      "R_T\020\300\235\001\022\025\n\017DelDevRsp_USR_T\020\312\235\001\022\030\n\022Modify"
+      "DevReq_USR_T\020\324\235\001\022\030\n\022ModifyDevRsp_USR_T\020\336"
+      "\235\001\022\033\n\025QueryDevInfoReq_USR_T\020\337\235\001\022\033\n\025Query"
+      "DevInfoRsp_USR_T\020\340\235\001\022\027\n\021QueryDevReq_USR_"
+      "T\020\350\235\001\022\027\n\021QueryDevRsp_USR_T\020\362\235\001\022\030\n\022QueryU"
+      "serReq_USR_T\020\363\235\001\022\030\n\022QueryUserRsp_USR_T\020\364"
+      "\235\001\022\031\n\023SharingDevReq_USR_T\020\374\235\001\022\031\n\023Sharing"
+      "DevRsp_USR_T\020\206\236\001\022\036\n\030CancelSharedDevReq_U"
+      "SR_T\020\220\236\001\022\036\n\030CancelSharedDevRsp_USR_T\020\232\236\001"
+      "\022\031\n\023AddFriendsReq_USR_T\020\244\236\001\022\031\n\023AddFriend"
+      "sRsp_USR_T\020\256\236\001\022\031\n\023DelFriendsReq_USR_T\020\270\236"
+      "\001\022\031\n\023DelFriendsRsp_USR_T\020\302\236\001\022\034\n\026ModifyFr"
+      "iendsReq_USR_T\020\314\236\001\022\034\n\026ModifyFriendsRsp_U"
+      "SR_T\020\326\236\001\022\033\n\025QueryFriendsReq_USR_T\020\340\236\001\022\033\n"
+      "\025QueryFriendsRsp_USR_T\020\352\236\001\022\035\n\027StorageAdd"
+      "ressReq_USR_T\020\364\236\001\022\035\n\027StorageAddressRsp_U"
+      "SR_T\020\376\236\001\022\026\n\020P2pInfoReq_USR_T\020\210\237\001\022\026\n\020P2pI"
+      "nfoRsp_USR_T\020\222\237\001\022\031\n\023DeleteFileReq_USR_T\020"
+      "\224\240\001\022\031\n\023DeleteFileRsp_USR_T\020\236\240\001\022\033\n\025Downlo"
+      "adFileReq_USR_T\020\250\240\001\022\033\n\025DownloadFileRsp_U"
+      "SR_T\020\262\240\001\022\030\n\022QueryFileReq_USR_T\020\274\240\001\022\030\n\022Qu"
+      "eryFileRsp_USR_T\020\306\240\001\022!\n\033GetOnlineDevInfo"
+      "Req_INNER_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_I"
+      "NNER_T\020\272\352\001\022$\n\036BroadcastOnlineDevInfo_INN"
+      "ER_T\020\304\352\001\022\"\n\034GetOnlineUserInfoReq_INNER_T"
+      "\020\316\352\001\022\"\n\034GetOnlineUserInfoRsp_INNER_T\020\330\352\001"
+      "\022%\n\037BroadcastOnlineUserInfo_INNER_T\020\342\352\001b"
+      "\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 14344);
+      descriptor, 14727);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -1870,6 +1913,8 @@ bool MsgType_IsValid(int value) {
     case 10230:
     case 10300:
     case 10310:
+    case 10320:
+    case 10330:
     case 19990:
     case 19991:
     case 20000:
@@ -13026,6 +13071,892 @@ AddFileRsp_DEV::mutable_strfileidfailed() {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryTimeZoneReq_DEV::kStrDevIDFieldNumber;
+const int QueryTimeZoneReq_DEV::kStrDevIpAddressFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryTimeZoneReq_DEV::QueryTimeZoneReq_DEV()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.QueryTimeZoneReq_DEV)
+}
+QueryTimeZoneReq_DEV::QueryTimeZoneReq_DEV(const QueryTimeZoneReq_DEV& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strdevid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdevid().size() > 0) {
+    strdevid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevid_);
+  }
+  strdevipaddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdevipaddress().size() > 0) {
+    strdevipaddress_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevipaddress_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.QueryTimeZoneReq_DEV)
+}
+
+void QueryTimeZoneReq_DEV::SharedCtor() {
+  strdevid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevipaddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+QueryTimeZoneReq_DEV::~QueryTimeZoneReq_DEV() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.QueryTimeZoneReq_DEV)
+  SharedDtor();
+}
+
+void QueryTimeZoneReq_DEV::SharedDtor() {
+  strdevid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevipaddress_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryTimeZoneReq_DEV::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryTimeZoneReq_DEV::descriptor() {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[22].descriptor;
+}
+
+const QueryTimeZoneReq_DEV& QueryTimeZoneReq_DEV::default_instance() {
+  protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryTimeZoneReq_DEV* QueryTimeZoneReq_DEV::New(::google::protobuf::Arena* arena) const {
+  QueryTimeZoneReq_DEV* n = new QueryTimeZoneReq_DEV;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryTimeZoneReq_DEV::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool QueryTimeZoneReq_DEV::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strDevID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdevid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdevid().data(), this->strdevid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryTimeZoneReq_DEV.strDevID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strDevIpAddress = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdevipaddress()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdevipaddress().data(), this->strdevipaddress().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.QueryTimeZoneReq_DEV)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.QueryTimeZoneReq_DEV)
+  return false;
+#undef DO_
+}
+
+void QueryTimeZoneReq_DEV::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  // string strDevID = 1;
+  if (this->strdevid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevid().data(), this->strdevid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneReq_DEV.strDevID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strdevid(), output);
+  }
+
+  // string strDevIpAddress = 2;
+  if (this->strdevipaddress().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevipaddress().data(), this->strdevipaddress().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strdevipaddress(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryTimeZoneReq_DEV)
+}
+
+::google::protobuf::uint8* QueryTimeZoneReq_DEV::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  // string strDevID = 1;
+  if (this->strdevid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevid().data(), this->strdevid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneReq_DEV.strDevID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strdevid(), target);
+  }
+
+  // string strDevIpAddress = 2;
+  if (this->strdevipaddress().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevipaddress().data(), this->strdevipaddress().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strdevipaddress(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryTimeZoneReq_DEV)
+  return target;
+}
+
+size_t QueryTimeZoneReq_DEV::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  size_t total_size = 0;
+
+  // string strDevID = 1;
+  if (this->strdevid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdevid());
+  }
+
+  // string strDevIpAddress = 2;
+  if (this->strdevipaddress().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdevipaddress());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryTimeZoneReq_DEV::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryTimeZoneReq_DEV* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryTimeZoneReq_DEV>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.QueryTimeZoneReq_DEV)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.QueryTimeZoneReq_DEV)
+    MergeFrom(*source);
+  }
+}
+
+void QueryTimeZoneReq_DEV::MergeFrom(const QueryTimeZoneReq_DEV& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strdevid().size() > 0) {
+
+    strdevid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevid_);
+  }
+  if (from.strdevipaddress().size() > 0) {
+
+    strdevipaddress_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevipaddress_);
+  }
+}
+
+void QueryTimeZoneReq_DEV::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryTimeZoneReq_DEV::CopyFrom(const QueryTimeZoneReq_DEV& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.QueryTimeZoneReq_DEV)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryTimeZoneReq_DEV::IsInitialized() const {
+  return true;
+}
+
+void QueryTimeZoneReq_DEV::Swap(QueryTimeZoneReq_DEV* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryTimeZoneReq_DEV::InternalSwap(QueryTimeZoneReq_DEV* other) {
+  strdevid_.Swap(&other->strdevid_);
+  strdevipaddress_.Swap(&other->strdevipaddress_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryTimeZoneReq_DEV::GetMetadata() const {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[22];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryTimeZoneReq_DEV
+
+// string strDevID = 1;
+void QueryTimeZoneReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryTimeZoneReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+void QueryTimeZoneReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+#if LANG_CXX11
+void QueryTimeZoneReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+#endif
+void QueryTimeZoneReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+void QueryTimeZoneReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+::std::string* QueryTimeZoneReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryTimeZoneReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryTimeZoneReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneReq_DEV.strDevID)
+}
+
+// string strDevIpAddress = 2;
+void QueryTimeZoneReq_DEV::clear_strdevipaddress() {
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryTimeZoneReq_DEV::strdevipaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  return strdevipaddress_.GetNoArena();
+}
+void QueryTimeZoneReq_DEV::set_strdevipaddress(const ::std::string& value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+#if LANG_CXX11
+void QueryTimeZoneReq_DEV::set_strdevipaddress(::std::string&& value) {
+  
+  strdevipaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+#endif
+void QueryTimeZoneReq_DEV::set_strdevipaddress(const char* value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+void QueryTimeZoneReq_DEV::set_strdevipaddress(const char* value, size_t size) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+::std::string* QueryTimeZoneReq_DEV::mutable_strdevipaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  return strdevipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryTimeZoneReq_DEV::release_strdevipaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+  
+  return strdevipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryTimeZoneReq_DEV::set_allocated_strdevipaddress(::std::string* strdevipaddress) {
+  if (strdevipaddress != NULL) {
+    
+  } else {
+    
+  }
+  strdevipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevipaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneReq_DEV.strDevIpAddress)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryTimeZoneRsp_DEV::kStrCountryCodeFieldNumber;
+const int QueryTimeZoneRsp_DEV::kStrCountryNameEnFieldNumber;
+const int QueryTimeZoneRsp_DEV::kStrCountryNameZhFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryTimeZoneRsp_DEV::QueryTimeZoneRsp_DEV()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.QueryTimeZoneRsp_DEV)
+}
+QueryTimeZoneRsp_DEV::QueryTimeZoneRsp_DEV(const QueryTimeZoneRsp_DEV& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strcountrycode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcountrycode().size() > 0) {
+    strcountrycode_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrycode_);
+  }
+  strcountrynameen_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcountrynameen().size() > 0) {
+    strcountrynameen_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrynameen_);
+  }
+  strcountrynamezh_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcountrynamezh().size() > 0) {
+    strcountrynamezh_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrynamezh_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.QueryTimeZoneRsp_DEV)
+}
+
+void QueryTimeZoneRsp_DEV::SharedCtor() {
+  strcountrycode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynameen_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynamezh_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+QueryTimeZoneRsp_DEV::~QueryTimeZoneRsp_DEV() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.QueryTimeZoneRsp_DEV)
+  SharedDtor();
+}
+
+void QueryTimeZoneRsp_DEV::SharedDtor() {
+  strcountrycode_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynameen_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynamezh_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryTimeZoneRsp_DEV::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryTimeZoneRsp_DEV::descriptor() {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[23].descriptor;
+}
+
+const QueryTimeZoneRsp_DEV& QueryTimeZoneRsp_DEV::default_instance() {
+  protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryTimeZoneRsp_DEV* QueryTimeZoneRsp_DEV::New(::google::protobuf::Arena* arena) const {
+  QueryTimeZoneRsp_DEV* n = new QueryTimeZoneRsp_DEV;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryTimeZoneRsp_DEV::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  strcountrycode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynameen_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcountrynamezh_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool QueryTimeZoneRsp_DEV::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strCountryCode = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcountrycode()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcountrycode().data(), this->strcountrycode().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCountryNameEn = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcountrynameen()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcountrynameen().data(), this->strcountrynameen().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCountryNameZh = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcountrynamezh()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcountrynamezh().data(), this->strcountrynamezh().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.QueryTimeZoneRsp_DEV)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.QueryTimeZoneRsp_DEV)
+  return false;
+#undef DO_
+}
+
+void QueryTimeZoneRsp_DEV::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  // string strCountryCode = 1;
+  if (this->strcountrycode().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrycode().data(), this->strcountrycode().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strcountrycode(), output);
+  }
+
+  // string strCountryNameEn = 2;
+  if (this->strcountrynameen().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrynameen().data(), this->strcountrynameen().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strcountrynameen(), output);
+  }
+
+  // string strCountryNameZh = 3;
+  if (this->strcountrynamezh().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrynamezh().data(), this->strcountrynamezh().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strcountrynamezh(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryTimeZoneRsp_DEV)
+}
+
+::google::protobuf::uint8* QueryTimeZoneRsp_DEV::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  // string strCountryCode = 1;
+  if (this->strcountrycode().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrycode().data(), this->strcountrycode().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strcountrycode(), target);
+  }
+
+  // string strCountryNameEn = 2;
+  if (this->strcountrynameen().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrynameen().data(), this->strcountrynameen().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strcountrynameen(), target);
+  }
+
+  // string strCountryNameZh = 3;
+  if (this->strcountrynamezh().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcountrynamezh().data(), this->strcountrynamezh().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strcountrynamezh(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryTimeZoneRsp_DEV)
+  return target;
+}
+
+size_t QueryTimeZoneRsp_DEV::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  size_t total_size = 0;
+
+  // string strCountryCode = 1;
+  if (this->strcountrycode().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcountrycode());
+  }
+
+  // string strCountryNameEn = 2;
+  if (this->strcountrynameen().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcountrynameen());
+  }
+
+  // string strCountryNameZh = 3;
+  if (this->strcountrynamezh().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcountrynamezh());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryTimeZoneRsp_DEV::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryTimeZoneRsp_DEV* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryTimeZoneRsp_DEV>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.QueryTimeZoneRsp_DEV)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.QueryTimeZoneRsp_DEV)
+    MergeFrom(*source);
+  }
+}
+
+void QueryTimeZoneRsp_DEV::MergeFrom(const QueryTimeZoneRsp_DEV& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strcountrycode().size() > 0) {
+
+    strcountrycode_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrycode_);
+  }
+  if (from.strcountrynameen().size() > 0) {
+
+    strcountrynameen_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrynameen_);
+  }
+  if (from.strcountrynamezh().size() > 0) {
+
+    strcountrynamezh_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcountrynamezh_);
+  }
+}
+
+void QueryTimeZoneRsp_DEV::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryTimeZoneRsp_DEV::CopyFrom(const QueryTimeZoneRsp_DEV& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.QueryTimeZoneRsp_DEV)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryTimeZoneRsp_DEV::IsInitialized() const {
+  return true;
+}
+
+void QueryTimeZoneRsp_DEV::Swap(QueryTimeZoneRsp_DEV* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryTimeZoneRsp_DEV::InternalSwap(QueryTimeZoneRsp_DEV* other) {
+  strcountrycode_.Swap(&other->strcountrycode_);
+  strcountrynameen_.Swap(&other->strcountrynameen_);
+  strcountrynamezh_.Swap(&other->strcountrynamezh_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryTimeZoneRsp_DEV::GetMetadata() const {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[23];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryTimeZoneRsp_DEV
+
+// string strCountryCode = 1;
+void QueryTimeZoneRsp_DEV::clear_strcountrycode() {
+  strcountrycode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryTimeZoneRsp_DEV::strcountrycode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  return strcountrycode_.GetNoArena();
+}
+void QueryTimeZoneRsp_DEV::set_strcountrycode(const ::std::string& value) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+#if LANG_CXX11
+void QueryTimeZoneRsp_DEV::set_strcountrycode(::std::string&& value) {
+  
+  strcountrycode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+#endif
+void QueryTimeZoneRsp_DEV::set_strcountrycode(const char* value) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+void QueryTimeZoneRsp_DEV::set_strcountrycode(const char* value, size_t size) {
+  
+  strcountrycode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrycode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  return strcountrycode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryTimeZoneRsp_DEV::release_strcountrycode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+  
+  return strcountrycode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryTimeZoneRsp_DEV::set_allocated_strcountrycode(::std::string* strcountrycode) {
+  if (strcountrycode != NULL) {
+    
+  } else {
+    
+  }
+  strcountrycode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrycode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryCode)
+}
+
+// string strCountryNameEn = 2;
+void QueryTimeZoneRsp_DEV::clear_strcountrynameen() {
+  strcountrynameen_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryTimeZoneRsp_DEV::strcountrynameen() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  return strcountrynameen_.GetNoArena();
+}
+void QueryTimeZoneRsp_DEV::set_strcountrynameen(const ::std::string& value) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+#if LANG_CXX11
+void QueryTimeZoneRsp_DEV::set_strcountrynameen(::std::string&& value) {
+  
+  strcountrynameen_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+#endif
+void QueryTimeZoneRsp_DEV::set_strcountrynameen(const char* value) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+void QueryTimeZoneRsp_DEV::set_strcountrynameen(const char* value, size_t size) {
+  
+  strcountrynameen_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrynameen() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  return strcountrynameen_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryTimeZoneRsp_DEV::release_strcountrynameen() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+  
+  return strcountrynameen_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryTimeZoneRsp_DEV::set_allocated_strcountrynameen(::std::string* strcountrynameen) {
+  if (strcountrynameen != NULL) {
+    
+  } else {
+    
+  }
+  strcountrynameen_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrynameen);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameEn)
+}
+
+// string strCountryNameZh = 3;
+void QueryTimeZoneRsp_DEV::clear_strcountrynamezh() {
+  strcountrynamezh_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryTimeZoneRsp_DEV::strcountrynamezh() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  return strcountrynamezh_.GetNoArena();
+}
+void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const ::std::string& value) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+#if LANG_CXX11
+void QueryTimeZoneRsp_DEV::set_strcountrynamezh(::std::string&& value) {
+  
+  strcountrynamezh_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+#endif
+void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const char* value) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+void QueryTimeZoneRsp_DEV::set_strcountrynamezh(const char* value, size_t size) {
+  
+  strcountrynamezh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+::std::string* QueryTimeZoneRsp_DEV::mutable_strcountrynamezh() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  return strcountrynamezh_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryTimeZoneRsp_DEV::release_strcountrynamezh() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+  
+  return strcountrynamezh_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryTimeZoneRsp_DEV::set_allocated_strcountrynamezh(::std::string* strcountrynamezh) {
+  if (strcountrynamezh != NULL) {
+    
+  } else {
+    
+  }
+  strcountrynamezh_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrynamezh);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int MsgPreHandlerReq_USR::kStrValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -13070,7 +14001,7 @@ void MsgPreHandlerReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* MsgPreHandlerReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[24].descriptor;
 }
 
 const MsgPreHandlerReq_USR& MsgPreHandlerReq_USR::default_instance() {
@@ -13244,7 +14175,7 @@ void MsgPreHandlerReq_USR::InternalSwap(MsgPreHandlerReq_USR* other) {
 
 ::google::protobuf::Metadata MsgPreHandlerReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[22];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[24];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -13351,7 +14282,7 @@ void MsgPreHandlerRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* MsgPreHandlerRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[23].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[25].descriptor;
 }
 
 const MsgPreHandlerRsp_USR& MsgPreHandlerRsp_USR::default_instance() {
@@ -13525,7 +14456,7 @@ void MsgPreHandlerRsp_USR::InternalSwap(MsgPreHandlerRsp_USR* other) {
 
 ::google::protobuf::Metadata MsgPreHandlerRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[23];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[25];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -13639,7 +14570,7 @@ void GetAccessAddressReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetAccessAddressReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[24].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[26].descriptor;
 }
 
 const GetAccessAddressReq_USR& GetAccessAddressReq_USR::default_instance() {
@@ -13862,7 +14793,7 @@ void GetAccessAddressReq_USR::InternalSwap(GetAccessAddressReq_USR* other) {
 
 ::google::protobuf::Metadata GetAccessAddressReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[24];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[26];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14035,7 +14966,7 @@ void GetAccessAddressRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetAccessAddressRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[25].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[27].descriptor;
 }
 
 const GetAccessAddressRsp_USR& GetAccessAddressRsp_USR::default_instance() {
@@ -14307,7 +15238,7 @@ void GetAccessAddressRsp_USR::InternalSwap(GetAccessAddressRsp_USR* other) {
 
 ::google::protobuf::Metadata GetAccessAddressRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[25];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[27];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14528,7 +15459,7 @@ void RegisterUserReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RegisterUserReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[26].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[28].descriptor;
 }
 
 const RegisterUserReq_USR& RegisterUserReq_USR::default_instance() {
@@ -14741,7 +15672,7 @@ void RegisterUserReq_USR::InternalSwap(RegisterUserReq_USR* other) {
 
 ::google::protobuf::Metadata RegisterUserReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[26];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[28];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14894,7 +15825,7 @@ void RegisterUserRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RegisterUserRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[27].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[29].descriptor;
 }
 
 const RegisterUserRsp_USR& RegisterUserRsp_USR::default_instance() {
@@ -15117,7 +16048,7 @@ void RegisterUserRsp_USR::InternalSwap(RegisterUserRsp_USR* other) {
 
 ::google::protobuf::Metadata RegisterUserRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[27];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[29];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15286,7 +16217,7 @@ void UnRegisterUserReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UnRegisterUserReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[28].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[30].descriptor;
 }
 
 const UnRegisterUserReq_USR& UnRegisterUserReq_USR::default_instance() {
@@ -15499,7 +16430,7 @@ void UnRegisterUserReq_USR::InternalSwap(UnRegisterUserReq_USR* other) {
 
 ::google::protobuf::Metadata UnRegisterUserReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[28];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[30];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15652,7 +16583,7 @@ void UnRegisterUserRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UnRegisterUserRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[29].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[31].descriptor;
 }
 
 const UnRegisterUserRsp_USR& UnRegisterUserRsp_USR::default_instance() {
@@ -15875,7 +16806,7 @@ void UnRegisterUserRsp_USR::InternalSwap(UnRegisterUserRsp_USR* other) {
 
 ::google::protobuf::Metadata UnRegisterUserRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[29];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[31];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16041,7 +16972,7 @@ void QueryUsrInfoReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUsrInfoReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[30].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[32].descriptor;
 }
 
 const QueryUsrInfoReq_USR& QueryUsrInfoReq_USR::default_instance() {
@@ -16264,7 +17195,7 @@ void QueryUsrInfoReq_USR::InternalSwap(QueryUsrInfoReq_USR* other) {
 
 ::google::protobuf::Metadata QueryUsrInfoReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[30];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[32];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16433,7 +17364,7 @@ void QueryUsrInfoRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUsrInfoRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[31].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[33].descriptor;
 }
 
 const QueryUsrInfoRsp_USR& QueryUsrInfoRsp_USR::default_instance() {
@@ -16646,7 +17577,7 @@ void QueryUsrInfoRsp_USR::InternalSwap(QueryUsrInfoRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryUsrInfoRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[31];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[33];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16802,7 +17733,7 @@ void ModifyUserInfoReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyUserInfoReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[32].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[34].descriptor;
 }
 
 const ModifyUserInfoReq_USR& ModifyUserInfoReq_USR::default_instance() {
@@ -17015,7 +17946,7 @@ void ModifyUserInfoReq_USR::InternalSwap(ModifyUserInfoReq_USR* other) {
 
 ::google::protobuf::Metadata ModifyUserInfoReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[32];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[34];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17161,7 +18092,7 @@ void ModifyUserInfoRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyUserInfoRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[33].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[35].descriptor;
 }
 
 const ModifyUserInfoRsp_USR& ModifyUserInfoRsp_USR::default_instance() {
@@ -17335,7 +18266,7 @@ void ModifyUserInfoRsp_USR::InternalSwap(ModifyUserInfoRsp_USR* other) {
 
 ::google::protobuf::Metadata ModifyUserInfoRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[33];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[35];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17449,7 +18380,7 @@ void RetrievePwdReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RetrievePwdReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[34].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[36].descriptor;
 }
 
 const RetrievePwdReq_USR& RetrievePwdReq_USR::default_instance() {
@@ -17672,7 +18603,7 @@ void RetrievePwdReq_USR::InternalSwap(RetrievePwdReq_USR* other) {
 
 ::google::protobuf::Metadata RetrievePwdReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[34];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[36];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17831,7 +18762,7 @@ void RetrievePwdRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RetrievePwdRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[35].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[37].descriptor;
 }
 
 const RetrievePwdRsp_USR& RetrievePwdRsp_USR::default_instance() {
@@ -18005,7 +18936,7 @@ void RetrievePwdRsp_USR::InternalSwap(RetrievePwdRsp_USR* other) {
 
 ::google::protobuf::Metadata RetrievePwdRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[35];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[37];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18122,7 +19053,7 @@ void LoginReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LoginReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[36].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[38].descriptor;
 }
 
 const LoginReq_USR& LoginReq_USR::default_instance() {
@@ -18335,7 +19266,7 @@ void LoginReq_USR::InternalSwap(LoginReq_USR* other) {
 
 ::google::protobuf::Metadata LoginReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[36];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[38];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18490,7 +19421,7 @@ void LoginRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LoginRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[37].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[39].descriptor;
 }
 
 const LoginRsp_USR& LoginRsp_USR::default_instance() {
@@ -18753,7 +19684,7 @@ void LoginRsp_USR::InternalSwap(LoginRsp_USR* other) {
 
 ::google::protobuf::Metadata LoginRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[37];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[39];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18952,7 +19883,7 @@ void LogoutReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LogoutReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[38].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[40].descriptor;
 }
 
 const LogoutReq_USR& LogoutReq_USR::default_instance() {
@@ -19165,7 +20096,7 @@ void LogoutReq_USR::InternalSwap(LogoutReq_USR* other) {
 
 ::google::protobuf::Metadata LogoutReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[38];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[40];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19311,7 +20242,7 @@ void LogoutRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* LogoutRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[39].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[41].descriptor;
 }
 
 const LogoutRsp_USR& LogoutRsp_USR::default_instance() {
@@ -19485,7 +20416,7 @@ void LogoutRsp_USR::InternalSwap(LogoutRsp_USR* other) {
 
 ::google::protobuf::Metadata LogoutRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[39];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[41];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19599,7 +20530,7 @@ void ShakehandReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[40].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[42].descriptor;
 }
 
 const ShakehandReq_USR& ShakehandReq_USR::default_instance() {
@@ -19822,7 +20753,7 @@ void ShakehandReq_USR::InternalSwap(ShakehandReq_USR* other) {
 
 ::google::protobuf::Metadata ShakehandReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[40];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[42];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19981,7 +20912,7 @@ void ShakehandRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[41].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[43].descriptor;
 }
 
 const ShakehandRsp_USR& ShakehandRsp_USR::default_instance() {
@@ -20155,7 +21086,7 @@ void ShakehandRsp_USR::InternalSwap(ShakehandRsp_USR* other) {
 
 ::google::protobuf::Metadata ShakehandRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[41];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[43];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20269,7 +21200,7 @@ void ConfigInfoReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ConfigInfoReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[42].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[44].descriptor;
 }
 
 const ConfigInfoReq_USR& ConfigInfoReq_USR::default_instance() {
@@ -20492,7 +21423,7 @@ void ConfigInfoReq_USR::InternalSwap(ConfigInfoReq_USR* other) {
 
 ::google::protobuf::Metadata ConfigInfoReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[42];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[44];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20653,7 +21584,7 @@ void ConfigInfoRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ConfigInfoRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[43].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[45].descriptor;
 }
 
 const ConfigInfoRsp_USR& ConfigInfoRsp_USR::default_instance() {
@@ -20874,7 +21805,7 @@ void ConfigInfoRsp_USR::InternalSwap(ConfigInfoRsp_USR* other) {
 
 ::google::protobuf::Metadata ConfigInfoRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[43];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[45];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21046,7 +21977,7 @@ void AddDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[44].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[46].descriptor;
 }
 
 const AddDevReq_USR& AddDevReq_USR::default_instance() {
@@ -21259,7 +22190,7 @@ void AddDevReq_USR::InternalSwap(AddDevReq_USR* other) {
 
 ::google::protobuf::Metadata AddDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[44];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[46];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21405,7 +22336,7 @@ void AddDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[45].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[47].descriptor;
 }
 
 const AddDevRsp_USR& AddDevRsp_USR::default_instance() {
@@ -21579,7 +22510,7 @@ void AddDevRsp_USR::InternalSwap(AddDevRsp_USR* other) {
 
 ::google::protobuf::Metadata AddDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[45];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[47];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21688,7 +22619,7 @@ void DelDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DelDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[46].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[48].descriptor;
 }
 
 const DelDevReq_USR& DelDevReq_USR::default_instance() {
@@ -21909,7 +22840,7 @@ void DelDevReq_USR::InternalSwap(DelDevReq_USR* other) {
 
 ::google::protobuf::Metadata DelDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[46];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[48];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22073,7 +23004,7 @@ void DelDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DelDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[47].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[49].descriptor;
 }
 
 const DelDevRsp_USR& DelDevRsp_USR::default_instance() {
@@ -22294,7 +23225,7 @@ void DelDevRsp_USR::InternalSwap(DelDevRsp_USR* other) {
 
 ::google::protobuf::Metadata DelDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[47];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[49];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22466,7 +23397,7 @@ void ModifyDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[48].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[50].descriptor;
 }
 
 const ModifyDevReq_USR& ModifyDevReq_USR::default_instance() {
@@ -22679,7 +23610,7 @@ void ModifyDevReq_USR::InternalSwap(ModifyDevReq_USR* other) {
 
 ::google::protobuf::Metadata ModifyDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[48];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[50];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22825,7 +23756,7 @@ void ModifyDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[49].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[51].descriptor;
 }
 
 const ModifyDevRsp_USR& ModifyDevRsp_USR::default_instance() {
@@ -22999,7 +23930,7 @@ void ModifyDevRsp_USR::InternalSwap(ModifyDevRsp_USR* other) {
 
 ::google::protobuf::Metadata ModifyDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[49];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[51];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23113,7 +24044,7 @@ void QueryDevInfoReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryDevInfoReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[50].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[52].descriptor;
 }
 
 const QueryDevInfoReq_USR& QueryDevInfoReq_USR::default_instance() {
@@ -23336,7 +24267,7 @@ void QueryDevInfoReq_USR::InternalSwap(QueryDevInfoReq_USR* other) {
 
 ::google::protobuf::Metadata QueryDevInfoReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[50];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[52];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23505,7 +24436,7 @@ void QueryDevInfoRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryDevInfoRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[51].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[53].descriptor;
 }
 
 const QueryDevInfoRsp_USR& QueryDevInfoRsp_USR::default_instance() {
@@ -23718,7 +24649,7 @@ void QueryDevInfoRsp_USR::InternalSwap(QueryDevInfoRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryDevInfoRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[51];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[53];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23874,7 +24805,7 @@ void QueryDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[52].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[54].descriptor;
 }
 
 const QueryDevReq_USR& QueryDevReq_USR::default_instance() {
@@ -24132,7 +25063,7 @@ void QueryDevReq_USR::InternalSwap(QueryDevReq_USR* other) {
 
 ::google::protobuf::Metadata QueryDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[52];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[54];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24300,7 +25231,7 @@ void QueryDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[53].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[55].descriptor;
 }
 
 const QueryDevRsp_USR& QueryDevRsp_USR::default_instance() {
@@ -24465,7 +25396,7 @@ void QueryDevRsp_USR::InternalSwap(QueryDevRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[53];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[55];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24560,7 +25491,7 @@ void QueryUserReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUserReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[54].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[56].descriptor;
 }
 
 const QueryUserReq_USR& QueryUserReq_USR::default_instance() {
@@ -24818,7 +25749,7 @@ void QueryUserReq_USR::InternalSwap(QueryUserReq_USR* other) {
 
 ::google::protobuf::Metadata QueryUserReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[54];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[56];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24986,7 +25917,7 @@ void QueryUserRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUserRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[55].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[57].descriptor;
 }
 
 const QueryUserRsp_USR& QueryUserRsp_USR::default_instance() {
@@ -25151,7 +26082,7 @@ void QueryUserRsp_USR::InternalSwap(QueryUserRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryUserRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[55];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[57];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25246,7 +26177,7 @@ void SharingDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SharingDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[56].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[58].descriptor;
 }
 
 const SharingDevReq_USR& SharingDevReq_USR::default_instance() {
@@ -25459,7 +26390,7 @@ void SharingDevReq_USR::InternalSwap(SharingDevReq_USR* other) {
 
 ::google::protobuf::Metadata SharingDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[56];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[58];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25605,7 +26536,7 @@ void SharingDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* SharingDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[57].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[59].descriptor;
 }
 
 const SharingDevRsp_USR& SharingDevRsp_USR::default_instance() {
@@ -25779,7 +26710,7 @@ void SharingDevRsp_USR::InternalSwap(SharingDevRsp_USR* other) {
 
 ::google::protobuf::Metadata SharingDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[57];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[59];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25896,7 +26827,7 @@ void CancelSharedDevReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CancelSharedDevReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[58].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[60].descriptor;
 }
 
 const CancelSharedDevReq_USR& CancelSharedDevReq_USR::default_instance() {
@@ -26109,7 +27040,7 @@ void CancelSharedDevReq_USR::InternalSwap(CancelSharedDevReq_USR* other) {
 
 ::google::protobuf::Metadata CancelSharedDevReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[58];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[60];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26255,7 +27186,7 @@ void CancelSharedDevRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CancelSharedDevRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[59].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[61].descriptor;
 }
 
 const CancelSharedDevRsp_USR& CancelSharedDevRsp_USR::default_instance() {
@@ -26429,7 +27360,7 @@ void CancelSharedDevRsp_USR::InternalSwap(CancelSharedDevRsp_USR* other) {
 
 ::google::protobuf::Metadata CancelSharedDevRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[59];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[61];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26543,7 +27474,7 @@ void AddFriendsReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddFriendsReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[60].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[62].descriptor;
 }
 
 const AddFriendsReq_USR& AddFriendsReq_USR::default_instance() {
@@ -26766,7 +27697,7 @@ void AddFriendsReq_USR::InternalSwap(AddFriendsReq_USR* other) {
 
 ::google::protobuf::Metadata AddFriendsReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[60];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[62];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26925,7 +27856,7 @@ void AddFriendsRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddFriendsRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[61].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[63].descriptor;
 }
 
 const AddFriendsRsp_USR& AddFriendsRsp_USR::default_instance() {
@@ -27099,7 +28030,7 @@ void AddFriendsRsp_USR::InternalSwap(AddFriendsRsp_USR* other) {
 
 ::google::protobuf::Metadata AddFriendsRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[61];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[63];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27208,7 +28139,7 @@ void DelFriendsReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DelFriendsReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[62].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[64].descriptor;
 }
 
 const DelFriendsReq_USR& DelFriendsReq_USR::default_instance() {
@@ -27429,7 +28360,7 @@ void DelFriendsReq_USR::InternalSwap(DelFriendsReq_USR* other) {
 
 ::google::protobuf::Metadata DelFriendsReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[62];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[64];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27593,7 +28524,7 @@ void DelFriendsRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DelFriendsRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[63].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[65].descriptor;
 }
 
 const DelFriendsRsp_USR& DelFriendsRsp_USR::default_instance() {
@@ -27814,7 +28745,7 @@ void DelFriendsRsp_USR::InternalSwap(DelFriendsRsp_USR* other) {
 
 ::google::protobuf::Metadata DelFriendsRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[63];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[65];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27986,7 +28917,7 @@ void QueryFriendsReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryFriendsReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[64].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[66].descriptor;
 }
 
 const QueryFriendsReq_USR& QueryFriendsReq_USR::default_instance() {
@@ -28244,7 +29175,7 @@ void QueryFriendsReq_USR::InternalSwap(QueryFriendsReq_USR* other) {
 
 ::google::protobuf::Metadata QueryFriendsReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[64];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[66];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28412,7 +29343,7 @@ void QueryFriendsRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryFriendsRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[65].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[67].descriptor;
 }
 
 const QueryFriendsRsp_USR& QueryFriendsRsp_USR::default_instance() {
@@ -28584,7 +29515,7 @@ void QueryFriendsRsp_USR::InternalSwap(QueryFriendsRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryFriendsRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[65];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[67];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28708,7 +29639,7 @@ void StorageAddressReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* StorageAddressReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[66].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[68].descriptor;
 }
 
 const StorageAddressReq_USR& StorageAddressReq_USR::default_instance() {
@@ -29001,7 +29932,7 @@ void StorageAddressReq_USR::InternalSwap(StorageAddressReq_USR* other) {
 
 ::google::protobuf::Metadata StorageAddressReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[66];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[68];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29191,7 +30122,7 @@ void StorageAddressRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* StorageAddressRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[67].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[69].descriptor;
 }
 
 const StorageAddressRsp_USR& StorageAddressRsp_USR::default_instance() {
@@ -29400,7 +30331,7 @@ void StorageAddressRsp_USR::InternalSwap(StorageAddressRsp_USR* other) {
 
 ::google::protobuf::Metadata StorageAddressRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[67];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[69];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29535,7 +30466,7 @@ void P2pInfoReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* P2pInfoReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[68].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[70].descriptor;
 }
 
 const P2pInfoReq_USR& P2pInfoReq_USR::default_instance() {
@@ -29807,7 +30738,7 @@ void P2pInfoReq_USR::InternalSwap(P2pInfoReq_USR* other) {
 
 ::google::protobuf::Metadata P2pInfoReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[68];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[70];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30028,7 +30959,7 @@ void P2pInfoRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* P2pInfoRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[69].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[71].descriptor;
 }
 
 const P2pInfoRsp_USR& P2pInfoRsp_USR::default_instance() {
@@ -30286,7 +31217,7 @@ void P2pInfoRsp_USR::InternalSwap(P2pInfoRsp_USR* other) {
 
 ::google::protobuf::Metadata P2pInfoRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[69];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[71];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30461,7 +31392,7 @@ void DeleteFileReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteFileReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[70].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[72].descriptor;
 }
 
 const DeleteFileReq_USR& DeleteFileReq_USR::default_instance() {
@@ -30682,7 +31613,7 @@ void DeleteFileReq_USR::InternalSwap(DeleteFileReq_USR* other) {
 
 ::google::protobuf::Metadata DeleteFileReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[70];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[72];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30846,7 +31777,7 @@ void DeleteFileRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteFileRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[71].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[73].descriptor;
 }
 
 const DeleteFileRsp_USR& DeleteFileRsp_USR::default_instance() {
@@ -31067,7 +31998,7 @@ void DeleteFileRsp_USR::InternalSwap(DeleteFileRsp_USR* other) {
 
 ::google::protobuf::Metadata DeleteFileRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[71];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[73];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31231,7 +32162,7 @@ void DownloadFileReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DownloadFileReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[72].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[74].descriptor;
 }
 
 const DownloadFileReq_USR& DownloadFileReq_USR::default_instance() {
@@ -31452,7 +32383,7 @@ void DownloadFileReq_USR::InternalSwap(DownloadFileReq_USR* other) {
 
 ::google::protobuf::Metadata DownloadFileReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[72];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[74];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31616,7 +32547,7 @@ void DownloadFileRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DownloadFileRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[73].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[75].descriptor;
 }
 
 const DownloadFileRsp_USR& DownloadFileRsp_USR::default_instance() {
@@ -31830,7 +32761,7 @@ void DownloadFileRsp_USR::InternalSwap(DownloadFileRsp_USR* other) {
 
 ::google::protobuf::Metadata DownloadFileRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[73];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[75];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32002,7 +32933,7 @@ void QueryFileReq_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryFileReq_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[74].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[76].descriptor;
 }
 
 const QueryFileReq_USR& QueryFileReq_USR::default_instance() {
@@ -32442,7 +33373,7 @@ void QueryFileReq_USR::InternalSwap(QueryFileReq_USR* other) {
 
 ::google::protobuf::Metadata QueryFileReq_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[74];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[76];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32787,7 +33718,7 @@ void QueryFileRsp_USR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryFileRsp_USR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[75].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[77].descriptor;
 }
 
 const QueryFileRsp_USR& QueryFileRsp_USR::default_instance() {
@@ -33001,7 +33932,7 @@ void QueryFileRsp_USR::InternalSwap(QueryFileRsp_USR* other) {
 
 ::google::protobuf::Metadata QueryFileRsp_USR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[75];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[77];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33138,7 +34069,7 @@ void GetOnlineDevInfoReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineDevInfoReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[76].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[78].descriptor;
 }
 
 const GetOnlineDevInfoReq_INNER& GetOnlineDevInfoReq_INNER::default_instance() {
@@ -33312,7 +34243,7 @@ void GetOnlineDevInfoReq_INNER::InternalSwap(GetOnlineDevInfoReq_INNER* other) {
 
 ::google::protobuf::Metadata GetOnlineDevInfoReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[76];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[78];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33421,7 +34352,7 @@ void GetOnlineDevInfoRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineDevInfoRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[77].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[79].descriptor;
 }
 
 const GetOnlineDevInfoRsp_INNER& GetOnlineDevInfoRsp_INNER::default_instance() {
@@ -33635,7 +34566,7 @@ void GetOnlineDevInfoRsp_INNER::InternalSwap(GetOnlineDevInfoRsp_INNER* other) {
 
 ::google::protobuf::Metadata GetOnlineDevInfoRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[77];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[79];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33774,7 +34705,7 @@ void BroadcastOnlineDevInfo_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BroadcastOnlineDevInfo_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[78].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[80].descriptor;
 }
 
 const BroadcastOnlineDevInfo_INNER& BroadcastOnlineDevInfo_INNER::default_instance() {
@@ -33988,7 +34919,7 @@ void BroadcastOnlineDevInfo_INNER::InternalSwap(BroadcastOnlineDevInfo_INNER* ot
 
 ::google::protobuf::Metadata BroadcastOnlineDevInfo_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[78];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[80];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34125,7 +35056,7 @@ void GetOnlineUserInfoReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineUserInfoReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[79].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[81].descriptor;
 }
 
 const GetOnlineUserInfoReq_INNER& GetOnlineUserInfoReq_INNER::default_instance() {
@@ -34299,7 +35230,7 @@ void GetOnlineUserInfoReq_INNER::InternalSwap(GetOnlineUserInfoReq_INNER* other)
 
 ::google::protobuf::Metadata GetOnlineUserInfoReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[79];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[81];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34408,7 +35339,7 @@ void GetOnlineUserInfoRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineUserInfoRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[80].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[82].descriptor;
 }
 
 const GetOnlineUserInfoRsp_INNER& GetOnlineUserInfoRsp_INNER::default_instance() {
@@ -34622,7 +35553,7 @@ void GetOnlineUserInfoRsp_INNER::InternalSwap(GetOnlineUserInfoRsp_INNER* other)
 
 ::google::protobuf::Metadata GetOnlineUserInfoRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[80];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[82];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34761,7 +35692,7 @@ void BroadcastOnlineUserInfo_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BroadcastOnlineUserInfo_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[81].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[83].descriptor;
 }
 
 const BroadcastOnlineUserInfo_INNER& BroadcastOnlineUserInfo_INNER::default_instance() {
@@ -34975,7 +35906,7 @@ void BroadcastOnlineUserInfo_INNER::InternalSwap(BroadcastOnlineUserInfo_INNER* 
 
 ::google::protobuf::Metadata BroadcastOnlineUserInfo_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[81];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[83];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35076,6 +36007,7 @@ const int Req::kConfigInfoReqDEVValueFieldNumber;
 const int Req::kStorageAddressReqDEVValueFieldNumber;
 const int Req::kP2PInfoReqDEVValueFieldNumber;
 const int Req::kAddFileReqDEVValueFieldNumber;
+const int Req::kQueryTimeZoneReqDEVValueFieldNumber;
 const int Req::kMsgPreHandlerReqUSRValueFieldNumber;
 const int Req::kGetAccessAddressReqUSRValueFieldNumber;
 const int Req::kRegisterUserReqUSRValueFieldNumber;
@@ -35161,6 +36093,11 @@ Req::Req(const Req& from)
     addfilereq_dev_value_ = new ::Interactive::Message::AddFileReq_DEV(*from.addfilereq_dev_value_);
   } else {
     addfilereq_dev_value_ = NULL;
+  }
+  if (from.has_querytimezonereq_dev_value()) {
+    querytimezonereq_dev_value_ = new ::Interactive::Message::QueryTimeZoneReq_DEV(*from.querytimezonereq_dev_value_);
+  } else {
+    querytimezonereq_dev_value_ = NULL;
   }
   if (from.has_msgprehandlerreq_usr_value()) {
     msgprehandlerreq_usr_value_ = new ::Interactive::Message::MsgPreHandlerReq_USR(*from.msgprehandlerreq_usr_value_);
@@ -35357,6 +36294,9 @@ void Req::SharedDtor() {
     delete addfilereq_dev_value_;
   }
   if (this != internal_default_instance()) {
+    delete querytimezonereq_dev_value_;
+  }
+  if (this != internal_default_instance()) {
     delete msgprehandlerreq_usr_value_;
   }
   if (this != internal_default_instance()) {
@@ -35458,7 +36398,7 @@ void Req::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Req::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[82].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[84].descriptor;
 }
 
 const Req& Req::default_instance() {
@@ -35508,6 +36448,10 @@ void Req::Clear() {
     delete addfilereq_dev_value_;
   }
   addfilereq_dev_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querytimezonereq_dev_value_ != NULL) {
+    delete querytimezonereq_dev_value_;
+  }
+  querytimezonereq_dev_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && msgprehandlerreq_usr_value_ != NULL) {
     delete msgprehandlerreq_usr_value_;
   }
@@ -35726,6 +36670,17 @@ bool Req::MergePartialFromCodedStream(
         if (tag == 482u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_addfilereq_dev_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+      case 61: {
+        if (tag == 490u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querytimezonereq_dev_value()));
         } else {
           goto handle_unusual;
         }
@@ -36145,6 +37100,12 @@ void Req::SerializeWithCachedSizes(
       60, *this->addfilereq_dev_value_, output);
   }
 
+  // .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+  if (this->has_querytimezonereq_dev_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      61, *this->querytimezonereq_dev_value_, output);
+  }
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   if (this->has_msgprehandlerreq_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -36392,6 +37353,13 @@ void Req::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         60, *this->addfilereq_dev_value_, false, target);
+  }
+
+  // .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+  if (this->has_querytimezonereq_dev_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        61, *this->querytimezonereq_dev_value_, false, target);
   }
 
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -36675,6 +37643,13 @@ size_t Req::ByteSizeLong() const {
         *this->addfilereq_dev_value_);
   }
 
+  // .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+  if (this->has_querytimezonereq_dev_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querytimezonereq_dev_value_);
+  }
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   if (this->has_msgprehandlerreq_usr_value()) {
     total_size += 2 +
@@ -36942,6 +37917,9 @@ void Req::MergeFrom(const Req& from) {
   if (from.has_addfilereq_dev_value()) {
     mutable_addfilereq_dev_value()->::Interactive::Message::AddFileReq_DEV::MergeFrom(from.addfilereq_dev_value());
   }
+  if (from.has_querytimezonereq_dev_value()) {
+    mutable_querytimezonereq_dev_value()->::Interactive::Message::QueryTimeZoneReq_DEV::MergeFrom(from.querytimezonereq_dev_value());
+  }
   if (from.has_msgprehandlerreq_usr_value()) {
     mutable_msgprehandlerreq_usr_value()->::Interactive::Message::MsgPreHandlerReq_USR::MergeFrom(from.msgprehandlerreq_usr_value());
   }
@@ -37068,6 +38046,7 @@ void Req::InternalSwap(Req* other) {
   std::swap(storageaddressreq_dev_value_, other->storageaddressreq_dev_value_);
   std::swap(p2pinforeq_dev_value_, other->p2pinforeq_dev_value_);
   std::swap(addfilereq_dev_value_, other->addfilereq_dev_value_);
+  std::swap(querytimezonereq_dev_value_, other->querytimezonereq_dev_value_);
   std::swap(msgprehandlerreq_usr_value_, other->msgprehandlerreq_usr_value_);
   std::swap(getaccessaddressreq_usr_value_, other->getaccessaddressreq_usr_value_);
   std::swap(registeruserreq_usr_value_, other->registeruserreq_usr_value_);
@@ -37104,7 +38083,7 @@ void Req::InternalSwap(Req* other) {
 
 ::google::protobuf::Metadata Req::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[82];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[84];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37420,6 +38399,45 @@ void Req::set_allocated_addfilereq_dev_value(::Interactive::Message::AddFileReq_
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddFileReq_DEV_Value)
+}
+
+// .Interactive.Message.QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;
+bool Req::has_querytimezonereq_dev_value() const {
+  return this != internal_default_instance() && querytimezonereq_dev_value_ != NULL;
+}
+void Req::clear_querytimezonereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querytimezonereq_dev_value_ != NULL) delete querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = NULL;
+}
+const ::Interactive::Message::QueryTimeZoneReq_DEV& Req::querytimezonereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  return querytimezonereq_dev_value_ != NULL ? *querytimezonereq_dev_value_
+                         : *::Interactive::Message::QueryTimeZoneReq_DEV::internal_default_instance();
+}
+::Interactive::Message::QueryTimeZoneReq_DEV* Req::mutable_querytimezonereq_dev_value() {
+  
+  if (querytimezonereq_dev_value_ == NULL) {
+    querytimezonereq_dev_value_ = new ::Interactive::Message::QueryTimeZoneReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  return querytimezonereq_dev_value_;
+}
+::Interactive::Message::QueryTimeZoneReq_DEV* Req::release_querytimezonereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+  
+  ::Interactive::Message::QueryTimeZoneReq_DEV* temp = querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = NULL;
+  return temp;
+}
+void Req::set_allocated_querytimezonereq_dev_value(::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value) {
+  delete querytimezonereq_dev_value_;
+  querytimezonereq_dev_value_ = querytimezonereq_dev_value;
+  if (querytimezonereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -38646,6 +39664,7 @@ const int Rsp::kConfigInfoRspDEVValueFieldNumber;
 const int Rsp::kStorageAddressRspDEVValueFieldNumber;
 const int Rsp::kP2PInfoRspDEVValueFieldNumber;
 const int Rsp::kAddFileRspDEVValueFieldNumber;
+const int Rsp::kQueryTimeZoneRspDEVValueFieldNumber;
 const int Rsp::kMsgPreHandlerRspUSRValueFieldNumber;
 const int Rsp::kGetAccessAddressRspUSRValueFieldNumber;
 const int Rsp::kRegisterUserRspUSRValueFieldNumber;
@@ -38733,6 +39752,11 @@ Rsp::Rsp(const Rsp& from)
     addfilersp_dev_value_ = new ::Interactive::Message::AddFileRsp_DEV(*from.addfilersp_dev_value_);
   } else {
     addfilersp_dev_value_ = NULL;
+  }
+  if (from.has_querytimezonersp_dev_value()) {
+    querytimezonersp_dev_value_ = new ::Interactive::Message::QueryTimeZoneRsp_DEV(*from.querytimezonersp_dev_value_);
+  } else {
+    querytimezonersp_dev_value_ = NULL;
   }
   if (from.has_msgprehandlerrsp_usr_value()) {
     msgprehandlerrsp_usr_value_ = new ::Interactive::Message::MsgPreHandlerRsp_USR(*from.msgprehandlerrsp_usr_value_);
@@ -38922,6 +39946,9 @@ void Rsp::SharedDtor() {
     delete addfilersp_dev_value_;
   }
   if (this != internal_default_instance()) {
+    delete querytimezonersp_dev_value_;
+  }
+  if (this != internal_default_instance()) {
     delete msgprehandlerrsp_usr_value_;
   }
   if (this != internal_default_instance()) {
@@ -39017,7 +40044,7 @@ void Rsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Rsp::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[83].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[85].descriptor;
 }
 
 const Rsp& Rsp::default_instance() {
@@ -39068,6 +40095,10 @@ void Rsp::Clear() {
     delete addfilersp_dev_value_;
   }
   addfilersp_dev_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querytimezonersp_dev_value_ != NULL) {
+    delete querytimezonersp_dev_value_;
+  }
+  querytimezonersp_dev_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && msgprehandlerrsp_usr_value_ != NULL) {
     delete msgprehandlerrsp_usr_value_;
   }
@@ -39307,6 +40338,17 @@ bool Rsp::MergePartialFromCodedStream(
         if (tag == 642u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_addfilersp_dev_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+      case 81: {
+        if (tag == 650u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querytimezonersp_dev_value()));
         } else {
           goto handle_unusual;
         }
@@ -39719,6 +40761,12 @@ void Rsp::SerializeWithCachedSizes(
       80, *this->addfilersp_dev_value_, output);
   }
 
+  // .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+  if (this->has_querytimezonersp_dev_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      81, *this->querytimezonersp_dev_value_, output);
+  }
+
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   if (this->has_msgprehandlerrsp_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -39970,6 +41018,13 @@ void Rsp::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         80, *this->addfilersp_dev_value_, false, target);
+  }
+
+  // .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+  if (this->has_querytimezonersp_dev_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        81, *this->querytimezonersp_dev_value_, false, target);
   }
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -40246,6 +41301,13 @@ size_t Rsp::ByteSizeLong() const {
         *this->addfilersp_dev_value_);
   }
 
+  // .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+  if (this->has_querytimezonersp_dev_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querytimezonersp_dev_value_);
+  }
+
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   if (this->has_msgprehandlerrsp_usr_value()) {
     total_size += 2 +
@@ -40510,6 +41572,9 @@ void Rsp::MergeFrom(const Rsp& from) {
   if (from.has_addfilersp_dev_value()) {
     mutable_addfilersp_dev_value()->::Interactive::Message::AddFileRsp_DEV::MergeFrom(from.addfilersp_dev_value());
   }
+  if (from.has_querytimezonersp_dev_value()) {
+    mutable_querytimezonersp_dev_value()->::Interactive::Message::QueryTimeZoneRsp_DEV::MergeFrom(from.querytimezonersp_dev_value());
+  }
   if (from.has_msgprehandlerrsp_usr_value()) {
     mutable_msgprehandlerrsp_usr_value()->::Interactive::Message::MsgPreHandlerRsp_USR::MergeFrom(from.msgprehandlerrsp_usr_value());
   }
@@ -40634,6 +41699,7 @@ void Rsp::InternalSwap(Rsp* other) {
   std::swap(storageaddressrsp_dev_value_, other->storageaddressrsp_dev_value_);
   std::swap(p2pinforsp_dev_value_, other->p2pinforsp_dev_value_);
   std::swap(addfilersp_dev_value_, other->addfilersp_dev_value_);
+  std::swap(querytimezonersp_dev_value_, other->querytimezonersp_dev_value_);
   std::swap(msgprehandlerrsp_usr_value_, other->msgprehandlerrsp_usr_value_);
   std::swap(getaccessaddressrsp_usr_value_, other->getaccessaddressrsp_usr_value_);
   std::swap(registeruserrsp_usr_value_, other->registeruserrsp_usr_value_);
@@ -40669,7 +41735,7 @@ void Rsp::InternalSwap(Rsp* other) {
 
 ::google::protobuf::Metadata Rsp::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[83];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[85];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41051,6 +42117,45 @@ void Rsp::set_allocated_addfilersp_dev_value(::Interactive::Message::AddFileRsp_
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddFileRsp_DEV_Value)
+}
+
+// .Interactive.Message.QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;
+bool Rsp::has_querytimezonersp_dev_value() const {
+  return this != internal_default_instance() && querytimezonersp_dev_value_ != NULL;
+}
+void Rsp::clear_querytimezonersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querytimezonersp_dev_value_ != NULL) delete querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = NULL;
+}
+const ::Interactive::Message::QueryTimeZoneRsp_DEV& Rsp::querytimezonersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  return querytimezonersp_dev_value_ != NULL ? *querytimezonersp_dev_value_
+                         : *::Interactive::Message::QueryTimeZoneRsp_DEV::internal_default_instance();
+}
+::Interactive::Message::QueryTimeZoneRsp_DEV* Rsp::mutable_querytimezonersp_dev_value() {
+  
+  if (querytimezonersp_dev_value_ == NULL) {
+    querytimezonersp_dev_value_ = new ::Interactive::Message::QueryTimeZoneRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  return querytimezonersp_dev_value_;
+}
+::Interactive::Message::QueryTimeZoneRsp_DEV* Rsp::release_querytimezonersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryTimeZoneRsp_DEV* temp = querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = NULL;
+  return temp;
+}
+void Rsp::set_allocated_querytimezonersp_dev_value(::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value) {
+  delete querytimezonersp_dev_value_;
+  querytimezonersp_dev_value_ = querytimezonersp_dev_value;
+  if (querytimezonersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -42258,7 +43363,7 @@ void InteractiveMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InteractiveMessage::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[84].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[86].descriptor;
 }
 
 const InteractiveMessage& InteractiveMessage::default_instance() {
@@ -42582,7 +43687,7 @@ void InteractiveMessage::InternalSwap(InteractiveMessage* other) {
 
 ::google::protobuf::Metadata InteractiveMessage::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[84];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[86];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
