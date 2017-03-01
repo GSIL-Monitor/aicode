@@ -6,6 +6,7 @@
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
 #include "UserLoginLTUserSite.h"
+#include "P2PServerManager_SY.h"
 
 const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
@@ -1611,6 +1612,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strP2pID = blResult ? strP2pID : "";
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
+        rsp.m_uiLease = blResult ? uiLease : 0;
         
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1622,6 +1624,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("P2p info of device rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
             " and device ip is " << req.m_strDevIpAddress << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
+            " and lease is " << uiLease <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 
@@ -1635,15 +1638,24 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     }
 
     //获取p2pid和p2pserver
-    strP2pID = "test_p2p_id";
-    strP2pServer = "test_p2p_server";
-    
+    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
+    P2PConnectParam p2pConnParam;
+    P2PServerManager_SY p2pSvrManager;
+    p2pSvrManager.SetUrl(strUrl);
+    p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
+    if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
+    {
+        LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    strP2pID = p2pConnParam.sP2Pid;
+    strP2pServer = p2pConnParam.sInitstring;
+    uiLease = p2pConnParam.nTime;
 
     blResult = true;
 
     return blResult;
-
-
 }
 
 bool AccessManager::ShakehandReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -1765,6 +1777,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strP2pID = blResult ? strP2pID : "";
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
+        rsp.m_uiLease = blResult ? uiLease : 0;
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1776,7 +1789,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("P2p info of user rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
             " and device id is " << req.m_strDevID << " and user ip is " << req.m_strUserIpAddress <<
-            " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
+            " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer << " and lease is " << uiLease <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 
@@ -1790,9 +1803,21 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     }
 
     //获取p2pid和p2pserver
-    strP2pID = "test_p2p_id_user";
-    strP2pServer = "test_p2p_server_user";
+    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
+    P2PConnectParam p2pConnParam;
+    P2PServerManager_SY p2pSvrManager;
+    p2pSvrManager.SetUrl(strUrl);
+    p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
+    if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strUserIpAddress, req.m_strUserID))
+    {
+        LOG_ERROR_RLD("Get user p2p info failed,  user id is " << req.m_strUserID <<
+            " and device id is " << req.m_strDevID << " and ip is " << req.m_strUserIpAddress);
+        return false;
+    }
 
+    strP2pID = p2pConnParam.sP2Pid;
+    strP2pServer = p2pConnParam.sInitstring;
+    uiLease = p2pConnParam.nTime;
 
     blResult = true;
 

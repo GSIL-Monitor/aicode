@@ -940,6 +940,7 @@ public:
         std::string m_strCountryCode;
         std::string m_strCountryNameEn;
         std::string m_strCountryNameZh;
+        std::string m_strTimeZone;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

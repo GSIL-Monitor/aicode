@@ -3055,6 +3055,7 @@ void InteractiveProtoHandler::QueryTimeZoneRsp_DEV::UnSerializer(const Interacti
     m_strCountryCode = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrycode();
     m_strCountryNameEn = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrynameen();
     m_strCountryNameZh = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strcountrynamezh();
+    m_strTimeZone = InteractiveMsg.rspvalue().querytimezonersp_dev_value().strtimezone();
 
 }
 
@@ -3065,5 +3066,6 @@ void InteractiveProtoHandler::QueryTimeZoneRsp_DEV::Serializer(InteractiveMessag
     InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrycode(m_strCountryCode);
     InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrynameen(m_strCountryNameEn);
     InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strcountrynamezh(m_strCountryNameZh);
+    InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strtimezone(m_strTimeZone);
 
 }

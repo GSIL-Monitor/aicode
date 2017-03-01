@@ -3312,6 +3312,20 @@ class QueryTimeZoneRsp_DEV : public ::google::protobuf::Message /* @@protoc_inse
   ::std::string* release_strcountrynamezh();
   void set_allocated_strcountrynamezh(::std::string* strcountrynamezh);
 
+  // string strTimeZone = 4;
+  void clear_strtimezone();
+  static const int kStrTimeZoneFieldNumber = 4;
+  const ::std::string& strtimezone() const;
+  void set_strtimezone(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strtimezone(::std::string&& value);
+  #endif
+  void set_strtimezone(const char* value);
+  void set_strtimezone(const char* value, size_t size);
+  ::std::string* mutable_strtimezone();
+  ::std::string* release_strtimezone();
+  void set_allocated_strtimezone(::std::string* strtimezone);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryTimeZoneRsp_DEV)
  private:
 
@@ -3319,6 +3333,7 @@ class QueryTimeZoneRsp_DEV : public ::google::protobuf::Message /* @@protoc_inse
   ::google::protobuf::internal::ArenaStringPtr strcountrycode_;
   ::google::protobuf::internal::ArenaStringPtr strcountrynameen_;
   ::google::protobuf::internal::ArenaStringPtr strcountrynamezh_;
+  ::google::protobuf::internal::ArenaStringPtr strtimezone_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -14311,6 +14326,58 @@ inline void QueryTimeZoneRsp_DEV::set_allocated_strcountrynamezh(::std::string* 
   }
   strcountrynamezh_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcountrynamezh);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strCountryNameZh)
+}
+
+// string strTimeZone = 4;
+inline void QueryTimeZoneRsp_DEV::clear_strtimezone() {
+  strtimezone_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryTimeZoneRsp_DEV::strtimezone() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+  return strtimezone_.GetNoArena();
+}
+inline void QueryTimeZoneRsp_DEV::set_strtimezone(const ::std::string& value) {
+  
+  strtimezone_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+}
+#if LANG_CXX11
+inline void QueryTimeZoneRsp_DEV::set_strtimezone(::std::string&& value) {
+  
+  strtimezone_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+}
+#endif
+inline void QueryTimeZoneRsp_DEV::set_strtimezone(const char* value) {
+  
+  strtimezone_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+}
+inline void QueryTimeZoneRsp_DEV::set_strtimezone(const char* value, size_t size) {
+  
+  strtimezone_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::mutable_strtimezone() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+  return strtimezone_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryTimeZoneRsp_DEV::release_strtimezone() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+  
+  return strtimezone_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryTimeZoneRsp_DEV::set_allocated_strtimezone(::std::string* strtimezone) {
+  if (strtimezone != NULL) {
+    
+  } else {
+    
+  }
+  strtimezone_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strtimezone);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
 }
 
 // -------------------------------------------------------------------

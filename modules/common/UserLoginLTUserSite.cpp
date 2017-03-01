@@ -57,7 +57,7 @@ int UserLoginLTUserSite::Login(const string &userName, const string &password)
 
     string respData;
     HttpClient httpClient;
-    if (CURLE_OK != httpClient.Post(LTUserSiteUrl.c_str(), postData, respData))
+    if (CURLE_OK != httpClient.Post(LTUserSiteUrl, postData, respData))
     {
         LOG_ERROR_RLD("Http post failed, url is: " << LTUserSiteUrl << " and postData is: " << postData);
         return ret;

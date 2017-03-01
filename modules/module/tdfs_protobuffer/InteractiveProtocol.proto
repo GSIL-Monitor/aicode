@@ -324,6 +324,7 @@ message QueryTimeZoneRsp_DEV                    //查询时区响应
   string strCountryCode = 1;
   string strCountryNameEn = 2;
   string strCountryNameZh = 3;
+  string strTimeZone = 4;
 }
 
 
