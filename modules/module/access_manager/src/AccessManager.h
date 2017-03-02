@@ -230,6 +230,9 @@ private:
 
     void SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail);
 
+    bool GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn, std::string &strCountryNameZh,
+        std::string &strTimeZone);
+
 private:
     ParamInfo m_ParamInfo;
 

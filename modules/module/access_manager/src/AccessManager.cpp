@@ -1510,11 +1510,12 @@ bool AccessManager::QueryFileReq(const std::string &strMsg, const std::string &s
 bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
-
+    
+    std::string strValue;
     InteractiveProtoHandler::LoginReq_DEV LoginReqDev;
     const std::string &strSessionID = CreateUUID();
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSessionID, &LoginReqDev, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSessionID, &LoginReqDev, &writer, &strSrcID, &strValue)
     {
         InteractiveProtoHandler::LoginRsp_DEV LoginRspUsr;
 
@@ -1523,7 +1524,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
         LoginRspUsr.m_strSID = strSessionID;
         LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        LoginRspUsr.m_strValue = "";
+        LoginRspUsr.m_strValue = strValue;
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(LoginRspUsr, strSerializeOutPut))
@@ -1546,32 +1547,39 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
         return false;
     }
 
-    if (LoginReqDev.m_strDevID.empty() && LoginReqDev.m_strPassword.empty())
+    if (LoginReqDev.m_strDevID.empty())
     {
-        LOG_ERROR_RLD("Login device req both id and pwd is empty.");
+        LOG_ERROR_RLD("Login req of device id is empty.");
         return false;
     }
-    
-    ////校验设备
-    //if (!ValidUser(LoginReqDev.m_userInfo.m_strUserID, LoginReqDev.m_userInfo.m_strUserName,
-    //    LoginReqDev.m_userInfo.m_strUserPassword, LoginReqDev.m_userInfo.m_uiTypeInfo))
-    //{
-    //    if (!LoginLTUserSiteReq(LoginReqDev.m_userInfo.m_strUserName, LoginReqDev.m_userInfo.m_strUserPassword,
-    //        m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID))
-    //    {
-    //        LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqDev.m_userInfo.m_strUserName);
-    //        return false;
-    //    }
-    //    LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqDev.m_userInfo.m_strUserName);
-    //}
 
+    std::string strCountryCode;
+    std::string strCountryNameEn;
+    std::string strCountryNameZh;
+    std::string strTimeZone;
+    if (!GetTimeZone(LoginReqDev.m_strValue, strCountryCode, strCountryNameEn, strCountryNameZh, strTimeZone)) //注意，这里使用了Value字段来传递ip
+    {
+        LOG_ERROR_RLD("Get time zone failed.");
+        return false;
+    }
+
+    {
+        Json::Value jsBody;
+        jsBody["countrycode"] = strCountryCode;
+        jsBody["countryname_en"] = strCountryNameEn;
+        jsBody["countryname_zh"] = strCountryNameZh;
+        jsBody["timezone"] = strTimeZone;
+        Json::FastWriter fastwriter;
+        const std::string &strBody = fastwriter.write(jsBody);
+        strValue = strBody;
+    }
+    //目前暂不对设备进行校验
     //登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是信息，json格式字符串，格式如下：
     //{"logindate":"2016-11-30 15:30:20","userid":"5167F842BB3AFF4C8CC1F2557E6EFB82"}
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
-
-
+    
     Json::Value jsBody;
     jsBody["logindate"] = strCurrentTime;
     jsBody["devid"] = LoginReqDev.m_strDevID;
@@ -1582,14 +1590,9 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold),
         boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1));
 
-  
-
     blResult = true;
 
-
     return blResult;
-
-
 }
 
 bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
@@ -1928,21 +1931,11 @@ bool AccessManager::QueryTimeZoneReqDevice(const std::string &strMsg, const std:
         return false;
     }
 
-    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
-    TimeZone timeZone;
-    CTimeZone cTimeZone;
-    cTimeZone.setpostUrl(strUrl);
-    cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
-    if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timeZone))
+    if (!GetTimeZone(req.m_strDevIpAddress, strCountryCode, strCountryNameEn, strCountryNameZh, strTimeZone))
     {
-        LOG_ERROR_RLD("Query timezone info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
+        LOG_ERROR_RLD("Get time zone failed.");
         return false;
     }
-
-    strCountryCode = timeZone.sCode;
-    strCountryNameEn = timeZone.sCountryEn;
-    strCountryNameZh = timeZone.sCountryCn;
-    strTimeZone = timeZone.sCountrySQ;
 
     blResult = true;
 
@@ -2423,6 +2416,28 @@ void AccessManager::SendUserResetPasswordEmail(const std::string &strUserName, c
     system(cmd);
 
     LOG_INFO_RLD("User reset password email has been sended, email address is " << strEmail << " and user name is " << strUserName);
+}
+
+bool AccessManager::GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn, 
+    std::string &strCountryNameZh, std::string &strTimeZone)
+{
+    std::string strUrl("http://ip.taobao.com/service/getIpInfo.php");
+    TimeZone timeZone;
+    CTimeZone cTimeZone;
+    cTimeZone.setpostUrl(strUrl);
+    cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
+    if (!cTimeZone.GetCountryTime(strIpAddress, timeZone))
+    {
+        LOG_ERROR_RLD("Query timezone info failed, and ip is " << strIpAddress);
+        return false;
+    }
+
+    strCountryCode = timeZone.sCode;
+    strCountryNameEn = timeZone.sCountryEn;
+    strCountryNameZh = timeZone.sCountryCn;
+    strTimeZone = timeZone.sCountrySQ;
+
+    return true;
 }
 
 void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)

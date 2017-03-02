@@ -191,7 +191,7 @@ private:
     bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);
 
-    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, std::string &strSid);
+    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);

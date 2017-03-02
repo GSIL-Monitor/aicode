@@ -1730,8 +1730,9 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 {
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsTimeZone;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsTimeZone)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -1740,9 +1741,20 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
-        }
 
-        this_->WriteMsg(ResultInfoMap, writer, blResult);
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["timezoneinfo"] = jsTimeZone;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
     }
     BOOST_SCOPE_EXIT_END
 
@@ -1763,15 +1775,68 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
     const std::string strDevPwd = itFind->second;
 
-    LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd);
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device remote ip not found.");
+        return blResult;
+    }
 
+    const std::string strRemoteIP = itFind->second;
+
+    LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd << 
+        " and device ip is " << strRemoteIP);
+
+    std::string strValue;
     std::string strSid;
-    if (!DeviceLogin(strDevID, strDevPwd, strSid))
+    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, strSid, strValue))
     {
         LOG_ERROR_RLD("Device login handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
     }
 
+    //Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(strValue, jsTimeZone, false))
+    {
+        LOG_ERROR_RLD("Reader Parse failed, strValue:" << strValue);
+        return false;
+    }
+
+    if (!jsTimeZone.isObject())
+    {
+        LOG_ERROR_RLD("Reader Parse failed, strValue:" << strValue);
+        return false;
+    }
+
+    Json::Value jsCountrycode = jsTimeZone["countrycode"];
+    if (jsCountrycode.isNull())
+    {
+        LOG_ERROR_RLD("Country code json value is null");
+        return false;
+    }
+
+    Json::Value jsCountrynameEn = jsTimeZone["countryname_en"];
+    if (jsCountrynameEn.isNull())
+    {
+        LOG_ERROR_RLD("Country name_en json value is null");
+        return false;
+    }
+
+    Json::Value jsCountrynameZh = jsTimeZone["countryname_zh"];
+    if (jsCountrynameZh.isNull())
+    {
+        LOG_ERROR_RLD("Country name_zh json value is null");
+        return false;
+    }
+
+    Json::Value jsTimezone = jsTimeZone["timezone"];
+    if (jsTimezone.isNull())
+    {
+        LOG_ERROR_RLD("Time zone json value is null");
+        return false;
+    }
+        
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sid", strSid));
@@ -3939,7 +4004,7 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
 
 }
 
-bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, std::string &strSid)
+bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, std::string &strSid, std::string &strValue)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -3947,7 +4012,7 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         DevLoginReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_DEV_T;
         DevLoginReq.m_uiMsgSeq = 1;
         DevLoginReq.m_strSID = "";
-        DevLoginReq.m_strValue = "";
+        DevLoginReq.m_strValue = strDevIpAddress; //这里Value保留值填写的内容是设备的接口ip，没有再独立定义字段
         DevLoginReq.m_strDevID = strDevID;
         DevLoginReq.m_strPassword = strDevPwd;
         
@@ -3979,9 +4044,11 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         }
 
         strSid = DevLoginRsp.m_strSID;
+        strValue = DevLoginRsp.m_strValue;
         iRet = DevLoginRsp.m_iRetcode;
 
         LOG_INFO_RLD("Login device id is " << strDevID << " and session id is " << DevLoginRsp.m_strSID <<
+            " and value is " << strValue <<
             " and return code is " << DevLoginRsp.m_iRetcode <<
             " and return msg is " << DevLoginRsp.m_strRetMsg);
 
