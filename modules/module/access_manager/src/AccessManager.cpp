@@ -1881,6 +1881,74 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
     return blResult;
 }
 
+bool AccessManager::QueryTimeZoneReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryTimeZoneReq_DEV req;
+
+    std::string strCountryCode;
+    std::string strCountryNameEn;
+    std::string strCountryNameZh;
+    std::string strTimeZone;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strCountryCode, &strCountryNameEn, &strCountryNameZh, &strTimeZone)
+    {
+        InteractiveProtoHandler::QueryTimeZoneRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryTimeZoneRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strCountryCode = blResult ? strCountryCode : "";
+        rsp.m_strCountryNameEn = blResult ? strCountryNameEn : "";
+        rsp.m_strCountryNameZh = blResult ? strCountryNameZh : "";
+        rsp.m_strTimeZone = blResult ? strTimeZone : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query timezone rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query timezone info rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
+            " and device ip is " << req.m_strDevIpAddress << " and country code is " << strCountryCode << " and country name en is " << strCountryNameEn <<
+            " and country name zh is " << strCountryNameZh << " and contry time zone is " << strTimeZone <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query timezone req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
+    TimeZone timeZone;
+    CTimeZone cTimeZone;
+    cTimeZone.setpostUrl(strUrl);
+    cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
+    if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timeZone))
+    {
+        LOG_ERROR_RLD("Query timezone info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    strCountryCode = timeZone.sCode;
+    strCountryNameEn = timeZone.sCountryEn;
+    strCountryNameZh = timeZone.sCountryCn;
+    strTimeZone = timeZone.sCountrySQ;
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -2214,6 +2282,9 @@ bool AccessManager::IsUserPasswordValid(const std::string &strUserID, const std:
         LOG_ERROR_RLD("The user password is invalid, user id is " << strUserID << " and password is " << strUserPassword);
         return false;
     }
+
+    auto result = boost::any_cast<unsigned int>(ResultList.front());
+    uiResult = result;
     
     if (uiResult > 0)
     {
@@ -2246,6 +2317,9 @@ void AccessManager::AddNoOwnerFile(const std::string &strUserID, const std::stri
         LOG_ERROR_RLD("AddNoOwnerFile sql failed, sql is " << sql);
         return;
     }
+
+    auto result = boost::any_cast<std::list <std::string>>(ResultList.front());
+    strIDList = result;
 
     if (strIDList.empty())
     {
@@ -2312,6 +2386,9 @@ bool AccessManager::CheckEmailByUserName(const std::string &strUserName, const s
         LOG_ERROR_RLD("The user name or email is invalid, user name is " << strUserName << " and email is " << strEmail);
         return false;
     }
+
+    auto result = boost::any_cast<unsigned int>(ResultList.front());
+    uiResult = result;
 
     if (uiResult > 0)
     {

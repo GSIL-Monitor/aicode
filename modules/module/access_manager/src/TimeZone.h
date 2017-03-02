@@ -12,7 +12,7 @@ typedef struct _tagCountryTime
         sCode = "CN";
         sCountryEn = "China";
         sCountryCn = "中国";
-        sCountrySQ = 8;
+        sCountrySQ = "8";
     }
     string sCode;               //国家代码
     string sCountryEn;      //国家英文名

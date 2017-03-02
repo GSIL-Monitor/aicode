@@ -54,6 +54,18 @@ bool CTimeZone::GetCountryTimeFromDataBase( string sIP, TimeZone &timezone)
         return false;
     }
 
+    if (NULL == m_pMysql)
+    {
+        LOG_ERROR_RLD("Mysql is null.");
+        return false;
+    }
+
+    if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+    {
+        LOG_ERROR_RLD("Insert t_ip_country sql exec failed, sql is " << "SET NAMES utf8");
+        return false;
+    }
+
     char sql[1024] = { 0 };
     const char* sqlfmt = "select countrycode, country_en, country_cn, countrySQ from t_timezone_info where countrycode = (select countrycode from t_ip_country where ip='%s' limit 1)";    
     snprintf(sql, sizeof(sql), sqlfmt, sIP.c_str());
@@ -94,6 +106,13 @@ bool CTimeZone::GetCountryTimeFromDataBase( string sIP, TimeZone &timezone)
         LOG_INFO_RLD("GetCountryInfoByIp info not found, sql is " << sql);
         return false;
     }
+
+    auto ResultInfo = boost::any_cast<TimeZone>(ResultList.front());
+    timezone.sCode = ResultInfo.sCode;
+    timezone.sCountryCn = ResultInfo.sCountryCn;
+    timezone.sCountryEn = ResultInfo.sCountryEn;
+    timezone.sCountrySQ = ResultInfo.sCountrySQ;
+
     return true;
 }
 

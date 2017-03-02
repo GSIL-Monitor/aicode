@@ -144,6 +144,8 @@ public:
 
     bool RetrievePwdReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryTimeZoneReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 

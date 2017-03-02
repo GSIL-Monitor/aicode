@@ -84,46 +84,33 @@ int UserLoginLTUserSite::Login(const string &userName, const string &password)
     switch (iRes)
     {
     case -1:
-    {
         ret = LOGIN_FAILED;
         LOG_ERROR_RLD("Communication failure");
         break;
-    }
     case 1:
-    {
         ret = LOGIN_OK;
         LOG_INFO_RLD("Login seccessful");
         break;
-    }
     case 2:
-    {
         ret = INVALID_USERNAME_OR_PASSWORD;
         LOG_ERROR_RLD("Usernam or password is incorrect");
         break;
-    }
     case 3:
-    {
         ret = LOGIN_FAILED;
         LOG_ERROR_RLD("Input parameter incorrect");
         break;
-    }
     case 4:
-    {
         ret = LOGIN_FAILED;
         LOG_ERROR_RLD("Login failed");
         break;
-    }
     case 5:
-    {
         ret = LOGIN_OK;
         LOG_INFO_RLD("Login seccessful, communication session is different");
         break;
-    }
     default:
-    {
         ret = LOGIN_FAILED;
         LOG_ERROR_RLD("Login failed, unkown login return code");
-    }
+        break;
     }
 
     if (LOGIN_OK != ret)
