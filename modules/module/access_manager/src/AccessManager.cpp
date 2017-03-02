@@ -45,6 +45,11 @@ bool AccessManager::Init()
         return false;
     }
 
+    if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+    {
+        LOG_ERROR_RLD("Init charset to utf8 failed, sql is SET NAMES utf8");
+        return false;
+    }
 
     m_DBCache.SetSqlCB(boost::bind(&AccessManager::UserInfoSqlCB, this, _1, _2, _3, _4));
     
@@ -2308,6 +2313,12 @@ void AccessManager::AddNoOwnerFile(const std::string &strUserID, const std::stri
     if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
     {
         LOG_ERROR_RLD("AddNoOwnerFile sql failed, sql is " << sql);
+        return;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("AddNoOwnerFile result is empty, sql is " << sql);
         return;
     }
 

@@ -70,6 +70,9 @@ enum MsgType
   QueryTimeZoneReq_DEV_T = 10320;    //查询时区
   QueryTimeZoneRsp_DEV_T = 10330;
 
+  QueryAccessDomainNameReq_DEV_T = 10340;  //设备查询接入服务器域名
+  QueryAccessDomainNameRsp_DEV_T = 10350;
+
   ////////////////////////////////////////////////////////
   
   MsgPreHandlerReq_USR_T = 19990;    //消息预处理
@@ -133,6 +136,9 @@ enum MsgType
   DownloadFileRsp_USR_T = 20530;
   QueryFileReq_USR_T = 20540;        //用户查询文件
   QueryFileRsp_USR_T = 20550;
+
+  QueryAccessDomainNameReq_USR_T = 20600;    //用户查询接入服务器域名
+  QueryAccessDomainNameRsp_USR_T = 20610;    
 
   ///////////////////////////////////////////////////////
   
@@ -325,6 +331,18 @@ message QueryTimeZoneRsp_DEV                    //查询时区响应
   string strCountryNameEn = 2;
   string strCountryNameZh = 3;
   string strTimeZone = 4;
+}
+
+message QueryAccessDomainNameReq_DEV            //设备查询接入服务器域名请求
+{
+  string strDevIpAddress = 1;
+  string strValue = 2;
+}
+
+message QueryAccessDomainNameRsp_DEV            //设备查询接入服务器域名响应
+{
+  string strDomainName = 1;
+  string strValue = 2;
 }
 
 
@@ -658,6 +676,19 @@ message QueryFileRsp_USR                        //用户查询文件响应
   repeated File fileInfo = 2;
 }
 
+message QueryAccessDomainNameReq_USR            //用户查询接入服务器域名请求
+{
+  string strUserIpAddress = 1;
+  string strValue = 2;
+}
+
+message QueryAccessDomainNameRsp_USR            //用户查询接入服务器域名响应
+{
+  string strDomainName = 1;
+  string strValue = 2;
+}
+
+
 
 ////////////////////////////////////////////////下面这些都是一些通知、广播类的消息///////////////////
 
@@ -714,6 +745,7 @@ message Req
   AddFileReq_DEV AddFileReq_DEV_Value = 60;                        //设备添加文件
   
   QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;            //查询时区
+  QueryAccessDomainNameReq_DEV QueryAccessDomainNameReq_DEV_Value = 62;    //设备查询接入服务器域名
   
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
@@ -747,7 +779,8 @@ message Req
   DownloadFileReq_USR DownloadFileReq_USR_Value = 320;             //用户下载文件
   QueryFileReq_USR QueryFileReq_USR_Value = 330;                   //用户查询文件
   
-  
+  QueryAccessDomainNameReq_USR QueryAccessDomainNameReq_USR_Value = 350;   //用户查询接入服务器域名
+ 
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;                //获取在线设备信息
   BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
   GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;              //获取在线用户信息
@@ -774,7 +807,7 @@ message Rsp
   AddFileRsp_DEV AddFileRsp_DEV_Value = 80;                        //设备添加文件
   
   QueryTimeZoneRsp_DEV QueryTimeZoneRsp_DEV_Value = 81;            //查询时区
-
+  QueryAccessDomainNameRsp_DEV QueryAccessDomainNameRsp_DEV_Value = 82;    //设备查询接入服务器域名
 
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
   GetAccessAddressRsp_USR GetAccessAddressRsp_USR_Value = 90;      //用户获取用户设备管理服务器地址
@@ -808,7 +841,8 @@ message Rsp
   DownloadFileRsp_USR DownloadFileRsp_USR_Value = 320;             //用户下载文件
   QueryFileRsp_USR QueryFileRsp_USR_Value = 330;                   //用户查询文件
   
-  
+  QueryAccessDomainNameRsp_USR QueryAccessDomainNameRsp_USR_Value = 350;   //用户查询接入服务器域名
+
   GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
   GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息
 

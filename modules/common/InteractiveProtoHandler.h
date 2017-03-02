@@ -51,6 +51,9 @@ public:
         QueryTimeZoneReq_DEV_T = 10320,    //查询时区
         QueryTimeZoneRsp_DEV_T = 10330,
 
+        QueryAccessDomainNameReq_DEV_T = 10340,  //设备查询接入服务器域名
+        QueryAccessDomainNameRsp_DEV_T = 10350,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -111,6 +114,9 @@ public:
 
         P2pInfoReq_USR_T = 20360,               //用户P2P服务器信息
         P2pInfoRsp_USR_T = 20370,
+
+        QueryAccessDomainNameReq_USR_T = 20600,    //用户查询接入服务器域名
+        QueryAccessDomainNameRsp_USR_T = 20610,
 
         ///////////////////////////////////////////////////////
 
@@ -771,6 +777,26 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryAccessDomainNameReq_DEV : Req
+    {
+        std::string m_strDevIpAddress;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAccessDomainNameRsp_DEV : Rsp
+    {
+        std::string m_strDomainName;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct GetOnlineDevInfoReq_INNER : Req
     {
@@ -880,6 +906,27 @@ public:
 
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
+
+    struct QueryAccessDomainNameReq_USR : Req
+    {
+        std::string m_strUserIpAddress;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAccessDomainNameRsp_USR : Rsp
+    {
+        std::string m_strDomainName;
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct ShakehandReq_DEV : Req
     {
@@ -1087,6 +1134,11 @@ private:
     bool P2pInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool P2pInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool QueryAccessDomainNameReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAccessDomainNameReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAccessDomainNameRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAccessDomainNameRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
     bool GetOnlineDevInfoReq_INNER_Serializer(const Req &req, std::string &strOutput);
     bool GetOnlineDevInfoReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
@@ -1113,6 +1165,12 @@ private:
     bool P2pInfoReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool P2pInfoRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool P2pInfoRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAccessDomainNameReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAccessDomainNameReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAccessDomainNameRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAccessDomainNameRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
     bool ShakehandReq_DEV_Serializer(const Req &req, std::string &strOutput);
     bool ShakehandReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);

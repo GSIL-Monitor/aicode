@@ -191,6 +191,18 @@ extern P2pInfoRsp_USRDefaultTypeInternal _P2pInfoRsp_USR_default_instance_;
 class PermissionOfUser;
 class PermissionOfUserDefaultTypeInternal;
 extern PermissionOfUserDefaultTypeInternal _PermissionOfUser_default_instance_;
+class QueryAccessDomainNameReq_DEV;
+class QueryAccessDomainNameReq_DEVDefaultTypeInternal;
+extern QueryAccessDomainNameReq_DEVDefaultTypeInternal _QueryAccessDomainNameReq_DEV_default_instance_;
+class QueryAccessDomainNameReq_USR;
+class QueryAccessDomainNameReq_USRDefaultTypeInternal;
+extern QueryAccessDomainNameReq_USRDefaultTypeInternal _QueryAccessDomainNameReq_USR_default_instance_;
+class QueryAccessDomainNameRsp_DEV;
+class QueryAccessDomainNameRsp_DEVDefaultTypeInternal;
+extern QueryAccessDomainNameRsp_DEVDefaultTypeInternal _QueryAccessDomainNameRsp_DEV_default_instance_;
+class QueryAccessDomainNameRsp_USR;
+class QueryAccessDomainNameRsp_USRDefaultTypeInternal;
+extern QueryAccessDomainNameRsp_USRDefaultTypeInternal _QueryAccessDomainNameRsp_USR_default_instance_;
 class QueryDevInfoReq_USR;
 class QueryDevInfoReq_USRDefaultTypeInternal;
 extern QueryDevInfoReq_USRDefaultTypeInternal _QueryDevInfoReq_USR_default_instance_;
@@ -330,6 +342,8 @@ enum MsgType {
   AddFileRsp_DEV_T = 10310,
   QueryTimeZoneReq_DEV_T = 10320,
   QueryTimeZoneRsp_DEV_T = 10330,
+  QueryAccessDomainNameReq_DEV_T = 10340,
+  QueryAccessDomainNameRsp_DEV_T = 10350,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -386,6 +400,8 @@ enum MsgType {
   DownloadFileRsp_USR_T = 20530,
   QueryFileReq_USR_T = 20540,
   QueryFileRsp_USR_T = 20550,
+  QueryAccessDomainNameReq_USR_T = 20600,
+  QueryAccessDomainNameRsp_USR_T = 20610,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -3334,6 +3350,218 @@ class QueryTimeZoneRsp_DEV : public ::google::protobuf::Message /* @@protoc_inse
   ::google::protobuf::internal::ArenaStringPtr strcountrynameen_;
   ::google::protobuf::internal::ArenaStringPtr strcountrynamezh_;
   ::google::protobuf::internal::ArenaStringPtr strtimezone_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAccessDomainNameReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAccessDomainNameReq_DEV) */ {
+ public:
+  QueryAccessDomainNameReq_DEV();
+  virtual ~QueryAccessDomainNameReq_DEV();
+
+  QueryAccessDomainNameReq_DEV(const QueryAccessDomainNameReq_DEV& from);
+
+  inline QueryAccessDomainNameReq_DEV& operator=(const QueryAccessDomainNameReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAccessDomainNameReq_DEV& default_instance();
+
+  static inline const QueryAccessDomainNameReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryAccessDomainNameReq_DEV*>(
+               &_QueryAccessDomainNameReq_DEV_default_instance_);
+  }
+
+  void Swap(QueryAccessDomainNameReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAccessDomainNameReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAccessDomainNameReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAccessDomainNameReq_DEV& from);
+  void MergeFrom(const QueryAccessDomainNameReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAccessDomainNameReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDevIpAddress = 1;
+  void clear_strdevipaddress();
+  static const int kStrDevIpAddressFieldNumber = 1;
+  const ::std::string& strdevipaddress() const;
+  void set_strdevipaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevipaddress(::std::string&& value);
+  #endif
+  void set_strdevipaddress(const char* value);
+  void set_strdevipaddress(const char* value, size_t size);
+  ::std::string* mutable_strdevipaddress();
+  ::std::string* release_strdevipaddress();
+  void set_allocated_strdevipaddress(::std::string* strdevipaddress);
+
+  // string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAccessDomainNameRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAccessDomainNameRsp_DEV) */ {
+ public:
+  QueryAccessDomainNameRsp_DEV();
+  virtual ~QueryAccessDomainNameRsp_DEV();
+
+  QueryAccessDomainNameRsp_DEV(const QueryAccessDomainNameRsp_DEV& from);
+
+  inline QueryAccessDomainNameRsp_DEV& operator=(const QueryAccessDomainNameRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAccessDomainNameRsp_DEV& default_instance();
+
+  static inline const QueryAccessDomainNameRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryAccessDomainNameRsp_DEV*>(
+               &_QueryAccessDomainNameRsp_DEV_default_instance_);
+  }
+
+  void Swap(QueryAccessDomainNameRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAccessDomainNameRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAccessDomainNameRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAccessDomainNameRsp_DEV& from);
+  void MergeFrom(const QueryAccessDomainNameRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAccessDomainNameRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDomainName = 1;
+  void clear_strdomainname();
+  static const int kStrDomainNameFieldNumber = 1;
+  const ::std::string& strdomainname() const;
+  void set_strdomainname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdomainname(::std::string&& value);
+  #endif
+  void set_strdomainname(const char* value);
+  void set_strdomainname(const char* value, size_t size);
+  ::std::string* mutable_strdomainname();
+  ::std::string* release_strdomainname();
+  void set_allocated_strdomainname(::std::string* strdomainname);
+
+  // string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdomainname_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -8944,6 +9172,218 @@ class QueryFileRsp_USR : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
+class QueryAccessDomainNameReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAccessDomainNameReq_USR) */ {
+ public:
+  QueryAccessDomainNameReq_USR();
+  virtual ~QueryAccessDomainNameReq_USR();
+
+  QueryAccessDomainNameReq_USR(const QueryAccessDomainNameReq_USR& from);
+
+  inline QueryAccessDomainNameReq_USR& operator=(const QueryAccessDomainNameReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAccessDomainNameReq_USR& default_instance();
+
+  static inline const QueryAccessDomainNameReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAccessDomainNameReq_USR*>(
+               &_QueryAccessDomainNameReq_USR_default_instance_);
+  }
+
+  void Swap(QueryAccessDomainNameReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAccessDomainNameReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAccessDomainNameReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAccessDomainNameReq_USR& from);
+  void MergeFrom(const QueryAccessDomainNameReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAccessDomainNameReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserIpAddress = 1;
+  void clear_struseripaddress();
+  static const int kStrUserIpAddressFieldNumber = 1;
+  const ::std::string& struseripaddress() const;
+  void set_struseripaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struseripaddress(::std::string&& value);
+  #endif
+  void set_struseripaddress(const char* value);
+  void set_struseripaddress(const char* value, size_t size);
+  ::std::string* mutable_struseripaddress();
+  ::std::string* release_struseripaddress();
+  void set_allocated_struseripaddress(::std::string* struseripaddress);
+
+  // string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struseripaddress_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAccessDomainNameRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAccessDomainNameRsp_USR) */ {
+ public:
+  QueryAccessDomainNameRsp_USR();
+  virtual ~QueryAccessDomainNameRsp_USR();
+
+  QueryAccessDomainNameRsp_USR(const QueryAccessDomainNameRsp_USR& from);
+
+  inline QueryAccessDomainNameRsp_USR& operator=(const QueryAccessDomainNameRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAccessDomainNameRsp_USR& default_instance();
+
+  static inline const QueryAccessDomainNameRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAccessDomainNameRsp_USR*>(
+               &_QueryAccessDomainNameRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryAccessDomainNameRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAccessDomainNameRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAccessDomainNameRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAccessDomainNameRsp_USR& from);
+  void MergeFrom(const QueryAccessDomainNameRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAccessDomainNameRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDomainName = 1;
+  void clear_strdomainname();
+  static const int kStrDomainNameFieldNumber = 1;
+  const ::std::string& strdomainname() const;
+  void set_strdomainname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdomainname(::std::string&& value);
+  #endif
+  void set_strdomainname(const char* value);
+  void set_strdomainname(const char* value, size_t size);
+  ::std::string* mutable_strdomainname();
+  ::std::string* release_strdomainname();
+  void set_allocated_strdomainname(::std::string* strdomainname);
+
+  // string strValue = 2;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 2;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdomainname_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class GetOnlineDevInfoReq_INNER : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.GetOnlineDevInfoReq_INNER) */ {
  public:
   GetOnlineDevInfoReq_INNER();
@@ -9690,6 +10130,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryTimeZoneReq_DEV* release_querytimezonereq_dev_value();
   void set_allocated_querytimezonereq_dev_value(::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value);
 
+  // .Interactive.Message.QueryAccessDomainNameReq_DEV QueryAccessDomainNameReq_DEV_Value = 62;
+  bool has_queryaccessdomainnamereq_dev_value() const;
+  void clear_queryaccessdomainnamereq_dev_value();
+  static const int kQueryAccessDomainNameReqDEVValueFieldNumber = 62;
+  const ::Interactive::Message::QueryAccessDomainNameReq_DEV& queryaccessdomainnamereq_dev_value() const;
+  ::Interactive::Message::QueryAccessDomainNameReq_DEV* mutable_queryaccessdomainnamereq_dev_value();
+  ::Interactive::Message::QueryAccessDomainNameReq_DEV* release_queryaccessdomainnamereq_dev_value();
+  void set_allocated_queryaccessdomainnamereq_dev_value(::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -9933,6 +10382,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFileReq_USR* release_queryfilereq_usr_value();
   void set_allocated_queryfilereq_usr_value(::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value);
 
+  // .Interactive.Message.QueryAccessDomainNameReq_USR QueryAccessDomainNameReq_USR_Value = 350;
+  bool has_queryaccessdomainnamereq_usr_value() const;
+  void clear_queryaccessdomainnamereq_usr_value();
+  static const int kQueryAccessDomainNameReqUSRValueFieldNumber = 350;
+  const ::Interactive::Message::QueryAccessDomainNameReq_USR& queryaccessdomainnamereq_usr_value() const;
+  ::Interactive::Message::QueryAccessDomainNameReq_USR* mutable_queryaccessdomainnamereq_usr_value();
+  ::Interactive::Message::QueryAccessDomainNameReq_USR* release_queryaccessdomainnamereq_usr_value();
+  void set_allocated_queryaccessdomainnamereq_usr_value(::Interactive::Message::QueryAccessDomainNameReq_USR* queryaccessdomainnamereq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -9982,6 +10440,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoReq_DEV* p2pinforeq_dev_value_;
   ::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value_;
   ::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value_;
+  ::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -10009,6 +10468,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteFileReq_USR* deletefilereq_usr_value_;
   ::Interactive::Message::DownloadFileReq_USR* downloadfilereq_usr_value_;
   ::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value_;
+  ::Interactive::Message::QueryAccessDomainNameReq_USR* queryaccessdomainnamereq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -10179,6 +10639,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryTimeZoneRsp_DEV* mutable_querytimezonersp_dev_value();
   ::Interactive::Message::QueryTimeZoneRsp_DEV* release_querytimezonersp_dev_value();
   void set_allocated_querytimezonersp_dev_value(::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value);
+
+  // .Interactive.Message.QueryAccessDomainNameRsp_DEV QueryAccessDomainNameRsp_DEV_Value = 82;
+  bool has_queryaccessdomainnamersp_dev_value() const;
+  void clear_queryaccessdomainnamersp_dev_value();
+  static const int kQueryAccessDomainNameRspDEVValueFieldNumber = 82;
+  const ::Interactive::Message::QueryAccessDomainNameRsp_DEV& queryaccessdomainnamersp_dev_value() const;
+  ::Interactive::Message::QueryAccessDomainNameRsp_DEV* mutable_queryaccessdomainnamersp_dev_value();
+  ::Interactive::Message::QueryAccessDomainNameRsp_DEV* release_queryaccessdomainnamersp_dev_value();
+  void set_allocated_queryaccessdomainnamersp_dev_value(::Interactive::Message::QueryAccessDomainNameRsp_DEV* queryaccessdomainnamersp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -10423,6 +10892,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryFileRsp_USR* release_queryfilersp_usr_value();
   void set_allocated_queryfilersp_usr_value(::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value);
 
+  // .Interactive.Message.QueryAccessDomainNameRsp_USR QueryAccessDomainNameRsp_USR_Value = 350;
+  bool has_queryaccessdomainnamersp_usr_value() const;
+  void clear_queryaccessdomainnamersp_usr_value();
+  static const int kQueryAccessDomainNameRspUSRValueFieldNumber = 350;
+  const ::Interactive::Message::QueryAccessDomainNameRsp_USR& queryaccessdomainnamersp_usr_value() const;
+  ::Interactive::Message::QueryAccessDomainNameRsp_USR* mutable_queryaccessdomainnamersp_usr_value();
+  ::Interactive::Message::QueryAccessDomainNameRsp_USR* release_queryaccessdomainnamersp_usr_value();
+  void set_allocated_queryaccessdomainnamersp_usr_value(::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -10461,6 +10939,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::P2pInfoRsp_DEV* p2pinforsp_dev_value_;
   ::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value_;
   ::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value_;
+  ::Interactive::Message::QueryAccessDomainNameRsp_DEV* queryaccessdomainnamersp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -10488,6 +10967,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteFileRsp_USR* deletefilersp_usr_value_;
   ::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value_;
   ::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value_;
+  ::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::google::protobuf::int32 iretcode_;
@@ -14378,6 +14858,222 @@ inline void QueryTimeZoneRsp_DEV::set_allocated_strtimezone(::std::string* strti
   }
   strtimezone_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strtimezone);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryTimeZoneRsp_DEV.strTimeZone)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAccessDomainNameReq_DEV
+
+// string strDevIpAddress = 1;
+inline void QueryAccessDomainNameReq_DEV::clear_strdevipaddress() {
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameReq_DEV::strdevipaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+  return strdevipaddress_.GetNoArena();
+}
+inline void QueryAccessDomainNameReq_DEV::set_strdevipaddress(const ::std::string& value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameReq_DEV::set_strdevipaddress(::std::string&& value) {
+  
+  strdevipaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+}
+#endif
+inline void QueryAccessDomainNameReq_DEV::set_strdevipaddress(const char* value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+}
+inline void QueryAccessDomainNameReq_DEV::set_strdevipaddress(const char* value, size_t size) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::mutable_strdevipaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+  return strdevipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::release_strdevipaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+  
+  return strdevipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameReq_DEV::set_allocated_strdevipaddress(::std::string* strdevipaddress) {
+  if (strdevipaddress != NULL) {
+    
+  } else {
+    
+  }
+  strdevipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevipaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
+}
+
+// string strValue = 2;
+inline void QueryAccessDomainNameReq_DEV::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameReq_DEV::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryAccessDomainNameReq_DEV::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameReq_DEV::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+}
+#endif
+inline void QueryAccessDomainNameReq_DEV::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+}
+inline void QueryAccessDomainNameReq_DEV::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameReq_DEV::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_DEV.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAccessDomainNameRsp_DEV
+
+// string strDomainName = 1;
+inline void QueryAccessDomainNameRsp_DEV::clear_strdomainname() {
+  strdomainname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameRsp_DEV::strdomainname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+  return strdomainname_.GetNoArena();
+}
+inline void QueryAccessDomainNameRsp_DEV::set_strdomainname(const ::std::string& value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameRsp_DEV::set_strdomainname(::std::string&& value) {
+  
+  strdomainname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+}
+#endif
+inline void QueryAccessDomainNameRsp_DEV::set_strdomainname(const char* value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+}
+inline void QueryAccessDomainNameRsp_DEV::set_strdomainname(const char* value, size_t size) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+}
+inline ::std::string* QueryAccessDomainNameRsp_DEV::mutable_strdomainname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+  return strdomainname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameRsp_DEV::release_strdomainname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+  
+  return strdomainname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameRsp_DEV::set_allocated_strdomainname(::std::string* strdomainname) {
+  if (strdomainname != NULL) {
+    
+  } else {
+    
+  }
+  strdomainname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdomainname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
+}
+
+// string strValue = 2;
+inline void QueryAccessDomainNameRsp_DEV::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameRsp_DEV::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryAccessDomainNameRsp_DEV::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameRsp_DEV::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+}
+#endif
+inline void QueryAccessDomainNameRsp_DEV::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+}
+inline void QueryAccessDomainNameRsp_DEV::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+}
+inline ::std::string* QueryAccessDomainNameRsp_DEV::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameRsp_DEV::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -19646,6 +20342,222 @@ QueryFileRsp_USR::fileinfo() const {
 
 // -------------------------------------------------------------------
 
+// QueryAccessDomainNameReq_USR
+
+// string strUserIpAddress = 1;
+inline void QueryAccessDomainNameReq_USR::clear_struseripaddress() {
+  struseripaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameReq_USR::struseripaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+  return struseripaddress_.GetNoArena();
+}
+inline void QueryAccessDomainNameReq_USR::set_struseripaddress(const ::std::string& value) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameReq_USR::set_struseripaddress(::std::string&& value) {
+  
+  struseripaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+}
+#endif
+inline void QueryAccessDomainNameReq_USR::set_struseripaddress(const char* value) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+}
+inline void QueryAccessDomainNameReq_USR::set_struseripaddress(const char* value, size_t size) {
+  
+  struseripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+}
+inline ::std::string* QueryAccessDomainNameReq_USR::mutable_struseripaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+  return struseripaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameReq_USR::release_struseripaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+  
+  return struseripaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameReq_USR::set_allocated_struseripaddress(::std::string* struseripaddress) {
+  if (struseripaddress != NULL) {
+    
+  } else {
+    
+  }
+  struseripaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struseripaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_USR.strUserIpAddress)
+}
+
+// string strValue = 2;
+inline void QueryAccessDomainNameReq_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameReq_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryAccessDomainNameReq_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameReq_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+}
+#endif
+inline void QueryAccessDomainNameReq_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+}
+inline void QueryAccessDomainNameReq_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+}
+inline ::std::string* QueryAccessDomainNameReq_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameReq_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameReq_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAccessDomainNameRsp_USR
+
+// string strDomainName = 1;
+inline void QueryAccessDomainNameRsp_USR::clear_strdomainname() {
+  strdomainname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameRsp_USR::strdomainname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+  return strdomainname_.GetNoArena();
+}
+inline void QueryAccessDomainNameRsp_USR::set_strdomainname(const ::std::string& value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameRsp_USR::set_strdomainname(::std::string&& value) {
+  
+  strdomainname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+}
+#endif
+inline void QueryAccessDomainNameRsp_USR::set_strdomainname(const char* value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+}
+inline void QueryAccessDomainNameRsp_USR::set_strdomainname(const char* value, size_t size) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+}
+inline ::std::string* QueryAccessDomainNameRsp_USR::mutable_strdomainname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+  return strdomainname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameRsp_USR::release_strdomainname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+  
+  return strdomainname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameRsp_USR::set_allocated_strdomainname(::std::string* strdomainname) {
+  if (strdomainname != NULL) {
+    
+  } else {
+    
+  }
+  strdomainname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdomainname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
+}
+
+// string strValue = 2;
+inline void QueryAccessDomainNameRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QueryAccessDomainNameRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+}
+#endif
+inline void QueryAccessDomainNameRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+}
+inline void QueryAccessDomainNameRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+}
+inline ::std::string* QueryAccessDomainNameRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
 // GetOnlineDevInfoReq_INNER
 
 // string strValue = 1;
@@ -20453,6 +21365,45 @@ inline void Req::set_allocated_querytimezonereq_dev_value(::Interactive::Message
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryTimeZoneReq_DEV_Value)
+}
+
+// .Interactive.Message.QueryAccessDomainNameReq_DEV QueryAccessDomainNameReq_DEV_Value = 62;
+inline bool Req::has_queryaccessdomainnamereq_dev_value() const {
+  return this != internal_default_instance() && queryaccessdomainnamereq_dev_value_ != NULL;
+}
+inline void Req::clear_queryaccessdomainnamereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryaccessdomainnamereq_dev_value_ != NULL) delete queryaccessdomainnamereq_dev_value_;
+  queryaccessdomainnamereq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAccessDomainNameReq_DEV& Req::queryaccessdomainnamereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryAccessDomainNameReq_DEV_Value)
+  return queryaccessdomainnamereq_dev_value_ != NULL ? *queryaccessdomainnamereq_dev_value_
+                         : *::Interactive::Message::QueryAccessDomainNameReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAccessDomainNameReq_DEV* Req::mutable_queryaccessdomainnamereq_dev_value() {
+  
+  if (queryaccessdomainnamereq_dev_value_ == NULL) {
+    queryaccessdomainnamereq_dev_value_ = new ::Interactive::Message::QueryAccessDomainNameReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryAccessDomainNameReq_DEV_Value)
+  return queryaccessdomainnamereq_dev_value_;
+}
+inline ::Interactive::Message::QueryAccessDomainNameReq_DEV* Req::release_queryaccessdomainnamereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryAccessDomainNameReq_DEV_Value)
+  
+  ::Interactive::Message::QueryAccessDomainNameReq_DEV* temp = queryaccessdomainnamereq_dev_value_;
+  queryaccessdomainnamereq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryaccessdomainnamereq_dev_value(::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value) {
+  delete queryaccessdomainnamereq_dev_value_;
+  queryaccessdomainnamereq_dev_value_ = queryaccessdomainnamereq_dev_value;
+  if (queryaccessdomainnamereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAccessDomainNameReq_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -21508,6 +22459,45 @@ inline void Req::set_allocated_queryfilereq_usr_value(::Interactive::Message::Qu
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFileReq_USR_Value)
 }
 
+// .Interactive.Message.QueryAccessDomainNameReq_USR QueryAccessDomainNameReq_USR_Value = 350;
+inline bool Req::has_queryaccessdomainnamereq_usr_value() const {
+  return this != internal_default_instance() && queryaccessdomainnamereq_usr_value_ != NULL;
+}
+inline void Req::clear_queryaccessdomainnamereq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryaccessdomainnamereq_usr_value_ != NULL) delete queryaccessdomainnamereq_usr_value_;
+  queryaccessdomainnamereq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAccessDomainNameReq_USR& Req::queryaccessdomainnamereq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryAccessDomainNameReq_USR_Value)
+  return queryaccessdomainnamereq_usr_value_ != NULL ? *queryaccessdomainnamereq_usr_value_
+                         : *::Interactive::Message::QueryAccessDomainNameReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAccessDomainNameReq_USR* Req::mutable_queryaccessdomainnamereq_usr_value() {
+  
+  if (queryaccessdomainnamereq_usr_value_ == NULL) {
+    queryaccessdomainnamereq_usr_value_ = new ::Interactive::Message::QueryAccessDomainNameReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryAccessDomainNameReq_USR_Value)
+  return queryaccessdomainnamereq_usr_value_;
+}
+inline ::Interactive::Message::QueryAccessDomainNameReq_USR* Req::release_queryaccessdomainnamereq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryAccessDomainNameReq_USR_Value)
+  
+  ::Interactive::Message::QueryAccessDomainNameReq_USR* temp = queryaccessdomainnamereq_usr_value_;
+  queryaccessdomainnamereq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryaccessdomainnamereq_usr_value(::Interactive::Message::QueryAccessDomainNameReq_USR* queryaccessdomainnamereq_usr_value) {
+  delete queryaccessdomainnamereq_usr_value_;
+  queryaccessdomainnamereq_usr_value_ = queryaccessdomainnamereq_usr_value;
+  if (queryaccessdomainnamereq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAccessDomainNameReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -22083,6 +23073,45 @@ inline void Rsp::set_allocated_querytimezonersp_dev_value(::Interactive::Message
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryTimeZoneRsp_DEV_Value)
+}
+
+// .Interactive.Message.QueryAccessDomainNameRsp_DEV QueryAccessDomainNameRsp_DEV_Value = 82;
+inline bool Rsp::has_queryaccessdomainnamersp_dev_value() const {
+  return this != internal_default_instance() && queryaccessdomainnamersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_queryaccessdomainnamersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryaccessdomainnamersp_dev_value_ != NULL) delete queryaccessdomainnamersp_dev_value_;
+  queryaccessdomainnamersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAccessDomainNameRsp_DEV& Rsp::queryaccessdomainnamersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryAccessDomainNameRsp_DEV_Value)
+  return queryaccessdomainnamersp_dev_value_ != NULL ? *queryaccessdomainnamersp_dev_value_
+                         : *::Interactive::Message::QueryAccessDomainNameRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAccessDomainNameRsp_DEV* Rsp::mutable_queryaccessdomainnamersp_dev_value() {
+  
+  if (queryaccessdomainnamersp_dev_value_ == NULL) {
+    queryaccessdomainnamersp_dev_value_ = new ::Interactive::Message::QueryAccessDomainNameRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryAccessDomainNameRsp_DEV_Value)
+  return queryaccessdomainnamersp_dev_value_;
+}
+inline ::Interactive::Message::QueryAccessDomainNameRsp_DEV* Rsp::release_queryaccessdomainnamersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryAccessDomainNameRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryAccessDomainNameRsp_DEV* temp = queryaccessdomainnamersp_dev_value_;
+  queryaccessdomainnamersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryaccessdomainnamersp_dev_value(::Interactive::Message::QueryAccessDomainNameRsp_DEV* queryaccessdomainnamersp_dev_value) {
+  delete queryaccessdomainnamersp_dev_value_;
+  queryaccessdomainnamersp_dev_value_ = queryaccessdomainnamersp_dev_value;
+  if (queryaccessdomainnamersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAccessDomainNameRsp_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -23138,6 +24167,45 @@ inline void Rsp::set_allocated_queryfilersp_usr_value(::Interactive::Message::Qu
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFileRsp_USR_Value)
 }
 
+// .Interactive.Message.QueryAccessDomainNameRsp_USR QueryAccessDomainNameRsp_USR_Value = 350;
+inline bool Rsp::has_queryaccessdomainnamersp_usr_value() const {
+  return this != internal_default_instance() && queryaccessdomainnamersp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryaccessdomainnamersp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryaccessdomainnamersp_usr_value_ != NULL) delete queryaccessdomainnamersp_usr_value_;
+  queryaccessdomainnamersp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAccessDomainNameRsp_USR& Rsp::queryaccessdomainnamersp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
+  return queryaccessdomainnamersp_usr_value_ != NULL ? *queryaccessdomainnamersp_usr_value_
+                         : *::Interactive::Message::QueryAccessDomainNameRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAccessDomainNameRsp_USR* Rsp::mutable_queryaccessdomainnamersp_usr_value() {
+  
+  if (queryaccessdomainnamersp_usr_value_ == NULL) {
+    queryaccessdomainnamersp_usr_value_ = new ::Interactive::Message::QueryAccessDomainNameRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
+  return queryaccessdomainnamersp_usr_value_;
+}
+inline ::Interactive::Message::QueryAccessDomainNameRsp_USR* Rsp::release_queryaccessdomainnamersp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
+  
+  ::Interactive::Message::QueryAccessDomainNameRsp_USR* temp = queryaccessdomainnamersp_usr_value_;
+  queryaccessdomainnamersp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryaccessdomainnamersp_usr_value(::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value) {
+  delete queryaccessdomainnamersp_usr_value_;
+  queryaccessdomainnamersp_usr_value_ = queryaccessdomainnamersp_usr_value;
+  if (queryaccessdomainnamersp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -23379,6 +24447,14 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

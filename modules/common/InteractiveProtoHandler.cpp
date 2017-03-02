@@ -577,6 +577,16 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameReq_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAccessDomainNameReq_USR_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameRsp_USR_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAccessDomainNameRsp_USR_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetOnlineUserInfoReq_INNER_UnSerializer, this, _1, _2);
 
@@ -621,6 +631,16 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::P2pInfoRsp_DEV_T, handler));
 
     //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameReq_DEV_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAccessDomainNameReq_DEV_T, handler));
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAccessDomainNameRsp_DEV_T, handler));
+
+    /////////////////////////////////////////////////////
 
     handler.Szr = boost::bind(&InteractiveProtoHandler::AddFileReq_DEV_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddFileReq_DEV_UnSerializer, this, _1, _2);
@@ -1270,6 +1290,25 @@ bool InteractiveProtoHandler::P2pInfoRsp_USR_UnSerializer(const InteractiveMessa
     return UnSerializerT<P2pInfoRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::QueryAccessDomainNameReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryAccessDomainNameReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryAccessDomainNameReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAccessDomainNameRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryAccessDomainNameRsp_USR, Req>(InteractiveMsg, rsp);
+}
 
 
 bool InteractiveProtoHandler::GetOnlineDevInfoReq_INNER_Serializer(const Req &rsp, std::string &strOutput)
@@ -1371,6 +1410,27 @@ bool InteractiveProtoHandler::P2pInfoRsp_DEV_UnSerializer(const InteractiveMessa
 {
     return UnSerializerT<P2pInfoRsp_DEV, Req>(InteractiveMsg, rsp);
 }
+
+bool InteractiveProtoHandler::QueryAccessDomainNameReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryAccessDomainNameReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryAccessDomainNameReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAccessDomainNameRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryAccessDomainNameRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
 
 bool InteractiveProtoHandler::ShakehandReq_DEV_Serializer(const Req &req, std::string &strOutput)
 {
@@ -2700,6 +2760,36 @@ void InteractiveProtoHandler::P2pInfoRsp_USR::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_uilease(m_uiLease);
 }
 
+void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserIpAddress = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().struseripaddress();
+    m_strValue = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_struseripaddress(m_strUserIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strDomainName = InteractiveMsg.rspvalue().queryaccessdomainnamersp_usr_value().strdomainname();
+    m_strValue = InteractiveMsg.rspvalue().queryaccessdomainnamersp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_usr_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_usr_value()->set_strvalue(m_strValue);
+}
+
 
 void InteractiveProtoHandler::GetOnlineDevInfoReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -2949,6 +3039,37 @@ void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pserver(m_strP2pServer);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_uilease(m_uiLease);
 }
+
+void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevIpAddress = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().strdevipaddress();
+    m_strValue = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strDomainName = InteractiveMsg.rspvalue().queryaccessdomainnamersp_dev_value().strdomainname();
+    m_strValue = InteractiveMsg.rspvalue().queryaccessdomainnamersp_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_dev_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_dev_value()->set_strvalue(m_strValue);
+}
+
 
 void InteractiveProtoHandler::ShakehandReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
