@@ -342,7 +342,8 @@ message QueryAccessDomainNameReq_DEV            //设备查询接入服务器域
 message QueryAccessDomainNameRsp_DEV            //设备查询接入服务器域名响应
 {
   string strDomainName = 1;
-  string strValue = 2;
+  uint32 uiLease = 2;
+  string strValue = 3;
 }
 
 
@@ -685,7 +686,8 @@ message QueryAccessDomainNameReq_USR            //用户查询接入服务器域
 message QueryAccessDomainNameRsp_USR            //用户查询接入服务器域名响应
 {
   string strDomainName = 1;
-  string strValue = 2;
+  uint32 uiLease = 2;
+  string strValue = 3;
 }
 
 

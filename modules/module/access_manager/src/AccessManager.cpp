@@ -110,7 +110,9 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::LoginReq_DEV_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::AddFileReq_DEV_T == req.m_MsgType || 
-        InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_DEV_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;

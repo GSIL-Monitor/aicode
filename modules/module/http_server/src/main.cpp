@@ -263,6 +263,8 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::RETRIEVE_PWD_ACTION, boost::bind(&HttpMsgHandler::RetrievePwdHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_TIMEZONE_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryTimeZoneHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryAccessDomainNameHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::UserQueryAccessDomainNameHandler, &filehdr, _1, _2));
 
 
 

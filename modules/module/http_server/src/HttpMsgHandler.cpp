@@ -77,6 +77,10 @@ const std::string HttpMsgHandler::RETRIEVE_PWD_ACTION("retrieve_pwd");
 
 const std::string HttpMsgHandler::DEVICE_QUERY_TIMEZONE_ACTION("device_query_timezone");
 
+const std::string HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION("user_query_access_domain");
+
+const std::string HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION("device_query_access_domain");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -2637,6 +2641,120 @@ bool HttpMsgHandler::DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pM
 
 }
 
+bool HttpMsgHandler::UserQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    std::string strUserName;
+    auto itFind = pMsgInfoMap->find("username");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserName = itFind->second;
+    }
+
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User remote ip not found.");
+        return blResult;
+    }
+    const std::string strRemoteIP = itFind->second;
+
+    LOG_INFO_RLD("User query access domain name info received and user name is " << strUserName 
+        << " and remote ip is " << strRemoteIP);
+
+    std::string strAccessDomainName;
+    std::string strLease;
+    if (!UserQueryAccessDomainName(strRemoteIP, strUserName, strAccessDomainName, strLease))
+    {
+        LOG_ERROR_RLD("User query access domain name info handle failed and user name is " << strUserName << " and remote ip is " << strRemoteIP);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainname", strAccessDomainName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", strLease));
+
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;        
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User remote ip not found.");
+        return blResult;
+    }
+    const std::string strRemoteIP = itFind->second;
+
+    LOG_INFO_RLD("Device query access domain name info received and device id is " << strDevID
+        << " and remote ip is " << strRemoteIP);
+
+    std::string strAccessDomainName;
+    std::string strLease;
+    if (!DeviceQueryAccessDomainName(strRemoteIP, strDevID, strAccessDomainName, strLease))
+    {
+        LOG_ERROR_RLD("Device query access domain name info handle failed and device id is " << strDevID << " and remote ip is " << strRemoteIP);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainname", strAccessDomainName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", strLease));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -4603,6 +4721,122 @@ bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::s
             " and country name zh is " << QueryTimeZoneInfoInfoRsp.m_strCountryNameZh <<
             " and return code is " << QueryTimeZoneInfoInfoRsp.m_iRetcode <<
             " and return msg is " << QueryTimeZoneInfoInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAccessDomainNameReq_USR QueryDomainReq;
+        QueryDomainReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T;
+        QueryDomainReq.m_uiMsgSeq = 1;
+        QueryDomainReq.m_strSID = "";
+        QueryDomainReq.m_strValue = "";
+        QueryDomainReq.m_strUserIpAddress = strIpAddress;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDomainReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user access domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryAccessDomainNameRsp_USR QueryDomainRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDomainRsp))
+        {
+            LOG_ERROR_RLD("Query user access domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
+        iRet = QueryDomainRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query user access domain and user name is " << strUserName << " and user ip is " << strIpAddress <<
+            " and domain name is " << strAccessDomainName <<
+            " and return code is " << QueryDomainRsp.m_iRetcode <<
+            " and return msg is " << QueryDomainRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAccessDomainNameReq_DEV QueryDomainReq;
+        QueryDomainReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_DEV_T;
+        QueryDomainReq.m_uiMsgSeq = 1;
+        QueryDomainReq.m_strSID = "";
+        QueryDomainReq.m_strValue = "";
+        QueryDomainReq.m_strDevIpAddress = strIpAddress;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDomainReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device access domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV QueryDomainRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDomainRsp))
+        {
+            LOG_ERROR_RLD("Query device access domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
+        iRet = QueryDomainRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device access domain and device id is " << strDevID << " and device ip is " << strIpAddress <<
+            " and domain name is " << strAccessDomainName <<
+            " and return code is " << QueryDomainRsp.m_iRetcode <<
+            " and return msg is " << QueryDomainRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

@@ -51,6 +51,10 @@ public:
     static const std::string RETRIEVE_PWD_ACTION;
     static const std::string DEVICE_QUERY_TIMEZONE_ACTION;
 
+    static const std::string USER_QUERY_ACCESS_DOMAIN_ACTION;
+    static const std::string DEVICE_QUERY_ACCESS_DOMAIN_ACTION;
+
+
 
     
     typedef struct _ParamInfo
@@ -127,6 +131,10 @@ public:
     bool AddFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeviceQueryTimeZoneHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool UserQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
 private:
@@ -215,6 +223,10 @@ private:
 
     bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode,
         std::string &strCountryNameEn, std::string &strCountryNameZh, std::string &strTimeZone);
+
+    bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease);
+
+    bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease);
 
 private:
     ParamInfo m_ParamInfo;

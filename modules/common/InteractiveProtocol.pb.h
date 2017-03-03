@@ -3542,9 +3542,9 @@ class QueryAccessDomainNameRsp_DEV : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strdomainname();
   void set_allocated_strdomainname(::std::string* strdomainname);
 
-  // string strValue = 2;
+  // string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -3556,12 +3556,19 @@ class QueryAccessDomainNameRsp_DEV : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
+  // uint32 uiLease = 2;
+  void clear_uilease();
+  static const int kUiLeaseFieldNumber = 2;
+  ::google::protobuf::uint32 uilease() const;
+  void set_uilease(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameRsp_DEV)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdomainname_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -9359,9 +9366,9 @@ class QueryAccessDomainNameRsp_USR : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strdomainname();
   void set_allocated_strdomainname(::std::string* strdomainname);
 
-  // string strValue = 2;
+  // string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -9373,12 +9380,19 @@ class QueryAccessDomainNameRsp_USR : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
+  // uint32 uiLease = 2;
+  void clear_uilease();
+  static const int kUiLeaseFieldNumber = 2;
+  ::google::protobuf::uint32 uilease() const;
+  void set_uilease(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdomainname_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -15024,7 +15038,21 @@ inline void QueryAccessDomainNameRsp_DEV::set_allocated_strdomainname(::std::str
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_DEV.strDomainName)
 }
 
-// string strValue = 2;
+// uint32 uiLease = 2;
+inline void QueryAccessDomainNameRsp_DEV::clear_uilease() {
+  uilease_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAccessDomainNameRsp_DEV::uilease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_DEV.uiLease)
+  return uilease_;
+}
+inline void QueryAccessDomainNameRsp_DEV::set_uilease(::google::protobuf::uint32 value) {
+  
+  uilease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_DEV.uiLease)
+}
+
+// string strValue = 3;
 inline void QueryAccessDomainNameRsp_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -20504,7 +20532,21 @@ inline void QueryAccessDomainNameRsp_USR::set_allocated_strdomainname(::std::str
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_USR.strDomainName)
 }
 
-// string strValue = 2;
+// uint32 uiLease = 2;
+inline void QueryAccessDomainNameRsp_USR::clear_uilease() {
+  uilease_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAccessDomainNameRsp_USR::uilease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameRsp_USR.uiLease)
+  return uilease_;
+}
+inline void QueryAccessDomainNameRsp_USR::set_uilease(::google::protobuf::uint32 value) {
+  
+  uilease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameRsp_USR.uiLease)
+}
+
+// string strValue = 3;
 inline void QueryAccessDomainNameRsp_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -2779,6 +2779,7 @@ void InteractiveProtoHandler::QueryAccessDomainNameRsp_USR::UnSerializer(const I
 {
     Rsp::UnSerializer(InteractiveMsg);
     m_strDomainName = InteractiveMsg.rspvalue().queryaccessdomainnamersp_usr_value().strdomainname();
+    m_uiLease = InteractiveMsg.rspvalue().queryaccessdomainnamersp_usr_value().uilease();
     m_strValue = InteractiveMsg.rspvalue().queryaccessdomainnamersp_usr_value().strvalue();
 }
 
@@ -2787,6 +2788,7 @@ void InteractiveProtoHandler::QueryAccessDomainNameRsp_USR::Serializer(Interacti
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_usr_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_usr_value()->set_uilease(m_uiLease);
     InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_usr_value()->set_strvalue(m_strValue);
 }
 
@@ -3059,6 +3061,7 @@ void InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV::UnSerializer(const I
 {
     Rsp::UnSerializer(InteractiveMsg);
     m_strDomainName = InteractiveMsg.rspvalue().queryaccessdomainnamersp_dev_value().strdomainname();
+    m_uiLease = InteractiveMsg.rspvalue().queryaccessdomainnamersp_dev_value().uilease();
     m_strValue = InteractiveMsg.rspvalue().queryaccessdomainnamersp_dev_value().strvalue();
 }
 
@@ -3067,6 +3070,7 @@ void InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV::Serializer(Interacti
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameRsp_DEV_T);
     InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_dev_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_dev_value()->set_uilease(m_uiLease);
     InteractiveMsg.mutable_rspvalue()->mutable_queryaccessdomainnamersp_dev_value()->set_strvalue(m_strValue);
 }
 

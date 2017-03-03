@@ -790,6 +790,7 @@ public:
     struct QueryAccessDomainNameRsp_DEV : Rsp
     {
         std::string m_strDomainName;
+        unsigned int m_uiLease;  //租约，单位为小时
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -920,6 +921,7 @@ public:
     struct QueryAccessDomainNameRsp_USR : Rsp
     {
         std::string m_strDomainName;
+        unsigned int m_uiLease;  //租约，单位为小时
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

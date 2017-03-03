@@ -130,4 +130,15 @@ CREATE TABLE `t_configuration_info` (
   INDEX index_ref2(category, subcategory)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_access_domain_info`;
+CREATE TABLE `t_access_domain_info` (
+  `id` varchar(36) NOT NULL,
+  `countryid` varchar(16) NOT NULL,
+  `areaid` varchar (16),
+  `domainname` varchar(256) NOT NULL,
+  `leaseduration` int(11) NOT NULL,
+  `createdate` datetime NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
