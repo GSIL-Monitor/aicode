@@ -197,12 +197,12 @@ private:
     bool QueryFriends(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<std::string> &FriendList);
 
     bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
-        std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);
+        std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey);
 
     bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
-        std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease);
+        std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey);
 
     bool DeviceShakehand(const std::string &strSid, const std::string &strDevID);
 

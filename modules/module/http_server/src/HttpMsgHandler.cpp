@@ -1712,7 +1712,8 @@ bool HttpMsgHandler::P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
-    if (!P2pInfo(strSid, strUserID, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease))
+    std::string strLicenseKey;
+    if (!P2pInfo(strSid, strUserID, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease, strLicenseKey))
     {
         LOG_ERROR_RLD("User p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -1723,6 +1724,7 @@ bool HttpMsgHandler::P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pserver", strP2pServer));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", strP2pID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", boost::lexical_cast<std::string>(uiLease)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("license_key", strLicenseKey));
 
     blResult = true;
 
@@ -1900,7 +1902,8 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
-    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease))
+    std::string strLicenseKey;
+    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease, strLicenseKey))
     {
         LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -1911,6 +1914,7 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pserver", strP2pServer));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", strP2pID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", boost::lexical_cast<std::string>(uiLease)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("license_key", strLicenseKey));
     
     blResult = true;
 
@@ -4060,7 +4064,7 @@ bool HttpMsgHandler::QueryFriends(const std::string &strSid, const std::string &
 }
 
 bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
-    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease)
+    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -4102,11 +4106,12 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
         strP2pServer = P2pInfoRsp.m_strP2pServer;
         strP2pID = P2pInfoRsp.m_strP2pID;
         uiLease = P2pInfoRsp.m_uiLease;
+        strLicenseKey = P2pInfoRsp.m_strLicenseKey;
 
         iRet = P2pInfoRsp.m_iRetcode;
 
         LOG_INFO_RLD("P2p info of user id is " << strUserID << " and device id is " << strDevID << " and session id is " << P2pInfoRsp.m_strSID <<
-            " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease <<
+            " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease << " and license key is " << strLicenseKey <<
             " and return code is " << P2pInfoRsp.m_iRetcode <<
             " and return msg is " << P2pInfoRsp.m_strRetMsg);
 
@@ -4182,7 +4187,7 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
 }
 
 bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
-    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease)
+    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -4223,11 +4228,12 @@ bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string 
         strP2pServer = DevP2pInfoRsp.m_strP2pServer;
         strP2pID = DevP2pInfoRsp.m_strP2pID;
         uiLease = DevP2pInfoRsp.m_uiLease;
+        strLicenseKey = DevP2pInfoRsp.m_strLicenseKey;
 
         iRet = DevP2pInfoRsp.m_iRetcode;
 
         LOG_INFO_RLD("P2p info of device id is " << strDevID << " and session id is " << DevP2pInfoRsp.m_strSID <<
-            " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease <<
+            " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease << " and license key is " << strLicenseKey <<
             " and return code is " << DevP2pInfoRsp.m_iRetcode <<
             " and return msg is " << DevP2pInfoRsp.m_strRetMsg);
 
