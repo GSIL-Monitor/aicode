@@ -771,6 +771,7 @@ public:
         std::string m_strP2pServer;
         std::string m_strP2pID;
         unsigned int m_uiLease;  //租约，单位为小时
+        std::string m_strLicenseKey;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -902,6 +903,7 @@ public:
         std::string m_strP2pServer;
         std::string m_strP2pID;
         unsigned int m_uiLease;  //租约，单位为小时
+        std::string m_strLicenseKey;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

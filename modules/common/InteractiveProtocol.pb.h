@@ -2868,6 +2868,20 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strp2pid();
   void set_allocated_strp2pid(::std::string* strp2pid);
 
+  // string strLicenseKey = 4;
+  void clear_strlicensekey();
+  static const int kStrLicenseKeyFieldNumber = 4;
+  const ::std::string& strlicensekey() const;
+  void set_strlicensekey(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strlicensekey(::std::string&& value);
+  #endif
+  void set_strlicensekey(const char* value);
+  void set_strlicensekey(const char* value, size_t size);
+  ::std::string* mutable_strlicensekey();
+  ::std::string* release_strlicensekey();
+  void set_allocated_strlicensekey(::std::string* strlicensekey);
+
   // uint32 uiLease = 3;
   void clear_uilease();
   static const int kUiLeaseFieldNumber = 3;
@@ -2880,6 +2894,7 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr strlicensekey_;
   ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -8464,6 +8479,20 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strp2pid();
   void set_allocated_strp2pid(::std::string* strp2pid);
 
+  // string strLicenseKey = 4;
+  void clear_strlicensekey();
+  static const int kStrLicenseKeyFieldNumber = 4;
+  const ::std::string& strlicensekey() const;
+  void set_strlicensekey(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strlicensekey(::std::string&& value);
+  #endif
+  void set_strlicensekey(const char* value);
+  void set_strlicensekey(const char* value, size_t size);
+  ::std::string* mutable_strlicensekey();
+  ::std::string* release_strlicensekey();
+  void set_allocated_strlicensekey(::std::string* strlicensekey);
+
   // uint32 uiLease = 3;
   void clear_uilease();
   static const int kUiLeaseFieldNumber = 3;
@@ -8476,6 +8505,7 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr strlicensekey_;
   ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -14305,6 +14335,58 @@ inline void P2pInfoRsp_DEV::set_uilease(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.uiLease)
 }
 
+// string strLicenseKey = 4;
+inline void P2pInfoRsp_DEV::clear_strlicensekey() {
+  strlicensekey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_DEV::strlicensekey() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+  return strlicensekey_.GetNoArena();
+}
+inline void P2pInfoRsp_DEV::set_strlicensekey(const ::std::string& value) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_DEV::set_strlicensekey(::std::string&& value) {
+  
+  strlicensekey_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+}
+#endif
+inline void P2pInfoRsp_DEV::set_strlicensekey(const char* value) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+}
+inline void P2pInfoRsp_DEV::set_strlicensekey(const char* value, size_t size) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+}
+inline ::std::string* P2pInfoRsp_DEV::mutable_strlicensekey() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+  return strlicensekey_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_DEV::release_strlicensekey() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+  
+  return strlicensekey_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_DEV::set_allocated_strlicensekey(::std::string* strlicensekey) {
+  if (strlicensekey != NULL) {
+    
+  } else {
+    
+  }
+  strlicensekey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlicensekey);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
+}
+
 // -------------------------------------------------------------------
 
 // AddFileReq_DEV
@@ -19569,6 +19651,58 @@ inline void P2pInfoRsp_USR::set_uilease(::google::protobuf::uint32 value) {
   
   uilease_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.uiLease)
+}
+
+// string strLicenseKey = 4;
+inline void P2pInfoRsp_USR::clear_strlicensekey() {
+  strlicensekey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_USR::strlicensekey() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+  return strlicensekey_.GetNoArena();
+}
+inline void P2pInfoRsp_USR::set_strlicensekey(const ::std::string& value) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_USR::set_strlicensekey(::std::string&& value) {
+  
+  strlicensekey_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+}
+#endif
+inline void P2pInfoRsp_USR::set_strlicensekey(const char* value) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+}
+inline void P2pInfoRsp_USR::set_strlicensekey(const char* value, size_t size) {
+  
+  strlicensekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+}
+inline ::std::string* P2pInfoRsp_USR::mutable_strlicensekey() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+  return strlicensekey_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_USR::release_strlicensekey() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+  
+  return strlicensekey_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_USR::set_allocated_strlicensekey(::std::string* strlicensekey) {
+  if (strlicensekey != NULL) {
+    
+  } else {
+    
+  }
+  strlicensekey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlicensekey);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
 }
 
 // -------------------------------------------------------------------

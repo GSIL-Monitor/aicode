@@ -1619,8 +1619,9 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
+    std::string strLicenseKey;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey)
     {
         InteractiveProtoHandler::P2pInfoRsp_DEV rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_DEV_T;
@@ -1631,7 +1632,8 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         rsp.m_strP2pID = blResult ? strP2pID : "";
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
         rsp.m_uiLease = blResult ? uiLease : 0;
-        
+        rsp.m_strLicenseKey = blResult ? strLicenseKey : "";
+
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
         {
@@ -1669,6 +1671,8 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     strP2pID = p2pConnParam.sP2Pid;
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
+    //TODO,测试数据
+    strLicenseKey = "device hard-coded license key 001";
 
     blResult = true;
 
@@ -1783,8 +1787,9 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
+    std::string strLicenseKey;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey)
     {
         InteractiveProtoHandler::P2pInfoRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_USR_T;
@@ -1795,6 +1800,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         rsp.m_strP2pID = blResult ? strP2pID : "";
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
         rsp.m_uiLease = blResult ? uiLease : 0;
+        rsp.m_strLicenseKey = blResult ? strLicenseKey : "";
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1834,6 +1840,8 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     strP2pID = p2pConnParam.sP2Pid;
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
+    //TODO,测试数据
+    strLicenseKey = "user hard-coded license key 900";
 
     blResult = true;
 
