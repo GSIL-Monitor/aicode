@@ -332,6 +332,8 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::P2pInfoReq_USR_T, boost::bind(&AccessManager::P2pInfoReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T, boost::bind(&AccessManager::RetrievePwdReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryTimeZoneReq_DEV_T, boost::bind(&AccessManager::QueryTimeZoneReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T, boost::bind(&AccessManager::QueryAccessDomainNameReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_DEV_T, boost::bind(&AccessManager::QueryAccessDomainNameReqDevice, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::LoginReq_DEV_T, boost::bind(&AccessManager::LoginReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T, boost::bind(&AccessManager::P2pInfoReqDevice, &Umg, _1, _2, _3));

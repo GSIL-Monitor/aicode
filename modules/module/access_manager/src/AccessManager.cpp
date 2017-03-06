@@ -10,6 +10,8 @@
 
 const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
+const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
+
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0)
 {
@@ -48,6 +50,12 @@ bool AccessManager::Init()
     if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
     {
         LOG_ERROR_RLD("Init charset to utf8 failed, sql is SET NAMES utf8");
+        return false;
+    }
+
+    if (!InitDefaultAccessDomainName())
+    {
+        LOG_ERROR_RLD("Init default access domain name failed.");
         return false;
     }
 
@@ -1648,10 +1656,9 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     }
 
     //获取p2pid和p2pserver
-    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
     P2PConnectParam p2pConnParam;
     P2PServerManager_SY p2pSvrManager;
-    p2pSvrManager.SetUrl(strUrl);
+    p2pSvrManager.SetUrl(GET_IPINFO_SITE);
     p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
     if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
     {
@@ -1813,10 +1820,9 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     }
 
     //获取p2pid和p2pserver
-    std::string strUrl = "http://ip.taobao.com/service/getIpInfo.php";
     P2PConnectParam p2pConnParam;
     P2PServerManager_SY p2pSvrManager;
-    p2pSvrManager.SetUrl(strUrl);
+    p2pSvrManager.SetUrl(GET_IPINFO_SITE);
     p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
     if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strUserIpAddress, req.m_strUserID))
     {
@@ -1943,6 +1949,142 @@ bool AccessManager::QueryTimeZoneReqDevice(const std::string &strMsg, const std:
         LOG_ERROR_RLD("Get time zone failed.");
         return false;
     }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAccessDomainNameReq_USR req;
+
+    std::string strDomainName;
+    unsigned int uiLease;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &strSrcID, &writer, &strDomainName, &uiLease)
+    {
+        InteractiveProtoHandler::QueryAccessDomainNameRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAccessDomainNameRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strDomainName = blResult ? strDomainName : "";
+        rsp.m_uiLease = blResult ? uiLease : 0;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user access domain name rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query user access domain name rsp already send, dst id is " << strSrcID <<
+            " and user ip is " << req.m_strUserIpAddress <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query user access domain name req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    TimeZone timezone;
+    CTimeZone cTimeZone;
+    cTimeZone.setpostUrl(GET_IPINFO_SITE);
+    cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
+    if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
+    {
+        LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress);
+        return false;
+    }
+
+    AccessDomainInfo DomainInfo;
+    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    {
+        LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress);
+        return false;
+    }
+
+    strDomainName = DomainInfo.strDomainName;
+    uiLease = DomainInfo.uiLease;
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAccessDomainNameReq_DEV req;
+
+    std::string strDomainName;
+    unsigned int uiLease;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &strSrcID, &writer, &strDomainName, &uiLease)
+    {
+        InteractiveProtoHandler::QueryAccessDomainNameRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAccessDomainNameRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strDomainName = blResult ? strDomainName : "";
+        rsp.m_uiLease = blResult ? uiLease : 0;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device access domain name rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query device access domain name rsp already send, dst id is " << strSrcID <<
+            " and device ip is " << req.m_strDevIpAddress <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query device access domain name req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    TimeZone timezone;
+    CTimeZone cTimeZone;
+    cTimeZone.setpostUrl(GET_IPINFO_SITE);
+    cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
+    if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
+    {
+        LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    AccessDomainInfo DomainInfo;
+    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    {
+        LOG_ERROR_RLD("Query user access domain name failed, device ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    strDomainName = DomainInfo.strDomainName;
+    uiLease = DomainInfo.uiLease;
 
     blResult = true;
 
@@ -2320,7 +2462,7 @@ void AccessManager::AddNoOwnerFile(const std::string &strUserID, const std::stri
 
     if (ResultList.empty())
     {
-        LOG_INFO_RLD("AddNoOwnerFile result is empty, sql is " << sql);
+        LOG_INFO_RLD("AddNoOwnerFile sql result is empty, sql is " << sql);
         return;
     }
 
@@ -2431,13 +2573,150 @@ void AccessManager::SendUserResetPasswordEmail(const std::string &strUserName, c
     LOG_INFO_RLD("User reset password email has been sended, email address is " << strEmail << " and user name is " << strUserName);
 }
 
-bool AccessManager::GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn, 
+bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID, const std::string &strAreaID, AccessDomainInfo &DomainInfo)
+{
+    std::string strKey = strCountryID;
+    if (!strAreaID.empty())
+    {
+        strKey += "|" + strAreaID;
+    }
+
+    auto itPos = m_AreaDomainMap.find(strKey);
+    if (itPos == m_AreaDomainMap.end())
+    {
+        std::string strDefaultCountryID = "CN";
+        //std::string strDefaultAreaID = "800000";
+        //strKey = strDefaultCountryID + "|" + strDefaultAreaID;
+        strKey = strDefaultCountryID;
+
+        LOG_INFO_RLD("QueryAccessDomainInfoByArea not found, use default domain name.");
+        itPos = m_AreaDomainMap.find(strKey);
+        if (itPos == m_AreaDomainMap.end())
+        {
+            LOG_ERROR_RLD("QueryAccessDomainInfoByArea default domain name not found.");
+            return false;
+        }
+    }
+
+    std::list<AccessDomainInfo> DomainInfoList = itPos->second;
+
+    int size = DomainInfoList.size();
+    if (size < 1)
+    {
+        LOG_ERROR_RLD("QueryAccessDomainInfoByArea not found, country id is " << strCountryID << " and area id is " << strAreaID);
+        return false;
+    }
+    else if (size == 1)
+    {
+        AccessDomainInfo domainInfo = DomainInfoList.front();
+        DomainInfo.strDomainName = domainInfo.strDomainName;
+        DomainInfo.uiLease = domainInfo.uiLease;
+        
+        return true;
+    }
+    else
+    {
+        //若同一地区配置多个域名，则使用随机的一个域名登录
+        srand((unsigned)time(NULL));
+        int nNum = rand() % size;
+
+        int i = 0;
+        auto itBegin = DomainInfoList.begin();
+        auto itEnd = DomainInfoList.end();
+        while (itBegin != itEnd)
+        {
+            if (i == nNum)
+            {
+                DomainInfo.strDomainName = itBegin->strDomainName;
+                DomainInfo.uiLease = itBegin->uiLease;
+                return true;
+            }
+
+            i++;
+            itBegin++;
+        }
+
+        LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, random number is out of boundary, country id is " << strCountryID << " and area id is " << strAreaID);
+        return false;
+    }
+}
+
+bool AccessManager::InitDefaultAccessDomainName()
+{
+    std::string strSql = "select countryid, areaid, domainname, leaseduration from t_access_domain_info where status = 0";
+
+    std::string strCountryID;
+    std::string strAreaID;
+    std::string strDomainName;
+    unsigned int uiLease;
+    auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            strCountryID = strColumn;
+            break;
+        case 1:
+            strAreaID = strColumn;
+            break;
+        case 2:
+            strDomainName = strColumn;
+            break;
+        case 3:
+        {
+            uiLease = boost::lexical_cast<unsigned int>(strColumn);
+
+            std::string strKey = strCountryID;
+            if (!strAreaID.empty())
+            {
+                strKey += "|" + strAreaID;
+            }
+
+            auto itPos = m_AreaDomainMap.find(strKey);
+            if (itPos == m_AreaDomainMap.end())
+            {
+                AccessDomainInfo domainInfo;
+                domainInfo.strDomainName = strDomainName;
+                domainInfo.uiLease = uiLease;
+
+                std::list<AccessDomainInfo> domainInfoList;
+                domainInfoList.push_back(domainInfo);
+
+                m_AreaDomainMap.insert(make_pair(strKey, domainInfoList));
+            }
+            else
+            {
+                AccessDomainInfo domainInfo;
+                domainInfo.strDomainName = strDomainName;
+                domainInfo.uiLease = uiLease;
+
+                std::list<AccessDomainInfo> &domainInfoList = itPos->second;
+                domainInfoList.push_back(domainInfo);
+            }
+
+            break;
+        }
+        default:
+            LOG_ERROR_RLD("Access domain name info SqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    if (!m_pMysql->QueryExec(strSql, FuncTmp))
+    {
+        LOG_ERROR_RLD("InitDefaultAccessDomainName sql failed, sql is " << strSql);
+        return false;
+    }
+
+    return true;
+}
+
+bool AccessManager::GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn,
     std::string &strCountryNameZh, std::string &strTimeZone)
 {
-    std::string strUrl("http://ip.taobao.com/service/getIpInfo.php");
     TimeZone timeZone;
     CTimeZone cTimeZone;
-    cTimeZone.setpostUrl(strUrl);
+    cTimeZone.setpostUrl(GET_IPINFO_SITE);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
     if (!cTimeZone.GetCountryTime(strIpAddress, timeZone))
     {
@@ -3248,10 +3527,20 @@ void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
         return;
     }
         
+    char sql[256] = { 0 };
+    const char *sqlfmt = "select id from t_device_info where deviceid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strDevID.c_str());
+
     std::string strUuid;
-    if (!GetMySqlUUID(strUuid))
+    auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
-        LOG_ERROR_RLD("Sharing relation get mysql uuid failed, user id is " << relation.m_strUsrID);
+        strUuid = strColumn;
+        LOG_INFO_RLD("The device key id from db is " << strUuid);
+    };
+
+    if (!m_pMysql->QueryExec(std::string(sql), FuncTmp))
+    {
+        LOG_ERROR_RLD("Query device key id failed and device id is " << relation.m_strDevID);
         return;
     }
 

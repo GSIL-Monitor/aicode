@@ -36,6 +36,7 @@ public:
 
     static const std::string MAX_DATE;
     
+    static const std::string GET_IPINFO_SITE;
 
     typedef struct _Relation
     {
@@ -73,6 +74,12 @@ public:
         std::string m_strLTUserSiteRC4Key;
 
     } ParamInfo;
+    
+    typedef struct _AccessDomainInfo
+    {
+        std::string strDomainName;
+        unsigned int uiLease;
+    } AccessDomainInfo;
     
     inline void SetParamInfo(const ParamInfo &pinfo)
     {
@@ -145,6 +152,10 @@ public:
     bool RetrievePwdReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryTimeZoneReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAccessDomainNameReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAccessDomainNameReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
@@ -233,6 +244,10 @@ private:
     bool GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn, std::string &strCountryNameZh,
         std::string &strTimeZone);
 
+    bool QueryAccessDomainInfoByArea(const std::string &strCountryID, const std::string &strAreaID, AccessDomainInfo &DomainInfo);
+
+    bool InitDefaultAccessDomainName();
+    
 private:
     ParamInfo m_ParamInfo;
 
@@ -251,6 +266,8 @@ private:
     boost::atomic_uint64_t m_uiMsgSeq;
     
     SessionMgr m_SessionMgr;
+
+    std::map<std::string, std::list<AccessDomainInfo>> m_AreaDomainMap;
 };
 
 
