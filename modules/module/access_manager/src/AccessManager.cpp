@@ -1644,7 +1644,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("P2p info of device rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
             " and device ip is " << req.m_strDevIpAddress << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
-            " and lease is " << uiLease <<
+            " and lease is " << uiLease << " and liecense key is " << strLicenseKey <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 
@@ -1813,6 +1813,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         LOG_INFO_RLD("P2p info of user rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
             " and device id is " << req.m_strDevID << " and user ip is " << req.m_strUserIpAddress <<
             " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer << " and lease is " << uiLease <<
+            " and liecense key is " << strLicenseKey <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 

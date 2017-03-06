@@ -3043,7 +3043,7 @@ void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pserver(m_strP2pServer);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_uilease(m_uiLease);
-    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strlicensekey(m_strLicenseKey);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strlicensekey(m_strLicenseKey);
 }
 
 void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
