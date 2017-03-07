@@ -1671,8 +1671,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     strP2pID = p2pConnParam.sP2Pid;
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
-    //TODO,测试数据
-    strLicenseKey = "device hard-coded license key 001";
+    strLicenseKey = p2pConnParam.sparam1;
 
     blResult = true;
 
@@ -1841,8 +1840,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     strP2pID = p2pConnParam.sP2Pid;
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
-    //TODO,测试数据
-    strLicenseKey = "user hard-coded license key 900";
+    strLicenseKey = p2pConnParam.sparam1;
 
     blResult = true;
 

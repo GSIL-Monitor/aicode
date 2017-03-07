@@ -3,6 +3,8 @@
 #include "boost/any.hpp"
 #include "boost/lexical_cast.hpp"
 
+boost::mutex P2PServerManager::m_smutex;
+
 P2PServerManager::P2PServerManager(void)
 {
     m_sFlag = "";
@@ -59,11 +61,11 @@ bool P2PServerManager::AllocP2PID( TimeZone timezone, string sDevID )
 {
     //查询数据表m_table_name，若设备已关联p2pid，则直接获取，否则分配空闲的id
     bool bRet = false;
-    bRet = GetP2pIDByDevID(sDevID, m_p2pConnectParams.sP2Pid, m_p2pConnectParams.nTime);
+    bRet = GetP2pIDByDevID(sDevID, m_p2pConnectParams);
     if (bRet == false)
     {
         P2PServerManager::m_smutex.lock();
-        bRet = GetFreeP2pID(timezone.sCode, m_table_name, m_p2pConnectParams.sP2Pid, m_p2pConnectParams.nTime);
+        bRet = GetFreeP2pID(timezone.sCode, m_table_name, m_p2pConnectParams);
         P2PServerManager::m_smutex.unlock();
     }
     return bRet;
@@ -81,7 +83,7 @@ bool P2PServerManager::GetP2PID( string sDevID , bool bGetTimeZone, TimeZone &ti
     //查询数据表m_table_name，找出与sDevID相关联的p2pid
     bool bRet = true;
     m_p2pConnectParams.nTime = 180;
-    bRet = GetP2pIDByDevID(sDevID, m_p2pConnectParams.sP2Pid, m_p2pConnectParams.nTime);
+    bRet = GetP2pIDByDevID(sDevID, m_p2pConnectParams);
     if (bGetTimeZone)
     {
         bRet = m_timezone.GetCountryInfoByDevID(sDevID, timezone);
@@ -101,23 +103,16 @@ bool P2PServerManager::GetP2PServerFromTimezone( TimeZone countryTime, P2PServer
     const char* sqlfmt = "select cluster, connectparams from t_p2pserver_info where countrycode='%s' and flag='%s' limit 1";
     snprintf(sql, sizeof(sql), sqlfmt, countryTime.sCode.c_str(), m_sFlag.c_str());
 
-    struct ClusterInfo
-    {
-        std::string m_strClusterInfo;
-        std::string m_strConnectParams;
-    };
-    ClusterInfo cinfo;
-
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
         switch (uiColumnNum)
         {
         case 0:
-            cinfo.m_strClusterInfo = strColumn;
+            p2pServerInfo.cluster = strColumn;
             break;
         case 1:
-            cinfo.m_strConnectParams = strColumn;
-            Result = cinfo;
+            p2pServerInfo.connectparams = strColumn;
+            Result = p2pServerInfo;
             break;        
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
@@ -139,15 +134,15 @@ bool P2PServerManager::GetP2PServerFromTimezone( TimeZone countryTime, P2PServer
         return false;
     }
 
-    auto ResultInfo = boost::any_cast<ClusterInfo>(ResultList.front());
-    p2pServerInfo.cluster = ResultInfo.m_strClusterInfo;
-    p2pServerInfo.connectparams = ResultInfo.m_strConnectParams;
+    auto ResultInfo = boost::any_cast<P2PServerInfo>(ResultList.front());
+    p2pServerInfo.cluster = ResultInfo.cluster;
+    p2pServerInfo.connectparams = ResultInfo.connectparams;
 
     return true;
 }
 
 
-bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, std::string &strP2pID, int &nValidity_period)
+bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectParam &p2pparams)
 {
     if (NULL == m_pDBCache)
     {
@@ -156,26 +151,22 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, std::string 
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period from t_p2pid_sy where deviceid='%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str());
-
-    struct P2pInfo
-    {
-        std::string m_strP2pID;
-        int m_nValidity_period;
-    };
-    P2pInfo cinfo;
+    const char* sqlfmt = "select p2pid, validity_period, param1 from %s where deviceid='%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDevID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
         switch (uiColumnNum)
         {
         case 0:
-            cinfo.m_strP2pID = strColumn;
+            p2pparams.sP2Pid = strColumn;
             break;
         case 1:
-            cinfo.m_nValidity_period = boost::lexical_cast<int>(strColumn);
-            Result = cinfo;
+            p2pparams.nTime = boost::lexical_cast<int>(strColumn);
+			break;
+		case 2:
+			p2pparams.sparam1 = strColumn;
+            Result = p2pparams;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
@@ -197,14 +188,15 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, std::string 
         return false;
     }
 
-    auto ResultInfo = boost::any_cast<P2pInfo>(ResultList.front());
-    strP2pID = ResultInfo.m_strP2pID;
-    nValidity_period = ResultInfo.m_nValidity_period;
+    auto ResultInfo = boost::any_cast<P2PConnectParam>(ResultList.front());
+    p2pparams.sP2Pid = ResultInfo.sP2Pid;
+    p2pparams.nTime = ResultInfo.nTime;
+    p2pparams.sparam1 = ResultInfo.sparam1;
     
     return true;
 }
 
-bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::string &strP2pIDTableName, std::string &strP2pID, int &nValidity_period)
+bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::string &strP2pIDTableName, P2PConnectParam &p2pparams)
 {
     if (NULL == m_pDBCache)
     {
@@ -213,26 +205,22 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period from %s where cluster = (select cluster from t_p2pserver_info where countrycode = '%s' and flag='%s') and deviceid is null limit 1";
+    const char* sqlfmt = "select p2pid, validity_period, param1 from %s where cluster = (select cluster from t_p2pserver_info where countrycode = '%s' and flag='%s') and deviceid is null limit 1";
     snprintf(sql, sizeof(sql), sqlfmt, strP2pIDTableName.c_str(), strCnCode.c_str(), m_sFlag.c_str());
-
-    struct P2pInfo
-    {
-        std::string m_strP2pID;
-        int m_nValidity_period;
-    };
-    P2pInfo cinfo;
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
         switch (uiColumnNum)
         {
         case 0:
-            cinfo.m_strP2pID = strColumn;
+            p2pparams.sP2Pid = strColumn;
             break;
         case 1:
-            cinfo.m_nValidity_period = boost::lexical_cast<int>(strColumn);
-            Result = cinfo;
+            p2pparams.nTime = boost::lexical_cast<int>(strColumn);
+            break;
+		case 2:
+			p2pparams.sparam1 = strColumn;
+			Result = p2pparams;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
@@ -254,15 +242,13 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
         return false;
     }
 
-    auto ResultInfo = boost::any_cast<P2pInfo>(ResultList.front());
-    strP2pID = ResultInfo.m_strP2pID;
-    nValidity_period = ResultInfo.m_nValidity_period;
+    auto ResultInfo = boost::any_cast<P2PConnectParam>(ResultList.front());
+    p2pparams.sP2Pid = ResultInfo.sP2Pid;
+    p2pparams.nTime = ResultInfo.nTime;
+    p2pparams.sparam1 = ResultInfo.sparam1;
 
     return true;
 }
-
-
-boost::mutex P2PServerManager::m_smutex;
 
 void P2PServerManager::SetUrl( string sUrl )
 {

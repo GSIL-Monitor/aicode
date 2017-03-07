@@ -10,6 +10,7 @@ typedef struct _tagP2PConnectParam
 {
     string sInitstring; //连接服务器的初始化字符串
     string sP2Pid;      //分配给设备的P2PID
+	string sparam1;		//对于尚云来说，这是license值，对于其他类型的p2pid，则可能是其他值
     int nTime;              //租约时间
 }P2PConnectParam;
 
@@ -53,8 +54,8 @@ public:
     virtual bool ParseConnectParams(string sconnectparams) = 0;
 
 private:
-    bool GetP2pIDByDevID(const std::string &strDevID, std::string &strP2pID, int &nValidity_period);
-    bool GetFreeP2pID(const std::string &strCnCode, const std::string &strP2pIDTableName, std::string &strP2pID, int &nValidity_period);
+    bool GetP2pIDByDevID(const std::string &strDevID, P2PConnectParam &p2pparams);
+    bool GetFreeP2pID(const std::string &strCnCode, const std::string &strP2pIDTableName, P2PConnectParam &p2pparams);
 
 public:
     string m_sFlag;
