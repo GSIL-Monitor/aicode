@@ -5188,6 +5188,22 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
       relationinfo() const;
 
+  // repeated string strDevName = 4;
+  int strdevname_size() const;
+  void clear_strdevname();
+  static const int kStrDevNameFieldNumber = 4;
+  const ::std::string& strdevname(int index) const;
+  ::std::string* mutable_strdevname(int index);
+  void set_strdevname(int index, const ::std::string& value);
+  void set_strdevname(int index, const char* value);
+  void set_strdevname(int index, const char* value, size_t size);
+  ::std::string* add_strdevname();
+  void add_strdevname(const ::std::string& value);
+  void add_strdevname(const char* value);
+  void add_strdevname(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strdevname() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strdevname();
+
   // string strUserID = 1;
   void clear_struserid();
   static const int kStrUserIDFieldNumber = 1;
@@ -5221,6 +5237,7 @@ class LoginRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > relationinfo_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strdevname_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
@@ -6830,11 +6847,28 @@ class QueryDevRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
       allrelationinfo() const;
 
+  // repeated string strDevName = 2;
+  int strdevname_size() const;
+  void clear_strdevname();
+  static const int kStrDevNameFieldNumber = 2;
+  const ::std::string& strdevname(int index) const;
+  ::std::string* mutable_strdevname(int index);
+  void set_strdevname(int index, const ::std::string& value);
+  void set_strdevname(int index, const char* value);
+  void set_strdevname(int index, const char* value, size_t size);
+  ::std::string* add_strdevname();
+  void add_strdevname(const ::std::string& value);
+  void add_strdevname(const char* value);
+  void add_strdevname(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strdevname() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strdevname();
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDevRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > allrelationinfo_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strdevname_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -16723,6 +16757,61 @@ inline void LoginRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginRsp_USR.strValue)
 }
 
+// repeated string strDevName = 4;
+inline int LoginRsp_USR::strdevname_size() const {
+  return strdevname_.size();
+}
+inline void LoginRsp_USR::clear_strdevname() {
+  strdevname_.Clear();
+}
+inline const ::std::string& LoginRsp_USR::strdevname(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginRsp_USR.strDevName)
+  return strdevname_.Get(index);
+}
+inline ::std::string* LoginRsp_USR::mutable_strdevname(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginRsp_USR.strDevName)
+  return strdevname_.Mutable(index);
+}
+inline void LoginRsp_USR::set_strdevname(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginRsp_USR.strDevName)
+  strdevname_.Mutable(index)->assign(value);
+}
+inline void LoginRsp_USR::set_strdevname(int index, const char* value) {
+  strdevname_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginRsp_USR.strDevName)
+}
+inline void LoginRsp_USR::set_strdevname(int index, const char* value, size_t size) {
+  strdevname_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginRsp_USR.strDevName)
+}
+inline ::std::string* LoginRsp_USR::add_strdevname() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.LoginRsp_USR.strDevName)
+  return strdevname_.Add();
+}
+inline void LoginRsp_USR::add_strdevname(const ::std::string& value) {
+  strdevname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.LoginRsp_USR.strDevName)
+}
+inline void LoginRsp_USR::add_strdevname(const char* value) {
+  strdevname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.LoginRsp_USR.strDevName)
+}
+inline void LoginRsp_USR::add_strdevname(const char* value, size_t size) {
+  strdevname_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.LoginRsp_USR.strDevName)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+LoginRsp_USR::strdevname() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.LoginRsp_USR.strDevName)
+  return strdevname_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+LoginRsp_USR::mutable_strdevname() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.LoginRsp_USR.strDevName)
+  return &strdevname_;
+}
+
 // -------------------------------------------------------------------
 
 // LogoutReq_USR
@@ -18138,6 +18227,61 @@ inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relat
 QueryDevRsp_USR::allrelationinfo() const {
   // @@protoc_insertion_point(field_list:Interactive.Message.QueryDevRsp_USR.allRelationInfo)
   return allrelationinfo_;
+}
+
+// repeated string strDevName = 2;
+inline int QueryDevRsp_USR::strdevname_size() const {
+  return strdevname_.size();
+}
+inline void QueryDevRsp_USR::clear_strdevname() {
+  strdevname_.Clear();
+}
+inline const ::std::string& QueryDevRsp_USR::strdevname(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevRsp_USR.strDevName)
+  return strdevname_.Get(index);
+}
+inline ::std::string* QueryDevRsp_USR::mutable_strdevname(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevRsp_USR.strDevName)
+  return strdevname_.Mutable(index);
+}
+inline void QueryDevRsp_USR::set_strdevname(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevRsp_USR.strDevName)
+  strdevname_.Mutable(index)->assign(value);
+}
+inline void QueryDevRsp_USR::set_strdevname(int index, const char* value) {
+  strdevname_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDevRsp_USR.strDevName)
+}
+inline void QueryDevRsp_USR::set_strdevname(int index, const char* value, size_t size) {
+  strdevname_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDevRsp_USR.strDevName)
+}
+inline ::std::string* QueryDevRsp_USR::add_strdevname() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.QueryDevRsp_USR.strDevName)
+  return strdevname_.Add();
+}
+inline void QueryDevRsp_USR::add_strdevname(const ::std::string& value) {
+  strdevname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryDevRsp_USR.strDevName)
+}
+inline void QueryDevRsp_USR::add_strdevname(const char* value) {
+  strdevname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.QueryDevRsp_USR.strDevName)
+}
+inline void QueryDevRsp_USR::add_strdevname(const char* value, size_t size) {
+  strdevname_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.QueryDevRsp_USR.strDevName)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+QueryDevRsp_USR::strdevname() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryDevRsp_USR.strDevName)
+  return strdevname_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+QueryDevRsp_USR::mutable_strdevname() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryDevRsp_USR.strDevName)
+  return &strdevname_;
 }
 
 // -------------------------------------------------------------------

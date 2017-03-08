@@ -573,15 +573,24 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         
     std::string strSid;
     std::list<InteractiveProtoHandler::Relation> relist;
-    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, relist, strUserID, strSid))
+    std::list<std::string> strDevNameList;
+    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, relist, strUserID, strSid, strDevNameList))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
         return blResult;
     }
 
+    if (relist.size() != strDevNameList.size())
+    {
+        LOG_ERROR_RLD("Login user rsp info handle failed and relation list size is " << relist.size() << " and device name list size is " << strDevNameList.size());
+        return blResult;
+    }
+
+    auto itBegin2 = strDevNameList.begin();
+    auto itEnd2 = strDevNameList.end();
     auto itBegin = relist.begin();
     auto itEnd = relist.end();
-    while (itBegin != itEnd)
+    while (itBegin != itEnd && itBegin2 != itEnd2)
     {
         Json::Value jsRelation;
         jsRelation["userid"] = itBegin->m_strUserID;
@@ -590,10 +599,12 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         jsRelation["begindate"] = itBegin->m_strBeginDate;
         jsRelation["enddate"] = itBegin->m_strEndDate;
         jsRelation["extend"] = itBegin->m_strValue;
+        jsRelation["devname"] = *itBegin2;
 
         jsRelationList.append(jsRelation);
 
         ++itBegin;
+        ++itBegin2;
     }
         
     
@@ -1124,15 +1135,25 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
         << " and session id is " << strSid);
 
     std::list<InteractiveProtoHandler::Relation> relist;
-    if (!QueryDevicesOfUser<InteractiveProtoHandler::Relation>(strSid, strUserID, uiBeginIndex, relist))
+    std::list<std::string> strDevNameList;
+    if (!QueryDevicesOfUser<InteractiveProtoHandler::Relation>(strSid, strUserID, uiBeginIndex, relist, strDevNameList))
     {
         LOG_ERROR_RLD("Query devices of user handle failed and user id is " << strUserID << " and session id is " << strSid);
         return blResult;
     }
     
+
+    if (relist.size() != strDevNameList.size())
+    {
+        LOG_ERROR_RLD("Query devices of user handle failed and relation list size is " << relist.size() << " and device name list size is " << strDevNameList.size());
+        return blResult;
+    }
+
+    auto itBegin2 = strDevNameList.begin();
+    auto itEnd2 = strDevNameList.end();
     auto itBegin = relist.begin();
     auto itEnd = relist.end();
-    while (itBegin != itEnd)
+    while (itBegin != itEnd && itBegin2 != itEnd2)
     {
         Json::Value jsRelation;
         jsRelation["userid"] = itBegin->m_strUserID;
@@ -1141,10 +1162,12 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
         jsRelation["begindate"] = itBegin->m_strBeginDate;
         jsRelation["enddate"] = itBegin->m_strEndDate;
         jsRelation["extend"] = itBegin->m_strValue;
+        jsRelation["devname"] = *itBegin2;
 
         jsRelationList.append(jsRelation);
 
         ++itBegin;
+        ++itBegin2;
     }
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
@@ -2988,7 +3011,7 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
 
 template<typename T>
 bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
-    std::string &strUserID, std::string &strSid)
+    std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -3042,6 +3065,9 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
 
         RelationList.clear();
         RelationList.swap(UsrLoginRsp.m_reInfoList);
+        strDevNameList.clear();
+        strDevNameList.swap(UsrLoginRsp.m_strDevNameList);
+        
 
         strUserID = UsrLoginRsp.m_strUserID;
         strSid = UsrLoginRsp.m_strSID;
@@ -3589,7 +3615,8 @@ bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::strin
 }
 
 template<typename T>
-bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList)
+bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList,
+    std::list<std::string> &strDevNameList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {        
@@ -3630,6 +3657,8 @@ bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::st
 
         RelationList.clear();
         RelationList.swap(QueryDevRsp.m_allRelationInfoList);
+        strDevNameList.clear();
+        strDevNameList.swap(QueryDevRsp.m_strDevNameList);
 
         iRet = QueryDevRsp.m_iRetcode;
 

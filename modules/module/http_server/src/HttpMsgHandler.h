@@ -156,7 +156,7 @@ private:
     
     template<typename T>
     bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
-        std::string &strUserID, std::string &strSid);
+        std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList);
 
     template<typename T>
     bool QueryUserInfo(const std::string &strSid, const std::string &strUserID, T &UserInfo);
@@ -180,7 +180,8 @@ private:
     bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo);
 
     template<typename T>
-    bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList);
+    bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList, 
+        std::list<std::string> &strDevNameList);
     
     template<typename T>
     bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList);

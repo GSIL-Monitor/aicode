@@ -163,9 +163,9 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectPa
             break;
         case 1:
             p2pparams.nTime = boost::lexical_cast<int>(strColumn);
-			break;
-		case 2:
-			p2pparams.sparam1 = strColumn;
+            break;
+        case 2:
+            p2pparams.sparam1 = strColumn;
             Result = p2pparams;
             break;
         default:
@@ -218,9 +218,9 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
         case 1:
             p2pparams.nTime = boost::lexical_cast<int>(strColumn);
             break;
-		case 2:
-			p2pparams.sparam1 = strColumn;
-			Result = p2pparams;
+        case 2:
+            p2pparams.sparam1 = strColumn;
+            Result = p2pparams;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);

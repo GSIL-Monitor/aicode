@@ -166,7 +166,7 @@ private:
 
     bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
 
-    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList, 
+    bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList, std::list<std::string> &strDevNameList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
@@ -179,7 +179,7 @@ private:
     void UserInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
 
     void DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, 
-        std::list<InteractiveProtoHandler::Relation> *pRelationList);
+        std::list<InteractiveProtoHandler::Relation> *pRelationList, std::list<std::string> *pStrDevNameList);
 
     void SessionTimeoutProcessCB(const std::string &strSessionID);
 

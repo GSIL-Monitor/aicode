@@ -444,6 +444,7 @@ message LoginRsp_USR                            //用户登录响应
   string strUserID = 1;                         //系统返回用户ID，这个ID后续用来代表用户的身份来进行后续的操作
   repeated Relation relationInfo = 2;           //这里直接返回用户与设备关联的信息，便于前端处理
   string strValue = 3;
+  repeated string strDevName = 4;
 }
 
 message LogoutReq_USR                           //用户登出请求
@@ -538,6 +539,7 @@ message QueryDevReq_USR                         //查询用户关联设备的信
 message QueryDevRsp_USR                         //查询用户关联设备响应，这里返回的是Relation对象，描述了用户与设备之间的关系。
 {
   repeated Relation allRelationInfo = 1;      
+  repeated string strDevName = 2;
 }
 
 message QueryUserReq_USR                        //查询设备关联的用户信息，这里要考虑分页处理

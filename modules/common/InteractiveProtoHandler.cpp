@@ -1822,6 +1822,12 @@ void InteractiveProtoHandler::LoginRsp_USR::UnSerializer(const InteractiveMessag
     UnSerializeRelationList(m_reInfoList, InteractiveMsg.rspvalue().loginrsp_usr_value().relationinfo());
     m_strValue = InteractiveMsg.rspvalue().loginrsp_usr_value().strvalue();
 
+    m_strDevNameList.clear();
+    int iCount = InteractiveMsg.rspvalue().loginrsp_usr_value().strdevname_size();
+    for (int i = 0; i < iCount; ++i)
+    {
+        m_strDevNameList.push_back(InteractiveMsg.rspvalue().loginrsp_usr_value().strdevname(i));
+    }
 }
 
 void InteractiveProtoHandler::LoginRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -1835,6 +1841,17 @@ void InteractiveProtoHandler::LoginRsp_USR::Serializer(InteractiveMessage &Inter
     auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->mutable_relationinfo();
     SerializeRelationList(m_reInfoList, uinfo);
 
+    int i = 0;
+    auto itBegin = m_strDevNameList.begin();
+    auto itEnd = m_strDevNameList.end();
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->add_strdevname();
+        InteractiveMsg.mutable_rspvalue()->mutable_loginrsp_usr_value()->set_strdevname(i, *itBegin);
+
+        ++i;
+        ++itBegin;
+    }
 }
 
 void InteractiveProtoHandler::LogoutReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2216,6 +2233,12 @@ void InteractiveProtoHandler::QueryDevRsp_USR::UnSerializer(const InteractiveMes
     Rsp::UnSerializer(InteractiveMsg);
     UnSerializeRelationList(m_allRelationInfoList, InteractiveMsg.rspvalue().querydevrsp_usr_value().allrelationinfo());
     
+    m_strDevNameList.clear();
+    int iCount = InteractiveMsg.rspvalue().querydevrsp_usr_value().strdevname_size();
+    for (int i = 0; i < iCount; ++i)
+    {
+        m_strDevNameList.push_back(InteractiveMsg.rspvalue().querydevrsp_usr_value().strdevname(i));
+    }
 }
 
 void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2226,6 +2249,17 @@ void InteractiveProtoHandler::QueryDevRsp_USR::Serializer(InteractiveMessage &In
     auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->mutable_allrelationinfo();
     SerializeRelationList(m_allRelationInfoList, uinfo);
 
+    int i = 0;
+    auto itBegin = m_strDevNameList.begin();
+    auto itEnd = m_strDevNameList.end();
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->add_strdevname();
+        InteractiveMsg.mutable_rspvalue()->mutable_querydevrsp_usr_value()->set_strdevname(i, *itBegin);
+
+        ++i;
+        ++itBegin;
+    }
 }
 
 void InteractiveProtoHandler::QueryUserReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
