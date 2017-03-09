@@ -469,8 +469,8 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
                     " and begin date is " << itBeginRelation->m_strBeginDate <<
                     " and end date is " << itBeginRelation->m_strEndDate);
 
-                itBeginDevName++;
-                itBeginRelation++;
+                ++itBeginDevName;
+                ++itBeginRelation;
             }
         }
     }
@@ -977,8 +977,8 @@ bool AccessManager::QueryDeviceReq(const std::string &strMsg, const std::string 
                     " and begin date is " << itBeginRelation->m_strBeginDate <<
                     " and end date is " << itBeginRelation->m_strEndDate);
 
-                itBeginDevName++;
-                itBeginRelation++;
+                ++itBeginDevName;
+                ++itBeginRelation;
             }
         }
     }
@@ -1662,8 +1662,9 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     std::string strP2pID;
     unsigned int uiLease = 0;
     std::string strLicenseKey;
+    std::string strPushID;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey, &strPushID)
     {
         InteractiveProtoHandler::P2pInfoRsp_DEV rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_DEV_T;
@@ -1675,6 +1676,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
         rsp.m_uiLease = blResult ? uiLease : 0;
         rsp.m_strLicenseKey = blResult ? strLicenseKey : "";
+        rsp.m_strPushID = blResult ? strPushID : "";
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1686,7 +1688,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("P2p info of device rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
             " and device ip is " << req.m_strDevIpAddress << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
-            " and lease is " << uiLease << " and liecense key is " << strLicenseKey <<
+            " and lease is " << uiLease << " and liecense key is " << strLicenseKey << " and push id is " << strPushID <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 
@@ -1714,6 +1716,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
     strLicenseKey = p2pConnParam.sparam1;
+    strPushID = p2pConnParam.sparam2;
 
     blResult = true;
 
@@ -1829,8 +1832,9 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     std::string strP2pID;
     unsigned int uiLease = 0;
     std::string strLicenseKey;
+    std::string strPushID;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strP2pServer, &strP2pID, &uiLease, &strLicenseKey, &strPushID)
     {
         InteractiveProtoHandler::P2pInfoRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_USR_T;
@@ -1842,6 +1846,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
         rsp.m_uiLease = blResult ? uiLease : 0;
         rsp.m_strLicenseKey = blResult ? strLicenseKey : "";
+        rsp.m_strPushID = blResult ? strPushID : "";
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1854,7 +1859,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         LOG_INFO_RLD("P2p info of user rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
             " and device id is " << req.m_strDevID << " and user ip is " << req.m_strUserIpAddress <<
             " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer << " and lease is " << uiLease <<
-            " and liecense key is " << strLicenseKey <<
+            " and liecense key is " << strLicenseKey << " and push id is " << strPushID <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
 
@@ -1883,6 +1888,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     strP2pServer = p2pConnParam.sInitstring;
     uiLease = p2pConnParam.nTime;
     strLicenseKey = p2pConnParam.sparam1;
+    strPushID = p2pConnParam.sparam2;
 
     blResult = true;
 
@@ -2681,8 +2687,8 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
                 return true;
             }
 
-            i++;
-            itBegin++;
+            ++i;
+            ++itBegin;
         }
 
         LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, random number is out of boundary, country id is " << strCountryID << " and area id is " << strAreaID);

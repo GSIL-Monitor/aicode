@@ -71,7 +71,8 @@ bool CTimeZone::GetCountryTimeFromDataBase( string sIP, TimeZone &timezone)
     const char* sqlfmt = "select countrycode, country_en, country_cn, countrySQ from t_timezone_info where countrycode = (select countrycode from t_ip_country where ip='%s' limit 1)";    
     snprintf(sql, sizeof(sql), sqlfmt, sIP.c_str());
 
-    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    bool bRet = false;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
         switch (uiColumnNum)
         {
@@ -86,7 +87,8 @@ bool CTimeZone::GetCountryTimeFromDataBase( string sIP, TimeZone &timezone)
             break;
         case 3:
             timezone.sCountrySQ = strColumn;
-            Result = timezone;
+            /*Result = timezone;*/
+            bRet = true;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
@@ -95,26 +97,13 @@ bool CTimeZone::GetCountryTimeFromDataBase( string sIP, TimeZone &timezone)
 
     };
 
-    std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_pMysql->QueryExec(std::string(sql), SqlFunc))
     {
         LOG_ERROR_RLD("GetCountryInfoByIp sql failed, sql is " << sql);
         return false;
     }
 
-    if (ResultList.empty())
-    {
-        LOG_INFO_RLD("GetCountryInfoByIp info not found, sql is " << sql);
-        return false;
-    }
-
-    auto ResultInfo = boost::any_cast<TimeZone>(ResultList.front());
-    timezone.sCode = ResultInfo.sCode;
-    timezone.sCountryCn = ResultInfo.sCountryCn;
-    timezone.sCountryEn = ResultInfo.sCountryEn;
-    timezone.sCountrySQ = ResultInfo.sCountrySQ;
-
-    return true;
+    return bRet;
 }
 
 //通过第三方接口获取指定IP的对应时区

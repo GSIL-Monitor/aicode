@@ -64,6 +64,8 @@ DROP TABLE IF EXISTS `t_p2pid_sy`;
 CREATE TABLE `t_p2pid_sy` (
     `id` VARCHAR(36) NOT NULL,
     `p2pid` VARCHAR(50) NOT NULL,
+    `param1` VARCHAR(100) NOT NULL COMMENT 'license值',
+    `param2` VARCHAR(100) NOT NULL COMMENT 'pushid',
     `deviceid` VARCHAR(100) NULL DEFAULT NULL,
     `cluster` VARCHAR(100) NOT NULL COMMENT '所属服务器集群',
     `validity_period` INT(11) NOT NULL DEFAULT '0' COMMENT '有效期，单位：秒，0代表永久有效',
@@ -75,7 +77,8 @@ CREATE TABLE `t_p2pid_sy` (
     INDEX `p2pid` (`p2pid`),
     INDEX `createtime` (`createtime`),
     INDEX `updatetime` (`updatetime`),
-    INDEX `status` (`status`)
+    INDEX `status` (`status`),
+    INDEX `license` (`param1`)
 )
 ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='尚云P2Pid库';
 

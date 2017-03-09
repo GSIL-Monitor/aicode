@@ -2,6 +2,7 @@
 #include "LogRLD.h"
 #include "boost/any.hpp"
 #include "boost/lexical_cast.hpp"
+#include "mysql_impl.h"
 
 boost::mutex P2PServerManager::m_smutex;
 
@@ -66,6 +67,10 @@ bool P2PServerManager::AllocP2PID( TimeZone timezone, string sDevID )
     {
         P2PServerManager::m_smutex.lock();
         bRet = GetFreeP2pID(timezone.sCode, m_table_name, m_p2pConnectParams);
+        if (bRet)
+        {
+            bRet = UpdateP2PID(m_p2pConnectParams.sP2Pid, sDevID);
+        }
         P2PServerManager::m_smutex.unlock();
     }
     return bRet;
@@ -151,7 +156,7 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectPa
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period, param1 from %s where deviceid='%s'";
+    const char* sqlfmt = "select p2pid, validity_period, param1, param2 from %s where deviceid='%s'";
     snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDevID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
@@ -166,6 +171,9 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectPa
             break;
         case 2:
             p2pparams.sparam1 = strColumn;
+			break;
+		case 3:
+			p2pparams.sparam2 = strColumn;
             Result = p2pparams;
             break;
         default:
@@ -205,10 +213,11 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period, param1 from %s where cluster = (select cluster from t_p2pserver_info where countrycode = '%s' and flag='%s') and deviceid is null limit 1";
+    const char* sqlfmt = "select p2pid, validity_period, param1, param2 from %s where status=0 and cluster = (select cluster from t_p2pserver_info where status=0 and countrycode = '%s' and flag='%s') and deviceid is null limit 1";
     snprintf(sql, sizeof(sql), sqlfmt, strP2pIDTableName.c_str(), strCnCode.c_str(), m_sFlag.c_str());
 
-    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    bool bRet = false;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
         switch (uiColumnNum)
         {
@@ -220,7 +229,11 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
             break;
         case 2:
             p2pparams.sparam1 = strColumn;
-            Result = p2pparams;
+            //Result = p2pparams;
+			break;
+		case 3:
+			p2pparams.sparam2 = strColumn;
+            bRet = true;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
@@ -229,23 +242,32 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
 
     };
 
-    std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_pMysql->QueryExec(std::string(sql), SqlFunc))
     {
         LOG_ERROR_RLD("GetFreeP2pID sql failed, sql is " << sql);
         return false;
     }
 
-    if (ResultList.empty())
+    return bRet;
+}
+
+bool P2PServerManager::UpdateP2PID(const std::string &p2pid, const std::string &strDeviceID)
+{
+    if (NULL == m_pDBCache)
     {
-        LOG_INFO_RLD("GetFreeP2pID info not found, sql is " << sql);
+        LOG_ERROR_RLD("DBCache is null.");
         return false;
     }
 
-    auto ResultInfo = boost::any_cast<P2PConnectParam>(ResultList.front());
-    p2pparams.sP2Pid = ResultInfo.sP2Pid;
-    p2pparams.nTime = ResultInfo.nTime;
-    p2pparams.sparam1 = ResultInfo.sparam1;
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "update %s set deviceid = '%s' where p2pid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), p2pid.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UpdateP2PID sql exec failed, sql is " << sql);
+        return false;
+    }
 
     return true;
 }

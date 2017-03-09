@@ -1,8 +1,11 @@
-#pragma once
+#ifndef _TIME_ZONE_
+#define _TIME_ZONE_
+
 //#include "Common.h"
 #include <string>
-
 using std::string;
+
+class MysqlImpl;
 
 //Ê±Çø
 typedef struct _tagCountryTime
@@ -37,7 +40,7 @@ typedef struct _tagCountryInfo
 }CountryInfo;
 
 class DBInfoCacheManager;
-class MysqlImpl;
+/*class MysqlImpl;*/
 
 class CTimeZone
 {
@@ -72,3 +75,6 @@ public:
     DBInfoCacheManager *m_pDBCache;
     MysqlImpl *m_pMysql;
 };
+
+
+#endif

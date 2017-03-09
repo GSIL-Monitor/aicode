@@ -1,9 +1,13 @@
-#pragma once
+#ifndef _P2P_SERVER_NANAGER_
+#define  _P2P_SERVER_NANAGER_
+
 #include <boost/thread/mutex.hpp>
 #include "TimeZone.h"
 #include "DBInfoCacheManager.h"
 
 using std::string;
+
+class MysqlImpl;
 
 //P2P连接目标参数
 typedef struct _tagP2PConnectParam
@@ -11,6 +15,7 @@ typedef struct _tagP2PConnectParam
     string sInitstring; //连接服务器的初始化字符串
     string sP2Pid;      //分配给设备的P2PID
     string sparam1;		//对于尚云来说，这是license值，对于其他类型的p2pid，则可能是其他值
+	string sparam2;		//对于尚云来说，这是pushid值
     int nTime;              //租约时间
 }P2PConnectParam;
 
@@ -56,6 +61,7 @@ public:
 private:
     bool GetP2pIDByDevID(const std::string &strDevID, P2PConnectParam &p2pparams);
     bool GetFreeP2pID(const std::string &strCnCode, const std::string &strP2pIDTableName, P2PConnectParam &p2pparams);
+    bool UpdateP2PID(const std::string &p2pid, const std::string &strDeviceID);
 
 public:
     string m_sFlag;
@@ -70,3 +76,6 @@ private:
     DBInfoCacheManager *m_pDBCache;
     MysqlImpl *m_pMysql;
 };
+
+
+#endif

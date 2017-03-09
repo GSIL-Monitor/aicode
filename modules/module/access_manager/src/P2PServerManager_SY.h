@@ -1,8 +1,10 @@
+#ifndef _P2P_SERVER_MANAGER_SY_
+#define _P2P_SERVER_MANAGER_SY_
+
 /*
 尚云P2P服务器管理类
 */
 
-#pragma once
 #include "P2PServerManager.h"
 
 class P2PServerManager_SY :
@@ -16,3 +18,6 @@ public:
     virtual bool ParseConnectParams( string sconnectparams );
 
 };
+
+
+#endif
