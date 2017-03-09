@@ -2784,6 +2784,7 @@ void InteractiveProtoHandler::P2pInfoRsp_USR::UnSerializer(const InteractiveMess
     m_strP2pServer = InteractiveMsg.rspvalue().p2pinforsp_usr_value().strp2pserver();
     m_uiLease = InteractiveMsg.rspvalue().p2pinforsp_usr_value().uilease();
     m_strLicenseKey = InteractiveMsg.rspvalue().p2pinforsp_usr_value().strlicensekey();
+    m_strPushID = InteractiveMsg.rspvalue().p2pinforsp_usr_value().strpushid();
 }
 
 void InteractiveProtoHandler::P2pInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2794,6 +2795,7 @@ void InteractiveProtoHandler::P2pInfoRsp_USR::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strp2pserver(m_strP2pServer);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_uilease(m_uiLease);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strlicensekey(m_strLicenseKey);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_usr_value()->set_strpushid(m_strPushID);
 }
 
 void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -3068,6 +3070,7 @@ void InteractiveProtoHandler::P2pInfoRsp_DEV::UnSerializer(const InteractiveMess
     m_strP2pServer = InteractiveMsg.rspvalue().p2pinforsp_dev_value().strp2pserver();
     m_uiLease = InteractiveMsg.rspvalue().p2pinforsp_dev_value().uilease();
     m_strLicenseKey = InteractiveMsg.rspvalue().p2pinforsp_dev_value().strlicensekey();
+    m_strPushID = InteractiveMsg.rspvalue().p2pinforsp_dev_value().strpushid();
 }
 
 void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3078,6 +3081,7 @@ void InteractiveProtoHandler::P2pInfoRsp_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strp2pserver(m_strP2pServer);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_uilease(m_uiLease);
     InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strlicensekey(m_strLicenseKey);
+    InteractiveMsg.mutable_rspvalue()->mutable_p2pinforsp_dev_value()->set_strpushid(m_strPushID);
 }
 
 void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)

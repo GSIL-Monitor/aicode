@@ -305,6 +305,7 @@ message P2pInfoRsp_DEV                          //p2p服务器信息响应
   string strP2pID = 2;
   uint32 uiLease = 3;                           //租约，单位为小时
   string strLicenseKey = 4;
+  string strPushID = 5;
 }
 
 message AddFileReq_DEV                          //设备添加文件请求
@@ -638,6 +639,7 @@ message P2pInfoRsp_USR                          //p2p服务器信息响应
   string strP2pID = 2;
   uint32 uiLease = 3;                           //租约，单位为小时
   string strLicenseKey = 4;
+  string strPushID = 5;
 }
 message DeleteFileReq_USR                       //用户删除文件请求
 {

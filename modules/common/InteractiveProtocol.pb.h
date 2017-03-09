@@ -2882,6 +2882,20 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strlicensekey();
   void set_allocated_strlicensekey(::std::string* strlicensekey);
 
+  // string strPushID = 5;
+  void clear_strpushid();
+  static const int kStrPushIDFieldNumber = 5;
+  const ::std::string& strpushid() const;
+  void set_strpushid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpushid(::std::string&& value);
+  #endif
+  void set_strpushid(const char* value);
+  void set_strpushid(const char* value, size_t size);
+  ::std::string* mutable_strpushid();
+  ::std::string* release_strpushid();
+  void set_allocated_strpushid(::std::string* strpushid);
+
   // uint32 uiLease = 3;
   void clear_uilease();
   static const int kUiLeaseFieldNumber = 3;
@@ -2895,6 +2909,7 @@ class P2pInfoRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
   ::google::protobuf::internal::ArenaStringPtr strlicensekey_;
+  ::google::protobuf::internal::ArenaStringPtr strpushid_;
   ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -8527,6 +8542,20 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strlicensekey();
   void set_allocated_strlicensekey(::std::string* strlicensekey);
 
+  // string strPushID = 5;
+  void clear_strpushid();
+  static const int kStrPushIDFieldNumber = 5;
+  const ::std::string& strpushid() const;
+  void set_strpushid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpushid(::std::string&& value);
+  #endif
+  void set_strpushid(const char* value);
+  void set_strpushid(const char* value, size_t size);
+  ::std::string* mutable_strpushid();
+  ::std::string* release_strpushid();
+  void set_allocated_strpushid(::std::string* strpushid);
+
   // uint32 uiLease = 3;
   void clear_uilease();
   static const int kUiLeaseFieldNumber = 3;
@@ -8540,6 +8569,7 @@ class P2pInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
   ::google::protobuf::internal::ArenaStringPtr strlicensekey_;
+  ::google::protobuf::internal::ArenaStringPtr strpushid_;
   ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -14421,6 +14451,58 @@ inline void P2pInfoRsp_DEV::set_allocated_strlicensekey(::std::string* strlicens
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strLicenseKey)
 }
 
+// string strPushID = 5;
+inline void P2pInfoRsp_DEV::clear_strpushid() {
+  strpushid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_DEV::strpushid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+  return strpushid_.GetNoArena();
+}
+inline void P2pInfoRsp_DEV::set_strpushid(const ::std::string& value) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_DEV::set_strpushid(::std::string&& value) {
+  
+  strpushid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+}
+#endif
+inline void P2pInfoRsp_DEV::set_strpushid(const char* value) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+}
+inline void P2pInfoRsp_DEV::set_strpushid(const char* value, size_t size) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+}
+inline ::std::string* P2pInfoRsp_DEV::mutable_strpushid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+  return strpushid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_DEV::release_strpushid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+  
+  return strpushid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_DEV::set_allocated_strpushid(::std::string* strpushid) {
+  if (strpushid != NULL) {
+    
+  } else {
+    
+  }
+  strpushid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpushid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_DEV.strPushID)
+}
+
 // -------------------------------------------------------------------
 
 // AddFileReq_DEV
@@ -19847,6 +19929,58 @@ inline void P2pInfoRsp_USR::set_allocated_strlicensekey(::std::string* strlicens
   }
   strlicensekey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlicensekey);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strLicenseKey)
+}
+
+// string strPushID = 5;
+inline void P2pInfoRsp_USR::clear_strpushid() {
+  strpushid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoRsp_USR::strpushid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoRsp_USR.strPushID)
+  return strpushid_.GetNoArena();
+}
+inline void P2pInfoRsp_USR::set_strpushid(const ::std::string& value) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoRsp_USR.strPushID)
+}
+#if LANG_CXX11
+inline void P2pInfoRsp_USR::set_strpushid(::std::string&& value) {
+  
+  strpushid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoRsp_USR.strPushID)
+}
+#endif
+inline void P2pInfoRsp_USR::set_strpushid(const char* value) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoRsp_USR.strPushID)
+}
+inline void P2pInfoRsp_USR::set_strpushid(const char* value, size_t size) {
+  
+  strpushid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoRsp_USR.strPushID)
+}
+inline ::std::string* P2pInfoRsp_USR::mutable_strpushid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoRsp_USR.strPushID)
+  return strpushid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoRsp_USR::release_strpushid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoRsp_USR.strPushID)
+  
+  return strpushid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoRsp_USR::set_allocated_strpushid(::std::string* strpushid) {
+  if (strpushid != NULL) {
+    
+  } else {
+    
+  }
+  strpushid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpushid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoRsp_USR.strPushID)
 }
 
 // -------------------------------------------------------------------
