@@ -70,6 +70,19 @@ bool AccessManager::Init()
     return true;
 }
 
+bool AccessManager::GetMsgType(const std::string &strMsg, int &iMsgType)
+{
+    InteractiveProtoHandler::MsgType mtype;
+    if (!m_pProtoHandler->GetMsgType(strMsg, mtype))
+    {
+        LOG_ERROR_RLD("Get msg type failed.");
+        return false;
+    }
+
+    iMsgType = mtype;
+    return true;
+}
+
 bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;

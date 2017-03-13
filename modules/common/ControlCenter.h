@@ -21,7 +21,8 @@ typedef boost::function<void(const std::string &strDstID, const std::string &str
 
 typedef boost::function<bool(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)> MsgHandler;
 
-class InteractiveProtoHandler;
+typedef boost::function<bool(const std::string &strMsg, int &iMsgType)> MsgTypeHandler;
+
 
 class ControlCenter
 {
@@ -54,6 +55,8 @@ public:
 
     void SetupMsgPreHandler(MsgHandler msghandler);
 
+    void SetupMsgTypeParseHandler(MsgTypeHandler msgtypehdr);
+
 private:    
     void ConnectCB(const boost::system::error_code &ec);
     void WriteCB(const boost::system::error_code &ec, void *pValue);
@@ -65,7 +68,6 @@ private:
     void MsgWriteInner(const std::string &strDstID, const std::string &strDataToBeWriting);
 
 private:
-    boost::shared_ptr<InteractiveProtoHandler> m_pProtoHandler;
 
     ParamInfo m_ParamInfo;
 
@@ -79,6 +81,8 @@ private:
 
     Runner m_MsgWriterRunner;
     boost::mutex m_MsgWriterMutex;
+
+    MsgTypeHandler m_MsgTypeHandler;
 
 private:
     bool ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue);

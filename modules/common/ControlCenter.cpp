@@ -1,10 +1,9 @@
 #include "ControlCenter.h"
-#include "InteractiveProtoHandler.h"
 #include "LogRLD.h"
 
 std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t uiSize);
 
-ControlCenter::ControlCenter(const ParamInfo &pinfo) : m_pProtoHandler(new InteractiveProtoHandler), m_ParamInfo(pinfo), 
+ControlCenter::ControlCenter(const ParamInfo &pinfo) : m_ParamInfo(pinfo), 
 m_MsgHandlerRunner(pinfo.uiThreadOfWorking), m_MsgWriterRunner(1)
 {
 
@@ -54,6 +53,11 @@ void ControlCenter::SetupMsgHandler(const int iMsgType, MsgHandler msghandler)
 void ControlCenter::SetupMsgPreHandler(MsgHandler msghandler)
 {
     m_MsgPreHandlerList.push_back(msghandler);
+}
+
+void ControlCenter::SetupMsgTypeParseHandler(MsgTypeHandler msgtypehdr)
+{
+    m_MsgTypeHandler = msgtypehdr;
 }
 
 void ControlCenter::ConnectCB(const boost::system::error_code &ec)
@@ -196,13 +200,19 @@ void ControlCenter::MsgWriteInner(const std::string &strDstID, const std::string
 
 bool ControlCenter::ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue)
 {
-    InteractiveProtoHandler::MsgType mtype;
-    if (!m_pProtoHandler->GetMsgType(strData, mtype))
+    if (NULL == m_MsgTypeHandler)
+    {
+        LOG_ERROR_RLD("Get msg type handle failed.");
+        return false;
+    }
+
+    int mtype = 0;
+    if (!m_MsgTypeHandler(strData, mtype))
     {
         LOG_ERROR_RLD("Get msg type failed.");
         return false;
     }
-    
+        
     LOG_INFO_RLD("Receive msg type is " << mtype);
 
     auto itFind = m_MsgHandlerMap.find(mtype);

@@ -90,6 +90,8 @@ public:
     ~AccessManager();
     bool Init();
 
+    bool GetMsgType(const std::string &strMsg, int &iMsgType);
+
     bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);

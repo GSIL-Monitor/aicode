@@ -307,6 +307,8 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgPreHandler(boost::bind(&AccessManager::PreCommonHandler, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgTypeParseHandler(boost::bind(&AccessManager::GetMsgType, &Umg, _1, _2));
+
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T, boost::bind(&AccessManager::RegisterUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnRegisterUserReq_USR_T, boost::bind(&AccessManager::UnRegisterUserReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUsrInfoReq_USR_T, boost::bind(&AccessManager::QueryUsrInfoReq, &Umg, _1, _2, _3));
