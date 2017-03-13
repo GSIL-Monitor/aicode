@@ -564,11 +564,36 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strValue = itFind->second;
     }
 
+    itFind = pMsgInfoMap->find("terminaltype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Terminal type not found.");
+        return blResult;
+    }
+    const std::string strTerminalType = itFind->second;
+
+    unsigned int uiTerminalType = 0;
+    try
+    {
+        uiTerminalType = boost::lexical_cast<unsigned int>(strTerminalType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+
+
     std::string strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
 
     LOG_INFO_RLD("Login user info received and  user name is " << strUsername <<
         " and user id is " << strUserID << 
-        " and user pwd is " << strUserpwd <<
+        " and user pwd is " << strUserpwd << " and terminal type is " << uiTerminalType <<
         " and strExtend is [" << strExtend << "]" << " and strValue is [" << strValue << "]");
         
     std::string strSid;
@@ -1815,8 +1840,32 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
     const std::string strRemoteIP = itFind->second;
 
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return blResult;
+    }
+    const std::string strDevType = itFind->second;
+
+    unsigned int uiDevType = 0;
+    try
+    {
+        uiDevType = boost::lexical_cast<unsigned int>(strDevType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+
     LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd << 
-        " and device ip is " << strRemoteIP);
+        " and device ip is " << strRemoteIP << " and device type is " << uiDevType);
 
     std::string strValue;
     std::string strSid;
