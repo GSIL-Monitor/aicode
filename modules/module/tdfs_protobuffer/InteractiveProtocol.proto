@@ -73,6 +73,9 @@ enum MsgType
   QueryAccessDomainNameReq_DEV_T = 10340;  //设备查询接入服务器域名
   QueryAccessDomainNameRsp_DEV_T = 10350;
 
+  QueryUpgradeSiteReq_DEV_T = 10360; //设备查询升级站点
+  QueryUpgradeSiteRsp_DEV_T = 10370;
+
   ////////////////////////////////////////////////////////
   
   MsgPreHandlerReq_USR_T = 19990;    //消息预处理
@@ -346,6 +349,18 @@ message QueryAccessDomainNameRsp_DEV            //设备查询接入服务器域
   string strDomainName = 1;
   uint32 uiLease = 2;
   string strValue = 3;
+}
+
+message QueryUpgradeSiteReq_DEV                 //设备查询升级站点请求
+{
+  string strDevID = 1;
+  string strDevIpAddress = 2;
+}
+
+message QueryUpgradeSiteRsp_DEV                 //设备查询升级站点响应
+{
+  string strUpgradeSiteUrl = 1;
+  uint32 uiLease = 2;                           //租约，单位为小时
 }
 
 
@@ -754,6 +769,8 @@ message Req
   
   QueryTimeZoneReq_DEV QueryTimeZoneReq_DEV_Value = 61;            //查询时区
   QueryAccessDomainNameReq_DEV QueryAccessDomainNameReq_DEV_Value = 62;    //设备查询接入服务器域名
+
+  QueryUpgradeSiteReq_DEV QueryUpgradeSiteReq_DEV_Value = 63;      //设备查询升级站点
   
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
   GetAccessAddressReq_USR GetAccessAddressReq_USR_Value = 70;      //用户获取用户设备管理服务器地址
@@ -788,7 +805,7 @@ message Req
   QueryFileReq_USR QueryFileReq_USR_Value = 330;                   //用户查询文件
   
   QueryAccessDomainNameReq_USR QueryAccessDomainNameReq_USR_Value = 350;   //用户查询接入服务器域名
- 
+
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;                //获取在线设备信息
   BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
   GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;              //获取在线用户信息
@@ -851,6 +868,8 @@ message Rsp
   
   QueryAccessDomainNameRsp_USR QueryAccessDomainNameRsp_USR_Value = 350;   //用户查询接入服务器域名
 
+  QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 360;     //设备查询升级站点
+ 
   GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
   GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息
 

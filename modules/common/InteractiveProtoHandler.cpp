@@ -710,6 +710,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryTimeZoneRsp_DEV_T, handler));
     
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUpgradeSiteReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUpgradeSiteReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUpgradeSiteReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUpgradeSiteRsp_DEV_T, handler));
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1511,6 +1525,27 @@ bool InteractiveProtoHandler::QueryTimeZoneRsp_DEV_UnSerializer(const Interactiv
 {
     return UnSerializerT<QueryTimeZoneRsp_DEV, Req>(InteractiveMsg, rsp);
 }
+
+bool InteractiveProtoHandler::QueryUpgradeSiteReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryUpgradeSiteReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUpgradeSiteReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryUpgradeSiteReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryUpgradeSiteRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryUpgradeSiteRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -3236,3 +3271,34 @@ void InteractiveProtoHandler::QueryTimeZoneRsp_DEV::Serializer(InteractiveMessag
     InteractiveMsg.mutable_rspvalue()->mutable_querytimezonersp_dev_value()->set_strtimezone(m_strTimeZone);
 
 }
+
+void InteractiveProtoHandler::QueryUpgradeSiteReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDevID = InteractiveMsg.reqvalue().queryupgradesitereq_dev_value().strdevid();
+    m_strDevIpAddress = InteractiveMsg.reqvalue().queryupgradesitereq_dev_value().strdevipaddress();
+}
+
+void InteractiveProtoHandler::QueryUpgradeSiteReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUpgradeSiteReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryupgradesitereq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryupgradesitereq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+}
+
+void InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strUpgradeSiteUrl = InteractiveMsg.rspvalue().queryupgradesitersp_dev_value().strupgradesiteurl();
+    m_uiLease = InteractiveMsg.rspvalue().queryupgradesitersp_dev_value().uilease();
+}
+
+void InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUpgradeSiteRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryupgradesitersp_dev_value()->set_strupgradesiteurl(m_strUpgradeSiteUrl);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryupgradesitersp_dev_value()->set_uilease(m_uiLease);
+}
+

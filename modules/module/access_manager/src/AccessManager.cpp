@@ -2181,7 +2181,7 @@ void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::li
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    for (auto fileInfo : FileInfoList)
+    for (auto &fileInfo : FileInfoList)
     {
         InteractiveProtoHandler::File fileInfoTmp;
         fileInfoTmp.m_strFileID = CreateUUID();
@@ -2262,7 +2262,7 @@ bool AccessManager::DownloadFileToDB(const std::string &strUserID, const std::li
         boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> > pFileUrlList;
         pFileUrlList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> >>(ResultList.front());
 
-        for (auto fileUrl : *pFileUrlList)
+        for (auto &fileUrl : *pFileUrlList)
         {
             FileUrlList.push_back(fileUrl);
         }
@@ -2308,7 +2308,7 @@ bool AccessManager::DownloadFileToDB(const std::string &strUserID, const std::li
         }
 
         boost::shared_ptr<std::list<InteractiveProtoHandler::FileUrl> > pFileUrlList(new std::list<InteractiveProtoHandler::FileUrl>);
-        for (auto fileUrl : FileUrlList)
+        for (auto &fileUrl : FileUrlList)
         {
             pFileUrlList->push_back(fileUrl);
         }
@@ -2373,7 +2373,7 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
         boost::shared_ptr<std::list<InteractiveProtoHandler::File> > pFileInfoList;
         pFileInfoList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::File> >>(ResultList.front());
 
-        for (auto fileInfo : *pFileInfoList)
+        for (auto &fileInfo : *pFileInfoList)
         {
             FileInfoList.push_back(fileInfo);
         }
@@ -2396,7 +2396,7 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
 
         boost::shared_ptr<std::list<InteractiveProtoHandler::File> > pFileInfoList(new std::list<InteractiveProtoHandler::File>);
 
-        for (auto fileInfo : FileInfoList)
+        for (auto &fileInfo : FileInfoList)
         {
             pFileInfoList->push_back(fileInfo);
         }
@@ -2666,7 +2666,7 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
         }
     }
 
-    std::list<AccessDomainInfo> DomainInfoList = itPos->second;
+    const std::list<AccessDomainInfo> &DomainInfoList = itPos->second;
 
     int size = DomainInfoList.size();
     if (size < 1)

@@ -54,6 +54,9 @@ public:
         QueryAccessDomainNameReq_DEV_T = 10340,  //设备查询接入服务器域名
         QueryAccessDomainNameRsp_DEV_T = 10350,
 
+        QueryUpgradeSiteReq_DEV_T = 10360,    //设备查询升级站点
+        QueryUpgradeSiteRsp_DEV_T = 10370,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -1002,6 +1005,27 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryUpgradeSiteReq_DEV : Req
+    {
+
+        std::string m_strDevID;
+        std::string m_strDevIpAddress;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUpgradeSiteRsp_DEV : Rsp
+    {
+        std::string m_strUpgradeSiteUrl;
+        unsigned int m_uiLease;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -1199,6 +1223,11 @@ private:
     bool QueryTimeZoneReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryTimeZoneRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryTimeZoneRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryUpgradeSiteReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryUpgradeSiteReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryUpgradeSiteRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryUpgradeSiteRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 

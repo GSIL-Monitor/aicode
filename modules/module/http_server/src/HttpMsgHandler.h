@@ -53,7 +53,7 @@ public:
 
     static const std::string USER_QUERY_ACCESS_DOMAIN_ACTION;
     static const std::string DEVICE_QUERY_ACCESS_DOMAIN_ACTION;
-
+    static const std::string DEVICE_QUERY_UPDATE_SERVICE;
 
 
     
@@ -136,16 +136,17 @@ public:
 
     bool DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool DeviceQueryUpdateServiceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
 private:
 
     bool AddDeviceFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool AddUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-
+    
 private:
-
-    void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
     bool PreCommonHandler(const std::string &strMsgReceived);
 
@@ -228,6 +229,8 @@ private:
     bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease);
 
     bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease);
+
+    bool DeviceQueryUpdateService(const std::string &strSid, const std::string &strIpAddress, const std::string &strDevID, std::string &strUpdateAddress, std::string &strLease);
 
 private:
     ParamInfo m_ParamInfo;

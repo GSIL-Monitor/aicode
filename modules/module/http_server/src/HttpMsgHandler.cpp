@@ -81,6 +81,8 @@ const std::string HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION("user_query_ac
 
 const std::string HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION("device_query_access_domain");
 
+const std::string HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE("device_query_update_service");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -2809,7 +2811,7 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
     itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
     if (pMsgInfoMap->end() == itFind)
     {
-        LOG_ERROR_RLD("User remote ip not found.");
+        LOG_ERROR_RLD("Device remote ip not found.");
         return blResult;
     }
     const std::string strRemoteIP = itFind->second;
@@ -2833,6 +2835,73 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
     blResult = true;
 
     return blResult;
+}
+
+bool HttpMsgHandler::DeviceQueryUpdateServiceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User remote ip not found.");
+        return blResult;
+    }
+    const std::string strRemoteIP = itFind->second;
+
+    itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    LOG_INFO_RLD("Device query update service address info received and device id is " << strDevID
+        << " and remote ip is " << strRemoteIP << " and sid is " << strSid);
+
+    std::string strUpdateServiceAddressName;
+    std::string strLease;
+    if (!DeviceQueryUpdateService(strSid, strRemoteIP, strDevID, strUpdateServiceAddressName, strLease))
+    {
+        LOG_ERROR_RLD("Device query update service address info handle failed and device id is " << strDevID << " and remote ip is " << strRemoteIP);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("update_address", strUpdateServiceAddressName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("lease", strLease));
+
+    blResult = true;
+
+    return blResult;
+
+
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -4929,6 +4998,64 @@ bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress
             " and domain name is " << strAccessDomainName <<
             " and return code is " << QueryDomainRsp.m_iRetcode <<
             " and return msg is " << QueryDomainRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeviceQueryUpdateService(const std::string &strSid, const std::string &strIpAddress, const std::string &strDevID, std::string &strUpdateAddress, std::string &strLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryUpgradeSiteReq_DEV QueryUpdateServiceReq;
+        QueryUpdateServiceReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUpgradeSiteReq_DEV_T;
+        QueryUpdateServiceReq.m_uiMsgSeq = 1;
+        QueryUpdateServiceReq.m_strSID = strSid;
+        QueryUpdateServiceReq.m_strDevID = strDevID;
+        QueryUpdateServiceReq.m_strDevIpAddress = strIpAddress;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUpdateServiceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device update address req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV QueryUpdateServiceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUpdateServiceRsp))
+        {
+            LOG_ERROR_RLD("Query device update service rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strUpdateAddress = QueryUpdateServiceRsp.m_strUpgradeSiteUrl;
+        strLease = boost::lexical_cast<std::string>(QueryUpdateServiceRsp.m_uiLease);
+        iRet = QueryUpdateServiceRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device update address and device id is " << strDevID << " and device ip is " << strIpAddress <<
+            " and update address is " << strUpdateAddress <<
+            " and return code is " << QueryUpdateServiceRsp.m_iRetcode <<
+            " and return msg is " << QueryUpdateServiceRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

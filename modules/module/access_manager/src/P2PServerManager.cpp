@@ -171,9 +171,9 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectPa
             break;
         case 2:
             p2pparams.sparam1 = strColumn;
-			break;
-		case 3:
-			p2pparams.sparam2 = strColumn;
+            break;
+        case 3:
+            p2pparams.sparam2 = strColumn;
             Result = p2pparams;
             break;
         default:
@@ -230,9 +230,9 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
         case 2:
             p2pparams.sparam1 = strColumn;
             //Result = p2pparams;
-			break;
-		case 3:
-			p2pparams.sparam2 = strColumn;
+            break;
+        case 3:
+            p2pparams.sparam2 = strColumn;
             bRet = true;
             break;
         default:

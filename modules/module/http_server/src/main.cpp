@@ -5,6 +5,7 @@
 #include "fcgiapp.h"
 #include "FCGIManager.h"
 #include "HttpMsgHandler.h"
+#include "ManagementAgent.h"
 #include "ConfigSt.h"
 #include "LogRLD.h"
 #include "boost/lexical_cast.hpp"
@@ -228,8 +229,20 @@ int main(int argc, char *argv[])
     CommMsgHandler::SetTimeoutRunningThreads(pm.m_uiThreadOfWorking);
 
     HttpMsgHandler filehdr(pm);
+
+    ManagementAgent::ParamInfo pm2;
+    pm2.m_strRemoteAddress = strRemoteAddress;
+    pm2.m_strRemotePort = strRemotePort;
+    pm2.m_strSelfID = strSelfID;
+    pm2.m_uiCallFuncTimeout = boost::lexical_cast<unsigned int>(CallFuncTimeout);
+    pm2.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
+    pm2.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
+    ManagementAgent ma(pm2);
+    ma.SetMsgWriter(boost::bind(&HttpMsgHandler::WriteMsg, &filehdr, _1, _2, _3, _4));
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
+    fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
+
     fcgimgr.SetMsgHandler(HttpMsgHandler::REGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::UNREGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_INFO_ACTION, boost::bind(&HttpMsgHandler::QueryUserInfoHandler, &filehdr, _1, _2));
@@ -265,9 +278,7 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryAccessDomainNameHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::UserQueryAccessDomainNameHandler, &filehdr, _1, _2));
-
-
-
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE, boost::bind(&HttpMsgHandler::DeviceQueryUpdateServiceHandler, &filehdr, _1, _2));
 
     fcgimgr.Run(true);
     return 0;

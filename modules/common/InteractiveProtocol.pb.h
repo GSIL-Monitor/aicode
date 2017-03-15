@@ -233,6 +233,12 @@ extern QueryTimeZoneReq_DEVDefaultTypeInternal _QueryTimeZoneReq_DEV_default_ins
 class QueryTimeZoneRsp_DEV;
 class QueryTimeZoneRsp_DEVDefaultTypeInternal;
 extern QueryTimeZoneRsp_DEVDefaultTypeInternal _QueryTimeZoneRsp_DEV_default_instance_;
+class QueryUpgradeSiteReq_DEV;
+class QueryUpgradeSiteReq_DEVDefaultTypeInternal;
+extern QueryUpgradeSiteReq_DEVDefaultTypeInternal _QueryUpgradeSiteReq_DEV_default_instance_;
+class QueryUpgradeSiteRsp_DEV;
+class QueryUpgradeSiteRsp_DEVDefaultTypeInternal;
+extern QueryUpgradeSiteRsp_DEVDefaultTypeInternal _QueryUpgradeSiteRsp_DEV_default_instance_;
 class QueryUserReq_USR;
 class QueryUserReq_USRDefaultTypeInternal;
 extern QueryUserReq_USRDefaultTypeInternal _QueryUserReq_USR_default_instance_;
@@ -344,6 +350,8 @@ enum MsgType {
   QueryTimeZoneRsp_DEV_T = 10330,
   QueryAccessDomainNameReq_DEV_T = 10340,
   QueryAccessDomainNameRsp_DEV_T = 10350,
+  QueryUpgradeSiteReq_DEV_T = 10360,
+  QueryUpgradeSiteRsp_DEV_T = 10370,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -3598,6 +3606,210 @@ class QueryAccessDomainNameRsp_DEV : public ::google::protobuf::Message /* @@pro
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdomainname_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uilease_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryUpgradeSiteReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUpgradeSiteReq_DEV) */ {
+ public:
+  QueryUpgradeSiteReq_DEV();
+  virtual ~QueryUpgradeSiteReq_DEV();
+
+  QueryUpgradeSiteReq_DEV(const QueryUpgradeSiteReq_DEV& from);
+
+  inline QueryUpgradeSiteReq_DEV& operator=(const QueryUpgradeSiteReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUpgradeSiteReq_DEV& default_instance();
+
+  static inline const QueryUpgradeSiteReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryUpgradeSiteReq_DEV*>(
+               &_QueryUpgradeSiteReq_DEV_default_instance_);
+  }
+
+  void Swap(QueryUpgradeSiteReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUpgradeSiteReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryUpgradeSiteReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryUpgradeSiteReq_DEV& from);
+  void MergeFrom(const QueryUpgradeSiteReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryUpgradeSiteReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDevID = 1;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 1;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strDevIpAddress = 2;
+  void clear_strdevipaddress();
+  static const int kStrDevIpAddressFieldNumber = 2;
+  const ::std::string& strdevipaddress() const;
+  void set_strdevipaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevipaddress(::std::string&& value);
+  #endif
+  void set_strdevipaddress(const char* value);
+  void set_strdevipaddress(const char* value, size_t size);
+  ::std::string* mutable_strdevipaddress();
+  ::std::string* release_strdevipaddress();
+  void set_allocated_strdevipaddress(::std::string* strdevipaddress);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUpgradeSiteReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryUpgradeSiteRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUpgradeSiteRsp_DEV) */ {
+ public:
+  QueryUpgradeSiteRsp_DEV();
+  virtual ~QueryUpgradeSiteRsp_DEV();
+
+  QueryUpgradeSiteRsp_DEV(const QueryUpgradeSiteRsp_DEV& from);
+
+  inline QueryUpgradeSiteRsp_DEV& operator=(const QueryUpgradeSiteRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUpgradeSiteRsp_DEV& default_instance();
+
+  static inline const QueryUpgradeSiteRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryUpgradeSiteRsp_DEV*>(
+               &_QueryUpgradeSiteRsp_DEV_default_instance_);
+  }
+
+  void Swap(QueryUpgradeSiteRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUpgradeSiteRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryUpgradeSiteRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryUpgradeSiteRsp_DEV& from);
+  void MergeFrom(const QueryUpgradeSiteRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryUpgradeSiteRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUpgradeSiteUrl = 1;
+  void clear_strupgradesiteurl();
+  static const int kStrUpgradeSiteUrlFieldNumber = 1;
+  const ::std::string& strupgradesiteurl() const;
+  void set_strupgradesiteurl(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupgradesiteurl(::std::string&& value);
+  #endif
+  void set_strupgradesiteurl(const char* value);
+  void set_strupgradesiteurl(const char* value, size_t size);
+  ::std::string* mutable_strupgradesiteurl();
+  ::std::string* release_strupgradesiteurl();
+  void set_allocated_strupgradesiteurl(::std::string* strupgradesiteurl);
+
+  // uint32 uiLease = 2;
+  void clear_uilease();
+  static const int kUiLeaseFieldNumber = 2;
+  ::google::protobuf::uint32 uilease() const;
+  void set_uilease(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUpgradeSiteRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strupgradesiteurl_;
   ::google::protobuf::uint32 uilease_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -10247,6 +10459,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryAccessDomainNameReq_DEV* release_queryaccessdomainnamereq_dev_value();
   void set_allocated_queryaccessdomainnamereq_dev_value(::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value);
 
+  // .Interactive.Message.QueryUpgradeSiteReq_DEV QueryUpgradeSiteReq_DEV_Value = 63;
+  bool has_queryupgradesitereq_dev_value() const;
+  void clear_queryupgradesitereq_dev_value();
+  static const int kQueryUpgradeSiteReqDEVValueFieldNumber = 63;
+  const ::Interactive::Message::QueryUpgradeSiteReq_DEV& queryupgradesitereq_dev_value() const;
+  ::Interactive::Message::QueryUpgradeSiteReq_DEV* mutable_queryupgradesitereq_dev_value();
+  ::Interactive::Message::QueryUpgradeSiteReq_DEV* release_queryupgradesitereq_dev_value();
+  void set_allocated_queryupgradesitereq_dev_value(::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -10549,6 +10770,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFileReq_DEV* addfilereq_dev_value_;
   ::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value_;
   ::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value_;
+  ::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -11009,6 +11231,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryAccessDomainNameRsp_USR* release_queryaccessdomainnamersp_usr_value();
   void set_allocated_queryaccessdomainnamersp_usr_value(::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value);
 
+  // .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 360;
+  bool has_queryupgradesitersp_dev_value() const;
+  void clear_queryupgradesitersp_dev_value();
+  static const int kQueryUpgradeSiteRspDEVValueFieldNumber = 360;
+  const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& queryupgradesitersp_dev_value() const;
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* mutable_queryupgradesitersp_dev_value();
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* release_queryupgradesitersp_dev_value();
+  void set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -11076,6 +11307,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value_;
   ::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value_;
   ::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value_;
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::google::protobuf::int32 iretcode_;
@@ -15300,6 +15532,184 @@ inline void QueryAccessDomainNameRsp_DEV::set_allocated_strvalue(::std::string* 
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameRsp_DEV.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryUpgradeSiteReq_DEV
+
+// string strDevID = 1;
+inline void QueryUpgradeSiteReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUpgradeSiteReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void QueryUpgradeSiteReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void QueryUpgradeSiteReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+}
+#endif
+inline void QueryUpgradeSiteReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+}
+inline void QueryUpgradeSiteReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+}
+inline ::std::string* QueryUpgradeSiteReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUpgradeSiteReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUpgradeSiteReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevID)
+}
+
+// string strDevIpAddress = 2;
+inline void QueryUpgradeSiteReq_DEV::clear_strdevipaddress() {
+  strdevipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUpgradeSiteReq_DEV::strdevipaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+  return strdevipaddress_.GetNoArena();
+}
+inline void QueryUpgradeSiteReq_DEV::set_strdevipaddress(const ::std::string& value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+}
+#if LANG_CXX11
+inline void QueryUpgradeSiteReq_DEV::set_strdevipaddress(::std::string&& value) {
+  
+  strdevipaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+}
+#endif
+inline void QueryUpgradeSiteReq_DEV::set_strdevipaddress(const char* value) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+}
+inline void QueryUpgradeSiteReq_DEV::set_strdevipaddress(const char* value, size_t size) {
+  
+  strdevipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+}
+inline ::std::string* QueryUpgradeSiteReq_DEV::mutable_strdevipaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+  return strdevipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUpgradeSiteReq_DEV::release_strdevipaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+  
+  return strdevipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUpgradeSiteReq_DEV::set_allocated_strdevipaddress(::std::string* strdevipaddress) {
+  if (strdevipaddress != NULL) {
+    
+  } else {
+    
+  }
+  strdevipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevipaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUpgradeSiteReq_DEV.strDevIpAddress)
+}
+
+// -------------------------------------------------------------------
+
+// QueryUpgradeSiteRsp_DEV
+
+// string strUpgradeSiteUrl = 1;
+inline void QueryUpgradeSiteRsp_DEV::clear_strupgradesiteurl() {
+  strupgradesiteurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUpgradeSiteRsp_DEV::strupgradesiteurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+  return strupgradesiteurl_.GetNoArena();
+}
+inline void QueryUpgradeSiteRsp_DEV::set_strupgradesiteurl(const ::std::string& value) {
+  
+  strupgradesiteurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+}
+#if LANG_CXX11
+inline void QueryUpgradeSiteRsp_DEV::set_strupgradesiteurl(::std::string&& value) {
+  
+  strupgradesiteurl_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+}
+#endif
+inline void QueryUpgradeSiteRsp_DEV::set_strupgradesiteurl(const char* value) {
+  
+  strupgradesiteurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+}
+inline void QueryUpgradeSiteRsp_DEV::set_strupgradesiteurl(const char* value, size_t size) {
+  
+  strupgradesiteurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+}
+inline ::std::string* QueryUpgradeSiteRsp_DEV::mutable_strupgradesiteurl() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+  return strupgradesiteurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUpgradeSiteRsp_DEV::release_strupgradesiteurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+  
+  return strupgradesiteurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUpgradeSiteRsp_DEV::set_allocated_strupgradesiteurl(::std::string* strupgradesiteurl) {
+  if (strupgradesiteurl != NULL) {
+    
+  } else {
+    
+  }
+  strupgradesiteurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupgradesiteurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUpgradeSiteRsp_DEV.strUpgradeSiteUrl)
+}
+
+// uint32 uiLease = 2;
+inline void QueryUpgradeSiteRsp_DEV::clear_uilease() {
+  uilease_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryUpgradeSiteRsp_DEV::uilease() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUpgradeSiteRsp_DEV.uiLease)
+  return uilease_;
+}
+inline void QueryUpgradeSiteRsp_DEV::set_uilease(::google::protobuf::uint32 value) {
+  
+  uilease_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUpgradeSiteRsp_DEV.uiLease)
 }
 
 // -------------------------------------------------------------------
@@ -21860,6 +22270,45 @@ inline void Req::set_allocated_queryaccessdomainnamereq_dev_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAccessDomainNameReq_DEV_Value)
 }
 
+// .Interactive.Message.QueryUpgradeSiteReq_DEV QueryUpgradeSiteReq_DEV_Value = 63;
+inline bool Req::has_queryupgradesitereq_dev_value() const {
+  return this != internal_default_instance() && queryupgradesitereq_dev_value_ != NULL;
+}
+inline void Req::clear_queryupgradesitereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryupgradesitereq_dev_value_ != NULL) delete queryupgradesitereq_dev_value_;
+  queryupgradesitereq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUpgradeSiteReq_DEV& Req::queryupgradesitereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryUpgradeSiteReq_DEV_Value)
+  return queryupgradesitereq_dev_value_ != NULL ? *queryupgradesitereq_dev_value_
+                         : *::Interactive::Message::QueryUpgradeSiteReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUpgradeSiteReq_DEV* Req::mutable_queryupgradesitereq_dev_value() {
+  
+  if (queryupgradesitereq_dev_value_ == NULL) {
+    queryupgradesitereq_dev_value_ = new ::Interactive::Message::QueryUpgradeSiteReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryUpgradeSiteReq_DEV_Value)
+  return queryupgradesitereq_dev_value_;
+}
+inline ::Interactive::Message::QueryUpgradeSiteReq_DEV* Req::release_queryupgradesitereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryUpgradeSiteReq_DEV_Value)
+  
+  ::Interactive::Message::QueryUpgradeSiteReq_DEV* temp = queryupgradesitereq_dev_value_;
+  queryupgradesitereq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryupgradesitereq_dev_value(::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value) {
+  delete queryupgradesitereq_dev_value_;
+  queryupgradesitereq_dev_value_ = queryupgradesitereq_dev_value;
+  if (queryupgradesitereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUpgradeSiteReq_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
 inline bool Req::has_msgprehandlerreq_usr_value() const {
   return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
@@ -24660,6 +25109,45 @@ inline void Rsp::set_allocated_queryaccessdomainnamersp_usr_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
 }
 
+// .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 360;
+inline bool Rsp::has_queryupgradesitersp_dev_value() const {
+  return this != internal_default_instance() && queryupgradesitersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_queryupgradesitersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryupgradesitersp_dev_value_ != NULL) delete queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& Rsp::queryupgradesitersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  return queryupgradesitersp_dev_value_ != NULL ? *queryupgradesitersp_dev_value_
+                         : *::Interactive::Message::QueryUpgradeSiteRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::mutable_queryupgradesitersp_dev_value() {
+  
+  if (queryupgradesitersp_dev_value_ == NULL) {
+    queryupgradesitersp_dev_value_ = new ::Interactive::Message::QueryUpgradeSiteRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  return queryupgradesitersp_dev_value_;
+}
+inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::release_queryupgradesitersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* temp = queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value) {
+  delete queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = queryupgradesitersp_dev_value;
+  if (queryupgradesitersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -24901,6 +25389,10 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
