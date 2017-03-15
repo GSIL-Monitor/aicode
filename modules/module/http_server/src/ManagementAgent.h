@@ -14,6 +14,8 @@ class ManagementAgent
 public:
 
     static const std::string ADD_CLUSTER_ACTION;
+    static const std::string CLUSTER_SHAKEHAND__ACTION;
+
 
     typedef struct _ParamInfo
     {
@@ -32,8 +34,10 @@ public:
 
     bool AddClusterAgentHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 private:
-    bool AddClusterAgent(const std::string &strManagementAddress);
+    bool AddClusterAgent(const std::string &strManagementAddress, const std::string &strClusterID);
 
 
 private:

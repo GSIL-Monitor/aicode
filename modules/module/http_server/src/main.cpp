@@ -237,11 +237,14 @@ int main(int argc, char *argv[])
     pm2.m_uiCallFuncTimeout = boost::lexical_cast<unsigned int>(CallFuncTimeout);
     pm2.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
     pm2.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
+
     ManagementAgent ma(pm2);
     ma.SetMsgWriter(boost::bind(&HttpMsgHandler::WriteMsg, &filehdr, _1, _2, _3, _4));
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
+    fcgimgr.SetMsgHandler(ManagementAgent::CLUSTER_SHAKEHAND__ACTION, boost::bind(&ManagementAgent::ClusterAgentShakehandHandler, &ma, _1, _2));
+
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::REGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::RegisterUserHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::UNREGISTER_USER_ACTION, boost::bind(&HttpMsgHandler::UnRegisterUserHandler, &filehdr, _1, _2));

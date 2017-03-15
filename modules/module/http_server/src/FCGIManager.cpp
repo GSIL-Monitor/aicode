@@ -206,12 +206,20 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
         }        
     }
 
+    bool IsExistValueEmpty = false;
     auto itBegin = pMsgInfoMap->begin();
     auto itEnd = pMsgInfoMap->end();
     while (itBegin != itEnd)
     {
         LOG_INFO_RLD("Param info: key=[" << itBegin->first << "],value=[" << itBegin->second << "]");
+        IsExistValueEmpty = itBegin->second.empty();
         ++itBegin;
+    }
+
+    if (IsExistValueEmpty)
+    {
+        LOG_ERROR_RLD("Empty param value is exist.");
+        return;
     }
         
     //根据具体业务调用对应的Handler来进行处理。
