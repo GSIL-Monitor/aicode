@@ -244,7 +244,9 @@ bool HttpMsgHandler::QueryCluserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     std::string strClusterAddress;
     std::string strManagementAddress;
     std::string strAliasName;
-    if (!QueryCluserInfo(strClusterID, strClusterAddress, strManagementAddress, strAliasName))
+    std::string strCreateDate;
+    std::string strStatus;
+    if (!QueryCluserInfo(strClusterID, strClusterAddress, strManagementAddress, strAliasName, strCreateDate, strStatus))
     {
         LOG_ERROR_RLD("Query cluster handle failed");
         return blResult;
@@ -255,6 +257,8 @@ bool HttpMsgHandler::QueryCluserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     ResultInfoMap.insert(std::make_pair("cluster_address", strClusterAddress));
     ResultInfoMap.insert(std::make_pair("mananement_address", strManagementAddress));
     ResultInfoMap.insert(std::make_pair("aliasname", strAliasName));
+    ResultInfoMap.insert(std::make_pair("createdate", strCreateDate));
+    ResultInfoMap.insert(std::make_pair("status", strStatus));
 
     blResult = true;
 
@@ -348,8 +352,8 @@ bool HttpMsgHandler::QueryAllCluserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     
     LOG_INFO_RLD("Query all cluster info received and  management address is " << strManagementAddress);
         
-    std::list<InteractiveProtoManagementHandler::Cluster> ClusterInfoList;
-    if (!QueryAllCluser<InteractiveProtoManagementHandler::Cluster>(strManagementAddress, ClusterInfoList))
+    std::list<InteractiveProtoManagementHandler::ClusterStatus> ClusterInfoList;
+    if (!QueryAllCluser<InteractiveProtoManagementHandler::ClusterStatus>(strManagementAddress, ClusterInfoList))
     {
         LOG_ERROR_RLD("Query all cluster handle failed and management address is " << strManagementAddress);
         return blResult;
@@ -360,11 +364,12 @@ bool HttpMsgHandler::QueryAllCluserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     while (itBegin != itEnd)
     {
         Json::Value jsRelation;
-        jsRelation["aliasname"] = itBegin->m_strAliasname;
-        jsRelation["cluster_address"] = itBegin->m_strClusterAddress;
-        jsRelation["clusterid"] = itBegin->m_strClusterID;
-        jsRelation["createdate"] = itBegin->m_strCreatedate;
-        jsRelation["management_address"] = itBegin->m_strManagementAddress;
+        jsRelation["aliasname"] = itBegin->m_clusterInfo.m_strAliasname;
+        jsRelation["cluster_address"] = itBegin->m_clusterInfo.m_strClusterAddress;
+        jsRelation["clusterid"] = itBegin->m_clusterInfo.m_strClusterID;
+        jsRelation["createdate"] = itBegin->m_clusterInfo.m_strCreatedate;
+        jsRelation["management_address"] = itBegin->m_clusterInfo.m_strManagementAddress;
+        jsRelation["status"] = itBegin->m_uiStatus;
         
         jsClusterInfoList.append(jsRelation);
 
@@ -1022,7 +1027,8 @@ bool HttpMsgHandler::ModifyCluser(const std::string &strClusterID, const std::st
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::string &strClusterAddress, std::string &strManagementAddress, std::string &strAliasName)
+bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::string &strClusterAddress, std::string &strManagementAddress, std::string &strAliasName,
+    std::string &strCreateDate, std::string &strStatus)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -1066,13 +1072,17 @@ bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::strin
         strClusterAddress = QueryClusterRsp.m_clusterInfo.m_strClusterAddress;
         strManagementAddress = QueryClusterRsp.m_clusterInfo.m_strManagementAddress;
         strAliasName = QueryClusterRsp.m_clusterInfo.m_strAliasname;
+        strCreateDate = QueryClusterRsp.m_clusterInfo.m_strCreatedate;
+        strStatus = boost::lexical_cast<std::string>(QueryClusterRsp.m_uiStatus);
 
         iRet = QueryClusterRsp.m_iRetcode;
 
-        LOG_INFO_RLD("Query cluster and cluser id is " << strClusterID << 
+        LOG_INFO_RLD("Query cluster and cluser id is " << strClusterID <<
             " and cluster address is " << strClusterAddress <<
             " and management address is " << strManagementAddress <<
             " and alias name is " << strAliasName <<
+            " and create date is " << strCreateDate <<
+            " and status is " << strStatus <<
             " and return code is " << QueryClusterRsp.m_iRetcode <<
             " and return msg is " << QueryClusterRsp.m_strRetMsg);
 
@@ -1186,7 +1196,7 @@ bool HttpMsgHandler::QueryAllCluser(const std::string &strManagementAddress, std
         }
 
         ClusterInfoList.clear();
-        ClusterInfoList.swap(QueryAllClsRsp.m_clusterInfoList);
+        ClusterInfoList.swap(QueryAllClsRsp.m_clusterStatusList);
 
         iRet = QueryAllClsRsp.m_iRetcode;
 

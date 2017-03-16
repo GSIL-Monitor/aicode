@@ -2159,6 +2159,60 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
     return blResult;
 }
 
+bool AccessManager::QueryUpgradeSiteReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryUpgradeSiteReq_DEV req;
+
+    std::string strUpgradeUrl;
+    unsigned int uiLease;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &strSrcID, &writer, &strUpgradeUrl, &uiLease)
+    {
+        InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryUpgradeSiteRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strUpgradeSiteUrl = blResult ? strUpgradeUrl : "";
+        rsp.m_uiLease = blResult ? uiLease : 0;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query upgrade site url rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query upgrade site url rsp already send, dst id is " << strSrcID <<
+            " and device id is " << req.m_strDevID <<
+            " and device ip is " << req.m_strDevIpAddress <<
+            " and session id is " << req.m_strSID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query upgrade site url req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryUpgradeSiteToDB(strUpgradeUrl, uiLease))
+    {
+        LOG_ERROR_RLD("Query upgrade site url failed, device id is " << req.m_strDevID << " and device ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -2328,7 +2382,7 @@ bool AccessManager::DownloadFileToDB(const std::string &strUserID, const std::li
 }
 
 bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
-    unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
+    const unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
@@ -2775,6 +2829,51 @@ bool AccessManager::InitDefaultAccessDomainName()
         LOG_ERROR_RLD("InitDefaultAccessDomainName sql failed, sql is " << strSql);
         return false;
     }
+
+    return true;
+}
+
+bool AccessManager::QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease)
+{
+    char sql[256] = { 0 };
+    //查询条件category = 1，配置类别为门铃，subcategory = 3，配置子项目为固件升级地址
+    const char *sqlfmt = "select content, leaseduration from t_configuration_info where category = 1 and subcategory = 3";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            strUpgradeUrl = strColumn;
+            Result = strUpgradeUrl;
+            break;
+        case 1:
+            uiLease = boost::lexical_cast<unsigned int>(strColumn);
+            Result = uiLease;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryUpgradeSiteToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryUpgradeSiteToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryUpgradeSiteToDB sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    strUpgradeUrl = boost::any_cast<std::string>(ResultList.front());
+    uiLease = boost::any_cast<unsigned int>(ResultList.back());
 
     return true;
 }

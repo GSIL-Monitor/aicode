@@ -1,0 +1,230 @@
+/////////////////////////////////////////////////
+//作者：蔡志勇
+//日期：2017-3-7
+//内容：管理中心协议框架定义
+//版本：1.0.0
+/////////////////////////////////////////////////
+
+///////////////传输协议格式介绍//////////////////
+//    __   ____   ____   ______   ____   ______   ______
+//   |RG|,|长度|,|源端|,|目标端|,|类型|,|协议体|,|校验和|
+//   ￣￣  ￣￣   ￣￣   ￣￣￣   ￣￣   ￣￣￣   ￣￣￣
+//长度：  该值为“源端,目标端,类型,协议体,校验和”的字节数，不包括长度字段后面的逗号。
+//源端：  该值为消息传输投递的源头，代表发送消息自身实体，可以唯一表示源端。
+//目标端：该值为消息传输投递的目标，代表接收消息实体，一般都需要实现约定好。
+//类型：  该值为消息的具体业务类型，目前该值填写0.
+//协议体：该值为业务协议的具体内容，就是下面采用protobuffer协议序列化后形成的字节缓冲区，支持Base64编码。
+//校验和：该值为“源端,目标端,类型, 协议体”的crc16计算得出的值。
+/////////////////////////////////////////////////
+
+///////////////传输协议会话ID解析////////////////
+//传输客户端在发起链接时，需要首先与服务器进行一次交互通信，以便获取当前这次链接的会话ID来进行通信，具体解析步骤如下：
+//  1：客户端发起链接，按照前述的“传输协议格式”，源端为客户端ID，目标端为0，类型为0，协议体内容如下，来发送消息到服务端。
+//     {"ID":"XXX","PWD":"XXX"} 注意：目前该内容服务器段暂未使用，所以客户端可以填写任意值。
+//  2：客户端接受响应报文，Decode64处理之后，获得一个json格式字符串，在root节点处解析Key值为UUID的Value，该值就是这次传输
+//     链接的会话ID值。
+//  3：后续客户端在这次链接中进行消息发送，包装传输协议格式时，“源端”这个值就是会话ID值。
+/////////////////////////////////////////////////
+
+
+
+//Explicit 'optional' labels are disallowed in the Proto3 syntax.
+//To define 'optional' fields in Proto3, simply remove the 'optional' label, as fields are 'optional' by default.
+
+syntax = "proto3";
+
+package Management.Interactive.Message;
+
+enum ManagementMsgType
+{
+  Init_T = 0;
+
+  AddClusterReq_T = 10000;               //添加集群
+  AddClusterRsp_T = 10010;
+  DeleteClusterReq_T = 10020;            //删除集群
+  DeleteClusterRsp_T = 10030;
+  ModifyClusterReq_T = 10040;            //修改集群
+  ModifyClusterRsp_T = 10050;
+  QueryClusterInfoReq_T = 10060;         //查询集群信息
+  QueryClusterInfoRsp_T = 10070;
+
+  ShakehandClusterReq_T = 10080;         //集群握手
+  ShakehandClusterRsp_T = 10090;
+
+  QueryAllClusterReq_T = 10100;          //查询所有集群
+  QueryAllClusterRsp_T = 10110;
+  QueryClusterDeviceReq_T = 10220;       //查询接入设备
+  QueryClusterDeviceRsp_T = 10230;
+  QueryClusterUserReq_T = 10300;         //查询接入用户
+  QueryClusterUserRsp_T = 10310;
+}
+
+message Cluster                          //集群信息
+{
+  string strClusterID = 1;
+  string strClusterAddress = 2;
+  string strManagementAddress = 3;
+  string strAliasname = 4;
+  string strCreatedate = 5;
+  uint32 uiStatus = 6;
+}
+
+message ClusterStatus                    //集群状态信息
+{
+  Cluster clusterInfo = 1;
+  uint32 uiStatus = 2;                   //集群状态，0-在线，1-离线
+}
+
+message AccessedDevice                   //接入设备信息
+{
+  string strDeviceID = 1;
+  string strDeviceName = 2;
+  uint32 uiDeviceType = 3;
+  string strLoginTime = 4;
+  string strLogoutTime = 5;
+}
+
+message AccessedUser                     //接入用户信息
+{
+  string strUserID = 1;
+  string strUserName = 2;
+  string strUserAliasname = 3;
+  uint32 uiClientType = 4;
+  string strLoginTime = 5;
+  string strLogoutTime = 6;
+}
+
+message AddClusterReq                    //添加集群请求
+{
+  Cluster clusterInfo = 1;
+}
+
+message AddClusterRsp                    //添加集群响应
+{
+  string strClusterID = 1;
+}
+
+message DeleteClusterReq                 //删除集群请求
+{
+  string strClusterID = 1;
+}
+
+message DeleteClusterRsp                 //删除集群响应
+{
+  string strValue = 1;
+}
+
+message ModifyClusterReq                 //修改集群请求
+{
+  Cluster clusterInfo = 1;
+}
+
+message ModifyClusterRsp                 //修改集群响应
+{
+  string strValue = 1;
+}
+
+message QueryClusterInfoReq              //查询集群信息请求
+{
+  string strClusterID = 1;
+}
+
+message QueryClusterInfoRsp              //查询集群信息响应
+{
+  ClusterStatus clusterStatus = 1;
+}
+
+message ShakehandClusterReq              //集群握手请求
+{
+  string strClusterID = 1;
+}
+
+message ShakehandClusterRsp              //集群握手响应
+{
+  string strValue = 1;
+}
+
+message QueryAllClusterReq               //查询所有集群请求
+{
+  string strManagementAddress = 1;
+}
+
+message QueryAllClusterRsp               //查询所有集群响应
+{
+  repeated ClusterStatus clusterStatus = 1;
+}
+
+message QueryClusterDeviceReq            //查询接入设备请求
+{
+  string strClusterID = 1;
+  string strBegindate = 2;
+  string strEnddate = 3;
+  uint32 uiRecordType = 4;               //查询记录类型，0-login/logout，1-login，2-logout
+  uint32 uiBeginIndex = 5;
+}
+
+message QueryClusterDeviceRsp            //查询接入设备响应
+{
+  repeated AccessedDevice accessedDeviceInfo = 1;
+}
+
+message QueryClusterUserReq              //查询接入用户请求
+{
+  string strClusterID = 1;
+  string strBegindate = 2;
+  string strEnddate = 3;
+  uint32 uiRecordType = 4;               //查询记录类型，0-login/logout，1-login，2-logout
+  uint32 uiBeginIndex =5;
+}
+
+message QueryClusterUserRsp              //查询接入用户响应
+{
+  repeated AccessedUser accessedUserInfo = 1;
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//请求对象
+message Request
+{
+  AddClusterReq AddClusterReq_Value = 10;                    //添加集群
+  DeleteClusterReq DeleteClusterReq_Value = 20;              //删除集群
+  ModifyClusterReq ModifyClusterReq_Value = 30;              //修改集群
+  QueryClusterInfoReq QueryClusterInfoReq_Value = 40;        //查询集群信息
+
+  ShakehandClusterReq ShakehandClusterReq_Value = 50;        //平台与管理中心握手
+
+  QueryAllClusterReq QueryAllClusterReq_Value = 60;          //查询所有集群
+  QueryClusterDeviceReq QueryClusterDeviceReq_Value = 70;    //查询接入设备
+  QueryClusterUserReq QueryClusterUserReq_Value = 80;        //查询接入用户
+}
+
+//响应对象
+message Response
+{
+  int32 iRetcode = 10;                                       //返回码
+  string strRetMsg = 20;                                     //返回消息
+
+  AddClusterRsp AddClusterRsp_Value = 30;                    //添加集群
+  DeleteClusterRsp DeleteClusterRsp_Value = 40;              //删除集群
+  ModifyClusterRsp ModifyClusterRsp_Value = 50;              //修改集群
+  QueryClusterInfoRsp QueryClusterInfoRsp_Value = 60;        //查询集群信息
+
+  ShakehandClusterRsp ShakehandClusterRsp_Value = 70;        //平台与管理中心握手
+
+  QueryAllClusterRsp QueryAllClusterRsp_Value = 80;          //查询所有集群
+  QueryClusterDeviceRsp QueryClusterDeviceRsp_Value = 90;    //查询接入设备
+  QueryClusterUserRsp QueryClusterUserRsp_Value = 100;       //查询接入用户
+}
+
+//主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理
+message ManagementInteractiveMessage
+{
+  ManagementMsgType type = 1;     //消息类型
+  uint64 uiMsgSeq = 2;            //消息序号
+  string strSID = 3;              //会话ID
+  Request reqValue = 4;           //请求值
+  Response rspValue = 5;          //响应值
+}

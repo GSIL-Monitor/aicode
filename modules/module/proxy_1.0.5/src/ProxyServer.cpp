@@ -250,6 +250,58 @@ void ProxyHub::ProcessProtocol(boost::shared_ptr<std::list<std::string> > pProto
     boost::shared_ptr<std::list<std::string> > pDstIDList,
     boost::shared_ptr<ProxySession> pSrcSession)
 {
+    {
+        std::list<std::string> BroadcastIDList;
+        std::list<std::string> BroadcastMsgList;
+
+        auto itBegin = pDstIDList->begin();
+        auto itEnd = pDstIDList->end();
+        auto itBeginMsg = pProtoList->begin();
+        while (itBegin != itEnd)
+        {
+            const std::string &strDstID = *itBegin;
+            const std::string &strDstMsg = *itBeginMsg;
+            if (strDstID == "***")
+            {
+                boost::shared_lock<boost::shared_mutex> lock(m_ExangeMutex);
+                auto itBeginExp = m_ExangeMap.begin();
+                auto itEndExp = m_ExangeMap.end();
+                while (itBeginExp != itEndExp)
+                {
+                    if (pSrcSession->GetID() != itBeginExp->first && pSrcSession.get() != itBeginExp->second.get())
+                    {
+                        BroadcastIDList.push_back(itBeginExp->first);
+                        BroadcastMsgList.push_back(strDstMsg);
+                    }
+
+                    ++itBeginExp;
+                }
+
+                pDstIDList->erase(itBegin++);
+                pProtoList->erase(itBeginMsg++);
+                continue;
+            }
+                                    
+            ++itBegin;
+            ++itBeginMsg;
+        }
+
+        if (!BroadcastIDList.empty())
+        {
+            auto itBeginBrd = BroadcastIDList.begin();
+            auto itEndBrd = BroadcastIDList.end();
+            auto itBeginBrdMsg = BroadcastMsgList.begin();
+            while (itBeginBrd != itEndBrd)
+            {
+                pDstIDList->push_back(*itBeginBrd);
+                pProtoList->push_back(*itBeginBrdMsg);
+
+                ++itBeginBrdMsg;
+                ++itBeginBrd;
+            }
+        }
+    }
+
     auto itBegin = pDstIDList->begin();
     auto itEnd = pDstIDList->end();
     auto itBeginMsg = pProtoList->begin();

@@ -22,6 +22,8 @@ namespace Interactive {
 namespace Message {
 class ClusterDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Cluster> {
 } _Cluster_default_instance_;
+class ClusterStatusDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ClusterStatus> {
+} _ClusterStatus_default_instance_;
 class AccessedDeviceDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AccessedDevice> {
 } _AccessedDevice_default_instance_;
 class AccessedUserDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AccessedUser> {
@@ -70,7 +72,7 @@ namespace protobuf_InteractiveProtocolManagement_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[22];
+::google::protobuf::Metadata file_level_metadata[23];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -86,6 +88,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, straliasname_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, uistatus_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClusterStatus, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClusterStatus, clusterinfo_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClusterStatus, uistatus_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedDevice, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -144,7 +152,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryClusterInfoRsp, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryClusterInfoRsp, clusterinfo_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryClusterInfoRsp, clusterstatus_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ShakehandClusterReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -164,7 +172,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllClusterRsp, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllClusterRsp, clusterinfo_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllClusterRsp, clusterstatus_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryClusterDeviceReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -232,31 +240,33 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(Cluster)},
-  { 10, -1, sizeof(AccessedDevice)},
-  { 19, -1, sizeof(AccessedUser)},
-  { 29, -1, sizeof(AddClusterReq)},
-  { 34, -1, sizeof(AddClusterRsp)},
-  { 39, -1, sizeof(DeleteClusterReq)},
-  { 44, -1, sizeof(DeleteClusterRsp)},
-  { 49, -1, sizeof(ModifyClusterReq)},
-  { 54, -1, sizeof(ModifyClusterRsp)},
-  { 59, -1, sizeof(QueryClusterInfoReq)},
-  { 64, -1, sizeof(QueryClusterInfoRsp)},
-  { 69, -1, sizeof(ShakehandClusterReq)},
-  { 74, -1, sizeof(ShakehandClusterRsp)},
-  { 79, -1, sizeof(QueryAllClusterReq)},
-  { 84, -1, sizeof(QueryAllClusterRsp)},
-  { 89, -1, sizeof(QueryClusterDeviceReq)},
-  { 98, -1, sizeof(QueryClusterDeviceRsp)},
-  { 103, -1, sizeof(QueryClusterUserReq)},
-  { 112, -1, sizeof(QueryClusterUserRsp)},
-  { 117, -1, sizeof(Request)},
-  { 129, -1, sizeof(Response)},
-  { 143, -1, sizeof(ManagementInteractiveMessage)},
+  { 10, -1, sizeof(ClusterStatus)},
+  { 16, -1, sizeof(AccessedDevice)},
+  { 25, -1, sizeof(AccessedUser)},
+  { 35, -1, sizeof(AddClusterReq)},
+  { 40, -1, sizeof(AddClusterRsp)},
+  { 45, -1, sizeof(DeleteClusterReq)},
+  { 50, -1, sizeof(DeleteClusterRsp)},
+  { 55, -1, sizeof(ModifyClusterReq)},
+  { 60, -1, sizeof(ModifyClusterRsp)},
+  { 65, -1, sizeof(QueryClusterInfoReq)},
+  { 70, -1, sizeof(QueryClusterInfoRsp)},
+  { 75, -1, sizeof(ShakehandClusterReq)},
+  { 80, -1, sizeof(ShakehandClusterRsp)},
+  { 85, -1, sizeof(QueryAllClusterReq)},
+  { 90, -1, sizeof(QueryAllClusterRsp)},
+  { 95, -1, sizeof(QueryClusterDeviceReq)},
+  { 104, -1, sizeof(QueryClusterDeviceRsp)},
+  { 109, -1, sizeof(QueryClusterUserReq)},
+  { 118, -1, sizeof(QueryClusterUserRsp)},
+  { 123, -1, sizeof(Request)},
+  { 135, -1, sizeof(Response)},
+  { 149, -1, sizeof(ManagementInteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_Cluster_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_ClusterStatus_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AccessedDevice_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AccessedUser_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddClusterReq_default_instance_),
@@ -298,7 +308,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 22);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 23);
 }
 
 }  // namespace
@@ -306,48 +316,50 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void TableStruct::Shutdown() {
   _Cluster_default_instance_.Shutdown();
   delete file_level_metadata[0].reflection;
-  _AccessedDevice_default_instance_.Shutdown();
+  _ClusterStatus_default_instance_.Shutdown();
   delete file_level_metadata[1].reflection;
-  _AccessedUser_default_instance_.Shutdown();
+  _AccessedDevice_default_instance_.Shutdown();
   delete file_level_metadata[2].reflection;
-  _AddClusterReq_default_instance_.Shutdown();
+  _AccessedUser_default_instance_.Shutdown();
   delete file_level_metadata[3].reflection;
-  _AddClusterRsp_default_instance_.Shutdown();
+  _AddClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[4].reflection;
-  _DeleteClusterReq_default_instance_.Shutdown();
+  _AddClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[5].reflection;
-  _DeleteClusterRsp_default_instance_.Shutdown();
+  _DeleteClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[6].reflection;
-  _ModifyClusterReq_default_instance_.Shutdown();
+  _DeleteClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[7].reflection;
-  _ModifyClusterRsp_default_instance_.Shutdown();
+  _ModifyClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[8].reflection;
-  _QueryClusterInfoReq_default_instance_.Shutdown();
+  _ModifyClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[9].reflection;
-  _QueryClusterInfoRsp_default_instance_.Shutdown();
+  _QueryClusterInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[10].reflection;
-  _ShakehandClusterReq_default_instance_.Shutdown();
+  _QueryClusterInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[11].reflection;
-  _ShakehandClusterRsp_default_instance_.Shutdown();
+  _ShakehandClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[12].reflection;
-  _QueryAllClusterReq_default_instance_.Shutdown();
+  _ShakehandClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[13].reflection;
-  _QueryAllClusterRsp_default_instance_.Shutdown();
+  _QueryAllClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[14].reflection;
-  _QueryClusterDeviceReq_default_instance_.Shutdown();
+  _QueryAllClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[15].reflection;
-  _QueryClusterDeviceRsp_default_instance_.Shutdown();
+  _QueryClusterDeviceReq_default_instance_.Shutdown();
   delete file_level_metadata[16].reflection;
-  _QueryClusterUserReq_default_instance_.Shutdown();
+  _QueryClusterDeviceRsp_default_instance_.Shutdown();
   delete file_level_metadata[17].reflection;
-  _QueryClusterUserRsp_default_instance_.Shutdown();
+  _QueryClusterUserReq_default_instance_.Shutdown();
   delete file_level_metadata[18].reflection;
-  _Request_default_instance_.Shutdown();
+  _QueryClusterUserRsp_default_instance_.Shutdown();
   delete file_level_metadata[19].reflection;
-  _Response_default_instance_.Shutdown();
+  _Request_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
-  _ManagementInteractiveMessage_default_instance_.Shutdown();
+  _Response_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
+  _ManagementInteractiveMessage_default_instance_.Shutdown();
+  delete file_level_metadata[22].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -355,6 +367,7 @@ void TableStruct::InitDefaultsImpl() {
 
   ::google::protobuf::internal::InitProtobufDefaults();
   _Cluster_default_instance_.DefaultConstruct();
+  _ClusterStatus_default_instance_.DefaultConstruct();
   _AccessedDevice_default_instance_.DefaultConstruct();
   _AccessedUser_default_instance_.DefaultConstruct();
   _AddClusterReq_default_instance_.DefaultConstruct();
@@ -376,12 +389,14 @@ void TableStruct::InitDefaultsImpl() {
   _Request_default_instance_.DefaultConstruct();
   _Response_default_instance_.DefaultConstruct();
   _ManagementInteractiveMessage_default_instance_.DefaultConstruct();
+  _ClusterStatus_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
+      ::Management::Interactive::Message::Cluster::internal_default_instance());
   _AddClusterReq_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
       ::Management::Interactive::Message::Cluster::internal_default_instance());
   _ModifyClusterReq_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
       ::Management::Interactive::Message::Cluster::internal_default_instance());
-  _QueryClusterInfoRsp_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
-      ::Management::Interactive::Message::Cluster::internal_default_instance());
+  _QueryClusterInfoRsp_default_instance_.get_mutable()->clusterstatus_ = const_cast< ::Management::Interactive::Message::ClusterStatus*>(
+      ::Management::Interactive::Message::ClusterStatus::internal_default_instance());
   _Request_default_instance_.get_mutable()->addclusterreq_value_ = const_cast< ::Management::Interactive::Message::AddClusterReq*>(
       ::Management::Interactive::Message::AddClusterReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->deleteclusterreq_value_ = const_cast< ::Management::Interactive::Message::DeleteClusterReq*>(
@@ -432,99 +447,102 @@ void AddDescriptorsImpl() {
       "r\022\024\n\014strClusterID\030\001 \001(\t\022\031\n\021strClusterAdd"
       "ress\030\002 \001(\t\022\034\n\024strManagementAddress\030\003 \001(\t"
       "\022\024\n\014strAliasname\030\004 \001(\t\022\025\n\rstrCreatedate\030"
-      "\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r\"\177\n\016AccessedDevic"
-      "e\022\023\n\013strDeviceID\030\001 \001(\t\022\025\n\rstrDeviceName\030"
-      "\002 \001(\t\022\024\n\014uiDeviceType\030\003 \001(\r\022\024\n\014strLoginT"
-      "ime\030\004 \001(\t\022\025\n\rstrLogoutTime\030\005 \001(\t\"\223\001\n\014Acc"
-      "essedUser\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strUserN"
-      "ame\030\002 \001(\t\022\030\n\020strUserAliasname\030\003 \001(\t\022\024\n\014u"
-      "iClientType\030\004 \001(\r\022\024\n\014strLoginTime\030\005 \001(\t\022"
-      "\025\n\rstrLogoutTime\030\006 \001(\t\"M\n\rAddClusterReq\022"
-      "<\n\013clusterInfo\030\001 \001(\0132\'.Management.Intera"
-      "ctive.Message.Cluster\"%\n\rAddClusterRsp\022\024"
-      "\n\014strClusterID\030\001 \001(\t\"(\n\020DeleteClusterReq"
-      "\022\024\n\014strClusterID\030\001 \001(\t\"$\n\020DeleteClusterR"
-      "sp\022\020\n\010strValue\030\001 \001(\t\"P\n\020ModifyClusterReq"
+      "\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r\"_\n\rClusterStatus"
       "\022<\n\013clusterInfo\030\001 \001(\0132\'.Management.Inter"
-      "active.Message.Cluster\"$\n\020ModifyClusterR"
-      "sp\022\020\n\010strValue\030\001 \001(\t\"+\n\023QueryClusterInfo"
-      "Req\022\024\n\014strClusterID\030\001 \001(\t\"S\n\023QueryCluste"
-      "rInfoRsp\022<\n\013clusterInfo\030\001 \001(\0132\'.Manageme"
-      "nt.Interactive.Message.Cluster\"+\n\023Shakeh"
-      "andClusterReq\022\024\n\014strClusterID\030\001 \001(\t\"\'\n\023S"
-      "hakehandClusterRsp\022\020\n\010strValue\030\001 \001(\t\"2\n\022"
-      "QueryAllClusterReq\022\034\n\024strManagementAddre"
-      "ss\030\001 \001(\t\"R\n\022QueryAllClusterRsp\022<\n\013cluste"
-      "rInfo\030\001 \003(\0132\'.Management.Interactive.Mes"
-      "sage.Cluster\"\203\001\n\025QueryClusterDeviceReq\022\024"
-      "\n\014strClusterID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001"
-      "(\t\022\022\n\nstrEnddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004"
-      " \001(\r\022\024\n\014uiBeginIndex\030\005 \001(\r\"c\n\025QueryClust"
-      "erDeviceRsp\022J\n\022accessedDeviceInfo\030\001 \003(\0132"
-      "..Management.Interactive.Message.Accesse"
-      "dDevice\"\201\001\n\023QueryClusterUserReq\022\024\n\014strCl"
+      "active.Message.Cluster\022\020\n\010uiStatus\030\002 \001(\r"
+      "\"\177\n\016AccessedDevice\022\023\n\013strDeviceID\030\001 \001(\t\022"
+      "\025\n\rstrDeviceName\030\002 \001(\t\022\024\n\014uiDeviceType\030\003"
+      " \001(\r\022\024\n\014strLoginTime\030\004 \001(\t\022\025\n\rstrLogoutT"
+      "ime\030\005 \001(\t\"\223\001\n\014AccessedUser\022\021\n\tstrUserID\030"
+      "\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\030\n\020strUserAli"
+      "asname\030\003 \001(\t\022\024\n\014uiClientType\030\004 \001(\r\022\024\n\014st"
+      "rLoginTime\030\005 \001(\t\022\025\n\rstrLogoutTime\030\006 \001(\t\""
+      "M\n\rAddClusterReq\022<\n\013clusterInfo\030\001 \001(\0132\'."
+      "Management.Interactive.Message.Cluster\"%"
+      "\n\rAddClusterRsp\022\024\n\014strClusterID\030\001 \001(\t\"(\n"
+      "\020DeleteClusterReq\022\024\n\014strClusterID\030\001 \001(\t\""
+      "$\n\020DeleteClusterRsp\022\020\n\010strValue\030\001 \001(\t\"P\n"
+      "\020ModifyClusterReq\022<\n\013clusterInfo\030\001 \001(\0132\'"
+      ".Management.Interactive.Message.Cluster\""
+      "$\n\020ModifyClusterRsp\022\020\n\010strValue\030\001 \001(\t\"+\n"
+      "\023QueryClusterInfoReq\022\024\n\014strClusterID\030\001 \001"
+      "(\t\"[\n\023QueryClusterInfoRsp\022D\n\rclusterStat"
+      "us\030\001 \001(\0132-.Management.Interactive.Messag"
+      "e.ClusterStatus\"+\n\023ShakehandClusterReq\022\024"
+      "\n\014strClusterID\030\001 \001(\t\"\'\n\023ShakehandCluster"
+      "Rsp\022\020\n\010strValue\030\001 \001(\t\"2\n\022QueryAllCluster"
+      "Req\022\034\n\024strManagementAddress\030\001 \001(\t\"Z\n\022Que"
+      "ryAllClusterRsp\022D\n\rclusterStatus\030\001 \003(\0132-"
+      ".Management.Interactive.Message.ClusterS"
+      "tatus\"\203\001\n\025QueryClusterDeviceReq\022\024\n\014strCl"
       "usterID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\ns"
       "trEnddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n"
-      "\014uiBeginIndex\030\005 \001(\r\"]\n\023QueryClusterUserR"
-      "sp\022F\n\020accessedUserInfo\030\001 \003(\0132,.Managemen"
-      "t.Interactive.Message.AccessedUser\"\263\005\n\007R"
-      "equest\022J\n\023AddClusterReq_Value\030\n \001(\0132-.Ma"
-      "nagement.Interactive.Message.AddClusterR"
-      "eq\022P\n\026DeleteClusterReq_Value\030\024 \001(\01320.Man"
-      "agement.Interactive.Message.DeleteCluste"
-      "rReq\022P\n\026ModifyClusterReq_Value\030\036 \001(\01320.M"
-      "anagement.Interactive.Message.ModifyClus"
-      "terReq\022V\n\031QueryClusterInfoReq_Value\030( \001("
-      "\01323.Management.Interactive.Message.Query"
-      "ClusterInfoReq\022V\n\031ShakehandClusterReq_Va"
-      "lue\0302 \001(\01323.Management.Interactive.Messa"
-      "ge.ShakehandClusterReq\022T\n\030QueryAllCluste"
-      "rReq_Value\030< \001(\01322.Management.Interactiv"
-      "e.Message.QueryAllClusterReq\022Z\n\033QueryClu"
-      "sterDeviceReq_Value\030F \001(\01325.Management.I"
-      "nteractive.Message.QueryClusterDeviceReq"
-      "\022V\n\031QueryClusterUserReq_Value\030P \001(\01323.Ma"
-      "nagement.Interactive.Message.QueryCluste"
-      "rUserReq\"\331\005\n\010Response\022\020\n\010iRetcode\030\n \001(\005\022"
-      "\021\n\tstrRetMsg\030\024 \001(\t\022J\n\023AddClusterRsp_Valu"
-      "e\030\036 \001(\0132-.Management.Interactive.Message"
-      ".AddClusterRsp\022P\n\026DeleteClusterRsp_Value"
-      "\030( \001(\01320.Management.Interactive.Message."
-      "DeleteClusterRsp\022P\n\026ModifyClusterRsp_Val"
-      "ue\0302 \001(\01320.Management.Interactive.Messag"
-      "e.ModifyClusterRsp\022V\n\031QueryClusterInfoRs"
-      "p_Value\030< \001(\01323.Management.Interactive.M"
-      "essage.QueryClusterInfoRsp\022V\n\031ShakehandC"
-      "lusterRsp_Value\030F \001(\01323.Management.Inter"
-      "active.Message.ShakehandClusterRsp\022T\n\030Qu"
-      "eryAllClusterRsp_Value\030P \001(\01322.Managemen"
-      "t.Interactive.Message.QueryAllClusterRsp"
-      "\022Z\n\033QueryClusterDeviceRsp_Value\030Z \001(\01325."
-      "Management.Interactive.Message.QueryClus"
-      "terDeviceRsp\022V\n\031QueryClusterUserRsp_Valu"
-      "e\030d \001(\01323.Management.Interactive.Message"
-      ".QueryClusterUserRsp\"\370\001\n\034ManagementInter"
-      "activeMessage\022\?\n\004type\030\001 \001(\01621.Management"
-      ".Interactive.Message.ManagementMsgType\022\020"
-      "\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\0229\n\010reqV"
-      "alue\030\004 \001(\0132\'.Management.Interactive.Mess"
-      "age.Request\022:\n\010rspValue\030\005 \001(\0132(.Manageme"
-      "nt.Interactive.Message.Response*\311\003\n\021Mana"
-      "gementMsgType\022\n\n\006Init_T\020\000\022\024\n\017AddClusterR"
-      "eq_T\020\220N\022\024\n\017AddClusterRsp_T\020\232N\022\027\n\022DeleteC"
-      "lusterReq_T\020\244N\022\027\n\022DeleteClusterRsp_T\020\256N\022"
-      "\027\n\022ModifyClusterReq_T\020\270N\022\027\n\022ModifyCluste"
-      "rRsp_T\020\302N\022\032\n\025QueryClusterInfoReq_T\020\314N\022\032\n"
-      "\025QueryClusterInfoRsp_T\020\326N\022\032\n\025ShakehandCl"
-      "usterReq_T\020\340N\022\032\n\025ShakehandClusterRsp_T\020\352"
-      "N\022\031\n\024QueryAllClusterReq_T\020\364N\022\031\n\024QueryAll"
-      "ClusterRsp_T\020\376N\022\034\n\027QueryClusterDeviceReq"
-      "_T\020\354O\022\034\n\027QueryClusterDeviceRsp_T\020\366O\022\032\n\025Q"
-      "ueryClusterUserReq_T\020\274P\022\032\n\025QueryClusterU"
-      "serRsp_T\020\306Pb\006proto3"
+      "\014uiBeginIndex\030\005 \001(\r\"c\n\025QueryClusterDevic"
+      "eRsp\022J\n\022accessedDeviceInfo\030\001 \003(\0132..Manag"
+      "ement.Interactive.Message.AccessedDevice"
+      "\"\201\001\n\023QueryClusterUserReq\022\024\n\014strClusterID"
+      "\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\nstrEndda"
+      "te\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n\014uiBegi"
+      "nIndex\030\005 \001(\r\"]\n\023QueryClusterUserRsp\022F\n\020a"
+      "ccessedUserInfo\030\001 \003(\0132,.Management.Inter"
+      "active.Message.AccessedUser\"\263\005\n\007Request\022"
+      "J\n\023AddClusterReq_Value\030\n \001(\0132-.Managemen"
+      "t.Interactive.Message.AddClusterReq\022P\n\026D"
+      "eleteClusterReq_Value\030\024 \001(\01320.Management"
+      ".Interactive.Message.DeleteClusterReq\022P\n"
+      "\026ModifyClusterReq_Value\030\036 \001(\01320.Manageme"
+      "nt.Interactive.Message.ModifyClusterReq\022"
+      "V\n\031QueryClusterInfoReq_Value\030( \001(\01323.Man"
+      "agement.Interactive.Message.QueryCluster"
+      "InfoReq\022V\n\031ShakehandClusterReq_Value\0302 \001"
+      "(\01323.Management.Interactive.Message.Shak"
+      "ehandClusterReq\022T\n\030QueryAllClusterReq_Va"
+      "lue\030< \001(\01322.Management.Interactive.Messa"
+      "ge.QueryAllClusterReq\022Z\n\033QueryClusterDev"
+      "iceReq_Value\030F \001(\01325.Management.Interact"
+      "ive.Message.QueryClusterDeviceReq\022V\n\031Que"
+      "ryClusterUserReq_Value\030P \001(\01323.Managemen"
+      "t.Interactive.Message.QueryClusterUserRe"
+      "q\"\331\005\n\010Response\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrR"
+      "etMsg\030\024 \001(\t\022J\n\023AddClusterRsp_Value\030\036 \001(\013"
+      "2-.Management.Interactive.Message.AddClu"
+      "sterRsp\022P\n\026DeleteClusterRsp_Value\030( \001(\0132"
+      "0.Management.Interactive.Message.DeleteC"
+      "lusterRsp\022P\n\026ModifyClusterRsp_Value\0302 \001("
+      "\01320.Management.Interactive.Message.Modif"
+      "yClusterRsp\022V\n\031QueryClusterInfoRsp_Value"
+      "\030< \001(\01323.Management.Interactive.Message."
+      "QueryClusterInfoRsp\022V\n\031ShakehandClusterR"
+      "sp_Value\030F \001(\01323.Management.Interactive."
+      "Message.ShakehandClusterRsp\022T\n\030QueryAllC"
+      "lusterRsp_Value\030P \001(\01322.Management.Inter"
+      "active.Message.QueryAllClusterRsp\022Z\n\033Que"
+      "ryClusterDeviceRsp_Value\030Z \001(\01325.Managem"
+      "ent.Interactive.Message.QueryClusterDevi"
+      "ceRsp\022V\n\031QueryClusterUserRsp_Value\030d \001(\013"
+      "23.Management.Interactive.Message.QueryC"
+      "lusterUserRsp\"\370\001\n\034ManagementInteractiveM"
+      "essage\022\?\n\004type\030\001 \001(\01621.Management.Intera"
+      "ctive.Message.ManagementMsgType\022\020\n\010uiMsg"
+      "Seq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\0229\n\010reqValue\030\004 "
+      "\001(\0132\'.Management.Interactive.Message.Req"
+      "uest\022:\n\010rspValue\030\005 \001(\0132(.Management.Inte"
+      "ractive.Message.Response*\311\003\n\021ManagementM"
+      "sgType\022\n\n\006Init_T\020\000\022\024\n\017AddClusterReq_T\020\220N"
+      "\022\024\n\017AddClusterRsp_T\020\232N\022\027\n\022DeleteClusterR"
+      "eq_T\020\244N\022\027\n\022DeleteClusterRsp_T\020\256N\022\027\n\022Modi"
+      "fyClusterReq_T\020\270N\022\027\n\022ModifyClusterRsp_T\020"
+      "\302N\022\032\n\025QueryClusterInfoReq_T\020\314N\022\032\n\025QueryC"
+      "lusterInfoRsp_T\020\326N\022\032\n\025ShakehandClusterRe"
+      "q_T\020\340N\022\032\n\025ShakehandClusterRsp_T\020\352N\022\031\n\024Qu"
+      "eryAllClusterReq_T\020\364N\022\031\n\024QueryAllCluster"
+      "Rsp_T\020\376N\022\034\n\027QueryClusterDeviceReq_T\020\354O\022\034"
+      "\n\027QueryClusterDeviceRsp_T\020\366O\022\032\n\025QueryClu"
+      "sterUserReq_T\020\274P\022\032\n\025QueryClusterUserRsp_"
+      "T\020\306Pb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3779);
+      descriptor, 3892);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolManagement.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -1341,6 +1359,319 @@ void Cluster::set_uistatus(::google::protobuf::uint32 value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ClusterStatus::kClusterInfoFieldNumber;
+const int ClusterStatus::kUiStatusFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ClusterStatus::ClusterStatus()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.ClusterStatus)
+}
+ClusterStatus::ClusterStatus(const ClusterStatus& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_clusterinfo()) {
+    clusterinfo_ = new ::Management::Interactive::Message::Cluster(*from.clusterinfo_);
+  } else {
+    clusterinfo_ = NULL;
+  }
+  uistatus_ = from.uistatus_;
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.ClusterStatus)
+}
+
+void ClusterStatus::SharedCtor() {
+  ::memset(&clusterinfo_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&clusterinfo_) + sizeof(uistatus_));
+  _cached_size_ = 0;
+}
+
+ClusterStatus::~ClusterStatus() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.ClusterStatus)
+  SharedDtor();
+}
+
+void ClusterStatus::SharedDtor() {
+  if (this != internal_default_instance()) {
+    delete clusterinfo_;
+  }
+}
+
+void ClusterStatus::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ClusterStatus::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[1].descriptor;
+}
+
+const ClusterStatus& ClusterStatus::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+ClusterStatus* ClusterStatus::New(::google::protobuf::Arena* arena) const {
+  ClusterStatus* n = new ClusterStatus;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ClusterStatus::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.ClusterStatus)
+  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) {
+    delete clusterinfo_;
+  }
+  clusterinfo_ = NULL;
+  uistatus_ = 0u;
+}
+
+bool ClusterStatus::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.ClusterStatus)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .Management.Interactive.Message.Cluster clusterInfo = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_clusterinfo()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiStatus = 2;
+      case 2: {
+        if (tag == 16u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uistatus_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.ClusterStatus)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.ClusterStatus)
+  return false;
+#undef DO_
+}
+
+void ClusterStatus::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.ClusterStatus)
+  // .Management.Interactive.Message.Cluster clusterInfo = 1;
+  if (this->has_clusterinfo()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->clusterinfo_, output);
+  }
+
+  // uint32 uiStatus = 2;
+  if (this->uistatus() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->uistatus(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.ClusterStatus)
+}
+
+::google::protobuf::uint8* ClusterStatus::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.ClusterStatus)
+  // .Management.Interactive.Message.Cluster clusterInfo = 1;
+  if (this->has_clusterinfo()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->clusterinfo_, false, target);
+  }
+
+  // uint32 uiStatus = 2;
+  if (this->uistatus() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->uistatus(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.ClusterStatus)
+  return target;
+}
+
+size_t ClusterStatus::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.ClusterStatus)
+  size_t total_size = 0;
+
+  // .Management.Interactive.Message.Cluster clusterInfo = 1;
+  if (this->has_clusterinfo()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->clusterinfo_);
+  }
+
+  // uint32 uiStatus = 2;
+  if (this->uistatus() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uistatus());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ClusterStatus::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.ClusterStatus)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ClusterStatus* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ClusterStatus>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.ClusterStatus)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.ClusterStatus)
+    MergeFrom(*source);
+  }
+}
+
+void ClusterStatus::MergeFrom(const ClusterStatus& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.ClusterStatus)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_clusterinfo()) {
+    mutable_clusterinfo()->::Management::Interactive::Message::Cluster::MergeFrom(from.clusterinfo());
+  }
+  if (from.uistatus() != 0) {
+    set_uistatus(from.uistatus());
+  }
+}
+
+void ClusterStatus::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.ClusterStatus)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ClusterStatus::CopyFrom(const ClusterStatus& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.ClusterStatus)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ClusterStatus::IsInitialized() const {
+  return true;
+}
+
+void ClusterStatus::Swap(ClusterStatus* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ClusterStatus::InternalSwap(ClusterStatus* other) {
+  std::swap(clusterinfo_, other->clusterinfo_);
+  std::swap(uistatus_, other->uistatus_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ClusterStatus::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[1];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ClusterStatus
+
+// .Management.Interactive.Message.Cluster clusterInfo = 1;
+bool ClusterStatus::has_clusterinfo() const {
+  return this != internal_default_instance() && clusterinfo_ != NULL;
+}
+void ClusterStatus::clear_clusterinfo() {
+  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) delete clusterinfo_;
+  clusterinfo_ = NULL;
+}
+const ::Management::Interactive::Message::Cluster& ClusterStatus::clusterinfo() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  return clusterinfo_ != NULL ? *clusterinfo_
+                         : *::Management::Interactive::Message::Cluster::internal_default_instance();
+}
+::Management::Interactive::Message::Cluster* ClusterStatus::mutable_clusterinfo() {
+  
+  if (clusterinfo_ == NULL) {
+    clusterinfo_ = new ::Management::Interactive::Message::Cluster;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  return clusterinfo_;
+}
+::Management::Interactive::Message::Cluster* ClusterStatus::release_clusterinfo() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  
+  ::Management::Interactive::Message::Cluster* temp = clusterinfo_;
+  clusterinfo_ = NULL;
+  return temp;
+}
+void ClusterStatus::set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo) {
+  delete clusterinfo_;
+  clusterinfo_ = clusterinfo;
+  if (clusterinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.ClusterStatus.clusterInfo)
+}
+
+// uint32 uiStatus = 2;
+void ClusterStatus::clear_uistatus() {
+  uistatus_ = 0u;
+}
+::google::protobuf::uint32 ClusterStatus::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.ClusterStatus.uiStatus)
+  return uistatus_;
+}
+void ClusterStatus::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.ClusterStatus.uiStatus)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int AccessedDevice::kStrDeviceIDFieldNumber;
 const int AccessedDevice::kStrDeviceNameFieldNumber;
 const int AccessedDevice::kUiDeviceTypeFieldNumber;
@@ -1409,7 +1740,7 @@ void AccessedDevice::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AccessedDevice::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[1].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[2].descriptor;
 }
 
 const AccessedDevice& AccessedDevice::default_instance() {
@@ -1765,7 +2096,7 @@ void AccessedDevice::InternalSwap(AccessedDevice* other) {
 
 ::google::protobuf::Metadata AccessedDevice::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[1];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[2];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2073,7 +2404,7 @@ void AccessedUser::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AccessedUser::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[2].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[3].descriptor;
 }
 
 const AccessedUser& AccessedUser::default_instance() {
@@ -2478,7 +2809,7 @@ void AccessedUser::InternalSwap(AccessedUser* other) {
 
 ::google::protobuf::Metadata AccessedUser::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[2];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[3];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -2810,7 +3141,7 @@ void AddClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[3].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4].descriptor;
 }
 
 const AddClusterReq& AddClusterReq::default_instance() {
@@ -2974,7 +3305,7 @@ void AddClusterReq::InternalSwap(AddClusterReq* other) {
 
 ::google::protobuf::Metadata AddClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[3];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3068,7 +3399,7 @@ void AddClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5].descriptor;
 }
 
 const AddClusterRsp& AddClusterRsp::default_instance() {
@@ -3242,7 +3573,7 @@ void AddClusterRsp::InternalSwap(AddClusterRsp* other) {
 
 ::google::protobuf::Metadata AddClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3349,7 +3680,7 @@ void DeleteClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6].descriptor;
 }
 
 const DeleteClusterReq& DeleteClusterReq::default_instance() {
@@ -3523,7 +3854,7 @@ void DeleteClusterReq::InternalSwap(DeleteClusterReq* other) {
 
 ::google::protobuf::Metadata DeleteClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3630,7 +3961,7 @@ void DeleteClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7].descriptor;
 }
 
 const DeleteClusterRsp& DeleteClusterRsp::default_instance() {
@@ -3804,7 +4135,7 @@ void DeleteClusterRsp::InternalSwap(DeleteClusterRsp* other) {
 
 ::google::protobuf::Metadata DeleteClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3914,7 +4245,7 @@ void ModifyClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8].descriptor;
 }
 
 const ModifyClusterReq& ModifyClusterReq::default_instance() {
@@ -4078,7 +4409,7 @@ void ModifyClusterReq::InternalSwap(ModifyClusterReq* other) {
 
 ::google::protobuf::Metadata ModifyClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4172,7 +4503,7 @@ void ModifyClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9].descriptor;
 }
 
 const ModifyClusterRsp& ModifyClusterRsp::default_instance() {
@@ -4346,7 +4677,7 @@ void ModifyClusterRsp::InternalSwap(ModifyClusterRsp* other) {
 
 ::google::protobuf::Metadata ModifyClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4453,7 +4784,7 @@ void QueryClusterInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterInfoReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10].descriptor;
 }
 
 const QueryClusterInfoReq& QueryClusterInfoReq::default_instance() {
@@ -4627,7 +4958,7 @@ void QueryClusterInfoReq::InternalSwap(QueryClusterInfoReq* other) {
 
 ::google::protobuf::Metadata QueryClusterInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4690,7 +5021,7 @@ void QueryClusterInfoReq::set_allocated_strclusterid(::std::string* strclusterid
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int QueryClusterInfoRsp::kClusterInfoFieldNumber;
+const int QueryClusterInfoRsp::kClusterStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 QueryClusterInfoRsp::QueryClusterInfoRsp()
@@ -4706,16 +5037,16 @@ QueryClusterInfoRsp::QueryClusterInfoRsp(const QueryClusterInfoRsp& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_clusterinfo()) {
-    clusterinfo_ = new ::Management::Interactive::Message::Cluster(*from.clusterinfo_);
+  if (from.has_clusterstatus()) {
+    clusterstatus_ = new ::Management::Interactive::Message::ClusterStatus(*from.clusterstatus_);
   } else {
-    clusterinfo_ = NULL;
+    clusterstatus_ = NULL;
   }
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.QueryClusterInfoRsp)
 }
 
 void QueryClusterInfoRsp::SharedCtor() {
-  clusterinfo_ = NULL;
+  clusterstatus_ = NULL;
   _cached_size_ = 0;
 }
 
@@ -4726,7 +5057,7 @@ QueryClusterInfoRsp::~QueryClusterInfoRsp() {
 
 void QueryClusterInfoRsp::SharedDtor() {
   if (this != internal_default_instance()) {
-    delete clusterinfo_;
+    delete clusterstatus_;
   }
 }
 
@@ -4737,7 +5068,7 @@ void QueryClusterInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterInfoRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11].descriptor;
 }
 
 const QueryClusterInfoRsp& QueryClusterInfoRsp::default_instance() {
@@ -4755,10 +5086,10 @@ QueryClusterInfoRsp* QueryClusterInfoRsp::New(::google::protobuf::Arena* arena) 
 
 void QueryClusterInfoRsp::Clear() {
 // @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.QueryClusterInfoRsp)
-  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) {
-    delete clusterinfo_;
+  if (GetArenaNoVirtual() == NULL && clusterstatus_ != NULL) {
+    delete clusterstatus_;
   }
-  clusterinfo_ = NULL;
+  clusterstatus_ = NULL;
 }
 
 bool QueryClusterInfoRsp::MergePartialFromCodedStream(
@@ -4771,11 +5102,11 @@ bool QueryClusterInfoRsp::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .Management.Interactive.Message.Cluster clusterInfo = 1;
+      // .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
       case 1: {
         if (tag == 10u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_clusterinfo()));
+               input, mutable_clusterstatus()));
         } else {
           goto handle_unusual;
         }
@@ -4806,10 +5137,10 @@ failure:
 void QueryClusterInfoRsp::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.QueryClusterInfoRsp)
-  // .Management.Interactive.Message.Cluster clusterInfo = 1;
-  if (this->has_clusterinfo()) {
+  // .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  if (this->has_clusterstatus()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, *this->clusterinfo_, output);
+      1, *this->clusterstatus_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.QueryClusterInfoRsp)
@@ -4819,11 +5150,11 @@ void QueryClusterInfoRsp::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.QueryClusterInfoRsp)
-  // .Management.Interactive.Message.Cluster clusterInfo = 1;
-  if (this->has_clusterinfo()) {
+  // .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  if (this->has_clusterstatus()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, *this->clusterinfo_, false, target);
+        1, *this->clusterstatus_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.QueryClusterInfoRsp)
@@ -4834,11 +5165,11 @@ size_t QueryClusterInfoRsp::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.QueryClusterInfoRsp)
   size_t total_size = 0;
 
-  // .Management.Interactive.Message.Cluster clusterInfo = 1;
-  if (this->has_clusterinfo()) {
+  // .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  if (this->has_clusterstatus()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->clusterinfo_);
+        *this->clusterstatus_);
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4867,8 +5198,8 @@ void QueryClusterInfoRsp::MergeFrom(const QueryClusterInfoRsp& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.QueryClusterInfoRsp)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_clusterinfo()) {
-    mutable_clusterinfo()->::Management::Interactive::Message::Cluster::MergeFrom(from.clusterinfo());
+  if (from.has_clusterstatus()) {
+    mutable_clusterstatus()->::Management::Interactive::Message::ClusterStatus::MergeFrom(from.clusterstatus());
   }
 }
 
@@ -4895,55 +5226,55 @@ void QueryClusterInfoRsp::Swap(QueryClusterInfoRsp* other) {
   InternalSwap(other);
 }
 void QueryClusterInfoRsp::InternalSwap(QueryClusterInfoRsp* other) {
-  std::swap(clusterinfo_, other->clusterinfo_);
+  std::swap(clusterstatus_, other->clusterstatus_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata QueryClusterInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // QueryClusterInfoRsp
 
-// .Management.Interactive.Message.Cluster clusterInfo = 1;
-bool QueryClusterInfoRsp::has_clusterinfo() const {
-  return this != internal_default_instance() && clusterinfo_ != NULL;
+// .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+bool QueryClusterInfoRsp::has_clusterstatus() const {
+  return this != internal_default_instance() && clusterstatus_ != NULL;
 }
-void QueryClusterInfoRsp::clear_clusterinfo() {
-  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) delete clusterinfo_;
-  clusterinfo_ = NULL;
+void QueryClusterInfoRsp::clear_clusterstatus() {
+  if (GetArenaNoVirtual() == NULL && clusterstatus_ != NULL) delete clusterstatus_;
+  clusterstatus_ = NULL;
 }
-const ::Management::Interactive::Message::Cluster& QueryClusterInfoRsp::clusterinfo() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
-  return clusterinfo_ != NULL ? *clusterinfo_
-                         : *::Management::Interactive::Message::Cluster::internal_default_instance();
+const ::Management::Interactive::Message::ClusterStatus& QueryClusterInfoRsp::clusterstatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
+  return clusterstatus_ != NULL ? *clusterstatus_
+                         : *::Management::Interactive::Message::ClusterStatus::internal_default_instance();
 }
-::Management::Interactive::Message::Cluster* QueryClusterInfoRsp::mutable_clusterinfo() {
+::Management::Interactive::Message::ClusterStatus* QueryClusterInfoRsp::mutable_clusterstatus() {
   
-  if (clusterinfo_ == NULL) {
-    clusterinfo_ = new ::Management::Interactive::Message::Cluster;
+  if (clusterstatus_ == NULL) {
+    clusterstatus_ = new ::Management::Interactive::Message::ClusterStatus;
   }
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
-  return clusterinfo_;
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
+  return clusterstatus_;
 }
-::Management::Interactive::Message::Cluster* QueryClusterInfoRsp::release_clusterinfo() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
+::Management::Interactive::Message::ClusterStatus* QueryClusterInfoRsp::release_clusterstatus() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
   
-  ::Management::Interactive::Message::Cluster* temp = clusterinfo_;
-  clusterinfo_ = NULL;
+  ::Management::Interactive::Message::ClusterStatus* temp = clusterstatus_;
+  clusterstatus_ = NULL;
   return temp;
 }
-void QueryClusterInfoRsp::set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo) {
-  delete clusterinfo_;
-  clusterinfo_ = clusterinfo;
-  if (clusterinfo) {
+void QueryClusterInfoRsp::set_allocated_clusterstatus(::Management::Interactive::Message::ClusterStatus* clusterstatus) {
+  delete clusterstatus_;
+  clusterstatus_ = clusterstatus;
+  if (clusterstatus) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4995,7 +5326,7 @@ void ShakehandClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12].descriptor;
 }
 
 const ShakehandClusterReq& ShakehandClusterReq::default_instance() {
@@ -5169,7 +5500,7 @@ void ShakehandClusterReq::InternalSwap(ShakehandClusterReq* other) {
 
 ::google::protobuf::Metadata ShakehandClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5276,7 +5607,7 @@ void ShakehandClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13].descriptor;
 }
 
 const ShakehandClusterRsp& ShakehandClusterRsp::default_instance() {
@@ -5450,7 +5781,7 @@ void ShakehandClusterRsp::InternalSwap(ShakehandClusterRsp* other) {
 
 ::google::protobuf::Metadata ShakehandClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5557,7 +5888,7 @@ void QueryAllClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14].descriptor;
 }
 
 const QueryAllClusterReq& QueryAllClusterReq::default_instance() {
@@ -5731,7 +6062,7 @@ void QueryAllClusterReq::InternalSwap(QueryAllClusterReq* other) {
 
 ::google::protobuf::Metadata QueryAllClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5794,7 +6125,7 @@ void QueryAllClusterReq::set_allocated_strmanagementaddress(::std::string* strma
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int QueryAllClusterRsp::kClusterInfoFieldNumber;
+const int QueryAllClusterRsp::kClusterStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 QueryAllClusterRsp::QueryAllClusterRsp()
@@ -5808,7 +6139,7 @@ QueryAllClusterRsp::QueryAllClusterRsp()
 QueryAllClusterRsp::QueryAllClusterRsp(const QueryAllClusterRsp& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      clusterinfo_(from.clusterinfo_),
+      clusterstatus_(from.clusterstatus_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.QueryAllClusterRsp)
@@ -5833,7 +6164,7 @@ void QueryAllClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15].descriptor;
 }
 
 const QueryAllClusterRsp& QueryAllClusterRsp::default_instance() {
@@ -5851,7 +6182,7 @@ QueryAllClusterRsp* QueryAllClusterRsp::New(::google::protobuf::Arena* arena) co
 
 void QueryAllClusterRsp::Clear() {
 // @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.QueryAllClusterRsp)
-  clusterinfo_.Clear();
+  clusterstatus_.Clear();
 }
 
 bool QueryAllClusterRsp::MergePartialFromCodedStream(
@@ -5864,12 +6195,12 @@ bool QueryAllClusterRsp::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
+      // repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
       case 1: {
         if (tag == 10u) {
           DO_(input->IncrementRecursionDepth());
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
-                input, add_clusterinfo()));
+                input, add_clusterstatus()));
         } else {
           goto handle_unusual;
         }
@@ -5901,10 +6232,10 @@ failure:
 void QueryAllClusterRsp::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.QueryAllClusterRsp)
-  // repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
-  for (unsigned int i = 0, n = this->clusterinfo_size(); i < n; i++) {
+  // repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  for (unsigned int i = 0, n = this->clusterstatus_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->clusterinfo(i), output);
+      1, this->clusterstatus(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.QueryAllClusterRsp)
@@ -5914,11 +6245,11 @@ void QueryAllClusterRsp::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.QueryAllClusterRsp)
-  // repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
-  for (unsigned int i = 0, n = this->clusterinfo_size(); i < n; i++) {
+  // repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  for (unsigned int i = 0, n = this->clusterstatus_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        1, this->clusterinfo(i), false, target);
+        1, this->clusterstatus(i), false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.QueryAllClusterRsp)
@@ -5929,14 +6260,14 @@ size_t QueryAllClusterRsp::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.QueryAllClusterRsp)
   size_t total_size = 0;
 
-  // repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
+  // repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
   {
-    unsigned int count = this->clusterinfo_size();
+    unsigned int count = this->clusterstatus_size();
     total_size += 1UL * count;
     for (unsigned int i = 0; i < count; i++) {
       total_size +=
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->clusterinfo(i));
+          this->clusterstatus(i));
     }
   }
 
@@ -5966,7 +6297,7 @@ void QueryAllClusterRsp::MergeFrom(const QueryAllClusterRsp& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.QueryAllClusterRsp)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  clusterinfo_.MergeFrom(from.clusterinfo_);
+  clusterstatus_.MergeFrom(from.clusterstatus_);
 }
 
 void QueryAllClusterRsp::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5992,46 +6323,46 @@ void QueryAllClusterRsp::Swap(QueryAllClusterRsp* other) {
   InternalSwap(other);
 }
 void QueryAllClusterRsp::InternalSwap(QueryAllClusterRsp* other) {
-  clusterinfo_.UnsafeArenaSwap(&other->clusterinfo_);
+  clusterstatus_.UnsafeArenaSwap(&other->clusterstatus_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata QueryAllClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // QueryAllClusterRsp
 
-// repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
-int QueryAllClusterRsp::clusterinfo_size() const {
-  return clusterinfo_.size();
+// repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+int QueryAllClusterRsp::clusterstatus_size() const {
+  return clusterstatus_.size();
 }
-void QueryAllClusterRsp::clear_clusterinfo() {
-  clusterinfo_.Clear();
+void QueryAllClusterRsp::clear_clusterstatus() {
+  clusterstatus_.Clear();
 }
-const ::Management::Interactive::Message::Cluster& QueryAllClusterRsp::clusterinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Get(index);
+const ::Management::Interactive::Message::ClusterStatus& QueryAllClusterRsp::clusterstatus(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Get(index);
 }
-::Management::Interactive::Message::Cluster* QueryAllClusterRsp::mutable_clusterinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Mutable(index);
+::Management::Interactive::Message::ClusterStatus* QueryAllClusterRsp::mutable_clusterstatus(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Mutable(index);
 }
-::Management::Interactive::Message::Cluster* QueryAllClusterRsp::add_clusterinfo() {
-  // @@protoc_insertion_point(field_add:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Add();
+::Management::Interactive::Message::ClusterStatus* QueryAllClusterRsp::add_clusterstatus() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Add();
 }
-::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >*
-QueryAllClusterRsp::mutable_clusterinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return &clusterinfo_;
+::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >*
+QueryAllClusterRsp::mutable_clusterstatus() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return &clusterstatus_;
 }
-const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >&
-QueryAllClusterRsp::clusterinfo() const {
-  // @@protoc_insertion_point(field_list:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_;
+const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >&
+QueryAllClusterRsp::clusterstatus() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6104,7 +6435,7 @@ void QueryClusterDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterDeviceReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16].descriptor;
 }
 
 const QueryClusterDeviceReq& QueryClusterDeviceReq::default_instance() {
@@ -6446,7 +6777,7 @@ void QueryClusterDeviceReq::InternalSwap(QueryClusterDeviceReq* other) {
 
 ::google::protobuf::Metadata QueryClusterDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6680,7 +7011,7 @@ void QueryClusterDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17].descriptor;
 }
 
 const QueryClusterDeviceRsp& QueryClusterDeviceRsp::default_instance() {
@@ -6845,7 +7176,7 @@ void QueryClusterDeviceRsp::InternalSwap(QueryClusterDeviceRsp* other) {
 
 ::google::protobuf::Metadata QueryClusterDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6951,7 +7282,7 @@ void QueryClusterUserReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterUserReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18].descriptor;
 }
 
 const QueryClusterUserReq& QueryClusterUserReq::default_instance() {
@@ -7293,7 +7624,7 @@ void QueryClusterUserReq::InternalSwap(QueryClusterUserReq* other) {
 
 ::google::protobuf::Metadata QueryClusterUserReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7527,7 +7858,7 @@ void QueryClusterUserRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterUserRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19].descriptor;
 }
 
 const QueryClusterUserRsp& QueryClusterUserRsp::default_instance() {
@@ -7692,7 +8023,7 @@ void QueryClusterUserRsp::InternalSwap(QueryClusterUserRsp* other) {
 
 ::google::protobuf::Metadata QueryClusterUserRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7844,7 +8175,7 @@ void Request::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Request::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20].descriptor;
 }
 
 const Request& Request::default_instance() {
@@ -8281,7 +8612,7 @@ void Request::InternalSwap(Request* other) {
 
 ::google::protobuf::Metadata Request::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8724,7 +9055,7 @@ void Response::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Response::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21].descriptor;
 }
 
 const Response& Response::default_instance() {
@@ -9245,7 +9576,7 @@ void Response::InternalSwap(Response* other) {
 
 ::google::protobuf::Metadata Response::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9703,7 +10034,7 @@ void ManagementInteractiveMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ManagementInteractiveMessage::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22].descriptor;
 }
 
 const ManagementInteractiveMessage& ManagementInteractiveMessage::default_instance() {
@@ -10027,7 +10358,7 @@ void ManagementInteractiveMessage::InternalSwap(ManagementInteractiveMessage* ot
 
 ::google::protobuf::Metadata ManagementInteractiveMessage::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -40,6 +40,8 @@ private:
     bool AddClusterAgent(const std::string &strManagementAddress, const std::string &strClusterID);
 
 
+    void CollectClusterInfo(const boost::system::error_code& e);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -49,6 +51,8 @@ private:
     static const std::string SUCCESS_MSG;
     static const std::string FAILED_CODE;
     static const std::string FAILED_MSG;
+
+    TimeOutHandler m_Tm;
 
 };
 

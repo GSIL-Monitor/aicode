@@ -54,6 +54,12 @@ public:
         unsigned int m_uiStatus;
     };
 
+    struct ClusterStatus
+    {
+        Cluster m_clusterInfo;
+        unsigned int m_uiStatus;
+    };
+
     struct AccessedDevice                         //接入设备信息
     {
         std::string m_strDeviceID;
@@ -159,6 +165,7 @@ public:
     struct QueryClusterInfoRsp : Response
     {
         Cluster m_clusterInfo;
+        unsigned m_uiStatus;
 
         virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
         virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
@@ -190,7 +197,7 @@ public:
 
     struct QueryAllClusterRsp : Response
     {
-        std::list<Cluster> m_clusterInfoList;
+        std::list<ClusterStatus> m_clusterStatusList;
 
         virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
         virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);

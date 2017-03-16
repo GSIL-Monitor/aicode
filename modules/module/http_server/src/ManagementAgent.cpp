@@ -13,13 +13,15 @@ const std::string ManagementAgent::SUCCESS_MSG = "Ok";
 const std::string ManagementAgent::FAILED_CODE = "-1";
 const std::string ManagementAgent::FAILED_MSG = "Inner failed";
 
-ManagementAgent::ManagementAgent(const ParamInfo &parminfo) : m_ParamInfo(parminfo)
+ManagementAgent::ManagementAgent(const ParamInfo &parminfo) : m_ParamInfo(parminfo), m_Tm(boost::bind(&ManagementAgent::CollectClusterInfo, this, _1), 10)
 {
+    m_Tm.Run();
 }
 
 
 ManagementAgent::~ManagementAgent()
 {
+    m_Tm.Stop();
 }
 
 void ManagementAgent::SetMsgWriter(Writer wr)
@@ -99,8 +101,7 @@ bool ManagementAgent::ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap>
         this_->m_Wr(ResultInfoMap, writer, blResult, NULL);
     }
     BOOST_SCOPE_EXIT_END
-
-
+        
     auto itFind = pMsgInfoMap->find("clusterid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -126,4 +127,14 @@ bool ManagementAgent::AddClusterAgent(const std::string &strManagementAddress, c
     return true;
 }
 
+void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
+{
+    if (e)
+    {
+        LOG_ERROR_RLD("Timer is error: " << e.message());
+        return;
+    }
+
+    LOG_INFO_RLD("Begin collect cluster info.");
+}
 

@@ -118,10 +118,11 @@ DROP TABLE IF EXISTS `t_configuration_info`;
 CREATE TABLE `t_configuration_info` (
   `id` varchar(36) NOT NULL,
   `category` int(11) NOT NULL, #配置类别，0-用户，1-门铃，2-IPC，3-camera
-  `subcategory` int(11) NOT NULL, #配置类别子项目，1-设备固件，2-证书
+  `subcategory` int(11) NOT, #配置类别子项目，1-设备固件，2-证书，3-固件升级地址
   `content` varchar(1000), #配置内容
   `description` varchar(2000), #配置内容描述
   `fileid` varchar(100),
+  `leaseduration` int(11),
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,

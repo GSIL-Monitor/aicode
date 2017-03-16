@@ -48,6 +48,9 @@ extern AddClusterRspDefaultTypeInternal _AddClusterRsp_default_instance_;
 class Cluster;
 class ClusterDefaultTypeInternal;
 extern ClusterDefaultTypeInternal _Cluster_default_instance_;
+class ClusterStatus;
+class ClusterStatusDefaultTypeInternal;
+extern ClusterStatusDefaultTypeInternal _ClusterStatus_default_instance_;
 class DeleteClusterReq;
 class DeleteClusterReqDefaultTypeInternal;
 extern DeleteClusterReqDefaultTypeInternal _DeleteClusterReq_default_instance_;
@@ -308,6 +311,99 @@ class Cluster : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::ArenaStringPtr strmanagementaddress_;
   ::google::protobuf::internal::ArenaStringPtr straliasname_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ClusterStatus : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.ClusterStatus) */ {
+ public:
+  ClusterStatus();
+  virtual ~ClusterStatus();
+
+  ClusterStatus(const ClusterStatus& from);
+
+  inline ClusterStatus& operator=(const ClusterStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClusterStatus& default_instance();
+
+  static inline const ClusterStatus* internal_default_instance() {
+    return reinterpret_cast<const ClusterStatus*>(
+               &_ClusterStatus_default_instance_);
+  }
+
+  void Swap(ClusterStatus* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ClusterStatus* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ClusterStatus* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ClusterStatus& from);
+  void MergeFrom(const ClusterStatus& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ClusterStatus* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Management.Interactive.Message.Cluster clusterInfo = 1;
+  bool has_clusterinfo() const;
+  void clear_clusterinfo();
+  static const int kClusterInfoFieldNumber = 1;
+  const ::Management::Interactive::Message::Cluster& clusterinfo() const;
+  ::Management::Interactive::Message::Cluster* mutable_clusterinfo();
+  ::Management::Interactive::Message::Cluster* release_clusterinfo();
+  void set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo);
+
+  // uint32 uiStatus = 2;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 2;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.ClusterStatus)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Management::Interactive::Message::Cluster* clusterinfo_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
@@ -1309,20 +1405,20 @@ class QueryClusterInfoRsp : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // .Management.Interactive.Message.Cluster clusterInfo = 1;
-  bool has_clusterinfo() const;
-  void clear_clusterinfo();
-  static const int kClusterInfoFieldNumber = 1;
-  const ::Management::Interactive::Message::Cluster& clusterinfo() const;
-  ::Management::Interactive::Message::Cluster* mutable_clusterinfo();
-  ::Management::Interactive::Message::Cluster* release_clusterinfo();
-  void set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo);
+  // .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  bool has_clusterstatus() const;
+  void clear_clusterstatus();
+  static const int kClusterStatusFieldNumber = 1;
+  const ::Management::Interactive::Message::ClusterStatus& clusterstatus() const;
+  ::Management::Interactive::Message::ClusterStatus* mutable_clusterstatus();
+  ::Management::Interactive::Message::ClusterStatus* release_clusterstatus();
+  void set_allocated_clusterstatus(::Management::Interactive::Message::ClusterStatus* clusterstatus);
 
   // @@protoc_insertion_point(class_scope:Management.Interactive.Message.QueryClusterInfoRsp)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::Management::Interactive::Message::Cluster* clusterinfo_;
+  ::Management::Interactive::Message::ClusterStatus* clusterstatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
 };
@@ -1668,23 +1764,23 @@ class QueryAllClusterRsp : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
-  // repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
-  int clusterinfo_size() const;
-  void clear_clusterinfo();
-  static const int kClusterInfoFieldNumber = 1;
-  const ::Management::Interactive::Message::Cluster& clusterinfo(int index) const;
-  ::Management::Interactive::Message::Cluster* mutable_clusterinfo(int index);
-  ::Management::Interactive::Message::Cluster* add_clusterinfo();
-  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >*
-      mutable_clusterinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >&
-      clusterinfo() const;
+  // repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+  int clusterstatus_size() const;
+  void clear_clusterstatus();
+  static const int kClusterStatusFieldNumber = 1;
+  const ::Management::Interactive::Message::ClusterStatus& clusterstatus(int index) const;
+  ::Management::Interactive::Message::ClusterStatus* mutable_clusterstatus(int index);
+  ::Management::Interactive::Message::ClusterStatus* add_clusterstatus();
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >*
+      mutable_clusterstatus();
+  const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >&
+      clusterstatus() const;
 
   // @@protoc_insertion_point(class_scope:Management.Interactive.Message.QueryAllClusterRsp)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster > clusterinfo_;
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus > clusterstatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
 };
@@ -2879,6 +2975,63 @@ inline void Cluster::set_uistatus(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
+// ClusterStatus
+
+// .Management.Interactive.Message.Cluster clusterInfo = 1;
+inline bool ClusterStatus::has_clusterinfo() const {
+  return this != internal_default_instance() && clusterinfo_ != NULL;
+}
+inline void ClusterStatus::clear_clusterinfo() {
+  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) delete clusterinfo_;
+  clusterinfo_ = NULL;
+}
+inline const ::Management::Interactive::Message::Cluster& ClusterStatus::clusterinfo() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  return clusterinfo_ != NULL ? *clusterinfo_
+                         : *::Management::Interactive::Message::Cluster::internal_default_instance();
+}
+inline ::Management::Interactive::Message::Cluster* ClusterStatus::mutable_clusterinfo() {
+  
+  if (clusterinfo_ == NULL) {
+    clusterinfo_ = new ::Management::Interactive::Message::Cluster;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  return clusterinfo_;
+}
+inline ::Management::Interactive::Message::Cluster* ClusterStatus::release_clusterinfo() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.ClusterStatus.clusterInfo)
+  
+  ::Management::Interactive::Message::Cluster* temp = clusterinfo_;
+  clusterinfo_ = NULL;
+  return temp;
+}
+inline void ClusterStatus::set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo) {
+  delete clusterinfo_;
+  clusterinfo_ = clusterinfo;
+  if (clusterinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.ClusterStatus.clusterInfo)
+}
+
+// uint32 uiStatus = 2;
+inline void ClusterStatus::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 ClusterStatus::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.ClusterStatus.uiStatus)
+  return uistatus_;
+}
+inline void ClusterStatus::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.ClusterStatus.uiStatus)
+}
+
+// -------------------------------------------------------------------
+
 // AccessedDevice
 
 // string strDeviceID = 1;
@@ -3751,43 +3904,43 @@ inline void QueryClusterInfoReq::set_allocated_strclusterid(::std::string* strcl
 
 // QueryClusterInfoRsp
 
-// .Management.Interactive.Message.Cluster clusterInfo = 1;
-inline bool QueryClusterInfoRsp::has_clusterinfo() const {
-  return this != internal_default_instance() && clusterinfo_ != NULL;
+// .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+inline bool QueryClusterInfoRsp::has_clusterstatus() const {
+  return this != internal_default_instance() && clusterstatus_ != NULL;
 }
-inline void QueryClusterInfoRsp::clear_clusterinfo() {
-  if (GetArenaNoVirtual() == NULL && clusterinfo_ != NULL) delete clusterinfo_;
-  clusterinfo_ = NULL;
+inline void QueryClusterInfoRsp::clear_clusterstatus() {
+  if (GetArenaNoVirtual() == NULL && clusterstatus_ != NULL) delete clusterstatus_;
+  clusterstatus_ = NULL;
 }
-inline const ::Management::Interactive::Message::Cluster& QueryClusterInfoRsp::clusterinfo() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
-  return clusterinfo_ != NULL ? *clusterinfo_
-                         : *::Management::Interactive::Message::Cluster::internal_default_instance();
+inline const ::Management::Interactive::Message::ClusterStatus& QueryClusterInfoRsp::clusterstatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
+  return clusterstatus_ != NULL ? *clusterstatus_
+                         : *::Management::Interactive::Message::ClusterStatus::internal_default_instance();
 }
-inline ::Management::Interactive::Message::Cluster* QueryClusterInfoRsp::mutable_clusterinfo() {
+inline ::Management::Interactive::Message::ClusterStatus* QueryClusterInfoRsp::mutable_clusterstatus() {
   
-  if (clusterinfo_ == NULL) {
-    clusterinfo_ = new ::Management::Interactive::Message::Cluster;
+  if (clusterstatus_ == NULL) {
+    clusterstatus_ = new ::Management::Interactive::Message::ClusterStatus;
   }
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
-  return clusterinfo_;
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
+  return clusterstatus_;
 }
-inline ::Management::Interactive::Message::Cluster* QueryClusterInfoRsp::release_clusterinfo() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
+inline ::Management::Interactive::Message::ClusterStatus* QueryClusterInfoRsp::release_clusterstatus() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
   
-  ::Management::Interactive::Message::Cluster* temp = clusterinfo_;
-  clusterinfo_ = NULL;
+  ::Management::Interactive::Message::ClusterStatus* temp = clusterstatus_;
+  clusterstatus_ = NULL;
   return temp;
 }
-inline void QueryClusterInfoRsp::set_allocated_clusterinfo(::Management::Interactive::Message::Cluster* clusterinfo) {
-  delete clusterinfo_;
-  clusterinfo_ = clusterinfo;
-  if (clusterinfo) {
+inline void QueryClusterInfoRsp::set_allocated_clusterstatus(::Management::Interactive::Message::ClusterStatus* clusterstatus) {
+  delete clusterstatus_;
+  clusterstatus_ = clusterstatus;
+  if (clusterstatus) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.QueryClusterInfoRsp.clusterInfo)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.QueryClusterInfoRsp.clusterStatus)
 }
 
 // -------------------------------------------------------------------
@@ -3962,34 +4115,34 @@ inline void QueryAllClusterReq::set_allocated_strmanagementaddress(::std::string
 
 // QueryAllClusterRsp
 
-// repeated .Management.Interactive.Message.Cluster clusterInfo = 1;
-inline int QueryAllClusterRsp::clusterinfo_size() const {
-  return clusterinfo_.size();
+// repeated .Management.Interactive.Message.ClusterStatus clusterStatus = 1;
+inline int QueryAllClusterRsp::clusterstatus_size() const {
+  return clusterstatus_.size();
 }
-inline void QueryAllClusterRsp::clear_clusterinfo() {
-  clusterinfo_.Clear();
+inline void QueryAllClusterRsp::clear_clusterstatus() {
+  clusterstatus_.Clear();
 }
-inline const ::Management::Interactive::Message::Cluster& QueryAllClusterRsp::clusterinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Get(index);
+inline const ::Management::Interactive::Message::ClusterStatus& QueryAllClusterRsp::clusterstatus(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Get(index);
 }
-inline ::Management::Interactive::Message::Cluster* QueryAllClusterRsp::mutable_clusterinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Mutable(index);
+inline ::Management::Interactive::Message::ClusterStatus* QueryAllClusterRsp::mutable_clusterstatus(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Mutable(index);
 }
-inline ::Management::Interactive::Message::Cluster* QueryAllClusterRsp::add_clusterinfo() {
-  // @@protoc_insertion_point(field_add:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_.Add();
+inline ::Management::Interactive::Message::ClusterStatus* QueryAllClusterRsp::add_clusterstatus() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >*
-QueryAllClusterRsp::mutable_clusterinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return &clusterinfo_;
+inline ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >*
+QueryAllClusterRsp::mutable_clusterstatus() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return &clusterstatus_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::Cluster >&
-QueryAllClusterRsp::clusterinfo() const {
-  // @@protoc_insertion_point(field_list:Management.Interactive.Message.QueryAllClusterRsp.clusterInfo)
-  return clusterinfo_;
+inline const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::ClusterStatus >&
+QueryAllClusterRsp::clusterstatus() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.QueryAllClusterRsp.clusterStatus)
+  return clusterstatus_;
 }
 
 // -------------------------------------------------------------------
@@ -5297,6 +5450,8 @@ inline void ManagementInteractiveMessage::set_allocated_rspvalue(::Management::I
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

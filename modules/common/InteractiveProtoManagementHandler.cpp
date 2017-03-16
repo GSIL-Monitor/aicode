@@ -87,6 +87,56 @@ void UnSerializeClusterList(std::list<InteractiveProtoManagementHandler::Cluster
     }
 }
 
+void SerializeClusterStatusList(const std::list<InteractiveProtoManagementHandler::ClusterStatus> &clusterStatusList,
+    ::google::protobuf::RepeatedPtrField<::Management::Interactive::Message::ClusterStatus> *pDstClusterStatusList)
+{
+    int i = 0;
+    auto itBegin = clusterStatusList.begin();
+    auto itEnd = clusterStatusList.end();
+    while (itBegin != itEnd)
+    {
+        pDstClusterStatusList->Add();
+        auto pDstClusterStatus = pDstClusterStatusList->Mutable(i);
+        auto clusterInfo = pDstClusterStatus->mutable_clusterinfo();
+
+        clusterInfo->set_strclusterid(itBegin->m_clusterInfo.m_strClusterID);
+        clusterInfo->set_strclusteraddress(itBegin->m_clusterInfo.m_strClusterAddress);
+        clusterInfo->set_strmanagementaddress(itBegin->m_clusterInfo.m_strManagementAddress);
+        clusterInfo->set_straliasname(itBegin->m_clusterInfo.m_strAliasname);
+        clusterInfo->set_strcreatedate(itBegin->m_clusterInfo.m_strCreatedate);
+        clusterInfo->set_uistatus(itBegin->m_clusterInfo.m_uiStatus);
+
+        pDstClusterStatus->set_uistatus(itBegin->m_uiStatus);
+
+        ++i;
+        ++itBegin;
+    }
+}
+
+void UnSerializeClusterStatusList(std::list<InteractiveProtoManagementHandler::ClusterStatus> &clusterStatusList,
+    const ::google::protobuf::RepeatedPtrField<::Management::Interactive::Message::ClusterStatus> &srcClusterStatusList)
+{
+    clusterStatusList.clear();
+    int iCount = srcClusterStatusList.size();
+    for (int i = 0; i < iCount; ++i)
+    {
+        auto srcClusterStatus = srcClusterStatusList.Get(i);
+        auto srcClusterInfo = srcClusterStatus.clusterinfo();
+
+        InteractiveProtoManagementHandler::ClusterStatus clusterStatus;
+        clusterStatus.m_clusterInfo.m_strClusterID = srcClusterInfo.strclusterid();
+        clusterStatus.m_clusterInfo.m_strClusterAddress = srcClusterInfo.strclusteraddress();
+        clusterStatus.m_clusterInfo.m_strManagementAddress = srcClusterInfo.strmanagementaddress();
+        clusterStatus.m_clusterInfo.m_strAliasname = srcClusterInfo.straliasname();
+        clusterStatus.m_clusterInfo.m_strCreatedate = srcClusterInfo.strcreatedate();
+        clusterStatus.m_clusterInfo.m_uiStatus = srcClusterInfo.uistatus();
+
+        clusterStatus.m_uiStatus = srcClusterStatus.uistatus();
+
+        clusterStatusList.push_back(std::move(clusterStatus));
+    }
+}
+
 void SerializeAccessedDeviceList(const std::list<InteractiveProtoManagementHandler::AccessedDevice> &accessedDeviceList,
     ::google::protobuf::RepeatedPtrField<::Management::Interactive::Message::AccessedDevice>* pDstAccessedDeviceList)
 {
@@ -641,21 +691,28 @@ void InteractiveProtoManagementHandler::QueryClusterInfoRsp::Serializer(Manageme
     Response::Serializer(MngInteractiveMsg);
     MngInteractiveMsg.set_type(Management::Interactive::Message::ManagementMsgType::QueryClusterInfoRsp_T);
 
-    auto clusterInfo = MngInteractiveMsg.mutable_rspvalue()->mutable_queryclusterinforsp_value()->mutable_clusterinfo();
+    auto clusterStatus = MngInteractiveMsg.mutable_rspvalue()->mutable_queryclusterinforsp_value()->mutable_clusterstatus();
+    auto clusterInfo = clusterStatus->mutable_clusterinfo();
 
     clusterInfo->set_strclusterid(m_clusterInfo.m_strClusterID);
     clusterInfo->set_strclusteraddress(m_clusterInfo.m_strClusterAddress);
     clusterInfo->set_strmanagementaddress(m_clusterInfo.m_strManagementAddress);
     clusterInfo->set_straliasname(m_clusterInfo.m_strAliasname);
+    clusterInfo->set_strcreatedate(m_clusterInfo.m_strCreatedate);
+
+    clusterStatus->set_uistatus(m_uiStatus);
 }
 
 void InteractiveProtoManagementHandler::QueryClusterInfoRsp::UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg)
 {
     Response::UnSerializer(MngInteractiveMsg);
-    m_clusterInfo.m_strClusterID = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterinfo().strclusterid();
-    m_clusterInfo.m_strClusterAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterinfo().strclusteraddress();
-    m_clusterInfo.m_strManagementAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterinfo().strmanagementaddress();
-    m_clusterInfo.m_strAliasname = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterinfo().straliasname();
+    m_clusterInfo.m_strClusterID = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strclusterid();
+    m_clusterInfo.m_strClusterAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strclusteraddress();
+    m_clusterInfo.m_strManagementAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strmanagementaddress();
+    m_clusterInfo.m_strAliasname = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().straliasname();
+    m_clusterInfo.m_strCreatedate = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strcreatedate();
+
+    m_uiStatus = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().uistatus();
 }
 
 void InteractiveProtoManagementHandler::ShakehandClusterReq::Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const
@@ -707,14 +764,14 @@ void InteractiveProtoManagementHandler::QueryAllClusterRsp::Serializer(Managemen
     Response::Serializer(MngInteractiveMsg);
     MngInteractiveMsg.set_type(Management::Interactive::Message::ManagementMsgType::QueryAllClusterRsp_T);
 
-    auto clusterInfo = MngInteractiveMsg.mutable_rspvalue()->mutable_queryallclusterrsp_value()->mutable_clusterinfo();
-    SerializeClusterList(m_clusterInfoList, clusterInfo);
+    auto clusterStatus = MngInteractiveMsg.mutable_rspvalue()->mutable_queryallclusterrsp_value()->mutable_clusterstatus();
+    SerializeClusterStatusList(m_clusterStatusList, clusterStatus);
 }
 
 void InteractiveProtoManagementHandler::QueryAllClusterRsp::UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg)
 {
     Response::UnSerializer(MngInteractiveMsg);
-    UnSerializeClusterList(m_clusterInfoList, MngInteractiveMsg.rspvalue().queryallclusterrsp_value().clusterinfo());
+    UnSerializeClusterStatusList(m_clusterStatusList, MngInteractiveMsg.rspvalue().queryallclusterrsp_value().clusterstatus());
 }
 
 void InteractiveProtoManagementHandler::QueryClusterDeviceReq::Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const

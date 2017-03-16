@@ -159,6 +159,8 @@ public:
 
     bool QueryAccessDomainNameReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryUpgradeSiteReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -221,7 +223,7 @@ private:
         std::list<InteractiveProtoHandler::FileUrl> &FileUrlList, const bool IsNeedCache = true);
 
     bool QueryFileToDB(const std::string &strUserID, const std::string &strDevID, std::list<InteractiveProtoHandler::File> &FileInfoList,
-        unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
+        const unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
 
     bool QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID);
@@ -249,6 +251,8 @@ private:
     bool QueryAccessDomainInfoByArea(const std::string &strCountryID, const std::string &strAreaID, AccessDomainInfo &DomainInfo);
 
     bool InitDefaultAccessDomainName();
+
+    bool QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease);
     
 private:
     ParamInfo m_ParamInfo;
