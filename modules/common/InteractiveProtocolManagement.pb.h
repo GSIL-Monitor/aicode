@@ -57,6 +57,9 @@ extern DeleteClusterReqDefaultTypeInternal _DeleteClusterReq_default_instance_;
 class DeleteClusterRsp;
 class DeleteClusterRspDefaultTypeInternal;
 extern DeleteClusterRspDefaultTypeInternal _DeleteClusterRsp_default_instance_;
+class DeviceAccessRecord;
+class DeviceAccessRecordDefaultTypeInternal;
+extern DeviceAccessRecordDefaultTypeInternal _DeviceAccessRecord_default_instance_;
 class ManagementInteractiveMessage;
 class ManagementInteractiveMessageDefaultTypeInternal;
 extern ManagementInteractiveMessageDefaultTypeInternal _ManagementInteractiveMessage_default_instance_;
@@ -66,6 +69,18 @@ extern ModifyClusterReqDefaultTypeInternal _ModifyClusterReq_default_instance_;
 class ModifyClusterRsp;
 class ModifyClusterRspDefaultTypeInternal;
 extern ModifyClusterRspDefaultTypeInternal _ModifyClusterRsp_default_instance_;
+class PushClusterDeviceReq;
+class PushClusterDeviceReqDefaultTypeInternal;
+extern PushClusterDeviceReqDefaultTypeInternal _PushClusterDeviceReq_default_instance_;
+class PushClusterDeviceRsp;
+class PushClusterDeviceRspDefaultTypeInternal;
+extern PushClusterDeviceRspDefaultTypeInternal _PushClusterDeviceRsp_default_instance_;
+class PushClusterUserReq;
+class PushClusterUserReqDefaultTypeInternal;
+extern PushClusterUserReqDefaultTypeInternal _PushClusterUserReq_default_instance_;
+class PushClusterUserRsp;
+class PushClusterUserRspDefaultTypeInternal;
+extern PushClusterUserRspDefaultTypeInternal _PushClusterUserRsp_default_instance_;
 class QueryAllClusterReq;
 class QueryAllClusterReqDefaultTypeInternal;
 extern QueryAllClusterReqDefaultTypeInternal _QueryAllClusterReq_default_instance_;
@@ -102,6 +117,9 @@ extern ShakehandClusterReqDefaultTypeInternal _ShakehandClusterReq_default_insta
 class ShakehandClusterRsp;
 class ShakehandClusterRspDefaultTypeInternal;
 extern ShakehandClusterRspDefaultTypeInternal _ShakehandClusterRsp_default_instance_;
+class UserAccessRecord;
+class UserAccessRecordDefaultTypeInternal;
+extern UserAccessRecordDefaultTypeInternal _UserAccessRecord_default_instance_;
 }  // namespace Message
 }  // namespace Interactive
 }  // namespace Management
@@ -139,12 +157,16 @@ enum ManagementMsgType {
   QueryClusterDeviceRsp_T = 10230,
   QueryClusterUserReq_T = 10300,
   QueryClusterUserRsp_T = 10310,
+  PushClusterDeviceReq_T = 10500,
+  PushClusterDeviceRsp_T = 10510,
+  PushClusterUserReq_T = 10520,
+  PushClusterUserRsp_T = 10530,
   ManagementMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ManagementMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ManagementMsgType_IsValid(int value);
 const ManagementMsgType ManagementMsgType_MIN = Init_T;
-const ManagementMsgType ManagementMsgType_MAX = QueryClusterUserRsp_T;
+const ManagementMsgType ManagementMsgType_MAX = PushClusterUserRsp_T;
 const int ManagementMsgType_ARRAYSIZE = ManagementMsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ManagementMsgType_descriptor();
@@ -539,6 +561,12 @@ class AccessedDevice : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::uint32 uidevicetype() const;
   void set_uidevicetype(::google::protobuf::uint32 value);
 
+  // uint32 uiOnlineDuration = 6;
+  void clear_uionlineduration();
+  static const int kUiOnlineDurationFieldNumber = 6;
+  ::google::protobuf::uint32 uionlineduration() const;
+  void set_uionlineduration(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Management.Interactive.Message.AccessedDevice)
  private:
 
@@ -548,6 +576,7 @@ class AccessedDevice : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr strlogintime_;
   ::google::protobuf::internal::ArenaStringPtr strlogouttime_;
   ::google::protobuf::uint32 uidevicetype_;
+  ::google::protobuf::uint32 uionlineduration_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
 };
@@ -696,6 +725,12 @@ class AccessedUser : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::uint32 uiclienttype() const;
   void set_uiclienttype(::google::protobuf::uint32 value);
 
+  // uint32 uiOnlineDuration = 7;
+  void clear_uionlineduration();
+  static const int kUiOnlineDurationFieldNumber = 7;
+  ::google::protobuf::uint32 uionlineduration() const;
+  void set_uionlineduration(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Management.Interactive.Message.AccessedUser)
  private:
 
@@ -706,6 +741,267 @@ class AccessedUser : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr strlogintime_;
   ::google::protobuf::internal::ArenaStringPtr strlogouttime_;
   ::google::protobuf::uint32 uiclienttype_;
+  ::google::protobuf::uint32 uionlineduration_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeviceAccessRecord : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.DeviceAccessRecord) */ {
+ public:
+  DeviceAccessRecord();
+  virtual ~DeviceAccessRecord();
+
+  DeviceAccessRecord(const DeviceAccessRecord& from);
+
+  inline DeviceAccessRecord& operator=(const DeviceAccessRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeviceAccessRecord& default_instance();
+
+  static inline const DeviceAccessRecord* internal_default_instance() {
+    return reinterpret_cast<const DeviceAccessRecord*>(
+               &_DeviceAccessRecord_default_instance_);
+  }
+
+  void Swap(DeviceAccessRecord* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeviceAccessRecord* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeviceAccessRecord* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeviceAccessRecord& from);
+  void MergeFrom(const DeviceAccessRecord& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeviceAccessRecord* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strClusterID = 2;
+  void clear_strclusterid();
+  static const int kStrClusterIDFieldNumber = 2;
+  const ::std::string& strclusterid() const;
+  void set_strclusterid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclusterid(::std::string&& value);
+  #endif
+  void set_strclusterid(const char* value);
+  void set_strclusterid(const char* value, size_t size);
+  ::std::string* mutable_strclusterid();
+  ::std::string* release_strclusterid();
+  void set_allocated_strclusterid(::std::string* strclusterid);
+
+  // string strCreateDate = 4;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 4;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+  bool has_accesseddevice() const;
+  void clear_accesseddevice();
+  static const int kAccessedDeviceFieldNumber = 3;
+  const ::Management::Interactive::Message::AccessedDevice& accesseddevice() const;
+  ::Management::Interactive::Message::AccessedDevice* mutable_accesseddevice();
+  ::Management::Interactive::Message::AccessedDevice* release_accesseddevice();
+  void set_allocated_accesseddevice(::Management::Interactive::Message::AccessedDevice* accesseddevice);
+
+  // uint32 uiSequence = 1;
+  void clear_uisequence();
+  static const int kUiSequenceFieldNumber = 1;
+  ::google::protobuf::uint32 uisequence() const;
+  void set_uisequence(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 5;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 5;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.DeviceAccessRecord)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strclusterid_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::Management::Interactive::Message::AccessedDevice* accesseddevice_;
+  ::google::protobuf::uint32 uisequence_;
+  ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.UserAccessRecord) */ {
+ public:
+  UserAccessRecord();
+  virtual ~UserAccessRecord();
+
+  UserAccessRecord(const UserAccessRecord& from);
+
+  inline UserAccessRecord& operator=(const UserAccessRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserAccessRecord& default_instance();
+
+  static inline const UserAccessRecord* internal_default_instance() {
+    return reinterpret_cast<const UserAccessRecord*>(
+               &_UserAccessRecord_default_instance_);
+  }
+
+  void Swap(UserAccessRecord* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UserAccessRecord* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UserAccessRecord* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UserAccessRecord& from);
+  void MergeFrom(const UserAccessRecord& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UserAccessRecord* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strClusterID = 2;
+  void clear_strclusterid();
+  static const int kStrClusterIDFieldNumber = 2;
+  const ::std::string& strclusterid() const;
+  void set_strclusterid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclusterid(::std::string&& value);
+  #endif
+  void set_strclusterid(const char* value);
+  void set_strclusterid(const char* value, size_t size);
+  ::std::string* mutable_strclusterid();
+  ::std::string* release_strclusterid();
+  void set_allocated_strclusterid(::std::string* strclusterid);
+
+  // string strCreateDate = 4;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 4;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // .Management.Interactive.Message.AccessedUser accessedUser = 3;
+  bool has_accesseduser() const;
+  void clear_accesseduser();
+  static const int kAccessedUserFieldNumber = 3;
+  const ::Management::Interactive::Message::AccessedUser& accesseduser() const;
+  ::Management::Interactive::Message::AccessedUser* mutable_accesseduser();
+  ::Management::Interactive::Message::AccessedUser* release_accesseduser();
+  void set_allocated_accesseduser(::Management::Interactive::Message::AccessedUser* accesseduser);
+
+  // uint32 uiSequence = 1;
+  void clear_uisequence();
+  static const int kUiSequenceFieldNumber = 1;
+  ::google::protobuf::uint32 uisequence() const;
+  void set_uisequence(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 5;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 5;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.UserAccessRecord)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strclusterid_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::Management::Interactive::Message::AccessedUser* accesseduser_;
+  ::google::protobuf::uint32 uisequence_;
+  ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
 };
@@ -2234,6 +2530,396 @@ class QueryClusterUserRsp : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class PushClusterDeviceReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.PushClusterDeviceReq) */ {
+ public:
+  PushClusterDeviceReq();
+  virtual ~PushClusterDeviceReq();
+
+  PushClusterDeviceReq(const PushClusterDeviceReq& from);
+
+  inline PushClusterDeviceReq& operator=(const PushClusterDeviceReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PushClusterDeviceReq& default_instance();
+
+  static inline const PushClusterDeviceReq* internal_default_instance() {
+    return reinterpret_cast<const PushClusterDeviceReq*>(
+               &_PushClusterDeviceReq_default_instance_);
+  }
+
+  void Swap(PushClusterDeviceReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PushClusterDeviceReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PushClusterDeviceReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PushClusterDeviceReq& from);
+  void MergeFrom(const PushClusterDeviceReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PushClusterDeviceReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+  int deviceaccessrecord_size() const;
+  void clear_deviceaccessrecord();
+  static const int kDeviceAccessRecordFieldNumber = 2;
+  const ::Management::Interactive::Message::DeviceAccessRecord& deviceaccessrecord(int index) const;
+  ::Management::Interactive::Message::DeviceAccessRecord* mutable_deviceaccessrecord(int index);
+  ::Management::Interactive::Message::DeviceAccessRecord* add_deviceaccessrecord();
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >*
+      mutable_deviceaccessrecord();
+  const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >&
+      deviceaccessrecord() const;
+
+  // string strClusterID = 1;
+  void clear_strclusterid();
+  static const int kStrClusterIDFieldNumber = 1;
+  const ::std::string& strclusterid() const;
+  void set_strclusterid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclusterid(::std::string&& value);
+  #endif
+  void set_strclusterid(const char* value);
+  void set_strclusterid(const char* value, size_t size);
+  ::std::string* mutable_strclusterid();
+  ::std::string* release_strclusterid();
+  void set_allocated_strclusterid(::std::string* strclusterid);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.PushClusterDeviceReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord > deviceaccessrecord_;
+  ::google::protobuf::internal::ArenaStringPtr strclusterid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PushClusterDeviceRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.PushClusterDeviceRsp) */ {
+ public:
+  PushClusterDeviceRsp();
+  virtual ~PushClusterDeviceRsp();
+
+  PushClusterDeviceRsp(const PushClusterDeviceRsp& from);
+
+  inline PushClusterDeviceRsp& operator=(const PushClusterDeviceRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PushClusterDeviceRsp& default_instance();
+
+  static inline const PushClusterDeviceRsp* internal_default_instance() {
+    return reinterpret_cast<const PushClusterDeviceRsp*>(
+               &_PushClusterDeviceRsp_default_instance_);
+  }
+
+  void Swap(PushClusterDeviceRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PushClusterDeviceRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PushClusterDeviceRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PushClusterDeviceRsp& from);
+  void MergeFrom(const PushClusterDeviceRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PushClusterDeviceRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.PushClusterDeviceRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PushClusterUserReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.PushClusterUserReq) */ {
+ public:
+  PushClusterUserReq();
+  virtual ~PushClusterUserReq();
+
+  PushClusterUserReq(const PushClusterUserReq& from);
+
+  inline PushClusterUserReq& operator=(const PushClusterUserReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PushClusterUserReq& default_instance();
+
+  static inline const PushClusterUserReq* internal_default_instance() {
+    return reinterpret_cast<const PushClusterUserReq*>(
+               &_PushClusterUserReq_default_instance_);
+  }
+
+  void Swap(PushClusterUserReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PushClusterUserReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PushClusterUserReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PushClusterUserReq& from);
+  void MergeFrom(const PushClusterUserReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PushClusterUserReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+  int useraccessrecord_size() const;
+  void clear_useraccessrecord();
+  static const int kUserAccessRecordFieldNumber = 2;
+  const ::Management::Interactive::Message::UserAccessRecord& useraccessrecord(int index) const;
+  ::Management::Interactive::Message::UserAccessRecord* mutable_useraccessrecord(int index);
+  ::Management::Interactive::Message::UserAccessRecord* add_useraccessrecord();
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >*
+      mutable_useraccessrecord();
+  const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >&
+      useraccessrecord() const;
+
+  // string strClusterID = 1;
+  void clear_strclusterid();
+  static const int kStrClusterIDFieldNumber = 1;
+  const ::std::string& strclusterid() const;
+  void set_strclusterid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclusterid(::std::string&& value);
+  #endif
+  void set_strclusterid(const char* value);
+  void set_strclusterid(const char* value, size_t size);
+  ::std::string* mutable_strclusterid();
+  ::std::string* release_strclusterid();
+  void set_allocated_strclusterid(::std::string* strclusterid);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.PushClusterUserReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord > useraccessrecord_;
+  ::google::protobuf::internal::ArenaStringPtr strclusterid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PushClusterUserRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.PushClusterUserRsp) */ {
+ public:
+  PushClusterUserRsp();
+  virtual ~PushClusterUserRsp();
+
+  PushClusterUserRsp(const PushClusterUserRsp& from);
+
+  inline PushClusterUserRsp& operator=(const PushClusterUserRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PushClusterUserRsp& default_instance();
+
+  static inline const PushClusterUserRsp* internal_default_instance() {
+    return reinterpret_cast<const PushClusterUserRsp*>(
+               &_PushClusterUserRsp_default_instance_);
+  }
+
+  void Swap(PushClusterUserRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PushClusterUserRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PushClusterUserRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PushClusterUserRsp& from);
+  void MergeFrom(const PushClusterUserRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PushClusterUserRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Management.Interactive.Message.PushClusterUserRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Management.Interactive.Message.Request) */ {
  public:
   Request();
@@ -2373,6 +3059,24 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::Management::Interactive::Message::QueryClusterUserReq* release_queryclusteruserreq_value();
   void set_allocated_queryclusteruserreq_value(::Management::Interactive::Message::QueryClusterUserReq* queryclusteruserreq_value);
 
+  // .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+  bool has_pushclusterdevicereq_value() const;
+  void clear_pushclusterdevicereq_value();
+  static const int kPushClusterDeviceReqValueFieldNumber = 270;
+  const ::Management::Interactive::Message::PushClusterDeviceReq& pushclusterdevicereq_value() const;
+  ::Management::Interactive::Message::PushClusterDeviceReq* mutable_pushclusterdevicereq_value();
+  ::Management::Interactive::Message::PushClusterDeviceReq* release_pushclusterdevicereq_value();
+  void set_allocated_pushclusterdevicereq_value(::Management::Interactive::Message::PushClusterDeviceReq* pushclusterdevicereq_value);
+
+  // .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+  bool has_pushclusteruserreq_value() const;
+  void clear_pushclusteruserreq_value();
+  static const int kPushClusterUserReqValueFieldNumber = 280;
+  const ::Management::Interactive::Message::PushClusterUserReq& pushclusteruserreq_value() const;
+  ::Management::Interactive::Message::PushClusterUserReq* mutable_pushclusteruserreq_value();
+  ::Management::Interactive::Message::PushClusterUserReq* release_pushclusteruserreq_value();
+  void set_allocated_pushclusteruserreq_value(::Management::Interactive::Message::PushClusterUserReq* pushclusteruserreq_value);
+
   // @@protoc_insertion_point(class_scope:Management.Interactive.Message.Request)
  private:
 
@@ -2385,6 +3089,8 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::Management::Interactive::Message::QueryAllClusterReq* queryallclusterreq_value_;
   ::Management::Interactive::Message::QueryClusterDeviceReq* queryclusterdevicereq_value_;
   ::Management::Interactive::Message::QueryClusterUserReq* queryclusteruserreq_value_;
+  ::Management::Interactive::Message::PushClusterDeviceReq* pushclusterdevicereq_value_;
+  ::Management::Interactive::Message::PushClusterUserReq* pushclusteruserreq_value_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
 };
@@ -2543,6 +3249,24 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::Management::Interactive::Message::QueryClusterUserRsp* release_queryclusteruserrsp_value();
   void set_allocated_queryclusteruserrsp_value(::Management::Interactive::Message::QueryClusterUserRsp* queryclusteruserrsp_value);
 
+  // .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+  bool has_pushclusterdevicersp_value() const;
+  void clear_pushclusterdevicersp_value();
+  static const int kPushClusterDeviceRspValueFieldNumber = 290;
+  const ::Management::Interactive::Message::PushClusterDeviceRsp& pushclusterdevicersp_value() const;
+  ::Management::Interactive::Message::PushClusterDeviceRsp* mutable_pushclusterdevicersp_value();
+  ::Management::Interactive::Message::PushClusterDeviceRsp* release_pushclusterdevicersp_value();
+  void set_allocated_pushclusterdevicersp_value(::Management::Interactive::Message::PushClusterDeviceRsp* pushclusterdevicersp_value);
+
+  // .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+  bool has_pushclusteruserrsp_value() const;
+  void clear_pushclusteruserrsp_value();
+  static const int kPushClusterUserRspValueFieldNumber = 300;
+  const ::Management::Interactive::Message::PushClusterUserRsp& pushclusteruserrsp_value() const;
+  ::Management::Interactive::Message::PushClusterUserRsp* mutable_pushclusteruserrsp_value();
+  ::Management::Interactive::Message::PushClusterUserRsp* release_pushclusteruserrsp_value();
+  void set_allocated_pushclusteruserrsp_value(::Management::Interactive::Message::PushClusterUserRsp* pushclusteruserrsp_value);
+
   // int32 iRetcode = 10;
   void clear_iretcode();
   static const int kIRetcodeFieldNumber = 10;
@@ -2562,6 +3286,8 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::Management::Interactive::Message::QueryAllClusterRsp* queryallclusterrsp_value_;
   ::Management::Interactive::Message::QueryClusterDeviceRsp* queryclusterdevicersp_value_;
   ::Management::Interactive::Message::QueryClusterUserRsp* queryclusteruserrsp_value_;
+  ::Management::Interactive::Message::PushClusterDeviceRsp* pushclusterdevicersp_value_;
+  ::Management::Interactive::Message::PushClusterUserRsp* pushclusteruserrsp_value_;
   ::google::protobuf::int32 iretcode_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
@@ -3256,6 +3982,20 @@ inline void AccessedDevice::set_allocated_strlogouttime(::std::string* strlogout
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.AccessedDevice.strLogoutTime)
 }
 
+// uint32 uiOnlineDuration = 6;
+inline void AccessedDevice::clear_uionlineduration() {
+  uionlineduration_ = 0u;
+}
+inline ::google::protobuf::uint32 AccessedDevice::uionlineduration() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.AccessedDevice.uiOnlineDuration)
+  return uionlineduration_;
+}
+inline void AccessedDevice::set_uionlineduration(::google::protobuf::uint32 value) {
+  
+  uionlineduration_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.AccessedDevice.uiOnlineDuration)
+}
+
 // -------------------------------------------------------------------
 
 // AccessedUser
@@ -3532,6 +4272,370 @@ inline void AccessedUser::set_allocated_strlogouttime(::std::string* strlogoutti
   }
   strlogouttime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlogouttime);
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.AccessedUser.strLogoutTime)
+}
+
+// uint32 uiOnlineDuration = 7;
+inline void AccessedUser::clear_uionlineduration() {
+  uionlineduration_ = 0u;
+}
+inline ::google::protobuf::uint32 AccessedUser::uionlineduration() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.AccessedUser.uiOnlineDuration)
+  return uionlineduration_;
+}
+inline void AccessedUser::set_uionlineduration(::google::protobuf::uint32 value) {
+  
+  uionlineduration_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.AccessedUser.uiOnlineDuration)
+}
+
+// -------------------------------------------------------------------
+
+// DeviceAccessRecord
+
+// uint32 uiSequence = 1;
+inline void DeviceAccessRecord::clear_uisequence() {
+  uisequence_ = 0u;
+}
+inline ::google::protobuf::uint32 DeviceAccessRecord::uisequence() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
+  return uisequence_;
+}
+inline void DeviceAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+  
+  uisequence_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
+}
+
+// string strClusterID = 2;
+inline void DeviceAccessRecord::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeviceAccessRecord::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+inline void DeviceAccessRecord::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+#if LANG_CXX11
+inline void DeviceAccessRecord::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+#endif
+inline void DeviceAccessRecord::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+inline void DeviceAccessRecord::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+inline ::std::string* DeviceAccessRecord::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceAccessRecord::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceAccessRecord::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+
+// .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+inline bool DeviceAccessRecord::has_accesseddevice() const {
+  return this != internal_default_instance() && accesseddevice_ != NULL;
+}
+inline void DeviceAccessRecord::clear_accesseddevice() {
+  if (GetArenaNoVirtual() == NULL && accesseddevice_ != NULL) delete accesseddevice_;
+  accesseddevice_ = NULL;
+}
+inline const ::Management::Interactive::Message::AccessedDevice& DeviceAccessRecord::accesseddevice() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  return accesseddevice_ != NULL ? *accesseddevice_
+                         : *::Management::Interactive::Message::AccessedDevice::internal_default_instance();
+}
+inline ::Management::Interactive::Message::AccessedDevice* DeviceAccessRecord::mutable_accesseddevice() {
+  
+  if (accesseddevice_ == NULL) {
+    accesseddevice_ = new ::Management::Interactive::Message::AccessedDevice;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  return accesseddevice_;
+}
+inline ::Management::Interactive::Message::AccessedDevice* DeviceAccessRecord::release_accesseddevice() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  
+  ::Management::Interactive::Message::AccessedDevice* temp = accesseddevice_;
+  accesseddevice_ = NULL;
+  return temp;
+}
+inline void DeviceAccessRecord::set_allocated_accesseddevice(::Management::Interactive::Message::AccessedDevice* accesseddevice) {
+  delete accesseddevice_;
+  accesseddevice_ = accesseddevice;
+  if (accesseddevice) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+}
+
+// string strCreateDate = 4;
+inline void DeviceAccessRecord::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeviceAccessRecord::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void DeviceAccessRecord::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+#if LANG_CXX11
+inline void DeviceAccessRecord::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+#endif
+inline void DeviceAccessRecord::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+inline void DeviceAccessRecord::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+inline ::std::string* DeviceAccessRecord::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceAccessRecord::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+
+// uint32 uiStatus = 5;
+inline void DeviceAccessRecord::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 DeviceAccessRecord::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.uiStatus)
+  return uistatus_;
+}
+inline void DeviceAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.uiStatus)
+}
+
+// -------------------------------------------------------------------
+
+// UserAccessRecord
+
+// uint32 uiSequence = 1;
+inline void UserAccessRecord::clear_uisequence() {
+  uisequence_ = 0u;
+}
+inline ::google::protobuf::uint32 UserAccessRecord::uisequence() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.uiSequence)
+  return uisequence_;
+}
+inline void UserAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+  
+  uisequence_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.uiSequence)
+}
+
+// string strClusterID = 2;
+inline void UserAccessRecord::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserAccessRecord::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+inline void UserAccessRecord::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+#if LANG_CXX11
+inline void UserAccessRecord::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+#endif
+inline void UserAccessRecord::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+inline void UserAccessRecord::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+inline ::std::string* UserAccessRecord::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserAccessRecord::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserAccessRecord::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+
+// .Management.Interactive.Message.AccessedUser accessedUser = 3;
+inline bool UserAccessRecord::has_accesseduser() const {
+  return this != internal_default_instance() && accesseduser_ != NULL;
+}
+inline void UserAccessRecord::clear_accesseduser() {
+  if (GetArenaNoVirtual() == NULL && accesseduser_ != NULL) delete accesseduser_;
+  accesseduser_ = NULL;
+}
+inline const ::Management::Interactive::Message::AccessedUser& UserAccessRecord::accesseduser() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  return accesseduser_ != NULL ? *accesseduser_
+                         : *::Management::Interactive::Message::AccessedUser::internal_default_instance();
+}
+inline ::Management::Interactive::Message::AccessedUser* UserAccessRecord::mutable_accesseduser() {
+  
+  if (accesseduser_ == NULL) {
+    accesseduser_ = new ::Management::Interactive::Message::AccessedUser;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  return accesseduser_;
+}
+inline ::Management::Interactive::Message::AccessedUser* UserAccessRecord::release_accesseduser() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  
+  ::Management::Interactive::Message::AccessedUser* temp = accesseduser_;
+  accesseduser_ = NULL;
+  return temp;
+}
+inline void UserAccessRecord::set_allocated_accesseduser(::Management::Interactive::Message::AccessedUser* accesseduser) {
+  delete accesseduser_;
+  accesseduser_ = accesseduser;
+  if (accesseduser) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.accessedUser)
+}
+
+// string strCreateDate = 4;
+inline void UserAccessRecord::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserAccessRecord::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void UserAccessRecord::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+#if LANG_CXX11
+inline void UserAccessRecord::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+#endif
+inline void UserAccessRecord::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+inline void UserAccessRecord::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+inline ::std::string* UserAccessRecord::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserAccessRecord::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+
+// uint32 uiStatus = 5;
+inline void UserAccessRecord::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 UserAccessRecord::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.uiStatus)
+  return uistatus_;
+}
+inline void UserAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.uiStatus)
 }
 
 // -------------------------------------------------------------------
@@ -4591,6 +5695,290 @@ QueryClusterUserRsp::accesseduserinfo() const {
 
 // -------------------------------------------------------------------
 
+// PushClusterDeviceReq
+
+// string strClusterID = 1;
+inline void PushClusterDeviceReq::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PushClusterDeviceReq::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+inline void PushClusterDeviceReq::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+#if LANG_CXX11
+inline void PushClusterDeviceReq::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+#endif
+inline void PushClusterDeviceReq::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+inline void PushClusterDeviceReq::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+inline ::std::string* PushClusterDeviceReq::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PushClusterDeviceReq::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PushClusterDeviceReq::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+
+// repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+inline int PushClusterDeviceReq::deviceaccessrecord_size() const {
+  return deviceaccessrecord_.size();
+}
+inline void PushClusterDeviceReq::clear_deviceaccessrecord() {
+  deviceaccessrecord_.Clear();
+}
+inline const ::Management::Interactive::Message::DeviceAccessRecord& PushClusterDeviceReq::deviceaccessrecord(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Get(index);
+}
+inline ::Management::Interactive::Message::DeviceAccessRecord* PushClusterDeviceReq::mutable_deviceaccessrecord(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Mutable(index);
+}
+inline ::Management::Interactive::Message::DeviceAccessRecord* PushClusterDeviceReq::add_deviceaccessrecord() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >*
+PushClusterDeviceReq::mutable_deviceaccessrecord() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return &deviceaccessrecord_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >&
+PushClusterDeviceReq::deviceaccessrecord() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_;
+}
+
+// -------------------------------------------------------------------
+
+// PushClusterDeviceRsp
+
+// string strValue = 1;
+inline void PushClusterDeviceRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PushClusterDeviceRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void PushClusterDeviceRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+#if LANG_CXX11
+inline void PushClusterDeviceRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+#endif
+inline void PushClusterDeviceRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+inline void PushClusterDeviceRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+inline ::std::string* PushClusterDeviceRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PushClusterDeviceRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PushClusterDeviceRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// PushClusterUserReq
+
+// string strClusterID = 1;
+inline void PushClusterUserReq::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PushClusterUserReq::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+inline void PushClusterUserReq::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+#if LANG_CXX11
+inline void PushClusterUserReq::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+#endif
+inline void PushClusterUserReq::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+inline void PushClusterUserReq::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+inline ::std::string* PushClusterUserReq::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PushClusterUserReq::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PushClusterUserReq::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+
+// repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+inline int PushClusterUserReq::useraccessrecord_size() const {
+  return useraccessrecord_.size();
+}
+inline void PushClusterUserReq::clear_useraccessrecord() {
+  useraccessrecord_.Clear();
+}
+inline const ::Management::Interactive::Message::UserAccessRecord& PushClusterUserReq::useraccessrecord(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Get(index);
+}
+inline ::Management::Interactive::Message::UserAccessRecord* PushClusterUserReq::mutable_useraccessrecord(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Mutable(index);
+}
+inline ::Management::Interactive::Message::UserAccessRecord* PushClusterUserReq::add_useraccessrecord() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >*
+PushClusterUserReq::mutable_useraccessrecord() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return &useraccessrecord_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >&
+PushClusterUserReq::useraccessrecord() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_;
+}
+
+// -------------------------------------------------------------------
+
+// PushClusterUserRsp
+
+// string strValue = 1;
+inline void PushClusterUserRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PushClusterUserRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void PushClusterUserRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+#if LANG_CXX11
+inline void PushClusterUserRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+#endif
+inline void PushClusterUserRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+inline void PushClusterUserRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+inline ::std::string* PushClusterUserRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PushClusterUserRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PushClusterUserRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
 // Request
 
 // .Management.Interactive.Message.AddClusterReq AddClusterReq_Value = 10;
@@ -4903,6 +6291,84 @@ inline void Request::set_allocated_queryclusteruserreq_value(::Management::Inter
     
   }
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.QueryClusterUserReq_Value)
+}
+
+// .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+inline bool Request::has_pushclusterdevicereq_value() const {
+  return this != internal_default_instance() && pushclusterdevicereq_value_ != NULL;
+}
+inline void Request::clear_pushclusterdevicereq_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicereq_value_ != NULL) delete pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = NULL;
+}
+inline const ::Management::Interactive::Message::PushClusterDeviceReq& Request::pushclusterdevicereq_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  return pushclusterdevicereq_value_ != NULL ? *pushclusterdevicereq_value_
+                         : *::Management::Interactive::Message::PushClusterDeviceReq::internal_default_instance();
+}
+inline ::Management::Interactive::Message::PushClusterDeviceReq* Request::mutable_pushclusterdevicereq_value() {
+  
+  if (pushclusterdevicereq_value_ == NULL) {
+    pushclusterdevicereq_value_ = new ::Management::Interactive::Message::PushClusterDeviceReq;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  return pushclusterdevicereq_value_;
+}
+inline ::Management::Interactive::Message::PushClusterDeviceReq* Request::release_pushclusterdevicereq_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  
+  ::Management::Interactive::Message::PushClusterDeviceReq* temp = pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_pushclusterdevicereq_value(::Management::Interactive::Message::PushClusterDeviceReq* pushclusterdevicereq_value) {
+  delete pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = pushclusterdevicereq_value;
+  if (pushclusterdevicereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+}
+
+// .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+inline bool Request::has_pushclusteruserreq_value() const {
+  return this != internal_default_instance() && pushclusteruserreq_value_ != NULL;
+}
+inline void Request::clear_pushclusteruserreq_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusteruserreq_value_ != NULL) delete pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = NULL;
+}
+inline const ::Management::Interactive::Message::PushClusterUserReq& Request::pushclusteruserreq_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  return pushclusteruserreq_value_ != NULL ? *pushclusteruserreq_value_
+                         : *::Management::Interactive::Message::PushClusterUserReq::internal_default_instance();
+}
+inline ::Management::Interactive::Message::PushClusterUserReq* Request::mutable_pushclusteruserreq_value() {
+  
+  if (pushclusteruserreq_value_ == NULL) {
+    pushclusteruserreq_value_ = new ::Management::Interactive::Message::PushClusterUserReq;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  return pushclusteruserreq_value_;
+}
+inline ::Management::Interactive::Message::PushClusterUserReq* Request::release_pushclusteruserreq_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  
+  ::Management::Interactive::Message::PushClusterUserReq* temp = pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_pushclusteruserreq_value(::Management::Interactive::Message::PushClusterUserReq* pushclusteruserreq_value) {
+  delete pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = pushclusteruserreq_value;
+  if (pushclusteruserreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.PushClusterUserReq_Value)
 }
 
 // -------------------------------------------------------------------
@@ -5287,6 +6753,84 @@ inline void Response::set_allocated_queryclusteruserrsp_value(::Management::Inte
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.QueryClusterUserRsp_Value)
 }
 
+// .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+inline bool Response::has_pushclusterdevicersp_value() const {
+  return this != internal_default_instance() && pushclusterdevicersp_value_ != NULL;
+}
+inline void Response::clear_pushclusterdevicersp_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicersp_value_ != NULL) delete pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = NULL;
+}
+inline const ::Management::Interactive::Message::PushClusterDeviceRsp& Response::pushclusterdevicersp_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  return pushclusterdevicersp_value_ != NULL ? *pushclusterdevicersp_value_
+                         : *::Management::Interactive::Message::PushClusterDeviceRsp::internal_default_instance();
+}
+inline ::Management::Interactive::Message::PushClusterDeviceRsp* Response::mutable_pushclusterdevicersp_value() {
+  
+  if (pushclusterdevicersp_value_ == NULL) {
+    pushclusterdevicersp_value_ = new ::Management::Interactive::Message::PushClusterDeviceRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  return pushclusterdevicersp_value_;
+}
+inline ::Management::Interactive::Message::PushClusterDeviceRsp* Response::release_pushclusterdevicersp_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  
+  ::Management::Interactive::Message::PushClusterDeviceRsp* temp = pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_pushclusterdevicersp_value(::Management::Interactive::Message::PushClusterDeviceRsp* pushclusterdevicersp_value) {
+  delete pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = pushclusterdevicersp_value;
+  if (pushclusterdevicersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+}
+
+// .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+inline bool Response::has_pushclusteruserrsp_value() const {
+  return this != internal_default_instance() && pushclusteruserrsp_value_ != NULL;
+}
+inline void Response::clear_pushclusteruserrsp_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusteruserrsp_value_ != NULL) delete pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = NULL;
+}
+inline const ::Management::Interactive::Message::PushClusterUserRsp& Response::pushclusteruserrsp_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  return pushclusteruserrsp_value_ != NULL ? *pushclusteruserrsp_value_
+                         : *::Management::Interactive::Message::PushClusterUserRsp::internal_default_instance();
+}
+inline ::Management::Interactive::Message::PushClusterUserRsp* Response::mutable_pushclusteruserrsp_value() {
+  
+  if (pushclusteruserrsp_value_ == NULL) {
+    pushclusteruserrsp_value_ = new ::Management::Interactive::Message::PushClusterUserRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  return pushclusteruserrsp_value_;
+}
+inline ::Management::Interactive::Message::PushClusterUserRsp* Response::release_pushclusteruserrsp_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  
+  ::Management::Interactive::Message::PushClusterUserRsp* temp = pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_pushclusteruserrsp_value(::Management::Interactive::Message::PushClusterUserRsp* pushclusteruserrsp_value) {
+  delete pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = pushclusteruserrsp_value;
+  if (pushclusteruserrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+}
+
 // -------------------------------------------------------------------
 
 // ManagementInteractiveMessage
@@ -5450,6 +6994,18 @@ inline void ManagementInteractiveMessage::set_allocated_rspvalue(::Management::I
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

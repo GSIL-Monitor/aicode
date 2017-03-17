@@ -1,5 +1,11 @@
+增加集群代理
+curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F management_address=172.20.122.252 http://172.20.122.252/access.cgi?action=cluster_shakehand
+
+集群握手
+curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 http://172.20.122.252/access.cgi?action=cluster_shakehand
+
 增加集群
-curl -F cluster_address=100.200.100.250 -F management_address=80.80.80.80 -F aliasname=beta集群002 http://172.20.122.250:8090/management.cgi?action=add_cluster
+curl -F cluster_address=100.200.100.250 -F management_address=172.20.122.252 -F aliasname=beta集群002 http://172.20.122.250:8090/management.cgi?action=add_cluster
 
 删除集群
 curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 http://172.20.122.250:8090/management.cgi?action=delete_cluster
@@ -10,15 +16,12 @@ curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F aliasname=修改beta集群123 
 查询集群信息
 curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 http://172.20.122.250:8090/management.cgi?action=query_cluster_info
 
-集群握手
-curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 http://172.20.122.250:8090/management.cgi?action=cluster_shakehand
-
 查询所有集群
-curl -F management_address=80.80.80.80 http://172.20.122.250:8090/management.cgi?action=query_all_cluster
+curl -F management_address=172.20.122.252 http://172.20.122.250:8090/management.cgi?action=query_all_cluster
 
 查询集群接入设备
-curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F begindate="2017-03-13 16:17:00" -F enddate="2017-03-13 16:19:00" -F type=2 http://172.20.122.250:8090/management.cgi?action=query_cluster_device
+curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F begindate="2017-03-10 16:17:00" -F enddate="2017-03-15 16:19:00" -F type=2 http://172.20.122.250:8090/management.cgi?action=query_cluster_device
 
 查询集群接入用户
-curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F begindate="2017-03-13 15:46:00" -F enddate="2017-03-13 16:18:00" -F type=0 http://172.20.122.250:8090/management.cgi?action=query_cluster_user
+curl -F clusterid=C3625E6E3E839B4AB75A8C92915CC476 -F begindate="2017-03-10 15:46:00" -F enddate="2017-03-15 16:18:00" -F type=0 http://172.20.122.250:8090/management.cgi?action=query_cluster_user
 

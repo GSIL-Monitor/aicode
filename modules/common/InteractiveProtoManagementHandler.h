@@ -26,6 +26,7 @@ public:
 
     enum ManagementMsgType {
         Init_T = 0,
+
         AddClusterReq_T = 10000,
         AddClusterRsp_T = 10010,
         DeleteClusterReq_T = 10020,
@@ -34,14 +35,21 @@ public:
         ModifyClusterRsp_T = 10050,
         QueryClusterInfoReq_T = 10060,
         QueryClusterInfoRsp_T = 10070,
+
         ShakehandClusterReq_T = 10080,
         ShakehandClusterRsp_T = 10090,
+
         QueryAllClusterReq_T = 10100,
         QueryAllClusterRsp_T = 10110,
         QueryClusterDeviceReq_T = 10220,
         QueryClusterDeviceRsp_T = 10230,
         QueryClusterUserReq_T = 10300,
-        QueryClusterUserRsp_T = 10310
+        QueryClusterUserRsp_T = 10310,
+
+        PushClusterDeviceReq_T = 10500,
+        PushClusterDeviceRsp_T = 10510,
+        PushClusterUserReq_T = 10520,
+        PushClusterUserRsp_T = 10530
     };
 
     struct Cluster                              //集群信息
@@ -67,6 +75,7 @@ public:
         unsigned int m_uiDeviceType;
         std::string m_strLoginTime;
         std::string m_strLogoutTime;
+        unsigned int m_uiOnlineDuration;
     };
 
     struct AccessedUser                           //接入用户信息
@@ -77,6 +86,25 @@ public:
         unsigned int m_uiClientType;
         std::string m_strLoginTime;
         std::string m_strLogoutTime;
+        unsigned int m_uiOnlineDuration;
+    };
+
+    struct DeviceAccessRecord
+    {
+        unsigned int m_uiSequence;
+        std::string m_strClusterID;
+        AccessedDevice m_accessedDevice;
+        std::string m_strCreateDate;
+        unsigned int m_uiStatus;
+    };
+
+    struct UserAccessRecord
+    {
+        unsigned int m_uiSequence;
+        std::string m_strClusterID;
+        AccessedUser m_accessedUser;
+        std::string m_strCreateDate;
+        unsigned int m_uiStatus;
     };
 
     struct Request
@@ -243,6 +271,40 @@ public:
         virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
     };
 
+    struct PushClusterDeviceReq : Request
+    {
+        std::string m_strClusterID;
+        std::list<DeviceAccessRecord> m_deviceAccessRecordList;
+
+        virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
+        virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
+    };
+
+    struct PushClusterDeviceRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
+        virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
+    };
+
+    struct PushClusterUserReq : Request
+    {
+        std::string m_strClusterID;
+        std::list<UserAccessRecord> m_userAccessRecordList;
+
+        virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
+        virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
+    };
+
+    struct PushClusterUserRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const;
+        virtual void UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg);
+    };
+
 
     bool GetManagementMsgType(const std::string &strData, ManagementMsgType &msgtype);
 
@@ -256,7 +318,6 @@ public:
 
 
 private:
-
     bool AddClusterReq_Serializer(const Request &req, std::string &strOutput);
     bool AddClusterReq_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &req);
     bool AddClusterRsp_Serializer(const Request &rsp, std::string &strOutput);
@@ -296,6 +357,16 @@ private:
     bool QueryClusterUserReq_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &req);
     bool QueryClusterUserRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QueryClusterUserRsp_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &rsp);
+
+    bool PushClusterDeviceReq_Serializer(const Request &req, std::string &strOutput);
+    bool PushClusterDeviceReq_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &req);
+    bool PushClusterDeviceRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool PushClusterDeviceRsp_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &rsp);
+
+    bool PushClusterUserReq_Serializer(const Request &req, std::string &strOutput);
+    bool PushClusterUserReq_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &req);
+    bool PushClusterUserRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool PushClusterUserRsp_UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg, Request &rsp);
 
     typedef boost::function<bool(const Request &req, std::string &strOutput)> Serializer;
     typedef boost::function<bool(const ManagementInteractiveMessage &MngInteractiveMsg, Request &req)> UnSerializer;

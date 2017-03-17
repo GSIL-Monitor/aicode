@@ -28,6 +28,10 @@ class AccessedDeviceDefaultTypeInternal : public ::google::protobuf::internal::E
 } _AccessedDevice_default_instance_;
 class AccessedUserDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AccessedUser> {
 } _AccessedUser_default_instance_;
+class DeviceAccessRecordDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DeviceAccessRecord> {
+} _DeviceAccessRecord_default_instance_;
+class UserAccessRecordDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<UserAccessRecord> {
+} _UserAccessRecord_default_instance_;
 class AddClusterReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AddClusterReq> {
 } _AddClusterReq_default_instance_;
 class AddClusterRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AddClusterRsp> {
@@ -60,6 +64,14 @@ class QueryClusterUserReqDefaultTypeInternal : public ::google::protobuf::intern
 } _QueryClusterUserReq_default_instance_;
 class QueryClusterUserRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryClusterUserRsp> {
 } _QueryClusterUserRsp_default_instance_;
+class PushClusterDeviceReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PushClusterDeviceReq> {
+} _PushClusterDeviceReq_default_instance_;
+class PushClusterDeviceRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PushClusterDeviceRsp> {
+} _PushClusterDeviceRsp_default_instance_;
+class PushClusterUserReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PushClusterUserReq> {
+} _PushClusterUserReq_default_instance_;
+class PushClusterUserRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PushClusterUserRsp> {
+} _PushClusterUserRsp_default_instance_;
 class RequestDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Request> {
 } _Request_default_instance_;
 class ResponseDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Response> {
@@ -72,7 +84,7 @@ namespace protobuf_InteractiveProtocolManagement_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[23];
+::google::protobuf::Metadata file_level_metadata[29];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -103,6 +115,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedDevice, uidevicetype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedDevice, strlogintime_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedDevice, strlogouttime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedDevice, uionlineduration_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedUser, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -113,6 +126,25 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedUser, uiclienttype_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedUser, strlogintime_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedUser, strlogouttime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccessedUser, uionlineduration_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, uisequence_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, strclusterid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, accesseddevice_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, strcreatedate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeviceAccessRecord, uistatus_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, uisequence_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, strclusterid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, accesseduser_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, strcreatedate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserAccessRecord, uistatus_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddClusterReq, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -202,6 +234,28 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryClusterUserRsp, accesseduserinfo_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterDeviceReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterDeviceReq, strclusterid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterDeviceReq, deviceaccessrecord_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterDeviceRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterDeviceRsp, strvalue_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterUserReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterUserReq, strclusterid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterUserReq, useraccessrecord_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterUserRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PushClusterUserRsp, strvalue_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -213,6 +267,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryallclusterreq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryclusterdevicereq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryclusteruserreq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, pushclusterdevicereq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, pushclusteruserreq_value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -227,6 +283,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryallclusterrsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryclusterdevicersp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryclusteruserrsp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, pushclusterdevicersp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, pushclusteruserrsp_value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManagementInteractiveMessage, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -242,26 +300,32 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(Cluster)},
   { 10, -1, sizeof(ClusterStatus)},
   { 16, -1, sizeof(AccessedDevice)},
-  { 25, -1, sizeof(AccessedUser)},
-  { 35, -1, sizeof(AddClusterReq)},
-  { 40, -1, sizeof(AddClusterRsp)},
-  { 45, -1, sizeof(DeleteClusterReq)},
-  { 50, -1, sizeof(DeleteClusterRsp)},
-  { 55, -1, sizeof(ModifyClusterReq)},
-  { 60, -1, sizeof(ModifyClusterRsp)},
-  { 65, -1, sizeof(QueryClusterInfoReq)},
-  { 70, -1, sizeof(QueryClusterInfoRsp)},
-  { 75, -1, sizeof(ShakehandClusterReq)},
-  { 80, -1, sizeof(ShakehandClusterRsp)},
-  { 85, -1, sizeof(QueryAllClusterReq)},
-  { 90, -1, sizeof(QueryAllClusterRsp)},
-  { 95, -1, sizeof(QueryClusterDeviceReq)},
-  { 104, -1, sizeof(QueryClusterDeviceRsp)},
-  { 109, -1, sizeof(QueryClusterUserReq)},
-  { 118, -1, sizeof(QueryClusterUserRsp)},
-  { 123, -1, sizeof(Request)},
-  { 135, -1, sizeof(Response)},
-  { 149, -1, sizeof(ManagementInteractiveMessage)},
+  { 26, -1, sizeof(AccessedUser)},
+  { 37, -1, sizeof(DeviceAccessRecord)},
+  { 46, -1, sizeof(UserAccessRecord)},
+  { 55, -1, sizeof(AddClusterReq)},
+  { 60, -1, sizeof(AddClusterRsp)},
+  { 65, -1, sizeof(DeleteClusterReq)},
+  { 70, -1, sizeof(DeleteClusterRsp)},
+  { 75, -1, sizeof(ModifyClusterReq)},
+  { 80, -1, sizeof(ModifyClusterRsp)},
+  { 85, -1, sizeof(QueryClusterInfoReq)},
+  { 90, -1, sizeof(QueryClusterInfoRsp)},
+  { 95, -1, sizeof(ShakehandClusterReq)},
+  { 100, -1, sizeof(ShakehandClusterRsp)},
+  { 105, -1, sizeof(QueryAllClusterReq)},
+  { 110, -1, sizeof(QueryAllClusterRsp)},
+  { 115, -1, sizeof(QueryClusterDeviceReq)},
+  { 124, -1, sizeof(QueryClusterDeviceRsp)},
+  { 129, -1, sizeof(QueryClusterUserReq)},
+  { 138, -1, sizeof(QueryClusterUserRsp)},
+  { 143, -1, sizeof(PushClusterDeviceReq)},
+  { 149, -1, sizeof(PushClusterDeviceRsp)},
+  { 154, -1, sizeof(PushClusterUserReq)},
+  { 160, -1, sizeof(PushClusterUserRsp)},
+  { 165, -1, sizeof(Request)},
+  { 179, -1, sizeof(Response)},
+  { 195, -1, sizeof(ManagementInteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -269,6 +333,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_ClusterStatus_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AccessedDevice_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AccessedUser_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DeviceAccessRecord_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_UserAccessRecord_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddClusterReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddClusterRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteClusterReq_default_instance_),
@@ -285,6 +351,10 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryClusterDeviceRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryClusterUserReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryClusterUserRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_PushClusterDeviceReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_PushClusterDeviceRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_PushClusterUserReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_PushClusterUserRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Request_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Response_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ManagementInteractiveMessage_default_instance_),
@@ -308,7 +378,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 23);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 29);
 }
 
 }  // namespace
@@ -322,44 +392,56 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[2].reflection;
   _AccessedUser_default_instance_.Shutdown();
   delete file_level_metadata[3].reflection;
-  _AddClusterReq_default_instance_.Shutdown();
+  _DeviceAccessRecord_default_instance_.Shutdown();
   delete file_level_metadata[4].reflection;
-  _AddClusterRsp_default_instance_.Shutdown();
+  _UserAccessRecord_default_instance_.Shutdown();
   delete file_level_metadata[5].reflection;
-  _DeleteClusterReq_default_instance_.Shutdown();
+  _AddClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[6].reflection;
-  _DeleteClusterRsp_default_instance_.Shutdown();
+  _AddClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[7].reflection;
-  _ModifyClusterReq_default_instance_.Shutdown();
+  _DeleteClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[8].reflection;
-  _ModifyClusterRsp_default_instance_.Shutdown();
+  _DeleteClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[9].reflection;
-  _QueryClusterInfoReq_default_instance_.Shutdown();
+  _ModifyClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[10].reflection;
-  _QueryClusterInfoRsp_default_instance_.Shutdown();
+  _ModifyClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[11].reflection;
-  _ShakehandClusterReq_default_instance_.Shutdown();
+  _QueryClusterInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[12].reflection;
-  _ShakehandClusterRsp_default_instance_.Shutdown();
+  _QueryClusterInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[13].reflection;
-  _QueryAllClusterReq_default_instance_.Shutdown();
+  _ShakehandClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[14].reflection;
-  _QueryAllClusterRsp_default_instance_.Shutdown();
+  _ShakehandClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[15].reflection;
-  _QueryClusterDeviceReq_default_instance_.Shutdown();
+  _QueryAllClusterReq_default_instance_.Shutdown();
   delete file_level_metadata[16].reflection;
-  _QueryClusterDeviceRsp_default_instance_.Shutdown();
+  _QueryAllClusterRsp_default_instance_.Shutdown();
   delete file_level_metadata[17].reflection;
-  _QueryClusterUserReq_default_instance_.Shutdown();
+  _QueryClusterDeviceReq_default_instance_.Shutdown();
   delete file_level_metadata[18].reflection;
-  _QueryClusterUserRsp_default_instance_.Shutdown();
+  _QueryClusterDeviceRsp_default_instance_.Shutdown();
   delete file_level_metadata[19].reflection;
-  _Request_default_instance_.Shutdown();
+  _QueryClusterUserReq_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
-  _Response_default_instance_.Shutdown();
+  _QueryClusterUserRsp_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
-  _ManagementInteractiveMessage_default_instance_.Shutdown();
+  _PushClusterDeviceReq_default_instance_.Shutdown();
   delete file_level_metadata[22].reflection;
+  _PushClusterDeviceRsp_default_instance_.Shutdown();
+  delete file_level_metadata[23].reflection;
+  _PushClusterUserReq_default_instance_.Shutdown();
+  delete file_level_metadata[24].reflection;
+  _PushClusterUserRsp_default_instance_.Shutdown();
+  delete file_level_metadata[25].reflection;
+  _Request_default_instance_.Shutdown();
+  delete file_level_metadata[26].reflection;
+  _Response_default_instance_.Shutdown();
+  delete file_level_metadata[27].reflection;
+  _ManagementInteractiveMessage_default_instance_.Shutdown();
+  delete file_level_metadata[28].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -370,6 +452,8 @@ void TableStruct::InitDefaultsImpl() {
   _ClusterStatus_default_instance_.DefaultConstruct();
   _AccessedDevice_default_instance_.DefaultConstruct();
   _AccessedUser_default_instance_.DefaultConstruct();
+  _DeviceAccessRecord_default_instance_.DefaultConstruct();
+  _UserAccessRecord_default_instance_.DefaultConstruct();
   _AddClusterReq_default_instance_.DefaultConstruct();
   _AddClusterRsp_default_instance_.DefaultConstruct();
   _DeleteClusterReq_default_instance_.DefaultConstruct();
@@ -386,11 +470,19 @@ void TableStruct::InitDefaultsImpl() {
   _QueryClusterDeviceRsp_default_instance_.DefaultConstruct();
   _QueryClusterUserReq_default_instance_.DefaultConstruct();
   _QueryClusterUserRsp_default_instance_.DefaultConstruct();
+  _PushClusterDeviceReq_default_instance_.DefaultConstruct();
+  _PushClusterDeviceRsp_default_instance_.DefaultConstruct();
+  _PushClusterUserReq_default_instance_.DefaultConstruct();
+  _PushClusterUserRsp_default_instance_.DefaultConstruct();
   _Request_default_instance_.DefaultConstruct();
   _Response_default_instance_.DefaultConstruct();
   _ManagementInteractiveMessage_default_instance_.DefaultConstruct();
   _ClusterStatus_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
       ::Management::Interactive::Message::Cluster::internal_default_instance());
+  _DeviceAccessRecord_default_instance_.get_mutable()->accesseddevice_ = const_cast< ::Management::Interactive::Message::AccessedDevice*>(
+      ::Management::Interactive::Message::AccessedDevice::internal_default_instance());
+  _UserAccessRecord_default_instance_.get_mutable()->accesseduser_ = const_cast< ::Management::Interactive::Message::AccessedUser*>(
+      ::Management::Interactive::Message::AccessedUser::internal_default_instance());
   _AddClusterReq_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
       ::Management::Interactive::Message::Cluster::internal_default_instance());
   _ModifyClusterReq_default_instance_.get_mutable()->clusterinfo_ = const_cast< ::Management::Interactive::Message::Cluster*>(
@@ -413,6 +505,10 @@ void TableStruct::InitDefaultsImpl() {
       ::Management::Interactive::Message::QueryClusterDeviceReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->queryclusteruserreq_value_ = const_cast< ::Management::Interactive::Message::QueryClusterUserReq*>(
       ::Management::Interactive::Message::QueryClusterUserReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->pushclusterdevicereq_value_ = const_cast< ::Management::Interactive::Message::PushClusterDeviceReq*>(
+      ::Management::Interactive::Message::PushClusterDeviceReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->pushclusteruserreq_value_ = const_cast< ::Management::Interactive::Message::PushClusterUserReq*>(
+      ::Management::Interactive::Message::PushClusterUserReq::internal_default_instance());
   _Response_default_instance_.get_mutable()->addclusterrsp_value_ = const_cast< ::Management::Interactive::Message::AddClusterRsp*>(
       ::Management::Interactive::Message::AddClusterRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->deleteclusterrsp_value_ = const_cast< ::Management::Interactive::Message::DeleteClusterRsp*>(
@@ -429,6 +525,10 @@ void TableStruct::InitDefaultsImpl() {
       ::Management::Interactive::Message::QueryClusterDeviceRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->queryclusteruserrsp_value_ = const_cast< ::Management::Interactive::Message::QueryClusterUserRsp*>(
       ::Management::Interactive::Message::QueryClusterUserRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->pushclusterdevicersp_value_ = const_cast< ::Management::Interactive::Message::PushClusterDeviceRsp*>(
+      ::Management::Interactive::Message::PushClusterDeviceRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->pushclusteruserrsp_value_ = const_cast< ::Management::Interactive::Message::PushClusterUserRsp*>(
+      ::Management::Interactive::Message::PushClusterUserRsp::internal_default_instance());
   _ManagementInteractiveMessage_default_instance_.get_mutable()->reqvalue_ = const_cast< ::Management::Interactive::Message::Request*>(
       ::Management::Interactive::Message::Request::internal_default_instance());
   _ManagementInteractiveMessage_default_instance_.get_mutable()->rspvalue_ = const_cast< ::Management::Interactive::Message::Response*>(
@@ -450,99 +550,129 @@ void AddDescriptorsImpl() {
       "\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r\"_\n\rClusterStatus"
       "\022<\n\013clusterInfo\030\001 \001(\0132\'.Management.Inter"
       "active.Message.Cluster\022\020\n\010uiStatus\030\002 \001(\r"
-      "\"\177\n\016AccessedDevice\022\023\n\013strDeviceID\030\001 \001(\t\022"
-      "\025\n\rstrDeviceName\030\002 \001(\t\022\024\n\014uiDeviceType\030\003"
-      " \001(\r\022\024\n\014strLoginTime\030\004 \001(\t\022\025\n\rstrLogoutT"
-      "ime\030\005 \001(\t\"\223\001\n\014AccessedUser\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\030\n\020strUserAli"
-      "asname\030\003 \001(\t\022\024\n\014uiClientType\030\004 \001(\r\022\024\n\014st"
-      "rLoginTime\030\005 \001(\t\022\025\n\rstrLogoutTime\030\006 \001(\t\""
-      "M\n\rAddClusterReq\022<\n\013clusterInfo\030\001 \001(\0132\'."
-      "Management.Interactive.Message.Cluster\"%"
-      "\n\rAddClusterRsp\022\024\n\014strClusterID\030\001 \001(\t\"(\n"
-      "\020DeleteClusterReq\022\024\n\014strClusterID\030\001 \001(\t\""
-      "$\n\020DeleteClusterRsp\022\020\n\010strValue\030\001 \001(\t\"P\n"
-      "\020ModifyClusterReq\022<\n\013clusterInfo\030\001 \001(\0132\'"
-      ".Management.Interactive.Message.Cluster\""
-      "$\n\020ModifyClusterRsp\022\020\n\010strValue\030\001 \001(\t\"+\n"
-      "\023QueryClusterInfoReq\022\024\n\014strClusterID\030\001 \001"
-      "(\t\"[\n\023QueryClusterInfoRsp\022D\n\rclusterStat"
-      "us\030\001 \001(\0132-.Management.Interactive.Messag"
-      "e.ClusterStatus\"+\n\023ShakehandClusterReq\022\024"
-      "\n\014strClusterID\030\001 \001(\t\"\'\n\023ShakehandCluster"
-      "Rsp\022\020\n\010strValue\030\001 \001(\t\"2\n\022QueryAllCluster"
-      "Req\022\034\n\024strManagementAddress\030\001 \001(\t\"Z\n\022Que"
-      "ryAllClusterRsp\022D\n\rclusterStatus\030\001 \003(\0132-"
-      ".Management.Interactive.Message.ClusterS"
-      "tatus\"\203\001\n\025QueryClusterDeviceReq\022\024\n\014strCl"
-      "usterID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\ns"
-      "trEnddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n"
-      "\014uiBeginIndex\030\005 \001(\r\"c\n\025QueryClusterDevic"
-      "eRsp\022J\n\022accessedDeviceInfo\030\001 \003(\0132..Manag"
-      "ement.Interactive.Message.AccessedDevice"
-      "\"\201\001\n\023QueryClusterUserReq\022\024\n\014strClusterID"
-      "\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\nstrEndda"
-      "te\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n\014uiBegi"
-      "nIndex\030\005 \001(\r\"]\n\023QueryClusterUserRsp\022F\n\020a"
-      "ccessedUserInfo\030\001 \003(\0132,.Management.Inter"
-      "active.Message.AccessedUser\"\263\005\n\007Request\022"
-      "J\n\023AddClusterReq_Value\030\n \001(\0132-.Managemen"
-      "t.Interactive.Message.AddClusterReq\022P\n\026D"
-      "eleteClusterReq_Value\030\024 \001(\01320.Management"
-      ".Interactive.Message.DeleteClusterReq\022P\n"
-      "\026ModifyClusterReq_Value\030\036 \001(\01320.Manageme"
-      "nt.Interactive.Message.ModifyClusterReq\022"
-      "V\n\031QueryClusterInfoReq_Value\030( \001(\01323.Man"
-      "agement.Interactive.Message.QueryCluster"
-      "InfoReq\022V\n\031ShakehandClusterReq_Value\0302 \001"
-      "(\01323.Management.Interactive.Message.Shak"
-      "ehandClusterReq\022T\n\030QueryAllClusterReq_Va"
-      "lue\030< \001(\01322.Management.Interactive.Messa"
-      "ge.QueryAllClusterReq\022Z\n\033QueryClusterDev"
-      "iceReq_Value\030F \001(\01325.Management.Interact"
-      "ive.Message.QueryClusterDeviceReq\022V\n\031Que"
-      "ryClusterUserReq_Value\030P \001(\01323.Managemen"
-      "t.Interactive.Message.QueryClusterUserRe"
-      "q\"\331\005\n\010Response\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrR"
-      "etMsg\030\024 \001(\t\022J\n\023AddClusterRsp_Value\030\036 \001(\013"
-      "2-.Management.Interactive.Message.AddClu"
-      "sterRsp\022P\n\026DeleteClusterRsp_Value\030( \001(\0132"
-      "0.Management.Interactive.Message.DeleteC"
-      "lusterRsp\022P\n\026ModifyClusterRsp_Value\0302 \001("
-      "\01320.Management.Interactive.Message.Modif"
-      "yClusterRsp\022V\n\031QueryClusterInfoRsp_Value"
-      "\030< \001(\01323.Management.Interactive.Message."
-      "QueryClusterInfoRsp\022V\n\031ShakehandClusterR"
-      "sp_Value\030F \001(\01323.Management.Interactive."
-      "Message.ShakehandClusterRsp\022T\n\030QueryAllC"
-      "lusterRsp_Value\030P \001(\01322.Management.Inter"
-      "active.Message.QueryAllClusterRsp\022Z\n\033Que"
-      "ryClusterDeviceRsp_Value\030Z \001(\01325.Managem"
-      "ent.Interactive.Message.QueryClusterDevi"
-      "ceRsp\022V\n\031QueryClusterUserRsp_Value\030d \001(\013"
-      "23.Management.Interactive.Message.QueryC"
-      "lusterUserRsp\"\370\001\n\034ManagementInteractiveM"
-      "essage\022\?\n\004type\030\001 \001(\01621.Management.Intera"
-      "ctive.Message.ManagementMsgType\022\020\n\010uiMsg"
-      "Seq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\0229\n\010reqValue\030\004 "
-      "\001(\0132\'.Management.Interactive.Message.Req"
-      "uest\022:\n\010rspValue\030\005 \001(\0132(.Management.Inte"
-      "ractive.Message.Response*\311\003\n\021ManagementM"
-      "sgType\022\n\n\006Init_T\020\000\022\024\n\017AddClusterReq_T\020\220N"
-      "\022\024\n\017AddClusterRsp_T\020\232N\022\027\n\022DeleteClusterR"
-      "eq_T\020\244N\022\027\n\022DeleteClusterRsp_T\020\256N\022\027\n\022Modi"
-      "fyClusterReq_T\020\270N\022\027\n\022ModifyClusterRsp_T\020"
-      "\302N\022\032\n\025QueryClusterInfoReq_T\020\314N\022\032\n\025QueryC"
-      "lusterInfoRsp_T\020\326N\022\032\n\025ShakehandClusterRe"
-      "q_T\020\340N\022\032\n\025ShakehandClusterRsp_T\020\352N\022\031\n\024Qu"
-      "eryAllClusterReq_T\020\364N\022\031\n\024QueryAllCluster"
-      "Rsp_T\020\376N\022\034\n\027QueryClusterDeviceReq_T\020\354O\022\034"
-      "\n\027QueryClusterDeviceRsp_T\020\366O\022\032\n\025QueryClu"
-      "sterUserReq_T\020\274P\022\032\n\025QueryClusterUserRsp_"
-      "T\020\306Pb\006proto3"
+      "\"\231\001\n\016AccessedDevice\022\023\n\013strDeviceID\030\001 \001(\t"
+      "\022\025\n\rstrDeviceName\030\002 \001(\t\022\024\n\014uiDeviceType\030"
+      "\003 \001(\r\022\024\n\014strLoginTime\030\004 \001(\t\022\025\n\rstrLogout"
+      "Time\030\005 \001(\t\022\030\n\020uiOnlineDuration\030\006 \001(\r\"\255\001\n"
+      "\014AccessedUser\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strU"
+      "serName\030\002 \001(\t\022\030\n\020strUserAliasname\030\003 \001(\t\022"
+      "\024\n\014uiClientType\030\004 \001(\r\022\024\n\014strLoginTime\030\005 "
+      "\001(\t\022\025\n\rstrLogoutTime\030\006 \001(\t\022\030\n\020uiOnlineDu"
+      "ration\030\007 \001(\r\"\257\001\n\022DeviceAccessRecord\022\022\n\nu"
+      "iSequence\030\001 \001(\r\022\024\n\014strClusterID\030\002 \001(\t\022F\n"
+      "\016accessedDevice\030\003 \001(\0132..Management.Inter"
+      "active.Message.AccessedDevice\022\025\n\rstrCrea"
+      "teDate\030\004 \001(\t\022\020\n\010uiStatus\030\005 \001(\r\"\251\001\n\020UserA"
+      "ccessRecord\022\022\n\nuiSequence\030\001 \001(\r\022\024\n\014strCl"
+      "usterID\030\002 \001(\t\022B\n\014accessedUser\030\003 \001(\0132,.Ma"
+      "nagement.Interactive.Message.AccessedUse"
+      "r\022\025\n\rstrCreateDate\030\004 \001(\t\022\020\n\010uiStatus\030\005 \001"
+      "(\r\"M\n\rAddClusterReq\022<\n\013clusterInfo\030\001 \001(\013"
+      "2\'.Management.Interactive.Message.Cluste"
+      "r\"%\n\rAddClusterRsp\022\024\n\014strClusterID\030\001 \001(\t"
+      "\"(\n\020DeleteClusterReq\022\024\n\014strClusterID\030\001 \001"
+      "(\t\"$\n\020DeleteClusterRsp\022\020\n\010strValue\030\001 \001(\t"
+      "\"P\n\020ModifyClusterReq\022<\n\013clusterInfo\030\001 \001("
+      "\0132\'.Management.Interactive.Message.Clust"
+      "er\"$\n\020ModifyClusterRsp\022\020\n\010strValue\030\001 \001(\t"
+      "\"+\n\023QueryClusterInfoReq\022\024\n\014strClusterID\030"
+      "\001 \001(\t\"[\n\023QueryClusterInfoRsp\022D\n\rclusterS"
+      "tatus\030\001 \001(\0132-.Management.Interactive.Mes"
+      "sage.ClusterStatus\"+\n\023ShakehandClusterRe"
+      "q\022\024\n\014strClusterID\030\001 \001(\t\"\'\n\023ShakehandClus"
+      "terRsp\022\020\n\010strValue\030\001 \001(\t\"2\n\022QueryAllClus"
+      "terReq\022\034\n\024strManagementAddress\030\001 \001(\t\"Z\n\022"
+      "QueryAllClusterRsp\022D\n\rclusterStatus\030\001 \003("
+      "\0132-.Management.Interactive.Message.Clust"
+      "erStatus\"\203\001\n\025QueryClusterDeviceReq\022\024\n\014st"
+      "rClusterID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022"
+      "\n\nstrEnddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r"
+      "\022\024\n\014uiBeginIndex\030\005 \001(\r\"c\n\025QueryClusterDe"
+      "viceRsp\022J\n\022accessedDeviceInfo\030\001 \003(\0132..Ma"
+      "nagement.Interactive.Message.AccessedDev"
+      "ice\"\201\001\n\023QueryClusterUserReq\022\024\n\014strCluste"
+      "rID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\nstrEn"
+      "ddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n\014uiB"
+      "eginIndex\030\005 \001(\r\"]\n\023QueryClusterUserRsp\022F"
+      "\n\020accessedUserInfo\030\001 \003(\0132,.Management.In"
+      "teractive.Message.AccessedUser\"|\n\024PushCl"
+      "usterDeviceReq\022\024\n\014strClusterID\030\001 \001(\t\022N\n\022"
+      "deviceAccessRecord\030\002 \003(\01322.Management.In"
+      "teractive.Message.DeviceAccessRecord\"(\n\024"
+      "PushClusterDeviceRsp\022\020\n\010strValue\030\001 \001(\t\"v"
+      "\n\022PushClusterUserReq\022\024\n\014strClusterID\030\001 \001"
+      "(\t\022J\n\020userAccessRecord\030\002 \003(\01320.Managemen"
+      "t.Interactive.Message.UserAccessRecord\"&"
+      "\n\022PushClusterUserRsp\022\020\n\010strValue\030\001 \001(\t\"\345"
+      "\006\n\007Request\022J\n\023AddClusterReq_Value\030\n \001(\0132"
+      "-.Management.Interactive.Message.AddClus"
+      "terReq\022P\n\026DeleteClusterReq_Value\030\024 \001(\01320"
+      ".Management.Interactive.Message.DeleteCl"
+      "usterReq\022P\n\026ModifyClusterReq_Value\030\036 \001(\013"
+      "20.Management.Interactive.Message.Modify"
+      "ClusterReq\022V\n\031QueryClusterInfoReq_Value\030"
+      "( \001(\01323.Management.Interactive.Message.Q"
+      "ueryClusterInfoReq\022V\n\031ShakehandClusterRe"
+      "q_Value\0302 \001(\01323.Management.Interactive.M"
+      "essage.ShakehandClusterReq\022T\n\030QueryAllCl"
+      "usterReq_Value\030< \001(\01322.Management.Intera"
+      "ctive.Message.QueryAllClusterReq\022Z\n\033Quer"
+      "yClusterDeviceReq_Value\030F \001(\01325.Manageme"
+      "nt.Interactive.Message.QueryClusterDevic"
+      "eReq\022V\n\031QueryClusterUserReq_Value\030P \001(\0132"
+      "3.Management.Interactive.Message.QueryCl"
+      "usterUserReq\022Y\n\032PushClusterDeviceReq_Val"
+      "ue\030\216\002 \001(\01324.Management.Interactive.Messa"
+      "ge.PushClusterDeviceReq\022U\n\030PushClusterUs"
+      "erReq_Value\030\230\002 \001(\01322.Management.Interact"
+      "ive.Message.PushClusterUserReq\"\213\007\n\010Respo"
+      "nse\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t"
+      "\022J\n\023AddClusterRsp_Value\030\036 \001(\0132-.Manageme"
+      "nt.Interactive.Message.AddClusterRsp\022P\n\026"
+      "DeleteClusterRsp_Value\030( \001(\01320.Managemen"
+      "t.Interactive.Message.DeleteClusterRsp\022P"
+      "\n\026ModifyClusterRsp_Value\0302 \001(\01320.Managem"
+      "ent.Interactive.Message.ModifyClusterRsp"
+      "\022V\n\031QueryClusterInfoRsp_Value\030< \001(\01323.Ma"
+      "nagement.Interactive.Message.QueryCluste"
+      "rInfoRsp\022V\n\031ShakehandClusterRsp_Value\030F "
+      "\001(\01323.Management.Interactive.Message.Sha"
+      "kehandClusterRsp\022T\n\030QueryAllClusterRsp_V"
+      "alue\030P \001(\01322.Management.Interactive.Mess"
+      "age.QueryAllClusterRsp\022Z\n\033QueryClusterDe"
+      "viceRsp_Value\030Z \001(\01325.Management.Interac"
+      "tive.Message.QueryClusterDeviceRsp\022V\n\031Qu"
+      "eryClusterUserRsp_Value\030d \001(\01323.Manageme"
+      "nt.Interactive.Message.QueryClusterUserR"
+      "sp\022Y\n\032PushClusterDeviceRsp_Value\030\242\002 \001(\0132"
+      "4.Management.Interactive.Message.PushClu"
+      "sterDeviceRsp\022U\n\030PushClusterUserRsp_Valu"
+      "e\030\254\002 \001(\01322.Management.Interactive.Messag"
+      "e.PushClusterUserRsp\"\370\001\n\034ManagementInter"
+      "activeMessage\022\?\n\004type\030\001 \001(\01621.Management"
+      ".Interactive.Message.ManagementMsgType\022\020"
+      "\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\0229\n\010reqV"
+      "alue\030\004 \001(\0132\'.Management.Interactive.Mess"
+      "age.Request\022:\n\010rspValue\030\005 \001(\0132(.Manageme"
+      "nt.Interactive.Message.Response*\271\004\n\021Mana"
+      "gementMsgType\022\n\n\006Init_T\020\000\022\024\n\017AddClusterR"
+      "eq_T\020\220N\022\024\n\017AddClusterRsp_T\020\232N\022\027\n\022DeleteC"
+      "lusterReq_T\020\244N\022\027\n\022DeleteClusterRsp_T\020\256N\022"
+      "\027\n\022ModifyClusterReq_T\020\270N\022\027\n\022ModifyCluste"
+      "rRsp_T\020\302N\022\032\n\025QueryClusterInfoReq_T\020\314N\022\032\n"
+      "\025QueryClusterInfoRsp_T\020\326N\022\032\n\025ShakehandCl"
+      "usterReq_T\020\340N\022\032\n\025ShakehandClusterRsp_T\020\352"
+      "N\022\031\n\024QueryAllClusterReq_T\020\364N\022\031\n\024QueryAll"
+      "ClusterRsp_T\020\376N\022\034\n\027QueryClusterDeviceReq"
+      "_T\020\354O\022\034\n\027QueryClusterDeviceRsp_T\020\366O\022\032\n\025Q"
+      "ueryClusterUserReq_T\020\274P\022\032\n\025QueryClusterU"
+      "serRsp_T\020\306P\022\033\n\026PushClusterDeviceReq_T\020\204R"
+      "\022\033\n\026PushClusterDeviceRsp_T\020\216R\022\031\n\024PushClu"
+      "sterUserReq_T\020\230R\022\031\n\024PushClusterUserRsp_T"
+      "\020\242Rb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 3892);
+      descriptor, 5091);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolManagement.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -584,6 +714,10 @@ bool ManagementMsgType_IsValid(int value) {
     case 10230:
     case 10300:
     case 10310:
+    case 10500:
+    case 10510:
+    case 10520:
+    case 10530:
       return true;
     default:
       return false;
@@ -1677,6 +1811,7 @@ const int AccessedDevice::kStrDeviceNameFieldNumber;
 const int AccessedDevice::kUiDeviceTypeFieldNumber;
 const int AccessedDevice::kStrLoginTimeFieldNumber;
 const int AccessedDevice::kStrLogoutTimeFieldNumber;
+const int AccessedDevice::kUiOnlineDurationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AccessedDevice::AccessedDevice()
@@ -1708,7 +1843,9 @@ AccessedDevice::AccessedDevice(const AccessedDevice& from)
   if (from.strlogouttime().size() > 0) {
     strlogouttime_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strlogouttime_);
   }
-  uidevicetype_ = from.uidevicetype_;
+  ::memcpy(&uidevicetype_, &from.uidevicetype_,
+    reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uionlineduration_));
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.AccessedDevice)
 }
 
@@ -1717,7 +1854,8 @@ void AccessedDevice::SharedCtor() {
   strdevicename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogintime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogouttime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uidevicetype_ = 0u;
+  ::memset(&uidevicetype_, 0, reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uionlineduration_));
   _cached_size_ = 0;
 }
 
@@ -1762,7 +1900,8 @@ void AccessedDevice::Clear() {
   strdevicename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogintime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogouttime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uidevicetype_ = 0u;
+  ::memset(&uidevicetype_, 0, reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uionlineduration_));
 }
 
 bool AccessedDevice::MergePartialFromCodedStream(
@@ -1848,6 +1987,19 @@ bool AccessedDevice::MergePartialFromCodedStream(
         break;
       }
 
+      // uint32 uiOnlineDuration = 6;
+      case 6: {
+        if (tag == 48u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uionlineduration_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -1917,6 +2069,11 @@ void AccessedDevice::SerializeWithCachedSizes(
       5, this->strlogouttime(), output);
   }
 
+  // uint32 uiOnlineDuration = 6;
+  if (this->uionlineduration() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uionlineduration(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.AccessedDevice)
 }
 
@@ -1973,6 +2130,11 @@ void AccessedDevice::SerializeWithCachedSizes(
         5, this->strlogouttime(), target);
   }
 
+  // uint32 uiOnlineDuration = 6;
+  if (this->uionlineduration() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uionlineduration(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.AccessedDevice)
   return target;
 }
@@ -2014,6 +2176,13 @@ size_t AccessedDevice::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->uidevicetype());
+  }
+
+  // uint32 uiOnlineDuration = 6;
+  if (this->uionlineduration() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uionlineduration());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2061,6 +2230,9 @@ void AccessedDevice::MergeFrom(const AccessedDevice& from) {
   if (from.uidevicetype() != 0) {
     set_uidevicetype(from.uidevicetype());
   }
+  if (from.uionlineduration() != 0) {
+    set_uionlineduration(from.uionlineduration());
+  }
 }
 
 void AccessedDevice::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2091,6 +2263,7 @@ void AccessedDevice::InternalSwap(AccessedDevice* other) {
   strlogintime_.Swap(&other->strlogintime_);
   strlogouttime_.Swap(&other->strlogouttime_);
   std::swap(uidevicetype_, other->uidevicetype_);
+  std::swap(uionlineduration_, other->uionlineduration_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -2324,6 +2497,20 @@ void AccessedDevice::set_allocated_strlogouttime(::std::string* strlogouttime) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.AccessedDevice.strLogoutTime)
 }
 
+// uint32 uiOnlineDuration = 6;
+void AccessedDevice::clear_uionlineduration() {
+  uionlineduration_ = 0u;
+}
+::google::protobuf::uint32 AccessedDevice::uionlineduration() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.AccessedDevice.uiOnlineDuration)
+  return uionlineduration_;
+}
+void AccessedDevice::set_uionlineduration(::google::protobuf::uint32 value) {
+  
+  uionlineduration_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.AccessedDevice.uiOnlineDuration)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -2335,6 +2522,7 @@ const int AccessedUser::kStrUserAliasnameFieldNumber;
 const int AccessedUser::kUiClientTypeFieldNumber;
 const int AccessedUser::kStrLoginTimeFieldNumber;
 const int AccessedUser::kStrLogoutTimeFieldNumber;
+const int AccessedUser::kUiOnlineDurationFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AccessedUser::AccessedUser()
@@ -2370,7 +2558,9 @@ AccessedUser::AccessedUser(const AccessedUser& from)
   if (from.strlogouttime().size() > 0) {
     strlogouttime_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strlogouttime_);
   }
-  uiclienttype_ = from.uiclienttype_;
+  ::memcpy(&uiclienttype_, &from.uiclienttype_,
+    reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uiclienttype_) + sizeof(uionlineduration_));
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.AccessedUser)
 }
 
@@ -2380,7 +2570,8 @@ void AccessedUser::SharedCtor() {
   struseraliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogintime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogouttime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uiclienttype_ = 0u;
+  ::memset(&uiclienttype_, 0, reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uiclienttype_) + sizeof(uionlineduration_));
   _cached_size_ = 0;
 }
 
@@ -2427,7 +2618,8 @@ void AccessedUser::Clear() {
   struseraliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogintime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strlogouttime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uiclienttype_ = 0u;
+  ::memset(&uiclienttype_, 0, reinterpret_cast<char*>(&uionlineduration_) -
+    reinterpret_cast<char*>(&uiclienttype_) + sizeof(uionlineduration_));
 }
 
 bool AccessedUser::MergePartialFromCodedStream(
@@ -2528,6 +2720,19 @@ bool AccessedUser::MergePartialFromCodedStream(
         break;
       }
 
+      // uint32 uiOnlineDuration = 7;
+      case 7: {
+        if (tag == 56u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uionlineduration_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -2607,6 +2812,11 @@ void AccessedUser::SerializeWithCachedSizes(
       6, this->strlogouttime(), output);
   }
 
+  // uint32 uiOnlineDuration = 7;
+  if (this->uionlineduration() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(7, this->uionlineduration(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.AccessedUser)
 }
 
@@ -2674,6 +2884,11 @@ void AccessedUser::SerializeWithCachedSizes(
         6, this->strlogouttime(), target);
   }
 
+  // uint32 uiOnlineDuration = 7;
+  if (this->uionlineduration() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->uionlineduration(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.AccessedUser)
   return target;
 }
@@ -2722,6 +2937,13 @@ size_t AccessedUser::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->uiclienttype());
+  }
+
+  // uint32 uiOnlineDuration = 7;
+  if (this->uionlineduration() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uionlineduration());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2773,6 +2995,9 @@ void AccessedUser::MergeFrom(const AccessedUser& from) {
   if (from.uiclienttype() != 0) {
     set_uiclienttype(from.uiclienttype());
   }
+  if (from.uionlineduration() != 0) {
+    set_uionlineduration(from.uionlineduration());
+  }
 }
 
 void AccessedUser::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2804,6 +3029,7 @@ void AccessedUser::InternalSwap(AccessedUser* other) {
   strlogintime_.Swap(&other->strlogintime_);
   strlogouttime_.Swap(&other->strlogouttime_);
   std::swap(uiclienttype_, other->uiclienttype_);
+  std::swap(uionlineduration_, other->uionlineduration_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -3089,6 +3315,1182 @@ void AccessedUser::set_allocated_strlogouttime(::std::string* strlogouttime) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.AccessedUser.strLogoutTime)
 }
 
+// uint32 uiOnlineDuration = 7;
+void AccessedUser::clear_uionlineduration() {
+  uionlineduration_ = 0u;
+}
+::google::protobuf::uint32 AccessedUser::uionlineduration() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.AccessedUser.uiOnlineDuration)
+  return uionlineduration_;
+}
+void AccessedUser::set_uionlineduration(::google::protobuf::uint32 value) {
+  
+  uionlineduration_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.AccessedUser.uiOnlineDuration)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DeviceAccessRecord::kUiSequenceFieldNumber;
+const int DeviceAccessRecord::kStrClusterIDFieldNumber;
+const int DeviceAccessRecord::kAccessedDeviceFieldNumber;
+const int DeviceAccessRecord::kStrCreateDateFieldNumber;
+const int DeviceAccessRecord::kUiStatusFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DeviceAccessRecord::DeviceAccessRecord()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.DeviceAccessRecord)
+}
+DeviceAccessRecord::DeviceAccessRecord(const DeviceAccessRecord& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strclusterid().size() > 0) {
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcreatedate().size() > 0) {
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  if (from.has_accesseddevice()) {
+    accesseddevice_ = new ::Management::Interactive::Message::AccessedDevice(*from.accesseddevice_);
+  } else {
+    accesseddevice_ = NULL;
+  }
+  ::memcpy(&uisequence_, &from.uisequence_,
+    reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uisequence_) + sizeof(uistatus_));
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.DeviceAccessRecord)
+}
+
+void DeviceAccessRecord::SharedCtor() {
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&accesseddevice_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&accesseddevice_) + sizeof(uistatus_));
+  _cached_size_ = 0;
+}
+
+DeviceAccessRecord::~DeviceAccessRecord() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.DeviceAccessRecord)
+  SharedDtor();
+}
+
+void DeviceAccessRecord::SharedDtor() {
+  strclusterid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete accesseddevice_;
+  }
+}
+
+void DeviceAccessRecord::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DeviceAccessRecord::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4].descriptor;
+}
+
+const DeviceAccessRecord& DeviceAccessRecord::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+DeviceAccessRecord* DeviceAccessRecord::New(::google::protobuf::Arena* arena) const {
+  DeviceAccessRecord* n = new DeviceAccessRecord;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DeviceAccessRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.DeviceAccessRecord)
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && accesseddevice_ != NULL) {
+    delete accesseddevice_;
+  }
+  accesseddevice_ = NULL;
+  ::memset(&uisequence_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uisequence_) + sizeof(uistatus_));
+}
+
+bool DeviceAccessRecord::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.DeviceAccessRecord)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint32 uiSequence = 1;
+      case 1: {
+        if (tag == 8u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uisequence_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strClusterID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strclusterid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strclusterid().data(), this->strclusterid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.DeviceAccessRecord.strClusterID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_accesseddevice()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCreateDate = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcreatedate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcreatedate().data(), this->strcreatedate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.DeviceAccessRecord.strCreateDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiStatus = 5;
+      case 5: {
+        if (tag == 40u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uistatus_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.DeviceAccessRecord)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.DeviceAccessRecord)
+  return false;
+#undef DO_
+}
+
+void DeviceAccessRecord::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.DeviceAccessRecord)
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->uisequence(), output);
+  }
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.DeviceAccessRecord.strClusterID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strclusterid(), output);
+  }
+
+  // .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+  if (this->has_accesseddevice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, *this->accesseddevice_, output);
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.DeviceAccessRecord.strCreateDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strcreatedate(), output);
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->uistatus(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.DeviceAccessRecord)
+}
+
+::google::protobuf::uint8* DeviceAccessRecord::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.DeviceAccessRecord)
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->uisequence(), target);
+  }
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.DeviceAccessRecord.strClusterID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strclusterid(), target);
+  }
+
+  // .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+  if (this->has_accesseddevice()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        3, *this->accesseddevice_, false, target);
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.DeviceAccessRecord.strCreateDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strcreatedate(), target);
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->uistatus(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.DeviceAccessRecord)
+  return target;
+}
+
+size_t DeviceAccessRecord::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.DeviceAccessRecord)
+  size_t total_size = 0;
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strclusterid());
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcreatedate());
+  }
+
+  // .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+  if (this->has_accesseddevice()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->accesseddevice_);
+  }
+
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uisequence());
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uistatus());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DeviceAccessRecord::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.DeviceAccessRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DeviceAccessRecord* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DeviceAccessRecord>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.DeviceAccessRecord)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.DeviceAccessRecord)
+    MergeFrom(*source);
+  }
+}
+
+void DeviceAccessRecord::MergeFrom(const DeviceAccessRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.DeviceAccessRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strclusterid().size() > 0) {
+
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  if (from.strcreatedate().size() > 0) {
+
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  if (from.has_accesseddevice()) {
+    mutable_accesseddevice()->::Management::Interactive::Message::AccessedDevice::MergeFrom(from.accesseddevice());
+  }
+  if (from.uisequence() != 0) {
+    set_uisequence(from.uisequence());
+  }
+  if (from.uistatus() != 0) {
+    set_uistatus(from.uistatus());
+  }
+}
+
+void DeviceAccessRecord::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.DeviceAccessRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DeviceAccessRecord::CopyFrom(const DeviceAccessRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.DeviceAccessRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DeviceAccessRecord::IsInitialized() const {
+  return true;
+}
+
+void DeviceAccessRecord::Swap(DeviceAccessRecord* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DeviceAccessRecord::InternalSwap(DeviceAccessRecord* other) {
+  strclusterid_.Swap(&other->strclusterid_);
+  strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(accesseddevice_, other->accesseddevice_);
+  std::swap(uisequence_, other->uisequence_);
+  std::swap(uistatus_, other->uistatus_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DeviceAccessRecord::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// DeviceAccessRecord
+
+// uint32 uiSequence = 1;
+void DeviceAccessRecord::clear_uisequence() {
+  uisequence_ = 0u;
+}
+::google::protobuf::uint32 DeviceAccessRecord::uisequence() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
+  return uisequence_;
+}
+void DeviceAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+  
+  uisequence_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
+}
+
+// string strClusterID = 2;
+void DeviceAccessRecord::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& DeviceAccessRecord::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+void DeviceAccessRecord::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+#if LANG_CXX11
+void DeviceAccessRecord::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+#endif
+void DeviceAccessRecord::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+void DeviceAccessRecord::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+::std::string* DeviceAccessRecord::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* DeviceAccessRecord::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void DeviceAccessRecord::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strClusterID)
+}
+
+// .Management.Interactive.Message.AccessedDevice accessedDevice = 3;
+bool DeviceAccessRecord::has_accesseddevice() const {
+  return this != internal_default_instance() && accesseddevice_ != NULL;
+}
+void DeviceAccessRecord::clear_accesseddevice() {
+  if (GetArenaNoVirtual() == NULL && accesseddevice_ != NULL) delete accesseddevice_;
+  accesseddevice_ = NULL;
+}
+const ::Management::Interactive::Message::AccessedDevice& DeviceAccessRecord::accesseddevice() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  return accesseddevice_ != NULL ? *accesseddevice_
+                         : *::Management::Interactive::Message::AccessedDevice::internal_default_instance();
+}
+::Management::Interactive::Message::AccessedDevice* DeviceAccessRecord::mutable_accesseddevice() {
+  
+  if (accesseddevice_ == NULL) {
+    accesseddevice_ = new ::Management::Interactive::Message::AccessedDevice;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  return accesseddevice_;
+}
+::Management::Interactive::Message::AccessedDevice* DeviceAccessRecord::release_accesseddevice() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+  
+  ::Management::Interactive::Message::AccessedDevice* temp = accesseddevice_;
+  accesseddevice_ = NULL;
+  return temp;
+}
+void DeviceAccessRecord::set_allocated_accesseddevice(::Management::Interactive::Message::AccessedDevice* accesseddevice) {
+  delete accesseddevice_;
+  accesseddevice_ = accesseddevice;
+  if (accesseddevice) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
+}
+
+// string strCreateDate = 4;
+void DeviceAccessRecord::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& DeviceAccessRecord::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+void DeviceAccessRecord::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+#if LANG_CXX11
+void DeviceAccessRecord::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+#endif
+void DeviceAccessRecord::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+void DeviceAccessRecord::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+::std::string* DeviceAccessRecord::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* DeviceAccessRecord::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void DeviceAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+}
+
+// uint32 uiStatus = 5;
+void DeviceAccessRecord::clear_uistatus() {
+  uistatus_ = 0u;
+}
+::google::protobuf::uint32 DeviceAccessRecord::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.uiStatus)
+  return uistatus_;
+}
+void DeviceAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.uiStatus)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int UserAccessRecord::kUiSequenceFieldNumber;
+const int UserAccessRecord::kStrClusterIDFieldNumber;
+const int UserAccessRecord::kAccessedUserFieldNumber;
+const int UserAccessRecord::kStrCreateDateFieldNumber;
+const int UserAccessRecord::kUiStatusFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+UserAccessRecord::UserAccessRecord()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.UserAccessRecord)
+}
+UserAccessRecord::UserAccessRecord(const UserAccessRecord& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strclusterid().size() > 0) {
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcreatedate().size() > 0) {
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  if (from.has_accesseduser()) {
+    accesseduser_ = new ::Management::Interactive::Message::AccessedUser(*from.accesseduser_);
+  } else {
+    accesseduser_ = NULL;
+  }
+  ::memcpy(&uisequence_, &from.uisequence_,
+    reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uisequence_) + sizeof(uistatus_));
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.UserAccessRecord)
+}
+
+void UserAccessRecord::SharedCtor() {
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&accesseduser_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&accesseduser_) + sizeof(uistatus_));
+  _cached_size_ = 0;
+}
+
+UserAccessRecord::~UserAccessRecord() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.UserAccessRecord)
+  SharedDtor();
+}
+
+void UserAccessRecord::SharedDtor() {
+  strclusterid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete accesseduser_;
+  }
+}
+
+void UserAccessRecord::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* UserAccessRecord::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5].descriptor;
+}
+
+const UserAccessRecord& UserAccessRecord::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+UserAccessRecord* UserAccessRecord::New(::google::protobuf::Arena* arena) const {
+  UserAccessRecord* n = new UserAccessRecord;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void UserAccessRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.UserAccessRecord)
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && accesseduser_ != NULL) {
+    delete accesseduser_;
+  }
+  accesseduser_ = NULL;
+  ::memset(&uisequence_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uisequence_) + sizeof(uistatus_));
+}
+
+bool UserAccessRecord::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.UserAccessRecord)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint32 uiSequence = 1;
+      case 1: {
+        if (tag == 8u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uisequence_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strClusterID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strclusterid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strclusterid().data(), this->strclusterid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.UserAccessRecord.strClusterID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Management.Interactive.Message.AccessedUser accessedUser = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_accesseduser()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCreateDate = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcreatedate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcreatedate().data(), this->strcreatedate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.UserAccessRecord.strCreateDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiStatus = 5;
+      case 5: {
+        if (tag == 40u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uistatus_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.UserAccessRecord)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.UserAccessRecord)
+  return false;
+#undef DO_
+}
+
+void UserAccessRecord::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.UserAccessRecord)
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->uisequence(), output);
+  }
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.UserAccessRecord.strClusterID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strclusterid(), output);
+  }
+
+  // .Management.Interactive.Message.AccessedUser accessedUser = 3;
+  if (this->has_accesseduser()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, *this->accesseduser_, output);
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.UserAccessRecord.strCreateDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strcreatedate(), output);
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->uistatus(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.UserAccessRecord)
+}
+
+::google::protobuf::uint8* UserAccessRecord::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.UserAccessRecord)
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->uisequence(), target);
+  }
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.UserAccessRecord.strClusterID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strclusterid(), target);
+  }
+
+  // .Management.Interactive.Message.AccessedUser accessedUser = 3;
+  if (this->has_accesseduser()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        3, *this->accesseduser_, false, target);
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.UserAccessRecord.strCreateDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strcreatedate(), target);
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->uistatus(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.UserAccessRecord)
+  return target;
+}
+
+size_t UserAccessRecord::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.UserAccessRecord)
+  size_t total_size = 0;
+
+  // string strClusterID = 2;
+  if (this->strclusterid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strclusterid());
+  }
+
+  // string strCreateDate = 4;
+  if (this->strcreatedate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcreatedate());
+  }
+
+  // .Management.Interactive.Message.AccessedUser accessedUser = 3;
+  if (this->has_accesseduser()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->accesseduser_);
+  }
+
+  // uint32 uiSequence = 1;
+  if (this->uisequence() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uisequence());
+  }
+
+  // uint32 uiStatus = 5;
+  if (this->uistatus() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uistatus());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void UserAccessRecord::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.UserAccessRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  const UserAccessRecord* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const UserAccessRecord>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.UserAccessRecord)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.UserAccessRecord)
+    MergeFrom(*source);
+  }
+}
+
+void UserAccessRecord::MergeFrom(const UserAccessRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.UserAccessRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strclusterid().size() > 0) {
+
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  if (from.strcreatedate().size() > 0) {
+
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  if (from.has_accesseduser()) {
+    mutable_accesseduser()->::Management::Interactive::Message::AccessedUser::MergeFrom(from.accesseduser());
+  }
+  if (from.uisequence() != 0) {
+    set_uisequence(from.uisequence());
+  }
+  if (from.uistatus() != 0) {
+    set_uistatus(from.uistatus());
+  }
+}
+
+void UserAccessRecord::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.UserAccessRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void UserAccessRecord::CopyFrom(const UserAccessRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.UserAccessRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UserAccessRecord::IsInitialized() const {
+  return true;
+}
+
+void UserAccessRecord::Swap(UserAccessRecord* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void UserAccessRecord::InternalSwap(UserAccessRecord* other) {
+  strclusterid_.Swap(&other->strclusterid_);
+  strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(accesseduser_, other->accesseduser_);
+  std::swap(uisequence_, other->uisequence_);
+  std::swap(uistatus_, other->uistatus_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata UserAccessRecord::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// UserAccessRecord
+
+// uint32 uiSequence = 1;
+void UserAccessRecord::clear_uisequence() {
+  uisequence_ = 0u;
+}
+::google::protobuf::uint32 UserAccessRecord::uisequence() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.uiSequence)
+  return uisequence_;
+}
+void UserAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+  
+  uisequence_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.uiSequence)
+}
+
+// string strClusterID = 2;
+void UserAccessRecord::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& UserAccessRecord::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+void UserAccessRecord::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+#if LANG_CXX11
+void UserAccessRecord::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+#endif
+void UserAccessRecord::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+void UserAccessRecord::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+::std::string* UserAccessRecord::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* UserAccessRecord::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void UserAccessRecord::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strClusterID)
+}
+
+// .Management.Interactive.Message.AccessedUser accessedUser = 3;
+bool UserAccessRecord::has_accesseduser() const {
+  return this != internal_default_instance() && accesseduser_ != NULL;
+}
+void UserAccessRecord::clear_accesseduser() {
+  if (GetArenaNoVirtual() == NULL && accesseduser_ != NULL) delete accesseduser_;
+  accesseduser_ = NULL;
+}
+const ::Management::Interactive::Message::AccessedUser& UserAccessRecord::accesseduser() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  return accesseduser_ != NULL ? *accesseduser_
+                         : *::Management::Interactive::Message::AccessedUser::internal_default_instance();
+}
+::Management::Interactive::Message::AccessedUser* UserAccessRecord::mutable_accesseduser() {
+  
+  if (accesseduser_ == NULL) {
+    accesseduser_ = new ::Management::Interactive::Message::AccessedUser;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  return accesseduser_;
+}
+::Management::Interactive::Message::AccessedUser* UserAccessRecord::release_accesseduser() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.accessedUser)
+  
+  ::Management::Interactive::Message::AccessedUser* temp = accesseduser_;
+  accesseduser_ = NULL;
+  return temp;
+}
+void UserAccessRecord::set_allocated_accesseduser(::Management::Interactive::Message::AccessedUser* accesseduser) {
+  delete accesseduser_;
+  accesseduser_ = accesseduser;
+  if (accesseduser) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.accessedUser)
+}
+
+// string strCreateDate = 4;
+void UserAccessRecord::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& UserAccessRecord::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+void UserAccessRecord::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+#if LANG_CXX11
+void UserAccessRecord::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+#endif
+void UserAccessRecord::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+void UserAccessRecord::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+::std::string* UserAccessRecord::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* UserAccessRecord::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void UserAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+}
+
+// uint32 uiStatus = 5;
+void UserAccessRecord::clear_uistatus() {
+  uistatus_ = 0u;
+}
+::google::protobuf::uint32 UserAccessRecord::uistatus() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.uiStatus)
+  return uistatus_;
+}
+void UserAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.uiStatus)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -3141,7 +4543,7 @@ void AddClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6].descriptor;
 }
 
 const AddClusterReq& AddClusterReq::default_instance() {
@@ -3305,7 +4707,7 @@ void AddClusterReq::InternalSwap(AddClusterReq* other) {
 
 ::google::protobuf::Metadata AddClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[4];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3399,7 +4801,7 @@ void AddClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7].descriptor;
 }
 
 const AddClusterRsp& AddClusterRsp::default_instance() {
@@ -3573,7 +4975,7 @@ void AddClusterRsp::InternalSwap(AddClusterRsp* other) {
 
 ::google::protobuf::Metadata AddClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[5];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3680,7 +5082,7 @@ void DeleteClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8].descriptor;
 }
 
 const DeleteClusterReq& DeleteClusterReq::default_instance() {
@@ -3854,7 +5256,7 @@ void DeleteClusterReq::InternalSwap(DeleteClusterReq* other) {
 
 ::google::protobuf::Metadata DeleteClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[6];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -3961,7 +5363,7 @@ void DeleteClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9].descriptor;
 }
 
 const DeleteClusterRsp& DeleteClusterRsp::default_instance() {
@@ -4135,7 +5537,7 @@ void DeleteClusterRsp::InternalSwap(DeleteClusterRsp* other) {
 
 ::google::protobuf::Metadata DeleteClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[7];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4245,7 +5647,7 @@ void ModifyClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10].descriptor;
 }
 
 const ModifyClusterReq& ModifyClusterReq::default_instance() {
@@ -4409,7 +5811,7 @@ void ModifyClusterReq::InternalSwap(ModifyClusterReq* other) {
 
 ::google::protobuf::Metadata ModifyClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[8];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4503,7 +5905,7 @@ void ModifyClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11].descriptor;
 }
 
 const ModifyClusterRsp& ModifyClusterRsp::default_instance() {
@@ -4677,7 +6079,7 @@ void ModifyClusterRsp::InternalSwap(ModifyClusterRsp* other) {
 
 ::google::protobuf::Metadata ModifyClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[9];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4784,7 +6186,7 @@ void QueryClusterInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterInfoReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12].descriptor;
 }
 
 const QueryClusterInfoReq& QueryClusterInfoReq::default_instance() {
@@ -4958,7 +6360,7 @@ void QueryClusterInfoReq::InternalSwap(QueryClusterInfoReq* other) {
 
 ::google::protobuf::Metadata QueryClusterInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[10];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5068,7 +6470,7 @@ void QueryClusterInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterInfoRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13].descriptor;
 }
 
 const QueryClusterInfoRsp& QueryClusterInfoRsp::default_instance() {
@@ -5232,7 +6634,7 @@ void QueryClusterInfoRsp::InternalSwap(QueryClusterInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryClusterInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[11];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5326,7 +6728,7 @@ void ShakehandClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14].descriptor;
 }
 
 const ShakehandClusterReq& ShakehandClusterReq::default_instance() {
@@ -5500,7 +6902,7 @@ void ShakehandClusterReq::InternalSwap(ShakehandClusterReq* other) {
 
 ::google::protobuf::Metadata ShakehandClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[12];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5607,7 +7009,7 @@ void ShakehandClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15].descriptor;
 }
 
 const ShakehandClusterRsp& ShakehandClusterRsp::default_instance() {
@@ -5781,7 +7183,7 @@ void ShakehandClusterRsp::InternalSwap(ShakehandClusterRsp* other) {
 
 ::google::protobuf::Metadata ShakehandClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[13];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -5888,7 +7290,7 @@ void QueryAllClusterReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllClusterReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16].descriptor;
 }
 
 const QueryAllClusterReq& QueryAllClusterReq::default_instance() {
@@ -6062,7 +7464,7 @@ void QueryAllClusterReq::InternalSwap(QueryAllClusterReq* other) {
 
 ::google::protobuf::Metadata QueryAllClusterReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[14];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6164,7 +7566,7 @@ void QueryAllClusterRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllClusterRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17].descriptor;
 }
 
 const QueryAllClusterRsp& QueryAllClusterRsp::default_instance() {
@@ -6329,7 +7731,7 @@ void QueryAllClusterRsp::InternalSwap(QueryAllClusterRsp* other) {
 
 ::google::protobuf::Metadata QueryAllClusterRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[15];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6435,7 +7837,7 @@ void QueryClusterDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterDeviceReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18].descriptor;
 }
 
 const QueryClusterDeviceReq& QueryClusterDeviceReq::default_instance() {
@@ -6777,7 +8179,7 @@ void QueryClusterDeviceReq::InternalSwap(QueryClusterDeviceReq* other) {
 
 ::google::protobuf::Metadata QueryClusterDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[16];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7011,7 +8413,7 @@ void QueryClusterDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19].descriptor;
 }
 
 const QueryClusterDeviceRsp& QueryClusterDeviceRsp::default_instance() {
@@ -7176,7 +8578,7 @@ void QueryClusterDeviceRsp::InternalSwap(QueryClusterDeviceRsp* other) {
 
 ::google::protobuf::Metadata QueryClusterDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[17];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7282,7 +8684,7 @@ void QueryClusterUserReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterUserReq::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20].descriptor;
 }
 
 const QueryClusterUserReq& QueryClusterUserReq::default_instance() {
@@ -7624,7 +9026,7 @@ void QueryClusterUserReq::InternalSwap(QueryClusterUserReq* other) {
 
 ::google::protobuf::Metadata QueryClusterUserReq::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[18];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7858,7 +9260,7 @@ void QueryClusterUserRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryClusterUserRsp::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21].descriptor;
 }
 
 const QueryClusterUserRsp& QueryClusterUserRsp::default_instance() {
@@ -8023,7 +9425,7 @@ void QueryClusterUserRsp::InternalSwap(QueryClusterUserRsp* other) {
 
 ::google::protobuf::Metadata QueryClusterUserRsp::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[19];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8064,6 +9466,1274 @@ QueryClusterUserRsp::accesseduserinfo() const {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PushClusterDeviceReq::kStrClusterIDFieldNumber;
+const int PushClusterDeviceReq::kDeviceAccessRecordFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PushClusterDeviceReq::PushClusterDeviceReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.PushClusterDeviceReq)
+}
+PushClusterDeviceReq::PushClusterDeviceReq(const PushClusterDeviceReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      deviceaccessrecord_(from.deviceaccessrecord_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strclusterid().size() > 0) {
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.PushClusterDeviceReq)
+}
+
+void PushClusterDeviceReq::SharedCtor() {
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+PushClusterDeviceReq::~PushClusterDeviceReq() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.PushClusterDeviceReq)
+  SharedDtor();
+}
+
+void PushClusterDeviceReq::SharedDtor() {
+  strclusterid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void PushClusterDeviceReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PushClusterDeviceReq::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22].descriptor;
+}
+
+const PushClusterDeviceReq& PushClusterDeviceReq::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+PushClusterDeviceReq* PushClusterDeviceReq::New(::google::protobuf::Arena* arena) const {
+  PushClusterDeviceReq* n = new PushClusterDeviceReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PushClusterDeviceReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.PushClusterDeviceReq)
+  deviceaccessrecord_.Clear();
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool PushClusterDeviceReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.PushClusterDeviceReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strClusterID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strclusterid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strclusterid().data(), this->strclusterid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.PushClusterDeviceReq.strClusterID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(input->IncrementRecursionDepth());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_deviceaccessrecord()));
+        } else {
+          goto handle_unusual;
+        }
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.PushClusterDeviceReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.PushClusterDeviceReq)
+  return false;
+#undef DO_
+}
+
+void PushClusterDeviceReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.PushClusterDeviceReq)
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterDeviceReq.strClusterID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strclusterid(), output);
+  }
+
+  // repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+  for (unsigned int i = 0, n = this->deviceaccessrecord_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->deviceaccessrecord(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.PushClusterDeviceReq)
+}
+
+::google::protobuf::uint8* PushClusterDeviceReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.PushClusterDeviceReq)
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterDeviceReq.strClusterID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strclusterid(), target);
+  }
+
+  // repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+  for (unsigned int i = 0, n = this->deviceaccessrecord_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, this->deviceaccessrecord(i), false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.PushClusterDeviceReq)
+  return target;
+}
+
+size_t PushClusterDeviceReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.PushClusterDeviceReq)
+  size_t total_size = 0;
+
+  // repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+  {
+    unsigned int count = this->deviceaccessrecord_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->deviceaccessrecord(i));
+    }
+  }
+
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strclusterid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PushClusterDeviceReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.PushClusterDeviceReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PushClusterDeviceReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PushClusterDeviceReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.PushClusterDeviceReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.PushClusterDeviceReq)
+    MergeFrom(*source);
+  }
+}
+
+void PushClusterDeviceReq::MergeFrom(const PushClusterDeviceReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.PushClusterDeviceReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  deviceaccessrecord_.MergeFrom(from.deviceaccessrecord_);
+  if (from.strclusterid().size() > 0) {
+
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+}
+
+void PushClusterDeviceReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.PushClusterDeviceReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PushClusterDeviceReq::CopyFrom(const PushClusterDeviceReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.PushClusterDeviceReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PushClusterDeviceReq::IsInitialized() const {
+  return true;
+}
+
+void PushClusterDeviceReq::Swap(PushClusterDeviceReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PushClusterDeviceReq::InternalSwap(PushClusterDeviceReq* other) {
+  deviceaccessrecord_.UnsafeArenaSwap(&other->deviceaccessrecord_);
+  strclusterid_.Swap(&other->strclusterid_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PushClusterDeviceReq::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PushClusterDeviceReq
+
+// string strClusterID = 1;
+void PushClusterDeviceReq::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& PushClusterDeviceReq::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+void PushClusterDeviceReq::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+#if LANG_CXX11
+void PushClusterDeviceReq::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+#endif
+void PushClusterDeviceReq::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+void PushClusterDeviceReq::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+::std::string* PushClusterDeviceReq::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* PushClusterDeviceReq::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void PushClusterDeviceReq::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterDeviceReq.strClusterID)
+}
+
+// repeated .Management.Interactive.Message.DeviceAccessRecord deviceAccessRecord = 2;
+int PushClusterDeviceReq::deviceaccessrecord_size() const {
+  return deviceaccessrecord_.size();
+}
+void PushClusterDeviceReq::clear_deviceaccessrecord() {
+  deviceaccessrecord_.Clear();
+}
+const ::Management::Interactive::Message::DeviceAccessRecord& PushClusterDeviceReq::deviceaccessrecord(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Get(index);
+}
+::Management::Interactive::Message::DeviceAccessRecord* PushClusterDeviceReq::mutable_deviceaccessrecord(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Mutable(index);
+}
+::Management::Interactive::Message::DeviceAccessRecord* PushClusterDeviceReq::add_deviceaccessrecord() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >*
+PushClusterDeviceReq::mutable_deviceaccessrecord() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return &deviceaccessrecord_;
+}
+const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::DeviceAccessRecord >&
+PushClusterDeviceReq::deviceaccessrecord() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.PushClusterDeviceReq.deviceAccessRecord)
+  return deviceaccessrecord_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PushClusterDeviceRsp::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PushClusterDeviceRsp::PushClusterDeviceRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.PushClusterDeviceRsp)
+}
+PushClusterDeviceRsp::PushClusterDeviceRsp(const PushClusterDeviceRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strvalue().size() > 0) {
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.PushClusterDeviceRsp)
+}
+
+void PushClusterDeviceRsp::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+PushClusterDeviceRsp::~PushClusterDeviceRsp() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.PushClusterDeviceRsp)
+  SharedDtor();
+}
+
+void PushClusterDeviceRsp::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void PushClusterDeviceRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PushClusterDeviceRsp::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[23].descriptor;
+}
+
+const PushClusterDeviceRsp& PushClusterDeviceRsp::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+PushClusterDeviceRsp* PushClusterDeviceRsp::New(::google::protobuf::Arena* arena) const {
+  PushClusterDeviceRsp* n = new PushClusterDeviceRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PushClusterDeviceRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool PushClusterDeviceRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strValue = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.PushClusterDeviceRsp.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.PushClusterDeviceRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.PushClusterDeviceRsp)
+  return false;
+#undef DO_
+}
+
+void PushClusterDeviceRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterDeviceRsp.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.PushClusterDeviceRsp)
+}
+
+::google::protobuf::uint8* PushClusterDeviceRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterDeviceRsp.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.PushClusterDeviceRsp)
+  return target;
+}
+
+size_t PushClusterDeviceRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  size_t total_size = 0;
+
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PushClusterDeviceRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PushClusterDeviceRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PushClusterDeviceRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.PushClusterDeviceRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.PushClusterDeviceRsp)
+    MergeFrom(*source);
+  }
+}
+
+void PushClusterDeviceRsp::MergeFrom(const PushClusterDeviceRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void PushClusterDeviceRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PushClusterDeviceRsp::CopyFrom(const PushClusterDeviceRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.PushClusterDeviceRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PushClusterDeviceRsp::IsInitialized() const {
+  return true;
+}
+
+void PushClusterDeviceRsp::Swap(PushClusterDeviceRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PushClusterDeviceRsp::InternalSwap(PushClusterDeviceRsp* other) {
+  strvalue_.Swap(&other->strvalue_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PushClusterDeviceRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[23];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PushClusterDeviceRsp
+
+// string strValue = 1;
+void PushClusterDeviceRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& PushClusterDeviceRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+void PushClusterDeviceRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+#if LANG_CXX11
+void PushClusterDeviceRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+#endif
+void PushClusterDeviceRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+void PushClusterDeviceRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+::std::string* PushClusterDeviceRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* PushClusterDeviceRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void PushClusterDeviceRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterDeviceRsp.strValue)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PushClusterUserReq::kStrClusterIDFieldNumber;
+const int PushClusterUserReq::kUserAccessRecordFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PushClusterUserReq::PushClusterUserReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.PushClusterUserReq)
+}
+PushClusterUserReq::PushClusterUserReq(const PushClusterUserReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      useraccessrecord_(from.useraccessrecord_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strclusterid().size() > 0) {
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.PushClusterUserReq)
+}
+
+void PushClusterUserReq::SharedCtor() {
+  strclusterid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+PushClusterUserReq::~PushClusterUserReq() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.PushClusterUserReq)
+  SharedDtor();
+}
+
+void PushClusterUserReq::SharedDtor() {
+  strclusterid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void PushClusterUserReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PushClusterUserReq::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[24].descriptor;
+}
+
+const PushClusterUserReq& PushClusterUserReq::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+PushClusterUserReq* PushClusterUserReq::New(::google::protobuf::Arena* arena) const {
+  PushClusterUserReq* n = new PushClusterUserReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PushClusterUserReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.PushClusterUserReq)
+  useraccessrecord_.Clear();
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool PushClusterUserReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.PushClusterUserReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strClusterID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strclusterid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strclusterid().data(), this->strclusterid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.PushClusterUserReq.strClusterID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(input->IncrementRecursionDepth());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_useraccessrecord()));
+        } else {
+          goto handle_unusual;
+        }
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.PushClusterUserReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.PushClusterUserReq)
+  return false;
+#undef DO_
+}
+
+void PushClusterUserReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.PushClusterUserReq)
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterUserReq.strClusterID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strclusterid(), output);
+  }
+
+  // repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+  for (unsigned int i = 0, n = this->useraccessrecord_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->useraccessrecord(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.PushClusterUserReq)
+}
+
+::google::protobuf::uint8* PushClusterUserReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.PushClusterUserReq)
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strclusterid().data(), this->strclusterid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterUserReq.strClusterID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strclusterid(), target);
+  }
+
+  // repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+  for (unsigned int i = 0, n = this->useraccessrecord_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, this->useraccessrecord(i), false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.PushClusterUserReq)
+  return target;
+}
+
+size_t PushClusterUserReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.PushClusterUserReq)
+  size_t total_size = 0;
+
+  // repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+  {
+    unsigned int count = this->useraccessrecord_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->useraccessrecord(i));
+    }
+  }
+
+  // string strClusterID = 1;
+  if (this->strclusterid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strclusterid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PushClusterUserReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.PushClusterUserReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PushClusterUserReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PushClusterUserReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.PushClusterUserReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.PushClusterUserReq)
+    MergeFrom(*source);
+  }
+}
+
+void PushClusterUserReq::MergeFrom(const PushClusterUserReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.PushClusterUserReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  useraccessrecord_.MergeFrom(from.useraccessrecord_);
+  if (from.strclusterid().size() > 0) {
+
+    strclusterid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strclusterid_);
+  }
+}
+
+void PushClusterUserReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.PushClusterUserReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PushClusterUserReq::CopyFrom(const PushClusterUserReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.PushClusterUserReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PushClusterUserReq::IsInitialized() const {
+  return true;
+}
+
+void PushClusterUserReq::Swap(PushClusterUserReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PushClusterUserReq::InternalSwap(PushClusterUserReq* other) {
+  useraccessrecord_.UnsafeArenaSwap(&other->useraccessrecord_);
+  strclusterid_.Swap(&other->strclusterid_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PushClusterUserReq::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[24];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PushClusterUserReq
+
+// string strClusterID = 1;
+void PushClusterUserReq::clear_strclusterid() {
+  strclusterid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& PushClusterUserReq::strclusterid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  return strclusterid_.GetNoArena();
+}
+void PushClusterUserReq::set_strclusterid(const ::std::string& value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+#if LANG_CXX11
+void PushClusterUserReq::set_strclusterid(::std::string&& value) {
+  
+  strclusterid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+#endif
+void PushClusterUserReq::set_strclusterid(const char* value) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+void PushClusterUserReq::set_strclusterid(const char* value, size_t size) {
+  
+  strclusterid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+::std::string* PushClusterUserReq::mutable_strclusterid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  return strclusterid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* PushClusterUserReq::release_strclusterid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+  
+  return strclusterid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void PushClusterUserReq::set_allocated_strclusterid(::std::string* strclusterid) {
+  if (strclusterid != NULL) {
+    
+  } else {
+    
+  }
+  strclusterid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclusterid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterUserReq.strClusterID)
+}
+
+// repeated .Management.Interactive.Message.UserAccessRecord userAccessRecord = 2;
+int PushClusterUserReq::useraccessrecord_size() const {
+  return useraccessrecord_.size();
+}
+void PushClusterUserReq::clear_useraccessrecord() {
+  useraccessrecord_.Clear();
+}
+const ::Management::Interactive::Message::UserAccessRecord& PushClusterUserReq::useraccessrecord(int index) const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Get(index);
+}
+::Management::Interactive::Message::UserAccessRecord* PushClusterUserReq::mutable_useraccessrecord(int index) {
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Mutable(index);
+}
+::Management::Interactive::Message::UserAccessRecord* PushClusterUserReq::add_useraccessrecord() {
+  // @@protoc_insertion_point(field_add:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >*
+PushClusterUserReq::mutable_useraccessrecord() {
+  // @@protoc_insertion_point(field_mutable_list:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return &useraccessrecord_;
+}
+const ::google::protobuf::RepeatedPtrField< ::Management::Interactive::Message::UserAccessRecord >&
+PushClusterUserReq::useraccessrecord() const {
+  // @@protoc_insertion_point(field_list:Management.Interactive.Message.PushClusterUserReq.userAccessRecord)
+  return useraccessrecord_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PushClusterUserRsp::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PushClusterUserRsp::PushClusterUserRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Management.Interactive.Message.PushClusterUserRsp)
+}
+PushClusterUserRsp::PushClusterUserRsp(const PushClusterUserRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strvalue().size() > 0) {
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.PushClusterUserRsp)
+}
+
+void PushClusterUserRsp::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+PushClusterUserRsp::~PushClusterUserRsp() {
+  // @@protoc_insertion_point(destructor:Management.Interactive.Message.PushClusterUserRsp)
+  SharedDtor();
+}
+
+void PushClusterUserRsp::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void PushClusterUserRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PushClusterUserRsp::descriptor() {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[25].descriptor;
+}
+
+const PushClusterUserRsp& PushClusterUserRsp::default_instance() {
+  protobuf_InteractiveProtocolManagement_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+PushClusterUserRsp* PushClusterUserRsp::New(::google::protobuf::Arena* arena) const {
+  PushClusterUserRsp* n = new PushClusterUserRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PushClusterUserRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:Management.Interactive.Message.PushClusterUserRsp)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool PushClusterUserRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Management.Interactive.Message.PushClusterUserRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strValue = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Management.Interactive.Message.PushClusterUserRsp.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Management.Interactive.Message.PushClusterUserRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Management.Interactive.Message.PushClusterUserRsp)
+  return false;
+#undef DO_
+}
+
+void PushClusterUserRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Management.Interactive.Message.PushClusterUserRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterUserRsp.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.PushClusterUserRsp)
+}
+
+::google::protobuf::uint8* PushClusterUserRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Management.Interactive.Message.PushClusterUserRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Management.Interactive.Message.PushClusterUserRsp.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.PushClusterUserRsp)
+  return target;
+}
+
+size_t PushClusterUserRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Management.Interactive.Message.PushClusterUserRsp)
+  size_t total_size = 0;
+
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PushClusterUserRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Management.Interactive.Message.PushClusterUserRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PushClusterUserRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PushClusterUserRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Management.Interactive.Message.PushClusterUserRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Management.Interactive.Message.PushClusterUserRsp)
+    MergeFrom(*source);
+  }
+}
+
+void PushClusterUserRsp::MergeFrom(const PushClusterUserRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Management.Interactive.Message.PushClusterUserRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void PushClusterUserRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Management.Interactive.Message.PushClusterUserRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PushClusterUserRsp::CopyFrom(const PushClusterUserRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Management.Interactive.Message.PushClusterUserRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PushClusterUserRsp::IsInitialized() const {
+  return true;
+}
+
+void PushClusterUserRsp::Swap(PushClusterUserRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PushClusterUserRsp::InternalSwap(PushClusterUserRsp* other) {
+  strvalue_.Swap(&other->strvalue_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PushClusterUserRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[25];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PushClusterUserRsp
+
+// string strValue = 1;
+void PushClusterUserRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& PushClusterUserRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+void PushClusterUserRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+#if LANG_CXX11
+void PushClusterUserRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+#endif
+void PushClusterUserRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+void PushClusterUserRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+::std::string* PushClusterUserRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* PushClusterUserRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.PushClusterUserRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void PushClusterUserRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.PushClusterUserRsp.strValue)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Request::kAddClusterReqValueFieldNumber;
 const int Request::kDeleteClusterReqValueFieldNumber;
 const int Request::kModifyClusterReqValueFieldNumber;
@@ -8072,6 +10742,8 @@ const int Request::kShakehandClusterReqValueFieldNumber;
 const int Request::kQueryAllClusterReqValueFieldNumber;
 const int Request::kQueryClusterDeviceReqValueFieldNumber;
 const int Request::kQueryClusterUserReqValueFieldNumber;
+const int Request::kPushClusterDeviceReqValueFieldNumber;
+const int Request::kPushClusterUserReqValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Request::Request()
@@ -8127,12 +10799,22 @@ Request::Request(const Request& from)
   } else {
     queryclusteruserreq_value_ = NULL;
   }
+  if (from.has_pushclusterdevicereq_value()) {
+    pushclusterdevicereq_value_ = new ::Management::Interactive::Message::PushClusterDeviceReq(*from.pushclusterdevicereq_value_);
+  } else {
+    pushclusterdevicereq_value_ = NULL;
+  }
+  if (from.has_pushclusteruserreq_value()) {
+    pushclusteruserreq_value_ = new ::Management::Interactive::Message::PushClusterUserReq(*from.pushclusteruserreq_value_);
+  } else {
+    pushclusteruserreq_value_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.Request)
 }
 
 void Request::SharedCtor() {
-  ::memset(&addclusterreq_value_, 0, reinterpret_cast<char*>(&queryclusteruserreq_value_) -
-    reinterpret_cast<char*>(&addclusterreq_value_) + sizeof(queryclusteruserreq_value_));
+  ::memset(&addclusterreq_value_, 0, reinterpret_cast<char*>(&pushclusteruserreq_value_) -
+    reinterpret_cast<char*>(&addclusterreq_value_) + sizeof(pushclusteruserreq_value_));
   _cached_size_ = 0;
 }
 
@@ -8166,6 +10848,12 @@ void Request::SharedDtor() {
   if (this != internal_default_instance()) {
     delete queryclusteruserreq_value_;
   }
+  if (this != internal_default_instance()) {
+    delete pushclusterdevicereq_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete pushclusteruserreq_value_;
+  }
 }
 
 void Request::SetCachedSize(int size) const {
@@ -8175,7 +10863,7 @@ void Request::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Request::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[26].descriptor;
 }
 
 const Request& Request::default_instance() {
@@ -8225,6 +10913,14 @@ void Request::Clear() {
     delete queryclusteruserreq_value_;
   }
   queryclusteruserreq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicereq_value_ != NULL) {
+    delete pushclusterdevicereq_value_;
+  }
+  pushclusterdevicereq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && pushclusteruserreq_value_ != NULL) {
+    delete pushclusteruserreq_value_;
+  }
+  pushclusteruserreq_value_ = NULL;
 }
 
 bool Request::MergePartialFromCodedStream(
@@ -8325,6 +11021,28 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
+      // .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+      case 270: {
+        if (tag == 2162u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_pushclusterdevicereq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+      case 280: {
+        if (tag == 2242u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_pushclusteruserreq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -8397,6 +11115,18 @@ void Request::SerializeWithCachedSizes(
       80, *this->queryclusteruserreq_value_, output);
   }
 
+  // .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+  if (this->has_pushclusterdevicereq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      270, *this->pushclusterdevicereq_value_, output);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+  if (this->has_pushclusteruserreq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      280, *this->pushclusteruserreq_value_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.Request)
 }
 
@@ -8458,6 +11188,20 @@ void Request::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         80, *this->queryclusteruserreq_value_, false, target);
+  }
+
+  // .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+  if (this->has_pushclusterdevicereq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        270, *this->pushclusterdevicereq_value_, false, target);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+  if (this->has_pushclusteruserreq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        280, *this->pushclusteruserreq_value_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.Request)
@@ -8524,6 +11268,20 @@ size_t Request::ByteSizeLong() const {
         *this->queryclusteruserreq_value_);
   }
 
+  // .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+  if (this->has_pushclusterdevicereq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->pushclusterdevicereq_value_);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+  if (this->has_pushclusteruserreq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->pushclusteruserreq_value_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -8574,6 +11332,12 @@ void Request::MergeFrom(const Request& from) {
   if (from.has_queryclusteruserreq_value()) {
     mutable_queryclusteruserreq_value()->::Management::Interactive::Message::QueryClusterUserReq::MergeFrom(from.queryclusteruserreq_value());
   }
+  if (from.has_pushclusterdevicereq_value()) {
+    mutable_pushclusterdevicereq_value()->::Management::Interactive::Message::PushClusterDeviceReq::MergeFrom(from.pushclusterdevicereq_value());
+  }
+  if (from.has_pushclusteruserreq_value()) {
+    mutable_pushclusteruserreq_value()->::Management::Interactive::Message::PushClusterUserReq::MergeFrom(from.pushclusteruserreq_value());
+  }
 }
 
 void Request::CopyFrom(const ::google::protobuf::Message& from) {
@@ -8607,12 +11371,14 @@ void Request::InternalSwap(Request* other) {
   std::swap(queryallclusterreq_value_, other->queryallclusterreq_value_);
   std::swap(queryclusterdevicereq_value_, other->queryclusterdevicereq_value_);
   std::swap(queryclusteruserreq_value_, other->queryclusteruserreq_value_);
+  std::swap(pushclusterdevicereq_value_, other->pushclusterdevicereq_value_);
+  std::swap(pushclusteruserreq_value_, other->pushclusteruserreq_value_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Request::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[20];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[26];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -8930,6 +11696,84 @@ void Request::set_allocated_queryclusteruserreq_value(::Management::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.QueryClusterUserReq_Value)
 }
 
+// .Management.Interactive.Message.PushClusterDeviceReq PushClusterDeviceReq_Value = 270;
+bool Request::has_pushclusterdevicereq_value() const {
+  return this != internal_default_instance() && pushclusterdevicereq_value_ != NULL;
+}
+void Request::clear_pushclusterdevicereq_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicereq_value_ != NULL) delete pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = NULL;
+}
+const ::Management::Interactive::Message::PushClusterDeviceReq& Request::pushclusterdevicereq_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  return pushclusterdevicereq_value_ != NULL ? *pushclusterdevicereq_value_
+                         : *::Management::Interactive::Message::PushClusterDeviceReq::internal_default_instance();
+}
+::Management::Interactive::Message::PushClusterDeviceReq* Request::mutable_pushclusterdevicereq_value() {
+  
+  if (pushclusterdevicereq_value_ == NULL) {
+    pushclusterdevicereq_value_ = new ::Management::Interactive::Message::PushClusterDeviceReq;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  return pushclusterdevicereq_value_;
+}
+::Management::Interactive::Message::PushClusterDeviceReq* Request::release_pushclusterdevicereq_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+  
+  ::Management::Interactive::Message::PushClusterDeviceReq* temp = pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_pushclusterdevicereq_value(::Management::Interactive::Message::PushClusterDeviceReq* pushclusterdevicereq_value) {
+  delete pushclusterdevicereq_value_;
+  pushclusterdevicereq_value_ = pushclusterdevicereq_value;
+  if (pushclusterdevicereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.PushClusterDeviceReq_Value)
+}
+
+// .Management.Interactive.Message.PushClusterUserReq PushClusterUserReq_Value = 280;
+bool Request::has_pushclusteruserreq_value() const {
+  return this != internal_default_instance() && pushclusteruserreq_value_ != NULL;
+}
+void Request::clear_pushclusteruserreq_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusteruserreq_value_ != NULL) delete pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = NULL;
+}
+const ::Management::Interactive::Message::PushClusterUserReq& Request::pushclusteruserreq_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  return pushclusteruserreq_value_ != NULL ? *pushclusteruserreq_value_
+                         : *::Management::Interactive::Message::PushClusterUserReq::internal_default_instance();
+}
+::Management::Interactive::Message::PushClusterUserReq* Request::mutable_pushclusteruserreq_value() {
+  
+  if (pushclusteruserreq_value_ == NULL) {
+    pushclusteruserreq_value_ = new ::Management::Interactive::Message::PushClusterUserReq;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  return pushclusteruserreq_value_;
+}
+::Management::Interactive::Message::PushClusterUserReq* Request::release_pushclusteruserreq_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+  
+  ::Management::Interactive::Message::PushClusterUserReq* temp = pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_pushclusteruserreq_value(::Management::Interactive::Message::PushClusterUserReq* pushclusteruserreq_value) {
+  delete pushclusteruserreq_value_;
+  pushclusteruserreq_value_ = pushclusteruserreq_value;
+  if (pushclusteruserreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Request.PushClusterUserReq_Value)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -8945,6 +11789,8 @@ const int Response::kShakehandClusterRspValueFieldNumber;
 const int Response::kQueryAllClusterRspValueFieldNumber;
 const int Response::kQueryClusterDeviceRspValueFieldNumber;
 const int Response::kQueryClusterUserRspValueFieldNumber;
+const int Response::kPushClusterDeviceRspValueFieldNumber;
+const int Response::kPushClusterUserRspValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Response::Response()
@@ -9004,6 +11850,16 @@ Response::Response(const Response& from)
   } else {
     queryclusteruserrsp_value_ = NULL;
   }
+  if (from.has_pushclusterdevicersp_value()) {
+    pushclusterdevicersp_value_ = new ::Management::Interactive::Message::PushClusterDeviceRsp(*from.pushclusterdevicersp_value_);
+  } else {
+    pushclusterdevicersp_value_ = NULL;
+  }
+  if (from.has_pushclusteruserrsp_value()) {
+    pushclusteruserrsp_value_ = new ::Management::Interactive::Message::PushClusterUserRsp(*from.pushclusteruserrsp_value_);
+  } else {
+    pushclusteruserrsp_value_ = NULL;
+  }
   iretcode_ = from.iretcode_;
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.Response)
 }
@@ -9046,6 +11902,12 @@ void Response::SharedDtor() {
   if (this != internal_default_instance()) {
     delete queryclusteruserrsp_value_;
   }
+  if (this != internal_default_instance()) {
+    delete pushclusterdevicersp_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete pushclusteruserrsp_value_;
+  }
 }
 
 void Response::SetCachedSize(int size) const {
@@ -9055,7 +11917,7 @@ void Response::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Response::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[27].descriptor;
 }
 
 const Response& Response::default_instance() {
@@ -9106,6 +11968,14 @@ void Response::Clear() {
     delete queryclusteruserrsp_value_;
   }
   queryclusteruserrsp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicersp_value_ != NULL) {
+    delete pushclusterdevicersp_value_;
+  }
+  pushclusterdevicersp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && pushclusteruserrsp_value_ != NULL) {
+    delete pushclusteruserrsp_value_;
+  }
+  pushclusteruserrsp_value_ = NULL;
   iretcode_ = 0;
 }
 
@@ -9235,6 +12105,28 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+      case 290: {
+        if (tag == 2322u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_pushclusterdevicersp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+      case 300: {
+        if (tag == 2402u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_pushclusteruserrsp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -9322,6 +12214,18 @@ void Response::SerializeWithCachedSizes(
       100, *this->queryclusteruserrsp_value_, output);
   }
 
+  // .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+  if (this->has_pushclusterdevicersp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      290, *this->pushclusterdevicersp_value_, output);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+  if (this->has_pushclusteruserrsp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      300, *this->pushclusteruserrsp_value_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.Response)
 }
 
@@ -9401,6 +12305,20 @@ void Response::SerializeWithCachedSizes(
         100, *this->queryclusteruserrsp_value_, false, target);
   }
 
+  // .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+  if (this->has_pushclusterdevicersp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        290, *this->pushclusterdevicersp_value_, false, target);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+  if (this->has_pushclusteruserrsp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        300, *this->pushclusteruserrsp_value_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.Response)
   return target;
 }
@@ -9472,6 +12390,20 @@ size_t Response::ByteSizeLong() const {
         *this->queryclusteruserrsp_value_);
   }
 
+  // .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+  if (this->has_pushclusterdevicersp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->pushclusterdevicersp_value_);
+  }
+
+  // .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+  if (this->has_pushclusteruserrsp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->pushclusteruserrsp_value_);
+  }
+
   // int32 iRetcode = 10;
   if (this->iretcode() != 0) {
     total_size += 1 +
@@ -9533,6 +12465,12 @@ void Response::MergeFrom(const Response& from) {
   if (from.has_queryclusteruserrsp_value()) {
     mutable_queryclusteruserrsp_value()->::Management::Interactive::Message::QueryClusterUserRsp::MergeFrom(from.queryclusteruserrsp_value());
   }
+  if (from.has_pushclusterdevicersp_value()) {
+    mutable_pushclusterdevicersp_value()->::Management::Interactive::Message::PushClusterDeviceRsp::MergeFrom(from.pushclusterdevicersp_value());
+  }
+  if (from.has_pushclusteruserrsp_value()) {
+    mutable_pushclusteruserrsp_value()->::Management::Interactive::Message::PushClusterUserRsp::MergeFrom(from.pushclusteruserrsp_value());
+  }
   if (from.iretcode() != 0) {
     set_iretcode(from.iretcode());
   }
@@ -9570,13 +12508,15 @@ void Response::InternalSwap(Response* other) {
   std::swap(queryallclusterrsp_value_, other->queryallclusterrsp_value_);
   std::swap(queryclusterdevicersp_value_, other->queryclusterdevicersp_value_);
   std::swap(queryclusteruserrsp_value_, other->queryclusteruserrsp_value_);
+  std::swap(pushclusterdevicersp_value_, other->pushclusterdevicersp_value_);
+  std::swap(pushclusteruserrsp_value_, other->pushclusteruserrsp_value_);
   std::swap(iretcode_, other->iretcode_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Response::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[21];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[27];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9960,6 +12900,84 @@ void Response::set_allocated_queryclusteruserrsp_value(::Management::Interactive
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.QueryClusterUserRsp_Value)
 }
 
+// .Management.Interactive.Message.PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;
+bool Response::has_pushclusterdevicersp_value() const {
+  return this != internal_default_instance() && pushclusterdevicersp_value_ != NULL;
+}
+void Response::clear_pushclusterdevicersp_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusterdevicersp_value_ != NULL) delete pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = NULL;
+}
+const ::Management::Interactive::Message::PushClusterDeviceRsp& Response::pushclusterdevicersp_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  return pushclusterdevicersp_value_ != NULL ? *pushclusterdevicersp_value_
+                         : *::Management::Interactive::Message::PushClusterDeviceRsp::internal_default_instance();
+}
+::Management::Interactive::Message::PushClusterDeviceRsp* Response::mutable_pushclusterdevicersp_value() {
+  
+  if (pushclusterdevicersp_value_ == NULL) {
+    pushclusterdevicersp_value_ = new ::Management::Interactive::Message::PushClusterDeviceRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  return pushclusterdevicersp_value_;
+}
+::Management::Interactive::Message::PushClusterDeviceRsp* Response::release_pushclusterdevicersp_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+  
+  ::Management::Interactive::Message::PushClusterDeviceRsp* temp = pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_pushclusterdevicersp_value(::Management::Interactive::Message::PushClusterDeviceRsp* pushclusterdevicersp_value) {
+  delete pushclusterdevicersp_value_;
+  pushclusterdevicersp_value_ = pushclusterdevicersp_value;
+  if (pushclusterdevicersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.PushClusterDeviceRsp_Value)
+}
+
+// .Management.Interactive.Message.PushClusterUserRsp PushClusterUserRsp_Value = 300;
+bool Response::has_pushclusteruserrsp_value() const {
+  return this != internal_default_instance() && pushclusteruserrsp_value_ != NULL;
+}
+void Response::clear_pushclusteruserrsp_value() {
+  if (GetArenaNoVirtual() == NULL && pushclusteruserrsp_value_ != NULL) delete pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = NULL;
+}
+const ::Management::Interactive::Message::PushClusterUserRsp& Response::pushclusteruserrsp_value() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  return pushclusteruserrsp_value_ != NULL ? *pushclusteruserrsp_value_
+                         : *::Management::Interactive::Message::PushClusterUserRsp::internal_default_instance();
+}
+::Management::Interactive::Message::PushClusterUserRsp* Response::mutable_pushclusteruserrsp_value() {
+  
+  if (pushclusteruserrsp_value_ == NULL) {
+    pushclusteruserrsp_value_ = new ::Management::Interactive::Message::PushClusterUserRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  return pushclusteruserrsp_value_;
+}
+::Management::Interactive::Message::PushClusterUserRsp* Response::release_pushclusteruserrsp_value() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+  
+  ::Management::Interactive::Message::PushClusterUserRsp* temp = pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_pushclusteruserrsp_value(::Management::Interactive::Message::PushClusterUserRsp* pushclusteruserrsp_value) {
+  delete pushclusteruserrsp_value_;
+  pushclusteruserrsp_value_ = pushclusteruserrsp_value;
+  if (pushclusteruserrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Response.PushClusterUserRsp_Value)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -10034,7 +13052,7 @@ void ManagementInteractiveMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ManagementInteractiveMessage::descriptor() {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[28].descriptor;
 }
 
 const ManagementInteractiveMessage& ManagementInteractiveMessage::default_instance() {
@@ -10358,7 +13376,7 @@ void ManagementInteractiveMessage::InternalSwap(ManagementInteractiveMessage* ot
 
 ::google::protobuf::Metadata ManagementInteractiveMessage::GetMetadata() const {
   protobuf_InteractiveProtocolManagement_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[22];
+  return protobuf_InteractiveProtocolManagement_2eproto::file_level_metadata[28];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

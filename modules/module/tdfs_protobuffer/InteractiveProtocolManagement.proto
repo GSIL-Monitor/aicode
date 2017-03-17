@@ -57,6 +57,12 @@ enum ManagementMsgType
   QueryClusterDeviceRsp_T = 10230;
   QueryClusterUserReq_T = 10300;         //查询接入用户
   QueryClusterUserRsp_T = 10310;
+
+  PushClusterDeviceReq_T = 10500;        //集群推送设备信息
+  PushClusterDeviceRsp_T = 10510;
+
+  PushClusterUserReq_T = 10520;          //集群推送用户信息
+  PushClusterUserRsp_T = 10530;
 }
 
 message Cluster                          //集群信息
@@ -82,6 +88,7 @@ message AccessedDevice                   //接入设备信息
   uint32 uiDeviceType = 3;
   string strLoginTime = 4;
   string strLogoutTime = 5;
+  uint32 uiOnlineDuration = 6;
 }
 
 message AccessedUser                     //接入用户信息
@@ -92,6 +99,25 @@ message AccessedUser                     //接入用户信息
   uint32 uiClientType = 4;
   string strLoginTime = 5;
   string strLogoutTime = 6;
+  uint32 uiOnlineDuration = 7;
+}
+
+message DeviceAccessRecord                //设备接入记录
+{
+  uint32 uiSequence = 1;
+  string strClusterID = 2;
+  AccessedDevice accessedDevice = 3;
+  string strCreateDate = 4;
+  uint32 uiStatus = 5;
+}
+
+message UserAccessRecord                  //用户接入记录
+{
+  uint32 uiSequence = 1;
+  string strClusterID = 2;
+  AccessedUser accessedUser = 3;
+  string strCreateDate = 4;
+  uint32 uiStatus = 5;
 }
 
 message AddClusterReq                    //添加集群请求
@@ -182,6 +208,28 @@ message QueryClusterUserRsp              //查询接入用户响应
   repeated AccessedUser accessedUserInfo = 1;
 }
 
+message PushClusterDeviceReq             //集群推送设备登录信息请求
+{
+  string strClusterID = 1;
+  repeated DeviceAccessRecord deviceAccessRecord = 2;
+}
+
+message PushClusterDeviceRsp             //集群推送设备登录信息响应
+{
+  string strValue = 1;
+}
+
+message PushClusterUserReq               //集群推送用户登录信息请求
+{
+  string strClusterID = 1;
+  repeated UserAccessRecord userAccessRecord = 2;
+}
+
+message PushClusterUserRsp               //集群推送用户登录信息响应
+{
+  string strValue = 1;
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +247,9 @@ message Request
   QueryAllClusterReq QueryAllClusterReq_Value = 60;          //查询所有集群
   QueryClusterDeviceReq QueryClusterDeviceReq_Value = 70;    //查询接入设备
   QueryClusterUserReq QueryClusterUserReq_Value = 80;        //查询接入用户
+
+  PushClusterDeviceReq PushClusterDeviceReq_Value = 270;     //集群推送设备信息
+  PushClusterUserReq PushClusterUserReq_Value = 280;         //集群推送用户信息
 }
 
 //响应对象
@@ -217,6 +268,9 @@ message Response
   QueryAllClusterRsp QueryAllClusterRsp_Value = 80;          //查询所有集群
   QueryClusterDeviceRsp QueryClusterDeviceRsp_Value = 90;    //查询接入设备
   QueryClusterUserRsp QueryClusterUserRsp_Value = 100;       //查询接入用户
+
+  PushClusterDeviceRsp PushClusterDeviceRsp_Value = 290;     //集群推送设备信息
+  PushClusterUserRsp PushClusterUserRsp_Value = 300;         //集群推送用户信息
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理
