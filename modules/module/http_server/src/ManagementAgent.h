@@ -36,9 +36,12 @@ public:
 
     bool ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool DeleteClusterAgentHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 private:
     bool AddClusterAgent(const std::string &strManagementAddress, const std::string &strClusterID);
-
+    
+    bool DeleteClusterAgent(const std::string &strClusterID);
 
     void CollectClusterInfo(const boost::system::error_code& e);
 
@@ -54,6 +57,9 @@ private:
 
     TimeOutHandler m_Tm;
 
+    boost::mutex m_MgnArMutex;
+    std::string m_strManagementAddress;
+    std::string m_strClusterID;
 };
 
 #endif

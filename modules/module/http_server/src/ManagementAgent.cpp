@@ -111,7 +111,61 @@ bool ManagementAgent::ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap>
     const std::string strClusterID = itFind->second;
 
     LOG_INFO_RLD("Shakehand cluster agent info received and cluster id is " << strClusterID);
+
+    {
+        boost::unique_lock<boost::mutex> lock(m_MgnArMutex);
+        if (m_strManagementAddress.empty())
+        {
+            LOG_ERROR_RLD("Current management address is empty, so failed to shakehand.");
+            return blResult;
+        }
+    }
+    
         
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ManagementAgent::DeleteClusterAgentHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->m_Wr(ResultInfoMap, writer, blResult, NULL);
+    }
+    BOOST_SCOPE_EXIT_END
+        
+    auto itFind = pMsgInfoMap->find("clusterid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Cluster id not found.");
+        return blResult;
+    }
+    const std::string strClusterID = itFind->second;
+
+    LOG_INFO_RLD("Delete cluster agent info received and cluster id is " << strClusterID);
+
+    if (!DeleteClusterAgent(strClusterID))
+    {
+        LOG_ERROR_RLD("Delete cluster agent handle failed");
+        return blResult;
+    }
+
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -122,8 +176,23 @@ bool ManagementAgent::ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap>
 
 bool ManagementAgent::AddClusterAgent(const std::string &strManagementAddress, const std::string &strClusterID)
 {
+    boost::unique_lock<boost::mutex> lock(m_MgnArMutex);
 
+    m_strManagementAddress = strManagementAddress;
+    m_strClusterID = strClusterID;
 
+    LOG_INFO_RLD("Receive add cluster agent info and management address is " << strManagementAddress <<
+        " and cluster id is " << strClusterID);
+    
+    return true;
+}
+
+bool ManagementAgent::DeleteClusterAgent(const std::string &strClusterID)
+{
+    boost::unique_lock<boost::mutex> lock(m_MgnArMutex);
+    m_strManagementAddress.clear();
+    m_strClusterID.clear();
+    
     return true;
 }
 
@@ -135,6 +204,17 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
         return;
     }
 
+    {
+        boost::unique_lock<boost::mutex> lock(m_MgnArMutex);
+        if (m_strManagementAddress.empty())
+        {
+            return;
+        }
+    }
+
     LOG_INFO_RLD("Begin collect cluster info.");
+    
+
+
 }
 
