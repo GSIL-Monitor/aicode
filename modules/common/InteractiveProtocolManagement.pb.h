@@ -814,6 +814,20 @@ class DeviceAccessRecord : public ::google::protobuf::Message /* @@protoc_insert
 
   // accessors -------------------------------------------------------
 
+  // string strAccessID = 1;
+  void clear_straccessid();
+  static const int kStrAccessIDFieldNumber = 1;
+  const ::std::string& straccessid() const;
+  void set_straccessid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straccessid(::std::string&& value);
+  #endif
+  void set_straccessid(const char* value);
+  void set_straccessid(const char* value, size_t size);
+  ::std::string* mutable_straccessid();
+  ::std::string* release_straccessid();
+  void set_allocated_straccessid(::std::string* straccessid);
+
   // string strClusterID = 2;
   void clear_strclusterid();
   static const int kStrClusterIDFieldNumber = 2;
@@ -851,12 +865,6 @@ class DeviceAccessRecord : public ::google::protobuf::Message /* @@protoc_insert
   ::Management::Interactive::Message::AccessedDevice* release_accesseddevice();
   void set_allocated_accesseddevice(::Management::Interactive::Message::AccessedDevice* accesseddevice);
 
-  // uint32 uiSequence = 1;
-  void clear_uisequence();
-  static const int kUiSequenceFieldNumber = 1;
-  ::google::protobuf::uint32 uisequence() const;
-  void set_uisequence(::google::protobuf::uint32 value);
-
   // uint32 uiStatus = 5;
   void clear_uistatus();
   static const int kUiStatusFieldNumber = 5;
@@ -867,10 +875,10 @@ class DeviceAccessRecord : public ::google::protobuf::Message /* @@protoc_insert
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straccessid_;
   ::google::protobuf::internal::ArenaStringPtr strclusterid_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::Management::Interactive::Message::AccessedDevice* accesseddevice_;
-  ::google::protobuf::uint32 uisequence_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
@@ -944,6 +952,20 @@ class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
+  // string strAccessID = 1;
+  void clear_straccessid();
+  static const int kStrAccessIDFieldNumber = 1;
+  const ::std::string& straccessid() const;
+  void set_straccessid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straccessid(::std::string&& value);
+  #endif
+  void set_straccessid(const char* value);
+  void set_straccessid(const char* value, size_t size);
+  ::std::string* mutable_straccessid();
+  ::std::string* release_straccessid();
+  void set_allocated_straccessid(::std::string* straccessid);
+
   // string strClusterID = 2;
   void clear_strclusterid();
   static const int kStrClusterIDFieldNumber = 2;
@@ -981,12 +1003,6 @@ class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertio
   ::Management::Interactive::Message::AccessedUser* release_accesseduser();
   void set_allocated_accesseduser(::Management::Interactive::Message::AccessedUser* accesseduser);
 
-  // uint32 uiSequence = 1;
-  void clear_uisequence();
-  static const int kUiSequenceFieldNumber = 1;
-  ::google::protobuf::uint32 uisequence() const;
-  void set_uisequence(::google::protobuf::uint32 value);
-
   // uint32 uiStatus = 5;
   void clear_uistatus();
   static const int kUiStatusFieldNumber = 5;
@@ -997,10 +1013,10 @@ class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertio
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straccessid_;
   ::google::protobuf::internal::ArenaStringPtr strclusterid_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::Management::Interactive::Message::AccessedUser* accesseduser_;
-  ::google::protobuf::uint32 uisequence_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
@@ -4292,18 +4308,56 @@ inline void AccessedUser::set_uionlineduration(::google::protobuf::uint32 value)
 
 // DeviceAccessRecord
 
-// uint32 uiSequence = 1;
-inline void DeviceAccessRecord::clear_uisequence() {
-  uisequence_ = 0u;
+// string strAccessID = 1;
+inline void DeviceAccessRecord::clear_straccessid() {
+  straccessid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::uint32 DeviceAccessRecord::uisequence() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
-  return uisequence_;
+inline const ::std::string& DeviceAccessRecord::straccessid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+  return straccessid_.GetNoArena();
 }
-inline void DeviceAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+inline void DeviceAccessRecord::set_straccessid(const ::std::string& value) {
   
-  uisequence_ = value;
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.uiSequence)
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+}
+#if LANG_CXX11
+inline void DeviceAccessRecord::set_straccessid(::std::string&& value) {
+  
+  straccessid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+}
+#endif
+inline void DeviceAccessRecord::set_straccessid(const char* value) {
+  
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+}
+inline void DeviceAccessRecord::set_straccessid(const char* value, size_t size) {
+  
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+}
+inline ::std::string* DeviceAccessRecord::mutable_straccessid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+  return straccessid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceAccessRecord::release_straccessid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
+  
+  return straccessid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceAccessRecord::set_allocated_straccessid(::std::string* straccessid) {
+  if (straccessid != NULL) {
+    
+  } else {
+    
+  }
+  straccessid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straccessid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strAccessID)
 }
 
 // string strClusterID = 2;
@@ -4467,18 +4521,56 @@ inline void DeviceAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
 
 // UserAccessRecord
 
-// uint32 uiSequence = 1;
-inline void UserAccessRecord::clear_uisequence() {
-  uisequence_ = 0u;
+// string strAccessID = 1;
+inline void UserAccessRecord::clear_straccessid() {
+  straccessid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::uint32 UserAccessRecord::uisequence() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.uiSequence)
-  return uisequence_;
+inline const ::std::string& UserAccessRecord::straccessid() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strAccessID)
+  return straccessid_.GetNoArena();
 }
-inline void UserAccessRecord::set_uisequence(::google::protobuf::uint32 value) {
+inline void UserAccessRecord::set_straccessid(const ::std::string& value) {
   
-  uisequence_ = value;
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.uiSequence)
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strAccessID)
+}
+#if LANG_CXX11
+inline void UserAccessRecord::set_straccessid(::std::string&& value) {
+  
+  straccessid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strAccessID)
+}
+#endif
+inline void UserAccessRecord::set_straccessid(const char* value) {
+  
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strAccessID)
+}
+inline void UserAccessRecord::set_straccessid(const char* value, size_t size) {
+  
+  straccessid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strAccessID)
+}
+inline ::std::string* UserAccessRecord::mutable_straccessid() {
+  
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strAccessID)
+  return straccessid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserAccessRecord::release_straccessid() {
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strAccessID)
+  
+  return straccessid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserAccessRecord::set_allocated_straccessid(::std::string* straccessid) {
+  if (straccessid != NULL) {
+    
+  } else {
+    
+  }
+  straccessid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straccessid);
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strAccessID)
 }
 
 // string strClusterID = 2;

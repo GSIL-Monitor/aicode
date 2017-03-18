@@ -554,6 +554,92 @@ bool ManagementCenter::QueryClusterUserReq(const std::string &strMsg, const std:
     return blResult;
 }
 
+bool ManagementCenter::PushClusterDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoManagementHandler::PushClusterDeviceReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoManagementHandler::PushClusterDeviceRsp rsp;
+        rsp.m_MngMsgType = InteractiveProtoManagementHandler::ManagementMsgType::PushClusterDeviceRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Push cluster device rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Push cluster device rsp already send, dst id is " << strSrcID <<
+            " and cluster id is " << req.m_strClusterID <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Push cluster device req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&ManagementCenter::PushClusterDevice, this, req.m_deviceAccessRecordList));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ManagementCenter::PushClusterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoManagementHandler::PushClusterUserReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoManagementHandler::PushClusterUserRsp rsp;
+        rsp.m_MngMsgType = InteractiveProtoManagementHandler::ManagementMsgType::PushClusterUserRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Push cluster user rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Push cluster user rsp already send, dst id is " << strSrcID <<
+            " and cluster id is " << req.m_strClusterID <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Push cluster user req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&ManagementCenter::PushClusterUser, this, req.m_userAccessRecordList));
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool ManagementCenter::IsValidCluster(const std::string &strClusterAddress)
 {
     char sql[256] = { 0 };
@@ -637,7 +723,7 @@ bool ManagementCenter::InitClusterSession()
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("InitClusterSession exec sql failed, sql is " << sql);
         return false;
@@ -709,7 +795,7 @@ void ManagementCenter::ShakehandCluster()
 
 /*刷新集群会话状态信息时，需要考虑互斥操作*/
 void ManagementCenter::RefreshClusterSession(const std::string &strClusterID, const std::string &strClusterAddress,
-    unsigned int uiStatus, bool blAdd)
+    const unsigned int uiStatus, const bool blAdd)
 {
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
@@ -849,7 +935,7 @@ bool ManagementCenter::QueryClusterInfo(const std::string &strClusterID, Interac
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryClusterInfo exec sql failed, sql is " << sql);
         return false;
@@ -912,7 +998,7 @@ bool ManagementCenter::QueryAllCluster(const std::string &strManagementAddress, 
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryAllCluster exec sql failed, sql is " << sql);
         return false;
@@ -941,15 +1027,15 @@ bool ManagementCenter::QueryAllCluster(const std::string &strManagementAddress, 
         clusterStatus.m_uiStatus = itPos == m_clusterSessionMap.end() ? CLUSTER_OFFLINE : itPos->second.uiStatus;
         m_mutex.unlock();
 
-        clusterStatusList.push_back(clusterStatus);
+        clusterStatusList.push_back(std::move(clusterStatus));
     }
 
     return true;
 }
 
 bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const std::string &strBegindate, const std::string &strEnddate,
-    unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedDevice> &accessedDeviceList,
-    unsigned int uiBeginIndex /*= 0*/, unsigned int uiPageSize /*= 10*/)
+    const unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedDevice> &accessedDeviceList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
     int size = sizeof(sql);
@@ -1013,14 +1099,14 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
             break;
 
         default:
-            LOG_ERROR_RLD("QueryClusterInfo sql callback error, row num is " <<
+            LOG_ERROR_RLD("QueryClusterDevice sql callback error, row num is " <<
                 uiRowNum << " and column num is " << uiColumnNum << " and value is " << strColumn);
             break;
         }
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryClusterDevice exec sql failed, sql is " << sql);
         return false;
@@ -1034,15 +1120,15 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
 
     for (auto &result : ResultList)
     {
-        accessedDeviceList.push_back(boost::any_cast<InteractiveProtoManagementHandler::AccessedDevice>(result));
+        accessedDeviceList.push_back(std::move(boost::any_cast<InteractiveProtoManagementHandler::AccessedDevice>(result)));
     }
 
     return true;
 }
 
 bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const std::string &strBegindate, const std::string &strEnddate,
-    unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedUser> &accessedUserList,
-    unsigned int uiBeginIndex /*= 0*/, unsigned int uiPageSize /*= 10*/)
+    const unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedUser> &accessedUserList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
     int size = sizeof(sql);
@@ -1108,14 +1194,14 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
             result = accessedUser;
 
         default:
-            LOG_ERROR_RLD("QueryClusterInfo sql callback error, row num is " <<
+            LOG_ERROR_RLD("QueryClusterUser sql callback error, row num is " <<
                 uiRowNum << " and column num is " << uiColumnNum << " and value is " << strColumn);
             break;
         }
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryClusterUser exec sql failed, sql is " << sql);
         return false;
@@ -1129,7 +1215,102 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
 
     for (auto &result : ResultList)
     {
-        accessedUserList.push_back(boost::any_cast<InteractiveProtoManagementHandler::AccessedUser>(result));
+        accessedUserList.push_back(std::move(boost::any_cast<InteractiveProtoManagementHandler::AccessedUser>(result)));
+    }
+
+    return true;
+}
+
+void ManagementCenter::PushClusterDevice(const std::list<InteractiveProtoManagementHandler::DeviceAccessRecord> &deviceAccessRecordList)
+{
+    boost::posix_time::ptime nowTime = boost::posix_time::second_clock::local_time();
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(nowTime);
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    for (auto &accessRecord : deviceAccessRecordList)
+    {
+        InteractiveProtoManagementHandler::DeviceAccessRecord deviceAccessRecord;
+        deviceAccessRecord.m_strAccessID = accessRecord.m_strAccessID;
+        deviceAccessRecord.m_strClusterID = accessRecord.m_strClusterID;
+        deviceAccessRecord.m_strCreateDate = strCurrentTime;
+        deviceAccessRecord.m_uiStatus = NORMAL_STATUS;
+
+        InteractiveProtoManagementHandler::AccessedDevice accessedDevice;
+        deviceAccessRecord.m_accessedDevice.m_strDeviceID = accessRecord.m_accessedDevice.m_strDeviceID;
+        deviceAccessRecord.m_accessedDevice.m_strDeviceName = accessRecord.m_accessedDevice.m_strDeviceName;
+        deviceAccessRecord.m_accessedDevice.m_uiDeviceType = accessRecord.m_accessedDevice.m_uiDeviceType;
+        deviceAccessRecord.m_accessedDevice.m_strLoginTime = accessRecord.m_accessedDevice.m_strLoginTime;
+        deviceAccessRecord.m_accessedDevice.m_strLogoutTime = accessRecord.m_accessedDevice.m_strLogoutTime;
+        deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration = accessRecord.m_accessedDevice.m_uiOnlineDuration;
+
+        InsertAccessedDevice(deviceAccessRecord);
+    }
+}
+
+bool ManagementCenter::InsertAccessedDevice(const InteractiveProtoManagementHandler::DeviceAccessRecord &deviceAccessRecord)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_cluster_accessed_device_info"
+        " (id, accessid, deviceid, devicename, clusterid, logintime, logouttime, onlineduration, devicetype, createdate, status)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d)"
+        " on duplicate key update set accessid = accessid, logouttime = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, deviceAccessRecord.m_strAccessID.c_str(), deviceAccessRecord.m_accessedDevice.m_strDeviceID.c_str(), deviceAccessRecord.m_accessedDevice.m_strDeviceName.c_str(),
+        deviceAccessRecord.m_strClusterID.c_str(), deviceAccessRecord.m_accessedDevice.m_strLoginTime.c_str(), deviceAccessRecord.m_accessedDevice.m_strLogoutTime.c_str(), deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration,
+        deviceAccessRecord.m_accessedDevice.m_uiDeviceType, deviceAccessRecord.m_strCreateDate.c_str(), deviceAccessRecord.m_uiStatus, deviceAccessRecord.m_accessedDevice.m_strLogoutTime.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertAccessedDevice exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    return true;
+}
+
+void ManagementCenter::PushClusterUser(const std::list<InteractiveProtoManagementHandler::UserAccessRecord> &userAccessRecordList)
+{
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    for (auto &accessRecord : userAccessRecordList)
+    {
+        InteractiveProtoManagementHandler::UserAccessRecord userAccessRecord;
+        userAccessRecord.m_strAccessID = accessRecord.m_strAccessID;
+        userAccessRecord.m_strClusterID = accessRecord.m_strClusterID;
+        userAccessRecord.m_strCreateDate = strCurrentTime;
+        userAccessRecord.m_uiStatus = NORMAL_STATUS;
+
+        InteractiveProtoManagementHandler::AccessedUser accessedUser;
+        userAccessRecord.m_accessedUser.m_strUserID = accessRecord.m_accessedUser.m_strUserID;
+        userAccessRecord.m_accessedUser.m_strUserName = accessRecord.m_accessedUser.m_strUserName;
+        userAccessRecord.m_accessedUser.m_strUserAliasname = accessRecord.m_accessedUser.m_strUserAliasname;
+        userAccessRecord.m_accessedUser.m_uiClientType = accessRecord.m_accessedUser.m_uiClientType;
+        userAccessRecord.m_accessedUser.m_strLoginTime = accessRecord.m_accessedUser.m_strLoginTime;
+        userAccessRecord.m_accessedUser.m_strLogoutTime = accessRecord.m_accessedUser.m_strLogoutTime;
+        userAccessRecord.m_accessedUser.m_uiOnlineDuration = accessRecord.m_accessedUser.m_uiOnlineDuration;
+
+        InsertAccessedUser(userAccessRecord);
+    }
+}
+
+bool ManagementCenter::InsertAccessedUser(const InteractiveProtoManagementHandler::UserAccessRecord &userAccessRecord)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_cluster_accessed_user_info"
+        " (id, accessid, userid, username, useraliasname, clusterid, logintime, logouttime, onlineduration, clienttype, createdate, status)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d)"
+        " on duplicate key update set accessid = accessid, logouttime = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, userAccessRecord.m_strAccessID.c_str(), userAccessRecord.m_accessedUser.m_strUserID.c_str(), userAccessRecord.m_accessedUser.m_strUserName.c_str(),
+        userAccessRecord.m_accessedUser.m_strUserAliasname.c_str(), userAccessRecord.m_strClusterID.c_str(), userAccessRecord.m_accessedUser.m_strLoginTime.c_str(),
+        userAccessRecord.m_accessedUser.m_strLogoutTime.c_str(), userAccessRecord.m_accessedUser.m_uiOnlineDuration, userAccessRecord.m_accessedUser.m_uiClientType,
+        userAccessRecord.m_strCreateDate.c_str(), userAccessRecord.m_uiStatus, userAccessRecord.m_accessedUser.m_strLogoutTime.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertAccessedUser exec sql failed, sql is " << sql);
+        return false;
     }
 
     return true;

@@ -79,6 +79,10 @@ public:
 
     bool QueryClusterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool PushClusterDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool PushClusterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 
 
 private:
@@ -94,12 +98,12 @@ private:
     bool QueryAllCluster(const std::string &strManagementAddress, std::list<InteractiveProtoManagementHandler::ClusterStatus> &clusterStatusList);
 
     bool QueryClusterDevice(const std::string &strClusterID, const std::string &strBegindate, const std::string &strEnddate,
-        unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedDevice> &accessedDeviceList,
-        unsigned int uiBeginIndex = 0, unsigned int uiPageSize = 10);
+        const unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedDevice> &accessedDeviceList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryClusterUser(const std::string &strClusterID, const std::string &strBegindate, const std::string &strEnddate,
-        unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedUser> &accessedUserList,
-        unsigned int uiBeginIndex = 0, unsigned int uiPageSize = 10);
+        const unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedUser> &accessedUserList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool IsValidCluster(const std::string &strClusterAddress);
 
@@ -109,7 +113,15 @@ private:
 
     void ShakehandCluster();
 
-    void RefreshClusterSession(const std::string &strClusterID, const std::string &strClusterAddress, unsigned int uiStatus, bool blAdd);
+    void RefreshClusterSession(const std::string &strClusterID, const std::string &strClusterAddress, const unsigned int uiStatus, const bool blAdd);
+
+    void PushClusterDevice(const std::list<InteractiveProtoManagementHandler::DeviceAccessRecord> &deviceAccessRecordList);
+
+    bool InsertAccessedDevice(const InteractiveProtoManagementHandler::DeviceAccessRecord &deviceAccessRecord);
+
+    void PushClusterUser(const std::list<InteractiveProtoManagementHandler::UserAccessRecord> &userAccessRecordList);
+
+    bool InsertAccessedUser(const InteractiveProtoManagementHandler::UserAccessRecord &userAccessRecord);
 
 
 

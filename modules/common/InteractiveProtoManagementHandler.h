@@ -91,7 +91,7 @@ public:
 
     struct DeviceAccessRecord
     {
-        unsigned int m_uiSequence;
+        std::string m_strAccessID;                //设备接入ID，直接使用设备登录平台时的会话ID
         std::string m_strClusterID;
         AccessedDevice m_accessedDevice;
         std::string m_strCreateDate;
@@ -100,7 +100,7 @@ public:
 
     struct UserAccessRecord
     {
-        unsigned int m_uiSequence;
+        std::string m_strAccessID;                //用户接入ID，直接使用用户登录平台时的会话ID
         std::string m_strClusterID;
         AccessedUser m_accessedUser;
         std::string m_strCreateDate;

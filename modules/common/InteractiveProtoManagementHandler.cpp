@@ -238,7 +238,7 @@ void SerializeDeviceAccessRecordList(const std::list<InteractiveProtoManagementH
         deviceaccessrecord->set_strlogouttime(itBegin->m_accessedDevice.m_strLogoutTime);
         deviceaccessrecord->set_uionlineduration(itBegin->m_accessedDevice.m_uiOnlineDuration);
 
-        pDstDeviceAccessRecord->set_uisequence(itBegin->m_uiSequence);
+        pDstDeviceAccessRecord->set_straccessid(itBegin->m_strAccessID);
         pDstDeviceAccessRecord->set_strclusterid(itBegin->m_strClusterID);
         pDstDeviceAccessRecord->set_strcreatedate(itBegin->m_strCreateDate);
         pDstDeviceAccessRecord->set_uistatus(itBegin->m_uiStatus);
@@ -266,7 +266,7 @@ void UnSerializeDeviceAccessRecordList(std::list<InteractiveProtoManagementHandl
         deviceAccessRecord.m_accessedDevice.m_strLogoutTime = accessedDevice.strlogouttime();
         deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration = accessedDevice.uionlineduration();
 
-        deviceAccessRecord.m_uiSequence = srcDeviceAccessRecord.uisequence();
+        deviceAccessRecord.m_strAccessID = srcDeviceAccessRecord.straccessid();
         deviceAccessRecord.m_strClusterID = srcDeviceAccessRecord.strclusterid();
         deviceAccessRecord.m_strCreateDate = srcDeviceAccessRecord.strcreatedate();
         deviceAccessRecord.m_uiStatus = srcDeviceAccessRecord.uistatus();
@@ -295,7 +295,7 @@ void SerializeUserAccessRecordList(const std::list<InteractiveProtoManagementHan
         useraccessrecord->set_strlogouttime(itBegin->m_accessedUser.m_strLogoutTime);
         useraccessrecord->set_uionlineduration(itBegin->m_accessedUser.m_uiOnlineDuration);
 
-        pDstUserAccessRecord->set_uisequence(itBegin->m_uiSequence);
+        pDstUserAccessRecord->set_straccessid(itBegin->m_strAccessID);
         pDstUserAccessRecord->set_strclusterid(itBegin->m_strClusterID);
         pDstUserAccessRecord->set_strcreatedate(itBegin->m_strCreateDate);
         pDstUserAccessRecord->set_uistatus(itBegin->m_uiStatus);
@@ -324,7 +324,7 @@ void UnSerializeUserAccessRecordList(std::list<InteractiveProtoManagementHandler
         userAccessRecord.m_accessedUser.m_strLogoutTime = accessedUser.strlogouttime();
         userAccessRecord.m_accessedUser.m_uiOnlineDuration = accessedUser.uionlineduration();
 
-        userAccessRecord.m_uiSequence = srcUserAccessRecord.uisequence();
+        userAccessRecord.m_strAccessID = srcUserAccessRecord.straccessid();
         userAccessRecord.m_strClusterID = srcUserAccessRecord.strclusterid();
         userAccessRecord.m_strCreateDate = srcUserAccessRecord.strcreatedate();
         userAccessRecord.m_uiStatus = srcUserAccessRecord.uistatus();

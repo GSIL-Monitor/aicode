@@ -5,7 +5,7 @@ use ManagementDB;
 DROP TABLE IF EXISTS `t_cluster_accessed_user_info`;
 CREATE TABLE `t_cluster_accessed_user_info` (
   `id` varchar(36) NOT NULL,
-  `sequence` bigint NOT NULL, #用户登录会话ID
+  `accessid` varchar(100) NOT NULL, #用户接入ID，直接使用用户登录平台时的会话ID
   `userid` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `useraliasname` varchar(100),
@@ -17,6 +17,7 @@ CREATE TABLE `t_cluster_accessed_user_info` (
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),
+  UNIQUE KEY (sequence),
   INDEX index_ref1(userid),
   INDEX index_ref2(clusterid),
   INDEX index_ref3(logintime, logouttime)
@@ -25,7 +26,7 @@ CREATE TABLE `t_cluster_accessed_user_info` (
 DROP TABLE IF EXISTS `t_cluster_accessed_device_info`;
 CREATE TABLE `t_cluster_accessed_device_info` (
   `id` varchar(36) NOT NULL,
-  `sequence` bigint NOT NULL, #设备登录会话ID
+  `accessid` varchar(100) NOT NULL, #设备接入ID，直接使用设备登录平台时的会话ID
   `deviceid` varchar(100) NOT NULL,
   `devicename` varchar(100) NOT NULL,
   `clusterid` varchar(100) NOT NULL, #集群ID
@@ -36,6 +37,7 @@ CREATE TABLE `t_cluster_accessed_device_info` (
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),
+  UNIQUE KEY (sequence),
   INDEX index_ref1(deviceid),
   INDEX index_ref2(clusterid),
   INDEX index_ref3(logintime, logouttime)

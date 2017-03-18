@@ -298,6 +298,8 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoManagementHandler::ManagementMsgType::QueryAllClusterReq_T, boost::bind(&ManagementCenter::QueryAllClusterReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoManagementHandler::ManagementMsgType::QueryClusterDeviceReq_T, boost::bind(&ManagementCenter::QueryClusterDeviceReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoManagementHandler::ManagementMsgType::QueryClusterUserReq_T, boost::bind(&ManagementCenter::QueryClusterUserReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoManagementHandler::ManagementMsgType::PushClusterDeviceReq_T, boost::bind(&ManagementCenter::PushClusterDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoManagementHandler::ManagementMsgType::PushClusterUserReq_T, boost::bind(&ManagementCenter::PushClusterUserReq, &Umg, _1, _2, _3));
 
 
 
