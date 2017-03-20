@@ -152,6 +152,10 @@ enum MsgType
   GetOnlineUserInfoRsp_INNER_T = 30040;
   BroadcastOnlineUserInfo_INNER_T = 30050;      //广播在线用户信息
   
+  GetDeviceAccessRecordReq_INNER_T = 30200;     //获取设备接入记录
+  GetDeviceAccessRecordRsp_INNER_T = 30210;
+  GetUserAccessRecordReq_INNER_T = 30220;       //获取用户接入记录
+  GetUserAccessRecordRsp_INNER_T = 30230;
 }
 
 message PermissionOfUser                        //用户权限对象
@@ -218,6 +222,35 @@ message FileUrl                                 //文件下载URL地址
 {
   string strFileID = 1;
   string strDownloadUrl = 2;
+}
+
+message DeviceAccessRecord                      //设备接入记录
+{
+  string strAccessID = 1;
+  string strClusterID = 2;
+  string strDeviceID = 3;
+  string strDeviceName = 4;
+  uint32 uiDeviceType = 5;
+  string strLoginTime = 6;
+  string strLogoutTime = 7;
+  uint32 uiOnlineDuration = 8;
+  string strCreateDate = 9;
+  uint32 uiStatus = 10;
+}
+
+message UserAccessRecord                        //用户接入记录
+{
+  string strAccessID = 1;
+  string strClusterID = 2;
+  string strUserID = 3;
+  string strUserName = 4;
+  string strUserAliasname = 5;
+  uint32 uiClientType = 6;
+  string strLoginTime = 7;
+  string strLogoutTime = 8;
+  uint32 uiOnlineDuration = 9;
+  string strCreateDate = 10;
+  uint32 uiStatus = 11;
 }
 
 
@@ -749,6 +782,28 @@ message BroadcastOnlineUserInfo_INNER
   string strValue = 2;
 }
 
+message GetDeviceAccessRecordReq_INNER          //获取设备接入记录请求
+{
+  uint32 uiBeginIndex = 1;
+}
+
+message GetDeviceAccessRecordRsp_INNER          //获取设备接入记录响应
+{
+  repeated DeviceAccessRecord deviceAccessRecord = 1;
+  uint32 uiRecordTotal = 2;
+}
+
+message GetUserAccessRecordReq_INNER            //获取用户接入记录请求
+{
+  uint32 uiBeginIndex = 1;
+}
+
+message GetUserAccessRecordRsp_INNER            //获取用户接入记录响应
+{
+  repeated UserAccessRecord userAccessRecord = 1;
+  uint32 uiRecordTotal = 2;
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -810,7 +865,9 @@ message Req
   BroadcastOnlineDevInfo_INNER BroadcastOnlineDevInfo_INNER_Value = 270;        //广播在线设备信息
   GetOnlineUserInfoReq_INNER GetOnlineUserInfoReq_INNER_Value = 280;              //获取在线用户信息
   BroadcastOnlineUserInfo_INNER BroadcastOnlineUserInfo_INNER_Value = 290;      //广播在线用户信息
-  
+
+  GetDeviceAccessRecordReq_INNER GetDeviceAccessRecordReq_INNER_Value = 440;  //获取设备接入记录
+  GetUserAccessRecordReq_INNER GetUserAccessRecordReq_INNER_Value = 450;            //获取用户接入记录
 }
 
 //响应对象
@@ -873,6 +930,8 @@ message Rsp
   GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280; //获取在线设备信息
   GetOnlineUserInfoRsp_INNER GetOnlineUserInfoRsp_INNER_Value = 290; //获取在线用户信息
 
+  GetDeviceAccessRecordRsp_INNER GetDeviceAccessRecordRsp_INNER_Value = 440;  //获取设备接入记录
+  GetUserAccessRecordRsp_INNER GetUserAccessRecordRsp_INNER_Value = 450;      //获取用户接入记录
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理

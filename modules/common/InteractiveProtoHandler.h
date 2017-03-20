@@ -128,8 +128,13 @@ public:
         BroadcastOnlineDevInfo__INNER_T = 30020,     //广播在线设备信息
         GetOnlineUserInfoReq_INNER_T = 30030,         //获取在线用户信息
         GetOnlineUserInfoRsp_INNER_T = 30040,
-        BroadcastOnlineUserInfo__INNER_T = 30050    //广播在线用户信息
-    };
+        BroadcastOnlineUserInfo__INNER_T = 30050,    //广播在线用户信息
+ 
+        GetDeviceAccessRecordReq_INNER_T = 30200,    //获取设备接入记录
+        GetDeviceAccessRecordRsp_INNER_T = 30210,
+        GetUserAccessRecordReq_INNER_T = 30220,      //获取用户接入记录
+        GetUserAccessRecordRsp_INNER_T = 30230
+   };
 
     struct Device
     {
@@ -190,7 +195,36 @@ public:
         std::string m_strFileID;
         std::string m_strDownloadUrl;
     };
+
+    struct DeviceAccessRecord
+    {
+        std::string m_strAccessID;
+        std::string m_strClusterID;
+        std::string m_strDeviceID;
+        std::string m_strDeviceName;
+        unsigned int m_uiDeviceType;
+        std::string m_strLoginTime;
+        std::string m_strLogoutTime;
+        unsigned int m_uiOnlineDuration;
+        std::string m_strCreateDate;
+        unsigned int m_uiStatus;
+    };
     
+    struct UserAccessRecord
+    {
+        std::string m_strAccessID;
+        std::string m_strClusterID;
+        std::string m_strUserID;
+        std::string m_strUserName;
+        std::string m_strUserAliasname;
+        unsigned int m_uiClientType;
+        std::string m_strLoginTime;
+        std::string m_strLogoutTime;
+        unsigned int m_uiOnlineDuration;
+        std::string m_strCreateDate;
+        unsigned int m_uiStatus;
+    };
+
     struct Req
     {
         Req(){};
@@ -1026,6 +1060,44 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct GetDeviceAccessRecordReq_INNER : Req
+    {
+        unsigned int m_uiBeginIndex;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct GetDeviceAccessRecordRsp_INNER : Rsp
+    {
+        std::list<DeviceAccessRecord> m_deviceAccessRecordList;
+        unsigned int m_uiRecordTotal;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct GetUserAccessRecordReq_INNER : Req
+    {
+        unsigned int m_uiBeginIndex;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct GetUserAccessRecordRsp_INNER : Rsp
+    {
+        std::list<UserAccessRecord> m_userAccessRecordList;
+        unsigned int m_uiRecordTotal;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
@@ -1228,6 +1300,16 @@ private:
     bool QueryUpgradeSiteReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryUpgradeSiteRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryUpgradeSiteRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool GetDeviceAccessRecordReq_INNER_Serializer(const Req &req, std::string &strOutput);
+    bool GetDeviceAccessRecordReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool GetDeviceAccessRecordRsp_INNER_Serializer(const Req &rsp, std::string &strOutput);
+    bool GetDeviceAccessRecordRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool GetUserAccessRecordReq_INNER_Serializer(const Req &req, std::string &strOutput);
+    bool GetUserAccessRecordReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool GetUserAccessRecordRsp_INNER_Serializer(const Req &rsp, std::string &strOutput);
+    bool GetUserAccessRecordRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 

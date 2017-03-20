@@ -1006,8 +1006,8 @@ bool ManagementCenter::QueryAllCluster(const std::string &strManagementAddress, 
 
     if (ResultList.empty())
     {
-        LOG_ERROR_RLD("QueryAllCluster sql result is empty, sql is " << sql);
-        return false;
+        LOG_INFO_RLD("QueryAllCluster sql result is empty, sql is " << sql);
+        return true;
     }
 
     for (auto &result : ResultList)
@@ -1114,8 +1114,8 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
 
     if (ResultList.empty())
     {
-        LOG_ERROR_RLD("QueryClusterDevice sql result is empty, sql is " << sql);
-        return false;
+        LOG_INFO_RLD("QueryClusterDevice sql result is empty, sql is " << sql);
+        return true;
     }
 
     for (auto &result : ResultList)
@@ -1209,8 +1209,8 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
 
     if (ResultList.empty())
     {
-        LOG_ERROR_RLD("QueryClusterUser sql result is empty, sql is " << sql);
-        return false;
+        LOG_INFO_RLD("QueryClusterUser sql result is empty, sql is " << sql);
+        return true;
     }
 
     for (auto &result : ResultList)

@@ -240,6 +240,120 @@ void SerializeFileUrlList(const std::list<InteractiveProtoHandler::FileUrl> &fil
     }
 }
 
+void UnSerializeDeviceAccessRecordList(std::list<InteractiveProtoHandler::DeviceAccessRecord> &deviceAccessRecordList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceAccessRecord > &srcDeviceAccessRecordList)
+{
+    deviceAccessRecordList.clear();
+
+    unsigned int iCount = srcDeviceAccessRecordList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        auto srcDeviceAccessRecord = srcDeviceAccessRecordList.Get(i);
+        InteractiveProtoHandler::DeviceAccessRecord deviceAccessRecord;
+        deviceAccessRecord.m_strAccessID = srcDeviceAccessRecord.straccessid();
+        deviceAccessRecord.m_strClusterID = srcDeviceAccessRecord.strclusterid();
+        deviceAccessRecord.m_strDeviceID = srcDeviceAccessRecord.strdeviceid();
+        deviceAccessRecord.m_strDeviceName = srcDeviceAccessRecord.strdevicename();
+        deviceAccessRecord.m_uiDeviceType = srcDeviceAccessRecord.uidevicetype();
+        deviceAccessRecord.m_strLoginTime = srcDeviceAccessRecord.strlogintime();
+        deviceAccessRecord.m_strLogoutTime = srcDeviceAccessRecord.strlogouttime();
+        deviceAccessRecord.m_uiOnlineDuration = srcDeviceAccessRecord.uionlineduration();
+        deviceAccessRecord.m_strCreateDate = srcDeviceAccessRecord.strcreatedate();
+        deviceAccessRecord.m_uiStatus = srcDeviceAccessRecord.uistatus();
+
+        deviceAccessRecordList.push_back(std::move(deviceAccessRecord));
+    }
+}
+
+void SerializeDeviceAccessRecordList(const std::list<InteractiveProtoHandler::DeviceAccessRecord> &deviceAccessRecordList,
+    ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceAccessRecord >* pDstDeviceAccessRecordList)
+{
+    unsigned int iCount = deviceAccessRecordList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstDeviceAccessRecordList->Add();
+    }
+
+    auto itBegin = deviceAccessRecordList.begin();
+    auto itEnd = deviceAccessRecordList.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstDeviceAccessRecord = pDstDeviceAccessRecordList->Mutable(i);
+        pDstDeviceAccessRecord->set_straccessid(itBegin->m_strAccessID);
+        pDstDeviceAccessRecord->set_strclusterid(itBegin->m_strClusterID);
+        pDstDeviceAccessRecord->set_strdeviceid(itBegin->m_strDeviceID);
+        pDstDeviceAccessRecord->set_strdevicename(itBegin->m_strDeviceName);
+        pDstDeviceAccessRecord->set_uidevicetype(itBegin->m_uiDeviceType);
+        pDstDeviceAccessRecord->set_strlogintime(itBegin->m_strLoginTime);
+        pDstDeviceAccessRecord->set_strlogouttime(itBegin->m_strLogoutTime);
+        pDstDeviceAccessRecord->set_uionlineduration(itBegin->m_uiOnlineDuration);
+        pDstDeviceAccessRecord->set_strcreatedate(itBegin->m_strCreateDate);
+        pDstDeviceAccessRecord->set_uistatus(itBegin->m_uiStatus);
+
+        ++i;
+        ++itBegin;
+    }
+}
+
+void UnSerializeUserAccessRecordList(std::list<InteractiveProtoHandler::UserAccessRecord> &userAccessRecordList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::UserAccessRecord > &srcUserAccessRecordList)
+{
+    userAccessRecordList.clear();
+
+    unsigned int iCount = srcUserAccessRecordList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        auto srcUserAccessRecord = srcUserAccessRecordList.Get(i);
+        InteractiveProtoHandler::UserAccessRecord userAccessRecord;
+        userAccessRecord.m_strAccessID = srcUserAccessRecord.straccessid();
+        userAccessRecord.m_strClusterID = srcUserAccessRecord.strclusterid();
+        userAccessRecord.m_strUserID = srcUserAccessRecord.struserid();
+        userAccessRecord.m_strUserName = srcUserAccessRecord.strusername();
+        userAccessRecord.m_strUserAliasname = srcUserAccessRecord.struseraliasname();
+        userAccessRecord.m_uiClientType = srcUserAccessRecord.uiclienttype();
+        userAccessRecord.m_strLoginTime = srcUserAccessRecord.strlogintime();
+        userAccessRecord.m_strLogoutTime = srcUserAccessRecord.strlogouttime();
+        userAccessRecord.m_uiOnlineDuration = srcUserAccessRecord.uionlineduration();
+        userAccessRecord.m_strCreateDate = srcUserAccessRecord.strcreatedate();
+        userAccessRecord.m_uiStatus = srcUserAccessRecord.uistatus();
+
+        userAccessRecordList.push_back(std::move(userAccessRecord));
+    }
+}
+
+void SerializeUserAccessRecordList(const std::list<InteractiveProtoHandler::UserAccessRecord> &userAccessRecordList,
+    ::google::protobuf::RepeatedPtrField< ::Interactive::Message::UserAccessRecord >* pDstUserAccessRecordList)
+{
+    unsigned int iCount = userAccessRecordList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstUserAccessRecordList->Add();
+    }
+
+    auto itBegin = userAccessRecordList.begin();
+    auto itEnd = userAccessRecordList.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstUserAccessRecord = pDstUserAccessRecordList->Mutable(i);
+        pDstUserAccessRecord->set_straccessid(itBegin->m_strAccessID);
+        pDstUserAccessRecord->set_strclusterid(itBegin->m_strClusterID);
+        pDstUserAccessRecord->set_struserid(itBegin->m_strUserID);
+        pDstUserAccessRecord->set_strusername(itBegin->m_strUserName);
+        pDstUserAccessRecord->set_struseraliasname(itBegin->m_strUserAliasname);
+        pDstUserAccessRecord->set_uiclienttype(itBegin->m_uiClientType);
+        pDstUserAccessRecord->set_strlogintime(itBegin->m_strLoginTime);
+        pDstUserAccessRecord->set_strlogouttime(itBegin->m_strLogoutTime);
+        pDstUserAccessRecord->set_uionlineduration(itBegin->m_uiOnlineDuration);
+        pDstUserAccessRecord->set_strcreatedate(itBegin->m_strCreateDate);
+        pDstUserAccessRecord->set_uistatus(itBegin->m_uiStatus);
+
+        ++i;
+        ++itBegin;
+    }
+}
+
 
 InteractiveProtoHandler::InteractiveProtoHandler()
 {
@@ -724,6 +838,33 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUpgradeSiteRsp_DEV_T, handler));
 
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetDeviceAccessRecordReq_INNER_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetDeviceAccessRecordRsp_INNER_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetUserAccessRecordReq_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetUserAccessRecordReq_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetUserAccessRecordReq_INNER_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::GetUserAccessRecordRsp_INNER_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::GetUserAccessRecordRsp_INNER_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::GetUserAccessRecordRsp_INNER_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -1544,6 +1685,46 @@ bool InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_Serializer(const Req &rsp,
 bool InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryUpgradeSiteRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<GetDeviceAccessRecordReq_INNER, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<GetDeviceAccessRecordReq_INNER, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetDeviceAccessRecordRsp_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetDeviceAccessRecordRsp_INNER, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::GetUserAccessRecordReq_INNER_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<GetUserAccessRecordReq_INNER, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::GetUserAccessRecordReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<GetUserAccessRecordReq_INNER, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::GetUserAccessRecordRsp_INNER_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<GetUserAccessRecordRsp_INNER, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::GetUserAccessRecordRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<GetUserAccessRecordRsp_INNER, Req>(InteractiveMsg, rsp);
 }
 
 
@@ -3300,5 +3481,67 @@ void InteractiveProtoHandler::QueryUpgradeSiteRsp_DEV::Serializer(InteractiveMes
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUpgradeSiteRsp_DEV_T);
     InteractiveMsg.mutable_rspvalue()->mutable_queryupgradesitersp_dev_value()->set_strupgradesiteurl(m_strUpgradeSiteUrl);
     InteractiveMsg.mutable_rspvalue()->mutable_queryupgradesitersp_dev_value()->set_uilease(m_uiLease);
+}
+
+void InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_uiBeginIndex = InteractiveMsg.reqvalue().getdeviceaccessrecordreq_inner_value().uibeginindex();
+}
+
+void InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetDeviceAccessRecordReq_INNER_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_getdeviceaccessrecordreq_inner_value()->set_uibeginindex(m_uiBeginIndex);
+}
+
+void InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_uiRecordTotal = InteractiveMsg.rspvalue().getdeviceaccessrecordrsp_inner_value().uirecordtotal();
+
+    UnSerializeDeviceAccessRecordList(m_deviceAccessRecordList, InteractiveMsg.rspvalue().getdeviceaccessrecordrsp_inner_value().deviceaccessrecord());
+}
+
+void InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetDeviceAccessRecordRsp_INNER_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_getdeviceaccessrecordrsp_inner_value()->set_uirecordtotal(m_uiRecordTotal);
+
+    auto devRecord = InteractiveMsg.mutable_rspvalue()->mutable_getdeviceaccessrecordrsp_inner_value()->mutable_deviceaccessrecord();
+    SerializeDeviceAccessRecordList(m_deviceAccessRecordList, devRecord);
+}
+
+void InteractiveProtoHandler::GetUserAccessRecordReq_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_uiBeginIndex = InteractiveMsg.reqvalue().getuseraccessrecordreq_inner_value().uibeginindex();
+}
+
+void InteractiveProtoHandler::GetUserAccessRecordReq_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetUserAccessRecordReq_INNER_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_getuseraccessrecordreq_inner_value()->set_uibeginindex(m_uiBeginIndex);
+}
+
+void InteractiveProtoHandler::GetUserAccessRecordRsp_INNER::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_uiRecordTotal = InteractiveMsg.rspvalue().getuseraccessrecordrsp_inner_value().uirecordtotal();
+
+    UnSerializeUserAccessRecordList(m_userAccessRecordList, InteractiveMsg.rspvalue().getuseraccessrecordrsp_inner_value().useraccessrecord());
+}
+
+void InteractiveProtoHandler::GetUserAccessRecordRsp_INNER::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::GetUserAccessRecordRsp_INNER_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_getuseraccessrecordrsp_inner_value()->set_uirecordtotal(m_uiRecordTotal);
+
+    auto userRecord = InteractiveMsg.mutable_rspvalue()->mutable_getuseraccessrecordrsp_inner_value()->mutable_useraccessrecord();
+    SerializeUserAccessRecordList(m_userAccessRecordList, userRecord);
 }
 
