@@ -9,14 +9,18 @@
 
 typedef boost::function<void(const std::map<std::string, std::string> &, MsgWriter, const bool, boost::function<void(void*)>)> Writer;
 
+class InteractiveProtoHandler;
+class InteractiveProtoManagementHandler;
+
+
 class ManagementAgent
 {
 public:
 
     static const std::string ADD_CLUSTER_ACTION;
+    static const std::string DELETE_CLUSTER_ACTION;
     static const std::string CLUSTER_SHAKEHAND__ACTION;
-
-
+    
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -45,6 +49,13 @@ private:
 
     void CollectClusterInfo(const boost::system::error_code& e);
 
+    template<typename T>
+    void AccessedDeviceInfoHandler(boost::shared_ptr<T> DeviceInfoList, const std::string &strPushIPAddress, const std::string &strPushPort);
+
+    template<typename T>
+    void AccessedUserInfoHandler(boost::shared_ptr<T> UserInfoList, const std::string &strPushIPAddress, const std::string &strPushPort);
+
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -60,6 +71,14 @@ private:
     boost::mutex m_MgnArMutex;
     std::string m_strManagementAddress;
     std::string m_strClusterID;
+
+    boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
+    boost::shared_ptr<InteractiveProtoManagementHandler> m_pInteractiveProtoMgrHandler;
+
+
+    Runner m_PushCollectInfoRunner;
 };
 
 #endif
+
+

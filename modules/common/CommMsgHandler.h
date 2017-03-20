@@ -33,6 +33,8 @@ public:
     
     int Start(const std::string& strIpAddr, const std::string& strPort, unsigned int uiSSLEnabled, unsigned int  uiHandShakeInterval);
 
+    int StartTask();
+
     void SetReqAndRspHandler(FuncRequest req, FuncReply rsp);
 
     static void SetTimeoutRunningThreads(const unsigned int uiThdNum);
@@ -47,8 +49,6 @@ private:
 
     int SyncSession(FuncRequest req, FuncReply rsp);
     
-    int StartTask();
-
     int SyncConnect();
 
     int SyncRead(Packet &pt);
