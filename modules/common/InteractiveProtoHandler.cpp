@@ -2008,6 +2008,7 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_strAliasName = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().straliasname();
     m_userInfo.m_strEmail = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().stremail();
 
+    m_uiTerminalType = InteractiveMsg.reqvalue().loginreq_usr_value().uiterminaltype();
     m_strValue = InteractiveMsg.reqvalue().loginreq_usr_value().strvalue();
 }
 
@@ -2017,6 +2018,7 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
     InteractiveMsg.set_type(Interactive::Message::MsgType::LoginReq_USR_T);
 
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->set_strvalue(m_strValue);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->set_uiterminaltype(m_uiTerminalType);
     auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->mutable_userinfo();
 
     uinfo->set_struserid(m_userInfo.m_strUserID);
@@ -3240,6 +3242,7 @@ void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessag
     m_strValue = InteractiveMsg.reqvalue().loginreq_dev_value().strvalue();
     m_strDevID = InteractiveMsg.reqvalue().loginreq_dev_value().strdevid();
     m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strpassword();
+    m_uiDeviceType = InteractiveMsg.reqvalue().loginreq_dev_value().uidevicetype();
 }
 
 void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3249,6 +3252,7 @@ void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &Inter
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strvalue(m_strValue);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdevid(m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strpassword(m_strPassword);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_uidevicetype(m_uiDeviceType);
 }
 
 void InteractiveProtoHandler::LoginRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)

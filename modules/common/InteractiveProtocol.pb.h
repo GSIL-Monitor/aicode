@@ -2175,9 +2175,9 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_strpassword();
   void set_allocated_strpassword(::std::string* strpassword);
 
-  // string strValue = 3;
+  // string strValue = 4;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 3;
+  static const int kStrValueFieldNumber = 4;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -2189,6 +2189,12 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
+  // uint32 uiDeviceType = 3;
+  void clear_uidevicetype();
+  static const int kUiDeviceTypeFieldNumber = 3;
+  ::google::protobuf::uint32 uidevicetype() const;
+  void set_uidevicetype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.LoginReq_DEV)
  private:
 
@@ -2196,6 +2202,7 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strpassword_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uidevicetype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -5743,9 +5750,9 @@ class LoginReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // string strValue = 2;
+  // string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -5766,12 +5773,19 @@ class LoginReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::Interactive::Message::User* release_userinfo();
   void set_allocated_userinfo(::Interactive::Message::User* userinfo);
 
+  // uint32 uiTerminalType = 2;
+  void clear_uiterminaltype();
+  static const int kUiTerminalTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uiterminaltype() const;
+  void set_uiterminaltype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.LoginReq_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::Interactive::Message::User* userinfo_;
+  ::google::protobuf::uint32 uiterminaltype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -15254,7 +15268,21 @@ inline void LoginReq_DEV::set_allocated_strpassword(::std::string* strpassword) 
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strPassword)
 }
 
-// string strValue = 3;
+// uint32 uiDeviceType = 3;
+inline void LoginReq_DEV::clear_uidevicetype() {
+  uidevicetype_ = 0u;
+}
+inline ::google::protobuf::uint32 LoginReq_DEV::uidevicetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.uiDeviceType)
+  return uidevicetype_;
+}
+inline void LoginReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
+  
+  uidevicetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiDeviceType)
+}
+
+// string strValue = 4;
 inline void LoginReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18770,7 +18798,21 @@ inline void LoginReq_USR::set_allocated_userinfo(::Interactive::Message::User* u
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_USR.userInfo)
 }
 
-// string strValue = 2;
+// uint32 uiTerminalType = 2;
+inline void LoginReq_USR::clear_uiterminaltype() {
+  uiterminaltype_ = 0u;
+}
+inline ::google::protobuf::uint32 LoginReq_USR::uiterminaltype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_USR.uiTerminalType)
+  return uiterminaltype_;
+}
+inline void LoginReq_USR::set_uiterminaltype(::google::protobuf::uint32 value) {
+  
+  uiterminaltype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_USR.uiTerminalType)
+}
+
+// string strValue = 3;
 inline void LoginReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

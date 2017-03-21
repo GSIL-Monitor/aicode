@@ -98,6 +98,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, strclusteraddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, strmanagementaddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, straliasname_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, uiusertotalnumber_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, uidevicetotalnumber_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Cluster, uistatus_),
   ~0u,  // no _has_bits_
@@ -298,34 +300,34 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(Cluster)},
-  { 10, -1, sizeof(ClusterStatus)},
-  { 16, -1, sizeof(AccessedDevice)},
-  { 26, -1, sizeof(AccessedUser)},
-  { 37, -1, sizeof(DeviceAccessRecord)},
-  { 46, -1, sizeof(UserAccessRecord)},
-  { 55, -1, sizeof(AddClusterReq)},
-  { 60, -1, sizeof(AddClusterRsp)},
-  { 65, -1, sizeof(DeleteClusterReq)},
-  { 70, -1, sizeof(DeleteClusterRsp)},
-  { 75, -1, sizeof(ModifyClusterReq)},
-  { 80, -1, sizeof(ModifyClusterRsp)},
-  { 85, -1, sizeof(QueryClusterInfoReq)},
-  { 90, -1, sizeof(QueryClusterInfoRsp)},
-  { 95, -1, sizeof(ShakehandClusterReq)},
-  { 100, -1, sizeof(ShakehandClusterRsp)},
-  { 105, -1, sizeof(QueryAllClusterReq)},
-  { 110, -1, sizeof(QueryAllClusterRsp)},
-  { 115, -1, sizeof(QueryClusterDeviceReq)},
-  { 124, -1, sizeof(QueryClusterDeviceRsp)},
-  { 129, -1, sizeof(QueryClusterUserReq)},
-  { 138, -1, sizeof(QueryClusterUserRsp)},
-  { 143, -1, sizeof(PushClusterDeviceReq)},
-  { 149, -1, sizeof(PushClusterDeviceRsp)},
-  { 154, -1, sizeof(PushClusterUserReq)},
-  { 160, -1, sizeof(PushClusterUserRsp)},
-  { 165, -1, sizeof(Request)},
-  { 179, -1, sizeof(Response)},
-  { 195, -1, sizeof(ManagementInteractiveMessage)},
+  { 12, -1, sizeof(ClusterStatus)},
+  { 18, -1, sizeof(AccessedDevice)},
+  { 28, -1, sizeof(AccessedUser)},
+  { 39, -1, sizeof(DeviceAccessRecord)},
+  { 48, -1, sizeof(UserAccessRecord)},
+  { 57, -1, sizeof(AddClusterReq)},
+  { 62, -1, sizeof(AddClusterRsp)},
+  { 67, -1, sizeof(DeleteClusterReq)},
+  { 72, -1, sizeof(DeleteClusterRsp)},
+  { 77, -1, sizeof(ModifyClusterReq)},
+  { 82, -1, sizeof(ModifyClusterRsp)},
+  { 87, -1, sizeof(QueryClusterInfoReq)},
+  { 92, -1, sizeof(QueryClusterInfoRsp)},
+  { 97, -1, sizeof(ShakehandClusterReq)},
+  { 102, -1, sizeof(ShakehandClusterRsp)},
+  { 107, -1, sizeof(QueryAllClusterReq)},
+  { 112, -1, sizeof(QueryAllClusterRsp)},
+  { 117, -1, sizeof(QueryClusterDeviceReq)},
+  { 126, -1, sizeof(QueryClusterDeviceRsp)},
+  { 131, -1, sizeof(QueryClusterUserReq)},
+  { 140, -1, sizeof(QueryClusterUserRsp)},
+  { 145, -1, sizeof(PushClusterDeviceReq)},
+  { 151, -1, sizeof(PushClusterDeviceRsp)},
+  { 156, -1, sizeof(PushClusterUserReq)},
+  { 162, -1, sizeof(PushClusterUserRsp)},
+  { 167, -1, sizeof(Request)},
+  { 181, -1, sizeof(Response)},
+  { 197, -1, sizeof(ManagementInteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -543,136 +545,137 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
       "\n#InteractiveProtocolManagement.proto\022\036M"
-      "anagement.Interactive.Message\"\227\001\n\007Cluste"
+      "anagement.Interactive.Message\"\317\001\n\007Cluste"
       "r\022\024\n\014strClusterID\030\001 \001(\t\022\031\n\021strClusterAdd"
       "ress\030\002 \001(\t\022\034\n\024strManagementAddress\030\003 \001(\t"
-      "\022\024\n\014strAliasname\030\004 \001(\t\022\025\n\rstrCreatedate\030"
-      "\005 \001(\t\022\020\n\010uiStatus\030\006 \001(\r\"_\n\rClusterStatus"
-      "\022<\n\013clusterInfo\030\001 \001(\0132\'.Management.Inter"
-      "active.Message.Cluster\022\020\n\010uiStatus\030\002 \001(\r"
-      "\"\231\001\n\016AccessedDevice\022\023\n\013strDeviceID\030\001 \001(\t"
-      "\022\025\n\rstrDeviceName\030\002 \001(\t\022\024\n\014uiDeviceType\030"
-      "\003 \001(\r\022\024\n\014strLoginTime\030\004 \001(\t\022\025\n\rstrLogout"
-      "Time\030\005 \001(\t\022\030\n\020uiOnlineDuration\030\006 \001(\r\"\255\001\n"
-      "\014AccessedUser\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strU"
-      "serName\030\002 \001(\t\022\030\n\020strUserAliasname\030\003 \001(\t\022"
-      "\024\n\014uiClientType\030\004 \001(\r\022\024\n\014strLoginTime\030\005 "
-      "\001(\t\022\025\n\rstrLogoutTime\030\006 \001(\t\022\030\n\020uiOnlineDu"
-      "ration\030\007 \001(\r\"\260\001\n\022DeviceAccessRecord\022\023\n\013s"
-      "trAccessID\030\001 \001(\t\022\024\n\014strClusterID\030\002 \001(\t\022F"
-      "\n\016accessedDevice\030\003 \001(\0132..Management.Inte"
-      "ractive.Message.AccessedDevice\022\025\n\rstrCre"
-      "ateDate\030\004 \001(\t\022\020\n\010uiStatus\030\005 \001(\r\"\252\001\n\020User"
-      "AccessRecord\022\023\n\013strAccessID\030\001 \001(\t\022\024\n\014str"
-      "ClusterID\030\002 \001(\t\022B\n\014accessedUser\030\003 \001(\0132,."
-      "Management.Interactive.Message.AccessedU"
-      "ser\022\025\n\rstrCreateDate\030\004 \001(\t\022\020\n\010uiStatus\030\005"
-      " \001(\r\"M\n\rAddClusterReq\022<\n\013clusterInfo\030\001 \001"
-      "(\0132\'.Management.Interactive.Message.Clus"
-      "ter\"%\n\rAddClusterRsp\022\024\n\014strClusterID\030\001 \001"
-      "(\t\"(\n\020DeleteClusterReq\022\024\n\014strClusterID\030\001"
-      " \001(\t\"$\n\020DeleteClusterRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\"P\n\020ModifyClusterReq\022<\n\013clusterInfo\030\001 "
-      "\001(\0132\'.Management.Interactive.Message.Clu"
-      "ster\"$\n\020ModifyClusterRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\"+\n\023QueryClusterInfoReq\022\024\n\014strClusterI"
-      "D\030\001 \001(\t\"[\n\023QueryClusterInfoRsp\022D\n\rcluste"
-      "rStatus\030\001 \001(\0132-.Management.Interactive.M"
-      "essage.ClusterStatus\"+\n\023ShakehandCluster"
-      "Req\022\024\n\014strClusterID\030\001 \001(\t\"\'\n\023ShakehandCl"
-      "usterRsp\022\020\n\010strValue\030\001 \001(\t\"2\n\022QueryAllCl"
-      "usterReq\022\034\n\024strManagementAddress\030\001 \001(\t\"Z"
-      "\n\022QueryAllClusterRsp\022D\n\rclusterStatus\030\001 "
-      "\003(\0132-.Management.Interactive.Message.Clu"
-      "sterStatus\"\203\001\n\025QueryClusterDeviceReq\022\024\n\014"
-      "strClusterID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t"
-      "\022\022\n\nstrEnddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001"
-      "(\r\022\024\n\014uiBeginIndex\030\005 \001(\r\"c\n\025QueryCluster"
-      "DeviceRsp\022J\n\022accessedDeviceInfo\030\001 \003(\0132.."
-      "Management.Interactive.Message.AccessedD"
-      "evice\"\201\001\n\023QueryClusterUserReq\022\024\n\014strClus"
-      "terID\030\001 \001(\t\022\024\n\014strBegindate\030\002 \001(\t\022\022\n\nstr"
-      "Enddate\030\003 \001(\t\022\024\n\014uiRecordType\030\004 \001(\r\022\024\n\014u"
-      "iBeginIndex\030\005 \001(\r\"]\n\023QueryClusterUserRsp"
-      "\022F\n\020accessedUserInfo\030\001 \003(\0132,.Management."
-      "Interactive.Message.AccessedUser\"|\n\024Push"
-      "ClusterDeviceReq\022\024\n\014strClusterID\030\001 \001(\t\022N"
-      "\n\022deviceAccessRecord\030\002 \003(\01322.Management."
-      "Interactive.Message.DeviceAccessRecord\"("
-      "\n\024PushClusterDeviceRsp\022\020\n\010strValue\030\001 \001(\t"
-      "\"v\n\022PushClusterUserReq\022\024\n\014strClusterID\030\001"
-      " \001(\t\022J\n\020userAccessRecord\030\002 \003(\01320.Managem"
-      "ent.Interactive.Message.UserAccessRecord"
-      "\"&\n\022PushClusterUserRsp\022\020\n\010strValue\030\001 \001(\t"
-      "\"\345\006\n\007Request\022J\n\023AddClusterReq_Value\030\n \001("
-      "\0132-.Management.Interactive.Message.AddCl"
-      "usterReq\022P\n\026DeleteClusterReq_Value\030\024 \001(\013"
-      "20.Management.Interactive.Message.Delete"
-      "ClusterReq\022P\n\026ModifyClusterReq_Value\030\036 \001"
-      "(\01320.Management.Interactive.Message.Modi"
-      "fyClusterReq\022V\n\031QueryClusterInfoReq_Valu"
-      "e\030( \001(\01323.Management.Interactive.Message"
-      ".QueryClusterInfoReq\022V\n\031ShakehandCluster"
-      "Req_Value\0302 \001(\01323.Management.Interactive"
-      ".Message.ShakehandClusterReq\022T\n\030QueryAll"
-      "ClusterReq_Value\030< \001(\01322.Management.Inte"
-      "ractive.Message.QueryAllClusterReq\022Z\n\033Qu"
-      "eryClusterDeviceReq_Value\030F \001(\01325.Manage"
-      "ment.Interactive.Message.QueryClusterDev"
-      "iceReq\022V\n\031QueryClusterUserReq_Value\030P \001("
-      "\01323.Management.Interactive.Message.Query"
-      "ClusterUserReq\022Y\n\032PushClusterDeviceReq_V"
-      "alue\030\216\002 \001(\01324.Management.Interactive.Mes"
-      "sage.PushClusterDeviceReq\022U\n\030PushCluster"
-      "UserReq_Value\030\230\002 \001(\01322.Management.Intera"
-      "ctive.Message.PushClusterUserReq\"\213\007\n\010Res"
-      "ponse\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001"
-      "(\t\022J\n\023AddClusterRsp_Value\030\036 \001(\0132-.Manage"
-      "ment.Interactive.Message.AddClusterRsp\022P"
-      "\n\026DeleteClusterRsp_Value\030( \001(\01320.Managem"
-      "ent.Interactive.Message.DeleteClusterRsp"
-      "\022P\n\026ModifyClusterRsp_Value\0302 \001(\01320.Manag"
-      "ement.Interactive.Message.ModifyClusterR"
-      "sp\022V\n\031QueryClusterInfoRsp_Value\030< \001(\01323."
+      "\022\024\n\014strAliasname\030\004 \001(\t\022\031\n\021uiUserTotalnum"
+      "ber\030\005 \001(\r\022\033\n\023uiDeviceTotalnumber\030\006 \001(\r\022\025"
+      "\n\rstrCreatedate\030\007 \001(\t\022\020\n\010uiStatus\030\010 \001(\r\""
+      "_\n\rClusterStatus\022<\n\013clusterInfo\030\001 \001(\0132\'."
+      "Management.Interactive.Message.Cluster\022\020"
+      "\n\010uiStatus\030\002 \001(\r\"\231\001\n\016AccessedDevice\022\023\n\013s"
+      "trDeviceID\030\001 \001(\t\022\025\n\rstrDeviceName\030\002 \001(\t\022"
+      "\024\n\014uiDeviceType\030\003 \001(\r\022\024\n\014strLoginTime\030\004 "
+      "\001(\t\022\025\n\rstrLogoutTime\030\005 \001(\t\022\030\n\020uiOnlineDu"
+      "ration\030\006 \001(\r\"\255\001\n\014AccessedUser\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\030\n\020strUser"
+      "Aliasname\030\003 \001(\t\022\024\n\014uiClientType\030\004 \001(\r\022\024\n"
+      "\014strLoginTime\030\005 \001(\t\022\025\n\rstrLogoutTime\030\006 \001"
+      "(\t\022\030\n\020uiOnlineDuration\030\007 \001(\r\"\260\001\n\022DeviceA"
+      "ccessRecord\022\023\n\013strAccessID\030\001 \001(\t\022\024\n\014strC"
+      "lusterID\030\002 \001(\t\022F\n\016accessedDevice\030\003 \001(\0132."
+      ".Management.Interactive.Message.Accessed"
+      "Device\022\025\n\rstrCreatedate\030\004 \001(\t\022\020\n\010uiStatu"
+      "s\030\005 \001(\r\"\252\001\n\020UserAccessRecord\022\023\n\013strAcces"
+      "sID\030\001 \001(\t\022\024\n\014strClusterID\030\002 \001(\t\022B\n\014acces"
+      "sedUser\030\003 \001(\0132,.Management.Interactive.M"
+      "essage.AccessedUser\022\025\n\rstrCreatedate\030\004 \001"
+      "(\t\022\020\n\010uiStatus\030\005 \001(\r\"M\n\rAddClusterReq\022<\n"
+      "\013clusterInfo\030\001 \001(\0132\'.Management.Interact"
+      "ive.Message.Cluster\"%\n\rAddClusterRsp\022\024\n\014"
+      "strClusterID\030\001 \001(\t\"(\n\020DeleteClusterReq\022\024"
+      "\n\014strClusterID\030\001 \001(\t\"$\n\020DeleteClusterRsp"
+      "\022\020\n\010strValue\030\001 \001(\t\"P\n\020ModifyClusterReq\022<"
+      "\n\013clusterInfo\030\001 \001(\0132\'.Management.Interac"
+      "tive.Message.Cluster\"$\n\020ModifyClusterRsp"
+      "\022\020\n\010strValue\030\001 \001(\t\"+\n\023QueryClusterInfoRe"
+      "q\022\024\n\014strClusterID\030\001 \001(\t\"[\n\023QueryClusterI"
+      "nfoRsp\022D\n\rclusterStatus\030\001 \001(\0132-.Manageme"
+      "nt.Interactive.Message.ClusterStatus\"+\n\023"
+      "ShakehandClusterReq\022\024\n\014strClusterID\030\001 \001("
+      "\t\"\'\n\023ShakehandClusterRsp\022\020\n\010strValue\030\001 \001"
+      "(\t\"2\n\022QueryAllClusterReq\022\034\n\024strManagemen"
+      "tAddress\030\001 \001(\t\"Z\n\022QueryAllClusterRsp\022D\n\r"
+      "clusterStatus\030\001 \003(\0132-.Management.Interac"
+      "tive.Message.ClusterStatus\"\203\001\n\025QueryClus"
+      "terDeviceReq\022\024\n\014strClusterID\030\001 \001(\t\022\024\n\014st"
+      "rBegindate\030\002 \001(\t\022\022\n\nstrEnddate\030\003 \001(\t\022\024\n\014"
+      "uiRecordType\030\004 \001(\r\022\024\n\014uiBeginIndex\030\005 \001(\r"
+      "\"c\n\025QueryClusterDeviceRsp\022J\n\022accessedDev"
+      "iceInfo\030\001 \003(\0132..Management.Interactive.M"
+      "essage.AccessedDevice\"\201\001\n\023QueryClusterUs"
+      "erReq\022\024\n\014strClusterID\030\001 \001(\t\022\024\n\014strBegind"
+      "ate\030\002 \001(\t\022\022\n\nstrEnddate\030\003 \001(\t\022\024\n\014uiRecor"
+      "dType\030\004 \001(\r\022\024\n\014uiBeginIndex\030\005 \001(\r\"]\n\023Que"
+      "ryClusterUserRsp\022F\n\020accessedUserInfo\030\001 \003"
+      "(\0132,.Management.Interactive.Message.Acce"
+      "ssedUser\"|\n\024PushClusterDeviceReq\022\024\n\014strC"
+      "lusterID\030\001 \001(\t\022N\n\022deviceAccessRecord\030\002 \003"
+      "(\01322.Management.Interactive.Message.Devi"
+      "ceAccessRecord\"(\n\024PushClusterDeviceRsp\022\020"
+      "\n\010strValue\030\001 \001(\t\"v\n\022PushClusterUserReq\022\024"
+      "\n\014strClusterID\030\001 \001(\t\022J\n\020userAccessRecord"
+      "\030\002 \003(\01320.Management.Interactive.Message."
+      "UserAccessRecord\"&\n\022PushClusterUserRsp\022\020"
+      "\n\010strValue\030\001 \001(\t\"\345\006\n\007Request\022J\n\023AddClust"
+      "erReq_Value\030\n \001(\0132-.Management.Interacti"
+      "ve.Message.AddClusterReq\022P\n\026DeleteCluste"
+      "rReq_Value\030\024 \001(\01320.Management.Interactiv"
+      "e.Message.DeleteClusterReq\022P\n\026ModifyClus"
+      "terReq_Value\030\036 \001(\01320.Management.Interact"
+      "ive.Message.ModifyClusterReq\022V\n\031QueryClu"
+      "sterInfoReq_Value\030( \001(\01323.Management.Int"
+      "eractive.Message.QueryClusterInfoReq\022V\n\031"
+      "ShakehandClusterReq_Value\0302 \001(\01323.Manage"
+      "ment.Interactive.Message.ShakehandCluste"
+      "rReq\022T\n\030QueryAllClusterReq_Value\030< \001(\01322"
+      ".Management.Interactive.Message.QueryAll"
+      "ClusterReq\022Z\n\033QueryClusterDeviceReq_Valu"
+      "e\030F \001(\01325.Management.Interactive.Message"
+      ".QueryClusterDeviceReq\022V\n\031QueryClusterUs"
+      "erReq_Value\030P \001(\01323.Management.Interacti"
+      "ve.Message.QueryClusterUserReq\022Y\n\032PushCl"
+      "usterDeviceReq_Value\030\216\002 \001(\01324.Management"
+      ".Interactive.Message.PushClusterDeviceRe"
+      "q\022U\n\030PushClusterUserReq_Value\030\230\002 \001(\01322.M"
+      "anagement.Interactive.Message.PushCluste"
+      "rUserReq\"\213\007\n\010Response\022\020\n\010iRetcode\030\n \001(\005\022"
+      "\021\n\tstrRetMsg\030\024 \001(\t\022J\n\023AddClusterRsp_Valu"
+      "e\030\036 \001(\0132-.Management.Interactive.Message"
+      ".AddClusterRsp\022P\n\026DeleteClusterRsp_Value"
+      "\030( \001(\01320.Management.Interactive.Message."
+      "DeleteClusterRsp\022P\n\026ModifyClusterRsp_Val"
+      "ue\0302 \001(\01320.Management.Interactive.Messag"
+      "e.ModifyClusterRsp\022V\n\031QueryClusterInfoRs"
+      "p_Value\030< \001(\01323.Management.Interactive.M"
+      "essage.QueryClusterInfoRsp\022V\n\031ShakehandC"
+      "lusterRsp_Value\030F \001(\01323.Management.Inter"
+      "active.Message.ShakehandClusterRsp\022T\n\030Qu"
+      "eryAllClusterRsp_Value\030P \001(\01322.Managemen"
+      "t.Interactive.Message.QueryAllClusterRsp"
+      "\022Z\n\033QueryClusterDeviceRsp_Value\030Z \001(\01325."
       "Management.Interactive.Message.QueryClus"
-      "terInfoRsp\022V\n\031ShakehandClusterRsp_Value\030"
-      "F \001(\01323.Management.Interactive.Message.S"
-      "hakehandClusterRsp\022T\n\030QueryAllClusterRsp"
-      "_Value\030P \001(\01322.Management.Interactive.Me"
-      "ssage.QueryAllClusterRsp\022Z\n\033QueryCluster"
-      "DeviceRsp_Value\030Z \001(\01325.Management.Inter"
-      "active.Message.QueryClusterDeviceRsp\022V\n\031"
-      "QueryClusterUserRsp_Value\030d \001(\01323.Manage"
-      "ment.Interactive.Message.QueryClusterUse"
-      "rRsp\022Y\n\032PushClusterDeviceRsp_Value\030\242\002 \001("
-      "\01324.Management.Interactive.Message.PushC"
-      "lusterDeviceRsp\022U\n\030PushClusterUserRsp_Va"
-      "lue\030\254\002 \001(\01322.Management.Interactive.Mess"
-      "age.PushClusterUserRsp\"\370\001\n\034ManagementInt"
-      "eractiveMessage\022\?\n\004type\030\001 \001(\01621.Manageme"
-      "nt.Interactive.Message.ManagementMsgType"
-      "\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\0229\n\010re"
-      "qValue\030\004 \001(\0132\'.Management.Interactive.Me"
-      "ssage.Request\022:\n\010rspValue\030\005 \001(\0132(.Manage"
-      "ment.Interactive.Message.Response*\271\004\n\021Ma"
-      "nagementMsgType\022\n\n\006Init_T\020\000\022\024\n\017AddCluste"
-      "rReq_T\020\220N\022\024\n\017AddClusterRsp_T\020\232N\022\027\n\022Delet"
-      "eClusterReq_T\020\244N\022\027\n\022DeleteClusterRsp_T\020\256"
-      "N\022\027\n\022ModifyClusterReq_T\020\270N\022\027\n\022ModifyClus"
-      "terRsp_T\020\302N\022\032\n\025QueryClusterInfoReq_T\020\314N\022"
-      "\032\n\025QueryClusterInfoRsp_T\020\326N\022\032\n\025Shakehand"
-      "ClusterReq_T\020\340N\022\032\n\025ShakehandClusterRsp_T"
-      "\020\352N\022\031\n\024QueryAllClusterReq_T\020\364N\022\031\n\024QueryA"
-      "llClusterRsp_T\020\376N\022\034\n\027QueryClusterDeviceR"
-      "eq_T\020\354O\022\034\n\027QueryClusterDeviceRsp_T\020\366O\022\032\n"
-      "\025QueryClusterUserReq_T\020\274P\022\032\n\025QueryCluste"
-      "rUserRsp_T\020\306P\022\033\n\026PushClusterDeviceReq_T\020"
-      "\204R\022\033\n\026PushClusterDeviceRsp_T\020\216R\022\031\n\024PushC"
-      "lusterUserReq_T\020\230R\022\031\n\024PushClusterUserRsp"
-      "_T\020\242Rb\006proto3"
+      "terDeviceRsp\022V\n\031QueryClusterUserRsp_Valu"
+      "e\030d \001(\01323.Management.Interactive.Message"
+      ".QueryClusterUserRsp\022Y\n\032PushClusterDevic"
+      "eRsp_Value\030\242\002 \001(\01324.Management.Interacti"
+      "ve.Message.PushClusterDeviceRsp\022U\n\030PushC"
+      "lusterUserRsp_Value\030\254\002 \001(\01322.Management."
+      "Interactive.Message.PushClusterUserRsp\"\370"
+      "\001\n\034ManagementInteractiveMessage\022\?\n\004type\030"
+      "\001 \001(\01621.Management.Interactive.Message.M"
+      "anagementMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006st"
+      "rSID\030\003 \001(\t\0229\n\010reqValue\030\004 \001(\0132\'.Managemen"
+      "t.Interactive.Message.Request\022:\n\010rspValu"
+      "e\030\005 \001(\0132(.Management.Interactive.Message"
+      ".Response*\271\004\n\021ManagementMsgType\022\n\n\006Init_"
+      "T\020\000\022\024\n\017AddClusterReq_T\020\220N\022\024\n\017AddClusterR"
+      "sp_T\020\232N\022\027\n\022DeleteClusterReq_T\020\244N\022\027\n\022Dele"
+      "teClusterRsp_T\020\256N\022\027\n\022ModifyClusterReq_T\020"
+      "\270N\022\027\n\022ModifyClusterRsp_T\020\302N\022\032\n\025QueryClus"
+      "terInfoReq_T\020\314N\022\032\n\025QueryClusterInfoRsp_T"
+      "\020\326N\022\032\n\025ShakehandClusterReq_T\020\340N\022\032\n\025Shake"
+      "handClusterRsp_T\020\352N\022\031\n\024QueryAllClusterRe"
+      "q_T\020\364N\022\031\n\024QueryAllClusterRsp_T\020\376N\022\034\n\027Que"
+      "ryClusterDeviceReq_T\020\354O\022\034\n\027QueryClusterD"
+      "eviceRsp_T\020\366O\022\032\n\025QueryClusterUserReq_T\020\274"
+      "P\022\032\n\025QueryClusterUserRsp_T\020\306P\022\033\n\026PushClu"
+      "sterDeviceReq_T\020\204R\022\033\n\026PushClusterDeviceR"
+      "sp_T\020\216R\022\031\n\024PushClusterUserReq_T\020\230R\022\031\n\024Pu"
+      "shClusterUserRsp_T\020\242Rb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 5093);
+      descriptor, 5149);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolManagement.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -732,6 +735,8 @@ const int Cluster::kStrClusterIDFieldNumber;
 const int Cluster::kStrClusterAddressFieldNumber;
 const int Cluster::kStrManagementAddressFieldNumber;
 const int Cluster::kStrAliasnameFieldNumber;
+const int Cluster::kUiUserTotalnumberFieldNumber;
+const int Cluster::kUiDeviceTotalnumberFieldNumber;
 const int Cluster::kStrCreatedateFieldNumber;
 const int Cluster::kUiStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -769,7 +774,9 @@ Cluster::Cluster(const Cluster& from)
   if (from.strcreatedate().size() > 0) {
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
   }
-  uistatus_ = from.uistatus_;
+  ::memcpy(&uiusertotalnumber_, &from.uiusertotalnumber_,
+    reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uiusertotalnumber_) + sizeof(uistatus_));
   // @@protoc_insertion_point(copy_constructor:Management.Interactive.Message.Cluster)
 }
 
@@ -779,7 +786,8 @@ void Cluster::SharedCtor() {
   strmanagementaddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   straliasname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uistatus_ = 0u;
+  ::memset(&uiusertotalnumber_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uiusertotalnumber_) + sizeof(uistatus_));
   _cached_size_ = 0;
 }
 
@@ -826,7 +834,8 @@ void Cluster::Clear() {
   strmanagementaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uistatus_ = 0u;
+  ::memset(&uiusertotalnumber_, 0, reinterpret_cast<char*>(&uistatus_) -
+    reinterpret_cast<char*>(&uiusertotalnumber_) + sizeof(uistatus_));
 }
 
 bool Cluster::MergePartialFromCodedStream(
@@ -899,9 +908,35 @@ bool Cluster::MergePartialFromCodedStream(
         break;
       }
 
-      // string strCreatedate = 5;
+      // uint32 uiUserTotalnumber = 5;
       case 5: {
-        if (tag == 42u) {
+        if (tag == 40u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uiusertotalnumber_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiDeviceTotalnumber = 6;
+      case 6: {
+        if (tag == 48u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uidevicetotalnumber_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCreatedate = 7;
+      case 7: {
+        if (tag == 58u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strcreatedate()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -914,9 +949,9 @@ bool Cluster::MergePartialFromCodedStream(
         break;
       }
 
-      // uint32 uiStatus = 6;
-      case 6: {
-        if (tag == 48u) {
+      // uint32 uiStatus = 8;
+      case 8: {
+        if (tag == 64u) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
@@ -991,19 +1026,29 @@ void Cluster::SerializeWithCachedSizes(
       4, this->straliasname(), output);
   }
 
-  // string strCreatedate = 5;
+  // uint32 uiUserTotalnumber = 5;
+  if (this->uiusertotalnumber() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->uiusertotalnumber(), output);
+  }
+
+  // uint32 uiDeviceTotalnumber = 6;
+  if (this->uidevicetotalnumber() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uidevicetotalnumber(), output);
+  }
+
+  // string strCreatedate = 7;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Management.Interactive.Message.Cluster.strCreatedate");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      5, this->strcreatedate(), output);
+      7, this->strcreatedate(), output);
   }
 
-  // uint32 uiStatus = 6;
+  // uint32 uiStatus = 8;
   if (this->uistatus() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->uistatus(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->uistatus(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Management.Interactive.Message.Cluster)
@@ -1057,7 +1102,17 @@ void Cluster::SerializeWithCachedSizes(
         4, this->straliasname(), target);
   }
 
-  // string strCreatedate = 5;
+  // uint32 uiUserTotalnumber = 5;
+  if (this->uiusertotalnumber() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->uiusertotalnumber(), target);
+  }
+
+  // uint32 uiDeviceTotalnumber = 6;
+  if (this->uidevicetotalnumber() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uidevicetotalnumber(), target);
+  }
+
+  // string strCreatedate = 7;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
@@ -1065,12 +1120,12 @@ void Cluster::SerializeWithCachedSizes(
       "Management.Interactive.Message.Cluster.strCreatedate");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->strcreatedate(), target);
+        7, this->strcreatedate(), target);
   }
 
-  // uint32 uiStatus = 6;
+  // uint32 uiStatus = 8;
   if (this->uistatus() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->uistatus(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->uistatus(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Management.Interactive.Message.Cluster)
@@ -1109,14 +1164,28 @@ size_t Cluster::ByteSizeLong() const {
         this->straliasname());
   }
 
-  // string strCreatedate = 5;
+  // string strCreatedate = 7;
   if (this->strcreatedate().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strcreatedate());
   }
 
-  // uint32 uiStatus = 6;
+  // uint32 uiUserTotalnumber = 5;
+  if (this->uiusertotalnumber() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uiusertotalnumber());
+  }
+
+  // uint32 uiDeviceTotalnumber = 6;
+  if (this->uidevicetotalnumber() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uidevicetotalnumber());
+  }
+
+  // uint32 uiStatus = 8;
   if (this->uistatus() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -1169,6 +1238,12 @@ void Cluster::MergeFrom(const Cluster& from) {
 
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
   }
+  if (from.uiusertotalnumber() != 0) {
+    set_uiusertotalnumber(from.uiusertotalnumber());
+  }
+  if (from.uidevicetotalnumber() != 0) {
+    set_uidevicetotalnumber(from.uidevicetotalnumber());
+  }
   if (from.uistatus() != 0) {
     set_uistatus(from.uistatus());
   }
@@ -1202,6 +1277,8 @@ void Cluster::InternalSwap(Cluster* other) {
   strmanagementaddress_.Swap(&other->strmanagementaddress_);
   straliasname_.Swap(&other->straliasname_);
   strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(uiusertotalnumber_, other->uiusertotalnumber_);
+  std::swap(uidevicetotalnumber_, other->uidevicetotalnumber_);
   std::swap(uistatus_, other->uistatus_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1422,7 +1499,35 @@ void Cluster::set_allocated_straliasname(::std::string* straliasname) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Cluster.strAliasname)
 }
 
-// string strCreatedate = 5;
+// uint32 uiUserTotalnumber = 5;
+void Cluster::clear_uiusertotalnumber() {
+  uiusertotalnumber_ = 0u;
+}
+::google::protobuf::uint32 Cluster::uiusertotalnumber() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Cluster.uiUserTotalnumber)
+  return uiusertotalnumber_;
+}
+void Cluster::set_uiusertotalnumber(::google::protobuf::uint32 value) {
+  
+  uiusertotalnumber_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.Cluster.uiUserTotalnumber)
+}
+
+// uint32 uiDeviceTotalnumber = 6;
+void Cluster::clear_uidevicetotalnumber() {
+  uidevicetotalnumber_ = 0u;
+}
+::google::protobuf::uint32 Cluster::uidevicetotalnumber() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Cluster.uiDeviceTotalnumber)
+  return uidevicetotalnumber_;
+}
+void Cluster::set_uidevicetotalnumber(::google::protobuf::uint32 value) {
+  
+  uidevicetotalnumber_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.Cluster.uiDeviceTotalnumber)
+}
+
+// string strCreatedate = 7;
 void Cluster::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1474,7 +1579,7 @@ void Cluster::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Cluster.strCreatedate)
 }
 
-// uint32 uiStatus = 6;
+// uint32 uiStatus = 8;
 void Cluster::clear_uistatus() {
   uistatus_ = 0u;
 }
@@ -3337,7 +3442,7 @@ void AccessedUser::set_uionlineduration(::google::protobuf::uint32 value) {
 const int DeviceAccessRecord::kStrAccessIDFieldNumber;
 const int DeviceAccessRecord::kStrClusterIDFieldNumber;
 const int DeviceAccessRecord::kAccessedDeviceFieldNumber;
-const int DeviceAccessRecord::kStrCreateDateFieldNumber;
+const int DeviceAccessRecord::kStrCreatedateFieldNumber;
 const int DeviceAccessRecord::kUiStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -3484,7 +3589,7 @@ bool DeviceAccessRecord::MergePartialFromCodedStream(
         break;
       }
 
-      // string strCreateDate = 4;
+      // string strCreatedate = 4;
       case 4: {
         if (tag == 34u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
@@ -3492,7 +3597,7 @@ bool DeviceAccessRecord::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->strcreatedate().data(), this->strcreatedate().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Management.Interactive.Message.DeviceAccessRecord.strCreateDate"));
+            "Management.Interactive.Message.DeviceAccessRecord.strCreatedate"));
         } else {
           goto handle_unusual;
         }
@@ -3562,12 +3667,12 @@ void DeviceAccessRecord::SerializeWithCachedSizes(
       3, *this->accesseddevice_, output);
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Management.Interactive.Message.DeviceAccessRecord.strCreateDate");
+      "Management.Interactive.Message.DeviceAccessRecord.strCreatedate");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       4, this->strcreatedate(), output);
   }
@@ -3613,12 +3718,12 @@ void DeviceAccessRecord::SerializeWithCachedSizes(
         3, *this->accesseddevice_, false, target);
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Management.Interactive.Message.DeviceAccessRecord.strCreateDate");
+      "Management.Interactive.Message.DeviceAccessRecord.strCreatedate");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         4, this->strcreatedate(), target);
@@ -3651,7 +3756,7 @@ size_t DeviceAccessRecord::ByteSizeLong() const {
         this->strclusterid());
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3900,45 +4005,45 @@ void DeviceAccessRecord::set_allocated_accesseddevice(::Management::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
 }
 
-// string strCreateDate = 4;
+// string strCreatedate = 4;
 void DeviceAccessRecord::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& DeviceAccessRecord::strcreatedate() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   return strcreatedate_.GetNoArena();
 }
 void DeviceAccessRecord::set_strcreatedate(const ::std::string& value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 #if LANG_CXX11
 void DeviceAccessRecord::set_strcreatedate(::std::string&& value) {
   
   strcreatedate_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 #endif
 void DeviceAccessRecord::set_strcreatedate(const char* value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 void DeviceAccessRecord::set_strcreatedate(const char* value, size_t size) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 ::std::string* DeviceAccessRecord::mutable_strcreatedate() {
   
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* DeviceAccessRecord::release_strcreatedate() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   
   return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3949,7 +4054,7 @@ void DeviceAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedat
     
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 
 // uint32 uiStatus = 5;
@@ -3974,7 +4079,7 @@ void DeviceAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
 const int UserAccessRecord::kStrAccessIDFieldNumber;
 const int UserAccessRecord::kStrClusterIDFieldNumber;
 const int UserAccessRecord::kAccessedUserFieldNumber;
-const int UserAccessRecord::kStrCreateDateFieldNumber;
+const int UserAccessRecord::kStrCreatedateFieldNumber;
 const int UserAccessRecord::kUiStatusFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -4121,7 +4226,7 @@ bool UserAccessRecord::MergePartialFromCodedStream(
         break;
       }
 
-      // string strCreateDate = 4;
+      // string strCreatedate = 4;
       case 4: {
         if (tag == 34u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
@@ -4129,7 +4234,7 @@ bool UserAccessRecord::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->strcreatedate().data(), this->strcreatedate().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Management.Interactive.Message.UserAccessRecord.strCreateDate"));
+            "Management.Interactive.Message.UserAccessRecord.strCreatedate"));
         } else {
           goto handle_unusual;
         }
@@ -4199,12 +4304,12 @@ void UserAccessRecord::SerializeWithCachedSizes(
       3, *this->accesseduser_, output);
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Management.Interactive.Message.UserAccessRecord.strCreateDate");
+      "Management.Interactive.Message.UserAccessRecord.strCreatedate");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       4, this->strcreatedate(), output);
   }
@@ -4250,12 +4355,12 @@ void UserAccessRecord::SerializeWithCachedSizes(
         3, *this->accesseduser_, false, target);
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Management.Interactive.Message.UserAccessRecord.strCreateDate");
+      "Management.Interactive.Message.UserAccessRecord.strCreatedate");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         4, this->strcreatedate(), target);
@@ -4288,7 +4393,7 @@ size_t UserAccessRecord::ByteSizeLong() const {
         this->strclusterid());
   }
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   if (this->strcreatedate().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -4537,45 +4642,45 @@ void UserAccessRecord::set_allocated_accesseduser(::Management::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.accessedUser)
 }
 
-// string strCreateDate = 4;
+// string strCreatedate = 4;
 void UserAccessRecord::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& UserAccessRecord::strcreatedate() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   return strcreatedate_.GetNoArena();
 }
 void UserAccessRecord::set_strcreatedate(const ::std::string& value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 #if LANG_CXX11
 void UserAccessRecord::set_strcreatedate(::std::string&& value) {
   
   strcreatedate_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 #endif
 void UserAccessRecord::set_strcreatedate(const char* value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 void UserAccessRecord::set_strcreatedate(const char* value, size_t size) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 ::std::string* UserAccessRecord::mutable_strcreatedate() {
   
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* UserAccessRecord::release_strcreatedate() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   
   return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -4586,7 +4691,7 @@ void UserAccessRecord::set_allocated_strcreatedate(::std::string* strcreatedate)
     
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 
 // uint32 uiStatus = 5;

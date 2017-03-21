@@ -452,7 +452,7 @@ void ManagementAgent::AccessedDeviceInfoHandler(boost::shared_ptr<T> DeviceInfoL
         {
             InteractiveProtoManagementHandler::DeviceAccessRecord dar;
             dar.m_strAccessID = DevInfo.m_strAccessID;
-            dar.m_strClusterID = DevInfo.m_strClusterID;
+            dar.m_strClusterID = m_strClusterID; //DevInfo.m_strClusterID;
             dar.m_strCreateDate = DevInfo.m_strCreateDate;
             dar.m_uiStatus = DevInfo.m_uiStatus;
             dar.m_accessedDevice.m_strDeviceID = DevInfo.m_strDeviceID;
@@ -535,7 +535,7 @@ void ManagementAgent::AccessedUserInfoHandler(boost::shared_ptr<T> UserInfoList,
         {
             InteractiveProtoManagementHandler::UserAccessRecord dar;
             dar.m_strAccessID = UsrInfo.m_strAccessID;
-            dar.m_strClusterID = UsrInfo.m_strClusterID;
+            dar.m_strClusterID = m_strClusterID; //UsrInfo.m_strClusterID;
             dar.m_strCreateDate = UsrInfo.m_strCreateDate;
             dar.m_uiStatus = UsrInfo.m_uiStatus;
             dar.m_accessedUser.m_strUserID = UsrInfo.m_strUserID;

@@ -58,6 +58,8 @@ public:
         std::string m_strClusterAddress;
         std::string m_strManagementAddress;
         std::string m_strAliasname;
+        unsigned int m_uiUserTotalnumber;
+        unsigned int m_uiDeviceTotalnumber;
         std::string m_strCreatedate;
         unsigned int m_uiStatus;
     };

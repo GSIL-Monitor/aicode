@@ -6,7 +6,6 @@
 #include "InteractiveProtoManagementHandler.h"
 #include <unordered_map>
 #include <string>
-#include <mutex>
 #include "boost/shared_ptr.hpp"
 #include "boost/thread/mutex.hpp"
 #include "NetComm.h"
@@ -139,7 +138,7 @@ private:
 
     TimeOutHandler m_timer;
 
-    std::mutex m_mutex;
+    boost::mutex m_mutex;
 
     struct ClusterSession
     {

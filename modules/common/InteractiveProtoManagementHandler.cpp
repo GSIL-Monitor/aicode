@@ -59,6 +59,8 @@ void SerializeClusterList(const std::list<InteractiveProtoManagementHandler::Clu
         pDstClusterInfo->set_strclusteraddress(itBegin->m_strClusterAddress);
         pDstClusterInfo->set_strmanagementaddress(itBegin->m_strManagementAddress);
         pDstClusterInfo->set_straliasname(itBegin->m_strAliasname);
+        pDstClusterInfo->set_uidevicetotalnumber(itBegin->m_uiDeviceTotalnumber);
+        pDstClusterInfo->set_uiusertotalnumber(itBegin->m_uiUserTotalnumber);
         pDstClusterInfo->set_strcreatedate(itBegin->m_strCreatedate);
         pDstClusterInfo->set_uistatus(itBegin->m_uiStatus);
 
@@ -80,6 +82,8 @@ void UnSerializeClusterList(std::list<InteractiveProtoManagementHandler::Cluster
         clusterInfo.m_strClusterAddress = srcClusterInfo.strclusteraddress();
         clusterInfo.m_strManagementAddress = srcClusterInfo.strmanagementaddress();
         clusterInfo.m_strAliasname = srcClusterInfo.straliasname();
+        clusterInfo.m_uiDeviceTotalnumber = srcClusterInfo.uidevicetotalnumber();
+        clusterInfo.m_uiUserTotalnumber = srcClusterInfo.uiusertotalnumber();
         clusterInfo.m_strCreatedate = srcClusterInfo.strcreatedate();
         clusterInfo.m_uiStatus = srcClusterInfo.uistatus();
 
@@ -103,6 +107,8 @@ void SerializeClusterStatusList(const std::list<InteractiveProtoManagementHandle
         clusterInfo->set_strclusteraddress(itBegin->m_clusterInfo.m_strClusterAddress);
         clusterInfo->set_strmanagementaddress(itBegin->m_clusterInfo.m_strManagementAddress);
         clusterInfo->set_straliasname(itBegin->m_clusterInfo.m_strAliasname);
+        clusterInfo->set_uidevicetotalnumber(itBegin->m_clusterInfo.m_uiDeviceTotalnumber);
+        clusterInfo->set_uiusertotalnumber(itBegin->m_clusterInfo.m_uiUserTotalnumber);
         clusterInfo->set_strcreatedate(itBegin->m_clusterInfo.m_strCreatedate);
         clusterInfo->set_uistatus(itBegin->m_clusterInfo.m_uiStatus);
 
@@ -128,6 +134,8 @@ void UnSerializeClusterStatusList(std::list<InteractiveProtoManagementHandler::C
         clusterStatus.m_clusterInfo.m_strClusterAddress = clusterInfo.strclusteraddress();
         clusterStatus.m_clusterInfo.m_strManagementAddress = clusterInfo.strmanagementaddress();
         clusterStatus.m_clusterInfo.m_strAliasname = clusterInfo.straliasname();
+        clusterStatus.m_clusterInfo.m_uiDeviceTotalnumber = clusterInfo.uidevicetotalnumber();
+        clusterStatus.m_clusterInfo.m_uiUserTotalnumber = clusterInfo.uiusertotalnumber();
         clusterStatus.m_clusterInfo.m_strCreatedate = clusterInfo.strcreatedate();
         clusterStatus.m_clusterInfo.m_uiStatus = clusterInfo.uistatus();
 
@@ -753,6 +761,8 @@ void InteractiveProtoManagementHandler::AddClusterReq::Serializer(ManagementInte
     clusterInfo->set_strclusteraddress(m_clusterInfo.m_strClusterAddress);
     clusterInfo->set_strmanagementaddress(m_clusterInfo.m_strManagementAddress);
     clusterInfo->set_straliasname(m_clusterInfo.m_strAliasname);
+    clusterInfo->set_uidevicetotalnumber(m_clusterInfo.m_uiDeviceTotalnumber);
+    clusterInfo->set_uiusertotalnumber(m_clusterInfo.m_uiUserTotalnumber);
     clusterInfo->set_strcreatedate(m_clusterInfo.m_strCreatedate);
     clusterInfo->set_uistatus(m_clusterInfo.m_uiStatus);
 }
@@ -764,6 +774,8 @@ void InteractiveProtoManagementHandler::AddClusterReq::UnSerializer(const Manage
     m_clusterInfo.m_strClusterAddress = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().strclusteraddress();
     m_clusterInfo.m_strManagementAddress = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().strmanagementaddress();
     m_clusterInfo.m_strAliasname = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().straliasname();
+    m_clusterInfo.m_uiDeviceTotalnumber = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().uidevicetotalnumber();
+    m_clusterInfo.m_uiUserTotalnumber = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().uiusertotalnumber();
     m_clusterInfo.m_strCreatedate = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().strcreatedate();
     m_clusterInfo.m_uiStatus = MngInteractiveMsg.reqvalue().addclusterreq_value().clusterinfo().uistatus();
 }
@@ -821,6 +833,10 @@ void InteractiveProtoManagementHandler::ModifyClusterReq::Serializer(ManagementI
     clusterInfo->set_strclusteraddress(m_clusterInfo.m_strClusterAddress);
     clusterInfo->set_strmanagementaddress(m_clusterInfo.m_strManagementAddress);
     clusterInfo->set_straliasname(m_clusterInfo.m_strAliasname);
+    clusterInfo->set_uidevicetotalnumber(m_clusterInfo.m_uiDeviceTotalnumber);
+    clusterInfo->set_uiusertotalnumber(m_clusterInfo.m_uiUserTotalnumber);
+    clusterInfo->set_strcreatedate(m_clusterInfo.m_strCreatedate);
+    clusterInfo->set_uistatus(m_clusterInfo.m_uiStatus);
 }
 
 void InteractiveProtoManagementHandler::ModifyClusterReq::UnSerializer(const ManagementInteractiveMessage &MngInteractiveMsg)
@@ -830,6 +846,10 @@ void InteractiveProtoManagementHandler::ModifyClusterReq::UnSerializer(const Man
     m_clusterInfo.m_strClusterAddress = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().strclusteraddress();
     m_clusterInfo.m_strManagementAddress = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().strmanagementaddress();
     m_clusterInfo.m_strAliasname = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().straliasname();
+    m_clusterInfo.m_uiDeviceTotalnumber = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().uidevicetotalnumber();
+    m_clusterInfo.m_uiUserTotalnumber = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().uiusertotalnumber();
+    m_clusterInfo.m_strCreatedate = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().strcreatedate();
+    m_clusterInfo.m_uiStatus = MngInteractiveMsg.reqvalue().modifyclusterreq_value().clusterinfo().uistatus();
 }
 
 void InteractiveProtoManagementHandler::ModifyClusterRsp::Serializer(ManagementInteractiveMessage &MngInteractiveMsg) const
@@ -872,7 +892,10 @@ void InteractiveProtoManagementHandler::QueryClusterInfoRsp::Serializer(Manageme
     clusterInfo->set_strclusteraddress(m_clusterInfo.m_strClusterAddress);
     clusterInfo->set_strmanagementaddress(m_clusterInfo.m_strManagementAddress);
     clusterInfo->set_straliasname(m_clusterInfo.m_strAliasname);
+    clusterInfo->set_uidevicetotalnumber(m_clusterInfo.m_uiDeviceTotalnumber);
+    clusterInfo->set_uiusertotalnumber(m_clusterInfo.m_uiUserTotalnumber);
     clusterInfo->set_strcreatedate(m_clusterInfo.m_strCreatedate);
+    clusterInfo->set_uistatus(m_clusterInfo.m_uiStatus);
 
     clusterStatus->set_uistatus(m_uiStatus);
 }
@@ -884,7 +907,10 @@ void InteractiveProtoManagementHandler::QueryClusterInfoRsp::UnSerializer(const 
     m_clusterInfo.m_strClusterAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strclusteraddress();
     m_clusterInfo.m_strManagementAddress = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strmanagementaddress();
     m_clusterInfo.m_strAliasname = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().straliasname();
+    m_clusterInfo.m_uiDeviceTotalnumber = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().uidevicetotalnumber();
+    m_clusterInfo.m_uiUserTotalnumber = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().uiusertotalnumber();
     m_clusterInfo.m_strCreatedate = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().strcreatedate();
+    m_clusterInfo.m_uiStatus = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().clusterinfo().uistatus();
 
     m_uiStatus = MngInteractiveMsg.rspvalue().queryclusterinforsp_value().clusterstatus().uistatus();
 }

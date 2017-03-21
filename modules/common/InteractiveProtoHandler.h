@@ -388,6 +388,7 @@ public:
 
         User m_userInfo;
         std::string m_strValue;
+        unsigned int m_uiTerminalType;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -909,6 +910,7 @@ public:
 
         std::string m_strDevID;
         std::string m_strPassword;
+        unsigned int m_uiDeviceType;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

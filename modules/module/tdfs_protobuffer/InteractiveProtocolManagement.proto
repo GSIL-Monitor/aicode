@@ -71,8 +71,10 @@ message Cluster                          //集群信息
   string strClusterAddress = 2;
   string strManagementAddress = 3;
   string strAliasname = 4;
-  string strCreatedate = 5;
-  uint32 uiStatus = 6;
+  uint32 uiUserTotalnumber = 5;
+  uint32 uiDeviceTotalnumber = 6;
+  string strCreatedate = 7;
+  uint32 uiStatus = 8;
 }
 
 message ClusterStatus                    //集群状态信息
@@ -107,7 +109,7 @@ message DeviceAccessRecord                //设备接入记录
   string strAccessID = 1;
   string strClusterID = 2;
   AccessedDevice accessedDevice = 3;
-  string strCreateDate = 4;
+  string strCreatedate = 4;
   uint32 uiStatus = 5;
 }
 
@@ -116,7 +118,7 @@ message UserAccessRecord                  //用户接入记录
   string strAccessID = 1;
   string strClusterID = 2;
   AccessedUser accessedUser = 3;
-  string strCreateDate = 4;
+  string strCreatedate = 4;
   uint32 uiStatus = 5;
 }
 

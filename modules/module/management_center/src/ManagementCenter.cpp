@@ -105,11 +105,11 @@ bool ManagementCenter::AddClusterReq(const std::string &strMsg, const std::strin
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Add cluster req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add cluster req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     if (!IsValidCluster(req.m_clusterInfo.m_strClusterAddress))
     {
@@ -181,11 +181,11 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Delete cluster req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete cluster req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&ManagementCenter::DeleteCluster, this, req.m_strClusterID));
 
@@ -225,11 +225,11 @@ bool ManagementCenter::ModifyClusterReq(const std::string &strMsg, const std::st
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Modify cluster req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify cluster req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&ManagementCenter::ModifyCluster, this, req.m_clusterInfo));
 
@@ -288,11 +288,11 @@ bool ManagementCenter::QueryClusterInfoReq(const std::string &strMsg, const std:
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Query cluster info req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query cluster info req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     if (!QueryClusterInfo(req.m_strClusterID, clusterInfo))
     {
@@ -336,11 +336,11 @@ bool ManagementCenter::ShakehandClusterReq(const std::string &strMsg, const std:
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Cluster shakehand req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Cluster shakehand req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     //TODO:¼¯ÈºÎÕÊÖ
     //m_SessionMgr.Reset(req.m_strSID);
@@ -402,11 +402,11 @@ bool ManagementCenter::QueryAllClusterReq(const std::string &strMsg, const std::
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Query all cluster req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query all cluster req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     if (!QueryAllCluster(req.m_strManagementAddress, clusterInfoList))
     {
@@ -469,11 +469,11 @@ bool ManagementCenter::QueryClusterDeviceReq(const std::string &strMsg, const st
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Query cluster device req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query cluster device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     if (!QueryClusterDevice(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedDeviceList))
     {
@@ -537,11 +537,11 @@ bool ManagementCenter::QueryClusterUserReq(const std::string &strMsg, const std:
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Query cluster user req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query cluster user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     if (!QueryClusterUser(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedUserList))
     {
@@ -584,11 +584,11 @@ bool ManagementCenter::PushClusterDeviceReq(const std::string &strMsg, const std
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Push cluster device req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Push cluster device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&ManagementCenter::PushClusterDevice, this, req.m_deviceAccessRecordList));
 
@@ -627,11 +627,11 @@ bool ManagementCenter::PushClusterUserReq(const std::string &strMsg, const std::
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-        {
-            LOG_ERROR_RLD("Push cluster user req unserialize failed, src id is " << strSrcID);
-            return false;
-        }
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Push cluster user req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&ManagementCenter::PushClusterUser, this, req.m_userAccessRecordList));
 
@@ -1060,17 +1060,17 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
     if (0 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logintime != '' and logouttime is not null and logouttime != ''");
+        snprintf(sql + len, size - len, " and logintime is not null and logouttime is not null");
     }
     else if (1 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logintime != ''");
+        snprintf(sql + len, size - len, " and logintime is not null");
     }
     else if (2 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logouttime is not null and logouttime != ''");
+        snprintf(sql + len, size - len, " and logouttime is not null");
     }
 
     len = strlen(sql);
@@ -1153,17 +1153,17 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
     if (0 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logintime != '' and logouttime is not null and logouttime != ''");
+        snprintf(sql + len, size - len, " and logintime is not null and logouttime is not null");
     }
     else if (1 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logintime != ''");
+        snprintf(sql + len, size - len, " and logintime is not null");
     }
     else if (2 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logouttime is not null and logouttime != ''");
+        snprintf(sql + len, size - len, " and logouttime is not null");
     }
 
     len = strlen(sql);

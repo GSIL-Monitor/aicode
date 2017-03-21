@@ -304,9 +304,9 @@ class Cluster : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_straliasname();
   void set_allocated_straliasname(::std::string* straliasname);
 
-  // string strCreatedate = 5;
+  // string strCreatedate = 7;
   void clear_strcreatedate();
-  static const int kStrCreatedateFieldNumber = 5;
+  static const int kStrCreatedateFieldNumber = 7;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -318,9 +318,21 @@ class Cluster : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // uint32 uiStatus = 6;
+  // uint32 uiUserTotalnumber = 5;
+  void clear_uiusertotalnumber();
+  static const int kUiUserTotalnumberFieldNumber = 5;
+  ::google::protobuf::uint32 uiusertotalnumber() const;
+  void set_uiusertotalnumber(::google::protobuf::uint32 value);
+
+  // uint32 uiDeviceTotalnumber = 6;
+  void clear_uidevicetotalnumber();
+  static const int kUiDeviceTotalnumberFieldNumber = 6;
+  ::google::protobuf::uint32 uidevicetotalnumber() const;
+  void set_uidevicetotalnumber(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 8;
   void clear_uistatus();
-  static const int kUiStatusFieldNumber = 6;
+  static const int kUiStatusFieldNumber = 8;
   ::google::protobuf::uint32 uistatus() const;
   void set_uistatus(::google::protobuf::uint32 value);
 
@@ -333,6 +345,8 @@ class Cluster : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::ArenaStringPtr strmanagementaddress_;
   ::google::protobuf::internal::ArenaStringPtr straliasname_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::uint32 uiusertotalnumber_;
+  ::google::protobuf::uint32 uidevicetotalnumber_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolManagement_2eproto::TableStruct;
@@ -842,9 +856,9 @@ class DeviceAccessRecord : public ::google::protobuf::Message /* @@protoc_insert
   ::std::string* release_strclusterid();
   void set_allocated_strclusterid(::std::string* strclusterid);
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 4;
+  static const int kStrCreatedateFieldNumber = 4;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -980,9 +994,9 @@ class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_strclusterid();
   void set_allocated_strclusterid(::std::string* strclusterid);
 
-  // string strCreateDate = 4;
+  // string strCreatedate = 4;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 4;
+  static const int kStrCreatedateFieldNumber = 4;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -3649,7 +3663,35 @@ inline void Cluster::set_allocated_straliasname(::std::string* straliasname) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Cluster.strAliasname)
 }
 
-// string strCreatedate = 5;
+// uint32 uiUserTotalnumber = 5;
+inline void Cluster::clear_uiusertotalnumber() {
+  uiusertotalnumber_ = 0u;
+}
+inline ::google::protobuf::uint32 Cluster::uiusertotalnumber() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Cluster.uiUserTotalnumber)
+  return uiusertotalnumber_;
+}
+inline void Cluster::set_uiusertotalnumber(::google::protobuf::uint32 value) {
+  
+  uiusertotalnumber_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.Cluster.uiUserTotalnumber)
+}
+
+// uint32 uiDeviceTotalnumber = 6;
+inline void Cluster::clear_uidevicetotalnumber() {
+  uidevicetotalnumber_ = 0u;
+}
+inline ::google::protobuf::uint32 Cluster::uidevicetotalnumber() const {
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.Cluster.uiDeviceTotalnumber)
+  return uidevicetotalnumber_;
+}
+inline void Cluster::set_uidevicetotalnumber(::google::protobuf::uint32 value) {
+  
+  uidevicetotalnumber_ = value;
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.Cluster.uiDeviceTotalnumber)
+}
+
+// string strCreatedate = 7;
 inline void Cluster::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -3701,7 +3743,7 @@ inline void Cluster::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.Cluster.strCreatedate)
 }
 
-// uint32 uiStatus = 6;
+// uint32 uiStatus = 8;
 inline void Cluster::clear_uistatus() {
   uistatus_ = 0u;
 }
@@ -4451,45 +4493,45 @@ inline void DeviceAccessRecord::set_allocated_accesseddevice(::Management::Inter
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.accessedDevice)
 }
 
-// string strCreateDate = 4;
+// string strCreatedate = 4;
 inline void DeviceAccessRecord::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline const ::std::string& DeviceAccessRecord::strcreatedate() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   return strcreatedate_.GetNoArena();
 }
 inline void DeviceAccessRecord::set_strcreatedate(const ::std::string& value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 #if LANG_CXX11
 inline void DeviceAccessRecord::set_strcreatedate(::std::string&& value) {
   
   strcreatedate_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 #endif
 inline void DeviceAccessRecord::set_strcreatedate(const char* value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 inline void DeviceAccessRecord::set_strcreatedate(const char* value, size_t size) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 inline ::std::string* DeviceAccessRecord::mutable_strcreatedate() {
   
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* DeviceAccessRecord::release_strcreatedate() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
   
   return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -4500,7 +4542,7 @@ inline void DeviceAccessRecord::set_allocated_strcreatedate(::std::string* strcr
     
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.DeviceAccessRecord.strCreatedate)
 }
 
 // uint32 uiStatus = 5;
@@ -4664,45 +4706,45 @@ inline void UserAccessRecord::set_allocated_accesseduser(::Management::Interacti
   // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.accessedUser)
 }
 
-// string strCreateDate = 4;
+// string strCreatedate = 4;
 inline void UserAccessRecord::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline const ::std::string& UserAccessRecord::strcreatedate() const {
-  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_get:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   return strcreatedate_.GetNoArena();
 }
 inline void UserAccessRecord::set_strcreatedate(const ::std::string& value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 #if LANG_CXX11
 inline void UserAccessRecord::set_strcreatedate(::std::string&& value) {
   
   strcreatedate_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_rvalue:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 #endif
 inline void UserAccessRecord::set_strcreatedate(const char* value) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_char:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 inline void UserAccessRecord::set_strcreatedate(const char* value, size_t size) {
   
   strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_pointer:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 inline ::std::string* UserAccessRecord::mutable_strcreatedate() {
   
-  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_mutable:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* UserAccessRecord::release_strcreatedate() {
-  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_release:Management.Interactive.Message.UserAccessRecord.strCreatedate)
   
   return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -4713,7 +4755,7 @@ inline void UserAccessRecord::set_allocated_strcreatedate(::std::string* strcrea
     
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
-  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreateDate)
+  // @@protoc_insertion_point(field_set_allocated:Management.Interactive.Message.UserAccessRecord.strCreatedate)
 }
 
 // uint32 uiStatus = 5;

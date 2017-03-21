@@ -273,7 +273,8 @@ message LoginReq_DEV                            //设备登陆请求
 {
   string strDevID = 1;
   string strPassword = 2;
-  string strValue = 3;
+  uint32 uiDeviceType = 3;
+  string strValue = 4;
 }
 
 message LoginRsp_DEV                            //设备登陆响应
@@ -485,7 +486,8 @@ message RetrievePwdRsp_USR                      //找回密码响应
 message LoginReq_USR                            //用户登录请求
 {
   User userInfo = 1;
-  string strValue = 2;
+  uint32 uiTerminalType = 2;
+  string strValue = 3;
 }
 
 message LoginRsp_USR                            //用户登录响应
