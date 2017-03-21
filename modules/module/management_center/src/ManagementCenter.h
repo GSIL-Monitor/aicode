@@ -9,11 +9,11 @@
 #include "boost/shared_ptr.hpp"
 #include "boost/thread/mutex.hpp"
 #include "NetComm.h"
-#include "mysql_impl.h"
 #include "DBInfoCacheManager.h"
 #include "boost/atomic.hpp"
 #include "SessionMgr.h"
 
+class MysqlImpl;
 
 /************************************************************************/
 /* 管理中心类，提供了管理相关操作的实现。
@@ -103,6 +103,10 @@ private:
     bool QueryClusterUser(const std::string &strClusterID, const std::string &strBegindate, const std::string &strEnddate,
         const unsigned int uiRecordType, std::list<InteractiveProtoManagementHandler::AccessedUser> &accessedUserList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QueryClusterDeviceTotal(const std::string &strClusterID, unsigned int &uiDeviceTotal);
+
+    bool QueryClusterUserTotal(const std::string &strClusterID, unsigned int &uiUserTotal);
 
     bool IsValidCluster(const std::string &strClusterAddress);
 

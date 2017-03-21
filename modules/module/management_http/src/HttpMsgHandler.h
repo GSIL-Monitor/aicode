@@ -72,7 +72,7 @@ private:
     bool ModifyCluser(const std::string &strClusterID, const std::string &strAliasName);
 
     bool QueryCluserInfo(const std::string &strClusterID, std::string &strClusterAddress, std::string &strManagementAddress, std::string &strAliasName,
-        std::string &strCreateDate, std::string &strStatus);
+        std::string &strCreateDate, std::string &strStatus, std::string &strAccessedUserNumber, std::string &strAccessedDeviceNumber);
 
     bool CluserShakehand(const std::string &strClusterID);
 

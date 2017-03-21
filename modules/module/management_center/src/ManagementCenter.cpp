@@ -5,6 +5,7 @@
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
 #include "HttpClient.h"
+#include "mysql_impl.h"
 
 const std::string ManagementCenter::MAX_DATE = "2199-01-01 00:00:00";
 
@@ -260,6 +261,8 @@ bool ManagementCenter::QueryClusterInfoReq(const std::string &strMsg, const std:
             rsp.m_clusterInfo.m_strClusterAddress = clusterInfo.m_strClusterAddress;
             rsp.m_clusterInfo.m_strManagementAddress = clusterInfo.m_strManagementAddress;
             rsp.m_clusterInfo.m_strAliasname = clusterInfo.m_strAliasname;
+            rsp.m_clusterInfo.m_uiDeviceTotalnumber = clusterInfo.m_uiDeviceTotalnumber;
+            rsp.m_clusterInfo.m_uiUserTotalnumber = clusterInfo.m_uiUserTotalnumber;
             rsp.m_clusterInfo.m_strCreatedate = clusterInfo.m_strCreatedate;
             rsp.m_clusterInfo.m_uiStatus = clusterInfo.m_uiStatus;
 
@@ -282,6 +285,8 @@ bool ManagementCenter::QueryClusterInfoReq(const std::string &strMsg, const std:
             " and address is " << clusterInfo.m_strClusterAddress <<
             " and management address is " << clusterInfo.m_strManagementAddress <<
             " and aliasname is " << clusterInfo.m_strAliasname <<
+            " and accessed device total number is " << clusterInfo.m_uiDeviceTotalnumber <<
+            " and accessed user total number is " << clusterInfo.m_uiUserTotalnumber <<
             " and create date is " << clusterInfo.m_strCreatedate <<
             " and cluster status is " << rsp.m_uiStatus <<
             " and result is " << blResult);
@@ -393,6 +398,8 @@ bool ManagementCenter::QueryAllClusterReq(const std::string &strMsg, const std::
                     " and address is " << clusterStatus.m_clusterInfo.m_strClusterAddress <<
                     " and management address is " << clusterStatus.m_clusterInfo.m_strManagementAddress <<
                     " and aliasname is " << clusterStatus.m_clusterInfo.m_strAliasname <<
+                    " and accessed device total number is " << clusterStatus.m_clusterInfo.m_uiDeviceTotalnumber <<
+                    " and accessed user total number is " << clusterStatus.m_clusterInfo.m_uiUserTotalnumber <<
                     " and create date is " << clusterStatus.m_clusterInfo.m_strCreatedate <<
                     " and cluster status is " << clusterStatus.m_uiStatus);
 
@@ -948,10 +955,18 @@ bool ManagementCenter::QueryClusterInfo(const std::string &strClusterID, Interac
     }
 
     auto rstCluster = boost::any_cast<InteractiveProtoManagementHandler::Cluster>(ResultList.front());
+
+    unsigned int uiDeviceTotal = 0;
+    unsigned int uiUserTotal = 0;
+    QueryClusterDeviceTotal(rstCluster.m_strClusterID, uiDeviceTotal);
+    QueryClusterUserTotal(rstCluster.m_strClusterID, uiUserTotal);
+
     clusterInfo.m_strClusterID = rstCluster.m_strClusterID;
     clusterInfo.m_strClusterAddress = rstCluster.m_strClusterAddress;
     clusterInfo.m_strManagementAddress = rstCluster.m_strManagementAddress;
     clusterInfo.m_strAliasname = rstCluster.m_strAliasname;
+    clusterInfo.m_uiDeviceTotalnumber = uiDeviceTotal;
+    clusterInfo.m_uiUserTotalnumber = uiUserTotal;
     clusterInfo.m_strCreatedate = rstCluster.m_strCreatedate;
     clusterInfo.m_uiStatus = rstCluster.m_uiStatus;
 
@@ -1014,11 +1029,18 @@ bool ManagementCenter::QueryAllCluster(const std::string &strManagementAddress, 
     {
         auto clusterInfo = boost::any_cast<InteractiveProtoManagementHandler::Cluster>(result);
 
+        unsigned int uiDeviceTotal = 0;
+        unsigned int uiUserTotal = 0;
+        QueryClusterDeviceTotal(clusterInfo.m_strClusterID, uiDeviceTotal);
+        QueryClusterUserTotal(clusterInfo.m_strClusterID, uiUserTotal);
+
         InteractiveProtoManagementHandler::ClusterStatus clusterStatus;
         clusterStatus.m_clusterInfo.m_strClusterID = clusterInfo.m_strClusterID;
         clusterStatus.m_clusterInfo.m_strClusterAddress = clusterInfo.m_strClusterAddress;
         clusterStatus.m_clusterInfo.m_strManagementAddress = clusterInfo.m_strManagementAddress;
         clusterStatus.m_clusterInfo.m_strAliasname = clusterInfo.m_strAliasname;
+        clusterStatus.m_clusterInfo.m_uiDeviceTotalnumber = uiDeviceTotal;
+        clusterStatus.m_clusterInfo.m_uiUserTotalnumber = uiUserTotal;
         clusterStatus.m_clusterInfo.m_strCreatedate = clusterInfo.m_strCreatedate;
         clusterStatus.m_clusterInfo.m_uiStatus = clusterInfo.m_uiStatus;
 
@@ -1217,6 +1239,68 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
     {
         accessedUserList.push_back(std::move(boost::any_cast<InteractiveProtoManagementHandler::AccessedUser>(result)));
     }
+
+    return true;
+}
+
+bool ManagementCenter::QueryClusterDeviceTotal(const std::string &strClusterID, unsigned int &uiDeviceTotal)
+{
+    char sql[256] = { 0 };
+    const char *sqlfmt = "select count(id) from t_cluster_accessed_device_info where clusterid = '%s' and logouttime is null and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        uiDeviceTotal = boost::lexical_cast<unsigned int>(strColumn);
+        result = uiDeviceTotal;
+        LOG_INFO_RLD("QueryClusterDeviceTotal sql count(id) is " << uiDeviceTotal);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryClusterDeviceTotal exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("QueryClusterDeviceTotal sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    uiDeviceTotal = boost::any_cast<unsigned int>(ResultList.front());
+
+    return true;
+}
+
+bool ManagementCenter::QueryClusterUserTotal(const std::string &strClusterID, unsigned int &uiUserTotal)
+{
+    char sql[256] = { 0 };
+    const char *sqlfmt = "select count(id) from t_cluster_accessed_user_info where clusterid = '%s' and logouttime is null and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        uiUserTotal = boost::lexical_cast<unsigned int>(strColumn);
+        result = uiUserTotal;
+        LOG_INFO_RLD("QueryClusterUserTotal sql count(id) is " << uiUserTotal);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryClusterUserTotal exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("QueryClusterUserTotal sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    uiUserTotal = boost::any_cast<unsigned int>(ResultList.front());
 
     return true;
 }

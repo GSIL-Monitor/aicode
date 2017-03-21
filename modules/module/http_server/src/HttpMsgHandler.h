@@ -156,7 +156,7 @@ private:
     bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
     
     template<typename T>
-    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
+    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiTerminalType, std::list<T> &RelationList,
         std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList);
 
     template<typename T>
@@ -201,7 +201,8 @@ private:
     bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);
 
-    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, std::string &strSid, std::string &strValue);
+    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
+        const unsigned int &uiDevType, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);

@@ -601,7 +601,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     std::string strSid;
     std::list<InteractiveProtoHandler::Relation> relist;
     std::list<std::string> strDevNameList;
-    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, relist, strUserID, strSid, strDevNameList))
+    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiTerminalType, relist, strUserID, strSid, strDevNameList))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
         return blResult;
@@ -1871,7 +1871,7 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
     std::string strValue;
     std::string strSid;
-    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, strSid, strValue))
+    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, uiDevType, strSid, strValue))
     {
         LOG_ERROR_RLD("Device login handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -3132,7 +3132,7 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
 }
 
 template<typename T>
-bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, std::list<T> &RelationList,
+bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiTerminalType, std::list<T> &RelationList,
     std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -3156,7 +3156,7 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         UsrLoginReq.m_userInfo.m_strExtend = "";
         UsrLoginReq.m_userInfo.m_strAliasName = "";
         UsrLoginReq.m_userInfo.m_strEmail = "";
-
+        UsrLoginReq.m_uiTerminalType = uiTerminalType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UsrLoginReq, strSerializeOutPut))
@@ -4280,7 +4280,8 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
 
 }
 
-bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, std::string &strSid, std::string &strValue)
+bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
+    const unsigned int &uiDevType, std::string &strSid, std::string &strValue)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -4291,6 +4292,7 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         DevLoginReq.m_strValue = strDevIpAddress; //这里Value保留值填写的内容是设备的接口ip，没有再独立定义字段
         DevLoginReq.m_strDevID = strDevID;
         DevLoginReq.m_strPassword = strDevPwd;
+        DevLoginReq.m_uiDeviceType = uiDevType;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevLoginReq, strSerializeOutPut))

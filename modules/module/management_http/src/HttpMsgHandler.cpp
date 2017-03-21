@@ -246,7 +246,11 @@ bool HttpMsgHandler::QueryCluserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     std::string strAliasName;
     std::string strCreateDate;
     std::string strStatus;
-    if (!QueryCluserInfo(strClusterID, strClusterAddress, strManagementAddress, strAliasName, strCreateDate, strStatus))
+    std::string strAccessedUserNumber;
+    std::string strAccessedDeviceNumber;
+
+    if (!QueryCluserInfo(strClusterID, strClusterAddress, strManagementAddress, strAliasName, strCreateDate, strStatus, 
+        strAccessedUserNumber, strAccessedDeviceNumber))
     {
         LOG_ERROR_RLD("Query cluster handle failed");
         return blResult;
@@ -259,6 +263,8 @@ bool HttpMsgHandler::QueryCluserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     ResultInfoMap.insert(std::make_pair("aliasname", strAliasName));
     ResultInfoMap.insert(std::make_pair("createdate", strCreateDate));
     ResultInfoMap.insert(std::make_pair("status", strStatus));
+    ResultInfoMap.insert(std::make_pair("user_totalnumber", strAccessedUserNumber));
+    ResultInfoMap.insert(std::make_pair("device_totalnumber", strAccessedDeviceNumber));
 
     blResult = true;
 
@@ -370,7 +376,9 @@ bool HttpMsgHandler::QueryAllCluserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
         jsRelation["createdate"] = itBegin->m_clusterInfo.m_strCreatedate;
         jsRelation["management_address"] = itBegin->m_clusterInfo.m_strManagementAddress;
         jsRelation["status"] = itBegin->m_uiStatus;
-        
+        jsRelation["user_totalnumber"] = boost::lexical_cast<std::string>(itBegin->m_clusterInfo.m_uiUserTotalnumber);
+        jsRelation["device_totalnumber"] = boost::lexical_cast<std::string>(itBegin->m_clusterInfo.m_uiDeviceTotalnumber);
+
         jsClusterInfoList.append(jsRelation);
 
         ++itBegin;
@@ -515,6 +523,8 @@ bool HttpMsgHandler::QueryCluserDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsg
         jsDev["logout_date"] = itBegin->m_strLogoutTime;
         jsDev["devid"] = itBegin->m_strDeviceID;
         jsDev["devtype"] = itBegin->m_uiDeviceType;
+        jsDev["devname"] = itBegin->m_strDeviceName;
+        jsDev["onlineduration"] = itBegin->m_uiOnlineDuration;
         
         jsClusterInfoList.append(jsDev);
 
@@ -660,6 +670,9 @@ bool HttpMsgHandler::QueryCluserUserHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
         jsUsr["logout_date"] = itBegin->m_strLogoutTime;
         jsUsr["userid"] = itBegin->m_strUserID;
         jsUsr["terminaltype"] = itBegin->m_uiClientType;
+        jsUsr["useraliasname"] = itBegin->m_strUserAliasname;
+        jsUsr["onlineduration"] = itBegin->m_uiOnlineDuration;
+        jsUsr["username"] = itBegin->m_strUserName;
 
         jsClusterInfoList.append(jsUsr);
 
@@ -1028,14 +1041,10 @@ bool HttpMsgHandler::ModifyCluser(const std::string &strClusterID, const std::st
 }
 
 bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::string &strClusterAddress, std::string &strManagementAddress, std::string &strAliasName,
-    std::string &strCreateDate, std::string &strStatus)
+    std::string &strCreateDate, std::string &strStatus, std::string &strAccessedUserNumber, std::string &strAccessedDeviceNumber)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
-        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-        std::string::size_type pos = strCurrentTime.find('T');
-        strCurrentTime.replace(pos, 1, std::string(" "));
-
         InteractiveProtoManagementHandler::QueryClusterInfoReq QueryClusterReq;
         QueryClusterReq.m_MngMsgType = InteractiveProtoManagementHandler::ManagementMsgType::QueryClusterInfoReq_T;
         QueryClusterReq.m_uiMsgSeq = 1;
@@ -1074,7 +1083,9 @@ bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::strin
         strAliasName = QueryClusterRsp.m_clusterInfo.m_strAliasname;
         strCreateDate = QueryClusterRsp.m_clusterInfo.m_strCreatedate;
         strStatus = boost::lexical_cast<std::string>(QueryClusterRsp.m_uiStatus);
-
+        strAccessedUserNumber = boost::lexical_cast<std::string>(QueryClusterRsp.m_clusterInfo.m_uiUserTotalnumber);
+        strAccessedDeviceNumber = boost::lexical_cast<std::string>(QueryClusterRsp.m_clusterInfo.m_uiDeviceTotalnumber);
+        
         iRet = QueryClusterRsp.m_iRetcode;
 
         LOG_INFO_RLD("Query cluster and cluser id is " << strClusterID <<
@@ -1083,6 +1094,8 @@ bool HttpMsgHandler::QueryCluserInfo(const std::string &strClusterID, std::strin
             " and alias name is " << strAliasName <<
             " and create date is " << strCreateDate <<
             " and status is " << strStatus <<
+            " and accessed user number is " << strAccessedUserNumber <<
+            " and accessed device number is " << strAccessedDeviceNumber <<
             " and return code is " << QueryClusterRsp.m_iRetcode <<
             " and return msg is " << QueryClusterRsp.m_strRetMsg);
 

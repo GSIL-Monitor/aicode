@@ -278,6 +278,13 @@ bool CTimeZone::ParseTimezoneString( string sTimezoneString, TimeZone &timezone)
         return false;
     }
 
+    Json::Value retValue = root["code"];
+    if (retValue.isNull() || (!retValue.isInt() && !retValue.isUInt()) || retValue.asInt() != 0)
+    {
+        LOG_ERROR_RLD("Http post return error, SrcString is" << sTimezoneString);
+        return false;
+    }
+
     Json::Value data = root["data"];
 
     Json::Value countrycode = data["country_id"];
