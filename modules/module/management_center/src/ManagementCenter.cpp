@@ -133,8 +133,8 @@ bool ManagementCenter::AddClusterReq(const std::string &strMsg, const std::strin
 
     m_DBRuner.Post(boost::bind(&ManagementCenter::AddCluster, this, clusterInfo));
 
-    m_DBRuner.Post(boost::bind(&ManagementCenter::AddClusterPost, this, clusterInfo.m_strClusterAddress, clusterInfo.m_strClusterID,
-        clusterInfo.m_strManagementAddress));
+    m_DBRuner.Post(boost::bind(&ManagementCenter::AddClusterAgent, this, clusterInfo.m_strClusterAddress, clusterInfo.m_strClusterID,
+        m_ParamInfo.m_strManagementAddress));
 
     blResult = true;
 
@@ -676,7 +676,25 @@ bool ManagementCenter::IsValidCluster(const std::string &strClusterAddress)
     return true;
 }
 
-void ManagementCenter::AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress)
+void ManagementCenter::AddClusterAgent(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress)
+{
+    if (AddClusterPost(strUrl, strClusterID, strManagementAddress))
+    {
+        LOG_INFO_RLD("AddClusterAgent successful, cluster address is " << strUrl << " and cluster id is " << strClusterID <<
+            " and management address is: " << strManagementAddress);
+
+        RefreshClusterSession(strClusterID, strUrl, CLUSTER_ONLINE, true);
+    }
+    else
+    {
+        LOG_ERROR_RLD("AddClusterAgent failed, cluster address is " << strUrl << " and cluster id is " << strClusterID <<
+            " and management address is: " << strManagementAddress);
+
+        RefreshClusterSession(strClusterID, strUrl, CLUSTER_OFFLINE, true);
+    }
+}
+
+bool ManagementCenter::AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress)
 {
     std::map<std::string, std::string> reqFormMap;
     reqFormMap.insert(std::make_pair("clusterid", strClusterID));
@@ -688,13 +706,13 @@ void ManagementCenter::AddClusterPost(const std::string &strUrl, const std::stri
     if (CURLE_OK != httpClient.PostForm(postUrl, reqFormMap, strRsp))
     {
         LOG_ERROR_RLD("AddClusterPost send http post failed, url is " << postUrl << " and cluster id is " << strClusterID);
-        return;
+        return false;
     }
 
     LOG_INFO_RLD("AddClusterPost successful, url is " << postUrl << " and cluster id is " << strClusterID <<
         " and response data is: " << strRsp);
 
-    RefreshClusterSession(strClusterID, strUrl, CLUSTER_ONLINE, true);
+    return true;
 }
 
 bool ManagementCenter::InitClusterSession()
@@ -769,6 +787,8 @@ void ManagementCenter::ShakehandCluster()
         strFormMap.clear();
         strFormMap.insert(std::make_pair("clusterid", strClusterID));
         std::string strUrl = "http://" + clusterSession.strClusterAddress + "/access.cgi?action=cluster_shakehand";
+
+        AddClusterPost(clusterSession.strClusterAddress, strClusterID, m_ParamInfo.m_strManagementAddress);
 
         std::string strRsp;
         if (CURLE_OK != httpClient.PostForm(strUrl, strFormMap, strRsp))
@@ -1307,6 +1327,13 @@ bool ManagementCenter::QueryClusterUserTotal(const std::string &strClusterID, un
 
 void ManagementCenter::PushClusterDevice(const std::list<InteractiveProtoManagementHandler::DeviceAccessRecord> &deviceAccessRecordList)
 {
+    if (deviceAccessRecordList.empty())
+    {
+        LOG_INFO_RLD("PushClusterDevice completed, input deviceAccessRecordList is empty");
+
+        return;
+    }
+
     boost::posix_time::ptime nowTime = boost::posix_time::second_clock::local_time();
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(nowTime);
     std::string::size_type pos = strCurrentTime.find('T');
@@ -1354,6 +1381,13 @@ bool ManagementCenter::InsertAccessedDevice(const InteractiveProtoManagementHand
 
 void ManagementCenter::PushClusterUser(const std::list<InteractiveProtoManagementHandler::UserAccessRecord> &userAccessRecordList)
 {
+    if (userAccessRecordList.empty())
+    {
+        LOG_INFO_RLD("PushClusterUser completed, input userAccessRecordList is empty");
+
+        return;
+    }
+
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));

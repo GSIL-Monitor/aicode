@@ -595,6 +595,7 @@ public:
     {
 
         std::list<Relation> m_allRelationInfoList;
+        std::list<std::string> m_strUserNameList;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

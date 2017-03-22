@@ -243,7 +243,15 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
     LOG_INFO_RLD("Begin collect cluster info.");
     
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    
+
+    if (CommMsgHandler::SUCCEED != pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval))
+    {
+        LOG_ERROR_RLD("Connect channel failed and remote address is " << m_ParamInfo.m_strRemoteAddress << 
+            "and port is " << m_ParamInfo.m_strRemotePort);
+        return;
+    }
+
     unsigned int uiIndex = 0;
     unsigned int uiTotal = 0;
     unsigned int uiReceived = 0;
@@ -285,6 +293,14 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                 return iRet = CommMsgHandler::FAILED;
             }
 
+            iRet = DeviceAccessedRsp.m_iRetcode;
+
+            if (CommMsgHandler::SUCCEED != iRet)
+            {
+                LOG_ERROR_RLD("Get accessed device info return code failed.");
+                return iRet = CommMsgHandler::FAILED;
+            }
+
             uiTotal = DeviceAccessedRsp.m_uiRecordTotal;
 
             boost::shared_ptr<std::list<InteractiveProtoHandler::DeviceAccessRecord> > pDeviceInfoList
@@ -311,31 +327,19 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
         };
 
         pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
-
-        if (0 == uiIndex)
+        
+        if (CommMsgHandler::SUCCEED != pCommMsgHdr->StartTask() ||
+            CommMsgHandler::SUCCEED != iRet)
         {
-            if (CommMsgHandler::SUCCEED != pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-                m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval)  ||
-                CommMsgHandler::SUCCEED != iRet)
-            {
-                LOG_ERROR_RLD("Get accessed device info failed and current index is " << uiIndex << "and total number is " << uiTotal);
-                return;
-            }
+            LOG_ERROR_RLD("Get accessed device info failed and current index is " << uiIndex << "and total number is " << uiTotal);
+            return;
         }
-        else
-        {
-            if (CommMsgHandler::SUCCEED != pCommMsgHdr->StartTask() ||
-                CommMsgHandler::SUCCEED != iRet)
-            {
-                LOG_ERROR_RLD("Get accessed device info failed and current index is " << uiIndex << "and total number is " << uiTotal);
-                return;
-            }
-        }
-
+       
         uiIndex += uiReceived;
 
-    } while (uiReceived == uiTotal);
+    } while (uiReceived < uiTotal);
 
+    LOG_INFO_RLD("Collecting user info.");
 
     {
         uiIndex = 0;
@@ -380,6 +384,14 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                     return iRet = CommMsgHandler::FAILED;
                 }
 
+                iRet = UserAccessedRsp.m_iRetcode;
+
+                if (CommMsgHandler::SUCCEED != iRet)
+                {
+                    LOG_ERROR_RLD("Get accessed user info return code failed.");
+                    return iRet = CommMsgHandler::FAILED;
+                }
+
                 uiTotal = UserAccessedRsp.m_uiRecordTotal;
 
                 boost::shared_ptr<std::list<InteractiveProtoHandler::UserAccessRecord> > pUserInfoList
@@ -406,30 +418,17 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
             };
 
             pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
-
-            if (0 == uiIndex)
+            
+            if (CommMsgHandler::SUCCEED != pCommMsgHdr->StartTask() ||
+                CommMsgHandler::SUCCEED != iRet)
             {
-                if (CommMsgHandler::SUCCEED != pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-                    m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) ||
-                    CommMsgHandler::SUCCEED != iRet)
-                {
-                    LOG_ERROR_RLD("Get accessed user info failed and current index is " << uiIndex << "and total number is " << uiTotal);
-                    return;
-                }
+                LOG_ERROR_RLD("Get accessed user info failed and current index is " << uiIndex << "and total number is " << uiTotal);
+                return;
             }
-            else
-            {
-                if (CommMsgHandler::SUCCEED != pCommMsgHdr->StartTask() ||
-                    CommMsgHandler::SUCCEED != iRet)
-                {
-                    LOG_ERROR_RLD("Get accessed user info failed and current index is " << uiIndex << "and total number is " << uiTotal);
-                    return;
-                }
-            }
-
+           
             uiIndex += uiReceived;
 
-        } while (uiReceived == uiTotal);
+        } while (uiReceived < uiTotal);
     }
 
     LOG_INFO_RLD("End collect cluster info.");

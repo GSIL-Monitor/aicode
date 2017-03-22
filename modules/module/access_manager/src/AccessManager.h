@@ -12,6 +12,7 @@
 #include "DBInfoCacheManager.h"
 #include "boost/atomic.hpp"
 #include "SessionMgr.h"
+#include "ClusterAccessCollector.h"
 
 class MysqlImpl;
 
@@ -161,6 +162,10 @@ public:
 
     bool QueryUpgradeSiteReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool GetDeviceAccessRecordReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool GetUserAccessRecordReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -173,7 +178,7 @@ private:
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList, std::list<std::string> &strDevNameList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
+    bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList, std::list<std::string> &strUserNameList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo = 0, const bool IsForceFromDB = false);
@@ -274,6 +279,9 @@ private:
     SessionMgr m_SessionMgr;
 
     std::map<std::string, std::list<AccessDomainInfo>> m_AreaDomainMap;
+
+    boost::shared_ptr<ClusterAccessCollector> m_pClusterAccessCollector;
+
 };
 
 

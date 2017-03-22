@@ -46,6 +46,7 @@ public:
         std::string m_strMemAddress;
         std::string m_strMemPort;
         std::string m_strSessionTimeoutCountThreshold;
+        std::string m_strManagementAddress;
     } ParamInfo;
 
     inline void SetParamInfo(const ParamInfo &pinfo)
@@ -110,7 +111,9 @@ private:
 
     bool IsValidCluster(const std::string &strClusterAddress);
 
-    void AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
+    void AddClusterAgent(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
+
+    bool AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
 
     bool InitClusterSession();
 

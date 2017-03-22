@@ -17,7 +17,7 @@ curl -F sid=4873DB4E14DE65459CDD26C04D294ED4 -F userid=C0C027EB494ACE4BA13FBC8AC
 curl -F username=中文用户001@anni.com -F email=zycai@annigroup.com http://172.20.122.252/access.cgi?action=retrieve_pwd
 
 用户登录
-curl -F username=中文用户001@anni.com -F userpwd=123456 -F terminaltype=0 http://172.20.122.252/access.cgi?action=user_login
+curl -F username=中文用户001@anni.com -F userpwd=123456 -F terminaltype=4 http://172.20.122.252/access.cgi?action=user_login
 
 用户登出
 curl -F sid=4873DB4E14DE65459CDD26C04D294ED4 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 http://172.20.122.252/access.cgi?action=user_logout
@@ -76,7 +76,7 @@ curl -F sid=4873DB4E14DE65459CDD26C04D294ED4 -F userid=7588DCA8D6EC5D45AAE7CA3C3
 curl -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_query_access_domain
 
 设备登录
-curl -F devid=czy_beta_device_id_001 -F devpwd=111111 -F devtype=0 http://172.20.122.252/access.cgi?action=device_login
+curl -F devid=czy_beta_device_id_001 -F devpwd=111111 -F devtype=11 http://172.20.122.252/access.cgi?action=device_login
 
 设备登出
 curl -F sid=66E544EFDB887341BB624CA49F1454E9 -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_logout

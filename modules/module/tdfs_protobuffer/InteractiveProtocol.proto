@@ -603,6 +603,7 @@ message QueryUserReq_USR                        //查询设备关联的用户信
 message QueryUserRsp_USR                        //查询设备关联用户信息响应
 {
   repeated Relation allRelationInfo = 1;
+  repeated string strUserName = 2;
 }
 
 message SharingDevReq_USR                       //分享设备请求

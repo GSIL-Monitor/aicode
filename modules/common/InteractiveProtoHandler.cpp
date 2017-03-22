@@ -2501,6 +2501,13 @@ void InteractiveProtoHandler::QueryUserRsp_USR::UnSerializer(const InteractiveMe
 {
     Rsp::UnSerializer(InteractiveMsg);
     UnSerializeRelationList(m_allRelationInfoList, InteractiveMsg.rspvalue().queryuserrsp_usr_value().allrelationinfo());
+
+    m_strUserNameList.clear();
+    int iCount = InteractiveMsg.rspvalue().queryuserrsp_usr_value().strusername_size();
+    for (int i = 0; i < iCount; ++i)
+    {
+        m_strUserNameList.push_back(InteractiveMsg.rspvalue().queryuserrsp_usr_value().strusername(i));
+    }
 }
 
 void InteractiveProtoHandler::QueryUserRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2510,6 +2517,18 @@ void InteractiveProtoHandler::QueryUserRsp_USR::Serializer(InteractiveMessage &I
 
     auto uinfo = InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->mutable_allrelationinfo();
     SerializeRelationList(m_allRelationInfoList, uinfo);
+
+    int i = 0;
+    auto itBegin = m_strUserNameList.begin();
+    auto itEnd = m_strUserNameList.end();
+    while (itBegin != itEnd)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->add_strusername();
+        InteractiveMsg.mutable_rspvalue()->mutable_queryuserrsp_usr_value()->set_strusername(i, *itBegin);
+
+        ++i;
+        ++itBegin;
+    }
 }
 
 void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

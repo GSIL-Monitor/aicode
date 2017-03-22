@@ -243,6 +243,13 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strManagementAddress = GetConfig("General.ManagementAddress");
+    if (strManagementAddress.empty())
+    {
+        LOG_ERROR_RLD("Management address config item not found.");
+        return 0;
+    }
+
     const std::string &strMemcachedAddress = GetConfig("MemCached.MemAddress");
     if (strMemcachedAddress.empty())
     {
@@ -268,6 +275,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strMemAddress = strMemcachedAddress;
     UmgParam.m_strMemPort = strMemcachedPort;
     UmgParam.m_strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
+    UmgParam.m_strManagementAddress = strManagementAddress;
 
     ManagementCenter Umg(UmgParam);
     if (!Umg.Init())

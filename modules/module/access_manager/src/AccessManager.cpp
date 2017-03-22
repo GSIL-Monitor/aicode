@@ -13,7 +13,7 @@ const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
 
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
-m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0)
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache))
 {
     
 }
@@ -133,7 +133,9 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::AddFileReq_DEV_T == req.m_MsgType || 
         InteractiveProtoHandler::MsgType::RetrievePwdReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_DEV_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::GetDeviceAccessRecordReq_INNER_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::GetUserAccessRecordReq_INNER_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -452,6 +454,13 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         {
             LoginRspUsr.m_reInfoList.swap(RelationList);
             LoginRspUsr.m_strDevNameList.swap(strDevNameList);
+
+            std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+            std::string::size_type pos = strCurrentTime.find('T');
+            strCurrentTime.replace(pos, 1, std::string(" "));
+
+            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
+            //    strSessionID, LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_uiTerminalType, strCurrentTime, ""));
         }
 
         std::string strSerializeOutPut;
@@ -602,6 +611,16 @@ bool AccessManager::LogoutReq(const std::string &strMsg, const std::string &strS
         LogoutRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         LogoutRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         LogoutRspUsr.m_strValue = "value";
+
+        if (blResult)
+        {
+            std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+            std::string::size_type pos = strCurrentTime.find('T');
+            strCurrentTime.replace(pos, 1, std::string(" "));
+
+            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
+            //    LogoutReqUsr.m_strSID, "", 0, "", strCurrentTime));
+        }
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(LogoutRspUsr, strSerializeOutPut))
@@ -1023,9 +1042,9 @@ bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &s
     bool blResult = false;
     InteractiveProtoHandler::QueryUserReq_USR req;
     std::list<InteractiveProtoHandler::Relation> RelationList;
+    std::list<std::string> strUserNameList;
 
-
-    BOOST_SCOPE_EXIT(&blResult, this_, &RelationList, &req, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &RelationList, &req, &writer, &strSrcID, &strUserNameList)
     {
         InteractiveProtoHandler::QueryUserRsp_USR rsp;
 
@@ -1038,6 +1057,7 @@ bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &s
         if (blResult)
         {
             rsp.m_allRelationInfoList.swap(RelationList);
+            rsp.m_strUserNameList.swap(strUserNameList);
         }
 
         std::string strSerializeOutPut;
@@ -1051,6 +1071,25 @@ bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &s
         LOG_INFO_RLD("Query user rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
             " and result is " << blResult);
 
+        if (blResult)
+        {
+            auto itBeginUserName = rsp.m_strUserNameList.begin();
+            auto itEndUserName = rsp.m_strUserNameList.end();
+            auto itBeginRelation = rsp.m_allRelationInfoList.begin();
+            auto itEndRelation = rsp.m_allRelationInfoList.end();
+
+            while (itBeginUserName != itEndUserName && itBeginRelation != itEndRelation)
+            {
+                LOG_INFO_RLD("Query device user relation successful, device id is " << itBeginRelation->m_strDevID <<
+                    " and user id is " << itBeginRelation->m_strUserID << " and user name is " << *itBeginUserName <<
+                    " and relation is " << itBeginRelation->m_uiRelation <<
+                    " and begin date is " << itBeginRelation->m_strBeginDate <<
+                    " and end date is " << itBeginRelation->m_strEndDate);
+
+                ++itBeginUserName;
+                ++itBeginRelation;
+            }
+        }
     }
     BOOST_SCOPE_EXIT_END
 
@@ -1061,7 +1100,7 @@ bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
-    if (!QueryRelationByDevID(req.m_strDevID, RelationList, req.m_uiBeginIndex))
+    if (!QueryRelationByDevID(req.m_strDevID, RelationList, strUserNameList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query user info failed and user id is " << req.m_strDevID);
         return false;
@@ -1596,6 +1635,16 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
         LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         LoginRspUsr.m_strValue = strValue;
 
+        if (blResult)
+        {
+            std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+            std::string::size_type pos = strCurrentTime.find('T');
+            strCurrentTime.replace(pos, 1, std::string(" "));
+
+            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
+            //    strSessionID, LoginReqDev.m_strDevID, LoginReqDev.m_uiDeviceType, strCurrentTime, ""));
+        }
+
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(LoginRspUsr, strSerializeOutPut))
         {
@@ -1797,6 +1846,16 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
         LogoutRspDev.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         LogoutRspDev.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         LogoutRspDev.m_strValue = "";
+
+        if (blResult)
+        {
+            std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+            std::string::size_type pos = strCurrentTime.find('T');
+            strCurrentTime.replace(pos, 1, std::string(" "));
+
+            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
+            //    LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0, "", strCurrentTime));
+        }
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(LogoutRspDev, strSerializeOutPut))
@@ -2207,6 +2266,153 @@ bool AccessManager::QueryUpgradeSiteReqDevice(const std::string &strMsg, const s
         LOG_ERROR_RLD("Query upgrade site url failed, device id is " << req.m_strDevID << " and device ip is " << req.m_strDevIpAddress);
         return false;
     }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::GetDeviceAccessRecordReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER req;
+    std::list<InteractiveProtoHandler::DeviceAccessRecord> deviceAccessRecordList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &deviceAccessRecordList)
+    {
+        InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::GetDeviceAccessRecordRsp_INNER_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_uiRecordTotal = blResult ? this_->m_pClusterAccessCollector->DeviceAccessRecordSize() : 0;
+
+        if (blResult)
+        {
+            rsp.m_deviceAccessRecordList.swap(deviceAccessRecordList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Get device access record rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Get device access record rsp already send, dst id is " << strSrcID <<
+            " and request begin index is " << req.m_uiBeginIndex <<
+            " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &deviceAccessRecord : rsp.m_deviceAccessRecordList)
+            {
+                LOG_INFO_RLD("Device access record[" << i << "]: "
+                    " access id is " << deviceAccessRecord.m_strAccessID <<
+                    " and cluster id is " << deviceAccessRecord.m_strClusterID <<
+                    " and device id is " << deviceAccessRecord.m_strDeviceID <<
+                    " and device name is " << deviceAccessRecord.m_strDeviceName <<
+                    " and device type is " << deviceAccessRecord.m_uiDeviceType <<
+                    " and login time is " << deviceAccessRecord.m_strLoginTime <<
+                    " and logout time is " << deviceAccessRecord.m_strLogoutTime <<
+                    " and online duration is " << deviceAccessRecord.m_uiOnlineDuration <<
+                    " and create date is " << deviceAccessRecord.m_strCreateDate <<
+                    " and status is " << deviceAccessRecord.m_uiStatus);
+
+                ++i;
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Get device access record req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //if (!m_pClusterAccessCollector->GetDeviceAccessRecord(deviceAccessRecordList, req.m_uiBeginIndex))
+    //{
+    //    LOG_ERROR_RLD("Get device access record failed, src id is " << strSrcID);
+    //}
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::GetUserAccessRecordReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::GetUserAccessRecordReq_INNER req;
+    std::list<InteractiveProtoHandler::UserAccessRecord> userAccessRecordList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &userAccessRecordList)
+    {
+        InteractiveProtoHandler::GetUserAccessRecordRsp_INNER rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::GetUserAccessRecordRsp_INNER_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_uiRecordTotal = blResult ? this_->m_pClusterAccessCollector->UserAccessRecordSize() : 0;
+
+        if (blResult)
+        {
+            rsp.m_userAccessRecordList.swap(userAccessRecordList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Get user access record rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Get user access record rsp already send, dst id is " << strSrcID <<
+            " and request begin index is " << req.m_uiBeginIndex <<
+            " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &userAccessRecord : rsp.m_userAccessRecordList)
+            {
+                LOG_INFO_RLD("User access record[" << i << "]: "
+                    " access id is " << userAccessRecord.m_strAccessID <<
+                    " and cluster id is " << userAccessRecord.m_strClusterID <<
+                    " and user id is " << userAccessRecord.m_strUserID <<
+                    " and user name is " << userAccessRecord.m_strUserName <<
+                    " and user aliasname is " << userAccessRecord.m_strUserAliasname <<
+                    " and client type is " << userAccessRecord.m_uiClientType <<
+                    " and login time is " << userAccessRecord.m_strLoginTime <<
+                    " and logout time is " << userAccessRecord.m_strLogoutTime <<
+                    " and online duration is " << userAccessRecord.m_uiOnlineDuration <<
+                    " and create date is " << userAccessRecord.m_strCreateDate <<
+                    " and status is " << userAccessRecord.m_uiStatus);
+
+                ++i;
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Get user access record req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //if (!m_pClusterAccessCollector->GetUserAccessRecord(userAccessRecordList, req.m_uiBeginIndex))
+    //{
+    //    LOG_ERROR_RLD("Get user access record failed, src id is " << strSrcID);
+    //}
 
     blResult = true;
 
@@ -3011,7 +3217,8 @@ void AccessManager::UnregisterUserToDB(const std::string &strUserID, const int i
 bool AccessManager::QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select count(id) from t_user_device_relation where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
+    const char* sqlfmt = "select count(rel.id) from t_user_device_relation rel, t_device_info dev where"
+        " rel.userid = '%s' and rel.deviceid = '%s' and rel.relation = %d and rel.status = 0 and rel.devicekeyid = dev.id and dev.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strDevID.c_str(), iRelation);
     std::string strSql = sql;
 
@@ -3141,11 +3348,11 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
 }
 
 bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
-    const unsigned int uiBeginIndex, const unsigned int uiPageSize)
+    std::list<std::string> &strUserNameList, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     memset(sql, 0, sizeof(sql));
-    const char *sqlft = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend"
+    const char *sqlft = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, usr.username"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
         " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
     snprintf(sql, sizeof(sql), sqlft, strDevID.c_str());
@@ -3161,12 +3368,23 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
         boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList;
         pRelationList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> >>(ResultList.front());
 
+        boost::shared_ptr<std::list<std::string> > pStrUserNameList;
+        pStrUserNameList = boost::any_cast<boost::shared_ptr<std::list<std::string> >>(ResultList.back());
+
         auto itBegin = pRelationList->begin();
         auto itEnd = pRelationList->end();
         while (itBegin != itEnd)
         {
             RelationList.push_back(*itBegin);
             ++itBegin;
+        }
+
+        auto itBeginUserName = pStrUserNameList->begin();
+        auto itEndUserName = pStrUserNameList->end();
+        while (itBeginUserName != itEndUserName)
+        {
+            strUserNameList.push_back(*itBeginUserName);
+            ++itBeginUserName;
         }
 
         LOG_INFO_RLD("Query relation by device id get result from cache and sql is " << strSql);
@@ -3210,6 +3428,10 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
             case 7:
                 relationInfo.m_strValue = strColumn;
                 break;
+            case 8:
+                strUserNameList.push_back(strColumn);
+                break;
+
             default:
                 LOG_ERROR_RLD("DevInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
                 break;
@@ -3237,8 +3459,18 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
             ++itBeginRel;
         }
 
+        boost::shared_ptr<std::list<std::string> > pStrUserNameList(new std::list<std::string>);
+        auto itBeginUserName = strUserNameList.begin();
+        auto itEndUserName = strUserNameList.end();
+        while (itBeginUserName != itEndUserName)
+        {
+            pStrUserNameList->push_back(*itBeginUserName);
+            ++itBeginUserName;
+        }
+
         boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
         pResultList->push_back(pRelationListTmp);
+        pResultList->push_back(pStrUserNameList);
 
         m_DBCache.SetResult(strSql, pResultList);
 

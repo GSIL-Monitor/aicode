@@ -7748,11 +7748,28 @@ class QueryUserRsp_USR : public ::google::protobuf::Message /* @@protoc_insertio
   const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation >&
       allrelationinfo() const;
 
+  // repeated string strUserName = 2;
+  int strusername_size() const;
+  void clear_strusername();
+  static const int kStrUserNameFieldNumber = 2;
+  const ::std::string& strusername(int index) const;
+  ::std::string* mutable_strusername(int index);
+  void set_strusername(int index, const ::std::string& value);
+  void set_strusername(int index, const char* value);
+  void set_strusername(int index, const char* value, size_t size);
+  ::std::string* add_strusername();
+  void add_strusername(const ::std::string& value);
+  void add_strusername(const char* value);
+  void add_strusername(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strusername() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strusername();
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserRsp_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relation > allrelationinfo_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strusername_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -20683,6 +20700,61 @@ inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Relat
 QueryUserRsp_USR::allrelationinfo() const {
   // @@protoc_insertion_point(field_list:Interactive.Message.QueryUserRsp_USR.allRelationInfo)
   return allrelationinfo_;
+}
+
+// repeated string strUserName = 2;
+inline int QueryUserRsp_USR::strusername_size() const {
+  return strusername_.size();
+}
+inline void QueryUserRsp_USR::clear_strusername() {
+  strusername_.Clear();
+}
+inline const ::std::string& QueryUserRsp_USR::strusername(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserRsp_USR.strUserName)
+  return strusername_.Get(index);
+}
+inline ::std::string* QueryUserRsp_USR::mutable_strusername(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserRsp_USR.strUserName)
+  return strusername_.Mutable(index);
+}
+inline void QueryUserRsp_USR::set_strusername(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserRsp_USR.strUserName)
+  strusername_.Mutable(index)->assign(value);
+}
+inline void QueryUserRsp_USR::set_strusername(int index, const char* value) {
+  strusername_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserRsp_USR.strUserName)
+}
+inline void QueryUserRsp_USR::set_strusername(int index, const char* value, size_t size) {
+  strusername_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserRsp_USR.strUserName)
+}
+inline ::std::string* QueryUserRsp_USR::add_strusername() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.QueryUserRsp_USR.strUserName)
+  return strusername_.Add();
+}
+inline void QueryUserRsp_USR::add_strusername(const ::std::string& value) {
+  strusername_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryUserRsp_USR.strUserName)
+}
+inline void QueryUserRsp_USR::add_strusername(const char* value) {
+  strusername_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.QueryUserRsp_USR.strUserName)
+}
+inline void QueryUserRsp_USR::add_strusername(const char* value, size_t size) {
+  strusername_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.QueryUserRsp_USR.strUserName)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+QueryUserRsp_USR::strusername() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryUserRsp_USR.strUserName)
+  return strusername_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+QueryUserRsp_USR::mutable_strusername() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryUserRsp_USR.strUserName)
+  return &strusername_;
 }
 
 // -------------------------------------------------------------------
