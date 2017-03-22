@@ -185,7 +185,8 @@ private:
         std::list<std::string> &strDevNameList);
     
     template<typename T>
-    bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList);
+    bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList,
+        std::list<std::string> &strUsrNameList);
 
     bool SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation, 
         const std::string &strBeginDate, const std::string &strEndDate);

@@ -316,7 +316,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                 strPushIpAddress, strPushPort)
                 );
             
-            uiReceived = uiReceived + DeviceAccessedRsp.m_deviceAccessRecordList.size();
+            uiReceived = uiReceived + pDeviceInfoList->size();
             
             LOG_INFO_RLD("Get accessed device info and total number is " << uiTotal << " and current index is " << uiIndex <<
                 " and receive number is " << uiReceived <<
@@ -407,7 +407,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                     strPushIpAddress, strPushPort)
                     );
 
-                uiReceived = uiReceived + UserAccessedRsp.m_userAccessRecordList.size();
+                uiReceived = uiReceived + pUserInfoList->size();
 
                 LOG_INFO_RLD("Get accessed user info and total number is " << uiTotal << " and current index is " << uiIndex <<
                     " and receive number is " << uiReceived <<
