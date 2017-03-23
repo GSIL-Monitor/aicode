@@ -259,7 +259,7 @@ bool HttpMsgHandler::QueryCluserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::make_pair("cluster_address", strClusterAddress));
-    ResultInfoMap.insert(std::make_pair("mananement_address", strManagementAddress));
+    ResultInfoMap.insert(std::make_pair("management_address", strManagementAddress));
     ResultInfoMap.insert(std::make_pair("aliasname", strAliasName));
     ResultInfoMap.insert(std::make_pair("createdate", strCreateDate));
     ResultInfoMap.insert(std::make_pair("status", strStatus));

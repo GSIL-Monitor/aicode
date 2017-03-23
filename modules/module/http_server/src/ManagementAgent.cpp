@@ -146,7 +146,7 @@ bool ManagementAgent::ClusterAgentShakehandHandler(boost::shared_ptr<MsgInfoMap>
 }
 
 bool ManagementAgent::DeleteClusterAgentHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
-{
+{    
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -275,7 +275,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
             return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
         };
 
-        int iRet = CommMsgHandler::SUCCEED;
+        int iRet = CommMsgHandler::FAILED;
         auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
         {
             const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
@@ -316,7 +316,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                 strPushIpAddress, strPushPort)
                 );
             
-            uiReceived = uiReceived + pDeviceInfoList->size();
+            uiIndex = uiReceived = uiReceived + pDeviceInfoList->size();
             
             LOG_INFO_RLD("Get accessed device info and total number is " << uiTotal << " and current index is " << uiIndex <<
                 " and receive number is " << uiReceived <<
@@ -331,11 +331,9 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
         if (CommMsgHandler::SUCCEED != pCommMsgHdr->StartTask() ||
             CommMsgHandler::SUCCEED != iRet)
         {
-            LOG_ERROR_RLD("Get accessed device info failed and current index is " << uiIndex << "and total number is " << uiTotal);
+            LOG_ERROR_RLD("Get accessed device info failed and current index is " << uiIndex << " and total number is " << uiTotal);
             return;
-        }
-       
-        uiIndex += uiReceived;
+        }       
 
     } while (uiReceived < uiTotal);
 
@@ -366,7 +364,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                 return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
             };
 
-            int iRet = CommMsgHandler::SUCCEED;
+            int iRet = CommMsgHandler::FAILED;
             auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
             {
                 const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
@@ -407,7 +405,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
                     strPushIpAddress, strPushPort)
                     );
 
-                uiReceived = uiReceived + pUserInfoList->size();
+                uiIndex = uiReceived = uiReceived + pUserInfoList->size();
 
                 LOG_INFO_RLD("Get accessed user info and total number is " << uiTotal << " and current index is " << uiIndex <<
                     " and receive number is " << uiReceived <<
@@ -424,9 +422,7 @@ void ManagementAgent::CollectClusterInfo(const boost::system::error_code& e)
             {
                 LOG_ERROR_RLD("Get accessed user info failed and current index is " << uiIndex << "and total number is " << uiTotal);
                 return;
-            }
-           
-            uiIndex += uiReceived;
+            }           
 
         } while (uiReceived < uiTotal);
     }
