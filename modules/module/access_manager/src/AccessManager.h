@@ -282,6 +282,8 @@ private:
 
     boost::shared_ptr<ClusterAccessCollector> m_pClusterAccessCollector;
 
+    TimeOutHandler m_DBTimer;
+
 };
 
 

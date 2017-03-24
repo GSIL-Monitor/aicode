@@ -13,7 +13,8 @@ const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
 
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
-m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache))
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache)),
+m_DBTimer(NULL, 600)
 {
     
 }
@@ -21,6 +22,8 @@ m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCol
 
 AccessManager::~AccessManager()
 {
+    m_DBTimer.Stop();
+
     m_SessionMgr.Stop();
 
     m_DBRuner.Stop();
@@ -47,11 +50,20 @@ bool AccessManager::Init()
         return false;
     }
 
-    if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+    auto TmFunc = [&](const boost::system::error_code &ec) ->void
     {
-        LOG_ERROR_RLD("Init charset to utf8 failed, sql is SET NAMES utf8");
-        return false;
-    }
+        if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+        {
+            LOG_ERROR_RLD("Exec sql charset to utf8 failed, sql is SET NAMES utf8");
+            return;
+        }
+
+        LOG_INFO_RLD("Set db to utp8 success.");
+    };
+
+    m_DBTimer.SetTimeOutCallBack(TmFunc);
+    
+    m_DBTimer.Run(true);
 
     if (!InitDefaultAccessDomainName())
     {
