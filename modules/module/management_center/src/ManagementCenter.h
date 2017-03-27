@@ -155,6 +155,8 @@ private:
     };
     std::map<std::string, ClusterSession> m_clusterSessionMap;
 
+    TimeOutHandler m_DBTimer;
+
 };
 
 

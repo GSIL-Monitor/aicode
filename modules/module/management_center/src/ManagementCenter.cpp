@@ -10,7 +10,7 @@
 const std::string ManagementCenter::MAX_DATE = "2199-01-01 00:00:00";
 
 ManagementCenter::ManagementCenter(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoManagementHandler),
-m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_timer(boost::bind(&ManagementCenter::ShakehandCluster, this), 30)
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_timer(boost::bind(&ManagementCenter::ShakehandCluster, this), 300), m_DBTimer(NULL, 600)
 {
 
 }
@@ -35,20 +35,26 @@ bool ManagementCenter::Init()
         return false;
     }
 
-
-    if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+    auto TmFunc = [&](const boost::system::error_code &ec) ->void
     {
-        LOG_ERROR_RLD("Init charset to utf8 failed, sql is SET NAMES utf8");
-        return false;
-    }
+        if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
+        {
+            LOG_ERROR_RLD("Exec sql charset to utf8 failed, sql is SET NAMES utf8");
+            return;
+        }
+
+        LOG_INFO_RLD("Set db to utp8 success.");
+    };
+
+    m_DBTimer.SetTimeOutCallBack(TmFunc);
+
+    m_DBTimer.Run(true);
 
     if (!InitClusterSession())
     {
         LOG_ERROR_RLD("Init cluster session failed");
         return false;
     }
-
-    //m_DBCache.SetSqlCB(boost::bind(&ManagementCenter::UserInfoSqlCB, this, _1, _2, _3, _4));
 
     m_DBRuner.Run();
 
