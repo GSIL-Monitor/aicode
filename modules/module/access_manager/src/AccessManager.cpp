@@ -471,8 +471,8 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
             std::string::size_type pos = strCurrentTime.find('T');
             strCurrentTime.replace(pos, 1, std::string(" "));
 
-            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
-            //    strSessionID, LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_uiTerminalType, strCurrentTime, ""));
+            this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
+                strSessionID, LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_uiTerminalType, strCurrentTime, ""));
         }
 
         std::string strSerializeOutPut;
@@ -630,8 +630,8 @@ bool AccessManager::LogoutReq(const std::string &strMsg, const std::string &strS
             std::string::size_type pos = strCurrentTime.find('T');
             strCurrentTime.replace(pos, 1, std::string(" "));
 
-            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
-            //    LogoutReqUsr.m_strSID, "", 0, "", strCurrentTime));
+            this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
+                LogoutReqUsr.m_strSID, "", 0, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;
@@ -1653,8 +1653,8 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
             std::string::size_type pos = strCurrentTime.find('T');
             strCurrentTime.replace(pos, 1, std::string(" "));
 
-            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
-            //    strSessionID, LoginReqDev.m_strDevID, LoginReqDev.m_uiDeviceType, strCurrentTime, ""));
+            this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
+                strSessionID, LoginReqDev.m_strDevID, LoginReqDev.m_uiDeviceType, strCurrentTime, ""));
         }
 
         std::string strSerializeOutPut;
@@ -1865,8 +1865,8 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
             std::string::size_type pos = strCurrentTime.find('T');
             strCurrentTime.replace(pos, 1, std::string(" "));
 
-            //this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
-            //    LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0, "", strCurrentTime));
+            this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
+                LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;
@@ -2348,10 +2348,12 @@ bool AccessManager::GetDeviceAccessRecordReq(const std::string &strMsg, const st
         return false;
     }
 
-    //if (!m_pClusterAccessCollector->GetDeviceAccessRecord(deviceAccessRecordList, req.m_uiBeginIndex))
-    //{
-    //    LOG_ERROR_RLD("Get device access record failed, src id is " << strSrcID);
-    //}
+    uiRecordTotal = m_pClusterAccessCollector->DeviceAccessRecordSize(req.m_uiBeginIndex);
+
+    if (!m_pClusterAccessCollector->GetDeviceAccessRecord(deviceAccessRecordList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Get device access record failed, src id is " << strSrcID);
+    }
 
     blResult = true;
 
@@ -2423,10 +2425,12 @@ bool AccessManager::GetUserAccessRecordReq(const std::string &strMsg, const std:
         return false;
     }
 
-    //if (!m_pClusterAccessCollector->GetUserAccessRecord(userAccessRecordList, req.m_uiBeginIndex))
-    //{
-    //    LOG_ERROR_RLD("Get user access record failed, src id is " << strSrcID);
-    //}
+    uiRecordTotal = m_pClusterAccessCollector->UserAccessRecordSize(req.m_uiBeginIndex);
+
+    if (!m_pClusterAccessCollector->GetUserAccessRecord(userAccessRecordList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Get user access record failed, src id is " << strSrcID);
+    }
 
     blResult = true;
 

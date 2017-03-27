@@ -89,7 +89,7 @@ private:
 
     void AddCluster(const InteractiveProtoManagementHandler::Cluster &clusterInfo);
 
-    void DeleteCluster(const std::string &strClusterID);
+    bool DeleteCluster(const std::string &strClusterID);
 
     void ModifyCluster(const InteractiveProtoManagementHandler::Cluster &clusterInfo);
 
@@ -114,6 +114,8 @@ private:
     void AddClusterAgent(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
 
     bool AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
+
+    bool DeleteClusterAgent(const std::string &strClusterID);
 
     bool InitClusterSession();
 

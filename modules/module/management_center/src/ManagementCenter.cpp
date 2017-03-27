@@ -171,6 +171,7 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
             {
                 m_clusterSessionMap.erase(itPos);
             }
+
             m_mutex.unlock();
         }
 
@@ -194,7 +195,12 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
         return false;
     }
 
-    m_DBRuner.Post(boost::bind(&ManagementCenter::DeleteCluster, this, req.m_strClusterID));
+    //m_DBRuner.Post(boost::bind(&ManagementCenter::DeleteCluster, this, req.m_strClusterID));
+    if (!DeleteCluster(req.m_strClusterID))
+    {
+        LOG_ERROR_RLD("Delete cluster failed, cluster id is " << req.m_strClusterID);
+        return false;
+    }
 
     blResult = true;
 
@@ -715,7 +721,77 @@ bool ManagementCenter::AddClusterPost(const std::string &strUrl, const std::stri
         return false;
     }
 
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strRsp, root))
+    {
+        LOG_ERROR_RLD("AddClusterPost failed, parse http post response data error, raw data is: " << strRsp);
+        return false;
+    }
+
+    auto retcode = root["retcode"];
+    if (retcode.isNull() || !retcode.isString())
+    {
+        LOG_ERROR_RLD("AddClusterPost failed, http post response data is illegal, raw data is: " << strRsp);
+        return false;
+    }
+
+    if ("0" != retcode.asString())
+    {
+        LOG_ERROR_RLD("AddClusterPost failed, http post return error, raw data is: " << strRsp);
+        return false;
+    }
+
     LOG_INFO_RLD("AddClusterPost successful, url is " << postUrl << " and cluster id is " << strClusterID);
+
+    return true;
+}
+
+bool ManagementCenter::DeleteClusterAgent(const std::string &strClusterID)
+{
+    InteractiveProtoManagementHandler::Cluster clusterInfo;
+    if (!QueryClusterInfo(strClusterID, clusterInfo))
+    {
+        LOG_ERROR_RLD("DeleteClusterAgent failed, query cluster address error, cluster id is " << strClusterID);
+        return false;
+    }
+
+    std::map<std::string, std::string> reqFormMap;
+    reqFormMap.insert(std::make_pair("clusterid", strClusterID));
+
+    std::string postUrl = "http://" + clusterInfo.m_strClusterAddress + "/access.cgi?action=delete_cluster_agent";
+    std::string strRsp;
+    HttpClient httpClient;
+    if (CURLE_OK != httpClient.PostForm(postUrl, reqFormMap, strRsp))
+    {
+        LOG_ERROR_RLD("DeleteClusterAgent send http post failed, url is " << postUrl << " and cluster id is " << strClusterID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strRsp, root))
+    {
+        LOG_ERROR_RLD("DeleteClusterAgent failed, parse http post response data error, raw data is: " << strRsp);
+        return false;
+    }
+
+    auto retcode = root["retcode"];
+    if (retcode.isNull() || !retcode.isString())
+    {
+        LOG_ERROR_RLD("DeleteClusterAgent failed, http post response data is illegal, raw data is: " << strRsp);
+        return false;
+    }
+
+    if ("0" != retcode.asString())
+    {
+        LOG_ERROR_RLD("DeleteClusterAgent failed, http post return error, raw data is: " << strRsp);
+        return false;
+    }
+
+    LOG_INFO_RLD("DeleteClusterAgent successful, url is " << postUrl << " and cluster id is " << strClusterID);
 
     return true;
 }
@@ -804,18 +880,24 @@ void ManagementCenter::ShakehandCluster()
         }
 
         Json::Reader reader;
-        Json::Value value;
-        if (!reader.parse(strRsp, value))
+        Json::Value root;
+        if (!reader.parse(strRsp, root))
         {
             LOG_ERROR_RLD("ShakehandCluster failed, parse http post response data error, raw data is: " << strRsp);
             RefreshClusterSession(strClusterID, clusterSession.strClusterAddress, CLUSTER_OFFLINE, false);
             continue;
         }
 
-        std::string postRtnCode = value["retcode"].isNull() ? "" : value["retcode"].asString();
-        if (postRtnCode != "0")
+        auto retcode = root["retcode"];
+        if (retcode.isNull() || !retcode.isString())
         {
-            LOG_ERROR_RLD("ShakehandCluster failed, http post return error, return code is " << postRtnCode);
+            LOG_ERROR_RLD("ShakehandCluster failed, http post response data is illegal, raw data is: " << strRsp);
+            continue;
+        }
+
+        if ("0" != retcode.asString())
+        {
+            LOG_ERROR_RLD("ShakehandCluster failed, http post return error, raw data is: " << strRsp);
             RefreshClusterSession(strClusterID, clusterSession.strClusterAddress, CLUSTER_OFFLINE, false);
             continue;
         }
@@ -850,6 +932,7 @@ void ManagementCenter::RefreshClusterSession(const std::string &strClusterID, co
         ClusterSession &clusterSession = itPos->second;
         clusterSession.uiStatus = uiStatus;
     }
+
     m_mutex.unlock();
 }
 
@@ -868,8 +951,15 @@ void ManagementCenter::AddCluster(const InteractiveProtoManagementHandler::Clust
     }
 }
 
-void ManagementCenter::DeleteCluster(const std::string &strClusterID)
+bool ManagementCenter::DeleteCluster(const std::string &strClusterID)
 {
+    //同时发送删除集群代理命令
+    if (!DeleteClusterAgent(strClusterID))
+    {
+        LOG_ERROR_RLD("DeleteCluster failed, delete cluster agent error, cluster id is " << strClusterID);
+        return false;
+    }
+
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_cluster_info set status = %d where clusterid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, strClusterID.c_str());
@@ -877,7 +967,10 @@ void ManagementCenter::DeleteCluster(const std::string &strClusterID)
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("DeleteCluster exec sql failed, sql is " << sql);
+        return false;
     }
+
+    return true;
 }
 
 void ManagementCenter::ModifyCluster(const InteractiveProtoManagementHandler::Cluster &clusterInfo)
