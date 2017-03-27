@@ -8,6 +8,7 @@
 #include "ClusterAccessCollector.h"
 
 ClusterAccessCollector::ClusterAccessCollector(SessionMgr *pSessionMgr, MysqlImpl *pMysqlImpl, DBInfoCacheManager *pDBInfo) :
+m_uiDeviceAccessDequeSize(0), m_uiUserAccessDequeSize(0), m_uiDeviceAccessRecordCursor(0), m_uiUserAccessRecordCursor(0),
 m_pSessionMgr(pSessionMgr), m_pMysqlImpl(pMysqlImpl), m_pDBInfo(pDBInfo)
 {
 
@@ -88,55 +89,50 @@ void ClusterAccessCollector::AddUserAccessRecord(const std::string &strAccessID,
 bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHandler::DeviceAccessRecord> &deviceAccessRecordList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
-    m_deviceAccessDequeMutex.lock();
-    unsigned int size = m_deviceAccessRecordMappingDeque.size();
-    if (uiBeginIndex >= size)
+    if (uiBeginIndex >= m_uiDeviceAccessDequeSize)
     {
-        LOG_ERROR_RLD("GetDeviceAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and deque size is " << size);
+        LOG_ERROR_RLD("GetDeviceAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and record total size is " << m_uiDeviceAccessDequeSize);
 
-        m_deviceAccessDequeMutex.unlock();
         return false;
     }
 
-    LOG_INFO_RLD("GetDeviceAccessRecord request begin index is " << uiBeginIndex << " and current deque size is" << size);
+    LOG_INFO_RLD("GetDeviceAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiDeviceAccessDequeSize << " and map size is " << m_deviceAccessRecordMap.size());
 
-    unsigned int uiEndIndex = uiBeginIndex + uiPageSize > size ? size : uiBeginIndex + uiPageSize;
+    m_deviceAccessRecordMutex.lock();
 
-    for (unsigned int i = uiBeginIndex; i < uiEndIndex; ++i)
+    unsigned int size = uiPageSize > m_uiDeviceAccessDequeSize - uiBeginIndex ? m_uiDeviceAccessDequeSize - uiBeginIndex : uiPageSize;
+
+    for (unsigned int i = uiBeginIndex; i < uiBeginIndex + size; ++i)
     {
         auto &deviceAccessRecordMapping = m_deviceAccessRecordMappingDeque[i];
-        auto itPos = m_deviceAccessRecordMap.find(deviceAccessRecordMapping.strAccessID);
-        if (itPos == m_deviceAccessRecordMap.end())
-        {
-            LOG_ERROR_RLD("GetDeviceAccessRecord error, device access record not found, access id is " << deviceAccessRecordMapping.strAccessID);
-            continue;
-        }
+        auto &deviceAccessRecord = deviceAccessRecordMapping.itAccessIDPos->second;
 
-        auto &deviceAccessRecord = itPos->second;
-
-        boost::posix_time::ptime lasttime;
         if (deviceAccessRecord.m_strLogoutTime.empty())
         {
-            lasttime = boost::posix_time::second_clock::local_time();
-
             //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
-            if (!m_pSessionMgr->Exist(itPos->first))
+            if (!m_pSessionMgr->Exist(deviceAccessRecordMapping.itAccessIDPos->first))
             {
-                LOG_INFO_RLD("GetDeviceAccessRecord check session id exist result is false");
-                deviceAccessRecord.m_strLogoutTime = boost::posix_time::to_iso_extended_string(lasttime);
+                LOG_INFO_RLD("GetDeviceAccessRecord check session id exist result is false, set device logout time as current time");
+
+                std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+                strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
+
+                deviceAccessRecord.m_strLogoutTime = strCurrentTime;
             }
         }
-        else
-        {
-            lasttime = boost::posix_time::time_from_string(deviceAccessRecord.m_strLogoutTime);
-        }
 
-        deviceAccessRecord.m_uiOnlineDuration = (lasttime - boost::posix_time::time_from_string(deviceAccessRecord.m_strLoginTime)).total_seconds();
-
-        deviceAccessRecordList.push_back(itPos->second);
+        deviceAccessRecordList.push_back(deviceAccessRecordMapping.itAccessIDPos->second);
     }
 
-    m_deviceAccessDequeMutex.unlock();
+    m_uiDeviceAccessRecordCursor += size;
+
+    //读取完最后一批数据时，清空本轮所有已读取的数据
+    if (m_uiDeviceAccessRecordCursor == m_uiDeviceAccessDequeSize)
+    {
+        DiscardDeviceAccessRecord(m_uiDeviceAccessDequeSize);
+    }
+
+    m_deviceAccessRecordMutex.unlock();
 
     return true;
 }
@@ -144,77 +140,84 @@ bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHan
 bool ClusterAccessCollector::GetUserAccessRecord(std::list<InteractiveProtoHandler::UserAccessRecord> &userAccessRecordList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
-    m_userAccessDequeMutex.lock();
-    unsigned int size = m_userAccessRecordMappingDeque.size();
-    if (uiBeginIndex >= size)
+    if (uiBeginIndex >= m_uiUserAccessDequeSize)
     {
-        LOG_ERROR_RLD("GetUserAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and deque size is " << size);
+        LOG_ERROR_RLD("GetUserAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and record total size is " << m_uiUserAccessDequeSize);
 
-        m_userAccessDequeMutex.unlock();
         return false;
     }
 
-    LOG_INFO_RLD("GetUserAccessRecord request begin index is " << uiBeginIndex << " and current deque size is" << size);
+    LOG_INFO_RLD("GetUserAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiUserAccessDequeSize << " and map size is " << m_userAccessRecordMap.size());
 
-    unsigned int uiEndIndex = uiBeginIndex + uiPageSize > size ? size : uiBeginIndex + uiPageSize;
+    m_userAccessRecordMutex.lock();
 
-    for (unsigned int i = uiBeginIndex; i < uiEndIndex; ++i)
+    unsigned int size = uiPageSize > m_uiUserAccessDequeSize - uiBeginIndex ? m_uiUserAccessDequeSize - uiBeginIndex : uiPageSize;
+
+    for (unsigned int i = uiBeginIndex; i < uiBeginIndex + size; ++i)
     {
         auto &userAccessRecordMapping = m_userAccessRecordMappingDeque[i];
-        auto itPos = m_userAccessRecordMap.find(userAccessRecordMapping.strAccessID);
-        if (itPos == m_userAccessRecordMap.end())
-        {
-            LOG_ERROR_RLD("GetUserAccessRecord error, user access record not found, access id is " << userAccessRecordMapping.strAccessID);
-            continue;
-        }
+        auto &userAccessRecord = userAccessRecordMapping.itAccessIDPos->second;
 
-        auto &userAccessRecord = itPos->second;
-
-        boost::posix_time::ptime lasttime;
         if (userAccessRecord.m_strLogoutTime.empty())
         {
-            lasttime = boost::posix_time::second_clock::local_time();
-
-            //如果会话ID已在MemoryCache中被清空，则认为该用户已下线
-            if (!m_pSessionMgr->Exist(itPos->first))
+            //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
+            if (!m_pSessionMgr->Exist(userAccessRecordMapping.itAccessIDPos->first))
             {
-                LOG_INFO_RLD("GetUserAccessRecord check session id exist result is false");
-                userAccessRecord.m_strLogoutTime = boost::posix_time::to_iso_extended_string(lasttime);
+                LOG_INFO_RLD("GetUserAccessRecord check session id exist result is false, set user logout time as current time");
+
+                std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+                strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
+
+                userAccessRecord.m_strLogoutTime = strCurrentTime;
             }
         }
-        else
-        {
-            lasttime = boost::posix_time::time_from_string(userAccessRecord.m_strLogoutTime);
-        }
 
-        userAccessRecord.m_uiOnlineDuration = (lasttime - boost::posix_time::time_from_string(userAccessRecord.m_strLoginTime)).total_seconds();
-
-        userAccessRecordList.push_back(itPos->second);
+        userAccessRecordList.push_back(userAccessRecordMapping.itAccessIDPos->second);
     }
 
-    m_userAccessDequeMutex.unlock();
+    m_uiUserAccessRecordCursor += size;
+
+    //读取完最后一批数据时，清空本轮所有已读取的数据
+    if (m_uiUserAccessRecordCursor == m_uiUserAccessDequeSize)
+    {
+        DiscardUserAccessRecord(m_uiUserAccessDequeSize);
+    }
+
+    m_userAccessRecordMutex.unlock();
 
     return true;
 }
 
-unsigned int ClusterAccessCollector::DeviceAccessRecordSize()
+unsigned int ClusterAccessCollector::DeviceAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
-    m_deviceAccessDequeMutex.lock();
-    unsigned int size = m_deviceAccessRecordMappingDeque.size();
+    if (0 == uiBeginIndex)
+    {
+        m_deviceAccessRecordMutex.lock();
 
-    m_deviceAccessDequeMutex.unlock();
+        UpdateDeviceAccessRecordParam(uiBeginIndex, uiPageSize);
 
-    return size;
+        m_uiDeviceAccessDequeSize = m_deviceAccessRecordMappingDeque.size();
+
+        m_deviceAccessRecordMutex.unlock();
+    }
+
+    return m_uiDeviceAccessDequeSize;
 }
 
-unsigned int ClusterAccessCollector::UserAccessRecordSize()
+unsigned int ClusterAccessCollector::UserAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
-    m_userAccessDequeMutex.lock();
-    unsigned int size = m_userAccessRecordMappingDeque.size();
+    if (0 == uiBeginIndex)
+    {
+        m_userAccessRecordMutex.lock();
 
-    m_userAccessDequeMutex.unlock();
+        UpdateUserAccessRecordParam(uiBeginIndex, uiPageSize);
 
-    return size;
+        m_uiUserAccessDequeSize = m_userAccessRecordMappingDeque.size();
+
+        m_userAccessRecordMutex.unlock();
+    }
+
+    return m_uiUserAccessDequeSize;
 }
 
 bool ClusterAccessCollector::QueryDeviceInfo(const std::string &strDeviceID, std::string &strDeviceName)
@@ -305,31 +308,90 @@ bool ClusterAccessCollector::QueryUserInfo(const std::string &strUserID, std::st
     return true;
 }
 
-void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandler::DeviceAccessRecord &accessedDevice)
+void ClusterAccessCollector::UpdateDeviceAccessRecordParam(const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
-    m_deviceAccessDequeMutex.lock();
-    if (MAX_USER_ACCESS_RECORD_SIZE <= m_deviceAccessRecordMappingDeque.size())
+    if (0 == uiBeginIndex)
     {
-        //如果队列已存储的元素个数达到定义的最大值，则清空头部元素，在尾部插入新元素
-        auto front = m_deviceAccessRecordMappingDeque.front();
-        m_deviceAccessRecordMappingDeque.pop_front();
-
-        auto itPos = m_deviceAccessRecordMap.find(front.strAccessID);
-        if (itPos != m_deviceAccessRecordMap.end())
+        //在上一轮数据接收异常时，保留最后一批数据，清除之前的所有数据
+        if (m_uiDeviceAccessRecordCursor > 0 && uiPageSize < m_uiDeviceAccessDequeSize - m_uiDeviceAccessRecordCursor)
         {
-            //同时清除Map中存储的详细接入信息
-            m_deviceAccessRecordMap.erase(itPos);
+            unsigned int uiEraseSize = m_uiDeviceAccessRecordCursor - uiPageSize;
+
+            if (uiEraseSize > 0)
+            {
+                DiscardDeviceAccessRecord(uiEraseSize);
+            }
         }
     }
+
+    m_uiDeviceAccessRecordCursor = uiBeginIndex;
+}
+
+void ClusterAccessCollector::UpdateUserAccessRecordParam(const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
+{
+    if (0 == uiBeginIndex)
+    {
+        //在上一轮数据接收异常时，保留最后一批数据，清除之前的所有数据
+        if (m_uiUserAccessRecordCursor > 0 && uiPageSize < m_uiUserAccessDequeSize - m_uiUserAccessRecordCursor)
+        {
+            unsigned int uiEraseSize = m_uiUserAccessRecordCursor - uiPageSize;
+
+            if (uiEraseSize > 0)
+            {
+                DiscardUserAccessRecord(uiEraseSize);
+            }
+        }
+    }
+
+    m_uiUserAccessRecordCursor = uiBeginIndex;
+}
+
+void ClusterAccessCollector::DiscardDeviceAccessRecord(const unsigned int uiSize)
+{
+    for (unsigned int i = 0; i < uiSize; ++i)
+    {
+        if (!m_deviceAccessRecordMappingDeque.empty())
+        {
+            auto mapping = m_deviceAccessRecordMappingDeque.front();
+            m_deviceAccessRecordMappingDeque.pop_front();
+
+            if (!m_deviceAccessRecordMap.empty())
+            {
+                m_deviceAccessRecordMap.erase(mapping.itAccessIDPos);
+            }
+        }
+    }
+}
+
+void ClusterAccessCollector::DiscardUserAccessRecord(const unsigned int uiSize)
+{
+    for (unsigned int i = 0; i < uiSize; ++i)
+    {
+        if (!m_userAccessRecordMappingDeque.empty())
+        {
+            auto mapping = m_userAccessRecordMappingDeque.front();
+            m_userAccessRecordMappingDeque.pop_front();
+
+            if (!m_userAccessRecordMap.empty())
+            {
+                m_userAccessRecordMap.erase(mapping.itAccessIDPos);
+            }
+        }
+    }
+}
+
+void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandler::DeviceAccessRecord &accessedDevice)
+{
+    m_deviceAccessRecordMutex.lock();
 
     auto itPos = m_deviceAccessRecordMap.find(accessedDevice.m_strAccessID);
     if (itPos == m_deviceAccessRecordMap.end())
     {
-        m_deviceAccessRecordMap.insert(std::make_pair(accessedDevice.m_strAccessID, accessedDevice));
+        auto itPos = m_deviceAccessRecordMap.insert(std::make_pair(accessedDevice.m_strAccessID, accessedDevice)).first;
 
         DeviceAccessRecordMapping deviceAccessRecordMapping;
         deviceAccessRecordMapping.strAccessID = accessedDevice.m_strAccessID;
-        deviceAccessRecordMapping.itAccessIDPos = m_deviceAccessRecordMap.find(accessedDevice.m_strAccessID);
+        deviceAccessRecordMapping.itAccessIDPos = itPos;
 
         m_deviceAccessRecordMappingDeque.push_back(deviceAccessRecordMapping);
     }
@@ -340,34 +402,21 @@ void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandle
         deviceLoginRecord.m_strLogoutTime = accessedDevice.m_strLogoutTime;
     }
 
-    m_deviceAccessDequeMutex.unlock();
+    m_deviceAccessRecordMutex.unlock();
 }
 
 void ClusterAccessCollector::PushUserAccessRecord(const InteractiveProtoHandler::UserAccessRecord &accessedUser)
 {
-    m_userAccessDequeMutex.lock();
-    if (MAX_USER_ACCESS_RECORD_SIZE <= m_userAccessRecordMappingDeque.size())
-    {
-        //如果队列已存储的元素个数达到定义的最大值，则清空头部元素，在尾部插入新元素
-        auto front = m_userAccessRecordMappingDeque.front();
-        m_userAccessRecordMappingDeque.pop_front();
-
-        auto itPos = m_userAccessRecordMap.find(front.strAccessID);
-        if (itPos != m_userAccessRecordMap.end())
-        {
-            //同时清除Map中存储的详细接入信息
-            m_userAccessRecordMap.erase(itPos);
-        }
-    }
+    m_userAccessRecordMutex.lock();
 
     auto itPos = m_userAccessRecordMap.find(accessedUser.m_strAccessID);
     if (itPos == m_userAccessRecordMap.end())
     {
-        m_userAccessRecordMap.insert(std::make_pair(accessedUser.m_strAccessID, accessedUser));
+        auto itPos = m_userAccessRecordMap.insert(std::make_pair(accessedUser.m_strAccessID, accessedUser)).first;
 
         UserAccessRecordMapping userAccessRecordMapping;
         userAccessRecordMapping.strAccessID = accessedUser.m_strAccessID;
-        userAccessRecordMapping.itAccessIDPos = m_userAccessRecordMap.find(accessedUser.m_strAccessID);
+        userAccessRecordMapping.itAccessIDPos = itPos;
 
         m_userAccessRecordMappingDeque.push_back(userAccessRecordMapping);
     }
@@ -378,6 +427,8 @@ void ClusterAccessCollector::PushUserAccessRecord(const InteractiveProtoHandler:
         userLoginRecord.m_strLogoutTime = accessedUser.m_strLogoutTime;
     }
 
-    m_userAccessDequeMutex.unlock();
+    m_userAccessRecordMutex.unlock();
 }
+
+
 

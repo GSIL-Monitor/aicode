@@ -709,8 +709,7 @@ bool ManagementCenter::AddClusterPost(const std::string &strUrl, const std::stri
         return false;
     }
 
-    LOG_INFO_RLD("AddClusterPost successful, url is " << postUrl << " and cluster id is " << strClusterID <<
-        " and response data is: " << strRsp);
+    LOG_INFO_RLD("AddClusterPost successful, url is " << postUrl << " and cluster id is " << strClusterID);
 
     return true;
 }
@@ -1362,13 +1361,34 @@ void ManagementCenter::PushClusterDevice(const std::list<InteractiveProtoManagem
 bool ManagementCenter::InsertAccessedDevice(const InteractiveProtoManagementHandler::DeviceAccessRecord &deviceAccessRecord)
 {
     char sql[512] = { 0 };
+    std::string strLoginTime;
+    std::string strLogoutTime;
+
+    if (deviceAccessRecord.m_accessedDevice.m_strLoginTime.empty())
+    {
+        strLoginTime = "null";
+    }
+    else
+    {
+        strLoginTime = "'" + deviceAccessRecord.m_accessedDevice.m_strLoginTime + "'";
+    }
+
+    if (deviceAccessRecord.m_accessedDevice.m_strLogoutTime.empty())
+    {
+        strLogoutTime = "null";
+    }
+    else
+    {
+        strLogoutTime = "'" + deviceAccessRecord.m_accessedDevice.m_strLogoutTime + "'";
+    }
+
     const char *sqlfmt = "insert into t_cluster_accessed_device_info"
         " (id, accessid, deviceid, devicename, clusterid, logintime, logouttime, onlineduration, devicetype, createdate, status)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d)"
-        " on duplicate key update set accessid = accessid, logouttime = '%s'";
+        " values(uuid(), '%s', '%s', '%s', '%s', %s, %s, %d, %d, '%s', %d)"
+        " on duplicate key update logouttime = %s, onlineduration = %d";
     snprintf(sql, sizeof(sql), sqlfmt, deviceAccessRecord.m_strAccessID.c_str(), deviceAccessRecord.m_accessedDevice.m_strDeviceID.c_str(), deviceAccessRecord.m_accessedDevice.m_strDeviceName.c_str(),
-        deviceAccessRecord.m_strClusterID.c_str(), deviceAccessRecord.m_accessedDevice.m_strLoginTime.c_str(), deviceAccessRecord.m_accessedDevice.m_strLogoutTime.c_str(), deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration,
-        deviceAccessRecord.m_accessedDevice.m_uiDeviceType, deviceAccessRecord.m_strCreateDate.c_str(), deviceAccessRecord.m_uiStatus, deviceAccessRecord.m_accessedDevice.m_strLogoutTime.c_str());
+        deviceAccessRecord.m_strClusterID.c_str(), strLoginTime.c_str(), strLogoutTime.c_str(), deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration, deviceAccessRecord.m_accessedDevice.m_uiDeviceType,
+        deviceAccessRecord.m_strCreateDate.c_str(), deviceAccessRecord.m_uiStatus, strLogoutTime.c_str(), deviceAccessRecord.m_accessedDevice.m_uiOnlineDuration);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -1416,14 +1436,35 @@ void ManagementCenter::PushClusterUser(const std::list<InteractiveProtoManagemen
 bool ManagementCenter::InsertAccessedUser(const InteractiveProtoManagementHandler::UserAccessRecord &userAccessRecord)
 {
     char sql[512] = { 0 };
+    std::string strLoginTime;
+    std::string strLogoutTime;
+
+    if (userAccessRecord.m_accessedUser.m_strLoginTime.empty())
+    {
+        strLoginTime = "null";
+    }
+    else
+    {
+        strLoginTime = "'" + userAccessRecord.m_accessedUser.m_strLoginTime + "'";
+    }
+
+    if (userAccessRecord.m_accessedUser.m_strLogoutTime.empty())
+    {
+        strLogoutTime = "null";
+    }
+    else
+    {
+        strLogoutTime = "'" + userAccessRecord.m_accessedUser.m_strLogoutTime + "'";
+    }
+    
     const char *sqlfmt = "insert into t_cluster_accessed_user_info"
         " (id, accessid, userid, username, useraliasname, clusterid, logintime, logouttime, onlineduration, clienttype, createdate, status)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d)"
-        " on duplicate key update set accessid = accessid, logouttime = '%s'";
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', %s, %s, %d, %d, '%s', %d)"
+        " on duplicate key update logouttime = %s, onlineduration = %d";
     snprintf(sql, sizeof(sql), sqlfmt, userAccessRecord.m_strAccessID.c_str(), userAccessRecord.m_accessedUser.m_strUserID.c_str(), userAccessRecord.m_accessedUser.m_strUserName.c_str(),
-        userAccessRecord.m_accessedUser.m_strUserAliasname.c_str(), userAccessRecord.m_strClusterID.c_str(), userAccessRecord.m_accessedUser.m_strLoginTime.c_str(),
-        userAccessRecord.m_accessedUser.m_strLogoutTime.c_str(), userAccessRecord.m_accessedUser.m_uiOnlineDuration, userAccessRecord.m_accessedUser.m_uiClientType,
-        userAccessRecord.m_strCreateDate.c_str(), userAccessRecord.m_uiStatus, userAccessRecord.m_accessedUser.m_strLogoutTime.c_str());
+        userAccessRecord.m_accessedUser.m_strUserAliasname.c_str(), userAccessRecord.m_strClusterID.c_str(), strLoginTime.c_str(), strLogoutTime.c_str(),
+        userAccessRecord.m_accessedUser.m_uiOnlineDuration, userAccessRecord.m_accessedUser.m_uiClientType, userAccessRecord.m_strCreateDate.c_str(),
+        userAccessRecord.m_uiStatus, strLogoutTime.c_str(), userAccessRecord.m_accessedUser.m_uiOnlineDuration);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {

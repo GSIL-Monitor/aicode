@@ -17,7 +17,7 @@ CREATE TABLE `t_cluster_accessed_user_info` (
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),
-  UNIQUE KEY (sequence),
+  UNIQUE KEY (accessid),
   INDEX index_ref1(userid),
   INDEX index_ref2(clusterid),
   INDEX index_ref3(logintime, logouttime)
@@ -37,7 +37,7 @@ CREATE TABLE `t_cluster_accessed_device_info` (
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),
-  UNIQUE KEY (sequence),
+  UNIQUE KEY (accessid),
   INDEX index_ref1(deviceid),
   INDEX index_ref2(clusterid),
   INDEX index_ref3(logintime, logouttime)

@@ -34,14 +34,20 @@ public:
     bool GetUserAccessRecord(std::list<InteractiveProtoHandler::UserAccessRecord> &userAccessRecordListconst,
         const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
 
-    unsigned int DeviceAccessRecordSize();
+    unsigned int DeviceAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
 
-    unsigned int UserAccessRecordSize();
+    unsigned int UserAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
 
 
 private:
     bool QueryDeviceInfo(const std::string &strDeviceID, std::string &strDeviceName);
     bool QueryUserInfo(const std::string &strUserID, std::string &strUserName, std::string &strAliasName);
+
+    void UpdateDeviceAccessRecordParam(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
+    void UpdateUserAccessRecordParam(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
+
+    void DiscardDeviceAccessRecord(const unsigned int uiSize);
+    void DiscardUserAccessRecord(const unsigned int uiSize);
 
     void PushDeviceAccessRecord(const InteractiveProtoHandler::DeviceAccessRecord &accessedDevice);
     void PushUserAccessRecord(const InteractiveProtoHandler::UserAccessRecord &accessedUser);
@@ -62,12 +68,18 @@ private:
         std::map<std::string, InteractiveProtoHandler::UserAccessRecord>::iterator itAccessIDPos;
     };
 
-
     //使用队列存储SessionID与用户及设备接入信息相对应的映射关系，支持在队列首尾的增删操作，以及对队列的随机访问操作
     std::deque<DeviceAccessRecordMapping> m_deviceAccessRecordMappingDeque;
     std::deque<UserAccessRecordMapping> m_userAccessRecordMappingDeque;
-    boost::mutex m_deviceAccessDequeMutex;
-    boost::mutex m_userAccessDequeMutex;
+
+    boost::mutex m_deviceAccessRecordMutex;
+    boost::mutex m_userAccessRecordMutex;
+
+    unsigned int m_uiDeviceAccessDequeSize;
+    unsigned int m_uiUserAccessDequeSize;
+
+    unsigned int m_uiDeviceAccessRecordCursor;
+    unsigned int m_uiUserAccessRecordCursor;
 
     SessionMgr *m_pSessionMgr;
 

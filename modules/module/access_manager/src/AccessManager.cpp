@@ -2289,9 +2289,10 @@ bool AccessManager::GetDeviceAccessRecordReq(const std::string &strMsg, const st
     bool blResult = false;
 
     InteractiveProtoHandler::GetDeviceAccessRecordReq_INNER req;
+    unsigned int uiRecordTotal = 0;
     std::list<InteractiveProtoHandler::DeviceAccessRecord> deviceAccessRecordList;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &deviceAccessRecordList)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &deviceAccessRecordList, &uiRecordTotal)
     {
         InteractiveProtoHandler::GetDeviceAccessRecordRsp_INNER rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::GetDeviceAccessRecordRsp_INNER_T;
@@ -2299,7 +2300,7 @@ bool AccessManager::GetDeviceAccessRecordReq(const std::string &strMsg, const st
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        rsp.m_uiRecordTotal = blResult ? this_->m_pClusterAccessCollector->DeviceAccessRecordSize() : 0;
+        rsp.m_uiRecordTotal = blResult ? uiRecordTotal : 0;
 
         if (blResult)
         {
@@ -2362,9 +2363,10 @@ bool AccessManager::GetUserAccessRecordReq(const std::string &strMsg, const std:
     bool blResult = false;
 
     InteractiveProtoHandler::GetUserAccessRecordReq_INNER req;
+    unsigned int uiRecordTotal = 0;
     std::list<InteractiveProtoHandler::UserAccessRecord> userAccessRecordList;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &userAccessRecordList)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &userAccessRecordList, &uiRecordTotal)
     {
         InteractiveProtoHandler::GetUserAccessRecordRsp_INNER rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::GetUserAccessRecordRsp_INNER_T;
@@ -2372,7 +2374,7 @@ bool AccessManager::GetUserAccessRecordReq(const std::string &strMsg, const std:
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        rsp.m_uiRecordTotal = blResult ? this_->m_pClusterAccessCollector->UserAccessRecordSize() : 0;
+        rsp.m_uiRecordTotal = blResult ? uiRecordTotal : 0;
 
         if (blResult)
         {
