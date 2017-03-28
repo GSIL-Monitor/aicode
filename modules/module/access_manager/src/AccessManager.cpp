@@ -19,7 +19,6 @@ m_DBTimer(NULL, 600)
     
 }
 
-
 AccessManager::~AccessManager()
 {
     m_DBTimer.Stop();
@@ -190,7 +189,7 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
         RegUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T;
         RegUsrRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         RegUsrRsp.m_strSID = CreateUUID();
-        RegUsrRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        RegUsrRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         RegUsrRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         RegUsrRsp.m_strUserID = strUserID;
         RegUsrRsp.m_strValue = "value";
@@ -216,11 +215,14 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     }
     
     //User info already exists
-    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName,
+    bool blUserExist;
+    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName, blUserExist,
         "", RegUsrReq.m_userInfo.m_uiTypeInfo, true))
     {
         LOG_ERROR_RLD("Register user failed because user already exist and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
             " and user id is " << RegUsrReq.m_userInfo.m_strUserID << " and user pwd is " << RegUsrReq.m_userInfo.m_strUserPassword);
+
+        ReturnInfo::RetCode((ReturnInfo::USERNAME_EXISTED_USER));
         return false;
     }
 
@@ -385,7 +387,7 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
         ModifyUsrRsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyUserInfoRsp_USR_T;
         ModifyUsrRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         ModifyUsrRsp.m_strSID = ModifyUsrReq.m_strSID;
-        ModifyUsrRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        ModifyUsrRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         ModifyUsrRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         ModifyUsrRsp.m_strValue = "";
 
@@ -415,11 +417,14 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
         return false;
     }
 
-    if (!ValidUser(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_userInfo.m_strUserName,
+    bool blUserExist;
+    if (!ValidUser(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_userInfo.m_strUserName, blUserExist,
         "", ModifyUsrReq.m_userInfo.m_uiTypeInfo))
     {
         LOG_ERROR_RLD("Modify user failed because user is invalid and user name is " << ModifyUsrReq.m_userInfo.m_strUserName <<
             " and user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword);
+
+        ReturnInfo::RetCode(ReturnInfo::USERID_NOT_EXISTED_USER);
         return false;
     }
     
@@ -431,6 +436,8 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
     {
         LOG_ERROR_RLD("Check user password valid failed, modify password must provide the correct old password, user id is " <<
             ModifyUsrReq.m_userInfo.m_strUserID << " and src id is " << ModifyUsrReq.m_strSID);
+
+        ReturnInfo::RetCode(ReturnInfo::PASSWORD_INVALID_USER);
         return false;
     }
 
@@ -457,7 +464,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         LoginRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_USR_T;
         LoginRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         LoginRspUsr.m_strSID = strSessionID;
-        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         LoginRspUsr.m_strUserID = LoginReqUsr.m_userInfo.m_strUserID;
         LoginRspUsr.m_strValue = "value";
@@ -530,16 +537,31 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     //    return false;
     //}
     
-    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, 
+    bool blUserExist = false;
+    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, blUserExist,
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
     {
-        if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
-            m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID, LoginReqUsr.m_userInfo.m_strUserID))
+        if (blUserExist)
         {
-            LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+            LOG_ERROR_RLD("User login failed, user password is invalid, src id is " << strSrcID <<
+                " and user name is " << LoginReqUsr.m_userInfo.m_strUserName);
+
+            ReturnInfo::RetCode(ReturnInfo::PASSWORD_INVALID_USER);
             return false;
         }
-        LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+        else
+        {
+            if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
+                m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID, LoginReqUsr.m_userInfo.m_strUserID))
+            {
+                LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+
+                ReturnInfo::RetCode(ReturnInfo::USERNAME_OR_PASSWORD_INVALID_USER);
+                return false;
+            }
+
+            LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+        }
     }
 
     //用户登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是用户信息，json格式字符串，格式如下：
@@ -738,7 +760,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
 
@@ -819,6 +841,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     } 
     else
     {
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_IS_ADDED_USER);
         LOG_ERROR_RLD("Add device failed, the device has been added, owner user id is " << strUserID << " and src id is " << strSrcID);
     }
 
@@ -836,7 +859,7 @@ bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::DelDevRsp_USR_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
 
@@ -862,6 +885,24 @@ bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
+    for (auto strDevID : req.m_strDevIDList)
+    {
+        std::string strUserID;
+        if (!QueryOwnerUserIDByDeviceID(strDevID, strUserID))
+        {
+            LOG_ERROR_RLD("Delete device failed, query device owner error, src id is " << strSrcID);
+            return false;
+        }
+
+        if (req.m_strUserID != strUserID)
+        {
+            LOG_ERROR_RLD("Delete device failed, the device is not belong to the user, src id is " << strSrcID <<
+                " and user id is " << req.m_strUserID << " and device id is " << strDevID);
+
+            ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_BELONG_TO_USER);
+            return false;
+        }
+    }
     
     m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
 
@@ -1991,7 +2032,7 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
         RetrievePwdRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::RetrievePwdRsp_USR_T;
         RetrievePwdRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         RetrievePwdRspUsr.m_strSID = RetrievePwdReqUsr.m_strSID;
-        RetrievePwdRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        RetrievePwdRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         RetrievePwdRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         RetrievePwdRspUsr.m_strValue = "value";
 
@@ -2020,6 +2061,8 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
     {
         LOG_ERROR_RLD("Retrieve user password failed, the user name or email is not correct, user name is " << RetrievePwdReqUsr.m_strUserName <<
             " and email is " << RetrievePwdReqUsr.m_strEmail);
+
+        ReturnInfo::RetCode(ReturnInfo::EMAIL_NOT_MATCHED_USER);
         return false;
     }
 
@@ -3498,7 +3541,7 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     return true;
 }
 
-bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
+bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, bool &blUserExist, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
 {
     //Valid user id
     char sql[1024] = { 0 };
@@ -3564,8 +3607,12 @@ bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, 
     if (ResultList.empty())
     {
         LOG_INFO_RLD("Valid user info not found, sql is " << sql);
+
+        blUserExist = false;
         return false;
     }
+
+    blUserExist = true;
 
     if (strUserPwd.empty())
     {

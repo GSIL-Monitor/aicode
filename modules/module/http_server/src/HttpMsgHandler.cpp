@@ -12,6 +12,7 @@
 #include "CommMsgHandler.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "boost/regex.hpp"
+#include "ReturnCode.h"
 
 
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
@@ -98,6 +99,8 @@ HttpMsgHandler::~HttpMsgHandler()
 
 bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -108,7 +111,7 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));                   
         }
 
@@ -163,6 +166,7 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     }
     const std::string strEmail = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << strType
          << " and extend is [" << strExtend << "]" << " and alias name is " << strAliasName << " and email is " << strEmail);
@@ -185,6 +189,8 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
 bool HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -195,7 +201,7 @@ bool HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -242,6 +248,8 @@ bool HttpMsgHandler::UnRegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     {
         strValue = itFind->second;
     }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Unregister user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user id is " << strUserid
         << " and strValue is [" << strValue << "]" << " and session id is " << strSid);
@@ -332,6 +340,8 @@ bool HttpMsgHandler::QueryUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
 
 bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -342,7 +352,7 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -428,6 +438,8 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
         strEmail = itFind->second;
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     LOG_INFO_RLD("Modify user info received and  user id is " << strUserid << " and user name is " << strAliasName 
         << " and user new pwd is " << strNewUserPwd << " and user old pwd is " << strOldUserPwd << " and user type is " << uiType 
         << " and extend is " << strExtend
@@ -450,6 +462,8 @@ bool HttpMsgHandler::ModifyUserInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
 
 bool HttpMsgHandler::RetrievePwdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -460,7 +474,7 @@ bool HttpMsgHandler::RetrievePwdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -484,6 +498,7 @@ bool HttpMsgHandler::RetrievePwdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
     const std::string strEmail = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Retrieve pwd info received and  user name is " << strUserName << " and email is " << strEmail);
 
@@ -504,6 +519,8 @@ bool HttpMsgHandler::RetrievePwdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
 bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsRelationList;
@@ -515,7 +532,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
 
             this_->WriteMsg(ResultInfoMap, writer, blResult);
@@ -589,9 +606,10 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
         return blResult;
     }
-
-
+    
     std::string strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Login user info received and  user name is " << strUsername <<
         " and user id is " << strUserID << 
@@ -610,6 +628,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     if (relist.size() != strDevNameList.size())
     {
         LOG_ERROR_RLD("Login user rsp info handle failed and relation list size is " << relist.size() << " and device name list size is " << strDevNameList.size());
+        ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
         return blResult;
     }
 
@@ -770,6 +789,8 @@ bool HttpMsgHandler::ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
 bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -780,7 +801,7 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -849,6 +870,8 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strDevInnerInfo = itFind->second;
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     LOG_INFO_RLD("Add device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
         << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
         << " and device inner info is [" << strDevInnerInfo << "]"
@@ -870,6 +893,8 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
 bool HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -880,7 +905,7 @@ bool HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -911,6 +936,8 @@ bool HttpMsgHandler::DeleteDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         return blResult;
     }
     const std::string strDevID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
     
     LOG_INFO_RLD("Delete device info received and  user id is " << strUserID << " and devcie id is " << strDevID 
         << " and session id is " << strSid);
@@ -3060,6 +3087,8 @@ bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::str
         strUserID = RegUsrRsp.m_strUserID;
         iRet = RegUsrRsp.m_iRetcode;
 
+        ReturnInfo::RetCode(iRet);
+
         LOG_INFO_RLD("Register user id is " << strUserID << " and return code is " << RegUsrRsp.m_iRetcode <<
             " and return msg is " << RegUsrRsp.m_strRetMsg);
 
@@ -3126,6 +3155,8 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
         }
         
         iRet = UnRegUsrRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Unregister user id is " << UnRegUsrRsp.m_strUserID << " and return code is " << UnRegUsrRsp.m_iRetcode <<
             " and return msg is " << UnRegUsrRsp.m_strRetMsg);
@@ -3205,6 +3236,8 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         strUserID = UsrLoginRsp.m_strUserID;
         strSid = UsrLoginRsp.m_strSID;
         iRet = UsrLoginRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Login user id is " << UsrLoginRsp.m_strUserID << " and session id is " << UsrLoginRsp.m_strSID << 
             " and return code is " << UsrLoginRsp.m_iRetcode <<
@@ -3328,6 +3361,8 @@ bool HttpMsgHandler::ModifyUserInfo(const std::string &strSid, const std::string
         }
 
         iRet = ModifyUsrInfoRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Modify user info  return code is " << ModifyUsrInfoRsp.m_iRetcode <<
             " and return msg is " << ModifyUsrInfoRsp.m_strRetMsg);
@@ -3535,6 +3570,8 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
 
         iRet = AddDevRsp.m_iRetcode;
 
+        ReturnInfo::RetCode(iRet);
+
         LOG_INFO_RLD("Add device is " << strUserID << " and session id is " << strSid <<
             " and return code is " << AddDevRsp.m_iRetcode <<
             " and return msg is " << AddDevRsp.m_strRetMsg);
@@ -3589,6 +3626,8 @@ bool HttpMsgHandler::DeleteDevice(const std::string &strSid, const std::string &
         }
 
         iRet = DelDevRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Delete device info user id is " << strUserID << " and session id is " << strSid <<
             " and return code is " << DelDevRsp.m_iRetcode <<
@@ -4830,6 +4869,8 @@ bool HttpMsgHandler::RetrievePwd(const std::string &strUserName, const std::stri
         }
 
         iRet = RetrievePwdRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Retrieve pwd info user name is " << strUserName << " and email is " << strEmail <<
             " and return code is " << RetrievePwdRsp.m_iRetcode <<

@@ -89,6 +89,13 @@ void ClusterAccessCollector::AddUserAccessRecord(const std::string &strAccessID,
 bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHandler::DeviceAccessRecord> &deviceAccessRecordList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
+    if (0 == m_uiDeviceAccessDequeSize)
+    {
+        LOG_INFO_RLD("GetDeviceAccessRecord completed, current deque is empty");
+
+        return true;
+    }
+
     if (uiBeginIndex >= m_uiDeviceAccessDequeSize)
     {
         LOG_ERROR_RLD("GetDeviceAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and record total size is " << m_uiDeviceAccessDequeSize);
@@ -96,7 +103,7 @@ bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHan
         return false;
     }
 
-    LOG_INFO_RLD("GetDeviceAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiDeviceAccessDequeSize << " and map size is " << m_deviceAccessRecordMap.size());
+    LOG_INFO_RLD("GetDeviceAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiDeviceAccessDequeSize);
 
     m_deviceAccessRecordMutex.lock();
 
@@ -140,6 +147,13 @@ bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHan
 bool ClusterAccessCollector::GetUserAccessRecord(std::list<InteractiveProtoHandler::UserAccessRecord> &userAccessRecordList,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize /*= 10*/)
 {
+    if (0 == m_uiUserAccessDequeSize)
+    {
+        LOG_INFO_RLD("GetUserAccessRecord completed, current deque is empty");
+
+        return true;
+    }
+
     if (uiBeginIndex >= m_uiUserAccessDequeSize)
     {
         LOG_ERROR_RLD("GetUserAccessRecord failed, begin index is out of range, index is " << uiBeginIndex << " and record total size is " << m_uiUserAccessDequeSize);
@@ -147,7 +161,7 @@ bool ClusterAccessCollector::GetUserAccessRecord(std::list<InteractiveProtoHandl
         return false;
     }
 
-    LOG_INFO_RLD("GetUserAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiUserAccessDequeSize << " and map size is " << m_userAccessRecordMap.size());
+    LOG_INFO_RLD("GetUserAccessRecord request begin index is " << uiBeginIndex << " and record total size is " << m_uiUserAccessDequeSize);
 
     m_userAccessRecordMutex.lock();
 
@@ -315,11 +329,11 @@ void ClusterAccessCollector::UpdateDeviceAccessRecordParam(const unsigned int ui
         //在上一轮数据接收异常时，保留最后一批数据，清除之前的所有数据
         if (m_uiDeviceAccessRecordCursor > 0 && uiPageSize < m_uiDeviceAccessDequeSize - m_uiDeviceAccessRecordCursor)
         {
-            unsigned int uiEraseSize = m_uiDeviceAccessRecordCursor - uiPageSize;
+            int eraseSize = m_uiDeviceAccessRecordCursor - uiPageSize;
 
-            if (uiEraseSize > 0)
+            if (eraseSize > 0)
             {
-                DiscardDeviceAccessRecord(uiEraseSize);
+                DiscardDeviceAccessRecord(eraseSize);
             }
         }
     }
@@ -334,11 +348,11 @@ void ClusterAccessCollector::UpdateUserAccessRecordParam(const unsigned int uiBe
         //在上一轮数据接收异常时，保留最后一批数据，清除之前的所有数据
         if (m_uiUserAccessRecordCursor > 0 && uiPageSize < m_uiUserAccessDequeSize - m_uiUserAccessRecordCursor)
         {
-            unsigned int uiEraseSize = m_uiUserAccessRecordCursor - uiPageSize;
+            int eraseSize = m_uiUserAccessRecordCursor - uiPageSize;
 
-            if (uiEraseSize > 0)
+            if (eraseSize > 0)
             {
-                DiscardUserAccessRecord(uiEraseSize);
+                DiscardUserAccessRecord(eraseSize);
             }
         }
     }
@@ -384,6 +398,12 @@ void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandle
 {
     m_deviceAccessRecordMutex.lock();
 
+    //队列长度达到设定的最大值时，清除头部元素，在尾部插入新元素
+    if (MAX_DEVICE_ACCESS_RECORD_SIZE <= m_deviceAccessRecordMappingDeque.size())
+    {
+        DiscardDeviceAccessRecord(1);
+    }
+
     auto itPos = m_deviceAccessRecordMap.find(accessedDevice.m_strAccessID);
     if (itPos == m_deviceAccessRecordMap.end())
     {
@@ -408,6 +428,12 @@ void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandle
 void ClusterAccessCollector::PushUserAccessRecord(const InteractiveProtoHandler::UserAccessRecord &accessedUser)
 {
     m_userAccessRecordMutex.lock();
+
+    //队列长度达到设定的最大值时，清除头部元素，在尾部插入新元素
+    if (MAX_USER_ACCESS_RECORD_SIZE <= m_userAccessRecordMappingDeque.size())
+    {
+        DiscardUserAccessRecord(1);
+    }
 
     auto itPos = m_userAccessRecordMap.find(accessedUser.m_strAccessID);
     if (itPos == m_userAccessRecordMap.end())
