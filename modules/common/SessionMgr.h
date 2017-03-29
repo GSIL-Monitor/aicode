@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <boost/shared_ptr.hpp>
 #include "NetComm.h"
-#include <unordered_map>
+
 
 class MemcacheClient;
 
@@ -24,6 +24,10 @@ public:
     SessionMgr();
     ~SessionMgr();
 
+    typedef boost::function<void(const std::string &strSessionID, const unsigned int uiType)> SessionTimeoutCB;
+
+    void SetSessionTimeoutCB(SessionTimeoutCB scb);
+
     void SetMemCacheAddRess(const std::string &strMemAddress, const std::string &strMemPort);
 
     bool Init();
@@ -34,7 +38,7 @@ public:
 
     typedef boost::function<void(const std::string &)> TMOUT_CB;
 
-    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb);
+    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0);
 
     bool Exist(const std::string &strSessionID);
     
@@ -57,13 +61,36 @@ private:
 
     bool MemCacheGet(const std::string &strKey, std::string &strValue);
 
+    void RemoveSTMap(const std::string &strSessionID);
+
 private:
+
+    SessionTimeoutCB m_scb;
+
+    typedef boost::function<bool(const std::string &strSessionID)> SessionExist;
+    typedef boost::function<void(const std::string &strSessionID)> SessionRemove;
+    
+    struct SessionTimer
+    {
+        SessionTimer();
+        ~SessionTimer();
+        boost::shared_ptr<TimeOutHandler> m_pTimer;
+        std::string m_strSid;
+        unsigned int m_uiType;
+        
+        void TimeOutCB(const boost::system::error_code& e, SessionExist se, SessionRemove sr, SessionTimeoutCB scb);
+    };
+
+    boost::mutex m_SessionTimerMutex;
+    std::unordered_map<std::string, boost::shared_ptr<SessionTimer> > m_STMap;
 
     std::string m_strMemAddress;
     std::string m_strMemPort;
 
     boost::mutex m_MemcachedMutex;
     MemcacheClient *m_pMemCl;
+
+    TimeOutHandlerEx m_TimeOutObj;
 
 };
 
