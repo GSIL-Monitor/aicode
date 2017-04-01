@@ -4,6 +4,9 @@
 #include "LogRLD.h"
 #include <boost/scope_exit.hpp>
 #include <boost/algorithm/string.hpp>
+#include "FileManager.h"
+
+
 
 const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
 
@@ -22,6 +25,8 @@ const std::string FCGIManager::CONTENT_TYPE = "CONTENT_TYPE";
 const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
 
 const std::string FCGIManager::REMOTE_ADDR = "REMOTE_ADDR";
+
+const unsigned int FCGIManager::CGI_READ_BUFFER_SIZE = 1024;
 
 FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum), m_MsgHandleRunner(uiRunTdNum)
 {
@@ -54,6 +59,14 @@ void FCGIManager::Run(bool isWaitRunFinished /*= false*/)
     }
     
     m_MsgLoopRunner.Run(isWaitRunFinished);
+
+}
+
+void FCGIManager::SetUploadTmpPath(const std::string &strPath)
+{
+    m_strUploadTmpPath = strPath;
+    m_pFileMgr.reset(new FileManager(strPath, 16));
+    m_pFileMgr->SetBlockSize(CGI_READ_BUFFER_SIZE);
 
 }
 
@@ -283,10 +296,11 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
 
     strBoundary = "--" + strBoundary;
 
+    bool blNeedOpen = true;
     std::string strReadBuffer;
     std::string strKey;
     std::string strValue;
-    char cReadBuffer[1024] = { 0 };
+    char cReadBuffer[CGI_READ_BUFFER_SIZE] = { 0 };
     while (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
     {
         strReadBuffer = cReadBuffer;
@@ -297,7 +311,94 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
         {
             if ((std::string::npos != strReadBuffer.find("filename")) && (std::string::npos != strReadBuffer.find("name")))
             {
-                LOG_ERROR_RLD("Invalid read line " << strReadBuffer);
+                std::string strFileName;
+                std::size_t PosFind = 0;
+                if (std::string::npos != (PosFind = strReadBuffer.find("filename=\"")))
+                {
+                    PosFind += 10;
+
+                    std::size_t PosFind2 = strReadBuffer.find("\"", PosFind);
+                    strFileName = strReadBuffer.substr(PosFind, (PosFind2 - PosFind));
+
+                    boost::algorithm::trim_if(strFileName, boost::algorithm::is_any_of(" \n\r"));
+                }
+
+                if (strFileName.empty())
+                {
+                    LOG_ERROR_RLD("Upload file name is empty, so skipped and continue.");
+                    continue;
+                }
+
+                pMsgInfoMap->insert(MsgInfoMap::value_type("filename", strFileName));
+
+                //带有文件上传
+                //
+                // POST http://172.20.122.252/access.cgi?action=device_login HTTP/1.1
+                //    User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.21 Basic ECC zlib/1.2.3 libidn/1.18 libssh2/1.4.2
+                //    Host: 172.20.122.252
+                //    Accept: * / *
+                //    Connection: Keep - Alive
+                //    Content - Length : 42517
+                //    Expect : 100 - continue
+                //    Content - Type : multipart / form - data; boundary = ----------------------------7393dbfddff5
+                //
+                //    ------------------------------7393dbfddff5
+                //    Content - Disposition: form - data; name = "upfile"; filename = "spawn-fcgi"
+                //    Content - Type: application / octet - stream
+
+                //    文件开头 
+
+                if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in) && (std::string::npos != std::string(cReadBuffer).find("octet-stream")))
+                {
+                    if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
+                    {
+                        //上传文件开始处
+                        std::string strFileID;
+                        if (blNeedOpen)
+                        {                            
+                            if (!m_pFileMgr->OpenFile(strFileName, strFileID))
+                            {
+                                LOG_ERROR_RLD("Open file failed and file name is " << strFileName);
+                                continue;
+                            }
+                            blNeedOpen = false;
+
+                            pMsgInfoMap->insert(MsgInfoMap::value_type("fileid", strFileID));
+                        }
+
+                        //
+                        FileStreamFilter(strFileID, "\r\n" + strBoundary, pRequest);
+
+                        ////
+                        //std::size_t PosBoundary;
+                        //std::string strTmp;
+                        //unsigned int uiBlkID = 0;
+                        //int iReadCount = 0;
+                        //while ((iReadCount =FCGX_GetStr(cReadBuffer, sizeof(cReadBuffer), pRequest->in)))
+                        //{
+                        //    strTmp.assign(cReadBuffer, iReadCount);
+                        //    if (std::string::npos != (PosBoundary = strTmp.find(strBoundary)))
+                        //    {
+                        //        const std::string &strEnd = strTmp.substr(0, strTmp.size() - (strBoundary.size() + 2 + 4)); //去掉\r\n和最后--字符
+                        //        m_pFileMgr->WriteBuffer(strFileID, strEnd.c_str(), strEnd.length(), uiBlkID);
+                        //        break;
+                        //    }
+                        //    else
+                        //    {
+                        //        m_pFileMgr->WriteBuffer(strFileID, cReadBuffer, iReadCount, uiBlkID);
+                        //    }
+                        //    
+                        //    ++uiBlkID;
+                        //}
+
+                        m_pFileMgr->CloseFile(strFileID);                        
+                    }
+                }
+                else
+                {
+                    LOG_ERROR_RLD("Content type is errror: " << cReadBuffer);
+                }
+                
                 continue;
             }
 
@@ -371,4 +472,79 @@ void FCGIManager::ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_
             pMsgInfoMap->insert(MsgInfoMap::value_type(strKey, strParams.substr(itFind + 1)));
         }
     }
+}
+
+void FCGIManager::FileStreamFilter(const std::string &strFileID, const std::string &strFileterString, FCGX_Request *pRequest)
+{
+    unsigned int uiBlkID = 0;
+    bool blFlagFinded = false;
+    int iLoop = 0;
+    std::string strNornalBuffer;
+    std::string strFilterBuffer;
+    int iReadChar = 0;
+    while (-1 != (iReadChar = FCGX_GetChar(pRequest->in)))
+    {
+        if (strFileterString[iLoop] == (char)iReadChar)
+        {
+            strFilterBuffer += (char)iReadChar;
+            if (strFilterBuffer == strFileterString)
+            {
+                blFlagFinded = true;
+                break;
+            }
+
+            ++iLoop;
+        }
+        else
+        {
+            if (!strFilterBuffer.empty())
+            {
+                if (strNornalBuffer.empty())
+                {
+                    strNornalBuffer = strFilterBuffer;
+                }
+                else
+                {
+                    strNornalBuffer.append(strFilterBuffer);
+                    //strNornalBuffer = strNornalBuffer + strFilterBuffer;
+                }
+                
+                strFilterBuffer.clear();
+            }
+            strNornalBuffer += (char)iReadChar;
+
+            iLoop = 0;
+
+            if (strNornalBuffer.size() == CGI_READ_BUFFER_SIZE)
+            {
+                m_pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
+                strNornalBuffer.clear();
+
+                ++uiBlkID;
+            }            
+        }
+    }
+
+    if (!strFilterBuffer.empty() && !blFlagFinded) //组装好正常buffer，包括了过滤字符
+    {
+        if (strNornalBuffer.empty())
+        {
+            strNornalBuffer = strFilterBuffer;
+        }
+        else
+        {
+            strNornalBuffer.append(strFilterBuffer);
+            //strNornalBuffer = strNornalBuffer + strFilterBuffer;
+        }
+
+        strFilterBuffer.clear();
+    }
+
+    if (!strNornalBuffer.empty())
+    {
+        m_pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
+        strNornalBuffer.clear();
+    }
+
+
 }

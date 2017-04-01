@@ -153,7 +153,7 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
 
     InteractiveProtoManagementHandler::DeleteClusterReq req;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &m_mutex, &m_clusterSessionMap)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
     {
         InteractiveProtoManagementHandler::DeleteClusterRsp rsp;
         rsp.m_MngMsgType = InteractiveProtoManagementHandler::ManagementMsgType::DeleteClusterRsp_T;
@@ -162,18 +162,6 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
-
-        if (blResult)
-        {
-            m_mutex.lock();
-            auto itPos = m_clusterSessionMap.find(req.m_strClusterID);
-            if (itPos != m_clusterSessionMap.end())
-            {
-                m_clusterSessionMap.erase(itPos);
-            }
-
-            m_mutex.unlock();
-        }
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -195,12 +183,12 @@ bool ManagementCenter::DeleteClusterReq(const std::string &strMsg, const std::st
         return false;
     }
 
-    //m_DBRuner.Post(boost::bind(&ManagementCenter::DeleteCluster, this, req.m_strClusterID));
-    if (!DeleteCluster(req.m_strClusterID))
-    {
-        LOG_ERROR_RLD("Delete cluster failed, cluster id is " << req.m_strClusterID);
-        return false;
-    }
+    m_DBRuner.Post(boost::bind(&ManagementCenter::DeleteCluster, this, req.m_strClusterID));
+    //if (!DeleteCluster(req.m_strClusterID))
+    //{
+    //    LOG_ERROR_RLD("Delete cluster failed, cluster id is " << req.m_strClusterID);
+    //    return false;
+    //}
 
     blResult = true;
 
@@ -311,7 +299,7 @@ bool ManagementCenter::QueryClusterInfoReq(const std::string &strMsg, const std:
         return false;
     }
 
-    if (!QueryClusterInfo(req.m_strClusterID, clusterInfo))
+    if (!QueryClusterInfo(req.m_strClusterID, NORMAL_STATUS, clusterInfo))
     {
         LOG_ERROR_RLD("Query cluster info failed, src id is " << strSrcID);
         return false;
@@ -494,7 +482,7 @@ bool ManagementCenter::QueryClusterDeviceReq(const std::string &strMsg, const st
         return false;
     }
 
-    if (!QueryClusterDevice(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedDeviceList))
+    if (!QueryClusterDevice(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedDeviceList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query cluster device failed, src id is " << strSrcID);
         return false;
@@ -562,7 +550,7 @@ bool ManagementCenter::QueryClusterUserReq(const std::string &strMsg, const std:
         return false;
     }
 
-    if (!QueryClusterUser(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedUserList))
+    if (!QueryClusterUser(req.m_strClusterID, req.m_strBegindate, req.m_strEnddate, req.m_uiRecordType, accessedUserList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query cluster user failed, src id is " << strSrcID);
         return false;
@@ -748,10 +736,10 @@ bool ManagementCenter::AddClusterPost(const std::string &strUrl, const std::stri
     return true;
 }
 
-bool ManagementCenter::DeleteClusterAgent(const std::string &strClusterID)
+bool ManagementCenter::DeleteClusterAgent(const std::string &strClusterID, const unsigned int uiStatus)
 {
     InteractiveProtoManagementHandler::Cluster clusterInfo;
-    if (!QueryClusterInfo(strClusterID, clusterInfo))
+    if (!QueryClusterInfo(strClusterID, uiStatus, clusterInfo))
     {
         LOG_ERROR_RLD("DeleteClusterAgent failed, query cluster address error, cluster id is " << strClusterID);
         return false;
@@ -953,13 +941,6 @@ void ManagementCenter::AddCluster(const InteractiveProtoManagementHandler::Clust
 
 bool ManagementCenter::DeleteCluster(const std::string &strClusterID)
 {
-    //同时发送删除集群代理命令
-    if (!DeleteClusterAgent(strClusterID))
-    {
-        LOG_ERROR_RLD("DeleteCluster failed, delete cluster agent error, cluster id is " << strClusterID);
-        return false;
-    }
-
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_cluster_info set status = %d where clusterid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, strClusterID.c_str());
@@ -968,6 +949,21 @@ bool ManagementCenter::DeleteCluster(const std::string &strClusterID)
     {
         LOG_ERROR_RLD("DeleteCluster exec sql failed, sql is " << sql);
         return false;
+    }
+
+    m_mutex.lock();
+    auto itPos = m_clusterSessionMap.find(strClusterID);
+    if (itPos != m_clusterSessionMap.end())
+    {
+        m_clusterSessionMap.erase(itPos);
+    }
+
+    m_mutex.unlock();
+
+    //同时发送删除集群代理命令
+    if (!DeleteClusterAgent(strClusterID, NORMAL_STATUS))
+    {
+        LOG_ERROR_RLD("DeleteCluster error, delete cluster agent error, cluster id is " << strClusterID);
     }
 
     return true;
@@ -1021,12 +1017,12 @@ void ManagementCenter::ModifyCluster(const InteractiveProtoManagementHandler::Cl
     }
 }
 
-bool ManagementCenter::QueryClusterInfo(const std::string &strClusterID, InteractiveProtoManagementHandler::Cluster &clusterInfo)
+bool ManagementCenter::QueryClusterInfo(const std::string &strClusterID, const unsigned int uiStatus, InteractiveProtoManagementHandler::Cluster &clusterInfo)
 {
     char sql[256] = { 0 };
     const char *sqlfmt = "select clusterid, clusteraddress, managementaddress, aliasname, createdate, status"
-        " from t_cluster_info where clusterid = '%s' and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
+        " from t_cluster_info where clusterid = '%s' and status = %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str(), uiStatus);
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -1185,32 +1181,56 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
         " from t_cluster_accessed_device_info where clusterid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
 
-    if (!strBegindate.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, " and createdate >= '%s'", strBegindate.c_str());
-    }
-
-    if (!strEnddate.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, " and createdate <= '%s'", strEnddate.c_str());
-    }
-
     if (0 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logouttime is not null");
+        snprintf(sql + len, size - len, " and logintime != '%s' and logouttime != '%s'", MAX_DATE.c_str(), MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime >= '%s' and logouttime >= '%s'", strBegindate.c_str(), strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime <= '%s' and logouttime <= '%s'", strEnddate.c_str(), strEnddate.c_str());
+        }
     }
     else if (1 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null");
+        snprintf(sql + len, size - len, " and logintime != '%s'", MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime >= '%s'", strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime <= '%s'", strEnddate.c_str());
+        }
     }
     else if (2 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logouttime is not null");
+        snprintf(sql + len, size - len, " and logouttime != '%s'", MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logouttime >= '%s'", strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logouttime <= '%s'", strEnddate.c_str());
+        }
     }
 
     len = strlen(sql);
@@ -1228,10 +1248,10 @@ bool ManagementCenter::QueryClusterDevice(const std::string &strClusterID, const
             accessedDevice.m_strDeviceName = strColumn;
             break;
         case 2:
-            accessedDevice.m_strLoginTime = strColumn;
+            accessedDevice.m_strLoginTime = strColumn == MAX_DATE ? "" : strColumn;
             break;
         case 3:
-            accessedDevice.m_strLogoutTime = strColumn;
+            accessedDevice.m_strLogoutTime = strColumn == MAX_DATE ? "" : strColumn;
             break;
         case 4:
             accessedDevice.m_uiDeviceType = boost::lexical_cast<unsigned int>(strColumn);
@@ -1278,32 +1298,56 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
         " from t_cluster_accessed_user_info where clusterid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
 
-    if (!strBegindate.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, " and createdate >= '%s'", strBegindate.c_str());
-    }
-
-    if (!strEnddate.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, " and createdate <= '%s'", strEnddate.c_str());
-    }
-
     if (0 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null and logouttime is not null");
+        snprintf(sql + len, size - len, " and logintime != '%s' and logouttime != '%s'", MAX_DATE.c_str(), MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime >= '%s' and logouttime >= '%s'", strBegindate.c_str(), strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime <= '%s' and logouttime <= '%s'", strEnddate.c_str(), strEnddate.c_str());
+        }
     }
     else if (1 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logintime is not null");
+        snprintf(sql + len, size - len, " and logintime != '%s'", MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime >= '%s'", strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logintime <= '%s'", strEnddate.c_str());
+        }
     }
     else if (2 == uiRecordType)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, " and logouttime is not null");
+        snprintf(sql + len, size - len, " and logouttime != '%s'", MAX_DATE.c_str());
+
+        if (!strBegindate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logouttime >= '%s'", strBegindate.c_str());
+        }
+
+        if (!strEnddate.empty())
+        {
+            len = strlen(sql);
+            snprintf(sql + len, size - len, " and logouttime <= '%s'", strEnddate.c_str());
+        }
     }
 
     len = strlen(sql);
@@ -1324,10 +1368,10 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
             accessedUser.m_strUserAliasname = strColumn;
             break;
         case 3:
-            accessedUser.m_strLoginTime = strColumn;
+            accessedUser.m_strLoginTime = strColumn == MAX_DATE ? "" : strColumn;
             break;
         case 4:
-            accessedUser.m_strLogoutTime = strColumn;
+            accessedUser.m_strLogoutTime = strColumn == MAX_DATE ? "" : strColumn;
             break;
         case 5:
             accessedUser.m_uiClientType = boost::lexical_cast<unsigned int>(strColumn);
@@ -1364,8 +1408,8 @@ bool ManagementCenter::QueryClusterUser(const std::string &strClusterID, const s
 bool ManagementCenter::QueryClusterDeviceTotal(const std::string &strClusterID, unsigned int &uiDeviceTotal)
 {
     char sql[256] = { 0 };
-    const char *sqlfmt = "select count(id) from t_cluster_accessed_device_info where clusterid = '%s' and logouttime is null and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
+    const char *sqlfmt = "select count(id) from t_cluster_accessed_device_info where clusterid = '%s' and logouttime = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str(), MAX_DATE.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -1395,8 +1439,8 @@ bool ManagementCenter::QueryClusterDeviceTotal(const std::string &strClusterID, 
 bool ManagementCenter::QueryClusterUserTotal(const std::string &strClusterID, unsigned int &uiUserTotal)
 {
     char sql[256] = { 0 };
-    const char *sqlfmt = "select count(id) from t_cluster_accessed_user_info where clusterid = '%s' and logouttime is null and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str());
+    const char *sqlfmt = "select count(id) from t_cluster_accessed_user_info where clusterid = '%s' and logouttime = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strClusterID.c_str(), MAX_DATE.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -1432,6 +1476,24 @@ void ManagementCenter::PushClusterDevice(const std::list<InteractiveProtoManagem
         return;
     }
 
+    auto &front = deviceAccessRecordList.front();
+    m_mutex.lock();
+    if (m_clusterSessionMap.find(front.m_strClusterID) == m_clusterSessionMap.end())
+    {
+        m_mutex.unlock();
+
+        //如果集群已被删除，则向集群发送删除集群代理命令
+        if (!DeleteClusterAgent(front.m_strClusterID, DELETE_STATUS))
+        {
+            LOG_ERROR_RLD("PushClusterDevice error, delete cluster agent error, cluster id is " << front.m_strClusterID);
+        }
+
+        LOG_ERROR_RLD("PushClusterDevice completed, cluster is deleted, cluster id is " << front.m_strClusterID);
+        return;
+    }
+
+    m_mutex.unlock();
+
     boost::posix_time::ptime nowTime = boost::posix_time::second_clock::local_time();
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(nowTime);
     std::string::size_type pos = strCurrentTime.find('T');
@@ -1465,7 +1527,7 @@ bool ManagementCenter::InsertAccessedDevice(const InteractiveProtoManagementHand
 
     if (deviceAccessRecord.m_accessedDevice.m_strLoginTime.empty())
     {
-        strLoginTime = "null";
+        strLoginTime = "'" + MAX_DATE + "'";
     }
     else
     {
@@ -1474,7 +1536,7 @@ bool ManagementCenter::InsertAccessedDevice(const InteractiveProtoManagementHand
 
     if (deviceAccessRecord.m_accessedDevice.m_strLogoutTime.empty())
     {
-        strLogoutTime = "null";
+        strLogoutTime = "'" + MAX_DATE + "'";
     }
     else
     {
@@ -1506,6 +1568,24 @@ void ManagementCenter::PushClusterUser(const std::list<InteractiveProtoManagemen
 
         return;
     }
+
+    auto &front = userAccessRecordList.front();
+    m_mutex.lock();
+    if (m_clusterSessionMap.find(front.m_strClusterID) == m_clusterSessionMap.end())
+    {
+        m_mutex.unlock();
+
+        //如果集群已被删除，则向集群发送删除集群代理命令
+        if (DeleteClusterAgent(front.m_strClusterID, DELETE_STATUS))
+        {
+            LOG_ERROR_RLD("PushClusterUser error, delete cluster agent error, cluster id is " << front.m_strClusterID);
+        }
+
+        LOG_ERROR_RLD("PushClusterUser completed, cluster is deleted, cluster id is " << front.m_strClusterID);
+        return;
+    }
+
+    m_mutex.unlock();
 
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
@@ -1540,7 +1620,7 @@ bool ManagementCenter::InsertAccessedUser(const InteractiveProtoManagementHandle
 
     if (userAccessRecord.m_accessedUser.m_strLoginTime.empty())
     {
-        strLoginTime = "null";
+        strLoginTime = "'" + MAX_DATE + "'";
     }
     else
     {
@@ -1549,13 +1629,13 @@ bool ManagementCenter::InsertAccessedUser(const InteractiveProtoManagementHandle
 
     if (userAccessRecord.m_accessedUser.m_strLogoutTime.empty())
     {
-        strLogoutTime = "null";
+        strLogoutTime = "'" + MAX_DATE + "'";
     }
     else
     {
         strLogoutTime = "'" + userAccessRecord.m_accessedUser.m_strLogoutTime + "'";
     }
-    
+
     const char *sqlfmt = "insert into t_cluster_accessed_user_info"
         " (id, accessid, userid, username, useraliasname, clusterid, logintime, logouttime, onlineduration, clienttype, createdate, status)"
         " values(uuid(), '%s', '%s', '%s', '%s', '%s', %s, %s, %d, %d, '%s', %d)"

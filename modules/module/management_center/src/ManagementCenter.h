@@ -61,7 +61,7 @@ public:
 
     bool GetMsgType(const std::string &strMsg, int &iMsgType);
 
-    bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    //bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool AddClusterReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
@@ -93,7 +93,7 @@ private:
 
     void ModifyCluster(const InteractiveProtoManagementHandler::Cluster &clusterInfo);
 
-    bool QueryClusterInfo(const std::string &strClusterID, InteractiveProtoManagementHandler::Cluster &clusterInfo);
+	bool QueryClusterInfo(const std::string &strClusterID, const unsigned int uiStatus, InteractiveProtoManagementHandler::Cluster &clusterInfo);
 
     bool QueryAllCluster(const std::string &strManagementAddress, std::list<InteractiveProtoManagementHandler::ClusterStatus> &clusterStatusList);
 
@@ -115,7 +115,7 @@ private:
 
     bool AddClusterPost(const std::string &strUrl, const std::string &strClusterID, const std::string &strManagementAddress);
 
-    bool DeleteClusterAgent(const std::string &strClusterID);
+    bool DeleteClusterAgent(const std::string &strClusterID, const unsigned int uiStatus);
 
     bool InitClusterSession();
 

@@ -42,6 +42,7 @@ bool AccessManager::Init()
     }
 
     m_SessionMgr.SetMemCacheAddRess(m_ParamInfo.m_strMemAddress, m_ParamInfo.m_strMemPort);
+    m_SessionMgr.SetSessionTimeoutCB(boost::bind(&ClusterAccessCollector::AddAccessTimeoutRecord, m_pClusterAccessCollector, _1, _2));
 
     if (!m_SessionMgr.Init())
     {
@@ -579,7 +580,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold), 
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1));
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION);
         
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList))
     {
@@ -653,7 +654,7 @@ bool AccessManager::LogoutReq(const std::string &strMsg, const std::string &strS
             strCurrentTime.replace(pos, 1, std::string(" "));
 
             this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
-                LogoutReqUsr.m_strSID, "", 0, "", strCurrentTime));
+                LogoutReqUsr.m_strSID, "", 0xFFFFFFFF, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;
@@ -1760,7 +1761,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold),
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1));
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION);
 
     blResult = true;
 
@@ -1907,7 +1908,7 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
             strCurrentTime.replace(pos, 1, std::string(" "));
 
             this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
-                LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0, "", strCurrentTime));
+                LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0xFFFFFFFF, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;

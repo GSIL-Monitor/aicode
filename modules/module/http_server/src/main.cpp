@@ -216,6 +216,14 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    const std::string &UploadTmpPath = cfg.GetItem("General.UploadTmpPath");
+    if (UploadTmpPath.empty())
+    {
+        LOG_ERROR_RLD("UploadTmpPath config item not found.");
+        return 0;
+    }
+
+
     ///////////////////////////////////////////////////
     HttpMsgHandler::ParamInfo pm;
     pm.m_strRemoteAddress = strRemoteAddress;
@@ -242,6 +250,8 @@ int main(int argc, char *argv[])
     ma.SetMsgWriter(boost::bind(&HttpMsgHandler::WriteMsg, &filehdr, _1, _2, _3, _4));
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
+    fcgimgr.SetUploadTmpPath(UploadTmpPath);
+
     fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
     fcgimgr.SetMsgHandler(ManagementAgent::CLUSTER_SHAKEHAND__ACTION, boost::bind(&ManagementAgent::ClusterAgentShakehandHandler, &ma, _1, _2));
     fcgimgr.SetMsgHandler(ManagementAgent::DELETE_CLUSTER_ACTION, boost::bind(&ManagementAgent::DeleteClusterAgentHandler, &ma, _1, _2));

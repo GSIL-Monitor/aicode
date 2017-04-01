@@ -25,8 +25,8 @@ void ClusterAccessCollector::AddDeviceAccessRecord(const std::string &strAccessI
     std::string strDeviceName;
     if (!QueryDeviceInfo(strDeviceID, strDeviceName))
     {
+        //未查询到设备其他相关数据时，都默认使用空值填充，使用设备ID作为关键数据保存即可
         LOG_ERROR_RLD("AddDeviceAccessRecord failed, device info not found, device id is " << strDeviceID);
-        return;
     }
 
     InteractiveProtoHandler::DeviceAccessRecord accessedDevice;
@@ -58,8 +58,8 @@ void ClusterAccessCollector::AddUserAccessRecord(const std::string &strAccessID,
     std::string strAliasname;
     if (!QueryUserInfo(strUserID, strUserName, strAliasname))
     {
+        //未查询到用户其他相关数据时，都默认使用空值填充，使用用户ID作为关键数据保存即可
         LOG_ERROR_RLD("AddUserAccessRecord failed, user info not found, user id is " << strUserID);
-        return;
     }
 
     InteractiveProtoHandler::UserAccessRecord accessedUser;
@@ -112,21 +112,21 @@ bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHan
     for (unsigned int i = uiBeginIndex; i < uiBeginIndex + size; ++i)
     {
         auto &deviceAccessRecordMapping = m_deviceAccessRecordMappingDeque[i];
-        auto &deviceAccessRecord = deviceAccessRecordMapping.itAccessIDPos->second;
+        //auto &deviceAccessRecord = deviceAccessRecordMapping.itAccessIDPos->second;
 
-        if (deviceAccessRecord.m_strLogoutTime.empty())
-        {
-            //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
-            if (!m_pSessionMgr->Exist(deviceAccessRecordMapping.itAccessIDPos->first))
-            {
-                LOG_INFO_RLD("GetDeviceAccessRecord check session id exist result is false, set device logout time as current time");
+        //if (deviceAccessRecord.m_strLogoutTime.empty())
+        //{
+        //    //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
+        //    if (!m_pSessionMgr->Exist(deviceAccessRecordMapping.itAccessIDPos->first))
+        //    {
+        //        LOG_INFO_RLD("GetDeviceAccessRecord check session id exist result is false, set device logout time as current time");
 
-                std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-                strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
+        //        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        //        strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
 
-                deviceAccessRecord.m_strLogoutTime = strCurrentTime;
-            }
-        }
+        //        deviceAccessRecord.m_strLogoutTime = strCurrentTime;
+        //    }
+        //}
 
         deviceAccessRecordList.push_back(deviceAccessRecordMapping.itAccessIDPos->second);
     }
@@ -134,7 +134,7 @@ bool ClusterAccessCollector::GetDeviceAccessRecord(std::list<InteractiveProtoHan
     m_uiDeviceAccessRecordCursor += size;
 
     //读取完最后一批数据时，清空本轮所有已读取的数据
-    if (m_uiDeviceAccessRecordCursor == m_uiDeviceAccessDequeSize)
+    if (m_uiDeviceAccessRecordCursor >= m_uiDeviceAccessDequeSize)
     {
         DiscardDeviceAccessRecord(m_uiDeviceAccessDequeSize);
     }
@@ -170,21 +170,21 @@ bool ClusterAccessCollector::GetUserAccessRecord(std::list<InteractiveProtoHandl
     for (unsigned int i = uiBeginIndex; i < uiBeginIndex + size; ++i)
     {
         auto &userAccessRecordMapping = m_userAccessRecordMappingDeque[i];
-        auto &userAccessRecord = userAccessRecordMapping.itAccessIDPos->second;
+        //auto &userAccessRecord = userAccessRecordMapping.itAccessIDPos->second;
 
-        if (userAccessRecord.m_strLogoutTime.empty())
-        {
-            //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
-            if (!m_pSessionMgr->Exist(userAccessRecordMapping.itAccessIDPos->first))
-            {
-                LOG_INFO_RLD("GetUserAccessRecord check session id exist result is false, set user logout time as current time");
+        //if (userAccessRecord.m_strLogoutTime.empty())
+        //{
+        //    //如果会话ID已在MemoryCache中被清空，则认为该设备已下线
+        //    if (!m_pSessionMgr->Exist(userAccessRecordMapping.itAccessIDPos->first))
+        //    {
+        //        LOG_INFO_RLD("GetUserAccessRecord check session id exist result is false, set user logout time as current time");
 
-                std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-                strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
+        //        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        //        strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
 
-                userAccessRecord.m_strLogoutTime = strCurrentTime;
-            }
-        }
+        //        userAccessRecord.m_strLogoutTime = strCurrentTime;
+        //    }
+        //}
 
         userAccessRecordList.push_back(userAccessRecordMapping.itAccessIDPos->second);
     }
@@ -192,7 +192,7 @@ bool ClusterAccessCollector::GetUserAccessRecord(std::list<InteractiveProtoHandl
     m_uiUserAccessRecordCursor += size;
 
     //读取完最后一批数据时，清空本轮所有已读取的数据
-    if (m_uiUserAccessRecordCursor == m_uiUserAccessDequeSize)
+    if (m_uiUserAccessRecordCursor >= m_uiUserAccessDequeSize)
     {
         DiscardUserAccessRecord(m_uiUserAccessDequeSize);
     }
@@ -232,6 +232,27 @@ unsigned int ClusterAccessCollector::UserAccessRecordSize(const unsigned int uiB
     }
 
     return m_uiUserAccessDequeSize;
+}
+
+void ClusterAccessCollector::AddAccessTimeoutRecord(const std::string &strAccessID, const unsigned int uiAccesser)
+{
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    strCurrentTime.replace(strCurrentTime.find('T'), 1, std::string(" "));
+
+    if (DEVICE_SESSION == uiAccesser)
+    {
+        AddDeviceAccessRecord(strAccessID, "", 0xFFFFFFFF, "", strCurrentTime);
+    }
+    else if (USER_SESSION == uiAccesser)
+    {
+        AddUserAccessRecord(strAccessID, "", 0xFFFFFFFF, "", strCurrentTime);
+    }
+    else
+    {
+        LOG_ERROR_RLD("AddAccessTimeoutRecord failed, input accesser is illegal, accesser is " << uiAccesser);
+    }
+
+    LOG_INFO_RLD("AddAccessTimeoutRecord successful, access id is " << strAccessID << " and acccesser is " << uiAccesser);
 }
 
 bool ClusterAccessCollector::QueryDeviceInfo(const std::string &strDeviceID, std::string &strDeviceName)
@@ -401,6 +422,14 @@ void ClusterAccessCollector::PushDeviceAccessRecord(const InteractiveProtoHandle
     //队列长度达到设定的最大值时，清除头部元素，在尾部插入新元素
     if (MAX_DEVICE_ACCESS_RECORD_SIZE <= m_deviceAccessRecordMappingDeque.size())
     {
+        auto &front = m_deviceAccessRecordMappingDeque.front();
+
+        LOG_ERROR_RLD("PushDeviceAccessRecord deque overflow, max deque size is " << MAX_DEVICE_ACCESS_RECORD_SIZE <<
+            " and discarded record access id is " << front.itAccessIDPos->second.m_strAccessID <<
+            " and device id is " << front.itAccessIDPos->second.m_strDeviceID <<
+            " and login time is " << front.itAccessIDPos->second.m_strLoginTime <<
+            " and logout time is " << front.itAccessIDPos->second.m_strLogoutTime);
+
         DiscardDeviceAccessRecord(1);
     }
 
@@ -432,6 +461,14 @@ void ClusterAccessCollector::PushUserAccessRecord(const InteractiveProtoHandler:
     //队列长度达到设定的最大值时，清除头部元素，在尾部插入新元素
     if (MAX_USER_ACCESS_RECORD_SIZE <= m_userAccessRecordMappingDeque.size())
     {
+        auto &front = m_userAccessRecordMappingDeque.front();
+
+        LOG_ERROR_RLD("PushUserAccessRecord deque overflow, max deque size is " << MAX_USER_ACCESS_RECORD_SIZE <<
+            " and discarded record access id is " << front.itAccessIDPos->second.m_strAccessID <<
+            " and user id is " << front.itAccessIDPos->second.m_strUserID <<
+            " and login time is " << front.itAccessIDPos->second.m_strLoginTime <<
+            " and logout time is " << front.itAccessIDPos->second.m_strLogoutTime);
+
         DiscardUserAccessRecord(1);
     }
 

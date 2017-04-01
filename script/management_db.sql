@@ -10,10 +10,10 @@ CREATE TABLE `t_cluster_accessed_user_info` (
   `username` varchar(100) NOT NULL,
   `useraliasname` varchar(100),
   `clusterid` varchar(100) NOT NULL, #集群ID
-  `logintime` datetime,
-  `logouttime` datetime,
+  `logintime` datetime NOT NULL,
+  `logouttime` datetime NOT NULL,
   `onlineduration` int(11),
-  `clienttype` int(11), #客户终端类型
+  `clienttype` int(11) NOT NULL, #客户终端类型
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),
@@ -30,10 +30,10 @@ CREATE TABLE `t_cluster_accessed_device_info` (
   `deviceid` varchar(100) NOT NULL,
   `devicename` varchar(100) NOT NULL,
   `clusterid` varchar(100) NOT NULL, #集群ID
-  `logintime` datetime,
-  `logouttime` datetime,
+  `logintime` datetime NOT NULL,
+  `logouttime` datetime NOT NULL,
   `onlineduration` int(11),
-  `devicetype` int(11), #设备类型
+  `devicetype` int(11) NOT NULL, #设备类型
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0, #0正常，1删除
   PRIMARY KEY (`id`),

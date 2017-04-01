@@ -6,10 +6,13 @@
 #include <boost/thread.hpp>
 #include "fcgiapp.h"
 
+
 /************************************************************************/
 /* FCGI管理器，负责将FCGI相关的信息解析出来，提供给业务使用，
  * 提供HTTP通道，供给业务进行写入HTTP消息（业务处理结果信息或者文件流信息）*/
 /************************************************************************/
+
+class FileManager;
 
 typedef boost::function<void(const char *, const unsigned int, const unsigned int)> MsgWriter;
 typedef enum
@@ -31,6 +34,8 @@ public:
 
     void Run(bool isWaitRunFinished = false);
 
+    void SetUploadTmpPath(const std::string &strPath);
+
     void SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn); //消息解析处理
 
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
@@ -48,6 +53,8 @@ private:
 
     void ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest);
 
+    void FileStreamFilter(const std::string &strFileID,  const std::string &strFileterString, FCGX_Request *pRequest);
+
 private:
     
     unsigned int m_uiTdNum;
@@ -60,6 +67,10 @@ private:
 
     std::list<MsgHandler> m_MsgPreHandlerList;
 
+    std::string m_strUploadTmpPath;
+
+    boost::shared_ptr<FileManager> m_pFileMgr;
+
 public:
     static const std::string QUERY_STRING;
     static const std::string REQUEST_METHOD;
@@ -71,7 +82,7 @@ public:
     static const std::string HTTP_RANGE;
     static const std::string REMOTE_ADDR;
 
-
+    static const unsigned int CGI_READ_BUFFER_SIZE;
 };
 
 

@@ -20,6 +20,9 @@ public:
     static const unsigned int MAX_DEVICE_ACCESS_RECORD_SIZE = 50000;  //大约10M的内存使用
     static const unsigned int MAX_USER_ACCESS_RECORD_SIZE = 50000;
 
+    static const unsigned int DEVICE_SESSION = 0;
+    static const unsigned int USER_SESSION = 1;
+
 
     ClusterAccessCollector(SessionMgr *pSessionMgr, MysqlImpl *pMysqlImpl, DBInfoCacheManager *pDBInfo);
     ~ClusterAccessCollector();
@@ -37,6 +40,8 @@ public:
     unsigned int DeviceAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
 
     unsigned int UserAccessRecordSize(const unsigned int uiBeginIndex, const unsigned int uiPageSize = 10);
+
+    void AddAccessTimeoutRecord(const std::string &strAccessID, const unsigned int uiAccesser);
 
 
 private:
