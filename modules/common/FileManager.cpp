@@ -6,8 +6,18 @@
 #include "CommonUtility.h"
 
 FileManager::FileManager(const std::string &strPath, const unsigned int uiSubDirNum, const bool InitClean) :
-m_strPath(strPath), m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(1)
+m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(1)
 {
+    boost::system::error_code e;
+    boost::filesystem::path FilePath = strPath.empty() ? (boost::filesystem::current_path() / "FileStorage") : (boost::filesystem::path(strPath) / "FileStorage");
+
+    if (m_InitClean)
+    {
+        boost::filesystem::remove_all(FilePath, e);
+        LOG_INFO_RLD("Storage path was inited and path is " << FilePath.string() << " and result msg is " << e.message());
+    }
+    
+    m_strPath = FilePath.string();
 }
 
 FileManager::~FileManager()
@@ -174,13 +184,7 @@ void FileManager::CloseFile(const std::string &strFileID)
 bool FileManager::GetStoragePath(std::string &strOutputPath, std::string &strFileID)
 {
     boost::system::error_code e;
-    boost::filesystem::path FilePath = m_strPath.empty() ? (boost::filesystem::current_path() / "FileStorage") : (boost::filesystem::path(m_strPath) / "FileStorage");
-
-    if (m_InitClean)
-    {
-        boost::filesystem::remove_all(FilePath, e);
-        LOG_INFO_RLD("Storage path was inited and path is " << FilePath.string() << " and result msg is " << e.message());
-    }
+    boost::filesystem::path FilePath(m_strPath);
 
     if (!boost::filesystem::exists(FilePath, e))
     {
