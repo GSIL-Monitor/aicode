@@ -41,6 +41,8 @@ public:
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
 
     void SetMsgPreHandler(MsgHandler msghdr); //消息预处理
+
+    boost::shared_ptr<FileManager> GetFileMgr();
     
 private:
     void FCGILoopHandler();

@@ -13,12 +13,15 @@
  *调用接口实现用户注册的业务动作。*/
 /************************************************************************/
 
+class FileManager;
 class InteractiveProtoHandler;
 
 class HttpMsgHandler : public boost::noncopyable
 {
 public:
     static const std::string UPLOAD_FILE_ACTION;
+    static const std::string DOWNLOAD_FILE_ACTION;
+
     static const std::string REGISTER_USER_ACTION;
     static const std::string USER_SHAKEHAND_ACTION;
     
@@ -35,24 +38,24 @@ public:
     HttpMsgHandler(const ParamInfo &parminfo);
     ~HttpMsgHandler();
 
+    void SetFileMgr(boost::shared_ptr<FileManager> pFileMgr);
+
     bool UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
-    bool RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-
-    bool ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    bool DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
+    void WriteMsg(MsgWriter writer, const char *pBuffer, const unsigned int uiBufferSize, const bool IsNeedWriteHead, const std::string &strHeaderMsg);
+
 private:
-
-    bool PreCommonHandler(const std::string &strMsgReceived);
-
-    bool RegisterUser(const std::string &strUserName, const std::string &strUserPwd, 
-        const std::string &strType, const std::string &strExtend, const std::string &strAliasName, const std::string &strEmail, std::string &strUserID);
+    bool DownloadFile(const std::string &strFileID, MsgWriter writer);
 
 private:
     ParamInfo m_ParamInfo;
     boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
+
+    boost::shared_ptr<FileManager> m_pFileMgr;
 
 private:
     static const std::string SUCCESS_CODE;

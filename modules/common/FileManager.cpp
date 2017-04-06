@@ -6,7 +6,7 @@
 #include "CommonUtility.h"
 
 FileManager::FileManager(const std::string &strPath, const unsigned int uiSubDirNum, const bool InitClean) :
-m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(1)
+m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(0)
 {
     boost::system::error_code e;
     boost::filesystem::path FilePath = strPath.empty() ? (boost::filesystem::current_path() / "FileStorage") : (boost::filesystem::path(strPath) / "FileStorage");
@@ -56,7 +56,7 @@ bool FileManager::OpenFile(const std::string &strFileName, std::string &strFileI
 
 }
 
-bool FileManager::OpenFile(const std::string &strFileID)
+bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize)
 {
     if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
     {
@@ -78,7 +78,27 @@ bool FileManager::OpenFile(const std::string &strFileID)
         return false;
     }
 
-    LOG_INFO_RLD("Get file path is " << strStoragePath);
+    {
+        boost::filesystem::path FilePath(strStoragePath);
+
+        boost::system::error_code ec;
+        if (!boost::filesystem::exists(FilePath, ec))
+        {
+            LOG_ERROR_RLD("File not exist and path is " << strStoragePath);
+            return false;
+        }
+
+        const unsigned int uiSize = (unsigned int)boost::filesystem::file_size(FilePath, ec);
+        if (0 == uiSize)
+        {
+            LOG_ERROR_RLD("File size is zero.");
+            return false;
+        }
+
+        uiFileSize = uiSize;
+    }
+
+    LOG_INFO_RLD("Get file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize);
 
     if (!AddFileHandler(strFileID, strStoragePath))
     {
@@ -180,6 +200,75 @@ void FileManager::CloseFile(const std::string &strFileID)
     }
 }
 
+
+bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
+{
+    unsigned int uiFileSize = 0;
+    if (!OpenFile(strFileID, uiFileSize))
+    {
+        LOG_ERROR_RLD("Open file failed and file id is " << strFileID);
+        return false;
+    }
+
+    if (0 == m_uiBlockSize)
+    {
+        LOG_ERROR_RLD("File block size is zero");
+        return false;
+    }
+
+    const unsigned int uiBlockSize = m_uiBlockSize;
+    const unsigned int uiBlockCount = uiBlockSize >= uiFileSize ? 1 : uiFileSize / uiBlockSize + 1;
+
+    unsigned int uiBlockStatus = 0; //0，第一个文件块，1，文件中间位置的文件块，2，文件最后文件块
+    boost::shared_ptr<char> pReadBuffer(new char[uiBlockSize]);
+    unsigned int uiReadSize = 0;
+    for (unsigned int i = 0; i < uiBlockCount; ++i)
+    {
+        if (!ReadBuffer(strFileID, pReadBuffer.get(), uiBlockSize, uiReadSize, i))
+        {
+            LOG_ERROR_RLD("Read file buffer failed and file id is " << strFileID << " and current block id is " << i);
+            return false;
+        }
+
+        if (!rfcb(pReadBuffer.get(), uiReadSize, uiBlockStatus, uiFileSize))
+        {
+            LOG_ERROR_RLD("Read file buffer callback error and file id is " << strFileID << " and current block id is " << i);
+            return false;
+        }
+
+        switch (uiBlockStatus)
+        {
+        case 0:
+            if (i + 1 < uiBlockCount)
+            {
+                uiBlockStatus = 1;
+            }
+            else
+            {
+                uiBlockStatus = 2;
+            }
+        	break;
+
+        case 1:
+            if (i + 1 >= uiBlockCount)
+            {
+                uiBlockStatus = 2;
+            }
+            break;
+
+        case 2:  //已经是最后一个文件块，不用处理状态了
+            break;
+
+        default:
+            LOG_ERROR_RLD("Unknown block status: " << uiBlockStatus);
+            return false;
+        }
+    }
+
+    CloseFile(strFileID);
+    
+    return true;
+}
 
 bool FileManager::GetStoragePath(std::string &strOutputPath, std::string &strFileID)
 {

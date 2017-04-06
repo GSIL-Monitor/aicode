@@ -240,7 +240,18 @@ int main(int argc, char *argv[])
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     fcgimgr.SetUploadTmpPath(UploadTmpPath);
 
+    auto pFileMgr = fcgimgr.GetFileMgr();
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("File manager failed.");
+        return 1;
+    }
+
+    filehdr.SetFileMgr(pFileMgr);
+
     fcgimgr.SetMsgHandler(HttpMsgHandler::UPLOAD_FILE_ACTION, boost::bind(&HttpMsgHandler::UploadFileHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DOWNLOAD_FILE_ACTION, boost::bind(&HttpMsgHandler::DownloadFileHandler, &filehdr, _1, _2));
+
     
     fcgimgr.Run(true);
     return 0;

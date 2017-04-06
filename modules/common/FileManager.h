@@ -6,6 +6,8 @@
 
 class FileRWHandler;
 
+typedef boost::function<bool(const char *, const unsigned int, const unsigned int, const unsigned int)> ReadFileCB;
+
 class FileManager
 {
 public:
@@ -16,13 +18,15 @@ public:
 
     bool OpenFile(const std::string &strFileName, std::string &strFileID);
 
-    bool OpenFile(const std::string &strFileID);
+    bool OpenFile(const std::string &strFileID, unsigned int &uiFileSize);
 
     bool WriteBuffer(const std::string &strFileID, const char *pBuffer, const unsigned int uiBufferSize, const unsigned int uiBlockID);
 
     bool ReadBuffer(const std::string &strFileID, char *pBuffer, const unsigned int uiBufferSize, unsigned int &uiReadSize, const unsigned int uiBlockID);
 
     void CloseFile(const std::string &strFileID);
+
+    bool ReadFile(const std::string &strFileID, ReadFileCB rfcb);
 
 private:
 

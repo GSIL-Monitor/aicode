@@ -65,7 +65,7 @@ void FCGIManager::Run(bool isWaitRunFinished /*= false*/)
 void FCGIManager::SetUploadTmpPath(const std::string &strPath)
 {
     m_strUploadTmpPath = strPath;
-    m_pFileMgr.reset(new FileManager(strPath, 16));
+    m_pFileMgr.reset(new FileManager(strPath, 16, false));
     m_pFileMgr->SetBlockSize(CGI_READ_BUFFER_SIZE);
 
 }
@@ -83,6 +83,11 @@ void FCGIManager::SetMsgHandler(const std::string &strKey, MsgHandler msghdr)
 void FCGIManager::SetMsgPreHandler(MsgHandler msghdr)
 {
     m_MsgPreHandlerList.push_back(msghdr);
+}
+
+boost::shared_ptr<FileManager> FCGIManager::GetFileMgr()
+{
+    return m_pFileMgr;
 }
 
 void FCGIManager::FCGILoopHandler()
@@ -355,8 +360,10 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
 
                 //    文件开头 
 
-                if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in) && (std::string::npos != std::string(cReadBuffer).find("octet-stream")))
+                if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in)) //&& (std::string::npos != std::string(cReadBuffer).find("octet-stream")))
                 {
+                    LOG_INFO_RLD("FCGI get line is " << cReadBuffer);
+
                     if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
                     {
                         //上传文件开始处
@@ -375,10 +382,11 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
                         m_pFileMgr->CloseFile(strFileID);                        
                     }
                 }
-                else
-                {
-                    LOG_ERROR_RLD("Content type is errror: " << cReadBuffer);
-                }
+                ////
+                //else
+                //{
+                //    LOG_ERROR_RLD("Content type is errror: " << cReadBuffer);
+                //}
                 
                 continue;
             }

@@ -13,6 +13,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "boost/regex.hpp"
 #include "ReturnCode.h"
+#include "FileManager.h"
 
 
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
@@ -21,6 +22,8 @@ const std::string HttpMsgHandler::FAILED_CODE = "-1";
 const std::string HttpMsgHandler::FAILED_MSG = "Inner failed";
 
 const std::string HttpMsgHandler::UPLOAD_FILE_ACTION("upload_file");
+
+const std::string HttpMsgHandler::DOWNLOAD_FILE_ACTION("download_file");
 
 const std::string HttpMsgHandler::REGISTER_USER_ACTION("register_user");
 
@@ -36,6 +39,11 @@ m_pInteractiveProtoHandler(new InteractiveProtoHandler)
 HttpMsgHandler::~HttpMsgHandler()
 {
 
+}
+
+void HttpMsgHandler::SetFileMgr(boost::shared_ptr<FileManager> pFileMgr)
+{
+    m_pFileMgr = pFileMgr;
 }
 
 bool HttpMsgHandler::UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
@@ -99,7 +107,7 @@ bool HttpMsgHandler::UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
 
 }
 
-bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
 
@@ -114,94 +122,6 @@ bool HttpMsgHandler::RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         {
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));                   
-        }
-
-        this_->WriteMsg(ResultInfoMap, writer, blResult);
-    }
-    BOOST_SCOPE_EXIT_END
-        
-    auto itFind = pMsgInfoMap->find("username");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("User name not found.");
-        return blResult;
-    }
-    const std::string strUserName = itFind->second;
-
-
-    itFind = pMsgInfoMap->find("userpwd");
-    if (pMsgInfoMap->end() == itFind)
-    {        
-        LOG_ERROR_RLD("User password not found.");
-        return blResult;
-    }
-    const std::string strUserPwd = itFind->second;
-    
-    itFind = pMsgInfoMap->find("type");    
-    if (pMsgInfoMap->end() == itFind)
-    {        
-        LOG_ERROR_RLD("User type not found.");
-        return blResult;
-    }
-    const std::string strType = itFind->second;
-
-    std::string strExtend;
-    itFind = pMsgInfoMap->find("extend");
-    if (pMsgInfoMap->end() != itFind)
-    {
-        strExtend = itFind->second;
-    }
-
-    std::string strAliasName;
-    itFind = pMsgInfoMap->find("aliasname");
-    if (pMsgInfoMap->end() != itFind)
-    {
-        strAliasName = itFind->second;
-    }
-
-    itFind = pMsgInfoMap->find("email");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("User email not found.");
-        return blResult;
-    }
-    const std::string strEmail = itFind->second;
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Register user info received and user name is " << strUserName << " and user pwd is " << strUserPwd << " and user type is " << strType
-         << " and extend is [" << strExtend << "]" << " and alias name is " << strAliasName << " and email is " << strEmail);
-
-    std::string strUserID;
-    if (!RegisterUser(strUserName, strUserPwd, strType, strExtend, strAliasName, strEmail, strUserID))
-    {
-        LOG_ERROR_RLD("Register user handle failed");
-        return blResult;
-    }
-    
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", strUserID));
-    
-    blResult = true;
-
-    return blResult;
-}
-
-bool HttpMsgHandler::ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
-{
-    bool blResult = false;
-    std::map<std::string, std::string> ResultInfoMap;
-
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
-    {
-        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
-
-        if (!blResult)
-        {
-            ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -209,156 +129,74 @@ bool HttpMsgHandler::ShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     }
     BOOST_SCOPE_EXIT_END
 
-    auto itFind = pMsgInfoMap->find("sid");
+    auto itFind = pMsgInfoMap->find("fileid");
     if (pMsgInfoMap->end() == itFind)
     {
-        LOG_ERROR_RLD("Sid not found.");
+        LOG_ERROR_RLD("File id not found.");
         return blResult;
     }
-    const std::string strSid = itFind->second;
-
-    itFind = pMsgInfoMap->find("userid");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("User id not found.");
-        return blResult;
-    }
+    const std::string strFileID = itFind->second;
     
-    const std::string strUserID = itFind->second;
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Shakehand info received and  user id is " << strUserID << " and session id is " << strSid);
+    LOG_INFO_RLD("Download file info received and file id is " << strFileID);
 
-    ////
-    //if (!Shakehand(strSid, strUserID))
-    //{
-    //    LOG_ERROR_RLD("Shakehand handle failed and user id is " << strUserID << " and sid is " << strSid);
-    //    return blResult;
-    //}
-
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    if (!DownloadFile(strFileID, writer))
+    {
+        LOG_ERROR_RLD("Download file handle failed");
+        return blResult;
+    }
 
     blResult = true;
 
     return blResult;
+
 }
 
-bool HttpMsgHandler::PreCommonHandler(const std::string &strMsgReceived)
+bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer)
 {
-    InteractiveProtoHandler::MsgType mtype;
-    if (!m_pInteractiveProtoHandler->GetMsgType(strMsgReceived, mtype))
+    if (NULL == m_pFileMgr.get())
     {
-        LOG_ERROR_RLD("Get msg type failed.");
+        LOG_ERROR_RLD("File manager handler is null");
         return false;
     }
 
-    if (InteractiveProtoHandler::MsgType::MsgPreHandlerRsp_USR_T == mtype)
+    std::string strExt;
+    std::string::size_type pos = strFileID.find_last_of('.');
+    if (string::npos != pos)
     {
-        InteractiveProtoHandler::MsgPreHandlerRsp_USR rsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, rsp))
+        strExt = strFileID.substr(pos + 1);
+    }
+
+    const std::string& strContentType = strExt.empty() ? "application/octet-stream" : find_mime_type(strExt.c_str());
+
+    auto FuncTmp = [&](const char *pBuffer, const unsigned int uiBufferSize, const unsigned int uiBlockStatus, const unsigned int uiFileSize) ->bool
+    {
+        if (0 == uiBlockStatus)
         {
-            LOG_ERROR_RLD("Msg prehandler rsp unserialize failed.");
-            return false;
+            char cBuffer[256] = { 0 };
+            snprintf(cBuffer, sizeof(cBuffer), "Content-disposition: attachment; filename=\"%s\"\r\nContent-Type: %s\r\n"
+                "Content-Length: %d\r\nStatus: 200 OK\r\n\r\n", strFileID.c_str(), strContentType.c_str(), uiFileSize);
+
+            const std::string strHeader = cBuffer;
+
+            WriteMsg(writer, pBuffer, uiBufferSize, true, strHeader);
+        }
+        else
+        {
+            WriteMsg(writer, pBuffer, uiBufferSize, false, "");
         }
 
-        LOG_INFO_RLD("Msg prehandler rsp return code is " << rsp.m_iRetcode << " return msg is " << rsp.m_strRetMsg <<
-            " and user session id is " << rsp.m_strSID);
-
-        if (CommMsgHandler::SUCCEED != rsp.m_iRetcode)
-        {
-            LOG_ERROR_RLD("Msg prehandler rsp return failed.");
-            return false;
-        }
+        return true;
+    };
+    
+    if (!m_pFileMgr->ReadFile(strFileID, FuncTmp))
+    {
+        LOG_ERROR_RLD("Read file failed and file id is " << strFileID);
+        return false;
     }
 
     return true;
-}
-
-bool HttpMsgHandler::RegisterUser(const std::string &strUserName, const std::string &strUserPwd, const std::string &strType, const std::string &strExtend, 
-    const std::string &strAliasName, const std::string &strEmail, std::string &strUserID)
-{    
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
-    {
-        unsigned int uiTypeInfo = 0;
-
-        try
-        {
-            uiTypeInfo = boost::lexical_cast<unsigned int>(strType);
-        }
-        catch (boost::bad_lexical_cast & e)
-        {
-            LOG_ERROR_RLD("Register user type info is invalid and error msg is " << e.what() << " and input type is " << strType);
-            return CommMsgHandler::FAILED;
-        }
-        catch (...)
-        {
-            LOG_ERROR_RLD("Register user type info is invalid" << " and input type is " << strType);
-            return CommMsgHandler::FAILED;
-        }
-
-        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-        std::string::size_type pos = strCurrentTime.find('T');
-        strCurrentTime.replace(pos, 1, std::string(" "));
-
-        InteractiveProtoHandler::RegisterUserReq_USR RegUsrReq;
-        RegUsrReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T;
-        RegUsrReq.m_uiMsgSeq = 1;
-        RegUsrReq.m_strSID = "";
-        RegUsrReq.m_strValue = "";
-        RegUsrReq.m_userInfo.m_uiStatus = 0;
-        RegUsrReq.m_userInfo.m_strUserID = "";
-        RegUsrReq.m_userInfo.m_strUserName = strUserName;
-        RegUsrReq.m_userInfo.m_strUserPassword = strUserPwd;
-        RegUsrReq.m_userInfo.m_uiTypeInfo = uiTypeInfo;
-        RegUsrReq.m_userInfo.m_strCreatedate = strCurrentTime;
-        RegUsrReq.m_userInfo.m_strExtend = strExtend;
-        RegUsrReq.m_userInfo.m_strAliasName = strAliasName;
-        RegUsrReq.m_userInfo.m_strEmail = strEmail;
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(RegUsrReq, strSerializeOutPut))
-        {
-            LOG_ERROR_RLD("Register user req serialize failed.");
-            return CommMsgHandler::FAILED;
-        }
-
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
-    };
-
-    int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
-    {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
-        if (!PreCommonHandler(strMsgReceived))
-        {
-            return iRet = CommMsgHandler::FAILED;
-        }
-
-        InteractiveProtoHandler::RegisterUserRsp_USR RegUsrRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RegUsrRsp))
-        {
-            LOG_ERROR_RLD("Register user rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
-        }
-        
-        strUserID = RegUsrRsp.m_strUserID;
-        iRet = RegUsrRsp.m_iRetcode;
-
-        ReturnInfo::RetCode(iRet);
-
-        LOG_INFO_RLD("Register user id is " << strUserID << " and return code is " << RegUsrRsp.m_iRetcode <<
-            " and return msg is " << RegUsrRsp.m_strRetMsg);
-
-        return CommMsgHandler::SUCCEED;
-    };
-    
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
-
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress, 
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -403,3 +241,15 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
     //writer("<title>FastCGI Hello! (C, fcgi_stdio library)</title>\n", 0, MsgWriterModel::PRINT_MODEL);
 
 }
+
+void HttpMsgHandler::WriteMsg(MsgWriter writer, const char *pBuffer, const unsigned int uiBufferSize, const bool IsNeedWriteHead, const std::string &strHeaderMsg)
+{
+    if (IsNeedWriteHead)
+    {
+        writer(strHeaderMsg.data(), strHeaderMsg.size(), MsgWriterModel::PRINT_MODEL);
+        LOG_INFO_RLD("Write header\r\n[\r\n\r\n" << strHeaderMsg << "]");
+    }
+
+    writer(pBuffer, uiBufferSize, MsgWriterModel::STREAM_MODEL);
+}
+
