@@ -25,9 +25,8 @@ const std::string HttpMsgHandler::UPLOAD_FILE_ACTION("upload_file");
 
 const std::string HttpMsgHandler::DOWNLOAD_FILE_ACTION("download_file");
 
-const std::string HttpMsgHandler::REGISTER_USER_ACTION("register_user");
+const std::string HttpMsgHandler::DELETE_FILE_ACTION("delete_file");
 
-const std::string HttpMsgHandler::USER_SHAKEHAND_ACTION("user_shakehand");
 
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -76,8 +75,6 @@ bool HttpMsgHandler::UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     }
     const std::string strFileName = itFind->second;
     
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
     itFind = pMsgInfoMap->find("fileid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -103,8 +100,6 @@ bool HttpMsgHandler::UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     blResult = true;
 
     return blResult;
-
-
 }
 
 bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
@@ -155,10 +150,51 @@ bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
 bool HttpMsgHandler::DeleteFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
 
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
 
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
-    return true;
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete file info received and file id is " << strFileID);
+
+    if (!m_pFileMgr->DeleteFile(strFileID))
+    {
+        LOG_ERROR_RLD("Delete file failed and file id is " << strFileID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("fileid", strFileID));
+
+    blResult = true;
+
+    return blResult;
 }
 
 bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer)

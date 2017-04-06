@@ -21,9 +21,7 @@ class HttpMsgHandler : public boost::noncopyable
 public:
     static const std::string UPLOAD_FILE_ACTION;
     static const std::string DOWNLOAD_FILE_ACTION;
-
-    static const std::string REGISTER_USER_ACTION;
-    static const std::string USER_SHAKEHAND_ACTION;
+    static const std::string DELETE_FILE_ACTION;
     
     typedef struct _ParamInfo
     {

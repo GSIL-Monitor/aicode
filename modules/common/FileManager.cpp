@@ -60,7 +60,7 @@ bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSiz
 {
     if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
     {
-        LOG_ERROR_RLD("Open file failed because file is invalid: " << strFileID);
+        LOG_ERROR_RLD("Open file failed because file id is invalid: " << strFileID);
         return false;
     }
 
@@ -275,8 +275,42 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
 
 bool FileManager::DeleteFile(const std::string &strFileID)
 {
+    if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
+    {
+        LOG_ERROR_RLD("Delete file failed because file id is invalid: " << strFileID);
+        return false;
+    }
 
+    if (strFileID.empty())
+    {
+        LOG_ERROR_RLD("File id is empty.");
+        return false;
+    }
 
+    std::string strFileIDTmp = strFileID;
+    std::string strStoragePath;
+    if (!GetStoragePath(strStoragePath, strFileIDTmp))
+    {
+        LOG_ERROR_RLD("Get path of storage failed.");
+        return false;
+    }
+
+    CloseFile(strFileID);
+
+    {
+        boost::filesystem::path FilePath(strStoragePath);
+
+        boost::system::error_code ec;
+        if (!boost::filesystem::exists(FilePath, ec))
+        {
+            LOG_ERROR_RLD("File not exist and path is " << strStoragePath);
+            return false;
+        }
+
+        boost::filesystem::remove(FilePath, ec);
+        LOG_INFO_RLD("Delete file and path is " << FilePath.string() << " and result msg is " << ec.message());        
+    }
+    
     return true;
 }
 
