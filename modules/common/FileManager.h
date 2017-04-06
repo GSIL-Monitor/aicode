@@ -3,6 +3,7 @@
 
 #include "NetComm.h"
 #include <map>
+#include "boost/atomic.hpp"
 
 class FileRWHandler;
 
@@ -18,7 +19,7 @@ public:
 
     bool OpenFile(const std::string &strFileName, std::string &strFileID);
 
-    bool OpenFile(const std::string &strFileID, unsigned int &uiFileSize);
+    bool OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq = "");
 
     bool WriteBuffer(const std::string &strFileID, const char *pBuffer, const unsigned int uiBufferSize, const unsigned int uiBlockID);
 
@@ -27,6 +28,8 @@ public:
     void CloseFile(const std::string &strFileID);
 
     bool ReadFile(const std::string &strFileID, ReadFileCB rfcb);
+
+    bool DeleteFile(const std::string &strFileID);
 
 private:
 
@@ -50,6 +53,8 @@ private:
 
     boost::mutex m_FileMapMutex;
     std::map<std::string, FileHdr> m_FileMap;
+
+    boost::atomic_uint64_t m_uiMsgSeq;
     
 };
 

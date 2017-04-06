@@ -153,6 +153,14 @@ bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
 
 }
 
+bool HttpMsgHandler::DeleteFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+
+
+
+    return true;
+}
+
 bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer)
 {
     if (NULL == m_pFileMgr.get())

@@ -6,7 +6,7 @@
 #include "CommonUtility.h"
 
 FileManager::FileManager(const std::string &strPath, const unsigned int uiSubDirNum, const bool InitClean) :
-m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(0)
+m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(0), m_uiMsgSeq(0)
 {
     boost::system::error_code e;
     boost::filesystem::path FilePath = strPath.empty() ? (boost::filesystem::current_path() / "FileStorage") : (boost::filesystem::path(strPath) / "FileStorage");
@@ -56,7 +56,7 @@ bool FileManager::OpenFile(const std::string &strFileName, std::string &strFileI
 
 }
 
-bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize)
+bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq)
 {
     if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
     {
@@ -98,9 +98,10 @@ bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSiz
         uiFileSize = uiSize;
     }
 
-    LOG_INFO_RLD("Get file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize);
+    LOG_INFO_RLD("Get file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize
+        << " and file id of seq is " << strFileIDSeq);
 
-    if (!AddFileHandler(strFileID, strStoragePath))
+    if (!AddFileHandler((strFileIDSeq.empty() ? strFileID : strFileIDSeq), strStoragePath))
     {
         LOG_ERROR_RLD("Add file handler failed and file id is " << strFileID << " and path is " << strStoragePath);
         return false;
@@ -203,8 +204,10 @@ void FileManager::CloseFile(const std::string &strFileID)
 
 bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
 {
+    const std::string &strFileIDSeq = boost::lexical_cast<std::string>(m_uiMsgSeq++) + "_"  + strFileID;
+    
     unsigned int uiFileSize = 0;
-    if (!OpenFile(strFileID, uiFileSize))
+    if (!OpenFile(strFileID, uiFileSize, strFileIDSeq))
     {
         LOG_ERROR_RLD("Open file failed and file id is " << strFileID);
         return false;
@@ -224,7 +227,7 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
     unsigned int uiReadSize = 0;
     for (unsigned int i = 0; i < uiBlockCount; ++i)
     {
-        if (!ReadBuffer(strFileID, pReadBuffer.get(), uiBlockSize, uiReadSize, i))
+        if (!ReadBuffer(strFileIDSeq, pReadBuffer.get(), uiBlockSize, uiReadSize, i))
         {
             LOG_ERROR_RLD("Read file buffer failed and file id is " << strFileID << " and current block id is " << i);
             return false;
@@ -265,8 +268,15 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
         }
     }
 
-    CloseFile(strFileID);
+    CloseFile(strFileIDSeq);
     
+    return true;
+}
+
+bool FileManager::DeleteFile(const std::string &strFileID)
+{
+
+
     return true;
 }
 
