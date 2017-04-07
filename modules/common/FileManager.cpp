@@ -4,6 +4,7 @@
 #include "boost/filesystem.hpp"
 #include "boost/lexical_cast.hpp"
 #include "CommonUtility.h"
+#include "md5_helper.h"
 
 FileManager::FileManager(const std::string &strPath, const unsigned int uiSubDirNum, const bool InitClean) :
 m_uiSubDirNum(uiSubDirNum), m_InitClean(InitClean), m_uiBlockSize(0), m_uiMsgSeq(0)
@@ -44,7 +45,7 @@ bool FileManager::OpenFile(const std::string &strFileName, std::string &strFileI
     strStoragePath += '/';
     strStoragePath += strFileID;
     
-    LOG_INFO_RLD("Get file path is " << strStoragePath << " and file id is " << strFileID);
+    LOG_INFO_RLD("Open file path is " << strStoragePath << " and file id is " << strFileID);
 
     if (!AddFileHandler(strFileID, strStoragePath))
     {
@@ -58,18 +59,18 @@ bool FileManager::OpenFile(const std::string &strFileName, std::string &strFileI
 
 bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq)
 {
-    if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
-    {
-        LOG_ERROR_RLD("Open file failed because file id is invalid: " << strFileID);
-        return false;
-    }
-
     if (strFileID.empty())
     {
         LOG_ERROR_RLD("File id is empty.");
         return false;
     }
-    
+
+    if (std::string::npos == strFileID.find("_"))
+    {
+        LOG_ERROR_RLD("Open file failed because file id is invalid: " << strFileID);
+        return false;
+    }
+
     std::string strFileIDTmp = strFileID;
     std::string strStoragePath;
     if (!GetStoragePath(strStoragePath, strFileIDTmp))
@@ -77,28 +78,14 @@ bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSiz
         LOG_ERROR_RLD("Get path of storage failed.");
         return false;
     }
-
+    
+    if (!GetFileSize(strStoragePath, uiFileSize))
     {
-        boost::filesystem::path FilePath(strStoragePath);
-
-        boost::system::error_code ec;
-        if (!boost::filesystem::exists(FilePath, ec))
-        {
-            LOG_ERROR_RLD("File not exist and path is " << strStoragePath);
-            return false;
-        }
-
-        const unsigned int uiSize = (unsigned int)boost::filesystem::file_size(FilePath, ec);
-        if (0 == uiSize)
-        {
-            LOG_ERROR_RLD("File size is zero.");
-            return false;
-        }
-
-        uiFileSize = uiSize;
+        LOG_ERROR_RLD("Get file size failed and file id is " << strFileID << " and storage path is " << strStoragePath << " and file id of seq is " << strFileIDSeq);
+        return false;
     }
 
-    LOG_INFO_RLD("Get file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize
+    LOG_INFO_RLD("Open file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize
         << " and file id of seq is " << strFileIDSeq);
 
     if (!AddFileHandler((strFileIDSeq.empty() ? strFileID : strFileIDSeq), strStoragePath))
@@ -275,15 +262,15 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
 
 bool FileManager::DeleteFile(const std::string &strFileID)
 {
-    if (!strFileID.empty() && std::string::npos == strFileID.find("/"))
-    {
-        LOG_ERROR_RLD("Delete file failed because file id is invalid: " << strFileID);
-        return false;
-    }
-
     if (strFileID.empty())
     {
         LOG_ERROR_RLD("File id is empty.");
+        return false;
+    }
+
+    if (std::string::npos == strFileID.find("_"))
+    {
+        LOG_ERROR_RLD("Delete file failed because file id is invalid: " << strFileID);
         return false;
     }
 
@@ -311,6 +298,46 @@ bool FileManager::DeleteFile(const std::string &strFileID)
         LOG_INFO_RLD("Delete file and path is " << FilePath.string() << " and result msg is " << ec.message());        
     }
     
+    return true;
+}
+
+bool FileManager::QueryFile(const std::string &strFileID, FileSTInfo &fileinfo)
+{
+    if (strFileID.empty())
+    {
+        LOG_ERROR_RLD("File id is empty.");
+        return false;
+    }
+
+    if (std::string::npos == strFileID.find("_"))
+    {
+        LOG_ERROR_RLD("Query file failed because file id is invalid: " << strFileID);
+        return false;
+    }
+
+    unsigned uiFileSize = 0;
+    std::string strFileIDTmp = strFileID;
+    std::string strStoragePath;
+    if (!GetStoragePath(strStoragePath, strFileIDTmp))
+    {
+        LOG_ERROR_RLD("Get path of storage failed.");
+        return false;
+    }
+
+    if (!GetFileSize(strStoragePath, uiFileSize))
+    {
+        LOG_ERROR_RLD("Get file size failed and file id is " << strFileID << " and storage path is " << strStoragePath);
+        return false;
+    }
+
+    const std::string &strMd5 = Md5Helper::Md5file(strStoragePath.data());
+
+    std::string::size_type pos = strFileID.find("_");    
+    fileinfo.m_strName = strFileID.substr(pos + 1);
+    fileinfo.m_uiSize = uiFileSize;
+    fileinfo.m_strMd5 = strMd5;
+
+    LOG_INFO_RLD("Query file info success and file name is " << fileinfo.m_strName << " and file size is " << fileinfo.m_uiSize << " and file md5 is " << fileinfo.m_strMd5);
     return true;
 }
 
@@ -403,6 +430,29 @@ bool FileManager::AddFileHandler(const std::string &strFileID, const std::string
 
         m_FileMap.insert(make_pair(strFileID, fh));
     }
+
+    return true;
+}
+
+bool FileManager::GetFileSize(const std::string &strStoragePath, unsigned int &uiFileSize)
+{
+    boost::filesystem::path FilePath(strStoragePath);
+
+    boost::system::error_code ec;
+    if (!boost::filesystem::exists(FilePath, ec))
+    {
+        LOG_ERROR_RLD("File not exist and path is " << strStoragePath);
+        return false;
+    }
+
+    const unsigned int uiSize = (unsigned int)boost::filesystem::file_size(FilePath, ec);
+    if (0 == uiSize)
+    {
+        LOG_ERROR_RLD("File size is zero.");
+        return false;
+    }
+
+    uiFileSize = uiSize;
 
     return true;
 }

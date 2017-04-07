@@ -15,6 +15,13 @@ public:
     FileManager(const std::string &strPath, const unsigned int uiSubDirNum, const bool InitClean = true);
     ~FileManager();
 
+    struct FileSTInfo
+    {
+        std::string m_strName;
+        std::string m_strMd5;
+        unsigned int m_uiSize;
+    };
+
     void SetBlockSize(const unsigned int uiBlockSize);
 
     bool OpenFile(const std::string &strFileName, std::string &strFileID);
@@ -31,11 +38,15 @@ public:
 
     bool DeleteFile(const std::string &strFileID);
 
+    bool QueryFile(const std::string &strFileID, FileSTInfo &fileinfo);
+
 private:
 
     bool GetStoragePath(std::string &strOutputPath, std::string &strFileID);
 
     bool AddFileHandler(const std::string &strFileID, const std::string &strFilePath);
+
+    bool GetFileSize(const std::string &strStoragePath, unsigned int &uiFileSize);
 
 private:
 

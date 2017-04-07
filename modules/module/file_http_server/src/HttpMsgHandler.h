@@ -22,6 +22,7 @@ public:
     static const std::string UPLOAD_FILE_ACTION;
     static const std::string DOWNLOAD_FILE_ACTION;
     static const std::string DELETE_FILE_ACTION;
+    static const std::string QUERY_FILE_ACTION;
     
     typedef struct _ParamInfo
     {
@@ -43,7 +44,9 @@ public:
     bool DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeleteFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-    
+
+    bool QueryFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 private:
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 

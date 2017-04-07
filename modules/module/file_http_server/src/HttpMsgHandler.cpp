@@ -27,6 +27,7 @@ const std::string HttpMsgHandler::DOWNLOAD_FILE_ACTION("download_file");
 
 const std::string HttpMsgHandler::DELETE_FILE_ACTION("delete_file");
 
+const std::string HttpMsgHandler::QUERY_FILE_ACTION("query_file");
 
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -192,6 +193,58 @@ bool HttpMsgHandler::DeleteFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("fileid", strFileID));
 
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query file info received and file id is " << strFileID);
+
+    FileManager::FileSTInfo fileinfo;
+    if (!m_pFileMgr->QueryFile(strFileID, fileinfo))
+    {
+        LOG_ERROR_RLD("Query file failed and file id is " << strFileID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("name", fileinfo.m_strName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("size", boost::lexical_cast<std::string>(fileinfo.m_uiSize)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("md5", fileinfo.m_strMd5));
+    
     blResult = true;
 
     return blResult;
