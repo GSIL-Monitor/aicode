@@ -143,14 +143,17 @@ public:
 
         ///////////////////////////////////////////////////////
 
-        AddConfigurationReq_MGR_T = 40000,           //添加配置项
-        AddConfigurationRsp_MGR_T = 40010,
-        DeleteConfigurationReq_MGR_T = 40020,        //删除配置项
-        DeleteConfigurationRsp_MGR_T = 40030,
-        ModifyConfigurationReq_MGR_T = 40040,        //修改配置项
-        ModifyConfigurationRsp_MGR_T = 40050,
-        QueryAllConfigurationReq_MGR_T = 40060,      //查询所有配置项
-        QueryAllConfigurationRsp_MGR_T = 40070
+        QueryUploadURLReq_MGR_T = 40000,
+        QueryUploadURLRsp_MGR_T = 40010,
+
+        AddConfigurationReq_MGR_T = 40020,           //添加配置项
+        AddConfigurationRsp_MGR_T = 40030,
+        DeleteConfigurationReq_MGR_T = 40040,        //删除配置项
+        DeleteConfigurationRsp_MGR_T = 40050,
+        ModifyConfigurationReq_MGR_T = 40060,        //修改配置项
+        ModifyConfigurationRsp_MGR_T = 40070,
+        QueryAllConfigurationReq_MGR_T = 40080,      //查询所有配置项
+        QueryAllConfigurationRsp_MGR_T = 40090
    };
 
     struct Device
@@ -246,15 +249,13 @@ public:
     {
         std::string m_strCategory;
         std::string m_strSubCategory;
-        std::string m_strContent;
         std::string m_strLatestVersion;
-        std::string m_strVersionCode;
         std::string m_strDescription;
         std::string m_strForceVersion;
-        std::string m_strServerAddress;
         std::string m_strFileName;
         std::string m_strFileID;
         unsigned int m_uiFileSize;
+        std::string m_strFilePath;
         unsigned int m_uiLeaseDuration;
         std::string m_strUpdateDate;
         unsigned int m_uiStatus;
@@ -268,7 +269,6 @@ public:
         std::string m_strAppPath;
         unsigned int m_uiAppSize;
         std::string m_strVersion;
-        std::string m_strVersionCode;
         std::string m_strDescription;
         unsigned int m_uiForceUpgrade;
         std::string m_strUpdateDate;
@@ -840,7 +840,6 @@ public:
         std::string m_strCategory;
         std::string m_strSubCategory;
         std::string m_strCurrentVersion;
-        std::string m_strVersionCode;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1203,6 +1202,24 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryUploadURLReq_MGR : Req
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUploadURLRsp_MGR : Rsp
+    {
+        std::string m_strUploadURL;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     struct AddConfigurationReq_MGR : Req
     {
         Configuration m_configuration;
@@ -1498,6 +1515,11 @@ private:
     bool QueryFirmwareUpgradeReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryFirmwareUpgradeRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryFirmwareUpgradeRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryUploadURLReq_MGR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryUploadURLReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryUploadURLRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryUploadURLRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
     bool AddConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput);
     bool AddConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);

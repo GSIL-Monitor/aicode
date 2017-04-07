@@ -272,6 +272,13 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strUploadURL = GetConfig("General.UploadURL");
+    if (strUploadURL.empty())
+    {
+        LOG_ERROR_RLD("UploadURL config item not found.");
+        return 0;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -286,6 +293,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
     UmgParam.m_strLTUserSite = strLTUserSite;
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
+    UmgParam.m_strUploadURL = strUploadURL;
 
 
     AccessManager Umg(UmgParam);

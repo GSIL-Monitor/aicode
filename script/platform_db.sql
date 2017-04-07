@@ -119,15 +119,13 @@ CREATE TABLE `t_configuration_info` (
   `id` varchar(36) NOT NULL,
   `category` varchar(50) NOT NULL, #配置类别，如用户APP、门铃、IPC
   `subcategory` varchar(100) NOT NULL, #配置类别子项目
-  `content` varchar(200), #配置内容
   `latestversion` varchar(20), #最新版本
-  `versioncode` varchar(20), #APP升级使用
-  `description` varchar(500), #配置描述
+  `description` varchar(500), #版本详情描述
   `forceversion` varchar(20), #强制升级的版本
-  `serveraddress` varchar(100), #文件服务器地址
   `filename` varchar(100),
   `fileid` varchar(100),
   `filesize` int(11),
+  `filepath` varchar(200),
   `leaseduration` int(11),
   `updatedate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除

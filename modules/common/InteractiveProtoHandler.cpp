@@ -366,15 +366,13 @@ void UnSerializeConfigurationList(std::list<InteractiveProtoHandler::Configurati
         InteractiveProtoHandler::Configuration configuration;
         configuration.m_strCategory = srcConfiguration.strcategory();
         configuration.m_strSubCategory = srcConfiguration.strsubcategory();
-        configuration.m_strContent = srcConfiguration.strcontent();
         configuration.m_strLatestVersion = srcConfiguration.strlatestversion();
-        configuration.m_strVersionCode = srcConfiguration.strversioncode();
         configuration.m_strDescription = srcConfiguration.strdescription();
         configuration.m_strForceVersion = srcConfiguration.strforceversion();
-        configuration.m_strServerAddress = srcConfiguration.strserveraddress();
         configuration.m_strFileName = srcConfiguration.strfilename();
         configuration.m_strFileID = srcConfiguration.strfileid();
         configuration.m_uiFileSize = srcConfiguration.uifilesize();
+        configuration.m_strFilePath = srcConfiguration.strfilepath();
         configuration.m_uiLeaseDuration = srcConfiguration.uileaseduration();
         configuration.m_strUpdateDate = srcConfiguration.strupdatedate();
         configuration.m_uiStatus = srcConfiguration.uistatus();
@@ -401,15 +399,13 @@ void SerializeConfigurationList(const std::list<InteractiveProtoHandler::Configu
         auto pDstConfiguration = pDstConfigurationList->Mutable(i);
         pDstConfiguration->set_strcategory(itBegin->m_strCategory);
         pDstConfiguration->set_strsubcategory(itBegin->m_strSubCategory);
-        pDstConfiguration->set_strcontent(itBegin->m_strContent);
         pDstConfiguration->set_strlatestversion(itBegin->m_strLatestVersion);
-        pDstConfiguration->set_strversioncode(itBegin->m_strVersionCode);
         pDstConfiguration->set_strdescription(itBegin->m_strDescription);
         pDstConfiguration->set_strforceversion(itBegin->m_strForceVersion);
-        pDstConfiguration->set_strserveraddress(itBegin->m_strServerAddress);
         pDstConfiguration->set_strfilename(itBegin->m_strFileName);
         pDstConfiguration->set_strfileid(itBegin->m_strFileID);
         pDstConfiguration->set_uifilesize(itBegin->m_uiFileSize);
+        pDstConfiguration->set_strfilepath(itBegin->m_strFilePath);
         pDstConfiguration->set_uileaseduration(itBegin->m_uiLeaseDuration);
         pDstConfiguration->set_strupdatedate(itBegin->m_strUpdateDate);
         pDstConfiguration->set_uistatus(itBegin->m_uiStatus);
@@ -959,6 +955,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryFirmwareUpgradeRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUploadURLReq_MGR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUploadURLReq_MGR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUploadURLReq_MGR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUploadURLRsp_MGR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUploadURLRsp_MGR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUploadURLRsp_MGR_T, handler));
 
     //////////////////////////////////////////////////
 
@@ -1915,6 +1925,26 @@ bool InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV_Serializer(const Req &
 bool InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryFirmwareUpgradeRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryUploadURLReq_MGR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryUploadURLReq_MGR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUploadURLReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryUploadURLReq_MGR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryUploadURLRsp_MGR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryUploadURLRsp_MGR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUploadURLRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryUploadURLRsp_MGR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::AddConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput)
@@ -3844,7 +3874,6 @@ void InteractiveProtoHandler::QueryAppUpgradeReq_USR::UnSerializer(const Interac
     m_strCategory = InteractiveMsg.reqvalue().queryappupgradereq_usr_value().strcategory();
     m_strSubCategory = InteractiveMsg.reqvalue().queryappupgradereq_usr_value().strsubcategory();
     m_strCurrentVersion = InteractiveMsg.reqvalue().queryappupgradereq_usr_value().strcurrentversion();
-    m_strVersionCode = InteractiveMsg.reqvalue().queryappupgradereq_usr_value().strversioncode();
 }
 
 void InteractiveProtoHandler::QueryAppUpgradeReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3854,7 +3883,6 @@ void InteractiveProtoHandler::QueryAppUpgradeReq_USR::Serializer(InteractiveMess
     InteractiveMsg.mutable_reqvalue()->mutable_queryappupgradereq_usr_value()->set_strcategory(m_strCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_queryappupgradereq_usr_value()->set_strsubcategory(m_strSubCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_queryappupgradereq_usr_value()->set_strcurrentversion(m_strCurrentVersion);
-    InteractiveMsg.mutable_reqvalue()->mutable_queryappupgradereq_usr_value()->set_strversioncode(m_strVersionCode);
 }
 
 void InteractiveProtoHandler::QueryAppUpgradeRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -3865,7 +3893,6 @@ void InteractiveProtoHandler::QueryAppUpgradeRsp_USR::UnSerializer(const Interac
     m_appUpgrade.m_strAppPath = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().strapppath();
     m_appUpgrade.m_uiAppSize = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().uiappsize();
     m_appUpgrade.m_strVersion = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().strversion();
-    m_appUpgrade.m_strVersionCode = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().strversioncode();
     m_appUpgrade.m_strDescription = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().strdescription();
     m_appUpgrade.m_uiForceUpgrade = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().uiforceupgrade();
     m_appUpgrade.m_strUpdateDate = InteractiveMsg.rspvalue().queryappupgradersp_usr_value().strupdatedate();
@@ -3880,7 +3907,6 @@ void InteractiveProtoHandler::QueryAppUpgradeRsp_USR::Serializer(InteractiveMess
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_strapppath(m_appUpgrade.m_strAppPath);
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_uiappsize(m_appUpgrade.m_uiAppSize);
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_strversion(m_appUpgrade.m_strVersion);
-    InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_strversioncode(m_appUpgrade.m_strVersionCode);
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_strdescription(m_appUpgrade.m_strDescription);
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_uiforceupgrade(m_appUpgrade.m_uiForceUpgrade);
     InteractiveMsg.mutable_rspvalue()->mutable_queryappupgradersp_usr_value()->set_strupdatedate(m_appUpgrade.m_strUpdateDate);
@@ -3930,20 +3956,44 @@ void InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV::Serializer(Interactiv
     InteractiveMsg.mutable_rspvalue()->mutable_queryfirmwareupgradersp_dev_value()->set_strupdatedate(m_firmwareUpgrade.m_strUpdateDate);
 }
 
+void InteractiveProtoHandler::QueryUploadURLReq_MGR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.reqvalue().queryuploadurlreq_mgr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryUploadURLReq_MGR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUploadURLReq_MGR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryuploadurlreq_mgr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryUploadURLRsp_MGR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strUploadURL = InteractiveMsg.rspvalue().queryuploadurlrsp_mgr_value().struploadurl();
+}
+
+void InteractiveProtoHandler::QueryUploadURLRsp_MGR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUploadURLRsp_MGR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryuploadurlrsp_mgr_value()->set_struploadurl(m_strUploadURL);
+}
+
 void InteractiveProtoHandler::AddConfigurationReq_MGR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Req::UnSerializer(InteractiveMsg);
     m_configuration.m_strCategory = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strcategory();
     m_configuration.m_strSubCategory = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strsubcategory();
-    m_configuration.m_strContent = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strcontent();
     m_configuration.m_strLatestVersion = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strlatestversion();
-    m_configuration.m_strVersionCode = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strversioncode();
     m_configuration.m_strDescription = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strdescription();
     m_configuration.m_strForceVersion = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strforceversion();
-    m_configuration.m_strServerAddress = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strserveraddress();
     m_configuration.m_strFileName = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strfilename();
     m_configuration.m_strFileID = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strfileid();
     m_configuration.m_uiFileSize = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().uifilesize();
+    m_configuration.m_strFilePath = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strfilepath();
     m_configuration.m_uiLeaseDuration = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().uileaseduration();
     m_configuration.m_strUpdateDate = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strupdatedate();
     m_configuration.m_uiStatus = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().uistatus();
@@ -3956,15 +4006,13 @@ void InteractiveProtoHandler::AddConfigurationReq_MGR::Serializer(InteractiveMes
     InteractiveMsg.set_type(Interactive::Message::MsgType::AddConfigurationReq_MGR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strcategory(m_configuration.m_strCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strsubcategory(m_configuration.m_strSubCategory);
-    InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strcontent(m_configuration.m_strContent);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strlatestversion(m_configuration.m_strLatestVersion);
-    InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strversioncode(m_configuration.m_strVersionCode);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strdescription(m_configuration.m_strDescription);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strforceversion(m_configuration.m_strForceVersion);
-    InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strserveraddress(m_configuration.m_strServerAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilename(m_configuration.m_strFileName);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfileid(m_configuration.m_strFileID);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uifilesize(m_configuration.m_uiFileSize);
+    InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilepath(m_configuration.m_strFilePath);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uileaseduration(m_configuration.m_uiLeaseDuration);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strupdatedate(m_configuration.m_strUpdateDate);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uistatus(m_configuration.m_uiStatus);
@@ -4017,15 +4065,13 @@ void InteractiveProtoHandler::ModifyConfigurationReq_MGR::UnSerializer(const Int
     Req::UnSerializer(InteractiveMsg);
     m_configuration.m_strCategory = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strcategory();
     m_configuration.m_strSubCategory = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strsubcategory();
-    m_configuration.m_strContent = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strcontent();
     m_configuration.m_strLatestVersion = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strlatestversion();
-    m_configuration.m_strVersionCode = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strversioncode();
     m_configuration.m_strDescription = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strdescription();
     m_configuration.m_strForceVersion = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strforceversion();
-    m_configuration.m_strServerAddress = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strserveraddress();
     m_configuration.m_strFileName = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strfilename();
     m_configuration.m_strFileID = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strfileid();
     m_configuration.m_uiFileSize = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().uifilesize();
+    m_configuration.m_strFilePath = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strfilepath();
     m_configuration.m_uiLeaseDuration = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().uileaseduration();
     m_configuration.m_strUpdateDate = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strupdatedate();
     m_configuration.m_uiStatus = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().uistatus();
@@ -4038,15 +4084,13 @@ void InteractiveProtoHandler::ModifyConfigurationReq_MGR::Serializer(Interactive
     InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyConfigurationReq_MGR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strcategory(m_configuration.m_strCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strsubcategory(m_configuration.m_strSubCategory);
-    InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strcontent(m_configuration.m_strContent);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strlatestversion(m_configuration.m_strLatestVersion);
-    InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strversioncode(m_configuration.m_strVersionCode);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strdescription(m_configuration.m_strDescription);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strforceversion(m_configuration.m_strForceVersion);
-    InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strserveraddress(m_configuration.m_strServerAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilename(m_configuration.m_strFileName);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfileid(m_configuration.m_strFileID);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uifilesize(m_configuration.m_uiFileSize);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilepath(m_configuration.m_strFilePath);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uileaseduration(m_configuration.m_uiLeaseDuration);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strupdatedate(m_configuration.m_strUpdateDate);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uistatus(m_configuration.m_uiStatus);

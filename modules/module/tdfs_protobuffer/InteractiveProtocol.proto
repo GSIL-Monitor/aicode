@@ -165,14 +165,17 @@ enum MsgType
   
   ///////////////////////////////////////////////////////
 
-  AddConfigurationReq_MGR_T = 40000;            //添加配置项
-  AddConfigurationRsp_MGR_T = 40010;
-  DeleteConfigurationReq_MGR_T = 40020;         //删除配置项
-  DeleteConfigurationRsp_MGR_T = 40030;
-  ModifyConfigurationReq_MGR_T = 40040;         //修改配置项
-  ModifyConfigurationRsp_MGR_T = 40050;
-  QueryAllConfigurationReq_MGR_T = 40060;       //查询所有配置项
-  QueryAllConfigurationRsp_MGR_T = 40070;
+  QueryUploadURLReq_MGR_T = 40000;              //查询文件上传URL
+  QueryUploadURLRsp_MGR_T = 40010;
+
+  AddConfigurationReq_MGR_T = 40020;            //添加配置项
+  AddConfigurationRsp_MGR_T = 40030;
+  DeleteConfigurationReq_MGR_T = 40040;         //删除配置项
+  DeleteConfigurationRsp_MGR_T = 40050;
+  ModifyConfigurationReq_MGR_T = 40060;         //修改配置项
+  ModifyConfigurationRsp_MGR_T = 40070;
+  QueryAllConfigurationReq_MGR_T = 40080;       //查询所有配置项
+  QueryAllConfigurationRsp_MGR_T = 40090;
 }
 
 message PermissionOfUser                        //用户权限对象
@@ -274,19 +277,17 @@ message Configuration                           //配置项内容
 {
   string strCategory = 1;
   string strSubCategory = 2;
-  string strContent = 3;
-  string strLatestVersion = 4;
-  string strVersionCode = 5;
-  string strDescription = 6;
-  string strForceVersion = 7;
-  string strServerAddress = 8;
-  string strFileName = 9;
-  string strFileID = 10;
-  uint32 uiFileSize = 11;
-  uint32 uiLeaseDuration = 12;
-  string strUpdateDate = 13;
-  uint32 uiStatus = 14;
-  string strExtend = 15;
+  string strLatestVersion = 3;
+  string strDescription = 4;
+  string strForceVersion = 5;
+  string strFileName = 6;
+  string strFileID = 7;
+  uint32 uiFileSize = 8;
+  string strFilePath = 9;
+  uint32 uiLeaseDuration = 10;
+  string strUpdateDate = 11;
+  uint32 uiStatus = 12;
+  string strExtend = 13;
 }
 
 
@@ -808,7 +809,6 @@ message QueryAppUpgradeReq_USR                  //用户APP查询升级数据请
   string strCategory = 1;
   string strSubCategory = 2;
   string strCurrentVersion = 3;
-  string strVersionCode = 4;                    //APP是否需要升级要根据此项判断
 }
 
 message QueryAppUpgradeRsp_USR                  //用户APP查询升级数据响应
@@ -818,15 +818,24 @@ message QueryAppUpgradeRsp_USR                  //用户APP查询升级数据响
   string strAppPath = 3;                        //APP路径
   uint32 uiAppSize = 4;                         //APP文件大小，单位Byte
   string strVersion = 5;
-  string strVersionCode = 6;                    //APP是否需要升级要根据此项判断
-  string strDescription = 7;
-  uint32 uiForceUpgrade = 8;                    //是否要强制升级，0-否，1-是
-  string strUpdateDate = 9;
+  string strDescription = 6;
+  uint32 uiForceUpgrade = 7;                    //是否要强制升级，0-否，1-是
+  string strUpdateDate = 8;
 }
 
 
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
+
+message QueryUploadURLReq_MGR                   //查询文件上传URL请求
+{
+  string strValue = 1;
+}
+
+message QueryUploadURLRsp_MGR                   //查询文件上传URL响应
+{
+  string strUploadURL = 1;
+}
 
 message AddConfigurationReq_MGR                 //新增配置项请求
 {
@@ -1001,10 +1010,12 @@ message Req
   GetDeviceAccessRecordReq_INNER GetDeviceAccessRecordReq_INNER_Value = 440;  //获取设备接入记录
   GetUserAccessRecordReq_INNER GetUserAccessRecordReq_INNER_Value = 450;      //获取用户接入记录
   
-  AddConfigurationReq_MGR AddConfigurationReq_MGR_Value = 600;                //新增配置项
-  DeleteConfigurationReq_MGR DeleteConfigurationReq_MGR_Value = 610;          //删除配置项
-  ModifyConfigurationReq_MGR ModifyConfigurationReq_MGR_Value = 620;          //修改配置项
-  QueryAllConfigurationReq_MGR QueryAllConfigurationReq_MGR_Value = 630;      //查询所有配置项
+  QueryUploadURLReq_MGR QueryUploadURLReq_MGR_Value = 600;                    //查询文件上传URL
+  
+  AddConfigurationReq_MGR AddConfigurationReq_MGR_Value = 610;                //新增配置项
+  DeleteConfigurationReq_MGR DeleteConfigurationReq_MGR_Value = 620;          //删除配置项
+  ModifyConfigurationReq_MGR ModifyConfigurationReq_MGR_Value = 630;          //修改配置项
+  QueryAllConfigurationReq_MGR QueryAllConfigurationReq_MGR_Value = 640;      //查询所有配置项
 }
 
 //响应对象
@@ -1079,10 +1090,12 @@ message Rsp
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  AddConfigurationRsp_MGR AddConfigurationRsp_MGR_Value = 600;                //新增配置项
-  DeleteConfigurationRsp_MGR DeleteConfigurationRsp_MGR_Value = 610;          //删除配置项
-  ModifyConfigurationRsp_MGR ModifyConfigurationRsp_MGR_Value = 620;          //修改配置项
-  QueryAllConfigurationRsp_MGR QueryAllConfigurationRsp_MGR_Value = 630;      //查询所有配置项
+  QueryUploadURLRsp_MGR QueryUploadURLRsp_MGR_Value = 600;                    //查询文件上传URL
+
+  AddConfigurationRsp_MGR AddConfigurationRsp_MGR_Value = 610;                //新增配置项
+  DeleteConfigurationRsp_MGR DeleteConfigurationRsp_MGR_Value = 620;          //删除配置项
+  ModifyConfigurationRsp_MGR ModifyConfigurationRsp_MGR_Value = 630;          //修改配置项
+  QueryAllConfigurationRsp_MGR QueryAllConfigurationRsp_MGR_Value = 640;      //查询所有配置项
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理
