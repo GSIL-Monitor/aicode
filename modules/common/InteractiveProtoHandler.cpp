@@ -369,6 +369,7 @@ void UnSerializeConfigurationList(std::list<InteractiveProtoHandler::Configurati
         configuration.m_strLatestVersion = srcConfiguration.strlatestversion();
         configuration.m_strDescription = srcConfiguration.strdescription();
         configuration.m_strForceVersion = srcConfiguration.strforceversion();
+        configuration.m_strServerAddress = srcConfiguration.strserveraddress();
         configuration.m_strFileName = srcConfiguration.strfilename();
         configuration.m_strFileID = srcConfiguration.strfileid();
         configuration.m_uiFileSize = srcConfiguration.uifilesize();
@@ -402,6 +403,7 @@ void SerializeConfigurationList(const std::list<InteractiveProtoHandler::Configu
         pDstConfiguration->set_strlatestversion(itBegin->m_strLatestVersion);
         pDstConfiguration->set_strdescription(itBegin->m_strDescription);
         pDstConfiguration->set_strforceversion(itBegin->m_strForceVersion);
+        pDstConfiguration->set_strserveraddress(itBegin->m_strServerAddress);
         pDstConfiguration->set_strfilename(itBegin->m_strFileName);
         pDstConfiguration->set_strfileid(itBegin->m_strFileID);
         pDstConfiguration->set_uifilesize(itBegin->m_uiFileSize);
@@ -3990,6 +3992,7 @@ void InteractiveProtoHandler::AddConfigurationReq_MGR::UnSerializer(const Intera
     m_configuration.m_strLatestVersion = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strlatestversion();
     m_configuration.m_strDescription = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strdescription();
     m_configuration.m_strForceVersion = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strforceversion();
+    m_configuration.m_strServerAddress = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strserveraddress();
     m_configuration.m_strFileName = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strfilename();
     m_configuration.m_strFileID = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().strfileid();
     m_configuration.m_uiFileSize = InteractiveMsg.reqvalue().addconfigurationreq_mgr_value().configurationinfo().uifilesize();
@@ -4009,6 +4012,7 @@ void InteractiveProtoHandler::AddConfigurationReq_MGR::Serializer(InteractiveMes
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strlatestversion(m_configuration.m_strLatestVersion);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strdescription(m_configuration.m_strDescription);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strforceversion(m_configuration.m_strForceVersion);
+    InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strserveraddress(m_configuration.m_strServerAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilename(m_configuration.m_strFileName);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfileid(m_configuration.m_strFileID);
     InteractiveMsg.mutable_reqvalue()->mutable_addconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uifilesize(m_configuration.m_uiFileSize);
@@ -4068,6 +4072,7 @@ void InteractiveProtoHandler::ModifyConfigurationReq_MGR::UnSerializer(const Int
     m_configuration.m_strLatestVersion = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strlatestversion();
     m_configuration.m_strDescription = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strdescription();
     m_configuration.m_strForceVersion = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strforceversion();
+    m_configuration.m_strServerAddress = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strserveraddress();
     m_configuration.m_strFileName = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strfilename();
     m_configuration.m_strFileID = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().strfileid();
     m_configuration.m_uiFileSize = InteractiveMsg.reqvalue().modifyconfigurationreq_mgr_value().configurationinfo().uifilesize();
@@ -4087,6 +4092,7 @@ void InteractiveProtoHandler::ModifyConfigurationReq_MGR::Serializer(Interactive
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strlatestversion(m_configuration.m_strLatestVersion);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strdescription(m_configuration.m_strDescription);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strforceversion(m_configuration.m_strForceVersion);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strserveraddress(m_configuration.m_strServerAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfilename(m_configuration.m_strFileName);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_strfileid(m_configuration.m_strFileID);
     InteractiveMsg.mutable_reqvalue()->mutable_modifyconfigurationreq_mgr_value()->mutable_configurationinfo()->set_uifilesize(m_configuration.m_uiFileSize);

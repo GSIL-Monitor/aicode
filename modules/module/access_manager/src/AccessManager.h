@@ -45,6 +45,9 @@ public:
     static const int INTERACTIVE_UPGRADE = 0;
     static const int FORCE_UPGRADE = 1;
 
+    static const std::string ANDROID_APP;
+    static const std::string IOS_APP;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -79,7 +82,7 @@ public:
         std::string m_strSessionTimeoutCountThreshold;
         std::string m_strLTUserSite;
         std::string m_strLTUserSiteRC4Key;
-
+        std::string m_strUploadURL;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo
@@ -175,6 +178,8 @@ public:
     bool QueryAppUpgradeReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryFirmwareUpgradeReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryUploadURLReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool AddConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
@@ -277,7 +282,7 @@ private:
 
     bool QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease);
 
-    bool QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strVersionCode,
+    bool QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
         InteractiveProtoHandler::AppUpgrade &appUpgrade);
     
     bool QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,

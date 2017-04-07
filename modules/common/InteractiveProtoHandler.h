@@ -252,6 +252,7 @@ public:
         std::string m_strLatestVersion;
         std::string m_strDescription;
         std::string m_strForceVersion;
+        std::string m_strServerAddress;
         std::string m_strFileName;
         std::string m_strFileID;
         unsigned int m_uiFileSize;

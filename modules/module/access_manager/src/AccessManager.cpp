@@ -10,6 +10,9 @@
 
 const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
+const std::string AccessManager::ANDROID_APP = "Android_App";
+const std::string AccessManager::IOS_APP = "iOS_App";
+
 const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
 
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
@@ -2503,7 +2506,6 @@ bool AccessManager::QueryAppUpgradeReqUser(const std::string &strMsg, const std:
         rsp.m_appUpgrade.m_strAppPath = appUpgrade.m_strAppPath;
         rsp.m_appUpgrade.m_uiAppSize = appUpgrade.m_uiAppSize;
         rsp.m_appUpgrade.m_strVersion = appUpgrade.m_strVersion;
-        rsp.m_appUpgrade.m_strVersionCode = appUpgrade.m_strVersionCode;
         rsp.m_appUpgrade.m_strDescription = appUpgrade.m_strDescription;
         rsp.m_appUpgrade.m_uiForceUpgrade = appUpgrade.m_uiForceUpgrade;
         rsp.m_appUpgrade.m_strUpdateDate = appUpgrade.m_strUpdateDate;
@@ -2517,7 +2519,7 @@ bool AccessManager::QueryAppUpgradeReqUser(const std::string &strMsg, const std:
 
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("Query app upgrade rsp already send, dst id is " << strSrcID << " and category is " << req.m_strCategory <<
-            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strVersionCode <<
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion <<
             " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -2528,10 +2530,10 @@ bool AccessManager::QueryAppUpgradeReqUser(const std::string &strMsg, const std:
         return false;
     }
 
-    if (!QueryAppUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strVersionCode, appUpgrade))
+    if (!QueryAppUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, appUpgrade))
     {
         LOG_ERROR_RLD("Query app upgrade from db failed, category is " << req.m_strCategory <<
-            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strVersionCode);
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion);
         return false;
     }
 
@@ -2598,6 +2600,47 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
     return blResult;
 }
 
+bool AccessManager::QueryUploadURLReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryUploadURLReq_MGR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &m_ParamInfo)
+    {
+        InteractiveProtoHandler::QueryUploadURLRsp_MGR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryUploadURLRsp_MGR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strUploadURL = blResult ? m_ParamInfo.m_strUploadURL : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query upload url rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query upload url rsp already send, dst id is " << strSrcID <<
+            " and upload url is " << rsp.m_strUploadURL <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query upload url req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
@@ -2622,17 +2665,16 @@ bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std:
 
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("Add configuration item already send, dst id is " << strSrcID <<
-            " and content is " << req.m_configuration.m_strContent <<
             " and category is " << req.m_configuration.m_strCategory <<
             " and sub category is " << req.m_configuration.m_strSubCategory <<
             " and latest version is " << req.m_configuration.m_strLatestVersion <<
-            " and version code is " << req.m_configuration.m_strVersionCode <<
-            " and force version is " << req.m_configuration.m_strForceVersion <<
             " and description is " << req.m_configuration.m_strDescription <<
+            " and force version is " << req.m_configuration.m_strForceVersion <<
             " and file server address is " << req.m_configuration.m_strServerAddress <<
             " and file name is " << req.m_configuration.m_strFileName <<
             " and file id is " << req.m_configuration.m_strFileID <<
             " and file size is " << req.m_configuration.m_uiFileSize <<
+            " and file path is " << req.m_configuration.m_strFilePath <<
             " and lease duration is " << req.m_configuration.m_uiLeaseDuration <<
             " and update date is " << req.m_configuration.m_strUpdateDate <<
             " and result is " << blResult);
@@ -2652,15 +2694,13 @@ bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std:
     InteractiveProtoHandler::Configuration configuration;
     configuration.m_strCategory = req.m_configuration.m_strCategory;
     configuration.m_strSubCategory = req.m_configuration.m_strSubCategory;
-    configuration.m_strContent = req.m_configuration.m_strContent;
     configuration.m_strLatestVersion = req.m_configuration.m_strLatestVersion;
-    configuration.m_strVersionCode = req.m_configuration.m_strVersionCode;
     configuration.m_strDescription = req.m_configuration.m_strDescription;
     configuration.m_strForceVersion = req.m_configuration.m_strForceVersion;
-    configuration.m_strServerAddress = req.m_configuration.m_strServerAddress;
     configuration.m_strFileName = req.m_configuration.m_strFileName;
     configuration.m_strFileID = req.m_configuration.m_strFileID;
     configuration.m_uiFileSize = req.m_configuration.m_uiFileSize;
+    configuration.m_strFilePath = "http://" + req.m_configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + req.m_configuration.m_strFileID;
     configuration.m_uiLeaseDuration = req.m_configuration.m_uiLeaseDuration;
     configuration.m_strUpdateDate = req.m_configuration.m_strUpdateDate;
     configuration.m_uiStatus = NORMAL_STATUS;
@@ -2800,17 +2840,16 @@ bool AccessManager::QueryAllConfigurationReqMgr(const std::string &strMsg, const
             for (auto &configuration : rsp.m_configurationList)
             {
                 LOG_INFO_RLD("Configuration item[" << i << "]: "
-                    " content is " << configuration.m_strContent <<
                     " and category is " << configuration.m_strCategory <<
                     " and sub category is " << configuration.m_strSubCategory <<
                     " and latest version is " << configuration.m_strLatestVersion <<
-                    " and version code is " << configuration.m_strVersionCode <<
                     " and description is " << configuration.m_strDescription <<
                     " and force version is " << configuration.m_strForceVersion <<
                     " and file server address is " << configuration.m_strServerAddress <<
                     " and file name is " << configuration.m_strFileName <<
                     " and file id is " << configuration.m_strFileID << 
                     " and file size is " << configuration.m_uiFileSize << 
+                    " and file path is " << configuration.m_strFilePath <<
                     " and lease duration is " << configuration.m_uiLeaseDuration << 
                     " and update date is " << configuration.m_strUpdateDate);
 
@@ -3459,9 +3498,8 @@ bool AccessManager::InitDefaultAccessDomainName()
 bool AccessManager::QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease)
 {
     char sql[256] = { 0 };
-    //查询条件category = 1，配置类别为门铃，subcategory = 3，配置子项目为固件升级地址
-    const char *sqlfmt = "select content, leaseduration from t_configuration_info where category = 1 and subcategory = 3";
-    snprintf(sql, sizeof(sql), sqlfmt);
+    const char *sqlfmt = "select description, leaseduration from t_configuration_info where category = '%s' and subcategory = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, "Doorbell", "Firmware_upgrade_address");
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
@@ -3501,11 +3539,11 @@ bool AccessManager::QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned in
     return true;
 }
 
-bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strVersionCode,
+bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
     InteractiveProtoHandler::AppUpgrade &appUpgrade)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select latestversion, description, forceversion, serveraddress, filename, fileid, filesize, updatedate from t_configuration_info"
+    const char* sqlfmt = "select latestversion, description, forceversion, filename, filesize, filepath, updatedate from t_configuration_info"
         " where category = '%s' and subcategory = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
 
@@ -3526,21 +3564,20 @@ bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const st
     else
     {
         configuration = boost::any_cast<InteractiveProtoHandler::Configuration>(ResultList.front());
-        appUpgrade.m_uiNewVersionValid = configuration.m_strVersionCode.compare(strVersionCode) > 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
+        appUpgrade.m_uiNewVersionValid = configuration.m_strLatestVersion.compare(strCurrentVersion) > 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
     }
     
     if (NEW_VERSION_VALID == appUpgrade.m_uiNewVersionValid)
     {
         appUpgrade.m_strAppName = configuration.m_strFileName;
-        appUpgrade.m_strAppPath = "http://" + configuration.m_strServerAddress + "/access.cgi?action=download&fileid=" + configuration.m_strFileID;
+        appUpgrade.m_strAppPath = configuration.m_strFilePath;
         appUpgrade.m_uiAppSize = configuration.m_uiFileSize;
         appUpgrade.m_strVersion = configuration.m_strLatestVersion;
-        appUpgrade.m_strVersionCode = configuration.m_strVersionCode;
         appUpgrade.m_strDescription = configuration.m_strDescription;
         appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
         appUpgrade.m_strUpdateDate = configuration.m_strUpdateDate;
 
-        LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersionCode);
+        LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersion);
     }
     else
     {
@@ -3548,12 +3585,11 @@ bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const st
         appUpgrade.m_strAppPath = "";
         appUpgrade.m_uiAppSize = 0;
         appUpgrade.m_strVersion = "";
-        appUpgrade.m_strVersionCode = "";
         appUpgrade.m_strDescription = "";
         appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
         appUpgrade.m_strUpdateDate = "";
 
-        LOG_INFO_RLD("QueryAppUpgradeToDB successful, current version is latest, version is " << strVersionCode);
+        LOG_INFO_RLD("QueryAppUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
     }
 
     return true;
@@ -3563,7 +3599,7 @@ bool AccessManager::QueryFirwareUpgradeToDB(const std::string &strCategory, cons
     InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select latestversion, description, forceversion, serveraddress, filename, fileid, filesize, updatedate from t_configuration_info"
+    const char* sqlfmt = "select latestversion, description, forceversion, filename, filesize, filepath, updatedate from t_configuration_info"
         " where category = '%s' and subcategory = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
 
@@ -3591,7 +3627,7 @@ bool AccessManager::QueryFirwareUpgradeToDB(const std::string &strCategory, cons
     if (NEW_VERSION_VALID == firmwareUpgrade.m_uiNewVersionValid)
     {
         firmwareUpgrade.m_strFirmwareName = configuration.m_strFileName;
-        firmwareUpgrade.m_strFirmwarePath = "http://" + configuration.m_strServerAddress + "/access.cgi?action=download&fileid=" + configuration.m_strFileID;
+        firmwareUpgrade.m_strFirmwarePath = configuration.m_strFilePath;
         firmwareUpgrade.m_uiFirmwareSize = configuration.m_uiFileSize;
         firmwareUpgrade.m_strVersion = configuration.m_strLatestVersion;
         firmwareUpgrade.m_strDescription = configuration.m_strDescription;
@@ -3625,27 +3661,21 @@ void AccessManager::ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const
         configuration.m_strLatestVersion = strColumn;
         break;
     case 1:
-        configuration.m_strVersionCode = strColumn;
-        break;
-    case 2:
         configuration.m_strDescription = strColumn;
         break;
-    case 3:
+    case 2:
         configuration.m_strForceVersion = strColumn;
         break;
-    case 4:
-        configuration.m_strServerAddress = strColumn;
-        break;
-    case 5:
+    case 3:
         configuration.m_strFileName = strColumn;
         break;
-    case 6:
-        configuration.m_strFileID = strColumn;
-        break;
-    case 7:
+    case 4:
         configuration.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
         break;
-    case 8:
+    case 5:
+        configuration.m_strFilePath = strColumn;
+        break;
+    case 6:
         configuration.m_strUpdateDate = strColumn;
         Result = configuration;
         break;
@@ -3697,10 +3727,10 @@ void AccessManager::InsertConfigurationToDB(const InteractiveProtoHandler::Confi
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_configuration_info"
-        "values(uuid, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d, '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, configuration.m_strCategory.c_str(), configuration.m_strSubCategory.c_str(), configuration.m_strContent.c_str(),
-        configuration.m_strLatestVersion.c_str(), configuration.m_strVersionCode.c_str(), configuration.m_strDescription.c_str(), configuration.m_strForceVersion.c_str(),
-        configuration.m_strServerAddress.c_str(), configuration.m_strFileName.c_str(), configuration.m_strFileID.c_str(), configuration.m_uiFileSize,
+        "values(uuid, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s' %d, '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, configuration.m_strCategory.c_str(), configuration.m_strSubCategory.c_str(),
+        configuration.m_strLatestVersion.c_str(), configuration.m_strDescription.c_str(), configuration.m_strForceVersion.c_str(),
+        configuration.m_strFileName.c_str(), configuration.m_strFileID.c_str(), configuration.m_uiFileSize, configuration.m_strFilePath.c_str(),
         configuration.m_uiLeaseDuration, configuration.m_strUpdateDate.c_str(), configuration.m_uiStatus, configuration.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -3730,26 +3760,10 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     int len;
     snprintf(sql, size, "update t_configuration_info set ");
 
-    if (!configuration.m_strContent.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, ", content = '%s'", configuration.m_strContent.c_str());
-
-        blModified = true;
-    }
-
     if (!configuration.m_strLatestVersion.empty())
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", latestversion = '%s'", configuration.m_strLatestVersion.c_str());
-
-        blModified = true;
-    }
-
-    if (!configuration.m_strVersionCode.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, ", versioncode = '%s'", configuration.m_strVersionCode.c_str());
 
         blModified = true;
     }
@@ -3770,14 +3784,6 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
         blModified = true;
     }
 
-    if (!configuration.m_strServerAddress.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, "serveraddress = '%s'", configuration.m_strServerAddress.c_str());
-
-        blModified = true;
-    }
-
     if (!configuration.m_strFileName.empty())
     {
         len = strlen(sql);
@@ -3786,10 +3792,11 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
         blModified = true;
     }
 
-    if (!configuration.m_strFileID.empty())
+    if (!configuration.m_strServerAddress.empty() && !configuration.m_strFileID.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "fileid = '%s', filesize = %d", configuration.m_strFileID.c_str(), configuration.m_uiFileSize);
+        snprintf(sql + len, size - len, "filesize = %d, filepath = '%s'", configuration.m_uiFileSize,
+            ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=xxxxx" + configuration.m_strFileID).c_str());
 
         blModified = true;
     }
@@ -3830,7 +3837,7 @@ bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler:
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[256] = { 0 };
-    const char *sqlfmt = "select category, subcategory, content, latestversion, versioncode, description, forceversion, serveraddress, filename, fileid, filesize, leaseduration, updatedate"
+    const char *sqlfmt = "select category, subcategory, latestversion, description, forceversion, filename, filesize, filepath, leaseduration, updatedate"
         " from t_configuration_info where status = 0";
     snprintf(sql, sizeof(sql), sqlfmt);
 
@@ -3846,36 +3853,27 @@ bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler:
             configuration.m_strSubCategory = strColumn;
             break;
         case 2:
-            configuration.m_strContent = strColumn;
-            break;
-        case 3:
             configuration.m_strLatestVersion = strColumn;
             break;
-        case 4:
-            configuration.m_strVersionCode = strColumn;
-            break;
-        case 5:
+        case 3:
             configuration.m_strDescription = strColumn;
             break;
-        case 6:
+        case 4:
             configuration.m_strForceVersion = strColumn;
             break;
-        case 7:
-            configuration.m_strServerAddress = strColumn;
-            break;
-        case 8:
+        case 5:
             configuration.m_strFileName = strColumn;
             break;
-        case 9:
-            configuration.m_strFileID = strColumn;
-            break;
-        case 10:
+        case 6:
             configuration.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
             break;
-        case 11:
+        case 7:
+            configuration.m_strFilePath = strColumn;
+            break;
+        case 8:
             configuration.m_uiLeaseDuration = boost::lexical_cast<unsigned int>(strColumn);
             break;
-        case 12:
+        case 9:
             configuration.m_strUpdateDate = strColumn;
             result = configuration;
             break;

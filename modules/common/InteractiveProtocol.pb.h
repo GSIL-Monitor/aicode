@@ -2049,9 +2049,23 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strforceversion();
   void set_allocated_strforceversion(::std::string* strforceversion);
 
-  // string strFileName = 6;
+  // string strServerAddress = 6;
+  void clear_strserveraddress();
+  static const int kStrServerAddressFieldNumber = 6;
+  const ::std::string& strserveraddress() const;
+  void set_strserveraddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strserveraddress(::std::string&& value);
+  #endif
+  void set_strserveraddress(const char* value);
+  void set_strserveraddress(const char* value, size_t size);
+  ::std::string* mutable_strserveraddress();
+  ::std::string* release_strserveraddress();
+  void set_allocated_strserveraddress(::std::string* strserveraddress);
+
+  // string strFileName = 7;
   void clear_strfilename();
-  static const int kStrFileNameFieldNumber = 6;
+  static const int kStrFileNameFieldNumber = 7;
   const ::std::string& strfilename() const;
   void set_strfilename(const ::std::string& value);
   #if LANG_CXX11
@@ -2063,9 +2077,9 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strfilename();
   void set_allocated_strfilename(::std::string* strfilename);
 
-  // string strFileID = 7;
+  // string strFileID = 8;
   void clear_strfileid();
-  static const int kStrFileIDFieldNumber = 7;
+  static const int kStrFileIDFieldNumber = 8;
   const ::std::string& strfileid() const;
   void set_strfileid(const ::std::string& value);
   #if LANG_CXX11
@@ -2077,9 +2091,9 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strfileid();
   void set_allocated_strfileid(::std::string* strfileid);
 
-  // string strFilePath = 9;
+  // string strFilePath = 10;
   void clear_strfilepath();
-  static const int kStrFilePathFieldNumber = 9;
+  static const int kStrFilePathFieldNumber = 10;
   const ::std::string& strfilepath() const;
   void set_strfilepath(const ::std::string& value);
   #if LANG_CXX11
@@ -2091,9 +2105,9 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strfilepath();
   void set_allocated_strfilepath(::std::string* strfilepath);
 
-  // string strUpdateDate = 11;
+  // string strUpdateDate = 12;
   void clear_strupdatedate();
-  static const int kStrUpdateDateFieldNumber = 11;
+  static const int kStrUpdateDateFieldNumber = 12;
   const ::std::string& strupdatedate() const;
   void set_strupdatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -2105,9 +2119,9 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strupdatedate();
   void set_allocated_strupdatedate(::std::string* strupdatedate);
 
-  // string strExtend = 13;
+  // string strExtend = 14;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 13;
+  static const int kStrExtendFieldNumber = 14;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -2119,21 +2133,21 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
-  // uint32 uiFileSize = 8;
+  // uint32 uiFileSize = 9;
   void clear_uifilesize();
-  static const int kUiFileSizeFieldNumber = 8;
+  static const int kUiFileSizeFieldNumber = 9;
   ::google::protobuf::uint32 uifilesize() const;
   void set_uifilesize(::google::protobuf::uint32 value);
 
-  // uint32 uiLeaseDuration = 10;
+  // uint32 uiLeaseDuration = 11;
   void clear_uileaseduration();
-  static const int kUiLeaseDurationFieldNumber = 10;
+  static const int kUiLeaseDurationFieldNumber = 11;
   ::google::protobuf::uint32 uileaseduration() const;
   void set_uileaseduration(::google::protobuf::uint32 value);
 
-  // uint32 uiStatus = 12;
+  // uint32 uiStatus = 13;
   void clear_uistatus();
-  static const int kUiStatusFieldNumber = 12;
+  static const int kUiStatusFieldNumber = 13;
   ::google::protobuf::uint32 uistatus() const;
   void set_uistatus(::google::protobuf::uint32 value);
 
@@ -2146,6 +2160,7 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::internal::ArenaStringPtr strlatestversion_;
   ::google::protobuf::internal::ArenaStringPtr strdescription_;
   ::google::protobuf::internal::ArenaStringPtr strforceversion_;
+  ::google::protobuf::internal::ArenaStringPtr strserveraddress_;
   ::google::protobuf::internal::ArenaStringPtr strfilename_;
   ::google::protobuf::internal::ArenaStringPtr strfileid_;
   ::google::protobuf::internal::ArenaStringPtr strfilepath_;
@@ -17110,7 +17125,59 @@ inline void Configuration::set_allocated_strforceversion(::std::string* strforce
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strForceVersion)
 }
 
-// string strFileName = 6;
+// string strServerAddress = 6;
+inline void Configuration::clear_strserveraddress() {
+  strserveraddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strserveraddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strServerAddress)
+  return strserveraddress_.GetNoArena();
+}
+inline void Configuration::set_strserveraddress(const ::std::string& value) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strServerAddress)
+}
+#if LANG_CXX11
+inline void Configuration::set_strserveraddress(::std::string&& value) {
+  
+  strserveraddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strServerAddress)
+}
+#endif
+inline void Configuration::set_strserveraddress(const char* value) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strServerAddress)
+}
+inline void Configuration::set_strserveraddress(const char* value, size_t size) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strServerAddress)
+}
+inline ::std::string* Configuration::mutable_strserveraddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strServerAddress)
+  return strserveraddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strserveraddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strServerAddress)
+  
+  return strserveraddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strserveraddress(::std::string* strserveraddress) {
+  if (strserveraddress != NULL) {
+    
+  } else {
+    
+  }
+  strserveraddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strserveraddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strServerAddress)
+}
+
+// string strFileName = 7;
 inline void Configuration::clear_strfilename() {
   strfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17162,7 +17229,7 @@ inline void Configuration::set_allocated_strfilename(::std::string* strfilename)
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strFileName)
 }
 
-// string strFileID = 7;
+// string strFileID = 8;
 inline void Configuration::clear_strfileid() {
   strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17214,7 +17281,7 @@ inline void Configuration::set_allocated_strfileid(::std::string* strfileid) {
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strFileID)
 }
 
-// uint32 uiFileSize = 8;
+// uint32 uiFileSize = 9;
 inline void Configuration::clear_uifilesize() {
   uifilesize_ = 0u;
 }
@@ -17228,7 +17295,7 @@ inline void Configuration::set_uifilesize(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiFileSize)
 }
 
-// string strFilePath = 9;
+// string strFilePath = 10;
 inline void Configuration::clear_strfilepath() {
   strfilepath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17280,7 +17347,7 @@ inline void Configuration::set_allocated_strfilepath(::std::string* strfilepath)
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strFilePath)
 }
 
-// uint32 uiLeaseDuration = 10;
+// uint32 uiLeaseDuration = 11;
 inline void Configuration::clear_uileaseduration() {
   uileaseduration_ = 0u;
 }
@@ -17294,7 +17361,7 @@ inline void Configuration::set_uileaseduration(::google::protobuf::uint32 value)
   // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiLeaseDuration)
 }
 
-// string strUpdateDate = 11;
+// string strUpdateDate = 12;
 inline void Configuration::clear_strupdatedate() {
   strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17346,7 +17413,7 @@ inline void Configuration::set_allocated_strupdatedate(::std::string* strupdated
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strUpdateDate)
 }
 
-// uint32 uiStatus = 12;
+// uint32 uiStatus = 13;
 inline void Configuration::clear_uistatus() {
   uistatus_ = 0u;
 }
@@ -17360,7 +17427,7 @@ inline void Configuration::set_uistatus(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiStatus)
 }
 
-// string strExtend = 13;
+// string strExtend = 14;
 inline void Configuration::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

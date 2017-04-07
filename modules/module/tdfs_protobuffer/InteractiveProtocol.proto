@@ -280,14 +280,15 @@ message Configuration                           //配置项内容
   string strLatestVersion = 3;
   string strDescription = 4;
   string strForceVersion = 5;
-  string strFileName = 6;
-  string strFileID = 7;
-  uint32 uiFileSize = 8;
-  string strFilePath = 9;
-  uint32 uiLeaseDuration = 10;
-  string strUpdateDate = 11;
-  uint32 uiStatus = 12;
-  string strExtend = 13;
+  string strServerAddress = 6;
+  string strFileName = 7;
+  string strFileID = 8;
+  uint32 uiFileSize = 9;
+  string strFilePath = 10;
+  uint32 uiLeaseDuration = 11;
+  string strUpdateDate = 12;
+  uint32 uiStatus = 13;
+  string strExtend = 14;
 }
 
 
