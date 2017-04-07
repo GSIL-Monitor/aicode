@@ -117,18 +117,23 @@ CREATE TABLE `t_file_info` (
 DROP TABLE IF EXISTS `t_configuration_info`;
 CREATE TABLE `t_configuration_info` (
   `id` varchar(36) NOT NULL,
-  `category` int(11) NOT NULL, #配置类别，0-用户，1-门铃，2-IPC，3-camera
-  `subcategory` int(11) NOT, #配置类别子项目，1-设备固件，2-证书，3-固件升级地址
-  `content` varchar(1000), #配置内容
-  `description` varchar(2000), #配置内容描述
+  `category` varchar(50) NOT NULL, #配置类别，如用户APP、门铃、IPC
+  `subcategory` varchar(100) NOT NULL, #配置类别子项目
+  `content` varchar(200), #配置内容
+  `latestversion` varchar(20), #最新版本
+  `versioncode` varchar(20), #APP升级使用
+  `description` varchar(500), #配置描述
+  `forceversion` varchar(20), #强制升级的版本
+  `serveraddress` varchar(100), #文件服务器地址
+  `filename` varchar(100),
   `fileid` varchar(100),
+  `filesize` int(11),
   `leaseduration` int(11),
-  `createdate` datetime NOT NULL,
+  `updatedate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX index_ref1(category),
-  INDEX index_ref2(category, subcategory)
+  INDEX index_ref1(category, subcategory)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `t_access_domain_info`;

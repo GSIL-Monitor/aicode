@@ -39,6 +39,12 @@ public:
     
     static const std::string GET_IPINFO_SITE;
 
+    static const int NEW_VERSION_INVALID = 0;
+    static const int NEW_VERSION_VALID = 1;
+
+    static const int INTERACTIVE_UPGRADE = 0;
+    static const int FORCE_UPGRADE = 1;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -166,6 +172,18 @@ public:
 
     bool GetUserAccessRecordReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryAppUpgradeReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryFirmwareUpgradeReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -258,7 +276,25 @@ private:
     bool InitDefaultAccessDomainName();
 
     bool QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease);
+
+    bool QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strVersionCode,
+        InteractiveProtoHandler::AppUpgrade &appUpgrade);
     
+    bool QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
+        InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade);
+
+    void ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
+
+    void InsertConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration);
+
+    void DeleteConfigurationToDB(const std::string &strCategory, const std::string &strSubCategory, const int iStatus);
+
+    void ModifyConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration);
+
+    bool QueryAllConfigurationToDB(std::list<InteractiveProtoHandler::Configuration> &configurationList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+
 private:
     ParamInfo m_ParamInfo;
 

@@ -32,6 +32,12 @@
 // @@protoc_insertion_point(includes)
 namespace Interactive {
 namespace Message {
+class AddConfigurationReq_MGR;
+class AddConfigurationReq_MGRDefaultTypeInternal;
+extern AddConfigurationReq_MGRDefaultTypeInternal _AddConfigurationReq_MGR_default_instance_;
+class AddConfigurationRsp_MGR;
+class AddConfigurationRsp_MGRDefaultTypeInternal;
+extern AddConfigurationRsp_MGRDefaultTypeInternal _AddConfigurationRsp_MGR_default_instance_;
 class AddDevReq_USR;
 class AddDevReq_USRDefaultTypeInternal;
 extern AddDevReq_USRDefaultTypeInternal _AddDevReq_USR_default_instance_;
@@ -74,6 +80,9 @@ extern ConfigInfoRsp_DEVDefaultTypeInternal _ConfigInfoRsp_DEV_default_instance_
 class ConfigInfoRsp_USR;
 class ConfigInfoRsp_USRDefaultTypeInternal;
 extern ConfigInfoRsp_USRDefaultTypeInternal _ConfigInfoRsp_USR_default_instance_;
+class Configuration;
+class ConfigurationDefaultTypeInternal;
+extern ConfigurationDefaultTypeInternal _Configuration_default_instance_;
 class DelDevReq_USR;
 class DelDevReq_USRDefaultTypeInternal;
 extern DelDevReq_USRDefaultTypeInternal _DelDevReq_USR_default_instance_;
@@ -86,6 +95,12 @@ extern DelFriendsReq_USRDefaultTypeInternal _DelFriendsReq_USR_default_instance_
 class DelFriendsRsp_USR;
 class DelFriendsRsp_USRDefaultTypeInternal;
 extern DelFriendsRsp_USRDefaultTypeInternal _DelFriendsRsp_USR_default_instance_;
+class DeleteConfigurationReq_MGR;
+class DeleteConfigurationReq_MGRDefaultTypeInternal;
+extern DeleteConfigurationReq_MGRDefaultTypeInternal _DeleteConfigurationReq_MGR_default_instance_;
+class DeleteConfigurationRsp_MGR;
+class DeleteConfigurationRsp_MGRDefaultTypeInternal;
+extern DeleteConfigurationRsp_MGRDefaultTypeInternal _DeleteConfigurationRsp_MGR_default_instance_;
 class DeleteFileReq_USR;
 class DeleteFileReq_USRDefaultTypeInternal;
 extern DeleteFileReq_USRDefaultTypeInternal _DeleteFileReq_USR_default_instance_;
@@ -173,6 +188,12 @@ extern LogoutRsp_DEVDefaultTypeInternal _LogoutRsp_DEV_default_instance_;
 class LogoutRsp_USR;
 class LogoutRsp_USRDefaultTypeInternal;
 extern LogoutRsp_USRDefaultTypeInternal _LogoutRsp_USR_default_instance_;
+class ModifyConfigurationReq_MGR;
+class ModifyConfigurationReq_MGRDefaultTypeInternal;
+extern ModifyConfigurationReq_MGRDefaultTypeInternal _ModifyConfigurationReq_MGR_default_instance_;
+class ModifyConfigurationRsp_MGR;
+class ModifyConfigurationRsp_MGRDefaultTypeInternal;
+extern ModifyConfigurationRsp_MGRDefaultTypeInternal _ModifyConfigurationRsp_MGR_default_instance_;
 class ModifyDevReq_USR;
 class ModifyDevReq_USRDefaultTypeInternal;
 extern ModifyDevReq_USRDefaultTypeInternal _ModifyDevReq_USR_default_instance_;
@@ -218,6 +239,18 @@ extern QueryAccessDomainNameRsp_DEVDefaultTypeInternal _QueryAccessDomainNameRsp
 class QueryAccessDomainNameRsp_USR;
 class QueryAccessDomainNameRsp_USRDefaultTypeInternal;
 extern QueryAccessDomainNameRsp_USRDefaultTypeInternal _QueryAccessDomainNameRsp_USR_default_instance_;
+class QueryAllConfigurationReq_MGR;
+class QueryAllConfigurationReq_MGRDefaultTypeInternal;
+extern QueryAllConfigurationReq_MGRDefaultTypeInternal _QueryAllConfigurationReq_MGR_default_instance_;
+class QueryAllConfigurationRsp_MGR;
+class QueryAllConfigurationRsp_MGRDefaultTypeInternal;
+extern QueryAllConfigurationRsp_MGRDefaultTypeInternal _QueryAllConfigurationRsp_MGR_default_instance_;
+class QueryAppUpgradeReq_USR;
+class QueryAppUpgradeReq_USRDefaultTypeInternal;
+extern QueryAppUpgradeReq_USRDefaultTypeInternal _QueryAppUpgradeReq_USR_default_instance_;
+class QueryAppUpgradeRsp_USR;
+class QueryAppUpgradeRsp_USRDefaultTypeInternal;
+extern QueryAppUpgradeRsp_USRDefaultTypeInternal _QueryAppUpgradeRsp_USR_default_instance_;
 class QueryDevInfoReq_USR;
 class QueryDevInfoReq_USRDefaultTypeInternal;
 extern QueryDevInfoReq_USRDefaultTypeInternal _QueryDevInfoReq_USR_default_instance_;
@@ -236,6 +269,12 @@ extern QueryFileReq_USRDefaultTypeInternal _QueryFileReq_USR_default_instance_;
 class QueryFileRsp_USR;
 class QueryFileRsp_USRDefaultTypeInternal;
 extern QueryFileRsp_USRDefaultTypeInternal _QueryFileRsp_USR_default_instance_;
+class QueryFirmwareUpgradeReq_DEV;
+class QueryFirmwareUpgradeReq_DEVDefaultTypeInternal;
+extern QueryFirmwareUpgradeReq_DEVDefaultTypeInternal _QueryFirmwareUpgradeReq_DEV_default_instance_;
+class QueryFirmwareUpgradeRsp_DEV;
+class QueryFirmwareUpgradeRsp_DEVDefaultTypeInternal;
+extern QueryFirmwareUpgradeRsp_DEVDefaultTypeInternal _QueryFirmwareUpgradeRsp_DEV_default_instance_;
 class QueryFriendsReq_USR;
 class QueryFriendsReq_USRDefaultTypeInternal;
 extern QueryFriendsReq_USRDefaultTypeInternal _QueryFriendsReq_USR_default_instance_;
@@ -370,6 +409,8 @@ enum MsgType {
   QueryAccessDomainNameRsp_DEV_T = 10350,
   QueryUpgradeSiteReq_DEV_T = 10360,
   QueryUpgradeSiteRsp_DEV_T = 10370,
+  QueryFirmwareUpgradeReq_DEV_T = 10380,
+  QueryFirmwareUpgradeRsp_DEV_T = 10390,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -428,6 +469,8 @@ enum MsgType {
   QueryFileRsp_USR_T = 20550,
   QueryAccessDomainNameReq_USR_T = 20600,
   QueryAccessDomainNameRsp_USR_T = 20610,
+  QueryAppUpgradeReq_USR_T = 20620,
+  QueryAppUpgradeRsp_USR_T = 20630,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -438,12 +481,20 @@ enum MsgType {
   GetDeviceAccessRecordRsp_INNER_T = 30210,
   GetUserAccessRecordReq_INNER_T = 30220,
   GetUserAccessRecordRsp_INNER_T = 30230,
+  AddConfigurationReq_MGR_T = 40000,
+  AddConfigurationRsp_MGR_T = 40010,
+  DeleteConfigurationReq_MGR_T = 40020,
+  DeleteConfigurationRsp_MGR_T = 40030,
+  ModifyConfigurationReq_MGR_T = 40040,
+  ModifyConfigurationRsp_MGR_T = 40050,
+  QueryAllConfigurationReq_MGR_T = 40060,
+  QueryAllConfigurationRsp_MGR_T = 40070,
   MsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   MsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool MsgType_IsValid(int value);
 const MsgType MsgType_MIN = Init_T;
-const MsgType MsgType_MAX = GetUserAccessRecordRsp_INNER_T;
+const MsgType MsgType_MAX = QueryAllConfigurationRsp_MGR_T;
 const int MsgType_ARRAYSIZE = MsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* MsgType_descriptor();
@@ -1847,6 +1898,283 @@ class UserAccessRecord : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::uint32 uiclienttype_;
   ::google::protobuf::uint32 uionlineduration_;
+  ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.Configuration) */ {
+ public:
+  Configuration();
+  virtual ~Configuration();
+
+  Configuration(const Configuration& from);
+
+  inline Configuration& operator=(const Configuration& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Configuration& default_instance();
+
+  static inline const Configuration* internal_default_instance() {
+    return reinterpret_cast<const Configuration*>(
+               &_Configuration_default_instance_);
+  }
+
+  void Swap(Configuration* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Configuration* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Configuration* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Configuration& from);
+  void MergeFrom(const Configuration& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Configuration* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCategory = 1;
+  void clear_strcategory();
+  static const int kStrCategoryFieldNumber = 1;
+  const ::std::string& strcategory() const;
+  void set_strcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcategory(::std::string&& value);
+  #endif
+  void set_strcategory(const char* value);
+  void set_strcategory(const char* value, size_t size);
+  ::std::string* mutable_strcategory();
+  ::std::string* release_strcategory();
+  void set_allocated_strcategory(::std::string* strcategory);
+
+  // string strSubCategory = 2;
+  void clear_strsubcategory();
+  static const int kStrSubCategoryFieldNumber = 2;
+  const ::std::string& strsubcategory() const;
+  void set_strsubcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsubcategory(::std::string&& value);
+  #endif
+  void set_strsubcategory(const char* value);
+  void set_strsubcategory(const char* value, size_t size);
+  ::std::string* mutable_strsubcategory();
+  ::std::string* release_strsubcategory();
+  void set_allocated_strsubcategory(::std::string* strsubcategory);
+
+  // string strContent = 3;
+  void clear_strcontent();
+  static const int kStrContentFieldNumber = 3;
+  const ::std::string& strcontent() const;
+  void set_strcontent(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcontent(::std::string&& value);
+  #endif
+  void set_strcontent(const char* value);
+  void set_strcontent(const char* value, size_t size);
+  ::std::string* mutable_strcontent();
+  ::std::string* release_strcontent();
+  void set_allocated_strcontent(::std::string* strcontent);
+
+  // string strLatestVersion = 4;
+  void clear_strlatestversion();
+  static const int kStrLatestVersionFieldNumber = 4;
+  const ::std::string& strlatestversion() const;
+  void set_strlatestversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strlatestversion(::std::string&& value);
+  #endif
+  void set_strlatestversion(const char* value);
+  void set_strlatestversion(const char* value, size_t size);
+  ::std::string* mutable_strlatestversion();
+  ::std::string* release_strlatestversion();
+  void set_allocated_strlatestversion(::std::string* strlatestversion);
+
+  // string strVersionCode = 5;
+  void clear_strversioncode();
+  static const int kStrVersionCodeFieldNumber = 5;
+  const ::std::string& strversioncode() const;
+  void set_strversioncode(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversioncode(::std::string&& value);
+  #endif
+  void set_strversioncode(const char* value);
+  void set_strversioncode(const char* value, size_t size);
+  ::std::string* mutable_strversioncode();
+  ::std::string* release_strversioncode();
+  void set_allocated_strversioncode(::std::string* strversioncode);
+
+  // string strDescription = 6;
+  void clear_strdescription();
+  static const int kStrDescriptionFieldNumber = 6;
+  const ::std::string& strdescription() const;
+  void set_strdescription(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdescription(::std::string&& value);
+  #endif
+  void set_strdescription(const char* value);
+  void set_strdescription(const char* value, size_t size);
+  ::std::string* mutable_strdescription();
+  ::std::string* release_strdescription();
+  void set_allocated_strdescription(::std::string* strdescription);
+
+  // string strForceVersion = 7;
+  void clear_strforceversion();
+  static const int kStrForceVersionFieldNumber = 7;
+  const ::std::string& strforceversion() const;
+  void set_strforceversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strforceversion(::std::string&& value);
+  #endif
+  void set_strforceversion(const char* value);
+  void set_strforceversion(const char* value, size_t size);
+  ::std::string* mutable_strforceversion();
+  ::std::string* release_strforceversion();
+  void set_allocated_strforceversion(::std::string* strforceversion);
+
+  // string strServerAddress = 8;
+  void clear_strserveraddress();
+  static const int kStrServerAddressFieldNumber = 8;
+  const ::std::string& strserveraddress() const;
+  void set_strserveraddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strserveraddress(::std::string&& value);
+  #endif
+  void set_strserveraddress(const char* value);
+  void set_strserveraddress(const char* value, size_t size);
+  ::std::string* mutable_strserveraddress();
+  ::std::string* release_strserveraddress();
+  void set_allocated_strserveraddress(::std::string* strserveraddress);
+
+  // string strFileName = 9;
+  void clear_strfilename();
+  static const int kStrFileNameFieldNumber = 9;
+  const ::std::string& strfilename() const;
+  void set_strfilename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfilename(::std::string&& value);
+  #endif
+  void set_strfilename(const char* value);
+  void set_strfilename(const char* value, size_t size);
+  ::std::string* mutable_strfilename();
+  ::std::string* release_strfilename();
+  void set_allocated_strfilename(::std::string* strfilename);
+
+  // string strFileID = 10;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 10;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // string strUpdateDate = 13;
+  void clear_strupdatedate();
+  static const int kStrUpdateDateFieldNumber = 13;
+  const ::std::string& strupdatedate() const;
+  void set_strupdatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatedate(::std::string&& value);
+  #endif
+  void set_strupdatedate(const char* value);
+  void set_strupdatedate(const char* value, size_t size);
+  ::std::string* mutable_strupdatedate();
+  ::std::string* release_strupdatedate();
+  void set_allocated_strupdatedate(::std::string* strupdatedate);
+
+  // string strExtend = 15;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 15;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiFileSize = 11;
+  void clear_uifilesize();
+  static const int kUiFileSizeFieldNumber = 11;
+  ::google::protobuf::uint32 uifilesize() const;
+  void set_uifilesize(::google::protobuf::uint32 value);
+
+  // uint32 uiLeaseDuration = 12;
+  void clear_uileaseduration();
+  static const int kUiLeaseDurationFieldNumber = 12;
+  ::google::protobuf::uint32 uileaseduration() const;
+  void set_uileaseduration(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 14;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 14;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.Configuration)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strcontent_;
+  ::google::protobuf::internal::ArenaStringPtr strlatestversion_;
+  ::google::protobuf::internal::ArenaStringPtr strversioncode_;
+  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strforceversion_;
+  ::google::protobuf::internal::ArenaStringPtr strserveraddress_;
+  ::google::protobuf::internal::ArenaStringPtr strfilename_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uifilesize_;
+  ::google::protobuf::uint32 uileaseduration_;
   ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -4259,6 +4587,299 @@ class QueryUpgradeSiteRsp_DEV : public ::google::protobuf::Message /* @@protoc_i
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strupgradesiteurl_;
   ::google::protobuf::uint32 uilease_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryFirmwareUpgradeReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryFirmwareUpgradeReq_DEV) */ {
+ public:
+  QueryFirmwareUpgradeReq_DEV();
+  virtual ~QueryFirmwareUpgradeReq_DEV();
+
+  QueryFirmwareUpgradeReq_DEV(const QueryFirmwareUpgradeReq_DEV& from);
+
+  inline QueryFirmwareUpgradeReq_DEV& operator=(const QueryFirmwareUpgradeReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryFirmwareUpgradeReq_DEV& default_instance();
+
+  static inline const QueryFirmwareUpgradeReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryFirmwareUpgradeReq_DEV*>(
+               &_QueryFirmwareUpgradeReq_DEV_default_instance_);
+  }
+
+  void Swap(QueryFirmwareUpgradeReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryFirmwareUpgradeReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryFirmwareUpgradeReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryFirmwareUpgradeReq_DEV& from);
+  void MergeFrom(const QueryFirmwareUpgradeReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryFirmwareUpgradeReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCategory = 1;
+  void clear_strcategory();
+  static const int kStrCategoryFieldNumber = 1;
+  const ::std::string& strcategory() const;
+  void set_strcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcategory(::std::string&& value);
+  #endif
+  void set_strcategory(const char* value);
+  void set_strcategory(const char* value, size_t size);
+  ::std::string* mutable_strcategory();
+  ::std::string* release_strcategory();
+  void set_allocated_strcategory(::std::string* strcategory);
+
+  // string strSubCategory = 2;
+  void clear_strsubcategory();
+  static const int kStrSubCategoryFieldNumber = 2;
+  const ::std::string& strsubcategory() const;
+  void set_strsubcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsubcategory(::std::string&& value);
+  #endif
+  void set_strsubcategory(const char* value);
+  void set_strsubcategory(const char* value, size_t size);
+  ::std::string* mutable_strsubcategory();
+  ::std::string* release_strsubcategory();
+  void set_allocated_strsubcategory(::std::string* strsubcategory);
+
+  // string strCurrentVersion = 3;
+  void clear_strcurrentversion();
+  static const int kStrCurrentVersionFieldNumber = 3;
+  const ::std::string& strcurrentversion() const;
+  void set_strcurrentversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcurrentversion(::std::string&& value);
+  #endif
+  void set_strcurrentversion(const char* value);
+  void set_strcurrentversion(const char* value, size_t size);
+  ::std::string* mutable_strcurrentversion();
+  ::std::string* release_strcurrentversion();
+  void set_allocated_strcurrentversion(::std::string* strcurrentversion);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFirmwareUpgradeReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strcurrentversion_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryFirmwareUpgradeRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryFirmwareUpgradeRsp_DEV) */ {
+ public:
+  QueryFirmwareUpgradeRsp_DEV();
+  virtual ~QueryFirmwareUpgradeRsp_DEV();
+
+  QueryFirmwareUpgradeRsp_DEV(const QueryFirmwareUpgradeRsp_DEV& from);
+
+  inline QueryFirmwareUpgradeRsp_DEV& operator=(const QueryFirmwareUpgradeRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryFirmwareUpgradeRsp_DEV& default_instance();
+
+  static inline const QueryFirmwareUpgradeRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryFirmwareUpgradeRsp_DEV*>(
+               &_QueryFirmwareUpgradeRsp_DEV_default_instance_);
+  }
+
+  void Swap(QueryFirmwareUpgradeRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryFirmwareUpgradeRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryFirmwareUpgradeRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryFirmwareUpgradeRsp_DEV& from);
+  void MergeFrom(const QueryFirmwareUpgradeRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryFirmwareUpgradeRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strFirmwareName = 2;
+  void clear_strfirmwarename();
+  static const int kStrFirmwareNameFieldNumber = 2;
+  const ::std::string& strfirmwarename() const;
+  void set_strfirmwarename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfirmwarename(::std::string&& value);
+  #endif
+  void set_strfirmwarename(const char* value);
+  void set_strfirmwarename(const char* value, size_t size);
+  ::std::string* mutable_strfirmwarename();
+  ::std::string* release_strfirmwarename();
+  void set_allocated_strfirmwarename(::std::string* strfirmwarename);
+
+  // string strFirmwarePath = 3;
+  void clear_strfirmwarepath();
+  static const int kStrFirmwarePathFieldNumber = 3;
+  const ::std::string& strfirmwarepath() const;
+  void set_strfirmwarepath(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfirmwarepath(::std::string&& value);
+  #endif
+  void set_strfirmwarepath(const char* value);
+  void set_strfirmwarepath(const char* value, size_t size);
+  ::std::string* mutable_strfirmwarepath();
+  ::std::string* release_strfirmwarepath();
+  void set_allocated_strfirmwarepath(::std::string* strfirmwarepath);
+
+  // string strVersion = 5;
+  void clear_strversion();
+  static const int kStrVersionFieldNumber = 5;
+  const ::std::string& strversion() const;
+  void set_strversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversion(::std::string&& value);
+  #endif
+  void set_strversion(const char* value);
+  void set_strversion(const char* value, size_t size);
+  ::std::string* mutable_strversion();
+  ::std::string* release_strversion();
+  void set_allocated_strversion(::std::string* strversion);
+
+  // string strDescription = 6;
+  void clear_strdescription();
+  static const int kStrDescriptionFieldNumber = 6;
+  const ::std::string& strdescription() const;
+  void set_strdescription(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdescription(::std::string&& value);
+  #endif
+  void set_strdescription(const char* value);
+  void set_strdescription(const char* value, size_t size);
+  ::std::string* mutable_strdescription();
+  ::std::string* release_strdescription();
+  void set_allocated_strdescription(::std::string* strdescription);
+
+  // string strUpdateDate = 8;
+  void clear_strupdatedate();
+  static const int kStrUpdateDateFieldNumber = 8;
+  const ::std::string& strupdatedate() const;
+  void set_strupdatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatedate(::std::string&& value);
+  #endif
+  void set_strupdatedate(const char* value);
+  void set_strupdatedate(const char* value, size_t size);
+  ::std::string* mutable_strupdatedate();
+  ::std::string* release_strupdatedate();
+  void set_allocated_strupdatedate(::std::string* strupdatedate);
+
+  // uint32 uiNewVersionValid = 1;
+  void clear_uinewversionvalid();
+  static const int kUiNewVersionValidFieldNumber = 1;
+  ::google::protobuf::uint32 uinewversionvalid() const;
+  void set_uinewversionvalid(::google::protobuf::uint32 value);
+
+  // uint32 uiFirmwareSize = 4;
+  void clear_uifirmwaresize();
+  static const int kUiFirmwareSizeFieldNumber = 4;
+  ::google::protobuf::uint32 uifirmwaresize() const;
+  void set_uifirmwaresize(::google::protobuf::uint32 value);
+
+  // uint32 uiForceUpgrade = 7;
+  void clear_uiforceupgrade();
+  static const int kUiForceUpgradeFieldNumber = 7;
+  ::google::protobuf::uint32 uiforceupgrade() const;
+  void set_uiforceupgrade(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFirmwareUpgradeRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strfirmwarename_;
+  ::google::protobuf::internal::ArenaStringPtr strfirmwarepath_;
+  ::google::protobuf::internal::ArenaStringPtr strversion_;
+  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatedate_;
+  ::google::protobuf::uint32 uinewversionvalid_;
+  ::google::protobuf::uint32 uifirmwaresize_;
+  ::google::protobuf::uint32 uiforceupgrade_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -10176,6 +10797,1052 @@ class QueryAccessDomainNameRsp_USR : public ::google::protobuf::Message /* @@pro
 };
 // -------------------------------------------------------------------
 
+class QueryAppUpgradeReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAppUpgradeReq_USR) */ {
+ public:
+  QueryAppUpgradeReq_USR();
+  virtual ~QueryAppUpgradeReq_USR();
+
+  QueryAppUpgradeReq_USR(const QueryAppUpgradeReq_USR& from);
+
+  inline QueryAppUpgradeReq_USR& operator=(const QueryAppUpgradeReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAppUpgradeReq_USR& default_instance();
+
+  static inline const QueryAppUpgradeReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAppUpgradeReq_USR*>(
+               &_QueryAppUpgradeReq_USR_default_instance_);
+  }
+
+  void Swap(QueryAppUpgradeReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAppUpgradeReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAppUpgradeReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAppUpgradeReq_USR& from);
+  void MergeFrom(const QueryAppUpgradeReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAppUpgradeReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCategory = 1;
+  void clear_strcategory();
+  static const int kStrCategoryFieldNumber = 1;
+  const ::std::string& strcategory() const;
+  void set_strcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcategory(::std::string&& value);
+  #endif
+  void set_strcategory(const char* value);
+  void set_strcategory(const char* value, size_t size);
+  ::std::string* mutable_strcategory();
+  ::std::string* release_strcategory();
+  void set_allocated_strcategory(::std::string* strcategory);
+
+  // string strSubCategory = 2;
+  void clear_strsubcategory();
+  static const int kStrSubCategoryFieldNumber = 2;
+  const ::std::string& strsubcategory() const;
+  void set_strsubcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsubcategory(::std::string&& value);
+  #endif
+  void set_strsubcategory(const char* value);
+  void set_strsubcategory(const char* value, size_t size);
+  ::std::string* mutable_strsubcategory();
+  ::std::string* release_strsubcategory();
+  void set_allocated_strsubcategory(::std::string* strsubcategory);
+
+  // string strCurrentVersion = 3;
+  void clear_strcurrentversion();
+  static const int kStrCurrentVersionFieldNumber = 3;
+  const ::std::string& strcurrentversion() const;
+  void set_strcurrentversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcurrentversion(::std::string&& value);
+  #endif
+  void set_strcurrentversion(const char* value);
+  void set_strcurrentversion(const char* value, size_t size);
+  ::std::string* mutable_strcurrentversion();
+  ::std::string* release_strcurrentversion();
+  void set_allocated_strcurrentversion(::std::string* strcurrentversion);
+
+  // string strVersionCode = 4;
+  void clear_strversioncode();
+  static const int kStrVersionCodeFieldNumber = 4;
+  const ::std::string& strversioncode() const;
+  void set_strversioncode(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversioncode(::std::string&& value);
+  #endif
+  void set_strversioncode(const char* value);
+  void set_strversioncode(const char* value, size_t size);
+  ::std::string* mutable_strversioncode();
+  ::std::string* release_strversioncode();
+  void set_allocated_strversioncode(::std::string* strversioncode);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAppUpgradeReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strcurrentversion_;
+  ::google::protobuf::internal::ArenaStringPtr strversioncode_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAppUpgradeRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAppUpgradeRsp_USR) */ {
+ public:
+  QueryAppUpgradeRsp_USR();
+  virtual ~QueryAppUpgradeRsp_USR();
+
+  QueryAppUpgradeRsp_USR(const QueryAppUpgradeRsp_USR& from);
+
+  inline QueryAppUpgradeRsp_USR& operator=(const QueryAppUpgradeRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAppUpgradeRsp_USR& default_instance();
+
+  static inline const QueryAppUpgradeRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAppUpgradeRsp_USR*>(
+               &_QueryAppUpgradeRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryAppUpgradeRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAppUpgradeRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAppUpgradeRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAppUpgradeRsp_USR& from);
+  void MergeFrom(const QueryAppUpgradeRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAppUpgradeRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAppName = 2;
+  void clear_strappname();
+  static const int kStrAppNameFieldNumber = 2;
+  const ::std::string& strappname() const;
+  void set_strappname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strappname(::std::string&& value);
+  #endif
+  void set_strappname(const char* value);
+  void set_strappname(const char* value, size_t size);
+  ::std::string* mutable_strappname();
+  ::std::string* release_strappname();
+  void set_allocated_strappname(::std::string* strappname);
+
+  // string strAppPath = 3;
+  void clear_strapppath();
+  static const int kStrAppPathFieldNumber = 3;
+  const ::std::string& strapppath() const;
+  void set_strapppath(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strapppath(::std::string&& value);
+  #endif
+  void set_strapppath(const char* value);
+  void set_strapppath(const char* value, size_t size);
+  ::std::string* mutable_strapppath();
+  ::std::string* release_strapppath();
+  void set_allocated_strapppath(::std::string* strapppath);
+
+  // string strVersion = 5;
+  void clear_strversion();
+  static const int kStrVersionFieldNumber = 5;
+  const ::std::string& strversion() const;
+  void set_strversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversion(::std::string&& value);
+  #endif
+  void set_strversion(const char* value);
+  void set_strversion(const char* value, size_t size);
+  ::std::string* mutable_strversion();
+  ::std::string* release_strversion();
+  void set_allocated_strversion(::std::string* strversion);
+
+  // string strVersionCode = 6;
+  void clear_strversioncode();
+  static const int kStrVersionCodeFieldNumber = 6;
+  const ::std::string& strversioncode() const;
+  void set_strversioncode(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversioncode(::std::string&& value);
+  #endif
+  void set_strversioncode(const char* value);
+  void set_strversioncode(const char* value, size_t size);
+  ::std::string* mutable_strversioncode();
+  ::std::string* release_strversioncode();
+  void set_allocated_strversioncode(::std::string* strversioncode);
+
+  // string strDescription = 7;
+  void clear_strdescription();
+  static const int kStrDescriptionFieldNumber = 7;
+  const ::std::string& strdescription() const;
+  void set_strdescription(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdescription(::std::string&& value);
+  #endif
+  void set_strdescription(const char* value);
+  void set_strdescription(const char* value, size_t size);
+  ::std::string* mutable_strdescription();
+  ::std::string* release_strdescription();
+  void set_allocated_strdescription(::std::string* strdescription);
+
+  // string strUpdateDate = 9;
+  void clear_strupdatedate();
+  static const int kStrUpdateDateFieldNumber = 9;
+  const ::std::string& strupdatedate() const;
+  void set_strupdatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatedate(::std::string&& value);
+  #endif
+  void set_strupdatedate(const char* value);
+  void set_strupdatedate(const char* value, size_t size);
+  ::std::string* mutable_strupdatedate();
+  ::std::string* release_strupdatedate();
+  void set_allocated_strupdatedate(::std::string* strupdatedate);
+
+  // uint32 uiNewVersionValid = 1;
+  void clear_uinewversionvalid();
+  static const int kUiNewVersionValidFieldNumber = 1;
+  ::google::protobuf::uint32 uinewversionvalid() const;
+  void set_uinewversionvalid(::google::protobuf::uint32 value);
+
+  // uint32 uiAppSize = 4;
+  void clear_uiappsize();
+  static const int kUiAppSizeFieldNumber = 4;
+  ::google::protobuf::uint32 uiappsize() const;
+  void set_uiappsize(::google::protobuf::uint32 value);
+
+  // uint32 uiForceUpgrade = 8;
+  void clear_uiforceupgrade();
+  static const int kUiForceUpgradeFieldNumber = 8;
+  ::google::protobuf::uint32 uiforceupgrade() const;
+  void set_uiforceupgrade(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAppUpgradeRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strappname_;
+  ::google::protobuf::internal::ArenaStringPtr strapppath_;
+  ::google::protobuf::internal::ArenaStringPtr strversion_;
+  ::google::protobuf::internal::ArenaStringPtr strversioncode_;
+  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatedate_;
+  ::google::protobuf::uint32 uinewversionvalid_;
+  ::google::protobuf::uint32 uiappsize_;
+  ::google::protobuf::uint32 uiforceupgrade_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddConfigurationReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddConfigurationReq_MGR) */ {
+ public:
+  AddConfigurationReq_MGR();
+  virtual ~AddConfigurationReq_MGR();
+
+  AddConfigurationReq_MGR(const AddConfigurationReq_MGR& from);
+
+  inline AddConfigurationReq_MGR& operator=(const AddConfigurationReq_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddConfigurationReq_MGR& default_instance();
+
+  static inline const AddConfigurationReq_MGR* internal_default_instance() {
+    return reinterpret_cast<const AddConfigurationReq_MGR*>(
+               &_AddConfigurationReq_MGR_default_instance_);
+  }
+
+  void Swap(AddConfigurationReq_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddConfigurationReq_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddConfigurationReq_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddConfigurationReq_MGR& from);
+  void MergeFrom(const AddConfigurationReq_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddConfigurationReq_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.Configuration configurationInfo = 1;
+  bool has_configurationinfo() const;
+  void clear_configurationinfo();
+  static const int kConfigurationInfoFieldNumber = 1;
+  const ::Interactive::Message::Configuration& configurationinfo() const;
+  ::Interactive::Message::Configuration* mutable_configurationinfo();
+  ::Interactive::Message::Configuration* release_configurationinfo();
+  void set_allocated_configurationinfo(::Interactive::Message::Configuration* configurationinfo);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddConfigurationReq_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::Configuration* configurationinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddConfigurationRsp_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddConfigurationRsp_MGR) */ {
+ public:
+  AddConfigurationRsp_MGR();
+  virtual ~AddConfigurationRsp_MGR();
+
+  AddConfigurationRsp_MGR(const AddConfigurationRsp_MGR& from);
+
+  inline AddConfigurationRsp_MGR& operator=(const AddConfigurationRsp_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddConfigurationRsp_MGR& default_instance();
+
+  static inline const AddConfigurationRsp_MGR* internal_default_instance() {
+    return reinterpret_cast<const AddConfigurationRsp_MGR*>(
+               &_AddConfigurationRsp_MGR_default_instance_);
+  }
+
+  void Swap(AddConfigurationRsp_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddConfigurationRsp_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddConfigurationRsp_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddConfigurationRsp_MGR& from);
+  void MergeFrom(const AddConfigurationRsp_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddConfigurationRsp_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddConfigurationRsp_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteConfigurationReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteConfigurationReq_MGR) */ {
+ public:
+  DeleteConfigurationReq_MGR();
+  virtual ~DeleteConfigurationReq_MGR();
+
+  DeleteConfigurationReq_MGR(const DeleteConfigurationReq_MGR& from);
+
+  inline DeleteConfigurationReq_MGR& operator=(const DeleteConfigurationReq_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteConfigurationReq_MGR& default_instance();
+
+  static inline const DeleteConfigurationReq_MGR* internal_default_instance() {
+    return reinterpret_cast<const DeleteConfigurationReq_MGR*>(
+               &_DeleteConfigurationReq_MGR_default_instance_);
+  }
+
+  void Swap(DeleteConfigurationReq_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteConfigurationReq_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteConfigurationReq_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteConfigurationReq_MGR& from);
+  void MergeFrom(const DeleteConfigurationReq_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteConfigurationReq_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCategory = 1;
+  void clear_strcategory();
+  static const int kStrCategoryFieldNumber = 1;
+  const ::std::string& strcategory() const;
+  void set_strcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcategory(::std::string&& value);
+  #endif
+  void set_strcategory(const char* value);
+  void set_strcategory(const char* value, size_t size);
+  ::std::string* mutable_strcategory();
+  ::std::string* release_strcategory();
+  void set_allocated_strcategory(::std::string* strcategory);
+
+  // string strSubCategory = 2;
+  void clear_strsubcategory();
+  static const int kStrSubCategoryFieldNumber = 2;
+  const ::std::string& strsubcategory() const;
+  void set_strsubcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsubcategory(::std::string&& value);
+  #endif
+  void set_strsubcategory(const char* value);
+  void set_strsubcategory(const char* value, size_t size);
+  ::std::string* mutable_strsubcategory();
+  ::std::string* release_strsubcategory();
+  void set_allocated_strsubcategory(::std::string* strsubcategory);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteConfigurationReq_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteConfigurationRsp_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteConfigurationRsp_MGR) */ {
+ public:
+  DeleteConfigurationRsp_MGR();
+  virtual ~DeleteConfigurationRsp_MGR();
+
+  DeleteConfigurationRsp_MGR(const DeleteConfigurationRsp_MGR& from);
+
+  inline DeleteConfigurationRsp_MGR& operator=(const DeleteConfigurationRsp_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteConfigurationRsp_MGR& default_instance();
+
+  static inline const DeleteConfigurationRsp_MGR* internal_default_instance() {
+    return reinterpret_cast<const DeleteConfigurationRsp_MGR*>(
+               &_DeleteConfigurationRsp_MGR_default_instance_);
+  }
+
+  void Swap(DeleteConfigurationRsp_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteConfigurationRsp_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteConfigurationRsp_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteConfigurationRsp_MGR& from);
+  void MergeFrom(const DeleteConfigurationRsp_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteConfigurationRsp_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteConfigurationRsp_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyConfigurationReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyConfigurationReq_MGR) */ {
+ public:
+  ModifyConfigurationReq_MGR();
+  virtual ~ModifyConfigurationReq_MGR();
+
+  ModifyConfigurationReq_MGR(const ModifyConfigurationReq_MGR& from);
+
+  inline ModifyConfigurationReq_MGR& operator=(const ModifyConfigurationReq_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyConfigurationReq_MGR& default_instance();
+
+  static inline const ModifyConfigurationReq_MGR* internal_default_instance() {
+    return reinterpret_cast<const ModifyConfigurationReq_MGR*>(
+               &_ModifyConfigurationReq_MGR_default_instance_);
+  }
+
+  void Swap(ModifyConfigurationReq_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyConfigurationReq_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyConfigurationReq_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyConfigurationReq_MGR& from);
+  void MergeFrom(const ModifyConfigurationReq_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyConfigurationReq_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.Configuration configurationInfo = 1;
+  bool has_configurationinfo() const;
+  void clear_configurationinfo();
+  static const int kConfigurationInfoFieldNumber = 1;
+  const ::Interactive::Message::Configuration& configurationinfo() const;
+  ::Interactive::Message::Configuration* mutable_configurationinfo();
+  ::Interactive::Message::Configuration* release_configurationinfo();
+  void set_allocated_configurationinfo(::Interactive::Message::Configuration* configurationinfo);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyConfigurationReq_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::Configuration* configurationinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyConfigurationRsp_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyConfigurationRsp_MGR) */ {
+ public:
+  ModifyConfigurationRsp_MGR();
+  virtual ~ModifyConfigurationRsp_MGR();
+
+  ModifyConfigurationRsp_MGR(const ModifyConfigurationRsp_MGR& from);
+
+  inline ModifyConfigurationRsp_MGR& operator=(const ModifyConfigurationRsp_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyConfigurationRsp_MGR& default_instance();
+
+  static inline const ModifyConfigurationRsp_MGR* internal_default_instance() {
+    return reinterpret_cast<const ModifyConfigurationRsp_MGR*>(
+               &_ModifyConfigurationRsp_MGR_default_instance_);
+  }
+
+  void Swap(ModifyConfigurationRsp_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyConfigurationRsp_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyConfigurationRsp_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyConfigurationRsp_MGR& from);
+  void MergeFrom(const ModifyConfigurationRsp_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyConfigurationRsp_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyConfigurationRsp_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllConfigurationReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAllConfigurationReq_MGR) */ {
+ public:
+  QueryAllConfigurationReq_MGR();
+  virtual ~QueryAllConfigurationReq_MGR();
+
+  QueryAllConfigurationReq_MGR(const QueryAllConfigurationReq_MGR& from);
+
+  inline QueryAllConfigurationReq_MGR& operator=(const QueryAllConfigurationReq_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllConfigurationReq_MGR& default_instance();
+
+  static inline const QueryAllConfigurationReq_MGR* internal_default_instance() {
+    return reinterpret_cast<const QueryAllConfigurationReq_MGR*>(
+               &_QueryAllConfigurationReq_MGR_default_instance_);
+  }
+
+  void Swap(QueryAllConfigurationReq_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllConfigurationReq_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllConfigurationReq_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllConfigurationReq_MGR& from);
+  void MergeFrom(const QueryAllConfigurationReq_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllConfigurationReq_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // uint32 uiBeginIndex = 1;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 1;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAllConfigurationReq_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::uint32 uibeginindex_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllConfigurationRsp_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAllConfigurationRsp_MGR) */ {
+ public:
+  QueryAllConfigurationRsp_MGR();
+  virtual ~QueryAllConfigurationRsp_MGR();
+
+  QueryAllConfigurationRsp_MGR(const QueryAllConfigurationRsp_MGR& from);
+
+  inline QueryAllConfigurationRsp_MGR& operator=(const QueryAllConfigurationRsp_MGR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllConfigurationRsp_MGR& default_instance();
+
+  static inline const QueryAllConfigurationRsp_MGR* internal_default_instance() {
+    return reinterpret_cast<const QueryAllConfigurationRsp_MGR*>(
+               &_QueryAllConfigurationRsp_MGR_default_instance_);
+  }
+
+  void Swap(QueryAllConfigurationRsp_MGR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllConfigurationRsp_MGR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllConfigurationRsp_MGR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllConfigurationRsp_MGR& from);
+  void MergeFrom(const QueryAllConfigurationRsp_MGR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllConfigurationRsp_MGR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.Configuration configurationInfo = 1;
+  int configurationinfo_size() const;
+  void clear_configurationinfo();
+  static const int kConfigurationInfoFieldNumber = 1;
+  const ::Interactive::Message::Configuration& configurationinfo(int index) const;
+  ::Interactive::Message::Configuration* mutable_configurationinfo(int index);
+  ::Interactive::Message::Configuration* add_configurationinfo();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Configuration >*
+      mutable_configurationinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Configuration >&
+      configurationinfo() const;
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAllConfigurationRsp_MGR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Configuration > configurationinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class GetOnlineDevInfoReq_INNER : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.GetOnlineDevInfoReq_INNER) */ {
  public:
   GetOnlineDevInfoReq_INNER();
@@ -11298,6 +12965,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUpgradeSiteReq_DEV* release_queryupgradesitereq_dev_value();
   void set_allocated_queryupgradesitereq_dev_value(::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value);
 
+  // .Interactive.Message.QueryFirmwareUpgradeReq_DEV QueryFirmwareUpgradeReq_DEV_Value = 64;
+  bool has_queryfirmwareupgradereq_dev_value() const;
+  void clear_queryfirmwareupgradereq_dev_value();
+  static const int kQueryFirmwareUpgradeReqDEVValueFieldNumber = 64;
+  const ::Interactive::Message::QueryFirmwareUpgradeReq_DEV& queryfirmwareupgradereq_dev_value() const;
+  ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* mutable_queryfirmwareupgradereq_dev_value();
+  ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* release_queryfirmwareupgradereq_dev_value();
+  void set_allocated_queryfirmwareupgradereq_dev_value(::Interactive::Message::QueryFirmwareUpgradeReq_DEV* queryfirmwareupgradereq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -11550,6 +13226,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryAccessDomainNameReq_USR* release_queryaccessdomainnamereq_usr_value();
   void set_allocated_queryaccessdomainnamereq_usr_value(::Interactive::Message::QueryAccessDomainNameReq_USR* queryaccessdomainnamereq_usr_value);
 
+  // .Interactive.Message.QueryAppUpgradeReq_USR QueryAppUpgradeReq_USR_Value = 360;
+  bool has_queryappupgradereq_usr_value() const;
+  void clear_queryappupgradereq_usr_value();
+  static const int kQueryAppUpgradeReqUSRValueFieldNumber = 360;
+  const ::Interactive::Message::QueryAppUpgradeReq_USR& queryappupgradereq_usr_value() const;
+  ::Interactive::Message::QueryAppUpgradeReq_USR* mutable_queryappupgradereq_usr_value();
+  ::Interactive::Message::QueryAppUpgradeReq_USR* release_queryappupgradereq_usr_value();
+  void set_allocated_queryappupgradereq_usr_value(::Interactive::Message::QueryAppUpgradeReq_USR* queryappupgradereq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -11604,6 +13289,42 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::GetUserAccessRecordReq_INNER* release_getuseraccessrecordreq_inner_value();
   void set_allocated_getuseraccessrecordreq_inner_value(::Interactive::Message::GetUserAccessRecordReq_INNER* getuseraccessrecordreq_inner_value);
 
+  // .Interactive.Message.AddConfigurationReq_MGR AddConfigurationReq_MGR_Value = 600;
+  bool has_addconfigurationreq_mgr_value() const;
+  void clear_addconfigurationreq_mgr_value();
+  static const int kAddConfigurationReqMGRValueFieldNumber = 600;
+  const ::Interactive::Message::AddConfigurationReq_MGR& addconfigurationreq_mgr_value() const;
+  ::Interactive::Message::AddConfigurationReq_MGR* mutable_addconfigurationreq_mgr_value();
+  ::Interactive::Message::AddConfigurationReq_MGR* release_addconfigurationreq_mgr_value();
+  void set_allocated_addconfigurationreq_mgr_value(::Interactive::Message::AddConfigurationReq_MGR* addconfigurationreq_mgr_value);
+
+  // .Interactive.Message.DeleteConfigurationReq_MGR DeleteConfigurationReq_MGR_Value = 610;
+  bool has_deleteconfigurationreq_mgr_value() const;
+  void clear_deleteconfigurationreq_mgr_value();
+  static const int kDeleteConfigurationReqMGRValueFieldNumber = 610;
+  const ::Interactive::Message::DeleteConfigurationReq_MGR& deleteconfigurationreq_mgr_value() const;
+  ::Interactive::Message::DeleteConfigurationReq_MGR* mutable_deleteconfigurationreq_mgr_value();
+  ::Interactive::Message::DeleteConfigurationReq_MGR* release_deleteconfigurationreq_mgr_value();
+  void set_allocated_deleteconfigurationreq_mgr_value(::Interactive::Message::DeleteConfigurationReq_MGR* deleteconfigurationreq_mgr_value);
+
+  // .Interactive.Message.ModifyConfigurationReq_MGR ModifyConfigurationReq_MGR_Value = 620;
+  bool has_modifyconfigurationreq_mgr_value() const;
+  void clear_modifyconfigurationreq_mgr_value();
+  static const int kModifyConfigurationReqMGRValueFieldNumber = 620;
+  const ::Interactive::Message::ModifyConfigurationReq_MGR& modifyconfigurationreq_mgr_value() const;
+  ::Interactive::Message::ModifyConfigurationReq_MGR* mutable_modifyconfigurationreq_mgr_value();
+  ::Interactive::Message::ModifyConfigurationReq_MGR* release_modifyconfigurationreq_mgr_value();
+  void set_allocated_modifyconfigurationreq_mgr_value(::Interactive::Message::ModifyConfigurationReq_MGR* modifyconfigurationreq_mgr_value);
+
+  // .Interactive.Message.QueryAllConfigurationReq_MGR QueryAllConfigurationReq_MGR_Value = 630;
+  bool has_queryallconfigurationreq_mgr_value() const;
+  void clear_queryallconfigurationreq_mgr_value();
+  static const int kQueryAllConfigurationReqMGRValueFieldNumber = 630;
+  const ::Interactive::Message::QueryAllConfigurationReq_MGR& queryallconfigurationreq_mgr_value() const;
+  ::Interactive::Message::QueryAllConfigurationReq_MGR* mutable_queryallconfigurationreq_mgr_value();
+  ::Interactive::Message::QueryAllConfigurationReq_MGR* release_queryallconfigurationreq_mgr_value();
+  void set_allocated_queryallconfigurationreq_mgr_value(::Interactive::Message::QueryAllConfigurationReq_MGR* queryallconfigurationreq_mgr_value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.Req)
  private:
 
@@ -11619,6 +13340,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryTimeZoneReq_DEV* querytimezonereq_dev_value_;
   ::Interactive::Message::QueryAccessDomainNameReq_DEV* queryaccessdomainnamereq_dev_value_;
   ::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value_;
+  ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* queryfirmwareupgradereq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -11647,12 +13369,17 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DownloadFileReq_USR* downloadfilereq_usr_value_;
   ::Interactive::Message::QueryFileReq_USR* queryfilereq_usr_value_;
   ::Interactive::Message::QueryAccessDomainNameReq_USR* queryaccessdomainnamereq_usr_value_;
+  ::Interactive::Message::QueryAppUpgradeReq_USR* queryappupgradereq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineUserInfo_INNER* broadcastonlineuserinfo_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordReq_INNER* getdeviceaccessrecordreq_inner_value_;
   ::Interactive::Message::GetUserAccessRecordReq_INNER* getuseraccessrecordreq_inner_value_;
+  ::Interactive::Message::AddConfigurationReq_MGR* addconfigurationreq_mgr_value_;
+  ::Interactive::Message::DeleteConfigurationReq_MGR* deleteconfigurationreq_mgr_value_;
+  ::Interactive::Message::ModifyConfigurationReq_MGR* modifyconfigurationreq_mgr_value_;
+  ::Interactive::Message::QueryAllConfigurationReq_MGR* queryallconfigurationreq_mgr_value_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -11828,6 +13555,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryAccessDomainNameRsp_DEV* mutable_queryaccessdomainnamersp_dev_value();
   ::Interactive::Message::QueryAccessDomainNameRsp_DEV* release_queryaccessdomainnamersp_dev_value();
   void set_allocated_queryaccessdomainnamersp_dev_value(::Interactive::Message::QueryAccessDomainNameRsp_DEV* queryaccessdomainnamersp_dev_value);
+
+  // .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 83;
+  bool has_queryupgradesitersp_dev_value() const;
+  void clear_queryupgradesitersp_dev_value();
+  static const int kQueryUpgradeSiteRspDEVValueFieldNumber = 83;
+  const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& queryupgradesitersp_dev_value() const;
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* mutable_queryupgradesitersp_dev_value();
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* release_queryupgradesitersp_dev_value();
+  void set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value);
+
+  // .Interactive.Message.QueryFirmwareUpgradeRsp_DEV QueryFirmwareUpgradeRsp_DEV_Value = 84;
+  bool has_queryfirmwareupgradersp_dev_value() const;
+  void clear_queryfirmwareupgradersp_dev_value();
+  static const int kQueryFirmwareUpgradeRspDEVValueFieldNumber = 84;
+  const ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV& queryfirmwareupgradersp_dev_value() const;
+  ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* mutable_queryfirmwareupgradersp_dev_value();
+  ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* release_queryfirmwareupgradersp_dev_value();
+  void set_allocated_queryfirmwareupgradersp_dev_value(::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* queryfirmwareupgradersp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -12081,14 +13826,14 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryAccessDomainNameRsp_USR* release_queryaccessdomainnamersp_usr_value();
   void set_allocated_queryaccessdomainnamersp_usr_value(::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value);
 
-  // .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 360;
-  bool has_queryupgradesitersp_dev_value() const;
-  void clear_queryupgradesitersp_dev_value();
-  static const int kQueryUpgradeSiteRspDEVValueFieldNumber = 360;
-  const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& queryupgradesitersp_dev_value() const;
-  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* mutable_queryupgradesitersp_dev_value();
-  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* release_queryupgradesitersp_dev_value();
-  void set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value);
+  // .Interactive.Message.QueryAppUpgradeRsp_USR QueryAppUpgradeRsp_USR_Value = 360;
+  bool has_queryappupgradersp_usr_value() const;
+  void clear_queryappupgradersp_usr_value();
+  static const int kQueryAppUpgradeRspUSRValueFieldNumber = 360;
+  const ::Interactive::Message::QueryAppUpgradeRsp_USR& queryappupgradersp_usr_value() const;
+  ::Interactive::Message::QueryAppUpgradeRsp_USR* mutable_queryappupgradersp_usr_value();
+  ::Interactive::Message::QueryAppUpgradeRsp_USR* release_queryappupgradersp_usr_value();
+  void set_allocated_queryappupgradersp_usr_value(::Interactive::Message::QueryAppUpgradeRsp_USR* queryappupgradersp_usr_value);
 
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
@@ -12126,6 +13871,42 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::GetUserAccessRecordRsp_INNER* release_getuseraccessrecordrsp_inner_value();
   void set_allocated_getuseraccessrecordrsp_inner_value(::Interactive::Message::GetUserAccessRecordRsp_INNER* getuseraccessrecordrsp_inner_value);
 
+  // .Interactive.Message.AddConfigurationRsp_MGR AddConfigurationRsp_MGR_Value = 600;
+  bool has_addconfigurationrsp_mgr_value() const;
+  void clear_addconfigurationrsp_mgr_value();
+  static const int kAddConfigurationRspMGRValueFieldNumber = 600;
+  const ::Interactive::Message::AddConfigurationRsp_MGR& addconfigurationrsp_mgr_value() const;
+  ::Interactive::Message::AddConfigurationRsp_MGR* mutable_addconfigurationrsp_mgr_value();
+  ::Interactive::Message::AddConfigurationRsp_MGR* release_addconfigurationrsp_mgr_value();
+  void set_allocated_addconfigurationrsp_mgr_value(::Interactive::Message::AddConfigurationRsp_MGR* addconfigurationrsp_mgr_value);
+
+  // .Interactive.Message.DeleteConfigurationRsp_MGR DeleteConfigurationRsp_MGR_Value = 610;
+  bool has_deleteconfigurationrsp_mgr_value() const;
+  void clear_deleteconfigurationrsp_mgr_value();
+  static const int kDeleteConfigurationRspMGRValueFieldNumber = 610;
+  const ::Interactive::Message::DeleteConfigurationRsp_MGR& deleteconfigurationrsp_mgr_value() const;
+  ::Interactive::Message::DeleteConfigurationRsp_MGR* mutable_deleteconfigurationrsp_mgr_value();
+  ::Interactive::Message::DeleteConfigurationRsp_MGR* release_deleteconfigurationrsp_mgr_value();
+  void set_allocated_deleteconfigurationrsp_mgr_value(::Interactive::Message::DeleteConfigurationRsp_MGR* deleteconfigurationrsp_mgr_value);
+
+  // .Interactive.Message.ModifyConfigurationRsp_MGR ModifyConfigurationRsp_MGR_Value = 620;
+  bool has_modifyconfigurationrsp_mgr_value() const;
+  void clear_modifyconfigurationrsp_mgr_value();
+  static const int kModifyConfigurationRspMGRValueFieldNumber = 620;
+  const ::Interactive::Message::ModifyConfigurationRsp_MGR& modifyconfigurationrsp_mgr_value() const;
+  ::Interactive::Message::ModifyConfigurationRsp_MGR* mutable_modifyconfigurationrsp_mgr_value();
+  ::Interactive::Message::ModifyConfigurationRsp_MGR* release_modifyconfigurationrsp_mgr_value();
+  void set_allocated_modifyconfigurationrsp_mgr_value(::Interactive::Message::ModifyConfigurationRsp_MGR* modifyconfigurationrsp_mgr_value);
+
+  // .Interactive.Message.QueryAllConfigurationRsp_MGR QueryAllConfigurationRsp_MGR_Value = 630;
+  bool has_queryallconfigurationrsp_mgr_value() const;
+  void clear_queryallconfigurationrsp_mgr_value();
+  static const int kQueryAllConfigurationRspMGRValueFieldNumber = 630;
+  const ::Interactive::Message::QueryAllConfigurationRsp_MGR& queryallconfigurationrsp_mgr_value() const;
+  ::Interactive::Message::QueryAllConfigurationRsp_MGR* mutable_queryallconfigurationrsp_mgr_value();
+  ::Interactive::Message::QueryAllConfigurationRsp_MGR* release_queryallconfigurationrsp_mgr_value();
+  void set_allocated_queryallconfigurationrsp_mgr_value(::Interactive::Message::QueryAllConfigurationRsp_MGR* queryallconfigurationrsp_mgr_value);
+
   // int32 iRetcode = 10;
   void clear_iretcode();
   static const int kIRetcodeFieldNumber = 10;
@@ -12147,6 +13928,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::AddFileRsp_DEV* addfilersp_dev_value_;
   ::Interactive::Message::QueryTimeZoneRsp_DEV* querytimezonersp_dev_value_;
   ::Interactive::Message::QueryAccessDomainNameRsp_DEV* queryaccessdomainnamersp_dev_value_;
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value_;
+  ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* queryfirmwareupgradersp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -12175,11 +13958,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DownloadFileRsp_USR* downloadfilersp_usr_value_;
   ::Interactive::Message::QueryFileRsp_USR* queryfilersp_usr_value_;
   ::Interactive::Message::QueryAccessDomainNameRsp_USR* queryaccessdomainnamersp_usr_value_;
-  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value_;
+  ::Interactive::Message::QueryAppUpgradeRsp_USR* queryappupgradersp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
   ::Interactive::Message::GetUserAccessRecordRsp_INNER* getuseraccessrecordrsp_inner_value_;
+  ::Interactive::Message::AddConfigurationRsp_MGR* addconfigurationrsp_mgr_value_;
+  ::Interactive::Message::DeleteConfigurationRsp_MGR* deleteconfigurationrsp_mgr_value_;
+  ::Interactive::Message::ModifyConfigurationRsp_MGR* modifyconfigurationrsp_mgr_value_;
+  ::Interactive::Message::QueryAllConfigurationRsp_MGR* queryallconfigurationrsp_mgr_value_;
   ::google::protobuf::int32 iretcode_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -14911,6 +16698,676 @@ inline void UserAccessRecord::set_uistatus(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
+// Configuration
+
+// string strCategory = 1;
+inline void Configuration::clear_strcategory() {
+  strcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strCategory)
+  return strcategory_.GetNoArena();
+}
+inline void Configuration::set_strcategory(const ::std::string& value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strCategory)
+}
+#if LANG_CXX11
+inline void Configuration::set_strcategory(::std::string&& value) {
+  
+  strcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strCategory)
+}
+#endif
+inline void Configuration::set_strcategory(const char* value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strCategory)
+}
+inline void Configuration::set_strcategory(const char* value, size_t size) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strCategory)
+}
+inline ::std::string* Configuration::mutable_strcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strCategory)
+  return strcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strCategory)
+  
+  return strcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strcategory(::std::string* strcategory) {
+  if (strcategory != NULL) {
+    
+  } else {
+    
+  }
+  strcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strCategory)
+}
+
+// string strSubCategory = 2;
+inline void Configuration::clear_strsubcategory() {
+  strsubcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strsubcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strSubCategory)
+  return strsubcategory_.GetNoArena();
+}
+inline void Configuration::set_strsubcategory(const ::std::string& value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strSubCategory)
+}
+#if LANG_CXX11
+inline void Configuration::set_strsubcategory(::std::string&& value) {
+  
+  strsubcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strSubCategory)
+}
+#endif
+inline void Configuration::set_strsubcategory(const char* value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strSubCategory)
+}
+inline void Configuration::set_strsubcategory(const char* value, size_t size) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strSubCategory)
+}
+inline ::std::string* Configuration::mutable_strsubcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strSubCategory)
+  return strsubcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strsubcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strSubCategory)
+  
+  return strsubcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strsubcategory(::std::string* strsubcategory) {
+  if (strsubcategory != NULL) {
+    
+  } else {
+    
+  }
+  strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strSubCategory)
+}
+
+// string strContent = 3;
+inline void Configuration::clear_strcontent() {
+  strcontent_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strcontent() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strContent)
+  return strcontent_.GetNoArena();
+}
+inline void Configuration::set_strcontent(const ::std::string& value) {
+  
+  strcontent_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strContent)
+}
+#if LANG_CXX11
+inline void Configuration::set_strcontent(::std::string&& value) {
+  
+  strcontent_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strContent)
+}
+#endif
+inline void Configuration::set_strcontent(const char* value) {
+  
+  strcontent_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strContent)
+}
+inline void Configuration::set_strcontent(const char* value, size_t size) {
+  
+  strcontent_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strContent)
+}
+inline ::std::string* Configuration::mutable_strcontent() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strContent)
+  return strcontent_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strcontent() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strContent)
+  
+  return strcontent_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strcontent(::std::string* strcontent) {
+  if (strcontent != NULL) {
+    
+  } else {
+    
+  }
+  strcontent_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcontent);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strContent)
+}
+
+// string strLatestVersion = 4;
+inline void Configuration::clear_strlatestversion() {
+  strlatestversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strlatestversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strLatestVersion)
+  return strlatestversion_.GetNoArena();
+}
+inline void Configuration::set_strlatestversion(const ::std::string& value) {
+  
+  strlatestversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strLatestVersion)
+}
+#if LANG_CXX11
+inline void Configuration::set_strlatestversion(::std::string&& value) {
+  
+  strlatestversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strLatestVersion)
+}
+#endif
+inline void Configuration::set_strlatestversion(const char* value) {
+  
+  strlatestversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strLatestVersion)
+}
+inline void Configuration::set_strlatestversion(const char* value, size_t size) {
+  
+  strlatestversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strLatestVersion)
+}
+inline ::std::string* Configuration::mutable_strlatestversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strLatestVersion)
+  return strlatestversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strlatestversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strLatestVersion)
+  
+  return strlatestversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strlatestversion(::std::string* strlatestversion) {
+  if (strlatestversion != NULL) {
+    
+  } else {
+    
+  }
+  strlatestversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlatestversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strLatestVersion)
+}
+
+// string strVersionCode = 5;
+inline void Configuration::clear_strversioncode() {
+  strversioncode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strversioncode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strVersionCode)
+  return strversioncode_.GetNoArena();
+}
+inline void Configuration::set_strversioncode(const ::std::string& value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strVersionCode)
+}
+#if LANG_CXX11
+inline void Configuration::set_strversioncode(::std::string&& value) {
+  
+  strversioncode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strVersionCode)
+}
+#endif
+inline void Configuration::set_strversioncode(const char* value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strVersionCode)
+}
+inline void Configuration::set_strversioncode(const char* value, size_t size) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strVersionCode)
+}
+inline ::std::string* Configuration::mutable_strversioncode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strVersionCode)
+  return strversioncode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strversioncode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strVersionCode)
+  
+  return strversioncode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strversioncode(::std::string* strversioncode) {
+  if (strversioncode != NULL) {
+    
+  } else {
+    
+  }
+  strversioncode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversioncode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strVersionCode)
+}
+
+// string strDescription = 6;
+inline void Configuration::clear_strdescription() {
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strdescription() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strDescription)
+  return strdescription_.GetNoArena();
+}
+inline void Configuration::set_strdescription(const ::std::string& value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strDescription)
+}
+#if LANG_CXX11
+inline void Configuration::set_strdescription(::std::string&& value) {
+  
+  strdescription_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strDescription)
+}
+#endif
+inline void Configuration::set_strdescription(const char* value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strDescription)
+}
+inline void Configuration::set_strdescription(const char* value, size_t size) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strDescription)
+}
+inline ::std::string* Configuration::mutable_strdescription() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strDescription)
+  return strdescription_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strdescription() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strDescription)
+  
+  return strdescription_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strdescription(::std::string* strdescription) {
+  if (strdescription != NULL) {
+    
+  } else {
+    
+  }
+  strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strDescription)
+}
+
+// string strForceVersion = 7;
+inline void Configuration::clear_strforceversion() {
+  strforceversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strforceversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strForceVersion)
+  return strforceversion_.GetNoArena();
+}
+inline void Configuration::set_strforceversion(const ::std::string& value) {
+  
+  strforceversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strForceVersion)
+}
+#if LANG_CXX11
+inline void Configuration::set_strforceversion(::std::string&& value) {
+  
+  strforceversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strForceVersion)
+}
+#endif
+inline void Configuration::set_strforceversion(const char* value) {
+  
+  strforceversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strForceVersion)
+}
+inline void Configuration::set_strforceversion(const char* value, size_t size) {
+  
+  strforceversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strForceVersion)
+}
+inline ::std::string* Configuration::mutable_strforceversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strForceVersion)
+  return strforceversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strforceversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strForceVersion)
+  
+  return strforceversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strforceversion(::std::string* strforceversion) {
+  if (strforceversion != NULL) {
+    
+  } else {
+    
+  }
+  strforceversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strforceversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strForceVersion)
+}
+
+// string strServerAddress = 8;
+inline void Configuration::clear_strserveraddress() {
+  strserveraddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strserveraddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strServerAddress)
+  return strserveraddress_.GetNoArena();
+}
+inline void Configuration::set_strserveraddress(const ::std::string& value) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strServerAddress)
+}
+#if LANG_CXX11
+inline void Configuration::set_strserveraddress(::std::string&& value) {
+  
+  strserveraddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strServerAddress)
+}
+#endif
+inline void Configuration::set_strserveraddress(const char* value) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strServerAddress)
+}
+inline void Configuration::set_strserveraddress(const char* value, size_t size) {
+  
+  strserveraddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strServerAddress)
+}
+inline ::std::string* Configuration::mutable_strserveraddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strServerAddress)
+  return strserveraddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strserveraddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strServerAddress)
+  
+  return strserveraddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strserveraddress(::std::string* strserveraddress) {
+  if (strserveraddress != NULL) {
+    
+  } else {
+    
+  }
+  strserveraddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strserveraddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strServerAddress)
+}
+
+// string strFileName = 9;
+inline void Configuration::clear_strfilename() {
+  strfilename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strfilename() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strFileName)
+  return strfilename_.GetNoArena();
+}
+inline void Configuration::set_strfilename(const ::std::string& value) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strFileName)
+}
+#if LANG_CXX11
+inline void Configuration::set_strfilename(::std::string&& value) {
+  
+  strfilename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strFileName)
+}
+#endif
+inline void Configuration::set_strfilename(const char* value) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strFileName)
+}
+inline void Configuration::set_strfilename(const char* value, size_t size) {
+  
+  strfilename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strFileName)
+}
+inline ::std::string* Configuration::mutable_strfilename() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strFileName)
+  return strfilename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strfilename() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strFileName)
+  
+  return strfilename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strfilename(::std::string* strfilename) {
+  if (strfilename != NULL) {
+    
+  } else {
+    
+  }
+  strfilename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfilename);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strFileName)
+}
+
+// string strFileID = 10;
+inline void Configuration::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void Configuration::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strFileID)
+}
+#if LANG_CXX11
+inline void Configuration::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strFileID)
+}
+#endif
+inline void Configuration::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strFileID)
+}
+inline void Configuration::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strFileID)
+}
+inline ::std::string* Configuration::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strFileID)
+}
+
+// uint32 uiFileSize = 11;
+inline void Configuration::clear_uifilesize() {
+  uifilesize_ = 0u;
+}
+inline ::google::protobuf::uint32 Configuration::uifilesize() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.uiFileSize)
+  return uifilesize_;
+}
+inline void Configuration::set_uifilesize(::google::protobuf::uint32 value) {
+  
+  uifilesize_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiFileSize)
+}
+
+// uint32 uiLeaseDuration = 12;
+inline void Configuration::clear_uileaseduration() {
+  uileaseduration_ = 0u;
+}
+inline ::google::protobuf::uint32 Configuration::uileaseduration() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.uiLeaseDuration)
+  return uileaseduration_;
+}
+inline void Configuration::set_uileaseduration(::google::protobuf::uint32 value) {
+  
+  uileaseduration_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiLeaseDuration)
+}
+
+// string strUpdateDate = 13;
+inline void Configuration::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+inline void Configuration::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strUpdateDate)
+}
+#if LANG_CXX11
+inline void Configuration::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strUpdateDate)
+}
+#endif
+inline void Configuration::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strUpdateDate)
+}
+inline void Configuration::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strUpdateDate)
+}
+inline ::std::string* Configuration::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strUpdateDate)
+}
+
+// uint32 uiStatus = 14;
+inline void Configuration::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 Configuration::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.uiStatus)
+  return uistatus_;
+}
+inline void Configuration::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.uiStatus)
+}
+
+// string strExtend = 15;
+inline void Configuration::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Configuration::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Configuration.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void Configuration::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.Configuration.strExtend)
+}
+#if LANG_CXX11
+inline void Configuration::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.Configuration.strExtend)
+}
+#endif
+inline void Configuration::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.Configuration.strExtend)
+}
+inline void Configuration::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.Configuration.strExtend)
+}
+inline ::std::string* Configuration::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Configuration.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Configuration::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Configuration.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Configuration::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strExtend)
+}
+
+// -------------------------------------------------------------------
+
 // GetAccessAddressReq_DEV
 
 // string strDevID = 1;
@@ -17466,6 +19923,472 @@ inline void QueryUpgradeSiteRsp_DEV::set_uilease(::google::protobuf::uint32 valu
   
   uilease_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.QueryUpgradeSiteRsp_DEV.uiLease)
+}
+
+// -------------------------------------------------------------------
+
+// QueryFirmwareUpgradeReq_DEV
+
+// string strCategory = 1;
+inline void QueryFirmwareUpgradeReq_DEV::clear_strcategory() {
+  strcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeReq_DEV::strcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+  return strcategory_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strcategory(const ::std::string& value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeReq_DEV::set_strcategory(::std::string&& value) {
+  
+  strcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+}
+#endif
+inline void QueryFirmwareUpgradeReq_DEV::set_strcategory(const char* value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strcategory(const char* value, size_t size) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::mutable_strcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+  return strcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::release_strcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+  
+  return strcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_allocated_strcategory(::std::string* strcategory) {
+  if (strcategory != NULL) {
+    
+  } else {
+    
+  }
+  strcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCategory)
+}
+
+// string strSubCategory = 2;
+inline void QueryFirmwareUpgradeReq_DEV::clear_strsubcategory() {
+  strsubcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeReq_DEV::strsubcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+  return strsubcategory_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strsubcategory(const ::std::string& value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeReq_DEV::set_strsubcategory(::std::string&& value) {
+  
+  strsubcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+}
+#endif
+inline void QueryFirmwareUpgradeReq_DEV::set_strsubcategory(const char* value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strsubcategory(const char* value, size_t size) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::mutable_strsubcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+  return strsubcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::release_strsubcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+  
+  return strsubcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_allocated_strsubcategory(::std::string* strsubcategory) {
+  if (strsubcategory != NULL) {
+    
+  } else {
+    
+  }
+  strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strSubCategory)
+}
+
+// string strCurrentVersion = 3;
+inline void QueryFirmwareUpgradeReq_DEV::clear_strcurrentversion() {
+  strcurrentversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeReq_DEV::strcurrentversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+  return strcurrentversion_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strcurrentversion(const ::std::string& value) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeReq_DEV::set_strcurrentversion(::std::string&& value) {
+  
+  strcurrentversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+#endif
+inline void QueryFirmwareUpgradeReq_DEV::set_strcurrentversion(const char* value) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strcurrentversion(const char* value, size_t size) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::mutable_strcurrentversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+  return strcurrentversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::release_strcurrentversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+  
+  return strcurrentversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_allocated_strcurrentversion(::std::string* strcurrentversion) {
+  if (strcurrentversion != NULL) {
+    
+  } else {
+    
+  }
+  strcurrentversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcurrentversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+
+// -------------------------------------------------------------------
+
+// QueryFirmwareUpgradeRsp_DEV
+
+// uint32 uiNewVersionValid = 1;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_uinewversionvalid() {
+  uinewversionvalid_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFirmwareUpgradeRsp_DEV::uinewversionvalid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiNewVersionValid)
+  return uinewversionvalid_;
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_uinewversionvalid(::google::protobuf::uint32 value) {
+  
+  uinewversionvalid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiNewVersionValid)
+}
+
+// string strFirmwareName = 2;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_strfirmwarename() {
+  strfirmwarename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeRsp_DEV::strfirmwarename() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+  return strfirmwarename_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarename(const ::std::string& value) {
+  
+  strfirmwarename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarename(::std::string&& value) {
+  
+  strfirmwarename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+}
+#endif
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarename(const char* value) {
+  
+  strfirmwarename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarename(const char* value, size_t size) {
+  
+  strfirmwarename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::mutable_strfirmwarename() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+  return strfirmwarename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::release_strfirmwarename() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+  
+  return strfirmwarename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_allocated_strfirmwarename(::std::string* strfirmwarename) {
+  if (strfirmwarename != NULL) {
+    
+  } else {
+    
+  }
+  strfirmwarename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfirmwarename);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwareName)
+}
+
+// string strFirmwarePath = 3;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_strfirmwarepath() {
+  strfirmwarepath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeRsp_DEV::strfirmwarepath() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+  return strfirmwarepath_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarepath(const ::std::string& value) {
+  
+  strfirmwarepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarepath(::std::string&& value) {
+  
+  strfirmwarepath_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+}
+#endif
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarepath(const char* value) {
+  
+  strfirmwarepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strfirmwarepath(const char* value, size_t size) {
+  
+  strfirmwarepath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::mutable_strfirmwarepath() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+  return strfirmwarepath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::release_strfirmwarepath() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+  
+  return strfirmwarepath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_allocated_strfirmwarepath(::std::string* strfirmwarepath) {
+  if (strfirmwarepath != NULL) {
+    
+  } else {
+    
+  }
+  strfirmwarepath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfirmwarepath);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strFirmwarePath)
+}
+
+// uint32 uiFirmwareSize = 4;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_uifirmwaresize() {
+  uifirmwaresize_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFirmwareUpgradeRsp_DEV::uifirmwaresize() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiFirmwareSize)
+  return uifirmwaresize_;
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_uifirmwaresize(::google::protobuf::uint32 value) {
+  
+  uifirmwaresize_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiFirmwareSize)
+}
+
+// string strVersion = 5;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_strversion() {
+  strversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeRsp_DEV::strversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+  return strversion_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strversion(const ::std::string& value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeRsp_DEV::set_strversion(::std::string&& value) {
+  
+  strversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+}
+#endif
+inline void QueryFirmwareUpgradeRsp_DEV::set_strversion(const char* value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strversion(const char* value, size_t size) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::mutable_strversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+  return strversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::release_strversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+  
+  return strversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_allocated_strversion(::std::string* strversion) {
+  if (strversion != NULL) {
+    
+  } else {
+    
+  }
+  strversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strVersion)
+}
+
+// string strDescription = 6;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_strdescription() {
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeRsp_DEV::strdescription() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+  return strdescription_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strdescription(const ::std::string& value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeRsp_DEV::set_strdescription(::std::string&& value) {
+  
+  strdescription_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+}
+#endif
+inline void QueryFirmwareUpgradeRsp_DEV::set_strdescription(const char* value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strdescription(const char* value, size_t size) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::mutable_strdescription() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+  return strdescription_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::release_strdescription() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+  
+  return strdescription_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_allocated_strdescription(::std::string* strdescription) {
+  if (strdescription != NULL) {
+    
+  } else {
+    
+  }
+  strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strDescription)
+}
+
+// uint32 uiForceUpgrade = 7;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_uiforceupgrade() {
+  uiforceupgrade_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryFirmwareUpgradeRsp_DEV::uiforceupgrade() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiForceUpgrade)
+  return uiforceupgrade_;
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_uiforceupgrade(::google::protobuf::uint32 value) {
+  
+  uiforceupgrade_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.uiForceUpgrade)
+}
+
+// string strUpdateDate = 8;
+inline void QueryFirmwareUpgradeRsp_DEV::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeRsp_DEV::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeRsp_DEV::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+}
+#endif
+inline void QueryFirmwareUpgradeRsp_DEV::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeRsp_DEV::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeRsp_DEV::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeRsp_DEV.strUpdateDate)
 }
 
 // -------------------------------------------------------------------
@@ -23247,6 +26170,990 @@ inline void QueryAccessDomainNameRsp_USR::set_allocated_strvalue(::std::string* 
 
 // -------------------------------------------------------------------
 
+// QueryAppUpgradeReq_USR
+
+// string strCategory = 1;
+inline void QueryAppUpgradeReq_USR::clear_strcategory() {
+  strcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeReq_USR::strcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+  return strcategory_.GetNoArena();
+}
+inline void QueryAppUpgradeReq_USR::set_strcategory(const ::std::string& value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeReq_USR::set_strcategory(::std::string&& value) {
+  
+  strcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+}
+#endif
+inline void QueryAppUpgradeReq_USR::set_strcategory(const char* value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+}
+inline void QueryAppUpgradeReq_USR::set_strcategory(const char* value, size_t size) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+}
+inline ::std::string* QueryAppUpgradeReq_USR::mutable_strcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+  return strcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeReq_USR::release_strcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+  
+  return strcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeReq_USR::set_allocated_strcategory(::std::string* strcategory) {
+  if (strcategory != NULL) {
+    
+  } else {
+    
+  }
+  strcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeReq_USR.strCategory)
+}
+
+// string strSubCategory = 2;
+inline void QueryAppUpgradeReq_USR::clear_strsubcategory() {
+  strsubcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeReq_USR::strsubcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+  return strsubcategory_.GetNoArena();
+}
+inline void QueryAppUpgradeReq_USR::set_strsubcategory(const ::std::string& value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeReq_USR::set_strsubcategory(::std::string&& value) {
+  
+  strsubcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+}
+#endif
+inline void QueryAppUpgradeReq_USR::set_strsubcategory(const char* value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+}
+inline void QueryAppUpgradeReq_USR::set_strsubcategory(const char* value, size_t size) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+}
+inline ::std::string* QueryAppUpgradeReq_USR::mutable_strsubcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+  return strsubcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeReq_USR::release_strsubcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+  
+  return strsubcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeReq_USR::set_allocated_strsubcategory(::std::string* strsubcategory) {
+  if (strsubcategory != NULL) {
+    
+  } else {
+    
+  }
+  strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeReq_USR.strSubCategory)
+}
+
+// string strCurrentVersion = 3;
+inline void QueryAppUpgradeReq_USR::clear_strcurrentversion() {
+  strcurrentversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeReq_USR::strcurrentversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+  return strcurrentversion_.GetNoArena();
+}
+inline void QueryAppUpgradeReq_USR::set_strcurrentversion(const ::std::string& value) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeReq_USR::set_strcurrentversion(::std::string&& value) {
+  
+  strcurrentversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+}
+#endif
+inline void QueryAppUpgradeReq_USR::set_strcurrentversion(const char* value) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+}
+inline void QueryAppUpgradeReq_USR::set_strcurrentversion(const char* value, size_t size) {
+  
+  strcurrentversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+}
+inline ::std::string* QueryAppUpgradeReq_USR::mutable_strcurrentversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+  return strcurrentversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeReq_USR::release_strcurrentversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+  
+  return strcurrentversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeReq_USR::set_allocated_strcurrentversion(::std::string* strcurrentversion) {
+  if (strcurrentversion != NULL) {
+    
+  } else {
+    
+  }
+  strcurrentversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcurrentversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeReq_USR.strCurrentVersion)
+}
+
+// string strVersionCode = 4;
+inline void QueryAppUpgradeReq_USR::clear_strversioncode() {
+  strversioncode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeReq_USR::strversioncode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+  return strversioncode_.GetNoArena();
+}
+inline void QueryAppUpgradeReq_USR::set_strversioncode(const ::std::string& value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeReq_USR::set_strversioncode(::std::string&& value) {
+  
+  strversioncode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+}
+#endif
+inline void QueryAppUpgradeReq_USR::set_strversioncode(const char* value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+}
+inline void QueryAppUpgradeReq_USR::set_strversioncode(const char* value, size_t size) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+}
+inline ::std::string* QueryAppUpgradeReq_USR::mutable_strversioncode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+  return strversioncode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeReq_USR::release_strversioncode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+  
+  return strversioncode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeReq_USR::set_allocated_strversioncode(::std::string* strversioncode) {
+  if (strversioncode != NULL) {
+    
+  } else {
+    
+  }
+  strversioncode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversioncode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeReq_USR.strVersionCode)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAppUpgradeRsp_USR
+
+// uint32 uiNewVersionValid = 1;
+inline void QueryAppUpgradeRsp_USR::clear_uinewversionvalid() {
+  uinewversionvalid_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAppUpgradeRsp_USR::uinewversionvalid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.uiNewVersionValid)
+  return uinewversionvalid_;
+}
+inline void QueryAppUpgradeRsp_USR::set_uinewversionvalid(::google::protobuf::uint32 value) {
+  
+  uinewversionvalid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.uiNewVersionValid)
+}
+
+// string strAppName = 2;
+inline void QueryAppUpgradeRsp_USR::clear_strappname() {
+  strappname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strappname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+  return strappname_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strappname(const ::std::string& value) {
+  
+  strappname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strappname(::std::string&& value) {
+  
+  strappname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strappname(const char* value) {
+  
+  strappname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+}
+inline void QueryAppUpgradeRsp_USR::set_strappname(const char* value, size_t size) {
+  
+  strappname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strappname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+  return strappname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strappname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+  
+  return strappname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strappname(::std::string* strappname) {
+  if (strappname != NULL) {
+    
+  } else {
+    
+  }
+  strappname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strappname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strAppName)
+}
+
+// string strAppPath = 3;
+inline void QueryAppUpgradeRsp_USR::clear_strapppath() {
+  strapppath_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strapppath() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+  return strapppath_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strapppath(const ::std::string& value) {
+  
+  strapppath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strapppath(::std::string&& value) {
+  
+  strapppath_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strapppath(const char* value) {
+  
+  strapppath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+}
+inline void QueryAppUpgradeRsp_USR::set_strapppath(const char* value, size_t size) {
+  
+  strapppath_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strapppath() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+  return strapppath_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strapppath() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+  
+  return strapppath_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strapppath(::std::string* strapppath) {
+  if (strapppath != NULL) {
+    
+  } else {
+    
+  }
+  strapppath_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strapppath);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strAppPath)
+}
+
+// uint32 uiAppSize = 4;
+inline void QueryAppUpgradeRsp_USR::clear_uiappsize() {
+  uiappsize_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAppUpgradeRsp_USR::uiappsize() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.uiAppSize)
+  return uiappsize_;
+}
+inline void QueryAppUpgradeRsp_USR::set_uiappsize(::google::protobuf::uint32 value) {
+  
+  uiappsize_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.uiAppSize)
+}
+
+// string strVersion = 5;
+inline void QueryAppUpgradeRsp_USR::clear_strversion() {
+  strversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+  return strversion_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strversion(const ::std::string& value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strversion(::std::string&& value) {
+  
+  strversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strversion(const char* value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+}
+inline void QueryAppUpgradeRsp_USR::set_strversion(const char* value, size_t size) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+  return strversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+  
+  return strversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strversion(::std::string* strversion) {
+  if (strversion != NULL) {
+    
+  } else {
+    
+  }
+  strversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strVersion)
+}
+
+// string strVersionCode = 6;
+inline void QueryAppUpgradeRsp_USR::clear_strversioncode() {
+  strversioncode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strversioncode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+  return strversioncode_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strversioncode(const ::std::string& value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strversioncode(::std::string&& value) {
+  
+  strversioncode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strversioncode(const char* value) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+}
+inline void QueryAppUpgradeRsp_USR::set_strversioncode(const char* value, size_t size) {
+  
+  strversioncode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strversioncode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+  return strversioncode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strversioncode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+  
+  return strversioncode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strversioncode(::std::string* strversioncode) {
+  if (strversioncode != NULL) {
+    
+  } else {
+    
+  }
+  strversioncode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversioncode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strVersionCode)
+}
+
+// string strDescription = 7;
+inline void QueryAppUpgradeRsp_USR::clear_strdescription() {
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strdescription() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+  return strdescription_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strdescription(const ::std::string& value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strdescription(::std::string&& value) {
+  
+  strdescription_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strdescription(const char* value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+}
+inline void QueryAppUpgradeRsp_USR::set_strdescription(const char* value, size_t size) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strdescription() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+  return strdescription_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strdescription() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+  
+  return strdescription_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strdescription(::std::string* strdescription) {
+  if (strdescription != NULL) {
+    
+  } else {
+    
+  }
+  strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strDescription)
+}
+
+// uint32 uiForceUpgrade = 8;
+inline void QueryAppUpgradeRsp_USR::clear_uiforceupgrade() {
+  uiforceupgrade_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAppUpgradeRsp_USR::uiforceupgrade() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.uiForceUpgrade)
+  return uiforceupgrade_;
+}
+inline void QueryAppUpgradeRsp_USR::set_uiforceupgrade(::google::protobuf::uint32 value) {
+  
+  uiforceupgrade_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.uiForceUpgrade)
+}
+
+// string strUpdateDate = 9;
+inline void QueryAppUpgradeRsp_USR::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAppUpgradeRsp_USR::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+inline void QueryAppUpgradeRsp_USR::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+}
+#if LANG_CXX11
+inline void QueryAppUpgradeRsp_USR::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+}
+#endif
+inline void QueryAppUpgradeRsp_USR::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+}
+inline void QueryAppUpgradeRsp_USR::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAppUpgradeRsp_USR::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAppUpgradeRsp_USR::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAppUpgradeRsp_USR.strUpdateDate)
+}
+
+// -------------------------------------------------------------------
+
+// AddConfigurationReq_MGR
+
+// .Interactive.Message.Configuration configurationInfo = 1;
+inline bool AddConfigurationReq_MGR::has_configurationinfo() const {
+  return this != internal_default_instance() && configurationinfo_ != NULL;
+}
+inline void AddConfigurationReq_MGR::clear_configurationinfo() {
+  if (GetArenaNoVirtual() == NULL && configurationinfo_ != NULL) delete configurationinfo_;
+  configurationinfo_ = NULL;
+}
+inline const ::Interactive::Message::Configuration& AddConfigurationReq_MGR::configurationinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddConfigurationReq_MGR.configurationInfo)
+  return configurationinfo_ != NULL ? *configurationinfo_
+                         : *::Interactive::Message::Configuration::internal_default_instance();
+}
+inline ::Interactive::Message::Configuration* AddConfigurationReq_MGR::mutable_configurationinfo() {
+  
+  if (configurationinfo_ == NULL) {
+    configurationinfo_ = new ::Interactive::Message::Configuration;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddConfigurationReq_MGR.configurationInfo)
+  return configurationinfo_;
+}
+inline ::Interactive::Message::Configuration* AddConfigurationReq_MGR::release_configurationinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddConfigurationReq_MGR.configurationInfo)
+  
+  ::Interactive::Message::Configuration* temp = configurationinfo_;
+  configurationinfo_ = NULL;
+  return temp;
+}
+inline void AddConfigurationReq_MGR::set_allocated_configurationinfo(::Interactive::Message::Configuration* configurationinfo) {
+  delete configurationinfo_;
+  configurationinfo_ = configurationinfo;
+  if (configurationinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddConfigurationReq_MGR.configurationInfo)
+}
+
+// -------------------------------------------------------------------
+
+// AddConfigurationRsp_MGR
+
+// string strValue = 1;
+inline void AddConfigurationRsp_MGR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddConfigurationRsp_MGR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddConfigurationRsp_MGR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+}
+#if LANG_CXX11
+inline void AddConfigurationRsp_MGR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+}
+#endif
+inline void AddConfigurationRsp_MGR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+}
+inline void AddConfigurationRsp_MGR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+}
+inline ::std::string* AddConfigurationRsp_MGR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddConfigurationRsp_MGR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddConfigurationRsp_MGR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddConfigurationRsp_MGR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteConfigurationReq_MGR
+
+// string strCategory = 1;
+inline void DeleteConfigurationReq_MGR::clear_strcategory() {
+  strcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteConfigurationReq_MGR::strcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+  return strcategory_.GetNoArena();
+}
+inline void DeleteConfigurationReq_MGR::set_strcategory(const ::std::string& value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+}
+#if LANG_CXX11
+inline void DeleteConfigurationReq_MGR::set_strcategory(::std::string&& value) {
+  
+  strcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+}
+#endif
+inline void DeleteConfigurationReq_MGR::set_strcategory(const char* value) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+}
+inline void DeleteConfigurationReq_MGR::set_strcategory(const char* value, size_t size) {
+  
+  strcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+}
+inline ::std::string* DeleteConfigurationReq_MGR::mutable_strcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+  return strcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteConfigurationReq_MGR::release_strcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+  
+  return strcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteConfigurationReq_MGR::set_allocated_strcategory(::std::string* strcategory) {
+  if (strcategory != NULL) {
+    
+  } else {
+    
+  }
+  strcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteConfigurationReq_MGR.strCategory)
+}
+
+// string strSubCategory = 2;
+inline void DeleteConfigurationReq_MGR::clear_strsubcategory() {
+  strsubcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteConfigurationReq_MGR::strsubcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+  return strsubcategory_.GetNoArena();
+}
+inline void DeleteConfigurationReq_MGR::set_strsubcategory(const ::std::string& value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+}
+#if LANG_CXX11
+inline void DeleteConfigurationReq_MGR::set_strsubcategory(::std::string&& value) {
+  
+  strsubcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+}
+#endif
+inline void DeleteConfigurationReq_MGR::set_strsubcategory(const char* value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+}
+inline void DeleteConfigurationReq_MGR::set_strsubcategory(const char* value, size_t size) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+}
+inline ::std::string* DeleteConfigurationReq_MGR::mutable_strsubcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+  return strsubcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteConfigurationReq_MGR::release_strsubcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+  
+  return strsubcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteConfigurationReq_MGR::set_allocated_strsubcategory(::std::string* strsubcategory) {
+  if (strsubcategory != NULL) {
+    
+  } else {
+    
+  }
+  strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteConfigurationReq_MGR.strSubCategory)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteConfigurationRsp_MGR
+
+// string strValue = 1;
+inline void DeleteConfigurationRsp_MGR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteConfigurationRsp_MGR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteConfigurationRsp_MGR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+}
+#if LANG_CXX11
+inline void DeleteConfigurationRsp_MGR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+}
+#endif
+inline void DeleteConfigurationRsp_MGR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+}
+inline void DeleteConfigurationRsp_MGR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+}
+inline ::std::string* DeleteConfigurationRsp_MGR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteConfigurationRsp_MGR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteConfigurationRsp_MGR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteConfigurationRsp_MGR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyConfigurationReq_MGR
+
+// .Interactive.Message.Configuration configurationInfo = 1;
+inline bool ModifyConfigurationReq_MGR::has_configurationinfo() const {
+  return this != internal_default_instance() && configurationinfo_ != NULL;
+}
+inline void ModifyConfigurationReq_MGR::clear_configurationinfo() {
+  if (GetArenaNoVirtual() == NULL && configurationinfo_ != NULL) delete configurationinfo_;
+  configurationinfo_ = NULL;
+}
+inline const ::Interactive::Message::Configuration& ModifyConfigurationReq_MGR::configurationinfo() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyConfigurationReq_MGR.configurationInfo)
+  return configurationinfo_ != NULL ? *configurationinfo_
+                         : *::Interactive::Message::Configuration::internal_default_instance();
+}
+inline ::Interactive::Message::Configuration* ModifyConfigurationReq_MGR::mutable_configurationinfo() {
+  
+  if (configurationinfo_ == NULL) {
+    configurationinfo_ = new ::Interactive::Message::Configuration;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyConfigurationReq_MGR.configurationInfo)
+  return configurationinfo_;
+}
+inline ::Interactive::Message::Configuration* ModifyConfigurationReq_MGR::release_configurationinfo() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyConfigurationReq_MGR.configurationInfo)
+  
+  ::Interactive::Message::Configuration* temp = configurationinfo_;
+  configurationinfo_ = NULL;
+  return temp;
+}
+inline void ModifyConfigurationReq_MGR::set_allocated_configurationinfo(::Interactive::Message::Configuration* configurationinfo) {
+  delete configurationinfo_;
+  configurationinfo_ = configurationinfo;
+  if (configurationinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyConfigurationReq_MGR.configurationInfo)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyConfigurationRsp_MGR
+
+// string strValue = 1;
+inline void ModifyConfigurationRsp_MGR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyConfigurationRsp_MGR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyConfigurationRsp_MGR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+}
+#if LANG_CXX11
+inline void ModifyConfigurationRsp_MGR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+}
+#endif
+inline void ModifyConfigurationRsp_MGR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+}
+inline void ModifyConfigurationRsp_MGR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+}
+inline ::std::string* ModifyConfigurationRsp_MGR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyConfigurationRsp_MGR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyConfigurationRsp_MGR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyConfigurationRsp_MGR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllConfigurationReq_MGR
+
+// uint32 uiBeginIndex = 1;
+inline void QueryAllConfigurationReq_MGR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllConfigurationReq_MGR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllConfigurationReq_MGR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryAllConfigurationReq_MGR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllConfigurationReq_MGR.uiBeginIndex)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllConfigurationRsp_MGR
+
+// repeated .Interactive.Message.Configuration configurationInfo = 1;
+inline int QueryAllConfigurationRsp_MGR::configurationinfo_size() const {
+  return configurationinfo_.size();
+}
+inline void QueryAllConfigurationRsp_MGR::clear_configurationinfo() {
+  configurationinfo_.Clear();
+}
+inline const ::Interactive::Message::Configuration& QueryAllConfigurationRsp_MGR::configurationinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllConfigurationRsp_MGR.configurationInfo)
+  return configurationinfo_.Get(index);
+}
+inline ::Interactive::Message::Configuration* QueryAllConfigurationRsp_MGR::mutable_configurationinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAllConfigurationRsp_MGR.configurationInfo)
+  return configurationinfo_.Mutable(index);
+}
+inline ::Interactive::Message::Configuration* QueryAllConfigurationRsp_MGR::add_configurationinfo() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryAllConfigurationRsp_MGR.configurationInfo)
+  return configurationinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Configuration >*
+QueryAllConfigurationRsp_MGR::mutable_configurationinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryAllConfigurationRsp_MGR.configurationInfo)
+  return &configurationinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::Configuration >&
+QueryAllConfigurationRsp_MGR::configurationinfo() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryAllConfigurationRsp_MGR.configurationInfo)
+  return configurationinfo_;
+}
+
+// -------------------------------------------------------------------
+
 // GetOnlineDevInfoReq_INNER
 
 // string strValue = 1;
@@ -24264,6 +28171,45 @@ inline void Req::set_allocated_queryupgradesitereq_dev_value(::Interactive::Mess
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUpgradeSiteReq_DEV_Value)
+}
+
+// .Interactive.Message.QueryFirmwareUpgradeReq_DEV QueryFirmwareUpgradeReq_DEV_Value = 64;
+inline bool Req::has_queryfirmwareupgradereq_dev_value() const {
+  return this != internal_default_instance() && queryfirmwareupgradereq_dev_value_ != NULL;
+}
+inline void Req::clear_queryfirmwareupgradereq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryfirmwareupgradereq_dev_value_ != NULL) delete queryfirmwareupgradereq_dev_value_;
+  queryfirmwareupgradereq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryFirmwareUpgradeReq_DEV& Req::queryfirmwareupgradereq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryFirmwareUpgradeReq_DEV_Value)
+  return queryfirmwareupgradereq_dev_value_ != NULL ? *queryfirmwareupgradereq_dev_value_
+                         : *::Interactive::Message::QueryFirmwareUpgradeReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* Req::mutable_queryfirmwareupgradereq_dev_value() {
+  
+  if (queryfirmwareupgradereq_dev_value_ == NULL) {
+    queryfirmwareupgradereq_dev_value_ = new ::Interactive::Message::QueryFirmwareUpgradeReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryFirmwareUpgradeReq_DEV_Value)
+  return queryfirmwareupgradereq_dev_value_;
+}
+inline ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* Req::release_queryfirmwareupgradereq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryFirmwareUpgradeReq_DEV_Value)
+  
+  ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* temp = queryfirmwareupgradereq_dev_value_;
+  queryfirmwareupgradereq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryfirmwareupgradereq_dev_value(::Interactive::Message::QueryFirmwareUpgradeReq_DEV* queryfirmwareupgradereq_dev_value) {
+  delete queryfirmwareupgradereq_dev_value_;
+  queryfirmwareupgradereq_dev_value_ = queryfirmwareupgradereq_dev_value;
+  if (queryfirmwareupgradereq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryFirmwareUpgradeReq_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
@@ -25358,6 +29304,45 @@ inline void Req::set_allocated_queryaccessdomainnamereq_usr_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAccessDomainNameReq_USR_Value)
 }
 
+// .Interactive.Message.QueryAppUpgradeReq_USR QueryAppUpgradeReq_USR_Value = 360;
+inline bool Req::has_queryappupgradereq_usr_value() const {
+  return this != internal_default_instance() && queryappupgradereq_usr_value_ != NULL;
+}
+inline void Req::clear_queryappupgradereq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryappupgradereq_usr_value_ != NULL) delete queryappupgradereq_usr_value_;
+  queryappupgradereq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAppUpgradeReq_USR& Req::queryappupgradereq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryAppUpgradeReq_USR_Value)
+  return queryappupgradereq_usr_value_ != NULL ? *queryappupgradereq_usr_value_
+                         : *::Interactive::Message::QueryAppUpgradeReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAppUpgradeReq_USR* Req::mutable_queryappupgradereq_usr_value() {
+  
+  if (queryappupgradereq_usr_value_ == NULL) {
+    queryappupgradereq_usr_value_ = new ::Interactive::Message::QueryAppUpgradeReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryAppUpgradeReq_USR_Value)
+  return queryappupgradereq_usr_value_;
+}
+inline ::Interactive::Message::QueryAppUpgradeReq_USR* Req::release_queryappupgradereq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryAppUpgradeReq_USR_Value)
+  
+  ::Interactive::Message::QueryAppUpgradeReq_USR* temp = queryappupgradereq_usr_value_;
+  queryappupgradereq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryappupgradereq_usr_value(::Interactive::Message::QueryAppUpgradeReq_USR* queryappupgradereq_usr_value) {
+  delete queryappupgradereq_usr_value_;
+  queryappupgradereq_usr_value_ = queryappupgradereq_usr_value;
+  if (queryappupgradereq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAppUpgradeReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -25590,6 +29575,162 @@ inline void Req::set_allocated_getuseraccessrecordreq_inner_value(::Interactive:
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.GetUserAccessRecordReq_INNER_Value)
+}
+
+// .Interactive.Message.AddConfigurationReq_MGR AddConfigurationReq_MGR_Value = 600;
+inline bool Req::has_addconfigurationreq_mgr_value() const {
+  return this != internal_default_instance() && addconfigurationreq_mgr_value_ != NULL;
+}
+inline void Req::clear_addconfigurationreq_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && addconfigurationreq_mgr_value_ != NULL) delete addconfigurationreq_mgr_value_;
+  addconfigurationreq_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddConfigurationReq_MGR& Req::addconfigurationreq_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.AddConfigurationReq_MGR_Value)
+  return addconfigurationreq_mgr_value_ != NULL ? *addconfigurationreq_mgr_value_
+                         : *::Interactive::Message::AddConfigurationReq_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::AddConfigurationReq_MGR* Req::mutable_addconfigurationreq_mgr_value() {
+  
+  if (addconfigurationreq_mgr_value_ == NULL) {
+    addconfigurationreq_mgr_value_ = new ::Interactive::Message::AddConfigurationReq_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.AddConfigurationReq_MGR_Value)
+  return addconfigurationreq_mgr_value_;
+}
+inline ::Interactive::Message::AddConfigurationReq_MGR* Req::release_addconfigurationreq_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.AddConfigurationReq_MGR_Value)
+  
+  ::Interactive::Message::AddConfigurationReq_MGR* temp = addconfigurationreq_mgr_value_;
+  addconfigurationreq_mgr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_addconfigurationreq_mgr_value(::Interactive::Message::AddConfigurationReq_MGR* addconfigurationreq_mgr_value) {
+  delete addconfigurationreq_mgr_value_;
+  addconfigurationreq_mgr_value_ = addconfigurationreq_mgr_value;
+  if (addconfigurationreq_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddConfigurationReq_MGR_Value)
+}
+
+// .Interactive.Message.DeleteConfigurationReq_MGR DeleteConfigurationReq_MGR_Value = 610;
+inline bool Req::has_deleteconfigurationreq_mgr_value() const {
+  return this != internal_default_instance() && deleteconfigurationreq_mgr_value_ != NULL;
+}
+inline void Req::clear_deleteconfigurationreq_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && deleteconfigurationreq_mgr_value_ != NULL) delete deleteconfigurationreq_mgr_value_;
+  deleteconfigurationreq_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteConfigurationReq_MGR& Req::deleteconfigurationreq_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.DeleteConfigurationReq_MGR_Value)
+  return deleteconfigurationreq_mgr_value_ != NULL ? *deleteconfigurationreq_mgr_value_
+                         : *::Interactive::Message::DeleteConfigurationReq_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteConfigurationReq_MGR* Req::mutable_deleteconfigurationreq_mgr_value() {
+  
+  if (deleteconfigurationreq_mgr_value_ == NULL) {
+    deleteconfigurationreq_mgr_value_ = new ::Interactive::Message::DeleteConfigurationReq_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.DeleteConfigurationReq_MGR_Value)
+  return deleteconfigurationreq_mgr_value_;
+}
+inline ::Interactive::Message::DeleteConfigurationReq_MGR* Req::release_deleteconfigurationreq_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.DeleteConfigurationReq_MGR_Value)
+  
+  ::Interactive::Message::DeleteConfigurationReq_MGR* temp = deleteconfigurationreq_mgr_value_;
+  deleteconfigurationreq_mgr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_deleteconfigurationreq_mgr_value(::Interactive::Message::DeleteConfigurationReq_MGR* deleteconfigurationreq_mgr_value) {
+  delete deleteconfigurationreq_mgr_value_;
+  deleteconfigurationreq_mgr_value_ = deleteconfigurationreq_mgr_value;
+  if (deleteconfigurationreq_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeleteConfigurationReq_MGR_Value)
+}
+
+// .Interactive.Message.ModifyConfigurationReq_MGR ModifyConfigurationReq_MGR_Value = 620;
+inline bool Req::has_modifyconfigurationreq_mgr_value() const {
+  return this != internal_default_instance() && modifyconfigurationreq_mgr_value_ != NULL;
+}
+inline void Req::clear_modifyconfigurationreq_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && modifyconfigurationreq_mgr_value_ != NULL) delete modifyconfigurationreq_mgr_value_;
+  modifyconfigurationreq_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyConfigurationReq_MGR& Req::modifyconfigurationreq_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.ModifyConfigurationReq_MGR_Value)
+  return modifyconfigurationreq_mgr_value_ != NULL ? *modifyconfigurationreq_mgr_value_
+                         : *::Interactive::Message::ModifyConfigurationReq_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyConfigurationReq_MGR* Req::mutable_modifyconfigurationreq_mgr_value() {
+  
+  if (modifyconfigurationreq_mgr_value_ == NULL) {
+    modifyconfigurationreq_mgr_value_ = new ::Interactive::Message::ModifyConfigurationReq_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.ModifyConfigurationReq_MGR_Value)
+  return modifyconfigurationreq_mgr_value_;
+}
+inline ::Interactive::Message::ModifyConfigurationReq_MGR* Req::release_modifyconfigurationreq_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.ModifyConfigurationReq_MGR_Value)
+  
+  ::Interactive::Message::ModifyConfigurationReq_MGR* temp = modifyconfigurationreq_mgr_value_;
+  modifyconfigurationreq_mgr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_modifyconfigurationreq_mgr_value(::Interactive::Message::ModifyConfigurationReq_MGR* modifyconfigurationreq_mgr_value) {
+  delete modifyconfigurationreq_mgr_value_;
+  modifyconfigurationreq_mgr_value_ = modifyconfigurationreq_mgr_value;
+  if (modifyconfigurationreq_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyConfigurationReq_MGR_Value)
+}
+
+// .Interactive.Message.QueryAllConfigurationReq_MGR QueryAllConfigurationReq_MGR_Value = 630;
+inline bool Req::has_queryallconfigurationreq_mgr_value() const {
+  return this != internal_default_instance() && queryallconfigurationreq_mgr_value_ != NULL;
+}
+inline void Req::clear_queryallconfigurationreq_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && queryallconfigurationreq_mgr_value_ != NULL) delete queryallconfigurationreq_mgr_value_;
+  queryallconfigurationreq_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAllConfigurationReq_MGR& Req::queryallconfigurationreq_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryAllConfigurationReq_MGR_Value)
+  return queryallconfigurationreq_mgr_value_ != NULL ? *queryallconfigurationreq_mgr_value_
+                         : *::Interactive::Message::QueryAllConfigurationReq_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAllConfigurationReq_MGR* Req::mutable_queryallconfigurationreq_mgr_value() {
+  
+  if (queryallconfigurationreq_mgr_value_ == NULL) {
+    queryallconfigurationreq_mgr_value_ = new ::Interactive::Message::QueryAllConfigurationReq_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryAllConfigurationReq_MGR_Value)
+  return queryallconfigurationreq_mgr_value_;
+}
+inline ::Interactive::Message::QueryAllConfigurationReq_MGR* Req::release_queryallconfigurationreq_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryAllConfigurationReq_MGR_Value)
+  
+  ::Interactive::Message::QueryAllConfigurationReq_MGR* temp = queryallconfigurationreq_mgr_value_;
+  queryallconfigurationreq_mgr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryallconfigurationreq_mgr_value(::Interactive::Message::QueryAllConfigurationReq_MGR* queryallconfigurationreq_mgr_value) {
+  delete queryallconfigurationreq_mgr_value_;
+  queryallconfigurationreq_mgr_value_ = queryallconfigurationreq_mgr_value;
+  if (queryallconfigurationreq_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAllConfigurationReq_MGR_Value)
 }
 
 // -------------------------------------------------------------------
@@ -26050,6 +30191,84 @@ inline void Rsp::set_allocated_queryaccessdomainnamersp_dev_value(::Interactive:
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAccessDomainNameRsp_DEV_Value)
+}
+
+// .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 83;
+inline bool Rsp::has_queryupgradesitersp_dev_value() const {
+  return this != internal_default_instance() && queryupgradesitersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_queryupgradesitersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryupgradesitersp_dev_value_ != NULL) delete queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& Rsp::queryupgradesitersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  return queryupgradesitersp_dev_value_ != NULL ? *queryupgradesitersp_dev_value_
+                         : *::Interactive::Message::QueryUpgradeSiteRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::mutable_queryupgradesitersp_dev_value() {
+  
+  if (queryupgradesitersp_dev_value_ == NULL) {
+    queryupgradesitersp_dev_value_ = new ::Interactive::Message::QueryUpgradeSiteRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  return queryupgradesitersp_dev_value_;
+}
+inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::release_queryupgradesitersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* temp = queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value) {
+  delete queryupgradesitersp_dev_value_;
+  queryupgradesitersp_dev_value_ = queryupgradesitersp_dev_value;
+  if (queryupgradesitersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+}
+
+// .Interactive.Message.QueryFirmwareUpgradeRsp_DEV QueryFirmwareUpgradeRsp_DEV_Value = 84;
+inline bool Rsp::has_queryfirmwareupgradersp_dev_value() const {
+  return this != internal_default_instance() && queryfirmwareupgradersp_dev_value_ != NULL;
+}
+inline void Rsp::clear_queryfirmwareupgradersp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && queryfirmwareupgradersp_dev_value_ != NULL) delete queryfirmwareupgradersp_dev_value_;
+  queryfirmwareupgradersp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV& Rsp::queryfirmwareupgradersp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryFirmwareUpgradeRsp_DEV_Value)
+  return queryfirmwareupgradersp_dev_value_ != NULL ? *queryfirmwareupgradersp_dev_value_
+                         : *::Interactive::Message::QueryFirmwareUpgradeRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* Rsp::mutable_queryfirmwareupgradersp_dev_value() {
+  
+  if (queryfirmwareupgradersp_dev_value_ == NULL) {
+    queryfirmwareupgradersp_dev_value_ = new ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryFirmwareUpgradeRsp_DEV_Value)
+  return queryfirmwareupgradersp_dev_value_;
+}
+inline ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* Rsp::release_queryfirmwareupgradersp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryFirmwareUpgradeRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* temp = queryfirmwareupgradersp_dev_value_;
+  queryfirmwareupgradersp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryfirmwareupgradersp_dev_value(::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* queryfirmwareupgradersp_dev_value) {
+  delete queryfirmwareupgradersp_dev_value_;
+  queryfirmwareupgradersp_dev_value_ = queryfirmwareupgradersp_dev_value;
+  if (queryfirmwareupgradersp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryFirmwareUpgradeRsp_DEV_Value)
 }
 
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
@@ -27144,43 +31363,43 @@ inline void Rsp::set_allocated_queryaccessdomainnamersp_usr_value(::Interactive:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAccessDomainNameRsp_USR_Value)
 }
 
-// .Interactive.Message.QueryUpgradeSiteRsp_DEV QueryUpgradeSiteRsp_DEV_Value = 360;
-inline bool Rsp::has_queryupgradesitersp_dev_value() const {
-  return this != internal_default_instance() && queryupgradesitersp_dev_value_ != NULL;
+// .Interactive.Message.QueryAppUpgradeRsp_USR QueryAppUpgradeRsp_USR_Value = 360;
+inline bool Rsp::has_queryappupgradersp_usr_value() const {
+  return this != internal_default_instance() && queryappupgradersp_usr_value_ != NULL;
 }
-inline void Rsp::clear_queryupgradesitersp_dev_value() {
-  if (GetArenaNoVirtual() == NULL && queryupgradesitersp_dev_value_ != NULL) delete queryupgradesitersp_dev_value_;
-  queryupgradesitersp_dev_value_ = NULL;
+inline void Rsp::clear_queryappupgradersp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryappupgradersp_usr_value_ != NULL) delete queryappupgradersp_usr_value_;
+  queryappupgradersp_usr_value_ = NULL;
 }
-inline const ::Interactive::Message::QueryUpgradeSiteRsp_DEV& Rsp::queryupgradesitersp_dev_value() const {
-  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
-  return queryupgradesitersp_dev_value_ != NULL ? *queryupgradesitersp_dev_value_
-                         : *::Interactive::Message::QueryUpgradeSiteRsp_DEV::internal_default_instance();
+inline const ::Interactive::Message::QueryAppUpgradeRsp_USR& Rsp::queryappupgradersp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryAppUpgradeRsp_USR_Value)
+  return queryappupgradersp_usr_value_ != NULL ? *queryappupgradersp_usr_value_
+                         : *::Interactive::Message::QueryAppUpgradeRsp_USR::internal_default_instance();
 }
-inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::mutable_queryupgradesitersp_dev_value() {
+inline ::Interactive::Message::QueryAppUpgradeRsp_USR* Rsp::mutable_queryappupgradersp_usr_value() {
   
-  if (queryupgradesitersp_dev_value_ == NULL) {
-    queryupgradesitersp_dev_value_ = new ::Interactive::Message::QueryUpgradeSiteRsp_DEV;
+  if (queryappupgradersp_usr_value_ == NULL) {
+    queryappupgradersp_usr_value_ = new ::Interactive::Message::QueryAppUpgradeRsp_USR;
   }
-  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
-  return queryupgradesitersp_dev_value_;
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryAppUpgradeRsp_USR_Value)
+  return queryappupgradersp_usr_value_;
 }
-inline ::Interactive::Message::QueryUpgradeSiteRsp_DEV* Rsp::release_queryupgradesitersp_dev_value() {
-  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+inline ::Interactive::Message::QueryAppUpgradeRsp_USR* Rsp::release_queryappupgradersp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryAppUpgradeRsp_USR_Value)
   
-  ::Interactive::Message::QueryUpgradeSiteRsp_DEV* temp = queryupgradesitersp_dev_value_;
-  queryupgradesitersp_dev_value_ = NULL;
+  ::Interactive::Message::QueryAppUpgradeRsp_USR* temp = queryappupgradersp_usr_value_;
+  queryappupgradersp_usr_value_ = NULL;
   return temp;
 }
-inline void Rsp::set_allocated_queryupgradesitersp_dev_value(::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value) {
-  delete queryupgradesitersp_dev_value_;
-  queryupgradesitersp_dev_value_ = queryupgradesitersp_dev_value;
-  if (queryupgradesitersp_dev_value) {
+inline void Rsp::set_allocated_queryappupgradersp_usr_value(::Interactive::Message::QueryAppUpgradeRsp_USR* queryappupgradersp_usr_value) {
+  delete queryappupgradersp_usr_value_;
+  queryappupgradersp_usr_value_ = queryappupgradersp_usr_value;
+  if (queryappupgradersp_usr_value) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUpgradeSiteRsp_DEV_Value)
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAppUpgradeRsp_USR_Value)
 }
 
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
@@ -27337,6 +31556,162 @@ inline void Rsp::set_allocated_getuseraccessrecordrsp_inner_value(::Interactive:
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.GetUserAccessRecordRsp_INNER_Value)
+}
+
+// .Interactive.Message.AddConfigurationRsp_MGR AddConfigurationRsp_MGR_Value = 600;
+inline bool Rsp::has_addconfigurationrsp_mgr_value() const {
+  return this != internal_default_instance() && addconfigurationrsp_mgr_value_ != NULL;
+}
+inline void Rsp::clear_addconfigurationrsp_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && addconfigurationrsp_mgr_value_ != NULL) delete addconfigurationrsp_mgr_value_;
+  addconfigurationrsp_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddConfigurationRsp_MGR& Rsp::addconfigurationrsp_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.AddConfigurationRsp_MGR_Value)
+  return addconfigurationrsp_mgr_value_ != NULL ? *addconfigurationrsp_mgr_value_
+                         : *::Interactive::Message::AddConfigurationRsp_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::AddConfigurationRsp_MGR* Rsp::mutable_addconfigurationrsp_mgr_value() {
+  
+  if (addconfigurationrsp_mgr_value_ == NULL) {
+    addconfigurationrsp_mgr_value_ = new ::Interactive::Message::AddConfigurationRsp_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.AddConfigurationRsp_MGR_Value)
+  return addconfigurationrsp_mgr_value_;
+}
+inline ::Interactive::Message::AddConfigurationRsp_MGR* Rsp::release_addconfigurationrsp_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.AddConfigurationRsp_MGR_Value)
+  
+  ::Interactive::Message::AddConfigurationRsp_MGR* temp = addconfigurationrsp_mgr_value_;
+  addconfigurationrsp_mgr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_addconfigurationrsp_mgr_value(::Interactive::Message::AddConfigurationRsp_MGR* addconfigurationrsp_mgr_value) {
+  delete addconfigurationrsp_mgr_value_;
+  addconfigurationrsp_mgr_value_ = addconfigurationrsp_mgr_value;
+  if (addconfigurationrsp_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddConfigurationRsp_MGR_Value)
+}
+
+// .Interactive.Message.DeleteConfigurationRsp_MGR DeleteConfigurationRsp_MGR_Value = 610;
+inline bool Rsp::has_deleteconfigurationrsp_mgr_value() const {
+  return this != internal_default_instance() && deleteconfigurationrsp_mgr_value_ != NULL;
+}
+inline void Rsp::clear_deleteconfigurationrsp_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && deleteconfigurationrsp_mgr_value_ != NULL) delete deleteconfigurationrsp_mgr_value_;
+  deleteconfigurationrsp_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteConfigurationRsp_MGR& Rsp::deleteconfigurationrsp_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.DeleteConfigurationRsp_MGR_Value)
+  return deleteconfigurationrsp_mgr_value_ != NULL ? *deleteconfigurationrsp_mgr_value_
+                         : *::Interactive::Message::DeleteConfigurationRsp_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteConfigurationRsp_MGR* Rsp::mutable_deleteconfigurationrsp_mgr_value() {
+  
+  if (deleteconfigurationrsp_mgr_value_ == NULL) {
+    deleteconfigurationrsp_mgr_value_ = new ::Interactive::Message::DeleteConfigurationRsp_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.DeleteConfigurationRsp_MGR_Value)
+  return deleteconfigurationrsp_mgr_value_;
+}
+inline ::Interactive::Message::DeleteConfigurationRsp_MGR* Rsp::release_deleteconfigurationrsp_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.DeleteConfigurationRsp_MGR_Value)
+  
+  ::Interactive::Message::DeleteConfigurationRsp_MGR* temp = deleteconfigurationrsp_mgr_value_;
+  deleteconfigurationrsp_mgr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_deleteconfigurationrsp_mgr_value(::Interactive::Message::DeleteConfigurationRsp_MGR* deleteconfigurationrsp_mgr_value) {
+  delete deleteconfigurationrsp_mgr_value_;
+  deleteconfigurationrsp_mgr_value_ = deleteconfigurationrsp_mgr_value;
+  if (deleteconfigurationrsp_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeleteConfigurationRsp_MGR_Value)
+}
+
+// .Interactive.Message.ModifyConfigurationRsp_MGR ModifyConfigurationRsp_MGR_Value = 620;
+inline bool Rsp::has_modifyconfigurationrsp_mgr_value() const {
+  return this != internal_default_instance() && modifyconfigurationrsp_mgr_value_ != NULL;
+}
+inline void Rsp::clear_modifyconfigurationrsp_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && modifyconfigurationrsp_mgr_value_ != NULL) delete modifyconfigurationrsp_mgr_value_;
+  modifyconfigurationrsp_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyConfigurationRsp_MGR& Rsp::modifyconfigurationrsp_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.ModifyConfigurationRsp_MGR_Value)
+  return modifyconfigurationrsp_mgr_value_ != NULL ? *modifyconfigurationrsp_mgr_value_
+                         : *::Interactive::Message::ModifyConfigurationRsp_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyConfigurationRsp_MGR* Rsp::mutable_modifyconfigurationrsp_mgr_value() {
+  
+  if (modifyconfigurationrsp_mgr_value_ == NULL) {
+    modifyconfigurationrsp_mgr_value_ = new ::Interactive::Message::ModifyConfigurationRsp_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.ModifyConfigurationRsp_MGR_Value)
+  return modifyconfigurationrsp_mgr_value_;
+}
+inline ::Interactive::Message::ModifyConfigurationRsp_MGR* Rsp::release_modifyconfigurationrsp_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.ModifyConfigurationRsp_MGR_Value)
+  
+  ::Interactive::Message::ModifyConfigurationRsp_MGR* temp = modifyconfigurationrsp_mgr_value_;
+  modifyconfigurationrsp_mgr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_modifyconfigurationrsp_mgr_value(::Interactive::Message::ModifyConfigurationRsp_MGR* modifyconfigurationrsp_mgr_value) {
+  delete modifyconfigurationrsp_mgr_value_;
+  modifyconfigurationrsp_mgr_value_ = modifyconfigurationrsp_mgr_value;
+  if (modifyconfigurationrsp_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyConfigurationRsp_MGR_Value)
+}
+
+// .Interactive.Message.QueryAllConfigurationRsp_MGR QueryAllConfigurationRsp_MGR_Value = 630;
+inline bool Rsp::has_queryallconfigurationrsp_mgr_value() const {
+  return this != internal_default_instance() && queryallconfigurationrsp_mgr_value_ != NULL;
+}
+inline void Rsp::clear_queryallconfigurationrsp_mgr_value() {
+  if (GetArenaNoVirtual() == NULL && queryallconfigurationrsp_mgr_value_ != NULL) delete queryallconfigurationrsp_mgr_value_;
+  queryallconfigurationrsp_mgr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAllConfigurationRsp_MGR& Rsp::queryallconfigurationrsp_mgr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryAllConfigurationRsp_MGR_Value)
+  return queryallconfigurationrsp_mgr_value_ != NULL ? *queryallconfigurationrsp_mgr_value_
+                         : *::Interactive::Message::QueryAllConfigurationRsp_MGR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAllConfigurationRsp_MGR* Rsp::mutable_queryallconfigurationrsp_mgr_value() {
+  
+  if (queryallconfigurationrsp_mgr_value_ == NULL) {
+    queryallconfigurationrsp_mgr_value_ = new ::Interactive::Message::QueryAllConfigurationRsp_MGR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryAllConfigurationRsp_MGR_Value)
+  return queryallconfigurationrsp_mgr_value_;
+}
+inline ::Interactive::Message::QueryAllConfigurationRsp_MGR* Rsp::release_queryallconfigurationrsp_mgr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryAllConfigurationRsp_MGR_Value)
+  
+  ::Interactive::Message::QueryAllConfigurationRsp_MGR* temp = queryallconfigurationrsp_mgr_value_;
+  queryallconfigurationrsp_mgr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryallconfigurationrsp_mgr_value(::Interactive::Message::QueryAllConfigurationRsp_MGR* queryallconfigurationrsp_mgr_value) {
+  delete queryallconfigurationrsp_mgr_value_;
+  queryallconfigurationrsp_mgr_value_ = queryallconfigurationrsp_mgr_value;
+  if (queryallconfigurationrsp_mgr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAllConfigurationRsp_MGR_Value)
 }
 
 // -------------------------------------------------------------------
@@ -27502,6 +31877,32 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

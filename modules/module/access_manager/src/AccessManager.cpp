@@ -2481,6 +2481,361 @@ bool AccessManager::GetUserAccessRecordReq(const std::string &strMsg, const std:
     return blResult;
 }
 
+bool AccessManager::QueryAppUpgradeReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAppUpgradeReq_USR req;
+    InteractiveProtoHandler::AppUpgrade appUpgrade;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &appUpgrade, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryAppUpgradeRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAppUpgradeRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        rsp.m_appUpgrade.m_uiNewVersionValid = appUpgrade.m_uiNewVersionValid;
+        rsp.m_appUpgrade.m_strAppName = appUpgrade.m_strAppName;
+        rsp.m_appUpgrade.m_strAppPath = appUpgrade.m_strAppPath;
+        rsp.m_appUpgrade.m_uiAppSize = appUpgrade.m_uiAppSize;
+        rsp.m_appUpgrade.m_strVersion = appUpgrade.m_strVersion;
+        rsp.m_appUpgrade.m_strVersionCode = appUpgrade.m_strVersionCode;
+        rsp.m_appUpgrade.m_strDescription = appUpgrade.m_strDescription;
+        rsp.m_appUpgrade.m_uiForceUpgrade = appUpgrade.m_uiForceUpgrade;
+        rsp.m_appUpgrade.m_strUpdateDate = appUpgrade.m_strUpdateDate;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query app upgrade rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query app upgrade rsp already send, dst id is " << strSrcID << " and category is " << req.m_strCategory <<
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strVersionCode <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query app upgrade req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAppUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strVersionCode, appUpgrade))
+    {
+        LOG_ERROR_RLD("Query app upgrade from db failed, category is " << req.m_strCategory <<
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strVersionCode);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryFirmwareUpgradeReq_DEV req;
+    InteractiveProtoHandler::FirmwareUpgrade firmwareUpgrade;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &firmwareUpgrade, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryFirmwareUpgradeRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        rsp.m_firmwareUpgrade.m_uiNewVersionValid = firmwareUpgrade.m_uiNewVersionValid;
+        rsp.m_firmwareUpgrade.m_strFirmwareName = firmwareUpgrade.m_strFirmwareName;
+        rsp.m_firmwareUpgrade.m_strFirmwarePath = firmwareUpgrade.m_strFirmwarePath;
+        rsp.m_firmwareUpgrade.m_uiFirmwareSize = firmwareUpgrade.m_uiFirmwareSize;
+        rsp.m_firmwareUpgrade.m_strVersion = firmwareUpgrade.m_strVersion;
+        rsp.m_firmwareUpgrade.m_strDescription = firmwareUpgrade.m_strDescription;
+        rsp.m_firmwareUpgrade.m_uiForceUpgrade = firmwareUpgrade.m_uiForceUpgrade;
+        rsp.m_firmwareUpgrade.m_strUpdateDate = firmwareUpgrade.m_strUpdateDate;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query firmware upgrade rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query firmware upgrade rsp already send, dst id is " << strSrcID << " and category is " << req.m_strCategory <<
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query firmware upgrade req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryFirwareUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, firmwareUpgrade))
+    {
+        LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
+            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::AddConfigurationReq_MGR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::AddConfigurationRsp_MGR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddConfigurationRsp_MGR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add configuration item rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add configuration item already send, dst id is " << strSrcID <<
+            " and content is " << req.m_configuration.m_strContent <<
+            " and category is " << req.m_configuration.m_strCategory <<
+            " and sub category is " << req.m_configuration.m_strSubCategory <<
+            " and latest version is " << req.m_configuration.m_strLatestVersion <<
+            " and version code is " << req.m_configuration.m_strVersionCode <<
+            " and force version is " << req.m_configuration.m_strForceVersion <<
+            " and description is " << req.m_configuration.m_strDescription <<
+            " and file server address is " << req.m_configuration.m_strServerAddress <<
+            " and file name is " << req.m_configuration.m_strFileName <<
+            " and file id is " << req.m_configuration.m_strFileID <<
+            " and file size is " << req.m_configuration.m_uiFileSize <<
+            " and lease duration is " << req.m_configuration.m_uiLeaseDuration <<
+            " and update date is " << req.m_configuration.m_strUpdateDate <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add configuration item req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    InteractiveProtoHandler::Configuration configuration;
+    configuration.m_strCategory = req.m_configuration.m_strCategory;
+    configuration.m_strSubCategory = req.m_configuration.m_strSubCategory;
+    configuration.m_strContent = req.m_configuration.m_strContent;
+    configuration.m_strLatestVersion = req.m_configuration.m_strLatestVersion;
+    configuration.m_strVersionCode = req.m_configuration.m_strVersionCode;
+    configuration.m_strDescription = req.m_configuration.m_strDescription;
+    configuration.m_strForceVersion = req.m_configuration.m_strForceVersion;
+    configuration.m_strServerAddress = req.m_configuration.m_strServerAddress;
+    configuration.m_strFileName = req.m_configuration.m_strFileName;
+    configuration.m_strFileID = req.m_configuration.m_strFileID;
+    configuration.m_uiFileSize = req.m_configuration.m_uiFileSize;
+    configuration.m_uiLeaseDuration = req.m_configuration.m_uiLeaseDuration;
+    configuration.m_strUpdateDate = req.m_configuration.m_strUpdateDate;
+    configuration.m_uiStatus = NORMAL_STATUS;
+    configuration.m_strExtend = "";
+
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertConfigurationToDB, this, configuration));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DeleteConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DeleteConfigurationReq_MGR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::DeleteConfigurationRsp_MGR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeleteConfigurationRsp_MGR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete configuration item rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete configuration item rsp already send, dst id is " << strSrcID <<
+            " and category is " << req.m_strCategory <<
+            " and sub category is " << req.m_strSubCategory <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete configuration item req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::DeleteConfigurationToDB, this, req.m_strCategory, req.m_strSubCategory, DELETE_STATUS));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::ModifyConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ModifyConfigurationReq_MGR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::ModifyConfigurationRsp_MGR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyConfigurationRsp_MGR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify configuration item rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify configuration item rsp already send, dst id is " << strSrcID <<
+            " and category is " << req.m_configuration.m_strCategory <<
+            " and sub category is " << req.m_configuration.m_strSubCategory <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify configuration item req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::ModifyConfigurationToDB, this, req.m_configuration));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryAllConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAllConfigurationReq_MGR req;
+    std::list<InteractiveProtoHandler::Configuration> configurationList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &configurationList)
+    {
+        InteractiveProtoHandler::QueryAllConfigurationRsp_MGR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllConfigurationRsp_MGR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_configurationList.swap(configurationList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all configuration item rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all configuration item rsp already send, dst id is " << strSrcID <<
+            " and begin index is " << req.m_uiBeginIndex <<
+            " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &configuration : rsp.m_configurationList)
+            {
+                LOG_INFO_RLD("Configuration item[" << i << "]: "
+                    " content is " << configuration.m_strContent <<
+                    " and category is " << configuration.m_strCategory <<
+                    " and sub category is " << configuration.m_strSubCategory <<
+                    " and latest version is " << configuration.m_strLatestVersion <<
+                    " and version code is " << configuration.m_strVersionCode <<
+                    " and description is " << configuration.m_strDescription <<
+                    " and force version is " << configuration.m_strForceVersion <<
+                    " and file server address is " << configuration.m_strServerAddress <<
+                    " and file name is " << configuration.m_strFileName <<
+                    " and file id is " << configuration.m_strFileID << 
+                    " and file size is " << configuration.m_uiFileSize << 
+                    " and lease duration is " << configuration.m_uiLeaseDuration << 
+                    " and update date is " << configuration.m_strUpdateDate);
+
+                ++i;
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query all configuration item req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAllConfigurationToDB(configurationList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all configuration item failed, src id is " << strSrcID);
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -3146,6 +3501,161 @@ bool AccessManager::QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned in
     return true;
 }
 
+bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strVersionCode,
+    InteractiveProtoHandler::AppUpgrade &appUpgrade)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select latestversion, description, forceversion, serveraddress, filename, fileid, filesize, updatedate from t_configuration_info"
+        " where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4)))
+    {
+        LOG_ERROR_RLD("QueryAppUpgradeToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    InteractiveProtoHandler::Configuration configuration;
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("QueryAppUpgradeToDB sql result is empty, there is no new version available");
+
+        appUpgrade.m_uiNewVersionValid = NEW_VERSION_INVALID;
+    }
+    else
+    {
+        configuration = boost::any_cast<InteractiveProtoHandler::Configuration>(ResultList.front());
+        appUpgrade.m_uiNewVersionValid = configuration.m_strVersionCode.compare(strVersionCode) > 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
+    }
+    
+    if (NEW_VERSION_VALID == appUpgrade.m_uiNewVersionValid)
+    {
+        appUpgrade.m_strAppName = configuration.m_strFileName;
+        appUpgrade.m_strAppPath = "http://" + configuration.m_strServerAddress + "/access.cgi?action=download&fileid=" + configuration.m_strFileID;
+        appUpgrade.m_uiAppSize = configuration.m_uiFileSize;
+        appUpgrade.m_strVersion = configuration.m_strLatestVersion;
+        appUpgrade.m_strVersionCode = configuration.m_strVersionCode;
+        appUpgrade.m_strDescription = configuration.m_strDescription;
+        appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+        appUpgrade.m_strUpdateDate = configuration.m_strUpdateDate;
+
+        LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersionCode);
+    }
+    else
+    {
+        appUpgrade.m_strAppName = "";
+        appUpgrade.m_strAppPath = "";
+        appUpgrade.m_uiAppSize = 0;
+        appUpgrade.m_strVersion = "";
+        appUpgrade.m_strVersionCode = "";
+        appUpgrade.m_strDescription = "";
+        appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+        appUpgrade.m_strUpdateDate = "";
+
+        LOG_INFO_RLD("QueryAppUpgradeToDB successful, current version is latest, version is " << strVersionCode);
+    }
+
+    return true;
+}
+
+bool AccessManager::QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
+    InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "select latestversion, description, forceversion, serveraddress, filename, fileid, filesize, updatedate from t_configuration_info"
+        " where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4)))
+    {
+        LOG_ERROR_RLD("QueryFirwareUpgradeToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    InteractiveProtoHandler::Configuration configuration;
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("QueryFirwareUpgradeToDB sql result is empty, there is no new version available");
+
+        firmwareUpgrade.m_uiNewVersionValid = NEW_VERSION_INVALID;
+    }
+    else
+    {
+        configuration = boost::any_cast<InteractiveProtoHandler::Configuration>(ResultList.front());
+        //固件升级允许出现版本回退的情况
+        firmwareUpgrade.m_uiNewVersionValid = configuration.m_strLatestVersion.compare(strCurrentVersion) != 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
+    }
+
+    if (NEW_VERSION_VALID == firmwareUpgrade.m_uiNewVersionValid)
+    {
+        firmwareUpgrade.m_strFirmwareName = configuration.m_strFileName;
+        firmwareUpgrade.m_strFirmwarePath = "http://" + configuration.m_strServerAddress + "/access.cgi?action=download&fileid=" + configuration.m_strFileID;
+        firmwareUpgrade.m_uiFirmwareSize = configuration.m_uiFileSize;
+        firmwareUpgrade.m_strVersion = configuration.m_strLatestVersion;
+        firmwareUpgrade.m_strDescription = configuration.m_strDescription;
+        firmwareUpgrade.m_uiForceUpgrade = configuration.m_strForceVersion == strCurrentVersion ? FORCE_UPGRADE : INTERACTIVE_UPGRADE;
+        firmwareUpgrade.m_strUpdateDate = configuration.m_strUpdateDate;
+
+        LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, found new version " << firmwareUpgrade.m_strVersion);
+    }
+    else
+    {
+        firmwareUpgrade.m_strFirmwareName = "";
+        firmwareUpgrade.m_strFirmwarePath = "";
+        firmwareUpgrade.m_uiFirmwareSize = 0;
+        firmwareUpgrade.m_strVersion = "";
+        firmwareUpgrade.m_strDescription = "";
+        firmwareUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+        firmwareUpgrade.m_strUpdateDate = "";
+
+        LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
+    }
+
+    return true;
+}
+
+void AccessManager::ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+{
+    InteractiveProtoHandler::Configuration configuration;
+    switch (uiColumnNum)
+    {
+    case 0:
+        configuration.m_strLatestVersion = strColumn;
+        break;
+    case 1:
+        configuration.m_strVersionCode = strColumn;
+        break;
+    case 2:
+        configuration.m_strDescription = strColumn;
+        break;
+    case 3:
+        configuration.m_strForceVersion = strColumn;
+        break;
+    case 4:
+        configuration.m_strServerAddress = strColumn;
+        break;
+    case 5:
+        configuration.m_strFileName = strColumn;
+        break;
+    case 6:
+        configuration.m_strFileID = strColumn;
+        break;
+    case 7:
+        configuration.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
+        break;
+    case 8:
+        configuration.m_strUpdateDate = strColumn;
+        Result = configuration;
+        break;
+
+    default:
+        LOG_ERROR_RLD("ConfigurationInfoSqlCB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+        break;
+    }
+}
+
 bool AccessManager::GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn,
     std::string &strCountryNameZh, std::string &strTimeZone)
 {
@@ -3181,6 +3691,221 @@ void AccessManager::InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo)
     {
         LOG_ERROR_RLD("Insert t_user_info sql exec failed, sql is " << sql);        
     }
+}
+
+void AccessManager::InsertConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_configuration_info"
+        "values(uuid, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, configuration.m_strCategory.c_str(), configuration.m_strSubCategory.c_str(), configuration.m_strContent.c_str(),
+        configuration.m_strLatestVersion.c_str(), configuration.m_strVersionCode.c_str(), configuration.m_strDescription.c_str(), configuration.m_strForceVersion.c_str(),
+        configuration.m_strServerAddress.c_str(), configuration.m_strFileName.c_str(), configuration.m_strFileID.c_str(), configuration.m_uiFileSize,
+        configuration.m_uiLeaseDuration, configuration.m_strUpdateDate.c_str(), configuration.m_uiStatus, configuration.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertConfigurationToDB exec sql failed, sql is " << sql);
+    }
+}
+
+void AccessManager::DeleteConfigurationToDB(const std::string &strCategory, const std::string &strSubCategory, const int iStatus)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_configuration_info set status = '%d' where category = '%s' and subcategory = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strCategory, strSubCategory);
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteConfigurationToDB exec sql failed, sql is " << sql);
+    }
+}
+
+void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration)
+{
+    bool blModified = false;
+
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+    snprintf(sql, size, "update t_configuration_info set ");
+
+    if (!configuration.m_strContent.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", content = '%s'", configuration.m_strContent.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strLatestVersion.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", latestversion = '%s'", configuration.m_strLatestVersion.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strVersionCode.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", versioncode = '%s'", configuration.m_strVersionCode.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strDescription.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "description = '%s'", configuration.m_strDescription.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strForceVersion.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "forceversion = '%s'", configuration.m_strForceVersion.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strServerAddress.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "serveraddress = '%s'", configuration.m_strServerAddress.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strFileName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "filename = '%s'", configuration.m_strFileName.c_str());
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strFileID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "fileid = '%s', filesize = %d", configuration.m_strFileID.c_str(), configuration.m_uiFileSize);
+
+        blModified = true;
+    }
+
+    if (0xFFFFFFFF != configuration.m_uiLeaseDuration)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "leaseduration = %d", configuration.m_uiLeaseDuration);
+
+        blModified = true;
+    }
+
+    if (!configuration.m_strUpdateDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, "updatedate = '%s'", configuration.m_strUpdateDate.c_str());
+
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyConfigurationToDB completed, there is no change");
+        return;
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " where category = '%s' and subcategory = '%s' and status = 0",
+        configuration.m_strCategory.c_str(), configuration.m_strSubCategory.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyConfigurationToDB exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler::Configuration> &configurationList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[256] = { 0 };
+    const char *sqlfmt = "select category, subcategory, content, latestversion, versioncode, description, forceversion, serveraddress, filename, fileid, filesize, leaseduration, updatedate"
+        " from t_configuration_info where status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    InteractiveProtoHandler::Configuration configuration;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            configuration.m_strCategory = strColumn;
+            break;
+        case 1:
+            configuration.m_strSubCategory = strColumn;
+            break;
+        case 2:
+            configuration.m_strContent = strColumn;
+            break;
+        case 3:
+            configuration.m_strLatestVersion = strColumn;
+            break;
+        case 4:
+            configuration.m_strVersionCode = strColumn;
+            break;
+        case 5:
+            configuration.m_strDescription = strColumn;
+            break;
+        case 6:
+            configuration.m_strForceVersion = strColumn;
+            break;
+        case 7:
+            configuration.m_strServerAddress = strColumn;
+            break;
+        case 8:
+            configuration.m_strFileName = strColumn;
+            break;
+        case 9:
+            configuration.m_strFileID = strColumn;
+            break;
+        case 10:
+            configuration.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 11:
+            configuration.m_uiLeaseDuration = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 12:
+            configuration.m_strUpdateDate = strColumn;
+            result = configuration;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllConfigurationToDB sql callback error, row num is " <<
+                uiRowNum << " and column num is " << uiColumnNum << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryAllConfigurationToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("QueryAllConfigurationToDB sql result is empty, sql is " << sql);
+        return true;
+    }
+
+    for (auto &result : ResultList)
+    {
+        configurationList.push_back(std::move(boost::any_cast<InteractiveProtoHandler::Configuration>(result)));
+    }
+
+    return true;
 }
 
 void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)

@@ -57,6 +57,9 @@ public:
         QueryUpgradeSiteReq_DEV_T = 10360,    //设备查询升级站点
         QueryUpgradeSiteRsp_DEV_T = 10370,
 
+        QueryFirmwareUpgradeReq_DEV_T = 10380,   //设备查询固件升级数据
+        QueryFirmwareUpgradeRsp_DEV_T = 10390,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -121,6 +124,9 @@ public:
         QueryAccessDomainNameReq_USR_T = 20600,    //用户查询接入服务器域名
         QueryAccessDomainNameRsp_USR_T = 20610,
 
+        QueryAppUpgradeReq_USR_T = 20620,          //用户查询APP升级版本数据
+        QueryAppUpgradeRsp_USR_T = 20630,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -133,7 +139,18 @@ public:
         GetDeviceAccessRecordReq_INNER_T = 30200,    //获取设备接入记录
         GetDeviceAccessRecordRsp_INNER_T = 30210,
         GetUserAccessRecordReq_INNER_T = 30220,      //获取用户接入记录
-        GetUserAccessRecordRsp_INNER_T = 30230
+        GetUserAccessRecordRsp_INNER_T = 30230,
+
+        ///////////////////////////////////////////////////////
+
+        AddConfigurationReq_MGR_T = 40000,           //添加配置项
+        AddConfigurationRsp_MGR_T = 40010,
+        DeleteConfigurationReq_MGR_T = 40020,        //删除配置项
+        DeleteConfigurationRsp_MGR_T = 40030,
+        ModifyConfigurationReq_MGR_T = 40040,        //修改配置项
+        ModifyConfigurationRsp_MGR_T = 40050,
+        QueryAllConfigurationReq_MGR_T = 40060,      //查询所有配置项
+        QueryAllConfigurationRsp_MGR_T = 40070
    };
 
     struct Device
@@ -223,6 +240,50 @@ public:
         unsigned int m_uiOnlineDuration;
         std::string m_strCreateDate;
         unsigned int m_uiStatus;
+    };
+
+    struct Configuration
+    {
+        std::string m_strCategory;
+        std::string m_strSubCategory;
+        std::string m_strContent;
+        std::string m_strLatestVersion;
+        std::string m_strVersionCode;
+        std::string m_strDescription;
+        std::string m_strForceVersion;
+        std::string m_strServerAddress;
+        std::string m_strFileName;
+        std::string m_strFileID;
+        unsigned int m_uiFileSize;
+        unsigned int m_uiLeaseDuration;
+        std::string m_strUpdateDate;
+        unsigned int m_uiStatus;
+        std::string m_strExtend;
+    };
+
+    struct AppUpgrade
+    {
+        unsigned int m_uiNewVersionValid;
+        std::string m_strAppName;
+        std::string m_strAppPath;
+        unsigned int m_uiAppSize;
+        std::string m_strVersion;
+        std::string m_strVersionCode;
+        std::string m_strDescription;
+        unsigned int m_uiForceUpgrade;
+        std::string m_strUpdateDate;
+    };
+
+    struct FirmwareUpgrade
+    {
+        unsigned int m_uiNewVersionValid;
+        std::string m_strFirmwareName;
+        std::string m_strFirmwarePath;
+        unsigned int m_uiFirmwareSize;
+        std::string m_strVersion;
+        std::string m_strDescription;
+        unsigned int m_uiForceUpgrade;
+        std::string m_strUpdateDate;
     };
 
     struct Req
@@ -774,6 +835,27 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryAppUpgradeReq_USR : Req
+    {
+        std::string m_strCategory;
+        std::string m_strSubCategory;
+        std::string m_strCurrentVersion;
+        std::string m_strVersionCode;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAppUpgradeRsp_USR : Rsp
+    {
+        AppUpgrade m_appUpgrade;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct AddFileReq_DEV : Req
     {
@@ -1053,6 +1135,26 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryFirmwareUpgradeReq_DEV : Req
+    {
+        std::string m_strCategory;
+        std::string m_strSubCategory;
+        std::string m_strCurrentVersion;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryFirmwareUpgradeRsp_DEV : Rsp
+    {
+        FirmwareUpgrade m_firmwareUpgrade;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     struct QueryUpgradeSiteRsp_DEV : Rsp
     {
         std::string m_strUpgradeSiteUrl;
@@ -1101,7 +1203,80 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
-    
+    struct AddConfigurationReq_MGR : Req
+    {
+        Configuration m_configuration;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct AddConfigurationRsp_MGR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteConfigurationReq_MGR : Req
+    {
+        std::string m_strCategory;
+        std::string m_strSubCategory;
+ 
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteConfigurationRsp_MGR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyConfigurationReq_MGR : Req
+    {
+        Configuration m_configuration;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyConfigurationRsp_MGR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllConfigurationReq_MGR : Req
+    {
+        unsigned int m_uiBeginIndex;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllConfigurationRsp_MGR : Rsp
+    {
+        std::list<Configuration> m_configurationList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
     bool GetMsgType(const std::string &strData, MsgType &msgtype);
 
     bool SerializeReq(const Req &req, std::string &strOutput);
@@ -1313,6 +1488,36 @@ private:
     bool GetUserAccessRecordReq_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool GetUserAccessRecordRsp_INNER_Serializer(const Req &rsp, std::string &strOutput);
     bool GetUserAccessRecordRsp_INNER_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAppUpgradeReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAppUpgradeReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAppUpgradeRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAppUpgradeRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryFirmwareUpgradeReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryFirmwareUpgradeReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryFirmwareUpgradeRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryFirmwareUpgradeRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool AddConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput);
+    bool AddConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool AddConfigurationRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
+    bool AddConfigurationRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DeleteConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput);
+    bool DeleteConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DeleteConfigurationRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
+    bool DeleteConfigurationRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ModifyConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput);
+    bool ModifyConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ModifyConfigurationRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
+    bool ModifyConfigurationRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAllConfigurationReq_MGR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAllConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAllConfigurationRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAllConfigurationRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 
