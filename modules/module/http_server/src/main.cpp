@@ -299,6 +299,9 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_CONFIG_ACTION, boost::bind(&HttpMsgHandler::DeleteConfigurationHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::MOD_CONFIG_ACTION, boost::bind(&HttpMsgHandler::ModifyConfigurationHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_CONFIG_ACTION, boost::bind(&HttpMsgHandler::QueryConfigurationHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_APP_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryAppUpgradeHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryDevUpgradeHandler, &filehdr, _1, _2));
+
 
     fcgimgr.Run(true);
     return 0;

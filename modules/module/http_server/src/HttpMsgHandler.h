@@ -60,6 +60,10 @@ public:
     static const std::string DELETE_CONFIG_ACTION;
     static const std::string MOD_CONFIG_ACTION;
     static const std::string QUERY_CONFIG_ACTION;
+
+    static const std::string QUERY_APP_UPGRADE_ACTION;
+    static const std::string QUERY_DEV_UPGRADE_ACTION;
+
     
     typedef struct _ParamInfo
     {
@@ -151,6 +155,11 @@ public:
     bool ModifyConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAppUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -262,6 +271,14 @@ private:
     bool QueryConfiguration(const unsigned int uiBeginIndex, std::list<T> &CfgList);
 
     bool QueryUploadURL(std::string &strURL);
+
+    bool QueryAppUpgrade(const std::string &strCategory, const std::string &strSubcategory,const std::string &strCurrentVersion, std::string &strNewVersionValid, 
+        std::string &strAppName, std::string &strAppPath, unsigned int &uiAppSize, std::string &strNewVersion, std::string &strDesc, 
+        std::string &strForceUpgrade, std::string &strUpdateDate);
+
+    bool QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, std::string &strNewVersionValid,
+        std::string &strFirmwareName, std::string &strFirmwarePath, unsigned int &uiFirmwareSize, std::string &strNewVersion, std::string &strDesc,
+        std::string &strForceUpgrade, std::string &strUpdateDate);
 
 private:
     ParamInfo m_ParamInfo;

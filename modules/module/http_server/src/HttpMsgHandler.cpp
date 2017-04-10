@@ -94,6 +94,10 @@ const std::string HttpMsgHandler::MOD_CONFIG_ACTION("modify_configuration");
 
 const std::string HttpMsgHandler::QUERY_CONFIG_ACTION("query_all_configuration");
 
+const std::string HttpMsgHandler::QUERY_APP_UPGRADE_ACTION("query_app_upgrade");
+
+const std::string HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION("query_firmware_upgrade");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -3432,6 +3436,166 @@ bool HttpMsgHandler::QueryConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMs
     return blResult;
 }
 
+bool HttpMsgHandler::QueryAppUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Category not found.");
+        return blResult;
+    }
+    const std::string strCategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("sub_category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sub category not found.");
+        return blResult;
+    }
+    const std::string strSubcategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("current_version");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Current version not found.");
+        return blResult;
+    }
+    const std::string strCurrentVersion = itFind->second;
+
+    LOG_INFO_RLD("Query app upgrade info received and category is " << strCategory << " and subcategory is " << strSubcategory
+        << " and current version is " << strCurrentVersion);
+
+    std::string strNewVersionValid;
+    std::string strAppName;
+    std::string strAppPath;
+    unsigned int uiAppSize = 0;
+    std::string strNewVersion;
+    std::string strDesc;
+    std::string strForceUpgrade;
+    std::string strUpdateDate;
+    if (!QueryAppUpgrade(strCategory, strSubcategory, strCurrentVersion, strNewVersionValid, strAppName, strAppPath, uiAppSize, 
+        strNewVersion, strDesc, strForceUpgrade, strUpdateDate))
+    {
+        LOG_ERROR_RLD("Query app upgrade handle failed and category is " << strCategory << " and subgategory is " << strSubcategory << 
+            " and current version is " << strCurrentVersion);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("new_version_valid", strNewVersionValid));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("app_name", strAppName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("app_path", strAppPath));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("app_size", boost::lexical_cast<std::string>(uiAppSize)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version", strNewVersion));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("description", strDesc));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("force_upgrade", strForceUpgrade));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("update_date", strUpdateDate));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Category not found.");
+        return blResult;
+    }
+    const std::string strCategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("sub_category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sub category not found.");
+        return blResult;
+    }
+    const std::string strSubcategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("current_version");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Current version not found.");
+        return blResult;
+    }
+    const std::string strCurrentVersion = itFind->second;
+
+    LOG_INFO_RLD("Query device firmware upgrade info received and category is " << strCategory << " and subcategory is " << strSubcategory
+        << " and current version is " << strCurrentVersion);
+
+    std::string strNewVersionValid;
+    std::string strFirmwareName;
+    std::string strFirmwarePath;
+    unsigned int uiFirmwareSize = 0;
+    std::string strNewVersion;
+    std::string strDesc;
+    std::string strForceUpgrade;
+    std::string strUpdateDate;
+    if (!QueryDevUpgrade(strCategory, strSubcategory, strCurrentVersion, strNewVersionValid, strFirmwareName, strFirmwarePath, uiFirmwareSize,
+        strNewVersion, strDesc, strForceUpgrade, strUpdateDate))
+    {
+        LOG_ERROR_RLD("Query device firmware upgrade handle failed and category is " << strCategory << " and subgategory is " << strSubcategory <<
+            " and current version is " << strCurrentVersion);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("new_version_valid", strNewVersionValid));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("firmware_name", strFirmwareName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("firmware_path", strFirmwarePath));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("firmware_size", boost::lexical_cast<std::string>(uiFirmwareSize)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version", strNewVersion));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("description", strDesc));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("force_upgrade", strForceUpgrade));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("update_date", strUpdateDate));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -5914,6 +6078,144 @@ bool HttpMsgHandler::QueryUploadURL(std::string &strURL)
         LOG_INFO_RLD("Query upload url is " << strURL <<
             " and return code is " << QueryUploadURLRsp.m_iRetcode <<
             " and return msg is " << QueryUploadURLRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryAppUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, 
+    std::string &strNewVersionValid, std::string &strAppName, std::string &strAppPath, unsigned int &uiAppSize, 
+    std::string &strNewVersion, std::string &strDesc, std::string &strForceUpgrade, std::string &strUpdateDate)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAppUpgradeReq_USR QueryAppVerReq;
+        QueryAppVerReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T;
+        QueryAppVerReq.m_uiMsgSeq = 1;
+        QueryAppVerReq.m_strSID = "";
+        QueryAppVerReq.m_strCategory = strCategory;
+        QueryAppVerReq.m_strSubCategory = strSubcategory;
+        QueryAppVerReq.m_strCurrentVersion = strCurrentVersion;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAppVerReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query app version req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryAppUpgradeRsp_USR QueryAppVerRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAppVerRsp))
+        {
+            LOG_ERROR_RLD("Query app version rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strNewVersionValid = QueryAppVerRsp.m_appUpgrade.m_uiNewVersionValid;
+        strAppName = QueryAppVerRsp.m_appUpgrade.m_strAppName;
+        strAppPath = QueryAppVerRsp.m_appUpgrade.m_strAppPath;
+        uiAppSize = QueryAppVerRsp.m_appUpgrade.m_uiAppSize;
+        strNewVersion = QueryAppVerRsp.m_appUpgrade.m_strVersion;
+        strDesc = QueryAppVerRsp.m_appUpgrade.m_strDescription;
+        strForceUpgrade = QueryAppVerRsp.m_appUpgrade.m_uiForceUpgrade;
+        strUpdateDate = QueryAppVerRsp.m_appUpgrade.m_strUpdateDate;
+
+        iRet = QueryAppVerRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query app version and new version vaild is  " << strNewVersionValid << " and app name is " << strAppName <<
+            " and app path " << strAppPath << " and app size is " << uiAppSize << " and new version is " << strNewVersion <<
+            " and description is " << strDesc << " and force upgrade is " << strForceUpgrade << " and update date is " << strUpdateDate <<
+            " and return code is " << QueryAppVerRsp.m_iRetcode <<
+            " and return msg is " << QueryAppVerRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, 
+    std::string &strNewVersionValid, std::string &strFirmwareName, std::string &strFirmwarePath, unsigned int &uiFirmwareSize, 
+    std::string &strNewVersion, std::string &strDesc, std::string &strForceUpgrade, std::string &strUpdateDate)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryFirmwareUpgradeReq_DEV QueryDevVerReq;
+        QueryDevVerReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryFirmwareUpgradeReq_DEV_T;
+        QueryDevVerReq.m_uiMsgSeq = 1;
+        QueryDevVerReq.m_strSID = "";
+        QueryDevVerReq.m_strCategory = strCategory;
+        QueryDevVerReq.m_strSubCategory = strSubcategory;
+        QueryDevVerReq.m_strCurrentVersion = strCurrentVersion;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevVerReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device firmware version req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV QueryDevVerRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevVerRsp))
+        {
+            LOG_ERROR_RLD("Query device firmware version rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strNewVersionValid = QueryDevVerRsp.m_firmwareUpgrade.m_uiNewVersionValid;
+        strFirmwareName = QueryDevVerRsp.m_firmwareUpgrade.m_strFirmwareName;
+        strFirmwarePath = QueryDevVerRsp.m_firmwareUpgrade.m_strFirmwarePath;
+        uiFirmwareSize = QueryDevVerRsp.m_firmwareUpgrade.m_uiFirmwareSize;
+        strNewVersion = QueryDevVerRsp.m_firmwareUpgrade.m_strVersion;
+        strDesc = QueryDevVerRsp.m_firmwareUpgrade.m_strDescription;
+        strForceUpgrade = QueryDevVerRsp.m_firmwareUpgrade.m_uiForceUpgrade;
+        strUpdateDate = QueryDevVerRsp.m_firmwareUpgrade.m_strUpdateDate;
+
+        iRet = QueryDevVerRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device firmware version and new version vaild is  " << strNewVersionValid << " and firmware name is " << strFirmwareName <<
+            " and firmware path " << strFirmwarePath << " and firmware size is " << uiFirmwareSize << " and new version is " << strNewVersion <<
+            " and description is " << strDesc << " and force upgrade is " << strForceUpgrade << " and update date is " << strUpdateDate <<
+            " and return code is " << QueryDevVerRsp.m_iRetcode <<
+            " and return msg is " << QueryDevVerRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
