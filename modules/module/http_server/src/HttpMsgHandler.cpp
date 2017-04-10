@@ -6131,7 +6131,7 @@ bool HttpMsgHandler::QueryAppUpgrade(const std::string &strCategory, const std::
             return iRet = CommMsgHandler::FAILED;
         }
 
-        strNewVersionValid = QueryAppVerRsp.m_appUpgrade.m_uiNewVersionValid;
+        strNewVersionValid = boost::lexical_cast<std::string>(QueryAppVerRsp.m_appUpgrade.m_uiNewVersionValid);
         strAppName = QueryAppVerRsp.m_appUpgrade.m_strAppName;
         strAppPath = QueryAppVerRsp.m_appUpgrade.m_strAppPath;
         uiAppSize = QueryAppVerRsp.m_appUpgrade.m_uiAppSize;
@@ -6200,7 +6200,7 @@ bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::
             return iRet = CommMsgHandler::FAILED;
         }
 
-        strNewVersionValid = QueryDevVerRsp.m_firmwareUpgrade.m_uiNewVersionValid;
+        strNewVersionValid = boost::lexical_cast<std::string>(QueryDevVerRsp.m_firmwareUpgrade.m_uiNewVersionValid);
         strFirmwareName = QueryDevVerRsp.m_firmwareUpgrade.m_strFirmwareName;
         strFirmwarePath = QueryDevVerRsp.m_firmwareUpgrade.m_strFirmwarePath;
         uiFirmwareSize = QueryDevVerRsp.m_firmwareUpgrade.m_uiFirmwareSize;
