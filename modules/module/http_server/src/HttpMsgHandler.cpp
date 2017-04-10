@@ -82,7 +82,17 @@ const std::string HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION("user_query_ac
 
 const std::string HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION("device_query_access_domain");
 
-const std::string HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE("device_query_update_service");
+const std::string HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE_ACTION("device_query_update_service");
+
+const std::string HttpMsgHandler::QUERY_UPLOAD_URL_ACTION("query_upload_url");
+
+const std::string HttpMsgHandler::ADD_CONFIG_ACTION("add_configuration");
+
+const std::string HttpMsgHandler::DELETE_CONFIG_ACTION("delete_configuration");
+
+const std::string HttpMsgHandler::MOD_CONFIG_ACTION("modify_configuration");
+
+const std::string HttpMsgHandler::QUERY_CONFIG_ACTION("query_all_configuration");
 
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -2906,7 +2916,7 @@ bool HttpMsgHandler::DeviceQueryUpdateServiceHandler(boost::shared_ptr<MsgInfoMa
     itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
     if (pMsgInfoMap->end() == itFind)
     {
-        LOG_ERROR_RLD("User remote ip not found.");
+        LOG_ERROR_RLD("Device remote ip not found.");
         return blResult;
     }
     const std::string strRemoteIP = itFind->second;
@@ -2940,6 +2950,486 @@ bool HttpMsgHandler::DeviceQueryUpdateServiceHandler(boost::shared_ptr<MsgInfoMa
     return blResult;
 
 
+}
+
+bool HttpMsgHandler::QueryUploadURLHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    LOG_INFO_RLD("Query upload url received.");
+
+    std::string strURL;
+    if (!QueryUploadURL(strURL))
+    {
+        LOG_ERROR_RLD("Query upload url handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::AddConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Category not found.");
+        return blResult;
+    }
+    const std::string strCategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("sub_category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sub category not found.");
+        return blResult;
+    }
+    const std::string strSubcategory = itFind->second;
+
+    std::string strContent;
+    itFind = pMsgInfoMap->find("content");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strContent = itFind->second;
+    }
+
+    std::string strLatestVersion;
+    itFind = pMsgInfoMap->find("latest_version");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLatestVersion = itFind->second;
+    }
+
+    std::string strDesc;
+    itFind = pMsgInfoMap->find("description");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDesc = itFind->second;
+    }
+
+    std::string strForceVersion;
+    itFind = pMsgInfoMap->find("force_version");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strForceVersion = itFind->second;
+    }
+
+    std::string strServerAddress;
+    itFind = pMsgInfoMap->find("server_address");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strServerAddress = itFind->second;
+    }
+
+    std::string strFilename;
+    itFind = pMsgInfoMap->find("file_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFilename = itFind->second;
+    }
+
+    std::string strFileID;
+    itFind = pMsgInfoMap->find("file_id");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileID = itFind->second;
+    }
+
+    unsigned int uiFileSize = 0;
+    std::string strFileSize;
+    itFind = pMsgInfoMap->find("file_size");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileSize = itFind->second;
+        
+        try
+        {
+            uiFileSize = boost::lexical_cast<unsigned int>(strFileSize);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Value invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Value invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiLease = 0;
+    std::string strLease;
+    itFind = pMsgInfoMap->find("lease");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLease = itFind->second;
+
+        try
+        {
+            uiLease = boost::lexical_cast<unsigned int>(strLease);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Value invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Value invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    LOG_INFO_RLD("Add configuration info received and category is " << strCategory << " and subcategory is " << strSubcategory
+        << " and latest version is " << strLatestVersion << " and description is " << strDesc << " and force version " << strForceVersion
+        << " and server address is " << strServerAddress << " and file name is " << strFilename << " and file id is " << strFileID 
+        << " and file size is " << strFileSize << " and lease is " << strLease);
+
+    if (!AddConfiguration(strCategory, strSubcategory, strLatestVersion, strDesc, strForceVersion, strServerAddress, strFilename, strFileID, uiFileSize, uiLease))
+    {
+        LOG_ERROR_RLD("Add configuration handle failed and category is " << strCategory << " and subgategory is " << strSubcategory);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DeleteConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Category not found.");
+        return blResult;
+    }
+    const std::string strCategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("sub_category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sub category not found.");
+        return blResult;
+    }
+    const std::string strSubcategory = itFind->second;
+
+
+    LOG_INFO_RLD("Delete configuration info received and category is " << strCategory << " and subcategory is " << strSubcategory);
+
+    if (!DeleteConfiguration(strCategory, strSubcategory))
+    {
+        LOG_ERROR_RLD("Delete configuration handle failed and category is " << strCategory << " and subgategory is " << strSubcategory);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::ModifyConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Category not found.");
+        return blResult;
+    }
+    const std::string strCategory = itFind->second;
+
+    itFind = pMsgInfoMap->find("sub_category");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sub category not found.");
+        return blResult;
+    }
+    const std::string strSubcategory = itFind->second;
+
+    std::string strContent;
+    itFind = pMsgInfoMap->find("content");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strContent = itFind->second;
+    }
+
+    std::string strLatestVersion;
+    itFind = pMsgInfoMap->find("latest_version");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLatestVersion = itFind->second;
+    }
+
+    std::string strDesc;
+    itFind = pMsgInfoMap->find("description");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDesc = itFind->second;
+    }
+
+    std::string strForceVersion;
+    itFind = pMsgInfoMap->find("force_version");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strForceVersion = itFind->second;
+    }
+
+    std::string strServerAddress;
+    itFind = pMsgInfoMap->find("server_address");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strServerAddress = itFind->second;
+    }
+
+    std::string strFilename;
+    itFind = pMsgInfoMap->find("file_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFilename = itFind->second;
+    }
+
+    std::string strFileID;
+    itFind = pMsgInfoMap->find("file_id");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileID = itFind->second;
+    }
+
+    unsigned int uiFileSize = 0;
+    std::string strFileSize;
+    itFind = pMsgInfoMap->find("file_size");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileSize = itFind->second;
+
+        try
+        {
+            uiFileSize = boost::lexical_cast<unsigned int>(strFileSize);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Value invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Value invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiLease = 0;
+    std::string strLease;
+    itFind = pMsgInfoMap->find("lease");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLease = itFind->second;
+
+        try
+        {
+            uiLease = boost::lexical_cast<unsigned int>(strLease);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Value invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Value invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    LOG_INFO_RLD("Modify configuration info received and category is " << strCategory << " and subcategory is " << strSubcategory
+        << " and latest version is " << strLatestVersion << " and description is " << strDesc << " and force version " << strForceVersion
+        << " and server address is " << strServerAddress << " and file name is " << strFilename << " and file id is " << strFileID
+        << " and file size is " << strFileSize << " and lease is " << strLease);
+
+    if (!ModifyConfiguration(strCategory, strSubcategory, strLatestVersion, strDesc, strForceVersion, strServerAddress, strFilename, strFileID, uiFileSize, uiLease))
+    {
+        LOG_ERROR_RLD("Modify configuration handle failed and category is " << strCategory << " and subgategory is " << strSubcategory);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::QueryConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsCfgList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsCfgList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsCfgList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    unsigned int uiBeginIndex = 0;
+    auto itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Value invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Value invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+    
+    LOG_INFO_RLD("Query configuration info received and begin index is " << uiBeginIndex);
+
+    std::list<InteractiveProtoHandler::Configuration> CfgList;
+    if (!QueryConfiguration<InteractiveProtoHandler::Configuration>(uiBeginIndex, CfgList))
+    {
+        LOG_ERROR_RLD("Query configuration handle failed and begin index is " << uiBeginIndex);
+        return blResult;
+    }
+
+    auto itBegin = CfgList.begin();
+    auto itEnd = CfgList.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsCfg;
+        jsCfg["category"] = itBegin->m_strCategory;
+        jsCfg["sub_category"] = itBegin->m_strSubCategory;
+        jsCfg["latest_version"] = itBegin->m_strLatestVersion;
+        jsCfg["description"] = itBegin->m_strDescription;
+        jsCfg["force_version"] = itBegin->m_strForceVersion;
+        jsCfg["file_name"] = itBegin->m_strFileName;
+        jsCfg["file_size"] = boost::lexical_cast<std::string>(itBegin->m_uiFileSize);
+        jsCfg["file_path"] = itBegin->m_strFilePath;
+        jsCfg["lease"] = boost::lexical_cast<std::string>(itBegin->m_uiLeaseDuration);
+        jsCfg["update_date"] = itBegin->m_strUpdateDate;
+
+        jsCfgList.append(jsCfg);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -5113,6 +5603,317 @@ bool HttpMsgHandler::DeviceQueryUpdateService(const std::string &strSid, const s
             " and update address is " << strUpdateAddress <<
             " and return code is " << QueryUpdateServiceRsp.m_iRetcode <<
             " and return msg is " << QueryUpdateServiceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::AddConfiguration(const std::string &strCategory, const std::string &strSubcategory, const std::string &strLatestVersion, 
+    const std::string &strDesc, const std::string &strForceVersion, const std::string &strServerAddress, const std::string &strFilename, const std::string &strFileID,
+    const unsigned int uiFileSize, const unsigned int uiLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::AddConfigurationReq_MGR AddCfgReq;
+        AddCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::AddConfigurationReq_MGR_T;
+        AddCfgReq.m_uiMsgSeq = 1;
+        AddCfgReq.m_strSID = "";
+        AddCfgReq.m_configuration.m_strCategory = strCategory;
+        AddCfgReq.m_configuration.m_strDescription = strDesc;
+        AddCfgReq.m_configuration.m_strFileID = strFileID;
+        AddCfgReq.m_configuration.m_strFileName = strFilename;
+        AddCfgReq.m_configuration.m_strForceVersion = strForceVersion;
+        AddCfgReq.m_configuration.m_strLatestVersion = strLatestVersion;
+        AddCfgReq.m_configuration.m_strSubCategory = strSubcategory;
+        AddCfgReq.m_configuration.m_strUpdateDate = strCurrentTime;
+        AddCfgReq.m_configuration.m_uiFileSize = uiFileSize;
+        AddCfgReq.m_configuration.m_uiLeaseDuration = uiLease;
+        AddCfgReq.m_configuration.m_uiStatus = 0;
+        AddCfgReq.m_configuration.m_strServerAddress = strServerAddress;
+
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add configuration req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::AddConfigurationRsp_MGR AddCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddCfgRsp))
+        {
+            LOG_ERROR_RLD("Add configuration rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddCfgRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add configuration and category is " << strCategory << " and subcategory is " << strSubcategory <<
+            " and return code is " << AddCfgRsp.m_iRetcode <<
+            " and return msg is " << AddCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeleteConfiguration(const std::string &strCategory, const std::string &strSubcategory)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DeleteConfigurationReq_MGR DelCfgReq;
+        DelCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::DeleteConfigurationReq_MGR_T;
+        DelCfgReq.m_uiMsgSeq = 1;
+        DelCfgReq.m_strSID = "";
+        DelCfgReq.m_strCategory = strCategory;
+        DelCfgReq.m_strSubCategory = strSubcategory;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete configuration req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DeleteConfigurationRsp_MGR DelCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelCfgRsp))
+        {
+            LOG_ERROR_RLD("Delete configuration rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelCfgRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete configuration and category is " << strCategory << " and subcategory is " << strSubcategory <<
+            " and return code is " << DelCfgRsp.m_iRetcode <<
+            " and return msg is " << DelCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::ModifyConfiguration(const std::string &strCategory, const std::string &strSubcategory, const std::string &strLatestVersion, const std::string &strDesc, const std::string &strForceVersion, const std::string &strServerAddress, const std::string &strFilename, const std::string &strFileID, const unsigned int uiFileSize, const unsigned int uiLease)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        InteractiveProtoHandler::ModifyConfigurationReq_MGR ModCfgReq;
+        ModCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T;
+        ModCfgReq.m_uiMsgSeq = 1;
+        ModCfgReq.m_strSID = "";
+        ModCfgReq.m_configuration.m_strCategory = strCategory;
+        ModCfgReq.m_configuration.m_strDescription = strDesc;
+        ModCfgReq.m_configuration.m_strFileID = strFileID;
+        ModCfgReq.m_configuration.m_strFileName = strFilename;
+        ModCfgReq.m_configuration.m_strForceVersion = strForceVersion;
+        ModCfgReq.m_configuration.m_strLatestVersion = strLatestVersion;
+        ModCfgReq.m_configuration.m_strSubCategory = strSubcategory;
+        ModCfgReq.m_configuration.m_strUpdateDate = strCurrentTime;
+        ModCfgReq.m_configuration.m_uiFileSize = uiFileSize;
+        ModCfgReq.m_configuration.m_uiLeaseDuration = uiLease;
+        ModCfgReq.m_configuration.m_uiStatus = 0;
+        ModCfgReq.m_configuration.m_strServerAddress = strServerAddress;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify configuration req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ModifyConfigurationRsp_MGR ModCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModCfgRsp))
+        {
+            LOG_ERROR_RLD("Modify configuration rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModCfgRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify configuration and category is " << strCategory << " and subcategory is " << strSubcategory <<
+            " and return code is " << ModCfgRsp.m_iRetcode <<
+            " and return msg is " << ModCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+template<typename T>
+bool HttpMsgHandler::QueryConfiguration(const unsigned int uiBeginIndex, std::list<T> &CfgList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAllConfigurationReq_MGR QueryCfgReq;
+        QueryCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T;
+        QueryCfgReq.m_uiMsgSeq = 1;
+        QueryCfgReq.m_strSID = "";
+        QueryCfgReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all config req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryAllConfigurationRsp_MGR QueryCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryCfgRsp))
+        {
+            LOG_ERROR_RLD("Query all config rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        CfgList.clear();
+        CfgList.swap(QueryCfgRsp.m_configurationList);
+
+        iRet = QueryCfgRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all config and begin index is " << uiBeginIndex <<
+            " and return code is " << QueryCfgRsp.m_iRetcode <<
+            " and return msg is " << QueryCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
+bool HttpMsgHandler::QueryUploadURL(std::string &strURL)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryUploadURLReq_MGR QueryUploadURLReq;
+        QueryUploadURLReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T;
+        QueryUploadURLReq.m_uiMsgSeq = 1;
+        QueryUploadURLReq.m_strSID = "";
+        QueryUploadURLReq.m_strValue = "";
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUploadURLReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query upload url req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryUploadURLRsp_MGR QueryUploadURLRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUploadURLRsp))
+        {
+            LOG_ERROR_RLD("Query upload url rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strURL = QueryUploadURLRsp.m_strUploadURL;
+
+        iRet = QueryUploadURLRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query upload url is " << strURL <<
+            " and return code is " << QueryUploadURLRsp.m_iRetcode <<
+            " and return msg is " << QueryUploadURLRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

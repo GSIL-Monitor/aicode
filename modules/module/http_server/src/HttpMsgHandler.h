@@ -53,9 +53,13 @@ public:
 
     static const std::string USER_QUERY_ACCESS_DOMAIN_ACTION;
     static const std::string DEVICE_QUERY_ACCESS_DOMAIN_ACTION;
-    static const std::string DEVICE_QUERY_UPDATE_SERVICE;
+    static const std::string DEVICE_QUERY_UPDATE_SERVICE_ACTION;
 
-
+    static const std::string QUERY_UPLOAD_URL_ACTION;
+    static const std::string ADD_CONFIG_ACTION;
+    static const std::string DELETE_CONFIG_ACTION;
+    static const std::string MOD_CONFIG_ACTION;
+    static const std::string QUERY_CONFIG_ACTION;
     
     typedef struct _ParamInfo
     {
@@ -137,6 +141,16 @@ public:
     bool DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeviceQueryUpdateServiceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryUploadURLHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool AddConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeleteConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryConfigurationHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -233,6 +247,21 @@ private:
     bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease);
 
     bool DeviceQueryUpdateService(const std::string &strSid, const std::string &strIpAddress, const std::string &strDevID, std::string &strUpdateAddress, std::string &strLease);
+
+    bool AddConfiguration(const std::string &strCategory, const std::string &strSubcategory, const std::string &strLatestVersion, const std::string &strDesc,
+        const std::string &strForceVersion, const std::string &strServerAddress, const std::string &strFilename, const std::string &strFileID, 
+        const unsigned int uiFileSize, const unsigned int uiLease);
+
+    bool DeleteConfiguration(const std::string &strCategory, const std::string &strSubcategory);
+
+    bool ModifyConfiguration(const std::string &strCategory, const std::string &strSubcategory, const std::string &strLatestVersion, const std::string &strDesc,
+        const std::string &strForceVersion, const std::string &strServerAddress, const std::string &strFilename, const std::string &strFileID,
+        const unsigned int uiFileSize, const unsigned int uiLease);
+
+    template<typename T>
+    bool QueryConfiguration(const unsigned int uiBeginIndex, std::list<T> &CfgList);
+
+    bool QueryUploadURL(std::string &strURL);
 
 private:
     ParamInfo m_ParamInfo;

@@ -292,7 +292,13 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryAccessDomainNameHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::USER_QUERY_ACCESS_DOMAIN_ACTION, boost::bind(&HttpMsgHandler::UserQueryAccessDomainNameHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE, boost::bind(&HttpMsgHandler::DeviceQueryUpdateServiceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_QUERY_UPDATE_SERVICE_ACTION, boost::bind(&HttpMsgHandler::DeviceQueryUpdateServiceHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_UPLOAD_URL_ACTION, boost::bind(&HttpMsgHandler::QueryUploadURLHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_CONFIG_ACTION, boost::bind(&HttpMsgHandler::AddConfigurationHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_CONFIG_ACTION, boost::bind(&HttpMsgHandler::DeleteConfigurationHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::MOD_CONFIG_ACTION, boost::bind(&HttpMsgHandler::ModifyConfigurationHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_CONFIG_ACTION, boost::bind(&HttpMsgHandler::QueryConfigurationHandler, &filehdr, _1, _2));
 
     fcgimgr.Run(true);
     return 0;
