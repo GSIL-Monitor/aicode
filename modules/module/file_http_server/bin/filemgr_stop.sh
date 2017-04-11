@@ -1,6 +1,8 @@
 #!/bin/bash
 current_path=`pwd`
-ps -ef | grep filemgr | awk '{print $2, $8}' | while read line
+current_path=$current_path'/filemgr.cgi'
+#echo $current_path
+ps -ef | grep filemgr.cgi | awk '{print $2, $8}' | while read line
 do
 	#echo "==${line}"
 	if [[ $line == *$current_path* ]]
