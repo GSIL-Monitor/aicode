@@ -29,6 +29,7 @@ public:
         std::string m_strSelfID;
         unsigned int m_uiCallFuncTimeout;
         unsigned int m_uiThreadOfWorking;
+        unsigned int m_uiCollectInfoTimeout;
     } ParamInfo;
 
     ManagementAgent(const ParamInfo &parminfo);

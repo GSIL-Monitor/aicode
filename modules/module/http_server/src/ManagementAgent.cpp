@@ -18,7 +18,8 @@ const std::string ManagementAgent::SUCCESS_MSG = "Ok";
 const std::string ManagementAgent::FAILED_CODE = "-1";
 const std::string ManagementAgent::FAILED_MSG = "Inner failed";
 
-ManagementAgent::ManagementAgent(const ParamInfo &parminfo) : m_ParamInfo(parminfo), m_Tm(boost::bind(&ManagementAgent::CollectClusterInfo, this, _1), 10),
+ManagementAgent::ManagementAgent(const ParamInfo &parminfo) : m_ParamInfo(parminfo), 
+m_Tm(boost::bind(&ManagementAgent::CollectClusterInfo, this, _1), parminfo.m_uiCollectInfoTimeout),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler), m_pInteractiveProtoMgrHandler(new InteractiveProtoManagementHandler), m_PushCollectInfoRunner(1)
 {
     m_PushCollectInfoRunner.Run();

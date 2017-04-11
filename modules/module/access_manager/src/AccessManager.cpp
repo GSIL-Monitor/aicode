@@ -1835,11 +1835,15 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     boost::shared_ptr<P2PServerManager> p2pSvrManager;
     if (P2P_SUPPLIER_LT == req.m_uiP2pSupplier)
     {
-        p2pSvrManager.reset(new P2PServerManager_LT());
+        p2pSvrManager.reset(new P2PServerManager_LT("LT"));
     }
     else if (P2P_SUPPLIER_SY == req.m_uiP2pSupplier)
     {
         p2pSvrManager.reset(new P2PServerManager_SY());
+    }
+    else if (P2P_SUPPLIER_TUTK == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_LT("TUTK"));
     }
     else
     {
@@ -2030,11 +2034,15 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     boost::shared_ptr<P2PServerManager> p2pSvrManager;
     if (P2P_SUPPLIER_LT == req.m_uiP2pSupplier)
     {
-        p2pSvrManager.reset(new P2PServerManager_LT());
+        p2pSvrManager.reset(new P2PServerManager_LT("LT"));
     }
     else if (P2P_SUPPLIER_SY == req.m_uiP2pSupplier)
     {
         p2pSvrManager.reset(new P2PServerManager_SY());
+    }
+    else if (P2P_SUPPLIER_TUTK == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_LT("TUTK"));
     }
     else
     {
@@ -2722,6 +2730,13 @@ bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std:
     if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
     {
         LOG_ERROR_RLD("Add configuration item req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!IsValidConfiguration(req.m_configuration.m_strCategory, req.m_configuration.m_strSubCategory))
+    {
+        LOG_ERROR_RLD("Add configuration verify configuration failed, src id is " << strSrcID <<
+            " and category is " << req.m_configuration.m_strCategory << " and sub category is " << req.m_configuration.m_strSubCategory);
         return false;
     }
 
@@ -3616,7 +3631,10 @@ bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const st
             appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
             appUpgrade.m_strUpdateDate = pResult->m_strUpdateDate;
 
-            LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersion);
+            LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version, version is " << appUpgrade.m_strVersion <<
+                " and app name is " << appUpgrade.m_strAppName << " and app path is " << appUpgrade.m_strAppPath <<
+                " and app size is " << appUpgrade.m_uiAppSize << " and latest version is " << appUpgrade.m_strVersion <<
+                " and force upgrade is " << appUpgrade.m_uiForceUpgrade << " and update date is " << appUpgrade.m_strUpdateDate);
         }
         else
         {
@@ -3718,6 +3736,48 @@ void AccessManager::ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const
     default:
         LOG_ERROR_RLD("ConfigurationInfoSqlCB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
         break;
+    }
+}
+
+bool AccessManager::IsValidConfiguration(const std::string &strCategory, const std::string &strSubCategory)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_configuration_info where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
+
+    unsigned int uiResult;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiResult = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiResult;
+
+        LOG_INFO_RLD("IsValidConfiguration exec sql count(id) is " << uiResult);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("IsValidConfiguration exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("IsValidConfiguration sql result is empty, category is " << strCategory << " and sub category is " << strSubCategory);
+        return false;
+    }
+
+    uiResult = boost::any_cast<unsigned int>(ResultList.front());
+
+    if (uiResult > 0)
+    {
+        LOG_ERROR_RLD("IsValidConfiguration failed, this configuration is existed, category is " << strCategory << " and sub category is " << strSubCategory);
+        return false;
+    }
+    else
+    {
+        LOG_INFO_RLD("IsValidConfiguration successful, category is " << strCategory << " and sub category is " << strSubCategory);
+        return true;
     }
 }
 
@@ -3914,7 +3974,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strServerAddress.empty() && !configuration.m_strFileID.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", filesize = %d, filepath = '%s'", configuration.m_uiFileSize,
+        snprintf(sql + len, size - len, ", fileid = '%s', filesize = %d, filepath = '%s'", configuration.m_strFileID.c_str(), configuration.m_uiFileSize,
             ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + configuration.m_strFileID).c_str());
 
         blModified = true;

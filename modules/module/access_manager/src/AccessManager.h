@@ -296,6 +296,8 @@ private:
     void ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
         boost::any &Result, boost::shared_ptr<InteractiveProtoHandler::Configuration> pConfiguration);
 
+    bool IsValidConfiguration(const std::string &strCategory, const std::string &strSubCategory);
+
     void InsertConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration);
 
     void DeleteConfigurationToDB(const std::string &strCategory, const std::string &strSubCategory, const int iStatus);

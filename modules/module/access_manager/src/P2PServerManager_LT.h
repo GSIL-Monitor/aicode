@@ -13,7 +13,7 @@ class P2PServerManager_LT :
     public P2PServerManager
 {
 public:
-    P2PServerManager_LT(void);
+    P2PServerManager_LT(const string &strSupplier);
     virtual ~P2PServerManager_LT(void);
 
     //解析连接参数

@@ -4,9 +4,9 @@
 
 #include "P2PServerManager_LT.h"
 
-P2PServerManager_LT::P2PServerManager_LT(void)
+P2PServerManager_LT::P2PServerManager_LT(const string &strSupplier)
 {
-    m_sFlag = "LT";
+    m_sFlag = strSupplier;
     m_table_name = "t_p2pid_lt";
 }
 
@@ -67,8 +67,8 @@ bool P2PServerManager_LT::GetP2pID(const string &strDeviceID, P2PConnectParam &p
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period from %s where deviceid='%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str());
+    const char* sqlfmt = "select p2pid, validity_period from %s where deviceid='%s' and supplier='%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), m_sFlag.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
@@ -116,8 +116,8 @@ bool P2PServerManager_LT::AllocateP2pID(const string &strDeviceID, P2PConnectPar
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period from %s where status=0 and deviceid is null limit 1";
-    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str());
+    const char* sqlfmt = "select p2pid, validity_period from %s where status=0 and deviceid is null and supplier='%s' limit 1";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), m_sFlag.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
@@ -166,8 +166,8 @@ bool P2PServerManager_LT::UpdateP2PID(const string &strDeviceID, const string &s
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "update %s set deviceid = '%s' where p2pid = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), strP2pID.c_str());
+    const char* sqlfmt = "update %s set deviceid = '%s' where p2pid = '%s' and supplier = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), strP2pID.c_str(), m_sFlag.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {

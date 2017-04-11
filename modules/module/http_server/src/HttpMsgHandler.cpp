@@ -6188,7 +6188,7 @@ bool HttpMsgHandler::QueryAppUpgrade(const std::string &strCategory, const std::
         uiAppSize = QueryAppVerRsp.m_appUpgrade.m_uiAppSize;
         strNewVersion = QueryAppVerRsp.m_appUpgrade.m_strVersion;
         strDesc = QueryAppVerRsp.m_appUpgrade.m_strDescription;
-        strForceUpgrade = QueryAppVerRsp.m_appUpgrade.m_uiForceUpgrade;
+        strForceUpgrade = boost::lexical_cast<std::string>(QueryAppVerRsp.m_appUpgrade.m_uiForceUpgrade);
         strUpdateDate = QueryAppVerRsp.m_appUpgrade.m_strUpdateDate;
 
         iRet = QueryAppVerRsp.m_iRetcode;
@@ -6257,7 +6257,7 @@ bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::
         uiFirmwareSize = QueryDevVerRsp.m_firmwareUpgrade.m_uiFirmwareSize;
         strNewVersion = QueryDevVerRsp.m_firmwareUpgrade.m_strVersion;
         strDesc = QueryDevVerRsp.m_firmwareUpgrade.m_strDescription;
-        strForceUpgrade = QueryDevVerRsp.m_firmwareUpgrade.m_uiForceUpgrade;
+        strForceUpgrade = boost::lexical_cast<std::string>(QueryDevVerRsp.m_firmwareUpgrade.m_uiForceUpgrade);
         strUpdateDate = QueryDevVerRsp.m_firmwareUpgrade.m_strUpdateDate;
 
         iRet = QueryDevVerRsp.m_iRetcode;

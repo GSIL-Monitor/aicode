@@ -202,6 +202,13 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    const std::string &strCollectInfoTimeout = cfg.GetItem("General.CollectInfoTimeout");
+    if (strCollectInfoTimeout.empty())
+    {
+        LOG_ERROR_RLD("Collect info timout threshold config item not found.");
+        return 0;
+    }
+    
     const std::string &strMemcachedAddress = cfg.GetItem("MemCached.MemAddress");
     if (strMemcachedAddress.empty())
     {
@@ -245,7 +252,8 @@ int main(int argc, char *argv[])
     pm2.m_uiCallFuncTimeout = boost::lexical_cast<unsigned int>(CallFuncTimeout);
     pm2.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
     pm2.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
-
+    pm2.m_uiCollectInfoTimeout = boost::lexical_cast<unsigned int>(strCollectInfoTimeout);
+    
     ManagementAgent ma(pm2);
     ma.SetMsgWriter(boost::bind(&HttpMsgHandler::WriteMsg, &filehdr, _1, _2, _3, _4));
         
