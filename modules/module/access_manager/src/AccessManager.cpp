@@ -1,3 +1,4 @@
+#include <map>
 #include "AccessManager.h"
 #include <boost/scope_exit.hpp>
 #include "CommonUtility.h"
@@ -7,11 +8,14 @@
 #include "json/json.h"
 #include "UserLoginLTUserSite.h"
 #include "P2PServerManager_SY.h"
+#include "P2PServerManager_LT.h"
+#include "HttpClient.h"
 
 const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
 const std::string AccessManager::ANDROID_APP = "Android_App";
 const std::string AccessManager::IOS_APP = "iOS_App";
+const std::string AccessManager::IPC = "IPC";
 
 const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
 
@@ -150,7 +154,13 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_DEV_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryAccessDomainNameReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::GetDeviceAccessRecordReq_INNER_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::GetUserAccessRecordReq_INNER_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::GetUserAccessRecordReq_INNER_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryAppUpgradeReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryFirmwareUpgradeReq_DEV_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::AddConfigurationReq_MGR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::DeleteConfigurationReq_MGR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -1822,10 +1832,24 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
     //获取p2pid和p2pserver
     P2PConnectParam p2pConnParam;
-    P2PServerManager_SY p2pSvrManager;
-    p2pSvrManager.SetUrl(GET_IPINFO_SITE);
-    p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
-    if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
+    boost::shared_ptr<P2PServerManager> p2pSvrManager;
+    if (P2P_SUPPLIER_LT == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_LT());
+    }
+    else if (P2P_SUPPLIER_SY == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_SY());
+    }
+    else
+    {
+        LOG_ERROR_RLD("P2p info of device failed, unkown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
+        return false;
+    }
+
+    p2pSvrManager->SetUrl(GET_IPINFO_SITE);
+    p2pSvrManager->SetDBManager(&m_DBCache, m_pMysql);
+    if (!p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
     {
         LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
         return false;
@@ -2003,10 +2027,24 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
 
     //获取p2pid和p2pserver
     P2PConnectParam p2pConnParam;
-    P2PServerManager_SY p2pSvrManager;
-    p2pSvrManager.SetUrl(GET_IPINFO_SITE);
-    p2pSvrManager.SetDBManager(&m_DBCache, m_pMysql);
-    if (!p2pSvrManager.DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strUserIpAddress, req.m_strUserID))
+    boost::shared_ptr<P2PServerManager> p2pSvrManager;
+    if (P2P_SUPPLIER_LT == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_LT());
+    }
+    else if (P2P_SUPPLIER_SY == req.m_uiP2pSupplier)
+    {
+        p2pSvrManager.reset(new P2PServerManager_SY());
+    }
+    else
+    {
+        LOG_ERROR_RLD("P2p info of user failed, unkown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
+        return false;
+    }
+
+    p2pSvrManager->SetUrl(GET_IPINFO_SITE);
+    p2pSvrManager->SetDBManager(&m_DBCache, m_pMysql);
+    if (!p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strUserIpAddress, req.m_strUserID))
     {
         LOG_ERROR_RLD("Get user p2p info failed,  user id is " << req.m_strUserID <<
             " and device id is " << req.m_strDevID << " and ip is " << req.m_strUserIpAddress);
@@ -3548,50 +3586,47 @@ bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const st
     snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4)))
+    boost::shared_ptr<InteractiveProtoHandler::Configuration> pConfiguration(new InteractiveProtoHandler::Configuration);
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4, pConfiguration)))
     {
         LOG_ERROR_RLD("QueryAppUpgradeToDB exec sql failed, sql is " << sql);
         return false;
     }
 
-    InteractiveProtoHandler::Configuration configuration;
     if (ResultList.empty())
     {
         LOG_INFO_RLD("QueryAppUpgradeToDB sql result is empty, there is no new version available");
 
         appUpgrade.m_uiNewVersionValid = NEW_VERSION_INVALID;
+        appUpgrade.m_uiAppSize = 0;
+        appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
     }
     else
     {
-        configuration = boost::any_cast<InteractiveProtoHandler::Configuration>(ResultList.front());
-        appUpgrade.m_uiNewVersionValid = configuration.m_strLatestVersion.compare(strCurrentVersion) > 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
+        auto pResult = boost::any_cast<boost::shared_ptr<InteractiveProtoHandler::Configuration>>(ResultList.front());
+        appUpgrade.m_uiNewVersionValid = pResult->m_strLatestVersion.compare(strCurrentVersion) > 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
+
+        if (NEW_VERSION_VALID == appUpgrade.m_uiNewVersionValid)
+        {
+            appUpgrade.m_strAppName = pResult->m_strFileName;
+            appUpgrade.m_strAppPath = pResult->m_strFilePath;
+            appUpgrade.m_uiAppSize = pResult->m_uiFileSize;
+            appUpgrade.m_strVersion = pResult->m_strLatestVersion;
+            appUpgrade.m_strDescription = pResult->m_strDescription;
+            appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+            appUpgrade.m_strUpdateDate = pResult->m_strUpdateDate;
+
+            LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersion);
+        }
+        else
+        {
+            appUpgrade.m_uiAppSize = 0;
+            appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+
+            LOG_INFO_RLD("QueryAppUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
+        }
     }
     
-    if (NEW_VERSION_VALID == appUpgrade.m_uiNewVersionValid)
-    {
-        appUpgrade.m_strAppName = configuration.m_strFileName;
-        appUpgrade.m_strAppPath = configuration.m_strFilePath;
-        appUpgrade.m_uiAppSize = configuration.m_uiFileSize;
-        appUpgrade.m_strVersion = configuration.m_strLatestVersion;
-        appUpgrade.m_strDescription = configuration.m_strDescription;
-        appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
-        appUpgrade.m_strUpdateDate = configuration.m_strUpdateDate;
-
-        LOG_INFO_RLD("QueryAppUpgradeToDB successful, found new version " << appUpgrade.m_strVersion);
-    }
-    else
-    {
-        appUpgrade.m_strAppName = "";
-        appUpgrade.m_strAppPath = "";
-        appUpgrade.m_uiAppSize = 0;
-        appUpgrade.m_strVersion = "";
-        appUpgrade.m_strDescription = "";
-        appUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
-        appUpgrade.m_strUpdateDate = "";
-
-        LOG_INFO_RLD("QueryAppUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
-    }
-
     return true;
 }
 
@@ -3604,80 +3639,80 @@ bool AccessManager::QueryFirwareUpgradeToDB(const std::string &strCategory, cons
     snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4)))
+    boost::shared_ptr<InteractiveProtoHandler::Configuration> pConfiguration(new InteractiveProtoHandler::Configuration);
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, boost::bind(&AccessManager::ConfigurationInfoSqlCB, this, _1, _2, _3, _4, pConfiguration)))
     {
         LOG_ERROR_RLD("QueryFirwareUpgradeToDB exec sql failed, sql is " << sql);
         return false;
     }
 
-    InteractiveProtoHandler::Configuration configuration;
     if (ResultList.empty())
     {
         LOG_INFO_RLD("QueryFirwareUpgradeToDB sql result is empty, there is no new version available");
 
         firmwareUpgrade.m_uiNewVersionValid = NEW_VERSION_INVALID;
-    }
-    else
-    {
-        configuration = boost::any_cast<InteractiveProtoHandler::Configuration>(ResultList.front());
-        //固件升级允许出现版本回退的情况
-        firmwareUpgrade.m_uiNewVersionValid = configuration.m_strLatestVersion.compare(strCurrentVersion) != 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
-    }
-
-    if (NEW_VERSION_VALID == firmwareUpgrade.m_uiNewVersionValid)
-    {
-        firmwareUpgrade.m_strFirmwareName = configuration.m_strFileName;
-        firmwareUpgrade.m_strFirmwarePath = configuration.m_strFilePath;
-        firmwareUpgrade.m_uiFirmwareSize = configuration.m_uiFileSize;
-        firmwareUpgrade.m_strVersion = configuration.m_strLatestVersion;
-        firmwareUpgrade.m_strDescription = configuration.m_strDescription;
-        firmwareUpgrade.m_uiForceUpgrade = configuration.m_strForceVersion == strCurrentVersion ? FORCE_UPGRADE : INTERACTIVE_UPGRADE;
-        firmwareUpgrade.m_strUpdateDate = configuration.m_strUpdateDate;
-
-        LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, found new version " << firmwareUpgrade.m_strVersion);
-    }
-    else
-    {
-        firmwareUpgrade.m_strFirmwareName = "";
-        firmwareUpgrade.m_strFirmwarePath = "";
         firmwareUpgrade.m_uiFirmwareSize = 0;
-        firmwareUpgrade.m_strVersion = "";
-        firmwareUpgrade.m_strDescription = "";
         firmwareUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
-        firmwareUpgrade.m_strUpdateDate = "";
+    }
+    else
+    {
+        auto pResult = boost::any_cast<boost::shared_ptr<InteractiveProtoHandler::Configuration>>(ResultList.front());
+        //固件升级允许出现版本回退的情况
+        firmwareUpgrade.m_uiNewVersionValid = pResult->m_strLatestVersion.compare(strCurrentVersion) != 0 ? NEW_VERSION_VALID : NEW_VERSION_INVALID;
 
-        LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
+        if (NEW_VERSION_VALID == firmwareUpgrade.m_uiNewVersionValid)
+        {
+            firmwareUpgrade.m_strFirmwareName = pResult->m_strFileName;
+            firmwareUpgrade.m_strFirmwarePath = pResult->m_strFilePath;
+            firmwareUpgrade.m_uiFirmwareSize = pResult->m_uiFileSize;
+            firmwareUpgrade.m_strVersion = pResult->m_strLatestVersion;
+            firmwareUpgrade.m_strDescription = pResult->m_strDescription;
+            firmwareUpgrade.m_uiForceUpgrade = pResult->m_strForceVersion == strCurrentVersion ? FORCE_UPGRADE : INTERACTIVE_UPGRADE;
+            firmwareUpgrade.m_strUpdateDate = pResult->m_strUpdateDate;
+
+            LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, found new version, version is " << firmwareUpgrade.m_strVersion <<
+                " and firmware name is " << firmwareUpgrade.m_strFirmwareName << " and firmware path is " << firmwareUpgrade.m_strFirmwarePath <<
+                " and firmware size is " << firmwareUpgrade.m_uiFirmwareSize << " and latest version is " << firmwareUpgrade.m_strVersion <<
+                " and force upgrade is " << firmwareUpgrade.m_uiForceUpgrade << " and update date is " << firmwareUpgrade.m_strUpdateDate);
+        }
+        else
+        {
+            firmwareUpgrade.m_uiFirmwareSize = 0;
+            firmwareUpgrade.m_uiForceUpgrade = INTERACTIVE_UPGRADE;
+
+            LOG_INFO_RLD("QueryFirwareUpgradeToDB successful, current version is latest, version is " << strCurrentVersion);
+        }
     }
 
     return true;
 }
 
-void AccessManager::ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+void AccessManager::ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
+    boost::any &Result, boost::shared_ptr<InteractiveProtoHandler::Configuration> pConfiguration)
 {
-    InteractiveProtoHandler::Configuration configuration;
     switch (uiColumnNum)
     {
     case 0:
-        configuration.m_strLatestVersion = strColumn;
+        pConfiguration->m_strLatestVersion = strColumn;
         break;
     case 1:
-        configuration.m_strDescription = strColumn;
+        pConfiguration->m_strDescription = strColumn;
         break;
     case 2:
-        configuration.m_strForceVersion = strColumn;
+        pConfiguration->m_strForceVersion = strColumn;
         break;
     case 3:
-        configuration.m_strFileName = strColumn;
+        pConfiguration->m_strFileName = strColumn;
         break;
     case 4:
-        configuration.m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
+        pConfiguration->m_uiFileSize = boost::lexical_cast<unsigned int>(strColumn);
         break;
     case 5:
-        configuration.m_strFilePath = strColumn;
+        pConfiguration->m_strFilePath = strColumn;
         break;
     case 6:
-        configuration.m_strUpdateDate = strColumn;
-        Result = configuration;
+        pConfiguration->m_strUpdateDate = strColumn;
+        Result = pConfiguration;
         break;
 
     default:
@@ -3727,7 +3762,7 @@ void AccessManager::InsertConfigurationToDB(const InteractiveProtoHandler::Confi
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_configuration_info"
-        "values(uuid, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s' %d, '%s', %d, '%s')";
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', %d, '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, configuration.m_strCategory.c_str(), configuration.m_strSubCategory.c_str(),
         configuration.m_strLatestVersion.c_str(), configuration.m_strDescription.c_str(), configuration.m_strForceVersion.c_str(),
         configuration.m_strFileName.c_str(), configuration.m_strFileID.c_str(), configuration.m_uiFileSize, configuration.m_strFilePath.c_str(),
@@ -3741,14 +3776,98 @@ void AccessManager::InsertConfigurationToDB(const InteractiveProtoHandler::Confi
 
 void AccessManager::DeleteConfigurationToDB(const std::string &strCategory, const std::string &strSubCategory, const int iStatus)
 {
+    if (!DeleteUpgradeFile(strCategory, strSubCategory))
+    {
+        LOG_ERROR_RLD("DeleteConfigurationToDB failed, delete upgrade file error, category is " << strCategory << " and sub category is " << strSubCategory);
+        return;
+    }
+
     char sql[1024] = { 0 };
     const char *sqlfmt = "update t_configuration_info set status = '%d' where category = '%s' and subcategory = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strCategory, strSubCategory);
+    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strCategory.c_str(), strSubCategory.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("DeleteConfigurationToDB exec sql failed, sql is " << sql);
     }
+}
+
+bool AccessManager::DeleteUpgradeFile(const std::string &strCategory, const std::string &strSubCategory)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select fileid, filepath from t_configuration_info where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strCategory.c_str(), strSubCategory.c_str());
+
+    std::string strFileID;
+    std::string strFilePath;
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            strFileID = strColumn;
+            break;
+        case 1:
+            strFilePath = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllConfigurationToDB sql callback error, row num is " <<
+                uiRowNum << " and column num is " << uiColumnNum << " and value is " << strColumn);
+            break;
+        }
+
+        result = strColumn;
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("DeleteUpgradeFile exec sql error, sql is " << sql);
+        return false;
+    }
+
+    strFileID = boost::any_cast<std::string>(ResultList.front());
+    strFilePath = boost::any_cast<std::string>(ResultList.back());
+
+    std::map<std::string, std::string> reqFormMap;
+    reqFormMap.insert(std::make_pair("fileid", strFileID));
+
+    std::string strUrl = strFilePath.substr(0, strFilePath.find_first_of("?") + 1) + "action=delete_file";
+
+    std::string strRsp;
+    HttpClient httpClient;
+    if (CURLE_OK != httpClient.PostForm(strUrl, reqFormMap, strRsp))
+    {
+        LOG_ERROR_RLD("DeleteUpgradeFile send http post failed, url is " << strUrl << " and file id is " << strFileID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strRsp, root))
+    {
+        LOG_ERROR_RLD("DeleteUpgradeFile failed, parse http post response data error, raw data is: " << strRsp);
+        return false;
+    }
+
+    auto retcode = root["retcode"];
+    if (retcode.isNull() || !retcode.isString())
+    {
+        LOG_ERROR_RLD("DeleteUpgradeFile failed, http post response data is illegal, raw data is: " << strRsp);
+        return false;
+    }
+
+    if ("0" != retcode.asString())
+    {
+        LOG_ERROR_RLD("DeleteUpgradeFile failed, http post return error, raw data is: " << strRsp);
+        return false;
+    }
+
+    LOG_INFO_RLD("DeleteUpgradeFile successful, post url is " << strUrl << " and file id is " << strFileID);
+    return true;
 }
 
 void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration)
@@ -3758,7 +3877,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    snprintf(sql, size, "update t_configuration_info set ");
+    snprintf(sql, size, "update t_configuration_info set id = id");
 
     if (!configuration.m_strLatestVersion.empty())
     {
@@ -3771,7 +3890,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strDescription.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "description = '%s'", configuration.m_strDescription.c_str());
+        snprintf(sql + len, size - len, ", description = '%s'", configuration.m_strDescription.c_str());
 
         blModified = true;
     }
@@ -3779,7 +3898,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strForceVersion.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "forceversion = '%s'", configuration.m_strForceVersion.c_str());
+        snprintf(sql + len, size - len, ", forceversion = '%s'", configuration.m_strForceVersion.c_str());
 
         blModified = true;
     }
@@ -3787,7 +3906,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strFileName.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "filename = '%s'", configuration.m_strFileName.c_str());
+        snprintf(sql + len, size - len, ", filename = '%s'", configuration.m_strFileName.c_str());
 
         blModified = true;
     }
@@ -3795,8 +3914,8 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strServerAddress.empty() && !configuration.m_strFileID.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "filesize = %d, filepath = '%s'", configuration.m_uiFileSize,
-            ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=xxxxx" + configuration.m_strFileID).c_str());
+        snprintf(sql + len, size - len, ", filesize = %d, filepath = '%s'", configuration.m_uiFileSize,
+            ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + configuration.m_strFileID).c_str());
 
         blModified = true;
     }
@@ -3804,7 +3923,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (0xFFFFFFFF != configuration.m_uiLeaseDuration)
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "leaseduration = %d", configuration.m_uiLeaseDuration);
+        snprintf(sql + len, size - len, ", leaseduration = %d", configuration.m_uiLeaseDuration);
 
         blModified = true;
     }
@@ -3812,7 +3931,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     if (!configuration.m_strUpdateDate.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, "updatedate = '%s'", configuration.m_strUpdateDate.c_str());
+        snprintf(sql + len, size - len, ", updatedate = '%s'", configuration.m_strUpdateDate.c_str());
 
         blModified = true;
     }

@@ -372,7 +372,8 @@ message StorageAddressRsp_DEV                   //设备获取存储的地址响
 message P2pInfoReq_DEV                          //p2p服务器信息请求
 {
   string strDevID = 1;
-  string strDevIpAddress = 2;  
+  string strDevIpAddress = 2;
+  uint32 uiP2pSupplier = 3;
 }
 
 message P2pInfoRsp_DEV                          //p2p服务器信息响应
@@ -740,6 +741,7 @@ message P2pInfoReq_USR                          //p2p服务器信息请求
   string strUserID = 1;
   string strUserIpAddress = 2;
   string strDevID = 3;                          //用户希望链接的设备ID  
+  uint32 uiP2pSupplier = 4;
 }
 
 message P2pInfoRsp_USR                          //p2p服务器信息响应

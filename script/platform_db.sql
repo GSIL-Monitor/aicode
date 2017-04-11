@@ -123,9 +123,9 @@ CREATE TABLE `t_configuration_info` (
   `description` varchar(500), #版本详情描述
   `forceversion` varchar(20), #强制升级的版本
   `filename` varchar(100),
-  `fileid` varchar(100),
+  `fileid` varchar(256),
   `filesize` int(11),
-  `filepath` varchar(200),
+  `filepath` varchar(256),
   `leaseduration` int(11),
   `updatedate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除

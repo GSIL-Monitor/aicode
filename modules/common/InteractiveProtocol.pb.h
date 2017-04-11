@@ -3539,12 +3539,19 @@ class P2pInfoReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strdevipaddress();
   void set_allocated_strdevipaddress(::std::string* strdevipaddress);
 
+  // uint32 uiP2pSupplier = 3;
+  void clear_uip2psupplier();
+  static const int kUiP2PSupplierFieldNumber = 3;
+  ::google::protobuf::uint32 uip2psupplier() const;
+  void set_uip2psupplier(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoReq_DEV)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  ::google::protobuf::uint32 uip2psupplier_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -9719,6 +9726,12 @@ class P2pInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strdevid();
   void set_allocated_strdevid(::std::string* strdevid);
 
+  // uint32 uiP2pSupplier = 4;
+  void clear_uip2psupplier();
+  static const int kUiP2PSupplierFieldNumber = 4;
+  ::google::protobuf::uint32 uip2psupplier() const;
+  void set_uip2psupplier(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.P2pInfoReq_USR)
  private:
 
@@ -9726,6 +9739,7 @@ class P2pInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr struseripaddress_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
+  ::google::protobuf::uint32 uip2psupplier_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -18835,6 +18849,20 @@ inline void P2pInfoReq_DEV::set_allocated_strdevipaddress(::std::string* strdevi
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_DEV.strDevIpAddress)
 }
 
+// uint32 uiP2pSupplier = 3;
+inline void P2pInfoReq_DEV::clear_uip2psupplier() {
+  uip2psupplier_ = 0u;
+}
+inline ::google::protobuf::uint32 P2pInfoReq_DEV::uip2psupplier() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_DEV.uiP2pSupplier)
+  return uip2psupplier_;
+}
+inline void P2pInfoReq_DEV::set_uip2psupplier(::google::protobuf::uint32 value) {
+  
+  uip2psupplier_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_DEV.uiP2pSupplier)
+}
+
 // -------------------------------------------------------------------
 
 // P2pInfoRsp_DEV
@@ -25026,6 +25054,20 @@ inline void P2pInfoReq_USR::set_allocated_strdevid(::std::string* strdevid) {
   }
   strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_USR.strDevID)
+}
+
+// uint32 uiP2pSupplier = 4;
+inline void P2pInfoReq_USR::clear_uip2psupplier() {
+  uip2psupplier_ = 0u;
+}
+inline ::google::protobuf::uint32 P2pInfoReq_USR::uip2psupplier() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_USR.uiP2pSupplier)
+  return uip2psupplier_;
+}
+inline void P2pInfoReq_USR::set_uip2psupplier(::google::protobuf::uint32 value) {
+  
+  uip2psupplier_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_USR.uiP2pSupplier)
 }
 
 // -------------------------------------------------------------------

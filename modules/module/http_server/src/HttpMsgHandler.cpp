@@ -1806,9 +1806,33 @@ bool HttpMsgHandler::P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
     }
     const std::string strRemoteIP = itFind->second;
 
+    itFind = pMsgInfoMap->find("p2p_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User p2p type not found.");
+        return blResult;
+    }
+    const std::string strP2pType = itFind->second;
 
+    unsigned int uiP2pType = 0;
+
+    try
+    {
+        uiP2pType = boost::lexical_cast<unsigned int>(strP2pType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Query p2p type of user is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Query p2p type of user is invalid and input is " << itFind->second);
+        return blResult;
+    }
+        
     LOG_INFO_RLD("User p2p info received and  session id is " << strSid << " and device id is " << strDevID
-        << " and user id is " << strUserID <<
+        << " and user id is " << strUserID << " and p2p type is " << uiP2pType <<
         " and user remote ip is " << strRemoteIP);
 
     std::string strP2pServer;
@@ -1816,7 +1840,7 @@ bool HttpMsgHandler::P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
     unsigned int uiLease = 0;
     std::string strLicenseKey;
     std::string strPushID;
-    if (!P2pInfo(strSid, strUserID, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
+    if (!P2pInfo(strSid, strUserID, strDevID, strRemoteIP, uiP2pType, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
     {
         LOG_ERROR_RLD("User p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -2024,15 +2048,40 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strRemoteIP = itFind->second;
 
+    itFind = pMsgInfoMap->find("p2p_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device p2p type not found.");
+        return blResult;
+    }
+    const std::string strP2pType = itFind->second;
 
-    LOG_INFO_RLD("Device p2p info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP);
+    unsigned int uiP2pType = 0;
+
+    try
+    {
+        uiP2pType = boost::lexical_cast<unsigned int>(strP2pType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Query p2p type of device is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Query p2p type of device is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Device p2p info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP
+        << " and p2p type is " << uiP2pType);
 
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
     std::string strLicenseKey;
     std::string strPushID;
-    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
+    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, uiP2pType, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
     {
         LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -4921,7 +4970,7 @@ bool HttpMsgHandler::QueryFriends(const std::string &strSid, const std::string &
 
 }
 
-bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress,
+bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress, const unsigned int uiP2pType,
     std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -4933,6 +4982,7 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
         P2pInfoReq.m_strUserID = strUserID;
         P2pInfoReq.m_strDevID = strDevID;
         P2pInfoReq.m_strUserIpAddress = strUserIpAddress;
+        P2pInfoReq.m_uiP2pSupplier = uiP2pType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(P2pInfoReq, strSerializeOutPut))
@@ -5048,7 +5098,7 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress,
+bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, const unsigned int uiP2pType,
     std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -5059,6 +5109,7 @@ bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string 
         DevP2pInfoReq.m_strSID = strSid;
         DevP2pInfoReq.m_strDevID = strDevID;
         DevP2pInfoReq.m_strDevIpAddress = strDevIpAddress;
+        DevP2pInfoReq.m_uiP2pSupplier = uiP2pType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevP2pInfoReq, strSerializeOutPut))
@@ -6097,7 +6148,7 @@ bool HttpMsgHandler::QueryAppUpgrade(const std::string &strCategory, const std::
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
         InteractiveProtoHandler::QueryAppUpgradeReq_USR QueryAppVerReq;
-        QueryAppVerReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T;
+        QueryAppVerReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAppUpgradeReq_USR_T;
         QueryAppVerReq.m_uiMsgSeq = 1;
         QueryAppVerReq.m_strSID = "";
         QueryAppVerReq.m_strCategory = strCategory;

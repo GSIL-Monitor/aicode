@@ -35,7 +35,7 @@ bool P2PServerManager::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparams, 
     {
         bRet = GetP2PID(sDeviceID, true, timezone);
     }
-    
+
 
     //查找数据库表，找出与该区域对应的P2P服务器信息
     P2PServerInfo p2pserver;
@@ -49,7 +49,7 @@ bool P2PServerManager::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparams, 
     {
         bRet = ParseConnectParams(p2pserver.connectparams);
     }
-    
+
     if (bRet)
     {
         p2pparams = m_p2pConnectParams;
@@ -58,7 +58,7 @@ bool P2PServerManager::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparams, 
     return bRet;
 }
 
-bool P2PServerManager::AllocP2PID( TimeZone timezone, string sDevID )
+bool P2PServerManager::AllocP2PID(TimeZone timezone, string sDevID)
 {
     //查询数据表m_table_name，若设备已关联p2pid，则直接获取，否则分配空闲的id
     bool bRet = false;
@@ -76,14 +76,14 @@ bool P2PServerManager::AllocP2PID( TimeZone timezone, string sDevID )
     return bRet;
 }
 
-bool P2PServerManager::ReleaseP2PID( string sDevID )
+bool P2PServerManager::ReleaseP2PID(string sDevID)
 {
     bool bRet = true;
     //
     return bRet;
 }
 
-bool P2PServerManager::GetP2PID( string sDevID , bool bGetTimeZone, TimeZone &timezone)
+bool P2PServerManager::GetP2PID(string sDevID, bool bGetTimeZone, TimeZone &timezone)
 {
     //查询数据表m_table_name，找出与sDevID相关联的p2pid
     bool bRet = true;
@@ -96,7 +96,7 @@ bool P2PServerManager::GetP2PID( string sDevID , bool bGetTimeZone, TimeZone &ti
     return bRet;
 }
 
-bool P2PServerManager::GetP2PServerFromTimezone( TimeZone countryTime, P2PServerInfo &p2pServerInfo)
+bool P2PServerManager::GetP2PServerFromTimezone(TimeZone countryTime, P2PServerInfo &p2pServerInfo)
 {
     if (NULL == m_pDBCache)
     {
@@ -118,7 +118,7 @@ bool P2PServerManager::GetP2PServerFromTimezone( TimeZone countryTime, P2PServer
         case 1:
             p2pServerInfo.connectparams = strColumn;
             Result = p2pServerInfo;
-            break;        
+            break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
             break;
@@ -200,7 +200,8 @@ bool P2PServerManager::GetP2pIDByDevID(const std::string &strDevID, P2PConnectPa
     p2pparams.sP2Pid = ResultInfo.sP2Pid;
     p2pparams.nTime = ResultInfo.nTime;
     p2pparams.sparam1 = ResultInfo.sparam1;
-    
+    p2pparams.sparam2 = ResultInfo.sparam2;
+
     return true;
 }
 
@@ -272,7 +273,7 @@ bool P2PServerManager::UpdateP2PID(const std::string &p2pid, const std::string &
     return true;
 }
 
-void P2PServerManager::SetUrl( string sUrl )
+void P2PServerManager::SetUrl(string sUrl)
 {
     m_timezone.setpostUrl(sUrl);
 }

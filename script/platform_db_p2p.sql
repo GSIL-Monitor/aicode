@@ -7,8 +7,8 @@ CREATE TABLE `t_ip_country` (
     `id` VARCHAR(36) NOT NULL,
     `ip` VARCHAR(46) NOT NULL,
     `countrycode` VARCHAR(8) NOT NULL,
-    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
     `status` INT(11) NOT NULL DEFAULT '0',
     `visitecount` INT(11) NOT NULL DEFAULT '0',
     `extend` VARCHAR(4000) NULL DEFAULT NULL,
@@ -31,8 +31,8 @@ CREATE TABLE `t_timezone_info` (
     `countryphone` VARCHAR(50) NULL DEFAULT NULL,
     `countrySC` VARCHAR(50) NULL DEFAULT NULL,
     `countrySQ` VARCHAR(50) NULL DEFAULT NULL,
-    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
     `status` INT(11) NOT NULL DEFAULT '0',
     `extend` VARCHAR(1000) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
@@ -50,8 +50,8 @@ CREATE TABLE `t_p2pserver_info` (
     `cluster` VARCHAR(50) NOT NULL COMMENT '所属服务器集群编号（用于分配p2pid）',
     `flag` VARCHAR(50) NOT NULL COMMENT 'P2P技术提供者标志',
     `connectparams` VARCHAR(2000) NOT NULL COMMENT 'P2P连接参数，以|分隔',
-    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
     `status` INT(11) NOT NULL DEFAULT '0',
     `extend` VARCHAR(4000) NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
@@ -69,8 +69,8 @@ CREATE TABLE `t_p2pid_sy` (
     `deviceid` VARCHAR(100) NULL DEFAULT NULL,
     `cluster` VARCHAR(100) NOT NULL COMMENT '所属服务器集群',
     `validity_period` INT(11) NOT NULL DEFAULT '0' COMMENT '有效期，单位：秒，0代表永久有效',
-    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
     `status` INT(11) NOT NULL DEFAULT '0',
     `extend` VARCHAR(4000) NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
@@ -82,6 +82,23 @@ CREATE TABLE `t_p2pid_sy` (
 )
 ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='尚云P2Pid库';
 
+DROP TABLE IF EXISTS `t_p2pid_lt`;
+CREATE TABLE `t_p2pid_lt` (
+    `id` VARCHAR(36) NOT NULL,
+    `p2pid` VARCHAR(50) NOT NULL,
+    `deviceid` VARCHAR(100) NULL DEFAULT NULL,
+    `cluster` VARCHAR(100) NOT NULL COMMENT '所属服务器集群',
+    `validity_period` INT(11) NOT NULL DEFAULT '0' COMMENT '有效期，单位：秒，0代表永久有效',
+    `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIME,
+    `status` INT(11) NOT NULL DEFAULT '0',
+    `extend` VARCHAR(4000) NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `p2pid` (`p2pid`),
+    INDEX `updatetime` (`updatetime`),
+    INDEX `status` (`status`)
+)
+ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='尚云P2Pid库';
 
 
 

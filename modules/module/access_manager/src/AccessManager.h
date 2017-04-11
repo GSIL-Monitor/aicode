@@ -47,6 +47,11 @@ public:
 
     static const std::string ANDROID_APP;
     static const std::string IOS_APP;
+    static const std::string IPC;
+
+    static const int P2P_SUPPLIER_LT = 1;
+    static const int P2P_SUPPLIER_SY = 2;
+    static const int P2P_SUPPLIER_TUTK = 3;
 
     typedef struct _Relation
     {
@@ -288,11 +293,14 @@ private:
     bool QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
         InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade);
 
-    void ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result);
+    void ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
+        boost::any &Result, boost::shared_ptr<InteractiveProtoHandler::Configuration> pConfiguration);
 
     void InsertConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration);
 
     void DeleteConfigurationToDB(const std::string &strCategory, const std::string &strSubCategory, const int iStatus);
+
+    bool DeleteUpgradeFile(const std::string &strCategory, const std::string &strSubCategory);
 
     void ModifyConfigurationToDB(const InteractiveProtoHandler::Configuration &configuration);
 

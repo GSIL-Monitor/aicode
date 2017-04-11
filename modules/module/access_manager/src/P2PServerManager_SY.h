@@ -12,7 +12,7 @@ class P2PServerManager_SY :
 {
 public:
     P2PServerManager_SY(void);
-    ~P2PServerManager_SY(void);
+    virtual ~P2PServerManager_SY(void);
 
     //解析连接参数
     virtual bool ParseConnectParams( string sconnectparams );

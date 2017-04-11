@@ -883,6 +883,7 @@ public:
         std::string m_strUserID;
         std::string m_strUserIpAddress;
         std::string m_strDevID;
+        unsigned int m_uiP2pSupplier;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1016,6 +1017,7 @@ public:
 
         std::string m_strDevID;
         std::string m_strDevIpAddress;
+        unsigned int m_uiP2pSupplier;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

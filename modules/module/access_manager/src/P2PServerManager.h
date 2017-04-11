@@ -36,7 +36,7 @@ class P2PServerManager
 {
 public:
     P2PServerManager(void);
-    ~P2PServerManager(void);
+    virtual ~P2PServerManager(void);
 
     //设置获取区域的第三方接口地址
     void SetUrl(string sUrl);
@@ -71,8 +71,6 @@ public:
     string m_table_name;
     static boost::mutex m_smutex;
 
-
-private:
     DBInfoCacheManager *m_pDBCache;
     MysqlImpl *m_pMysql;
 };

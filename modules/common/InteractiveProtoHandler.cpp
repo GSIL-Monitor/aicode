@@ -3305,6 +3305,7 @@ void InteractiveProtoHandler::P2pInfoReq_USR::UnSerializer(const InteractiveMess
     m_strUserID = InteractiveMsg.reqvalue().p2pinforeq_usr_value().struserid();
     m_strUserIpAddress = InteractiveMsg.reqvalue().p2pinforeq_usr_value().struseripaddress();
     m_strDevID = InteractiveMsg.reqvalue().p2pinforeq_usr_value().strdevid();
+    m_uiP2pSupplier = InteractiveMsg.reqvalue().p2pinforeq_usr_value().uip2psupplier();
 }
 
 void InteractiveProtoHandler::P2pInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3314,6 +3315,7 @@ void InteractiveProtoHandler::P2pInfoReq_USR::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_struserid(m_strUserID);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_struseripaddress(m_strUserIpAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_usr_value()->set_uip2psupplier(m_uiP2pSupplier);
 }
 
 void InteractiveProtoHandler::P2pInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -3594,6 +3596,7 @@ void InteractiveProtoHandler::P2pInfoReq_DEV::UnSerializer(const InteractiveMess
     Req::UnSerializer(InteractiveMsg);
     m_strDevID = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevid();
     m_strDevIpAddress = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevipaddress();
+    m_uiP2pSupplier = InteractiveMsg.reqvalue().p2pinforeq_dev_value().uip2psupplier();
 }
 
 void InteractiveProtoHandler::P2pInfoReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3602,6 +3605,7 @@ void InteractiveProtoHandler::P2pInfoReq_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.set_type(Interactive::Message::MsgType::P2pInfoReq_DEV_T);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevid(m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_uip2psupplier(m_uiP2pSupplier);
 }
 
 void InteractiveProtoHandler::P2pInfoRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
