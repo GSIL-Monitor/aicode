@@ -17,8 +17,6 @@ const std::string AccessManager::ANDROID_APP = "Android_App";
 const std::string AccessManager::IOS_APP = "iOS_App";
 const std::string AccessManager::IPC = "IPC";
 
-const std::string AccessManager::GET_IPINFO_SITE = "http://ip.taobao.com/service/getIpInfo.php";
-
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache)),
 m_DBTimer(NULL, 600)
@@ -1851,7 +1849,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         return false;
     }
 
-    p2pSvrManager->SetUrl(GET_IPINFO_SITE);
+    p2pSvrManager->SetUrl(m_ParamInfo.m_strGetIpInfoSite);
     p2pSvrManager->SetDBManager(&m_DBCache, m_pMysql);
     if (!p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
     {
@@ -2050,7 +2048,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
         return false;
     }
 
-    p2pSvrManager->SetUrl(GET_IPINFO_SITE);
+    p2pSvrManager->SetUrl(m_ParamInfo.m_strGetIpInfoSite);
     p2pSvrManager->SetDBManager(&m_DBCache, m_pMysql);
     if (!p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strUserIpAddress, req.m_strUserID))
     {
@@ -2232,7 +2230,7 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
 
     TimeZone timezone;
     CTimeZone cTimeZone;
-    cTimeZone.setpostUrl(GET_IPINFO_SITE);
+    cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
     if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
     {
@@ -2300,7 +2298,7 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
 
     TimeZone timezone;
     CTimeZone cTimeZone;
-    cTimeZone.setpostUrl(GET_IPINFO_SITE);
+    cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
     if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
     {
@@ -3449,6 +3447,10 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
         DomainInfo.strDomainName = domainInfo.strDomainName;
         DomainInfo.uiLease = domainInfo.uiLease;
         
+        //租约控制在一个范围内，而不是所有设备使用相同的租约，避免租约同时到期时，查询接入域名的并发量过大
+        srand((unsigned)time(NULL));
+        DomainInfo.uiLease += rand() % 10;
+
         return true;
     }
     else
@@ -3466,6 +3468,11 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
             {
                 DomainInfo.strDomainName = itBegin->strDomainName;
                 DomainInfo.uiLease = itBegin->uiLease;
+
+                //租约控制在一个范围内，而不是所有设备使用相同的租约，避免租约同时到期时，查询接入域名的并发量过大
+                srand((unsigned)time(NULL));
+                DomainInfo.uiLease += rand() % 10;
+
                 return true;
             }
 
@@ -3786,7 +3793,7 @@ bool AccessManager::GetTimeZone(const std::string &strIpAddress, std::string &st
 {
     TimeZone timeZone;
     CTimeZone cTimeZone;
-    cTimeZone.setpostUrl(GET_IPINFO_SITE);
+    cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
     if (!cTimeZone.GetCountryTime(strIpAddress, timeZone))
     {
@@ -3971,14 +3978,14 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
         blModified = true;
     }
 
-    if (!configuration.m_strServerAddress.empty() && !configuration.m_strFileID.empty())
-    {
-        len = strlen(sql);
-        snprintf(sql + len, size - len, ", fileid = '%s', filesize = %d, filepath = '%s'", configuration.m_strFileID.c_str(), configuration.m_uiFileSize,
-            ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + configuration.m_strFileID).c_str());
+    //if (!configuration.m_strServerAddress.empty() && !configuration.m_strFileID.empty())
+    //{
+    //    len = strlen(sql);
+    //    snprintf(sql + len, size - len, ", fileid = '%s', filesize = %d, filepath = '%s'", configuration.m_strFileID.c_str(), configuration.m_uiFileSize,
+    //        ("http://" + configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + configuration.m_strFileID).c_str());
 
-        blModified = true;
-    }
+    //    blModified = true;
+    //}
 
     if (0xFFFFFFFF != configuration.m_uiLeaseDuration)
     {

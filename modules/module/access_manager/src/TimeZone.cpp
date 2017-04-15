@@ -1,4 +1,5 @@
 //#include "StdAfx.h"
+#include <list>
 #include "TimeZone.h"
 #include "json/json.h"
 #include "DBInfoCacheManager.h"
@@ -151,13 +152,16 @@ bool CTimeZone::GetCountryTimeFromThirdInterface( string sUrl, string sIP, strin
             //  return strResult;
             //}
 
-    std::string strGetUrl = sUrl;
-    strGetUrl.append("?ip=").append(sIP);
+    std::string::size_type pos = sUrl.find("|");
+    std::string strGetUrl = sUrl.substr(0, pos) + "?ip=" + sIP;
+
+    std::list<std::string> headerList;
+    headerList.push_back(sUrl.substr(pos + 1));
 
     HttpClient httpClient;
-    if (CURLE_OK != httpClient.Get(strGetUrl, timezone))
+    if (CURLE_OK != httpClient.HttpsGet(strGetUrl, headerList, timezone))
     {
-        LOG_ERROR_RLD("GetCountryTimeFromThirdInterface get failed, url is " << sUrl);
+        LOG_ERROR_RLD("GetCountryTimeFromThirdInterface get failed, url is " << strGetUrl);
         return false;
     }
 

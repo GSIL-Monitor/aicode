@@ -79,6 +79,7 @@ bool P2PServerManager_LT::GetP2pID(const string &strDeviceID, P2PConnectParam &p
             break;
         case 1:
             p2pparams.nTime = boost::lexical_cast<int>(strColumn);
+            Result = p2pparams;
             break;
 
         default:

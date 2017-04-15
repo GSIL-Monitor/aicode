@@ -37,8 +37,6 @@ public:
 
     static const std::string MAX_DATE;
     
-    static const std::string GET_IPINFO_SITE;
-
     static const int NEW_VERSION_INVALID = 0;
     static const int NEW_VERSION_VALID = 1;
 
@@ -88,6 +86,7 @@ public:
         std::string m_strLTUserSite;
         std::string m_strLTUserSiteRC4Key;
         std::string m_strUploadURL;
+        std::string m_strGetIpInfoSite;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo

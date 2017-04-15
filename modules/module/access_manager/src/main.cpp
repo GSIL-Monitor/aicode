@@ -279,6 +279,13 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strGetIpInfoSite = GetConfig("General.GetIpInfoSite");
+    if (strGetIpInfoSite.empty())
+    {
+        LOG_ERROR_RLD("GetIpInfoSite config item not found.");
+        return 0;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -294,6 +301,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strLTUserSite = strLTUserSite;
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
     UmgParam.m_strUploadURL = strUploadURL;
+    UmgParam.m_strGetIpInfoSite = strGetIpInfoSite;
 
 
     AccessManager Umg(UmgParam);

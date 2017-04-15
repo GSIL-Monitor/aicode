@@ -207,7 +207,7 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
     }
 
     const unsigned int uiBlockSize = m_uiBlockSize;
-    const unsigned int uiBlockCount = uiBlockSize >= uiFileSize ? 1 : uiFileSize / uiBlockSize + 1;
+    const unsigned int uiBlockCount = 0 == uiFileSize % uiBlockSize ? uiFileSize / uiBlockSize : uiFileSize / uiBlockSize + 1;
 
     unsigned int uiBlockStatus = 0; //0，第一个文件块，1，文件中间位置的文件块，2，文件最后文件块
     boost::shared_ptr<char> pReadBuffer(new char[uiBlockSize]);

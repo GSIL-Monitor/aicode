@@ -108,7 +108,7 @@ curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=Android_App -F sub_cate
 curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_beta_001.img http://172.20.122.252/access.cgi?action=delete_configuration
 
 管理员修改配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_beta_001.img -F latest_version=1.8 -F description=fixed:15bugs -F force_version=3.4 -F server_address=172.20.122.251 -F file_name=mailsender -F file_id=11/F3A98BC7AEE22647B16B7F601B26D29E_mailsender -F file_size=40951 -F lease=2400 http://172.20.122.252/access.cgi?action=modify_configuration
+curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_beta_001.img -F latest_version=1.8 -F description=fixed:15bugs -F force_version=3.4 -F file_name=mailsender -F lease=2400 http://172.20.122.252/access.cgi?action=modify_configuration
 
 管理员查询所有配置项
 curl -F sid=1C399135C2F5C044A39E6B9F977958A7 http://172.20.122.252/access.cgi?action=query_all_configuration
