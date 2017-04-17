@@ -390,6 +390,9 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, strdevid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, strpassword_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, uidevicetype_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, uip2psupplier_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, strp2pid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, strp2pserver_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginReq_DEV, strvalue_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginRsp_DEV, _internal_metadata_),
@@ -1137,108 +1140,108 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 111, -1, sizeof(GetAccessAddressReq_DEV)},
   { 117, -1, sizeof(GetAccessAddressRsp_DEV)},
   { 124, -1, sizeof(LoginReq_DEV)},
-  { 132, -1, sizeof(LoginRsp_DEV)},
-  { 137, -1, sizeof(LogoutReq_DEV)},
-  { 143, -1, sizeof(LogoutRsp_DEV)},
-  { 148, -1, sizeof(ShakehandReq_DEV)},
-  { 154, -1, sizeof(ShakehandRsp_DEV)},
-  { 159, -1, sizeof(ConfigInfoReq_DEV)},
-  { 165, -1, sizeof(ConfigInfoRsp_DEV)},
-  { 171, -1, sizeof(StorageAddressReq_DEV)},
-  { 179, -1, sizeof(StorageAddressRsp_DEV)},
-  { 185, -1, sizeof(P2pInfoReq_DEV)},
-  { 192, -1, sizeof(P2pInfoRsp_DEV)},
-  { 201, -1, sizeof(AddFileReq_DEV)},
-  { 208, -1, sizeof(AddFileRsp_DEV)},
-  { 214, -1, sizeof(QueryTimeZoneReq_DEV)},
-  { 220, -1, sizeof(QueryTimeZoneRsp_DEV)},
-  { 228, -1, sizeof(QueryAccessDomainNameReq_DEV)},
-  { 234, -1, sizeof(QueryAccessDomainNameRsp_DEV)},
-  { 241, -1, sizeof(QueryUpgradeSiteReq_DEV)},
-  { 247, -1, sizeof(QueryUpgradeSiteRsp_DEV)},
-  { 253, -1, sizeof(QueryFirmwareUpgradeReq_DEV)},
-  { 260, -1, sizeof(QueryFirmwareUpgradeRsp_DEV)},
-  { 272, -1, sizeof(MsgPreHandlerReq_USR)},
-  { 277, -1, sizeof(MsgPreHandlerRsp_USR)},
-  { 282, -1, sizeof(GetAccessAddressReq_USR)},
-  { 288, -1, sizeof(GetAccessAddressRsp_USR)},
-  { 295, -1, sizeof(RegisterUserReq_USR)},
-  { 301, -1, sizeof(RegisterUserRsp_USR)},
-  { 307, -1, sizeof(UnRegisterUserReq_USR)},
-  { 313, -1, sizeof(UnRegisterUserRsp_USR)},
-  { 319, -1, sizeof(QueryUsrInfoReq_USR)},
-  { 325, -1, sizeof(QueryUsrInfoRsp_USR)},
-  { 331, -1, sizeof(ModifyUserInfoReq_USR)},
-  { 337, -1, sizeof(ModifyUserInfoRsp_USR)},
-  { 342, -1, sizeof(RetrievePwdReq_USR)},
-  { 348, -1, sizeof(RetrievePwdRsp_USR)},
-  { 353, -1, sizeof(LoginReq_USR)},
-  { 360, -1, sizeof(LoginRsp_USR)},
-  { 368, -1, sizeof(LogoutReq_USR)},
-  { 374, -1, sizeof(LogoutRsp_USR)},
-  { 379, -1, sizeof(ShakehandReq_USR)},
-  { 385, -1, sizeof(ShakehandRsp_USR)},
-  { 390, -1, sizeof(ConfigInfoReq_USR)},
-  { 396, -1, sizeof(ConfigInfoRsp_USR)},
-  { 402, -1, sizeof(AddDevReq_USR)},
-  { 408, -1, sizeof(AddDevRsp_USR)},
-  { 413, -1, sizeof(DelDevReq_USR)},
-  { 419, -1, sizeof(DelDevRsp_USR)},
-  { 425, -1, sizeof(ModifyDevReq_USR)},
-  { 431, -1, sizeof(ModifyDevRsp_USR)},
-  { 436, -1, sizeof(QueryDevInfoReq_USR)},
-  { 442, -1, sizeof(QueryDevInfoRsp_USR)},
-  { 448, -1, sizeof(QueryDevReq_USR)},
-  { 455, -1, sizeof(QueryDevRsp_USR)},
-  { 461, -1, sizeof(QueryUserReq_USR)},
-  { 468, -1, sizeof(QueryUserRsp_USR)},
-  { 474, -1, sizeof(SharingDevReq_USR)},
-  { 480, -1, sizeof(SharingDevRsp_USR)},
-  { 485, -1, sizeof(CancelSharedDevReq_USR)},
-  { 491, -1, sizeof(CancelSharedDevRsp_USR)},
-  { 496, -1, sizeof(AddFriendsReq_USR)},
-  { 502, -1, sizeof(AddFriendsRsp_USR)},
-  { 507, -1, sizeof(DelFriendsReq_USR)},
-  { 513, -1, sizeof(DelFriendsRsp_USR)},
-  { 519, -1, sizeof(QueryFriendsReq_USR)},
-  { 526, -1, sizeof(QueryFriendsRsp_USR)},
-  { 531, -1, sizeof(StorageAddressReq_USR)},
-  { 539, -1, sizeof(StorageAddressRsp_USR)},
-  { 545, -1, sizeof(P2pInfoReq_USR)},
-  { 553, -1, sizeof(P2pInfoRsp_USR)},
-  { 562, -1, sizeof(DeleteFileReq_USR)},
-  { 568, -1, sizeof(DeleteFileRsp_USR)},
-  { 574, -1, sizeof(DownloadFileReq_USR)},
-  { 580, -1, sizeof(DownloadFileRsp_USR)},
-  { 586, -1, sizeof(QueryFileReq_USR)},
-  { 597, -1, sizeof(QueryFileRsp_USR)},
-  { 603, -1, sizeof(QueryAccessDomainNameReq_USR)},
-  { 609, -1, sizeof(QueryAccessDomainNameRsp_USR)},
-  { 616, -1, sizeof(QueryAppUpgradeReq_USR)},
-  { 623, -1, sizeof(QueryAppUpgradeRsp_USR)},
-  { 635, -1, sizeof(QueryUploadURLReq_MGR)},
-  { 640, -1, sizeof(QueryUploadURLRsp_MGR)},
-  { 645, -1, sizeof(AddConfigurationReq_MGR)},
-  { 650, -1, sizeof(AddConfigurationRsp_MGR)},
-  { 655, -1, sizeof(DeleteConfigurationReq_MGR)},
-  { 661, -1, sizeof(DeleteConfigurationRsp_MGR)},
-  { 666, -1, sizeof(ModifyConfigurationReq_MGR)},
-  { 671, -1, sizeof(ModifyConfigurationRsp_MGR)},
-  { 676, -1, sizeof(QueryAllConfigurationReq_MGR)},
-  { 681, -1, sizeof(QueryAllConfigurationRsp_MGR)},
-  { 686, -1, sizeof(GetOnlineDevInfoReq_INNER)},
-  { 691, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
-  { 697, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
-  { 703, -1, sizeof(GetOnlineUserInfoReq_INNER)},
-  { 708, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
-  { 714, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
-  { 720, -1, sizeof(GetDeviceAccessRecordReq_INNER)},
-  { 725, -1, sizeof(GetDeviceAccessRecordRsp_INNER)},
-  { 731, -1, sizeof(GetUserAccessRecordReq_INNER)},
-  { 736, -1, sizeof(GetUserAccessRecordRsp_INNER)},
-  { 742, -1, sizeof(Req)},
-  { 798, -1, sizeof(Rsp)},
-  { 854, -1, sizeof(InteractiveMessage)},
+  { 135, -1, sizeof(LoginRsp_DEV)},
+  { 140, -1, sizeof(LogoutReq_DEV)},
+  { 146, -1, sizeof(LogoutRsp_DEV)},
+  { 151, -1, sizeof(ShakehandReq_DEV)},
+  { 157, -1, sizeof(ShakehandRsp_DEV)},
+  { 162, -1, sizeof(ConfigInfoReq_DEV)},
+  { 168, -1, sizeof(ConfigInfoRsp_DEV)},
+  { 174, -1, sizeof(StorageAddressReq_DEV)},
+  { 182, -1, sizeof(StorageAddressRsp_DEV)},
+  { 188, -1, sizeof(P2pInfoReq_DEV)},
+  { 195, -1, sizeof(P2pInfoRsp_DEV)},
+  { 204, -1, sizeof(AddFileReq_DEV)},
+  { 211, -1, sizeof(AddFileRsp_DEV)},
+  { 217, -1, sizeof(QueryTimeZoneReq_DEV)},
+  { 223, -1, sizeof(QueryTimeZoneRsp_DEV)},
+  { 231, -1, sizeof(QueryAccessDomainNameReq_DEV)},
+  { 237, -1, sizeof(QueryAccessDomainNameRsp_DEV)},
+  { 244, -1, sizeof(QueryUpgradeSiteReq_DEV)},
+  { 250, -1, sizeof(QueryUpgradeSiteRsp_DEV)},
+  { 256, -1, sizeof(QueryFirmwareUpgradeReq_DEV)},
+  { 263, -1, sizeof(QueryFirmwareUpgradeRsp_DEV)},
+  { 275, -1, sizeof(MsgPreHandlerReq_USR)},
+  { 280, -1, sizeof(MsgPreHandlerRsp_USR)},
+  { 285, -1, sizeof(GetAccessAddressReq_USR)},
+  { 291, -1, sizeof(GetAccessAddressRsp_USR)},
+  { 298, -1, sizeof(RegisterUserReq_USR)},
+  { 304, -1, sizeof(RegisterUserRsp_USR)},
+  { 310, -1, sizeof(UnRegisterUserReq_USR)},
+  { 316, -1, sizeof(UnRegisterUserRsp_USR)},
+  { 322, -1, sizeof(QueryUsrInfoReq_USR)},
+  { 328, -1, sizeof(QueryUsrInfoRsp_USR)},
+  { 334, -1, sizeof(ModifyUserInfoReq_USR)},
+  { 340, -1, sizeof(ModifyUserInfoRsp_USR)},
+  { 345, -1, sizeof(RetrievePwdReq_USR)},
+  { 351, -1, sizeof(RetrievePwdRsp_USR)},
+  { 356, -1, sizeof(LoginReq_USR)},
+  { 363, -1, sizeof(LoginRsp_USR)},
+  { 371, -1, sizeof(LogoutReq_USR)},
+  { 377, -1, sizeof(LogoutRsp_USR)},
+  { 382, -1, sizeof(ShakehandReq_USR)},
+  { 388, -1, sizeof(ShakehandRsp_USR)},
+  { 393, -1, sizeof(ConfigInfoReq_USR)},
+  { 399, -1, sizeof(ConfigInfoRsp_USR)},
+  { 405, -1, sizeof(AddDevReq_USR)},
+  { 411, -1, sizeof(AddDevRsp_USR)},
+  { 416, -1, sizeof(DelDevReq_USR)},
+  { 422, -1, sizeof(DelDevRsp_USR)},
+  { 428, -1, sizeof(ModifyDevReq_USR)},
+  { 434, -1, sizeof(ModifyDevRsp_USR)},
+  { 439, -1, sizeof(QueryDevInfoReq_USR)},
+  { 445, -1, sizeof(QueryDevInfoRsp_USR)},
+  { 451, -1, sizeof(QueryDevReq_USR)},
+  { 458, -1, sizeof(QueryDevRsp_USR)},
+  { 464, -1, sizeof(QueryUserReq_USR)},
+  { 471, -1, sizeof(QueryUserRsp_USR)},
+  { 477, -1, sizeof(SharingDevReq_USR)},
+  { 483, -1, sizeof(SharingDevRsp_USR)},
+  { 488, -1, sizeof(CancelSharedDevReq_USR)},
+  { 494, -1, sizeof(CancelSharedDevRsp_USR)},
+  { 499, -1, sizeof(AddFriendsReq_USR)},
+  { 505, -1, sizeof(AddFriendsRsp_USR)},
+  { 510, -1, sizeof(DelFriendsReq_USR)},
+  { 516, -1, sizeof(DelFriendsRsp_USR)},
+  { 522, -1, sizeof(QueryFriendsReq_USR)},
+  { 529, -1, sizeof(QueryFriendsRsp_USR)},
+  { 534, -1, sizeof(StorageAddressReq_USR)},
+  { 542, -1, sizeof(StorageAddressRsp_USR)},
+  { 548, -1, sizeof(P2pInfoReq_USR)},
+  { 556, -1, sizeof(P2pInfoRsp_USR)},
+  { 565, -1, sizeof(DeleteFileReq_USR)},
+  { 571, -1, sizeof(DeleteFileRsp_USR)},
+  { 577, -1, sizeof(DownloadFileReq_USR)},
+  { 583, -1, sizeof(DownloadFileRsp_USR)},
+  { 589, -1, sizeof(QueryFileReq_USR)},
+  { 600, -1, sizeof(QueryFileRsp_USR)},
+  { 606, -1, sizeof(QueryAccessDomainNameReq_USR)},
+  { 612, -1, sizeof(QueryAccessDomainNameRsp_USR)},
+  { 619, -1, sizeof(QueryAppUpgradeReq_USR)},
+  { 626, -1, sizeof(QueryAppUpgradeRsp_USR)},
+  { 638, -1, sizeof(QueryUploadURLReq_MGR)},
+  { 643, -1, sizeof(QueryUploadURLRsp_MGR)},
+  { 648, -1, sizeof(AddConfigurationReq_MGR)},
+  { 653, -1, sizeof(AddConfigurationRsp_MGR)},
+  { 658, -1, sizeof(DeleteConfigurationReq_MGR)},
+  { 664, -1, sizeof(DeleteConfigurationRsp_MGR)},
+  { 669, -1, sizeof(ModifyConfigurationReq_MGR)},
+  { 674, -1, sizeof(ModifyConfigurationRsp_MGR)},
+  { 679, -1, sizeof(QueryAllConfigurationReq_MGR)},
+  { 684, -1, sizeof(QueryAllConfigurationRsp_MGR)},
+  { 689, -1, sizeof(GetOnlineDevInfoReq_INNER)},
+  { 694, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
+  { 700, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
+  { 706, -1, sizeof(GetOnlineUserInfoReq_INNER)},
+  { 711, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
+  { 717, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
+  { 723, -1, sizeof(GetDeviceAccessRecordReq_INNER)},
+  { 728, -1, sizeof(GetDeviceAccessRecordRsp_INNER)},
+  { 734, -1, sizeof(GetUserAccessRecordReq_INNER)},
+  { 739, -1, sizeof(GetUserAccessRecordRsp_INNER)},
+  { 745, -1, sizeof(Req)},
+  { 801, -1, sizeof(Rsp)},
+  { 857, -1, sizeof(InteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -2021,486 +2024,487 @@ void AddDescriptorsImpl() {
       "dressReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strVal"
       "ue\030\002 \001(\t\"\\\n\027GetAccessAddressRsp_DEV\022\030\n\020s"
       "trAccessAddress\030\001 \001(\t\022\025\n\rstrAccessPort\030\002"
-      " \001(\t\022\020\n\010strValue\030\003 \001(\t\"]\n\014LoginReq_DEV\022\020"
-      "\n\010strDevID\030\001 \001(\t\022\023\n\013strPassword\030\002 \001(\t\022\024\n"
-      "\014uiDeviceType\030\003 \001(\r\022\020\n\010strValue\030\004 \001(\t\" \n"
-      "\014LoginRsp_DEV\022\020\n\010strValue\030\002 \001(\t\"3\n\rLogou"
-      "tReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\002"
-      " \001(\t\"!\n\rLogoutRsp_DEV\022\020\n\010strValue\030\001 \001(\t\""
-      "6\n\020ShakehandReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n"
-      "\010strValue\030\003 \001(\t\"$\n\020ShakehandRsp_DEV\022\020\n\010s"
-      "trValue\030\001 \001(\t\"7\n\021ConfigInfoReq_DEV\022\020\n\010st"
-      "rDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"<\n\021Config"
-      "InfoRsp_DEV\022\025\n\rstrConfigInfo\030\001 \001(\t\022\020\n\010st"
-      "rValue\030\002 \001(\t\"l\n\025StorageAddressReq_DEV\022\020\n"
-      "\010strDevID\030\001 \001(\t\022\025\n\ruiStorageType\030\002 \001(\r\022\027"
-      "\n\017uiStorageAction\030\003 \001(\r\022\021\n\tstrFileID\030\004 \001"
-      "(\t\";\n\025StorageAddressRsp_DEV\022\022\n\nstrAddres"
-      "s\030\001 \001(\t\022\016\n\006uiPort\030\002 \001(\r\"R\n\016P2pInfoReq_DE"
-      "V\022\020\n\010strDevID\030\001 \001(\t\022\027\n\017strDevIpAddress\030\002"
-      " \001(\t\022\025\n\ruiP2pSupplier\030\003 \001(\r\"s\n\016P2pInfoRs"
-      "p_DEV\022\024\n\014strP2pServer\030\001 \001(\t\022\020\n\010strP2pID\030"
-      "\002 \001(\t\022\017\n\007uiLease\030\003 \001(\r\022\025\n\rstrLicenseKey\030"
-      "\004 \001(\t\022\021\n\tstrPushID\030\005 \001(\t\"a\n\016AddFileReq_D"
-      "EV\022\020\n\010strDevID\030\001 \001(\t\022+\n\010fileInfo\030\002 \003(\0132\031"
-      ".Interactive.Message.File\022\020\n\010strValue\030\003 "
-      "\001(\t\";\n\016AddFileRsp_DEV\022\020\n\010strValue\030\001 \001(\t\022"
-      "\027\n\017strFileIDFailed\030\002 \003(\t\"A\n\024QueryTimeZon"
-      "eReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\027\n\017strDevIpAd"
-      "dress\030\002 \001(\t\"w\n\024QueryTimeZoneRsp_DEV\022\026\n\016s"
-      "trCountryCode\030\001 \001(\t\022\030\n\020strCountryNameEn\030"
-      "\002 \001(\t\022\030\n\020strCountryNameZh\030\003 \001(\t\022\023\n\013strTi"
-      "meZone\030\004 \001(\t\"I\n\034QueryAccessDomainNameReq"
-      "_DEV\022\027\n\017strDevIpAddress\030\001 \001(\t\022\020\n\010strValu"
-      "e\030\002 \001(\t\"X\n\034QueryAccessDomainNameRsp_DEV\022"
-      "\025\n\rstrDomainName\030\001 \001(\t\022\017\n\007uiLease\030\002 \001(\r\022"
-      "\020\n\010strValue\030\003 \001(\t\"D\n\027QueryUpgradeSiteReq"
-      "_DEV\022\020\n\010strDevID\030\001 \001(\t\022\027\n\017strDevIpAddres"
-      "s\030\002 \001(\t\"E\n\027QueryUpgradeSiteRsp_DEV\022\031\n\021st"
-      "rUpgradeSiteUrl\030\001 \001(\t\022\017\n\007uiLease\030\002 \001(\r\"e"
-      "\n\033QueryFirmwareUpgradeReq_DEV\022\023\n\013strCate"
-      "gory\030\001 \001(\t\022\026\n\016strSubCategory\030\002 \001(\t\022\031\n\021st"
-      "rCurrentVersion\030\003 \001(\t\"\335\001\n\033QueryFirmwareU"
-      "pgradeRsp_DEV\022\031\n\021uiNewVersionValid\030\001 \001(\r"
-      "\022\027\n\017strFirmwareName\030\002 \001(\t\022\027\n\017strFirmware"
-      "Path\030\003 \001(\t\022\026\n\016uiFirmwareSize\030\004 \001(\r\022\022\n\nst"
-      "rVersion\030\005 \001(\t\022\026\n\016strDescription\030\006 \001(\t\022\026"
-      "\n\016uiForceUpgrade\030\007 \001(\r\022\025\n\rstrUpdateDate\030"
-      "\010 \001(\t\"(\n\024MsgPreHandlerReq_USR\022\020\n\010strValu"
-      "e\030\001 \001(\t\"(\n\024MsgPreHandlerRsp_USR\022\020\n\010strVa"
-      "lue\030\001 \001(\t\"C\n\027GetAccessAddressReq_USR\022\026\n\016"
-      "strSerializeID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"\\"
-      "\n\027GetAccessAddressRsp_USR\022\030\n\020strAccessAd"
-      "dress\030\001 \001(\t\022\025\n\rstrAccessPort\030\002 \001(\t\022\020\n\010st"
-      "rValue\030\003 \001(\t\"T\n\023RegisterUserReq_USR\022+\n\010u"
-      "serInfo\030\001 \001(\0132\031.Interactive.Message.User"
-      "\022\020\n\010strValue\030\002 \001(\t\":\n\023RegisterUserRsp_US"
-      "R\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"V"
-      "\n\025UnRegisterUserReq_USR\022+\n\010userInfo\030\001 \001("
-      "\0132\031.Interactive.Message.User\022\020\n\010strValue"
-      "\030\002 \001(\t\"<\n\025UnRegisterUserRsp_USR\022\021\n\tstrUs"
-      "erID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\":\n\023QueryUsr"
+      " \001(\t\022\020\n\010strValue\030\003 \001(\t\"\234\001\n\014LoginReq_DEV\022"
+      "\020\n\010strDevID\030\001 \001(\t\022\023\n\013strPassword\030\002 \001(\t\022\024"
+      "\n\014uiDeviceType\030\003 \001(\r\022\025\n\ruiP2pSupplier\030\004 "
+      "\001(\r\022\020\n\010strP2pID\030\005 \001(\t\022\024\n\014strP2pServer\030\006 "
+      "\001(\t\022\020\n\010strValue\030\007 \001(\t\" \n\014LoginRsp_DEV\022\020\n"
+      "\010strValue\030\002 \001(\t\"3\n\rLogoutReq_DEV\022\020\n\010strD"
+      "evID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRs"
+      "p_DEV\022\020\n\010strValue\030\001 \001(\t\"6\n\020ShakehandReq_"
+      "DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\003 \001(\t\""
+      "$\n\020ShakehandRsp_DEV\022\020\n\010strValue\030\001 \001(\t\"7\n"
+      "\021ConfigInfoReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010"
+      "strValue\030\002 \001(\t\"<\n\021ConfigInfoRsp_DEV\022\025\n\rs"
+      "trConfigInfo\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"l\n\025"
+      "StorageAddressReq_DEV\022\020\n\010strDevID\030\001 \001(\t\022"
+      "\025\n\ruiStorageType\030\002 \001(\r\022\027\n\017uiStorageActio"
+      "n\030\003 \001(\r\022\021\n\tstrFileID\030\004 \001(\t\";\n\025StorageAdd"
+      "ressRsp_DEV\022\022\n\nstrAddress\030\001 \001(\t\022\016\n\006uiPor"
+      "t\030\002 \001(\r\"R\n\016P2pInfoReq_DEV\022\020\n\010strDevID\030\001 "
+      "\001(\t\022\027\n\017strDevIpAddress\030\002 \001(\t\022\025\n\ruiP2pSup"
+      "plier\030\003 \001(\r\"s\n\016P2pInfoRsp_DEV\022\024\n\014strP2pS"
+      "erver\030\001 \001(\t\022\020\n\010strP2pID\030\002 \001(\t\022\017\n\007uiLease"
+      "\030\003 \001(\r\022\025\n\rstrLicenseKey\030\004 \001(\t\022\021\n\tstrPush"
+      "ID\030\005 \001(\t\"a\n\016AddFileReq_DEV\022\020\n\010strDevID\030\001"
+      " \001(\t\022+\n\010fileInfo\030\002 \003(\0132\031.Interactive.Mes"
+      "sage.File\022\020\n\010strValue\030\003 \001(\t\";\n\016AddFileRs"
+      "p_DEV\022\020\n\010strValue\030\001 \001(\t\022\027\n\017strFileIDFail"
+      "ed\030\002 \003(\t\"A\n\024QueryTimeZoneReq_DEV\022\020\n\010strD"
+      "evID\030\001 \001(\t\022\027\n\017strDevIpAddress\030\002 \001(\t\"w\n\024Q"
+      "ueryTimeZoneRsp_DEV\022\026\n\016strCountryCode\030\001 "
+      "\001(\t\022\030\n\020strCountryNameEn\030\002 \001(\t\022\030\n\020strCoun"
+      "tryNameZh\030\003 \001(\t\022\023\n\013strTimeZone\030\004 \001(\t\"I\n\034"
+      "QueryAccessDomainNameReq_DEV\022\027\n\017strDevIp"
+      "Address\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"X\n\034Query"
+      "AccessDomainNameRsp_DEV\022\025\n\rstrDomainName"
+      "\030\001 \001(\t\022\017\n\007uiLease\030\002 \001(\r\022\020\n\010strValue\030\003 \001("
+      "\t\"D\n\027QueryUpgradeSiteReq_DEV\022\020\n\010strDevID"
+      "\030\001 \001(\t\022\027\n\017strDevIpAddress\030\002 \001(\t\"E\n\027Query"
+      "UpgradeSiteRsp_DEV\022\031\n\021strUpgradeSiteUrl\030"
+      "\001 \001(\t\022\017\n\007uiLease\030\002 \001(\r\"e\n\033QueryFirmwareU"
+      "pgradeReq_DEV\022\023\n\013strCategory\030\001 \001(\t\022\026\n\016st"
+      "rSubCategory\030\002 \001(\t\022\031\n\021strCurrentVersion\030"
+      "\003 \001(\t\"\335\001\n\033QueryFirmwareUpgradeRsp_DEV\022\031\n"
+      "\021uiNewVersionValid\030\001 \001(\r\022\027\n\017strFirmwareN"
+      "ame\030\002 \001(\t\022\027\n\017strFirmwarePath\030\003 \001(\t\022\026\n\016ui"
+      "FirmwareSize\030\004 \001(\r\022\022\n\nstrVersion\030\005 \001(\t\022\026"
+      "\n\016strDescription\030\006 \001(\t\022\026\n\016uiForceUpgrade"
+      "\030\007 \001(\r\022\025\n\rstrUpdateDate\030\010 \001(\t\"(\n\024MsgPreH"
+      "andlerReq_USR\022\020\n\010strValue\030\001 \001(\t\"(\n\024MsgPr"
+      "eHandlerRsp_USR\022\020\n\010strValue\030\001 \001(\t\"C\n\027Get"
+      "AccessAddressReq_USR\022\026\n\016strSerializeID\030\001"
+      " \001(\t\022\020\n\010strValue\030\002 \001(\t\"\\\n\027GetAccessAddre"
+      "ssRsp_USR\022\030\n\020strAccessAddress\030\001 \001(\t\022\025\n\rs"
+      "trAccessPort\030\002 \001(\t\022\020\n\010strValue\030\003 \001(\t\"T\n\023"
+      "RegisterUserReq_USR\022+\n\010userInfo\030\001 \001(\0132\031."
+      "Interactive.Message.User\022\020\n\010strValue\030\002 \001"
+      "(\t\":\n\023RegisterUserRsp_USR\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\020\n\010strValue\030\002 \001(\t\"V\n\025UnRegisterUser"
+      "Req_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive."
+      "Message.User\022\020\n\010strValue\030\002 \001(\t\"<\n\025UnRegi"
+      "sterUserRsp_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010st"
+      "rValue\030\002 \001(\t\":\n\023QueryUsrInfoReq_USR\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"T\n\023Quer"
+      "yUsrInfoRsp_USR\022+\n\010userInfo\030\001 \001(\0132\031.Inte"
+      "ractive.Message.User\022\020\n\010strValue\030\002 \001(\t\"W"
+      "\n\025ModifyUserInfoReq_USR\022\021\n\tstrOldPwd\030\001 \001"
+      "(\t\022+\n\010userInfo\030\002 \001(\0132\031.Interactive.Messa"
+      "ge.User\")\n\025ModifyUserInfoRsp_USR\022\020\n\010strV"
+      "alue\030\001 \001(\t\";\n\022RetrievePwdReq_USR\022\023\n\013strU"
+      "serName\030\001 \001(\t\022\020\n\010strEmail\030\002 \001(\t\"&\n\022Retri"
+      "evePwdRsp_USR\022\020\n\010strValue\030\001 \001(\t\"e\n\014Login"
+      "Req_USR\022+\n\010userInfo\030\001 \001(\0132\031.Interactive."
+      "Message.User\022\026\n\016uiTerminalType\030\002 \001(\r\022\020\n\010"
+      "strValue\030\003 \001(\t\"|\n\014LoginRsp_USR\022\021\n\tstrUse"
+      "rID\030\001 \001(\t\0223\n\014relationInfo\030\002 \003(\0132\035.Intera"
+      "ctive.Message.Relation\022\020\n\010strValue\030\003 \001(\t"
+      "\022\022\n\nstrDevName\030\004 \003(\t\"N\n\rLogoutReq_USR\022+\n"
+      "\010userInfo\030\001 \001(\0132\031.Interactive.Message.Us"
+      "er\022\020\n\010strValue\030\002 \001(\t\"!\n\rLogoutRsp_USR\022\020\n"
+      "\010strValue\030\001 \001(\t\"7\n\020ShakehandReq_USR\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"$\n\020Shak"
+      "ehandRsp_USR\022\020\n\010strValue\030\001 \001(\t\"8\n\021Config"
       "InfoReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVal"
-      "ue\030\002 \001(\t\"T\n\023QueryUsrInfoRsp_USR\022+\n\010userI"
-      "nfo\030\001 \001(\0132\031.Interactive.Message.User\022\020\n\010"
-      "strValue\030\002 \001(\t\"W\n\025ModifyUserInfoReq_USR\022"
-      "\021\n\tstrOldPwd\030\001 \001(\t\022+\n\010userInfo\030\002 \001(\0132\031.I"
-      "nteractive.Message.User\")\n\025ModifyUserInf"
-      "oRsp_USR\022\020\n\010strValue\030\001 \001(\t\";\n\022RetrievePw"
-      "dReq_USR\022\023\n\013strUserName\030\001 \001(\t\022\020\n\010strEmai"
-      "l\030\002 \001(\t\"&\n\022RetrievePwdRsp_USR\022\020\n\010strValu"
-      "e\030\001 \001(\t\"e\n\014LoginReq_USR\022+\n\010userInfo\030\001 \001("
-      "\0132\031.Interactive.Message.User\022\026\n\016uiTermin"
-      "alType\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"|\n\014LoginR"
-      "sp_USR\022\021\n\tstrUserID\030\001 \001(\t\0223\n\014relationInf"
-      "o\030\002 \003(\0132\035.Interactive.Message.Relation\022\020"
-      "\n\010strValue\030\003 \001(\t\022\022\n\nstrDevName\030\004 \003(\t\"N\n\r"
-      "LogoutReq_USR\022+\n\010userInfo\030\001 \001(\0132\031.Intera"
-      "ctive.Message.User\022\020\n\010strValue\030\002 \001(\t\"!\n\r"
-      "LogoutRsp_USR\022\020\n\010strValue\030\001 \001(\t\"7\n\020Shake"
-      "handReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVal"
-      "ue\030\002 \001(\t\"$\n\020ShakehandRsp_USR\022\020\n\010strValue"
-      "\030\001 \001(\t\"8\n\021ConfigInfoReq_USR\022\021\n\tstrUserID"
-      "\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"7\n\021ConfigInfoRs"
-      "p_USR\022\020\n\010strValue\030\001 \001(\t\022\020\n\010strItems\030\002 \003("
-      "\t\"P\n\rAddDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022,\n"
-      "\007devInfo\030\002 \001(\0132\033.Interactive.Message.Dev"
-      "ice\"!\n\rAddDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"4"
-      "\n\rDelDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010st"
-      "rDevID\030\002 \003(\t\"9\n\rDelDevRsp_USR\022\020\n\010strValu"
-      "e\030\001 \001(\t\022\026\n\016strDevIDFailed\030\002 \003(\t\"S\n\020Modif"
-      "yDevReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022,\n\007devInf"
-      "o\030\002 \001(\0132\033.Interactive.Message.Device\"$\n\020"
-      "ModifyDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\"9\n\023Qu"
-      "eryDevInfoReq_USR\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010s"
-      "trValue\030\002 \001(\t\"U\n\023QueryDevInfoRsp_USR\022,\n\007"
-      "devInfo\030\001 \001(\0132\033.Interactive.Message.Devi"
-      "ce\022\020\n\010strValue\030\002 \001(\t\"L\n\017QueryDevReq_USR\022"
-      "\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r"
-      "\022\020\n\010strValue\030\003 \001(\t\"]\n\017QueryDevRsp_USR\0226\n"
-      "\017allRelationInfo\030\001 \003(\0132\035.Interactive.Mes"
-      "sage.Relation\022\022\n\nstrDevName\030\002 \003(\t\"L\n\020Que"
-      "ryUserReq_USR\022\020\n\010strDevID\030\001 \001(\t\022\024\n\014uiBeg"
-      "inIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"_\n\020Query"
-      "UserRsp_USR\0226\n\017allRelationInfo\030\001 \003(\0132\035.I"
-      "nteractive.Message.Relation\022\023\n\013strUserNa"
-      "me\030\002 \003(\t\"Z\n\021SharingDevReq_USR\0223\n\014relatio"
+      "ue\030\002 \001(\t\"7\n\021ConfigInfoRsp_USR\022\020\n\010strValu"
+      "e\030\001 \001(\t\022\020\n\010strItems\030\002 \003(\t\"P\n\rAddDevReq_U"
+      "SR\022\021\n\tstrUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033"
+      ".Interactive.Message.Device\"!\n\rAddDevRsp"
+      "_USR\022\020\n\010strValue\030\001 \001(\t\"4\n\rDelDevReq_USR\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \003(\t\"9\n\r"
+      "DelDevRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\026\n\016strDe"
+      "vIDFailed\030\002 \003(\t\"S\n\020ModifyDevReq_USR\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022,\n\007devInfo\030\002 \001(\0132\033.Intera"
+      "ctive.Message.Device\"$\n\020ModifyDevRsp_USR"
+      "\022\020\n\010strValue\030\001 \001(\t\"9\n\023QueryDevInfoReq_US"
+      "R\022\020\n\010strDevID\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"U\n"
+      "\023QueryDevInfoRsp_USR\022,\n\007devInfo\030\001 \001(\0132\033."
+      "Interactive.Message.Device\022\020\n\010strValue\030\002"
+      " \001(\t\"L\n\017QueryDevReq_USR\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001"
+      "(\t\"]\n\017QueryDevRsp_USR\0226\n\017allRelationInfo"
+      "\030\001 \003(\0132\035.Interactive.Message.Relation\022\022\n"
+      "\nstrDevName\030\002 \003(\t\"L\n\020QueryUserReq_USR\022\020\n"
+      "\010strDevID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n"
+      "\010strValue\030\003 \001(\t\"_\n\020QueryUserRsp_USR\0226\n\017a"
+      "llRelationInfo\030\001 \003(\0132\035.Interactive.Messa"
+      "ge.Relation\022\023\n\013strUserName\030\002 \003(\t\"Z\n\021Shar"
+      "ingDevReq_USR\0223\n\014relationInfo\030\001 \001(\0132\035.In"
+      "teractive.Message.Relation\022\020\n\010strValue\030\002"
+      " \001(\t\"%\n\021SharingDevRsp_USR\022\020\n\010strValue\030\001 "
+      "\001(\t\"_\n\026CancelSharedDevReq_USR\0223\n\014relatio"
       "nInfo\030\001 \001(\0132\035.Interactive.Message.Relati"
-      "on\022\020\n\010strValue\030\002 \001(\t\"%\n\021SharingDevRsp_US"
-      "R\022\020\n\010strValue\030\001 \001(\t\"_\n\026CancelSharedDevRe"
-      "q_USR\0223\n\014relationInfo\030\001 \001(\0132\035.Interactiv"
-      "e.Message.Relation\022\020\n\010strValue\030\002 \001(\t\"*\n\026"
-      "CancelSharedDevRsp_USR\022\020\n\010strValue\030\001 \001(\t"
-      "\"\?\n\021AddFriendsReq_USR\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\027\n\017strFriendUserID\030\002 \001(\t\"%\n\021AddFriendsR"
-      "sp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021DelFriendsRe"
+      "on\022\020\n\010strValue\030\002 \001(\t\"*\n\026CancelSharedDevR"
+      "sp_USR\022\020\n\010strValue\030\001 \001(\t\"\?\n\021AddFriendsRe"
       "q_USR\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strFriendUse"
-      "rID\030\002 \003(\t\"D\n\021DelFriendsRsp_USR\022\020\n\010strVal"
-      "ue\030\001 \001(\t\022\035\n\025strFriendUserIDFailed\030\002 \003(\t\""
-      "P\n\023QueryFriendsReq_USR\022\021\n\tstrUserID\030\001 \001("
-      "\t\022\024\n\014uiBeginIndex\030\002 \001(\r\022\020\n\010strValue\030\003 \001("
-      "\t\"1\n\023QueryFriendsRsp_USR\022\032\n\022strAllFriend"
-      "UserID\030\001 \003(\t\"m\n\025StorageAddressReq_USR\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\025\n\ruiStorageType\030\002 \001(\r\022"
-      "\027\n\017uiStorageAction\030\003 \001(\r\022\021\n\tstrFileID\030\004 "
-      "\001(\t\";\n\025StorageAddressRsp_USR\022\022\n\nstrAddre"
-      "ss\030\001 \001(\t\022\016\n\006uiPort\030\002 \001(\r\"f\n\016P2pInfoReq_U"
-      "SR\022\021\n\tstrUserID\030\001 \001(\t\022\030\n\020strUserIpAddres"
-      "s\030\002 \001(\t\022\020\n\010strDevID\030\003 \001(\t\022\025\n\ruiP2pSuppli"
-      "er\030\004 \001(\r\"s\n\016P2pInfoRsp_USR\022\024\n\014strP2pServ"
-      "er\030\001 \001(\t\022\020\n\010strP2pID\030\002 \001(\t\022\017\n\007uiLease\030\003 "
-      "\001(\r\022\025\n\rstrLicenseKey\030\004 \001(\t\022\021\n\tstrPushID\030"
-      "\005 \001(\t\"9\n\021DeleteFileReq_USR\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\021\n\tstrFileID\030\002 \003(\t\">\n\021DeleteFileRs"
-      "p_USR\022\020\n\010strValue\030\001 \001(\t\022\027\n\017strFileIDFail"
-      "ed\030\002 \003(\t\";\n\023DownloadFileReq_USR\022\021\n\tstrUs"
-      "erID\030\001 \001(\t\022\021\n\tstrFileID\030\002 \003(\t\"V\n\023Downloa"
-      "dFileRsp_USR\022\020\n\010strValue\030\001 \001(\t\022-\n\007fileUr"
-      "l\030\002 \003(\0132\034.Interactive.Message.FileUrl\"\241\001"
-      "\n\020QueryFileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n"
-      "\010strDevID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\022\024\n"
-      "\014strBeginDate\030\004 \001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022"
-      "\026\n\016uiBusinessType\030\006 \001(\r\022\020\n\010strValue\030\007 \001("
-      "\t\"Q\n\020QueryFileRsp_USR\022\020\n\010strValue\030\001 \001(\t\022"
-      "+\n\010fileInfo\030\002 \003(\0132\031.Interactive.Message."
-      "File\"J\n\034QueryAccessDomainNameReq_USR\022\030\n\020"
-      "strUserIpAddress\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t"
-      "\"X\n\034QueryAccessDomainNameRsp_USR\022\025\n\rstrD"
-      "omainName\030\001 \001(\t\022\017\n\007uiLease\030\002 \001(\r\022\020\n\010strV"
-      "alue\030\003 \001(\t\"`\n\026QueryAppUpgradeReq_USR\022\023\n\013"
-      "strCategory\030\001 \001(\t\022\026\n\016strSubCategory\030\002 \001("
-      "\t\022\031\n\021strCurrentVersion\030\003 \001(\t\"\311\001\n\026QueryAp"
-      "pUpgradeRsp_USR\022\031\n\021uiNewVersionValid\030\001 \001"
-      "(\r\022\022\n\nstrAppName\030\002 \001(\t\022\022\n\nstrAppPath\030\003 \001"
-      "(\t\022\021\n\tuiAppSize\030\004 \001(\r\022\022\n\nstrVersion\030\005 \001("
-      "\t\022\026\n\016strDescription\030\006 \001(\t\022\026\n\016uiForceUpgr"
-      "ade\030\007 \001(\r\022\025\n\rstrUpdateDate\030\010 \001(\t\")\n\025Quer"
-      "yUploadURLReq_MGR\022\020\n\010strValue\030\001 \001(\t\"-\n\025Q"
-      "ueryUploadURLRsp_MGR\022\024\n\014strUploadURL\030\001 \001"
-      "(\t\"X\n\027AddConfigurationReq_MGR\022=\n\021configu"
-      "rationInfo\030\001 \001(\0132\".Interactive.Message.C"
-      "onfiguration\"+\n\027AddConfigurationRsp_MGR\022"
-      "\020\n\010strValue\030\001 \001(\t\"I\n\032DeleteConfiguration"
-      "Req_MGR\022\023\n\013strCategory\030\001 \001(\t\022\026\n\016strSubCa"
-      "tegory\030\002 \001(\t\".\n\032DeleteConfigurationRsp_M"
-      "GR\022\020\n\010strValue\030\001 \001(\t\"[\n\032ModifyConfigurat"
-      "ionReq_MGR\022=\n\021configurationInfo\030\001 \001(\0132\"."
-      "Interactive.Message.Configuration\".\n\032Mod"
-      "ifyConfigurationRsp_MGR\022\020\n\010strValue\030\001 \001("
-      "\t\"4\n\034QueryAllConfigurationReq_MGR\022\024\n\014uiB"
-      "eginIndex\030\001 \001(\r\"]\n\034QueryAllConfiguration"
-      "Rsp_MGR\022=\n\021configurationInfo\030\001 \003(\0132\".Int"
-      "eractive.Message.Configuration\"-\n\031GetOnl"
-      "ineDevInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n"
-      "\031GetOnlineDevInfoRsp_INNER\022,\n\007devInfo\030\001 "
+      "rID\030\002 \001(\t\"%\n\021AddFriendsRsp_USR\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"\?\n\021DelFriendsReq_USR\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\027\n\017strFriendUserID\030\002 \003(\t\"D\n\021Del"
+      "FriendsRsp_USR\022\020\n\010strValue\030\001 \001(\t\022\035\n\025strF"
+      "riendUserIDFailed\030\002 \003(\t\"P\n\023QueryFriendsR"
+      "eq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginInde"
+      "x\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"1\n\023QueryFriend"
+      "sRsp_USR\022\032\n\022strAllFriendUserID\030\001 \003(\t\"m\n\025"
+      "StorageAddressReq_USR\022\021\n\tstrUserID\030\001 \001(\t"
+      "\022\025\n\ruiStorageType\030\002 \001(\r\022\027\n\017uiStorageActi"
+      "on\030\003 \001(\r\022\021\n\tstrFileID\030\004 \001(\t\";\n\025StorageAd"
+      "dressRsp_USR\022\022\n\nstrAddress\030\001 \001(\t\022\016\n\006uiPo"
+      "rt\030\002 \001(\r\"f\n\016P2pInfoReq_USR\022\021\n\tstrUserID\030"
+      "\001 \001(\t\022\030\n\020strUserIpAddress\030\002 \001(\t\022\020\n\010strDe"
+      "vID\030\003 \001(\t\022\025\n\ruiP2pSupplier\030\004 \001(\r\"s\n\016P2pI"
+      "nfoRsp_USR\022\024\n\014strP2pServer\030\001 \001(\t\022\020\n\010strP"
+      "2pID\030\002 \001(\t\022\017\n\007uiLease\030\003 \001(\r\022\025\n\rstrLicens"
+      "eKey\030\004 \001(\t\022\021\n\tstrPushID\030\005 \001(\t\"9\n\021DeleteF"
+      "ileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrFile"
+      "ID\030\002 \003(\t\">\n\021DeleteFileRsp_USR\022\020\n\010strValu"
+      "e\030\001 \001(\t\022\027\n\017strFileIDFailed\030\002 \003(\t\";\n\023Down"
+      "loadFileReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tst"
+      "rFileID\030\002 \003(\t\"V\n\023DownloadFileRsp_USR\022\020\n\010"
+      "strValue\030\001 \001(\t\022-\n\007fileUrl\030\002 \003(\0132\034.Intera"
+      "ctive.Message.FileUrl\"\241\001\n\020QueryFileReq_U"
+      "SR\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strDevID\030\002 \001(\t\022"
+      "\024\n\014uiBeginIndex\030\003 \001(\r\022\024\n\014strBeginDate\030\004 "
+      "\001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\026\n\016uiBusinessTyp"
+      "e\030\006 \001(\r\022\020\n\010strValue\030\007 \001(\t\"Q\n\020QueryFileRs"
+      "p_USR\022\020\n\010strValue\030\001 \001(\t\022+\n\010fileInfo\030\002 \003("
+      "\0132\031.Interactive.Message.File\"J\n\034QueryAcc"
+      "essDomainNameReq_USR\022\030\n\020strUserIpAddress"
+      "\030\001 \001(\t\022\020\n\010strValue\030\002 \001(\t\"X\n\034QueryAccessD"
+      "omainNameRsp_USR\022\025\n\rstrDomainName\030\001 \001(\t\022"
+      "\017\n\007uiLease\030\002 \001(\r\022\020\n\010strValue\030\003 \001(\t\"`\n\026Qu"
+      "eryAppUpgradeReq_USR\022\023\n\013strCategory\030\001 \001("
+      "\t\022\026\n\016strSubCategory\030\002 \001(\t\022\031\n\021strCurrentV"
+      "ersion\030\003 \001(\t\"\311\001\n\026QueryAppUpgradeRsp_USR\022"
+      "\031\n\021uiNewVersionValid\030\001 \001(\r\022\022\n\nstrAppName"
+      "\030\002 \001(\t\022\022\n\nstrAppPath\030\003 \001(\t\022\021\n\tuiAppSize\030"
+      "\004 \001(\r\022\022\n\nstrVersion\030\005 \001(\t\022\026\n\016strDescript"
+      "ion\030\006 \001(\t\022\026\n\016uiForceUpgrade\030\007 \001(\r\022\025\n\rstr"
+      "UpdateDate\030\010 \001(\t\")\n\025QueryUploadURLReq_MG"
+      "R\022\020\n\010strValue\030\001 \001(\t\"-\n\025QueryUploadURLRsp"
+      "_MGR\022\024\n\014strUploadURL\030\001 \001(\t\"X\n\027AddConfigu"
+      "rationReq_MGR\022=\n\021configurationInfo\030\001 \001(\013"
+      "2\".Interactive.Message.Configuration\"+\n\027"
+      "AddConfigurationRsp_MGR\022\020\n\010strValue\030\001 \001("
+      "\t\"I\n\032DeleteConfigurationReq_MGR\022\023\n\013strCa"
+      "tegory\030\001 \001(\t\022\026\n\016strSubCategory\030\002 \001(\t\".\n\032"
+      "DeleteConfigurationRsp_MGR\022\020\n\010strValue\030\001"
+      " \001(\t\"[\n\032ModifyConfigurationReq_MGR\022=\n\021co"
+      "nfigurationInfo\030\001 \001(\0132\".Interactive.Mess"
+      "age.Configuration\".\n\032ModifyConfiguration"
+      "Rsp_MGR\022\020\n\010strValue\030\001 \001(\t\"4\n\034QueryAllCon"
+      "figurationReq_MGR\022\024\n\014uiBeginIndex\030\001 \001(\r\""
+      "]\n\034QueryAllConfigurationRsp_MGR\022=\n\021confi"
+      "gurationInfo\030\001 \003(\0132\".Interactive.Message"
+      ".Configuration\"-\n\031GetOnlineDevInfoReq_IN"
+      "NER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnlineDevInf"
+      "oRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Interactiv"
+      "e.Message.Device\022\020\n\010strValue\030\002 \001(\t\"^\n\034Br"
+      "oadcastOnlineDevInfo_INNER\022,\n\007devInfo\030\001 "
       "\003(\0132\033.Interactive.Message.Device\022\020\n\010strV"
-      "alue\030\002 \001(\t\"^\n\034BroadcastOnlineDevInfo_INN"
-      "ER\022,\n\007devInfo\030\001 \003(\0132\033.Interactive.Messag"
-      "e.Device\022\020\n\010strValue\030\002 \001(\t\".\n\032GetOnlineU"
-      "serInfoReq_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032Ge"
-      "tOnlineUserInfoRsp_INNER\022+\n\010userInfo\030\001 \003"
+      "alue\030\002 \001(\t\".\n\032GetOnlineUserInfoReq_INNER"
+      "\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnlineUserInfoR"
+      "sp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interactive"
+      ".Message.User\022\020\n\010strValue\030\002 \001(\t\"^\n\035Broad"
+      "castOnlineUserInfo_INNER\022+\n\010userInfo\030\001 \003"
       "(\0132\031.Interactive.Message.User\022\020\n\010strValu"
-      "e\030\002 \001(\t\"^\n\035BroadcastOnlineUserInfo_INNER"
-      "\022+\n\010userInfo\030\001 \003(\0132\031.Interactive.Message"
-      ".User\022\020\n\010strValue\030\002 \001(\t\"6\n\036GetDeviceAcce"
-      "ssRecordReq_INNER\022\024\n\014uiBeginIndex\030\001 \001(\r\""
-      "|\n\036GetDeviceAccessRecordRsp_INNER\022C\n\022dev"
-      "iceAccessRecord\030\001 \003(\0132\'.Interactive.Mess"
-      "age.DeviceAccessRecord\022\025\n\ruiRecordTotal\030"
-      "\002 \001(\r\"4\n\034GetUserAccessRecordReq_INNER\022\024\n"
-      "\014uiBeginIndex\030\001 \001(\r\"v\n\034GetUserAccessReco"
-      "rdRsp_INNER\022\?\n\020userAccessRecord\030\001 \003(\0132%."
-      "Interactive.Message.UserAccessRecord\022\025\n\r"
-      "uiRecordTotal\030\002 \001(\r\"\254 \n\003Req\022S\n\035GetAccess"
-      "AddressReq_DEV_Value\030\n \001(\0132,.Interactive"
-      ".Message.GetAccessAddressReq_DEV\022=\n\022Logi"
-      "nReq_DEV_Value\030\024 \001(\0132!.Interactive.Messa"
-      "ge.LoginReq_DEV\022\?\n\023LogoutReq_DEV_Value\030\036"
-      " \001(\0132\".Interactive.Message.LogoutReq_DEV"
-      "\022E\n\026ShakehandReq_DEV_Value\030( \001(\0132%.Inter"
-      "active.Message.ShakehandReq_DEV\022G\n\027Confi"
-      "gInfoReq_DEV_Value\0302 \001(\0132&.Interactive.M"
-      "essage.ConfigInfoReq_DEV\022O\n\033StorageAddre"
-      "ssReq_DEV_Value\0304 \001(\0132*.Interactive.Mess"
-      "age.StorageAddressReq_DEV\022A\n\024P2pInfoReq_"
-      "DEV_Value\0306 \001(\0132#.Interactive.Message.P2"
-      "pInfoReq_DEV\022A\n\024AddFileReq_DEV_Value\030< \001"
-      "(\0132#.Interactive.Message.AddFileReq_DEV\022"
-      "M\n\032QueryTimeZoneReq_DEV_Value\030= \001(\0132).In"
-      "teractive.Message.QueryTimeZoneReq_DEV\022]"
-      "\n\"QueryAccessDomainNameReq_DEV_Value\030> \001"
-      "(\01321.Interactive.Message.QueryAccessDoma"
-      "inNameReq_DEV\022S\n\035QueryUpgradeSiteReq_DEV"
-      "_Value\030\? \001(\0132,.Interactive.Message.Query"
-      "UpgradeSiteReq_DEV\022[\n!QueryFirmwareUpgra"
-      "deReq_DEV_Value\030@ \001(\01320.Interactive.Mess"
-      "age.QueryFirmwareUpgradeReq_DEV\022M\n\032MsgPr"
-      "eHandlerReq_USR_Value\030A \001(\0132).Interactiv"
-      "e.Message.MsgPreHandlerReq_USR\022S\n\035GetAcc"
-      "essAddressReq_USR_Value\030F \001(\0132,.Interact"
-      "ive.Message.GetAccessAddressReq_USR\022K\n\031R"
-      "egisterUserReq_USR_Value\030P \001(\0132(.Interac"
-      "tive.Message.RegisterUserReq_USR\022O\n\033UnRe"
-      "gisterUserReq_USR_Value\030Z \001(\0132*.Interact"
-      "ive.Message.UnRegisterUserReq_USR\022K\n\031Que"
-      "ryUsrInfoReq_USR_Value\030d \001(\0132(.Interacti"
-      "ve.Message.QueryUsrInfoReq_USR\022O\n\033Modify"
-      "UserInfoReq_USR_Value\030f \001(\0132*.Interactiv"
-      "e.Message.ModifyUserInfoReq_USR\022I\n\030Retri"
-      "evePwdReq_USR_Value\030h \001(\0132\'.Interactive."
-      "Message.RetrievePwdReq_USR\022=\n\022LoginReq_U"
-      "SR_Value\030n \001(\0132!.Interactive.Message.Log"
-      "inReq_USR\022\?\n\023LogoutReq_USR_Value\030x \001(\0132\""
-      ".Interactive.Message.LogoutReq_USR\022F\n\026Sh"
-      "akehandReq_USR_Value\030\202\001 \001(\0132%.Interactiv"
-      "e.Message.ShakehandReq_USR\022H\n\027ConfigInfo"
-      "Req_USR_Value\030\214\001 \001(\0132&.Interactive.Messa"
-      "ge.ConfigInfoReq_USR\022@\n\023AddDevReq_USR_Va"
-      "lue\030\226\001 \001(\0132\".Interactive.Message.AddDevR"
-      "eq_USR\022@\n\023DelDevReq_USR_Value\030\240\001 \001(\0132\".I"
-      "nteractive.Message.DelDevReq_USR\022F\n\026Modi"
-      "fyDevReq_USR_Value\030\252\001 \001(\0132%.Interactive."
-      "Message.ModifyDevReq_USR\022L\n\031QueryDevInfo"
-      "Req_USR_Value\030\264\001 \001(\0132(.Interactive.Messa"
-      "ge.QueryDevInfoReq_USR\022D\n\025QueryDevReq_US"
-      "R_Value\030\276\001 \001(\0132$.Interactive.Message.Que"
-      "ryDevReq_USR\022F\n\026QueryUserReq_USR_Value\030\310"
-      "\001 \001(\0132%.Interactive.Message.QueryUserReq"
-      "_USR\022H\n\027SharingDevReq_USR_Value\030\322\001 \001(\0132&"
-      ".Interactive.Message.SharingDevReq_USR\022R"
-      "\n\034CancelSharedDevReq_USR_Value\030\334\001 \001(\0132+."
-      "Interactive.Message.CancelSharedDevReq_U"
-      "SR\022H\n\027AddFriendsReq_USR_Value\030\346\001 \001(\0132&.I"
-      "nteractive.Message.AddFriendsReq_USR\022H\n\027"
-      "DelFriendsReq_USR_Value\030\360\001 \001(\0132&.Interac"
-      "tive.Message.DelFriendsReq_USR\022L\n\031QueryF"
-      "riendsReq_USR_Value\030\372\001 \001(\0132(.Interactive"
-      ".Message.QueryFriendsReq_USR\022P\n\033StorageA"
-      "ddressReq_USR_Value\030\374\001 \001(\0132*.Interactive"
-      ".Message.StorageAddressReq_USR\022B\n\024P2pInf"
-      "oReq_USR_Value\030\376\001 \001(\0132#.Interactive.Mess"
-      "age.P2pInfoReq_USR\022H\n\027DeleteFileReq_USR_"
-      "Value\030\266\002 \001(\0132&.Interactive.Message.Delet"
-      "eFileReq_USR\022L\n\031DownloadFileReq_USR_Valu"
-      "e\030\300\002 \001(\0132(.Interactive.Message.DownloadF"
-      "ileReq_USR\022F\n\026QueryFileReq_USR_Value\030\312\002 "
-      "\001(\0132%.Interactive.Message.QueryFileReq_U"
-      "SR\022^\n\"QueryAccessDomainNameReq_USR_Value"
-      "\030\336\002 \001(\01321.Interactive.Message.QueryAcces"
-      "sDomainNameReq_USR\022R\n\034QueryAppUpgradeReq"
-      "_USR_Value\030\350\002 \001(\0132+.Interactive.Message."
-      "QueryAppUpgradeReq_USR\022X\n\037GetOnlineDevIn"
-      "foReq_INNER_Value\030\204\002 \001(\0132..Interactive.M"
-      "essage.GetOnlineDevInfoReq_INNER\022^\n\"Broa"
-      "dcastOnlineDevInfo_INNER_Value\030\216\002 \001(\01321."
-      "Interactive.Message.BroadcastOnlineDevIn"
-      "fo_INNER\022Z\n GetOnlineUserInfoReq_INNER_V"
-      "alue\030\230\002 \001(\0132/.Interactive.Message.GetOnl"
-      "ineUserInfoReq_INNER\022`\n#BroadcastOnlineU"
-      "serInfo_INNER_Value\030\242\002 \001(\01322.Interactive"
-      ".Message.BroadcastOnlineUserInfo_INNER\022b"
-      "\n$GetDeviceAccessRecordReq_INNER_Value\030\270"
-      "\003 \001(\01323.Interactive.Message.GetDeviceAcc"
-      "essRecordReq_INNER\022^\n\"GetUserAccessRecor"
-      "dReq_INNER_Value\030\302\003 \001(\01321.Interactive.Me"
-      "ssage.GetUserAccessRecordReq_INNER\022P\n\033Qu"
-      "eryUploadURLReq_MGR_Value\030\330\004 \001(\0132*.Inter"
-      "active.Message.QueryUploadURLReq_MGR\022T\n\035"
-      "AddConfigurationReq_MGR_Value\030\342\004 \001(\0132,.I"
-      "nteractive.Message.AddConfigurationReq_M"
-      "GR\022Z\n DeleteConfigurationReq_MGR_Value\030\354"
-      "\004 \001(\0132/.Interactive.Message.DeleteConfig"
-      "urationReq_MGR\022Z\n ModifyConfigurationReq"
-      "_MGR_Value\030\366\004 \001(\0132/.Interactive.Message."
-      "ModifyConfigurationReq_MGR\022^\n\"QueryAllCo"
-      "nfigurationReq_MGR_Value\030\200\005 \001(\01321.Intera"
-      "ctive.Message.QueryAllConfigurationReq_M"
-      "GR\"\221\037\n\003Rsp\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMs"
-      "g\030\024 \001(\t\022S\n\035GetAccessAddressRsp_DEV_Value"
-      "\030\036 \001(\0132,.Interactive.Message.GetAccessAd"
-      "dressRsp_DEV\022=\n\022LoginRsp_DEV_Value\030( \001(\013"
-      "2!.Interactive.Message.LoginRsp_DEV\022\?\n\023L"
-      "ogoutRsp_DEV_Value\0302 \001(\0132\".Interactive.M"
-      "essage.LogoutRsp_DEV\022E\n\026ShakehandRsp_DEV"
-      "_Value\030< \001(\0132%.Interactive.Message.Shake"
-      "handRsp_DEV\022G\n\027ConfigInfoRsp_DEV_Value\030F"
-      " \001(\0132&.Interactive.Message.ConfigInfoRsp"
-      "_DEV\022O\n\033StorageAddressRsp_DEV_Value\030H \001("
-      "\0132*.Interactive.Message.StorageAddressRs"
-      "p_DEV\022A\n\024P2pInfoRsp_DEV_Value\030J \001(\0132#.In"
-      "teractive.Message.P2pInfoRsp_DEV\022A\n\024AddF"
-      "ileRsp_DEV_Value\030P \001(\0132#.Interactive.Mes"
-      "sage.AddFileRsp_DEV\022M\n\032QueryTimeZoneRsp_"
-      "DEV_Value\030Q \001(\0132).Interactive.Message.Qu"
-      "eryTimeZoneRsp_DEV\022]\n\"QueryAccessDomainN"
-      "ameRsp_DEV_Value\030R \001(\01321.Interactive.Mes"
-      "sage.QueryAccessDomainNameRsp_DEV\022S\n\035Que"
-      "ryUpgradeSiteRsp_DEV_Value\030S \001(\0132,.Inter"
-      "active.Message.QueryUpgradeSiteRsp_DEV\022["
-      "\n!QueryFirmwareUpgradeRsp_DEV_Value\030T \001("
-      "\01320.Interactive.Message.QueryFirmwareUpg"
-      "radeRsp_DEV\022M\n\032MsgPreHandlerRsp_USR_Valu"
-      "e\030U \001(\0132).Interactive.Message.MsgPreHand"
-      "lerRsp_USR\022S\n\035GetAccessAddressRsp_USR_Va"
-      "lue\030Z \001(\0132,.Interactive.Message.GetAcces"
-      "sAddressRsp_USR\022K\n\031RegisterUserRsp_USR_V"
-      "alue\030d \001(\0132(.Interactive.Message.Registe"
-      "rUserRsp_USR\022O\n\033UnRegisterUserRsp_USR_Va"
-      "lue\030n \001(\0132*.Interactive.Message.UnRegist"
-      "erUserRsp_USR\022K\n\031QueryUsrInfoRsp_USR_Val"
-      "ue\030x \001(\0132(.Interactive.Message.QueryUsrI"
-      "nfoRsp_USR\022O\n\033ModifyUserInfoRsp_USR_Valu"
-      "e\030z \001(\0132*.Interactive.Message.ModifyUser"
-      "InfoRsp_USR\022I\n\030RetrievePwdRsp_USR_Value\030"
-      "| \001(\0132\'.Interactive.Message.RetrievePwdR"
-      "sp_USR\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.In"
-      "teractive.Message.LoginRsp_USR\022@\n\023Logout"
-      "Rsp_USR_Value\030\214\001 \001(\0132\".Interactive.Messa"
-      "ge.LogoutRsp_USR\022F\n\026ShakehandRsp_USR_Val"
-      "ue\030\226\001 \001(\0132%.Interactive.Message.Shakehan"
-      "dRsp_USR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001"
-      "(\0132&.Interactive.Message.ConfigInfoRsp_U"
-      "SR\022@\n\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".Inter"
-      "active.Message.AddDevRsp_USR\022@\n\023DelDevRs"
-      "p_USR_Value\030\264\001 \001(\0132\".Interactive.Message"
-      ".DelDevRsp_USR\022F\n\026ModifyDevRsp_USR_Value"
-      "\030\276\001 \001(\0132%.Interactive.Message.ModifyDevR"
-      "sp_USR\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001"
-      "(\0132(.Interactive.Message.QueryDevInfoRsp"
-      "_USR\022D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.I"
-      "nteractive.Message.QueryDevRsp_USR\022F\n\026Qu"
-      "eryUserRsp_USR_Value\030\334\001 \001(\0132%.Interactiv"
-      "e.Message.QueryUserRsp_USR\022H\n\027SharingDev"
-      "Rsp_USR_Value\030\346\001 \001(\0132&.Interactive.Messa"
-      "ge.SharingDevRsp_USR\022R\n\034CancelSharedDevR"
-      "sp_USR_Value\030\360\001 \001(\0132+.Interactive.Messag"
-      "e.CancelSharedDevRsp_USR\022H\n\027AddFriendsRs"
-      "p_USR_Value\030\372\001 \001(\0132&.Interactive.Message"
-      ".AddFriendsRsp_USR\022H\n\027DelFriendsRsp_USR_"
-      "Value\030\204\002 \001(\0132&.Interactive.Message.DelFr"
-      "iendsRsp_USR\022L\n\031QueryFriendsRsp_USR_Valu"
-      "e\030\216\002 \001(\0132(.Interactive.Message.QueryFrie"
-      "ndsRsp_USR\022P\n\033StorageAddressReq_USR_Valu"
-      "e\030\220\002 \001(\0132*.Interactive.Message.StorageAd"
-      "dressRsp_USR\022B\n\024P2pInfoRsp_USR_Value\030\222\002 "
-      "\001(\0132#.Interactive.Message.P2pInfoRsp_USR"
-      "\022H\n\027DeleteFileRsp_USR_Value\030\266\002 \001(\0132&.Int"
-      "eractive.Message.DeleteFileRsp_USR\022L\n\031Do"
-      "wnloadFileRsp_USR_Value\030\300\002 \001(\0132(.Interac"
-      "tive.Message.DownloadFileRsp_USR\022F\n\026Quer"
-      "yFileRsp_USR_Value\030\312\002 \001(\0132%.Interactive."
-      "Message.QueryFileRsp_USR\022^\n\"QueryAccessD"
-      "omainNameRsp_USR_Value\030\336\002 \001(\01321.Interact"
-      "ive.Message.QueryAccessDomainNameRsp_USR"
-      "\022R\n\034QueryAppUpgradeRsp_USR_Value\030\350\002 \001(\0132"
-      "+.Interactive.Message.QueryAppUpgradeRsp"
-      "_USR\022X\n\037GetOnlineDevInfoRsp_INNER_Value\030"
-      "\230\002 \001(\0132..Interactive.Message.GetOnlineDe"
-      "vInfoRsp_INNER\022Z\n GetOnlineUserInfoRsp_I"
-      "NNER_Value\030\242\002 \001(\0132/.Interactive.Message."
-      "GetOnlineUserInfoRsp_INNER\022b\n$GetDeviceA"
-      "ccessRecordRsp_INNER_Value\030\270\003 \001(\01323.Inte"
-      "ractive.Message.GetDeviceAccessRecordRsp"
-      "_INNER\022^\n\"GetUserAccessRecordRsp_INNER_V"
-      "alue\030\302\003 \001(\01321.Interactive.Message.GetUse"
-      "rAccessRecordRsp_INNER\022P\n\033QueryUploadURL"
-      "Rsp_MGR_Value\030\330\004 \001(\0132*.Interactive.Messa"
-      "ge.QueryUploadURLRsp_MGR\022T\n\035AddConfigura"
-      "tionRsp_MGR_Value\030\342\004 \001(\0132,.Interactive.M"
-      "essage.AddConfigurationRsp_MGR\022Z\n Delete"
-      "ConfigurationRsp_MGR_Value\030\354\004 \001(\0132/.Inte"
-      "ractive.Message.DeleteConfigurationRsp_M"
-      "GR\022Z\n ModifyConfigurationRsp_MGR_Value\030\366"
-      "\004 \001(\0132/.Interactive.Message.ModifyConfig"
-      "urationRsp_MGR\022^\n\"QueryAllConfigurationR"
-      "sp_MGR_Value\030\200\005 \001(\01321.Interactive.Messag"
-      "e.QueryAllConfigurationRsp_MGR\"\272\001\n\022Inter"
-      "activeMessage\022*\n\004type\030\001 \001(\0162\034.Interactiv"
-      "e.Message.MsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006s"
-      "trSID\030\003 \001(\t\022*\n\010ReqValue\030\004 \001(\0132\030.Interact"
-      "ive.Message.Req\022*\n\010RspValue\030\005 \001(\0132\030.Inte"
-      "ractive.Message.Rsp*\230\030\n\007MsgType\022\n\n\006Init_"
-      "T\020\000\022\036\n\031GetAccessAddressReq_DEV_T\020\220N\022\036\n\031G"
-      "etAccessAddressRsp_DEV_T\020\232N\022\023\n\016LoginReq_"
-      "DEV_T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256N\022\024\n\017LogoutR"
-      "eq_DEV_T\020\270N\022\024\n\017LogoutRsp_DEV_T\020\302N\022\027\n\022Sha"
-      "kehandReq_DEV_T\020\314N\022\027\n\022ShakehandRsp_DEV_T"
-      "\020\326N\022\030\n\023ConfigInfoReq_DEV_T\020\340N\022\030\n\023ConfigI"
-      "nfoRsp_DEV_T\020\352N\022\034\n\027StorageAddressReq_DEV"
-      "_T\020\364N\022\034\n\027StorageAddressRsp_DEV_T\020\376N\022\025\n\020P"
-      "2pInfoReq_DEV_T\020\354O\022\025\n\020P2pInfoRsp_DEV_T\020\366"
-      "O\022\025\n\020AddFileReq_DEV_T\020\274P\022\025\n\020AddFileRsp_D"
-      "EV_T\020\306P\022\033\n\026QueryTimeZoneReq_DEV_T\020\320P\022\033\n\026"
-      "QueryTimeZoneRsp_DEV_T\020\332P\022#\n\036QueryAccess"
-      "DomainNameReq_DEV_T\020\344P\022#\n\036QueryAccessDom"
-      "ainNameRsp_DEV_T\020\356P\022\036\n\031QueryUpgradeSiteR"
-      "eq_DEV_T\020\370P\022\036\n\031QueryUpgradeSiteRsp_DEV_T"
-      "\020\202Q\022\"\n\035QueryFirmwareUpgradeReq_DEV_T\020\214Q\022"
-      "\"\n\035QueryFirmwareUpgradeRsp_DEV_T\020\226Q\022\034\n\026M"
-      "sgPreHandlerReq_USR_T\020\226\234\001\022\034\n\026MsgPreHandl"
-      "erRsp_USR_T\020\227\234\001\022\037\n\031GetAccessAddressReq_U"
-      "SR_T\020\240\234\001\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234"
-      "\001\022\033\n\025RegisterUserReq_USR_T\020\264\234\001\022\033\n\025Regist"
-      "erUserRsp_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq"
-      "_USR_T\020\310\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234"
-      "\001\022\033\n\025QueryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025QueryU"
-      "srInfoRsp_USR_T\020\324\234\001\022\035\n\027ModifyUserInfoReq"
-      "_USR_T\020\327\234\001\022\035\n\027ModifyUserInfoRsp_USR_T\020\330\234"
-      "\001\022\032\n\024RetrievePwdReq_USR_T\020\331\234\001\022\032\n\024Retriev"
-      "ePwdRsp_USR_T\020\332\234\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022"
-      "\024\n\016LoginRsp_USR_T\020\346\234\001\022\025\n\017LogoutReq_USR_T"
-      "\020\360\234\001\022\025\n\017LogoutRsp_USR_T\020\372\234\001\022\030\n\022Shakehand"
-      "Req_USR_T\020\204\235\001\022\030\n\022ShakehandRsp_USR_T\020\216\235\001\022"
-      "\031\n\023ConfigInfoReq_USR_T\020\230\235\001\022\031\n\023ConfigInfo"
-      "Rsp_USR_T\020\242\235\001\022\025\n\017AddDevReq_USR_T\020\254\235\001\022\025\n\017"
-      "AddDevRsp_USR_T\020\266\235\001\022\025\n\017DelDevReq_USR_T\020\300"
-      "\235\001\022\025\n\017DelDevRsp_USR_T\020\312\235\001\022\030\n\022ModifyDevRe"
-      "q_USR_T\020\324\235\001\022\030\n\022ModifyDevRsp_USR_T\020\336\235\001\022\033\n"
-      "\025QueryDevInfoReq_USR_T\020\337\235\001\022\033\n\025QueryDevIn"
-      "foRsp_USR_T\020\340\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001"
-      "\022\027\n\021QueryDevRsp_USR_T\020\362\235\001\022\030\n\022QueryUserRe"
-      "q_USR_T\020\363\235\001\022\030\n\022QueryUserRsp_USR_T\020\364\235\001\022\031\n"
-      "\023SharingDevReq_USR_T\020\374\235\001\022\031\n\023SharingDevRs"
-      "p_USR_T\020\206\236\001\022\036\n\030CancelSharedDevReq_USR_T\020"
-      "\220\236\001\022\036\n\030CancelSharedDevRsp_USR_T\020\232\236\001\022\031\n\023A"
-      "ddFriendsReq_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_"
-      "USR_T\020\256\236\001\022\031\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023"
-      "DelFriendsRsp_USR_T\020\302\236\001\022\034\n\026ModifyFriends"
-      "Req_USR_T\020\314\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020"
-      "\326\236\001\022\033\n\025QueryFriendsReq_USR_T\020\340\236\001\022\033\n\025Quer"
-      "yFriendsRsp_USR_T\020\352\236\001\022\035\n\027StorageAddressR"
-      "eq_USR_T\020\364\236\001\022\035\n\027StorageAddressRsp_USR_T\020"
-      "\376\236\001\022\026\n\020P2pInfoReq_USR_T\020\210\237\001\022\026\n\020P2pInfoRs"
-      "p_USR_T\020\222\237\001\022\031\n\023DeleteFileReq_USR_T\020\224\240\001\022\031"
-      "\n\023DeleteFileRsp_USR_T\020\236\240\001\022\033\n\025DownloadFil"
-      "eReq_USR_T\020\250\240\001\022\033\n\025DownloadFileRsp_USR_T\020"
-      "\262\240\001\022\030\n\022QueryFileReq_USR_T\020\274\240\001\022\030\n\022QueryFi"
-      "leRsp_USR_T\020\306\240\001\022$\n\036QueryAccessDomainName"
-      "Req_USR_T\020\370\240\001\022$\n\036QueryAccessDomainNameRs"
-      "p_USR_T\020\202\241\001\022\036\n\030QueryAppUpgradeReq_USR_T\020"
-      "\214\241\001\022\036\n\030QueryAppUpgradeRsp_USR_T\020\226\241\001\022!\n\033G"
-      "etOnlineDevInfoReq_INNER_T\020\260\352\001\022!\n\033GetOnl"
-      "ineDevInfoRsp_INNER_T\020\272\352\001\022$\n\036BroadcastOn"
-      "lineDevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlineUser"
-      "InfoReq_INNER_T\020\316\352\001\022\"\n\034GetOnlineUserInfo"
-      "Rsp_INNER_T\020\330\352\001\022%\n\037BroadcastOnlineUserIn"
-      "fo_INNER_T\020\342\352\001\022&\n GetDeviceAccessRecordR"
-      "eq_INNER_T\020\370\353\001\022&\n GetDeviceAccessRecordR"
-      "sp_INNER_T\020\202\354\001\022$\n\036GetUserAccessRecordReq"
-      "_INNER_T\020\214\354\001\022$\n\036GetUserAccessRecordRsp_I"
-      "NNER_T\020\226\354\001\022\035\n\027QueryUploadURLReq_MGR_T\020\300\270"
-      "\002\022\035\n\027QueryUploadURLRsp_MGR_T\020\312\270\002\022\037\n\031AddC"
-      "onfigurationReq_MGR_T\020\324\270\002\022\037\n\031AddConfigur"
-      "ationRsp_MGR_T\020\336\270\002\022\"\n\034DeleteConfiguratio"
-      "nReq_MGR_T\020\350\270\002\022\"\n\034DeleteConfigurationRsp"
-      "_MGR_T\020\362\270\002\022\"\n\034ModifyConfigurationReq_MGR"
-      "_T\020\374\270\002\022\"\n\034ModifyConfigurationRsp_MGR_T\020\206"
-      "\271\002\022$\n\036QueryAllConfigurationReq_MGR_T\020\220\271\002"
-      "\022$\n\036QueryAllConfigurationRsp_MGR_T\020\232\271\002b\006"
-      "proto3"
+      "e\030\002 \001(\t\"6\n\036GetDeviceAccessRecordReq_INNE"
+      "R\022\024\n\014uiBeginIndex\030\001 \001(\r\"|\n\036GetDeviceAcce"
+      "ssRecordRsp_INNER\022C\n\022deviceAccessRecord\030"
+      "\001 \003(\0132\'.Interactive.Message.DeviceAccess"
+      "Record\022\025\n\ruiRecordTotal\030\002 \001(\r\"4\n\034GetUser"
+      "AccessRecordReq_INNER\022\024\n\014uiBeginIndex\030\001 "
+      "\001(\r\"v\n\034GetUserAccessRecordRsp_INNER\022\?\n\020u"
+      "serAccessRecord\030\001 \003(\0132%.Interactive.Mess"
+      "age.UserAccessRecord\022\025\n\ruiRecordTotal\030\002 "
+      "\001(\r\"\254 \n\003Req\022S\n\035GetAccessAddressReq_DEV_V"
+      "alue\030\n \001(\0132,.Interactive.Message.GetAcce"
+      "ssAddressReq_DEV\022=\n\022LoginReq_DEV_Value\030\024"
+      " \001(\0132!.Interactive.Message.LoginReq_DEV\022"
+      "\?\n\023LogoutReq_DEV_Value\030\036 \001(\0132\".Interacti"
+      "ve.Message.LogoutReq_DEV\022E\n\026ShakehandReq"
+      "_DEV_Value\030( \001(\0132%.Interactive.Message.S"
+      "hakehandReq_DEV\022G\n\027ConfigInfoReq_DEV_Val"
+      "ue\0302 \001(\0132&.Interactive.Message.ConfigInf"
+      "oReq_DEV\022O\n\033StorageAddressReq_DEV_Value\030"
+      "4 \001(\0132*.Interactive.Message.StorageAddre"
+      "ssReq_DEV\022A\n\024P2pInfoReq_DEV_Value\0306 \001(\0132"
+      "#.Interactive.Message.P2pInfoReq_DEV\022A\n\024"
+      "AddFileReq_DEV_Value\030< \001(\0132#.Interactive"
+      ".Message.AddFileReq_DEV\022M\n\032QueryTimeZone"
+      "Req_DEV_Value\030= \001(\0132).Interactive.Messag"
+      "e.QueryTimeZoneReq_DEV\022]\n\"QueryAccessDom"
+      "ainNameReq_DEV_Value\030> \001(\01321.Interactive"
+      ".Message.QueryAccessDomainNameReq_DEV\022S\n"
+      "\035QueryUpgradeSiteReq_DEV_Value\030\? \001(\0132,.I"
+      "nteractive.Message.QueryUpgradeSiteReq_D"
+      "EV\022[\n!QueryFirmwareUpgradeReq_DEV_Value\030"
+      "@ \001(\01320.Interactive.Message.QueryFirmwar"
+      "eUpgradeReq_DEV\022M\n\032MsgPreHandlerReq_USR_"
+      "Value\030A \001(\0132).Interactive.Message.MsgPre"
+      "HandlerReq_USR\022S\n\035GetAccessAddressReq_US"
+      "R_Value\030F \001(\0132,.Interactive.Message.GetA"
+      "ccessAddressReq_USR\022K\n\031RegisterUserReq_U"
+      "SR_Value\030P \001(\0132(.Interactive.Message.Reg"
+      "isterUserReq_USR\022O\n\033UnRegisterUserReq_US"
+      "R_Value\030Z \001(\0132*.Interactive.Message.UnRe"
+      "gisterUserReq_USR\022K\n\031QueryUsrInfoReq_USR"
+      "_Value\030d \001(\0132(.Interactive.Message.Query"
+      "UsrInfoReq_USR\022O\n\033ModifyUserInfoReq_USR_"
+      "Value\030f \001(\0132*.Interactive.Message.Modify"
+      "UserInfoReq_USR\022I\n\030RetrievePwdReq_USR_Va"
+      "lue\030h \001(\0132\'.Interactive.Message.Retrieve"
+      "PwdReq_USR\022=\n\022LoginReq_USR_Value\030n \001(\0132!"
+      ".Interactive.Message.LoginReq_USR\022\?\n\023Log"
+      "outReq_USR_Value\030x \001(\0132\".Interactive.Mes"
+      "sage.LogoutReq_USR\022F\n\026ShakehandReq_USR_V"
+      "alue\030\202\001 \001(\0132%.Interactive.Message.Shakeh"
+      "andReq_USR\022H\n\027ConfigInfoReq_USR_Value\030\214\001"
+      " \001(\0132&.Interactive.Message.ConfigInfoReq"
+      "_USR\022@\n\023AddDevReq_USR_Value\030\226\001 \001(\0132\".Int"
+      "eractive.Message.AddDevReq_USR\022@\n\023DelDev"
+      "Req_USR_Value\030\240\001 \001(\0132\".Interactive.Messa"
+      "ge.DelDevReq_USR\022F\n\026ModifyDevReq_USR_Val"
+      "ue\030\252\001 \001(\0132%.Interactive.Message.ModifyDe"
+      "vReq_USR\022L\n\031QueryDevInfoReq_USR_Value\030\264\001"
+      " \001(\0132(.Interactive.Message.QueryDevInfoR"
+      "eq_USR\022D\n\025QueryDevReq_USR_Value\030\276\001 \001(\0132$"
+      ".Interactive.Message.QueryDevReq_USR\022F\n\026"
+      "QueryUserReq_USR_Value\030\310\001 \001(\0132%.Interact"
+      "ive.Message.QueryUserReq_USR\022H\n\027SharingD"
+      "evReq_USR_Value\030\322\001 \001(\0132&.Interactive.Mes"
+      "sage.SharingDevReq_USR\022R\n\034CancelSharedDe"
+      "vReq_USR_Value\030\334\001 \001(\0132+.Interactive.Mess"
+      "age.CancelSharedDevReq_USR\022H\n\027AddFriends"
+      "Req_USR_Value\030\346\001 \001(\0132&.Interactive.Messa"
+      "ge.AddFriendsReq_USR\022H\n\027DelFriendsReq_US"
+      "R_Value\030\360\001 \001(\0132&.Interactive.Message.Del"
+      "FriendsReq_USR\022L\n\031QueryFriendsReq_USR_Va"
+      "lue\030\372\001 \001(\0132(.Interactive.Message.QueryFr"
+      "iendsReq_USR\022P\n\033StorageAddressReq_USR_Va"
+      "lue\030\374\001 \001(\0132*.Interactive.Message.Storage"
+      "AddressReq_USR\022B\n\024P2pInfoReq_USR_Value\030\376"
+      "\001 \001(\0132#.Interactive.Message.P2pInfoReq_U"
+      "SR\022H\n\027DeleteFileReq_USR_Value\030\266\002 \001(\0132&.I"
+      "nteractive.Message.DeleteFileReq_USR\022L\n\031"
+      "DownloadFileReq_USR_Value\030\300\002 \001(\0132(.Inter"
+      "active.Message.DownloadFileReq_USR\022F\n\026Qu"
+      "eryFileReq_USR_Value\030\312\002 \001(\0132%.Interactiv"
+      "e.Message.QueryFileReq_USR\022^\n\"QueryAcces"
+      "sDomainNameReq_USR_Value\030\336\002 \001(\01321.Intera"
+      "ctive.Message.QueryAccessDomainNameReq_U"
+      "SR\022R\n\034QueryAppUpgradeReq_USR_Value\030\350\002 \001("
+      "\0132+.Interactive.Message.QueryAppUpgradeR"
+      "eq_USR\022X\n\037GetOnlineDevInfoReq_INNER_Valu"
+      "e\030\204\002 \001(\0132..Interactive.Message.GetOnline"
+      "DevInfoReq_INNER\022^\n\"BroadcastOnlineDevIn"
+      "fo_INNER_Value\030\216\002 \001(\01321.Interactive.Mess"
+      "age.BroadcastOnlineDevInfo_INNER\022Z\n GetO"
+      "nlineUserInfoReq_INNER_Value\030\230\002 \001(\0132/.In"
+      "teractive.Message.GetOnlineUserInfoReq_I"
+      "NNER\022`\n#BroadcastOnlineUserInfo_INNER_Va"
+      "lue\030\242\002 \001(\01322.Interactive.Message.Broadca"
+      "stOnlineUserInfo_INNER\022b\n$GetDeviceAcces"
+      "sRecordReq_INNER_Value\030\270\003 \001(\01323.Interact"
+      "ive.Message.GetDeviceAccessRecordReq_INN"
+      "ER\022^\n\"GetUserAccessRecordReq_INNER_Value"
+      "\030\302\003 \001(\01321.Interactive.Message.GetUserAcc"
+      "essRecordReq_INNER\022P\n\033QueryUploadURLReq_"
+      "MGR_Value\030\330\004 \001(\0132*.Interactive.Message.Q"
+      "ueryUploadURLReq_MGR\022T\n\035AddConfiguration"
+      "Req_MGR_Value\030\342\004 \001(\0132,.Interactive.Messa"
+      "ge.AddConfigurationReq_MGR\022Z\n DeleteConf"
+      "igurationReq_MGR_Value\030\354\004 \001(\0132/.Interact"
+      "ive.Message.DeleteConfigurationReq_MGR\022Z"
+      "\n ModifyConfigurationReq_MGR_Value\030\366\004 \001("
+      "\0132/.Interactive.Message.ModifyConfigurat"
+      "ionReq_MGR\022^\n\"QueryAllConfigurationReq_M"
+      "GR_Value\030\200\005 \001(\01321.Interactive.Message.Qu"
+      "eryAllConfigurationReq_MGR\"\221\037\n\003Rsp\022\020\n\010iR"
+      "etcode\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035GetAc"
+      "cessAddressRsp_DEV_Value\030\036 \001(\0132,.Interac"
+      "tive.Message.GetAccessAddressRsp_DEV\022=\n\022"
+      "LoginRsp_DEV_Value\030( \001(\0132!.Interactive.M"
+      "essage.LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_Val"
+      "ue\0302 \001(\0132\".Interactive.Message.LogoutRsp"
+      "_DEV\022E\n\026ShakehandRsp_DEV_Value\030< \001(\0132%.I"
+      "nteractive.Message.ShakehandRsp_DEV\022G\n\027C"
+      "onfigInfoRsp_DEV_Value\030F \001(\0132&.Interacti"
+      "ve.Message.ConfigInfoRsp_DEV\022O\n\033StorageA"
+      "ddressRsp_DEV_Value\030H \001(\0132*.Interactive."
+      "Message.StorageAddressRsp_DEV\022A\n\024P2pInfo"
+      "Rsp_DEV_Value\030J \001(\0132#.Interactive.Messag"
+      "e.P2pInfoRsp_DEV\022A\n\024AddFileRsp_DEV_Value"
+      "\030P \001(\0132#.Interactive.Message.AddFileRsp_"
+      "DEV\022M\n\032QueryTimeZoneRsp_DEV_Value\030Q \001(\0132"
+      ").Interactive.Message.QueryTimeZoneRsp_D"
+      "EV\022]\n\"QueryAccessDomainNameRsp_DEV_Value"
+      "\030R \001(\01321.Interactive.Message.QueryAccess"
+      "DomainNameRsp_DEV\022S\n\035QueryUpgradeSiteRsp"
+      "_DEV_Value\030S \001(\0132,.Interactive.Message.Q"
+      "ueryUpgradeSiteRsp_DEV\022[\n!QueryFirmwareU"
+      "pgradeRsp_DEV_Value\030T \001(\01320.Interactive."
+      "Message.QueryFirmwareUpgradeRsp_DEV\022M\n\032M"
+      "sgPreHandlerRsp_USR_Value\030U \001(\0132).Intera"
+      "ctive.Message.MsgPreHandlerRsp_USR\022S\n\035Ge"
+      "tAccessAddressRsp_USR_Value\030Z \001(\0132,.Inte"
+      "ractive.Message.GetAccessAddressRsp_USR\022"
+      "K\n\031RegisterUserRsp_USR_Value\030d \001(\0132(.Int"
+      "eractive.Message.RegisterUserRsp_USR\022O\n\033"
+      "UnRegisterUserRsp_USR_Value\030n \001(\0132*.Inte"
+      "ractive.Message.UnRegisterUserRsp_USR\022K\n"
+      "\031QueryUsrInfoRsp_USR_Value\030x \001(\0132(.Inter"
+      "active.Message.QueryUsrInfoRsp_USR\022O\n\033Mo"
+      "difyUserInfoRsp_USR_Value\030z \001(\0132*.Intera"
+      "ctive.Message.ModifyUserInfoRsp_USR\022I\n\030R"
+      "etrievePwdRsp_USR_Value\030| \001(\0132\'.Interact"
+      "ive.Message.RetrievePwdRsp_USR\022>\n\022LoginR"
+      "sp_USR_Value\030\202\001 \001(\0132!.Interactive.Messag"
+      "e.LoginRsp_USR\022@\n\023LogoutRsp_USR_Value\030\214\001"
+      " \001(\0132\".Interactive.Message.LogoutRsp_USR"
+      "\022F\n\026ShakehandRsp_USR_Value\030\226\001 \001(\0132%.Inte"
+      "ractive.Message.ShakehandRsp_USR\022H\n\027Conf"
+      "igInfoRsp_USR_Value\030\240\001 \001(\0132&.Interactive"
+      ".Message.ConfigInfoRsp_USR\022@\n\023AddDevRsp_"
+      "USR_Value\030\252\001 \001(\0132\".Interactive.Message.A"
+      "ddDevRsp_USR\022@\n\023DelDevRsp_USR_Value\030\264\001 \001"
+      "(\0132\".Interactive.Message.DelDevRsp_USR\022F"
+      "\n\026ModifyDevRsp_USR_Value\030\276\001 \001(\0132%.Intera"
+      "ctive.Message.ModifyDevRsp_USR\022L\n\031QueryD"
+      "evInfoRsp_USR_Value\030\310\001 \001(\0132(.Interactive"
+      ".Message.QueryDevInfoRsp_USR\022D\n\025QueryDev"
+      "Rsp_USR_Value\030\322\001 \001(\0132$.Interactive.Messa"
+      "ge.QueryDevRsp_USR\022F\n\026QueryUserRsp_USR_V"
+      "alue\030\334\001 \001(\0132%.Interactive.Message.QueryU"
+      "serRsp_USR\022H\n\027SharingDevRsp_USR_Value\030\346\001"
+      " \001(\0132&.Interactive.Message.SharingDevRsp"
+      "_USR\022R\n\034CancelSharedDevRsp_USR_Value\030\360\001 "
+      "\001(\0132+.Interactive.Message.CancelSharedDe"
+      "vRsp_USR\022H\n\027AddFriendsRsp_USR_Value\030\372\001 \001"
+      "(\0132&.Interactive.Message.AddFriendsRsp_U"
+      "SR\022H\n\027DelFriendsRsp_USR_Value\030\204\002 \001(\0132&.I"
+      "nteractive.Message.DelFriendsRsp_USR\022L\n\031"
+      "QueryFriendsRsp_USR_Value\030\216\002 \001(\0132(.Inter"
+      "active.Message.QueryFriendsRsp_USR\022P\n\033St"
+      "orageAddressReq_USR_Value\030\220\002 \001(\0132*.Inter"
+      "active.Message.StorageAddressRsp_USR\022B\n\024"
+      "P2pInfoRsp_USR_Value\030\222\002 \001(\0132#.Interactiv"
+      "e.Message.P2pInfoRsp_USR\022H\n\027DeleteFileRs"
+      "p_USR_Value\030\266\002 \001(\0132&.Interactive.Message"
+      ".DeleteFileRsp_USR\022L\n\031DownloadFileRsp_US"
+      "R_Value\030\300\002 \001(\0132(.Interactive.Message.Dow"
+      "nloadFileRsp_USR\022F\n\026QueryFileRsp_USR_Val"
+      "ue\030\312\002 \001(\0132%.Interactive.Message.QueryFil"
+      "eRsp_USR\022^\n\"QueryAccessDomainNameRsp_USR"
+      "_Value\030\336\002 \001(\01321.Interactive.Message.Quer"
+      "yAccessDomainNameRsp_USR\022R\n\034QueryAppUpgr"
+      "adeRsp_USR_Value\030\350\002 \001(\0132+.Interactive.Me"
+      "ssage.QueryAppUpgradeRsp_USR\022X\n\037GetOnlin"
+      "eDevInfoRsp_INNER_Value\030\230\002 \001(\0132..Interac"
+      "tive.Message.GetOnlineDevInfoRsp_INNER\022Z"
+      "\n GetOnlineUserInfoRsp_INNER_Value\030\242\002 \001("
+      "\0132/.Interactive.Message.GetOnlineUserInf"
+      "oRsp_INNER\022b\n$GetDeviceAccessRecordRsp_I"
+      "NNER_Value\030\270\003 \001(\01323.Interactive.Message."
+      "GetDeviceAccessRecordRsp_INNER\022^\n\"GetUse"
+      "rAccessRecordRsp_INNER_Value\030\302\003 \001(\01321.In"
+      "teractive.Message.GetUserAccessRecordRsp"
+      "_INNER\022P\n\033QueryUploadURLRsp_MGR_Value\030\330\004"
+      " \001(\0132*.Interactive.Message.QueryUploadUR"
+      "LRsp_MGR\022T\n\035AddConfigurationRsp_MGR_Valu"
+      "e\030\342\004 \001(\0132,.Interactive.Message.AddConfig"
+      "urationRsp_MGR\022Z\n DeleteConfigurationRsp"
+      "_MGR_Value\030\354\004 \001(\0132/.Interactive.Message."
+      "DeleteConfigurationRsp_MGR\022Z\n ModifyConf"
+      "igurationRsp_MGR_Value\030\366\004 \001(\0132/.Interact"
+      "ive.Message.ModifyConfigurationRsp_MGR\022^"
+      "\n\"QueryAllConfigurationRsp_MGR_Value\030\200\005 "
+      "\001(\01321.Interactive.Message.QueryAllConfig"
+      "urationRsp_MGR\"\272\001\n\022InteractiveMessage\022*\n"
+      "\004type\030\001 \001(\0162\034.Interactive.Message.MsgTyp"
+      "e\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010R"
+      "eqValue\030\004 \001(\0132\030.Interactive.Message.Req\022"
+      "*\n\010RspValue\030\005 \001(\0132\030.Interactive.Message."
+      "Rsp*\230\030\n\007MsgType\022\n\n\006Init_T\020\000\022\036\n\031GetAccess"
+      "AddressReq_DEV_T\020\220N\022\036\n\031GetAccessAddressR"
+      "sp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016Logi"
+      "nRsp_DEV_T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017L"
+      "ogoutRsp_DEV_T\020\302N\022\027\n\022ShakehandReq_DEV_T\020"
+      "\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022\030\n\023ConfigInf"
+      "oReq_DEV_T\020\340N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N\022"
+      "\034\n\027StorageAddressReq_DEV_T\020\364N\022\034\n\027Storage"
+      "AddressRsp_DEV_T\020\376N\022\025\n\020P2pInfoReq_DEV_T\020"
+      "\354O\022\025\n\020P2pInfoRsp_DEV_T\020\366O\022\025\n\020AddFileReq_"
+      "DEV_T\020\274P\022\025\n\020AddFileRsp_DEV_T\020\306P\022\033\n\026Query"
+      "TimeZoneReq_DEV_T\020\320P\022\033\n\026QueryTimeZoneRsp"
+      "_DEV_T\020\332P\022#\n\036QueryAccessDomainNameReq_DE"
+      "V_T\020\344P\022#\n\036QueryAccessDomainNameRsp_DEV_T"
+      "\020\356P\022\036\n\031QueryUpgradeSiteReq_DEV_T\020\370P\022\036\n\031Q"
+      "ueryUpgradeSiteRsp_DEV_T\020\202Q\022\"\n\035QueryFirm"
+      "wareUpgradeReq_DEV_T\020\214Q\022\"\n\035QueryFirmware"
+      "UpgradeRsp_DEV_T\020\226Q\022\034\n\026MsgPreHandlerReq_"
+      "USR_T\020\226\234\001\022\034\n\026MsgPreHandlerRsp_USR_T\020\227\234\001\022"
+      "\037\n\031GetAccessAddressReq_USR_T\020\240\234\001\022\037\n\031GetA"
+      "ccessAddressRsp_USR_T\020\252\234\001\022\033\n\025RegisterUse"
+      "rReq_USR_T\020\264\234\001\022\033\n\025RegisterUserRsp_USR_T\020"
+      "\276\234\001\022\035\n\027UnRegisterUserReq_USR_T\020\310\234\001\022\035\n\027Un"
+      "RegisterUserRsp_USR_T\020\322\234\001\022\033\n\025QueryUsrInf"
+      "oReq_USR_T\020\323\234\001\022\033\n\025QueryUsrInfoRsp_USR_T\020"
+      "\324\234\001\022\035\n\027ModifyUserInfoReq_USR_T\020\327\234\001\022\035\n\027Mo"
+      "difyUserInfoRsp_USR_T\020\330\234\001\022\032\n\024RetrievePwd"
+      "Req_USR_T\020\331\234\001\022\032\n\024RetrievePwdRsp_USR_T\020\332\234"
+      "\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_"
+      "T\020\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRs"
+      "p_USR_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n"
+      "\022ShakehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq"
+      "_USR_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n"
+      "\017AddDevReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020"
+      "\266\235\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_"
+      "USR_T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022M"
+      "odifyDevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq"
+      "_USR_T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022"
+      "\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_"
+      "USR_T\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022Q"
+      "ueryUserRsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_U"
+      "SR_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030C"
+      "ancelSharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelSha"
+      "redDevRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR"
+      "_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023Del"
+      "FriendsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_US"
+      "R_T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n"
+      "\026ModifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFrie"
+      "ndsReq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_"
+      "T\020\352\236\001\022\035\n\027StorageAddressReq_USR_T\020\364\236\001\022\035\n\027"
+      "StorageAddressRsp_USR_T\020\376\236\001\022\026\n\020P2pInfoRe"
+      "q_USR_T\020\210\237\001\022\026\n\020P2pInfoRsp_USR_T\020\222\237\001\022\031\n\023D"
+      "eleteFileReq_USR_T\020\224\240\001\022\031\n\023DeleteFileRsp_"
+      "USR_T\020\236\240\001\022\033\n\025DownloadFileReq_USR_T\020\250\240\001\022\033"
+      "\n\025DownloadFileRsp_USR_T\020\262\240\001\022\030\n\022QueryFile"
+      "Req_USR_T\020\274\240\001\022\030\n\022QueryFileRsp_USR_T\020\306\240\001\022"
+      "$\n\036QueryAccessDomainNameReq_USR_T\020\370\240\001\022$\n"
+      "\036QueryAccessDomainNameRsp_USR_T\020\202\241\001\022\036\n\030Q"
+      "ueryAppUpgradeReq_USR_T\020\214\241\001\022\036\n\030QueryAppU"
+      "pgradeRsp_USR_T\020\226\241\001\022!\n\033GetOnlineDevInfoR"
+      "eq_INNER_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_IN"
+      "NER_T\020\272\352\001\022$\n\036BroadcastOnlineDevInfo_INNE"
+      "R_T\020\304\352\001\022\"\n\034GetOnlineUserInfoReq_INNER_T\020"
+      "\316\352\001\022\"\n\034GetOnlineUserInfoRsp_INNER_T\020\330\352\001\022"
+      "%\n\037BroadcastOnlineUserInfo_INNER_T\020\342\352\001\022&"
+      "\n GetDeviceAccessRecordReq_INNER_T\020\370\353\001\022&"
+      "\n GetDeviceAccessRecordRsp_INNER_T\020\202\354\001\022$"
+      "\n\036GetUserAccessRecordReq_INNER_T\020\214\354\001\022$\n\036"
+      "GetUserAccessRecordRsp_INNER_T\020\226\354\001\022\035\n\027Qu"
+      "eryUploadURLReq_MGR_T\020\300\270\002\022\035\n\027QueryUpload"
+      "URLRsp_MGR_T\020\312\270\002\022\037\n\031AddConfigurationReq_"
+      "MGR_T\020\324\270\002\022\037\n\031AddConfigurationRsp_MGR_T\020\336"
+      "\270\002\022\"\n\034DeleteConfigurationReq_MGR_T\020\350\270\002\022\""
+      "\n\034DeleteConfigurationRsp_MGR_T\020\362\270\002\022\"\n\034Mo"
+      "difyConfigurationReq_MGR_T\020\374\270\002\022\"\n\034Modify"
+      "ConfigurationRsp_MGR_T\020\206\271\002\022$\n\036QueryAllCo"
+      "nfigurationReq_MGR_T\020\220\271\002\022$\n\036QueryAllConf"
+      "igurationRsp_MGR_T\020\232\271\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 20966);
+      descriptor, 21030);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -12117,6 +12121,9 @@ void GetAccessAddressRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
 const int LoginReq_DEV::kStrDevIDFieldNumber;
 const int LoginReq_DEV::kStrPasswordFieldNumber;
 const int LoginReq_DEV::kUiDeviceTypeFieldNumber;
+const int LoginReq_DEV::kUiP2PSupplierFieldNumber;
+const int LoginReq_DEV::kStrP2PIDFieldNumber;
+const int LoginReq_DEV::kStrP2PServerFieldNumber;
 const int LoginReq_DEV::kStrValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -12141,19 +12148,32 @@ LoginReq_DEV::LoginReq_DEV(const LoginReq_DEV& from)
   if (from.strpassword().size() > 0) {
     strpassword_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpassword_);
   }
+  strp2pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strp2pid().size() > 0) {
+    strp2pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pid_);
+  }
+  strp2pserver_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strp2pserver().size() > 0) {
+    strp2pserver_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pserver_);
+  }
   strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.strvalue().size() > 0) {
     strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
   }
-  uidevicetype_ = from.uidevicetype_;
+  ::memcpy(&uidevicetype_, &from.uidevicetype_,
+    reinterpret_cast<char*>(&uip2psupplier_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uip2psupplier_));
   // @@protoc_insertion_point(copy_constructor:Interactive.Message.LoginReq_DEV)
 }
 
 void LoginReq_DEV::SharedCtor() {
   strdevid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pserver_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uidevicetype_ = 0u;
+  ::memset(&uidevicetype_, 0, reinterpret_cast<char*>(&uip2psupplier_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uip2psupplier_));
   _cached_size_ = 0;
 }
 
@@ -12165,6 +12185,8 @@ LoginReq_DEV::~LoginReq_DEV() {
 void LoginReq_DEV::SharedDtor() {
   strdevid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pserver_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -12195,8 +12217,11 @@ void LoginReq_DEV::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.LoginReq_DEV)
   strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pserver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  uidevicetype_ = 0u;
+  ::memset(&uidevicetype_, 0, reinterpret_cast<char*>(&uip2psupplier_) -
+    reinterpret_cast<char*>(&uidevicetype_) + sizeof(uip2psupplier_));
 }
 
 bool LoginReq_DEV::MergePartialFromCodedStream(
@@ -12252,9 +12277,52 @@ bool LoginReq_DEV::MergePartialFromCodedStream(
         break;
       }
 
-      // string strValue = 4;
+      // uint32 uiP2pSupplier = 4;
       case 4: {
-        if (tag == 34u) {
+        if (tag == 32u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uip2psupplier_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strP2pID = 5;
+      case 5: {
+        if (tag == 42u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strp2pid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strp2pid().data(), this->strp2pid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.LoginReq_DEV.strP2pID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strP2pServer = 6;
+      case 6: {
+        if (tag == 50u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strp2pserver()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strp2pserver().data(), this->strp2pserver().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.LoginReq_DEV.strP2pServer"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strValue = 7;
+      case 7: {
+        if (tag == 58u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strvalue()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -12316,14 +12384,39 @@ void LoginReq_DEV::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->uidevicetype(), output);
   }
 
-  // string strValue = 4;
+  // uint32 uiP2pSupplier = 4;
+  if (this->uip2psupplier() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->uip2psupplier(), output);
+  }
+
+  // string strP2pID = 5;
+  if (this->strp2pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pid().data(), this->strp2pid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.LoginReq_DEV.strP2pID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->strp2pid(), output);
+  }
+
+  // string strP2pServer = 6;
+  if (this->strp2pserver().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pserver().data(), this->strp2pserver().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.LoginReq_DEV.strP2pServer");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->strp2pserver(), output);
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Interactive.Message.LoginReq_DEV.strValue");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->strvalue(), output);
+      7, this->strvalue(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.LoginReq_DEV)
@@ -12360,7 +12453,34 @@ void LoginReq_DEV::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->uidevicetype(), target);
   }
 
-  // string strValue = 4;
+  // uint32 uiP2pSupplier = 4;
+  if (this->uip2psupplier() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->uip2psupplier(), target);
+  }
+
+  // string strP2pID = 5;
+  if (this->strp2pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pid().data(), this->strp2pid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.LoginReq_DEV.strP2pID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->strp2pid(), target);
+  }
+
+  // string strP2pServer = 6;
+  if (this->strp2pserver().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pserver().data(), this->strp2pserver().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.LoginReq_DEV.strP2pServer");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->strp2pserver(), target);
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strvalue().data(), this->strvalue().length(),
@@ -12368,7 +12488,7 @@ void LoginReq_DEV::SerializeWithCachedSizes(
       "Interactive.Message.LoginReq_DEV.strValue");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->strvalue(), target);
+        7, this->strvalue(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.LoginReq_DEV)
@@ -12393,7 +12513,21 @@ size_t LoginReq_DEV::ByteSizeLong() const {
         this->strpassword());
   }
 
-  // string strValue = 4;
+  // string strP2pID = 5;
+  if (this->strp2pid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strp2pid());
+  }
+
+  // string strP2pServer = 6;
+  if (this->strp2pserver().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strp2pserver());
+  }
+
+  // string strValue = 7;
   if (this->strvalue().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -12405,6 +12539,13 @@ size_t LoginReq_DEV::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::UInt32Size(
         this->uidevicetype());
+  }
+
+  // uint32 uiP2pSupplier = 4;
+  if (this->uip2psupplier() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uip2psupplier());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -12441,12 +12582,23 @@ void LoginReq_DEV::MergeFrom(const LoginReq_DEV& from) {
 
     strpassword_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpassword_);
   }
+  if (from.strp2pid().size() > 0) {
+
+    strp2pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pid_);
+  }
+  if (from.strp2pserver().size() > 0) {
+
+    strp2pserver_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pserver_);
+  }
   if (from.strvalue().size() > 0) {
 
     strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
   }
   if (from.uidevicetype() != 0) {
     set_uidevicetype(from.uidevicetype());
+  }
+  if (from.uip2psupplier() != 0) {
+    set_uip2psupplier(from.uip2psupplier());
   }
 }
 
@@ -12475,8 +12627,11 @@ void LoginReq_DEV::Swap(LoginReq_DEV* other) {
 void LoginReq_DEV::InternalSwap(LoginReq_DEV* other) {
   strdevid_.Swap(&other->strdevid_);
   strpassword_.Swap(&other->strpassword_);
+  strp2pid_.Swap(&other->strp2pid_);
+  strp2pserver_.Swap(&other->strp2pserver_);
   strvalue_.Swap(&other->strvalue_);
   std::swap(uidevicetype_, other->uidevicetype_);
+  std::swap(uip2psupplier_, other->uip2psupplier_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -12606,7 +12761,125 @@ void LoginReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiDeviceType)
 }
 
-// string strValue = 4;
+// uint32 uiP2pSupplier = 4;
+void LoginReq_DEV::clear_uip2psupplier() {
+  uip2psupplier_ = 0u;
+}
+::google::protobuf::uint32 LoginReq_DEV::uip2psupplier() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.uiP2pSupplier)
+  return uip2psupplier_;
+}
+void LoginReq_DEV::set_uip2psupplier(::google::protobuf::uint32 value) {
+  
+  uip2psupplier_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiP2pSupplier)
+}
+
+// string strP2pID = 5;
+void LoginReq_DEV::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& LoginReq_DEV::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+void LoginReq_DEV::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+#if LANG_CXX11
+void LoginReq_DEV::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+#endif
+void LoginReq_DEV::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+void LoginReq_DEV::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+::std::string* LoginReq_DEV::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* LoginReq_DEV::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void LoginReq_DEV::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+
+// string strP2pServer = 6;
+void LoginReq_DEV::clear_strp2pserver() {
+  strp2pserver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& LoginReq_DEV::strp2pserver() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strP2pServer)
+  return strp2pserver_.GetNoArena();
+}
+void LoginReq_DEV::set_strp2pserver(const ::std::string& value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+#if LANG_CXX11
+void LoginReq_DEV::set_strp2pserver(::std::string&& value) {
+  
+  strp2pserver_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+#endif
+void LoginReq_DEV::set_strp2pserver(const char* value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+void LoginReq_DEV::set_strp2pserver(const char* value, size_t size) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+::std::string* LoginReq_DEV::mutable_strp2pserver() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strP2pServer)
+  return strp2pserver_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* LoginReq_DEV::release_strp2pserver() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strP2pServer)
+  
+  return strp2pserver_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void LoginReq_DEV::set_allocated_strp2pserver(::std::string* strp2pserver) {
+  if (strp2pserver != NULL) {
+    
+  } else {
+    
+  }
+  strp2pserver_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pserver);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+
+// string strValue = 7;
 void LoginReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

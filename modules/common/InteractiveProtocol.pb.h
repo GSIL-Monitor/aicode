@@ -2496,9 +2496,37 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_strpassword();
   void set_allocated_strpassword(::std::string* strpassword);
 
-  // string strValue = 4;
+  // string strP2pID = 5;
+  void clear_strp2pid();
+  static const int kStrP2PIDFieldNumber = 5;
+  const ::std::string& strp2pid() const;
+  void set_strp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pid(::std::string&& value);
+  #endif
+  void set_strp2pid(const char* value);
+  void set_strp2pid(const char* value, size_t size);
+  ::std::string* mutable_strp2pid();
+  ::std::string* release_strp2pid();
+  void set_allocated_strp2pid(::std::string* strp2pid);
+
+  // string strP2pServer = 6;
+  void clear_strp2pserver();
+  static const int kStrP2PServerFieldNumber = 6;
+  const ::std::string& strp2pserver() const;
+  void set_strp2pserver(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pserver(::std::string&& value);
+  #endif
+  void set_strp2pserver(const char* value);
+  void set_strp2pserver(const char* value, size_t size);
+  ::std::string* mutable_strp2pserver();
+  ::std::string* release_strp2pserver();
+  void set_allocated_strp2pserver(::std::string* strp2pserver);
+
+  // string strValue = 7;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 4;
+  static const int kStrValueFieldNumber = 7;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -2516,14 +2544,23 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::uint32 uidevicetype() const;
   void set_uidevicetype(::google::protobuf::uint32 value);
 
+  // uint32 uiP2pSupplier = 4;
+  void clear_uip2psupplier();
+  static const int kUiP2PSupplierFieldNumber = 4;
+  ::google::protobuf::uint32 uip2psupplier() const;
+  void set_uip2psupplier(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.LoginReq_DEV)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strpassword_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uidevicetype_;
+  ::google::protobuf::uint32 uip2psupplier_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -17883,7 +17920,125 @@ inline void LoginReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiDeviceType)
 }
 
-// string strValue = 4;
+// uint32 uiP2pSupplier = 4;
+inline void LoginReq_DEV::clear_uip2psupplier() {
+  uip2psupplier_ = 0u;
+}
+inline ::google::protobuf::uint32 LoginReq_DEV::uip2psupplier() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.uiP2pSupplier)
+  return uip2psupplier_;
+}
+inline void LoginReq_DEV::set_uip2psupplier(::google::protobuf::uint32 value) {
+  
+  uip2psupplier_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiP2pSupplier)
+}
+
+// string strP2pID = 5;
+inline void LoginReq_DEV::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+inline void LoginReq_DEV::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+#endif
+inline void LoginReq_DEV::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+inline void LoginReq_DEV::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+inline ::std::string* LoginReq_DEV::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strP2pID)
+}
+
+// string strP2pServer = 6;
+inline void LoginReq_DEV::clear_strp2pserver() {
+  strp2pserver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::strp2pserver() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strP2pServer)
+  return strp2pserver_.GetNoArena();
+}
+inline void LoginReq_DEV::set_strp2pserver(const ::std::string& value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_strp2pserver(::std::string&& value) {
+  
+  strp2pserver_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+#endif
+inline void LoginReq_DEV::set_strp2pserver(const char* value) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+inline void LoginReq_DEV::set_strp2pserver(const char* value, size_t size) {
+  
+  strp2pserver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+inline ::std::string* LoginReq_DEV::mutable_strp2pserver() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strP2pServer)
+  return strp2pserver_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_strp2pserver() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strP2pServer)
+  
+  return strp2pserver_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_strp2pserver(::std::string* strp2pserver) {
+  if (strp2pserver != NULL) {
+    
+  } else {
+    
+  }
+  strp2pserver_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pserver);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strP2pServer)
+}
+
+// string strValue = 7;
 inline void LoginReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

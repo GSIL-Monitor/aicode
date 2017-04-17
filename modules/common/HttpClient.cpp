@@ -1,17 +1,81 @@
 #include "HttpClient.h"
+#include "openssl/crypto.h"
+#include <pthread.h>
+
+//保证libcurl在程序中只初始化一次
+const int HttpClient::m_curlCode = Init();
+
+pthread_mutex_t* HttpClient::m_lockArray = NULL;
 
 HttpClient::HttpClient()
 {
-    curl_global_init(CURL_GLOBAL_ALL);
-}
 
+}
 
 HttpClient::~HttpClient()
 {
-    curl_global_cleanup();
+    //kill_locks();
+    //curl_global_cleanup();
 }
 
-static size_t WriteToString(void *ptr, size_t size, size_t nmemb, void *stream)
+int HttpClient::Init()
+{
+    int ret = curl_global_init(CURL_GLOBAL_ALL);
+    init_locks();
+
+    return ret;
+}
+
+void HttpClient::lock_callback(int mode, int type, char *file, int line)
+{
+    (void)file;
+    (void)line;
+    if (mode & CRYPTO_LOCK)
+    {
+        pthread_mutex_lock(&(m_lockArray[type]));
+    }
+    else
+    {
+        pthread_mutex_unlock(&(m_lockArray[type]));
+    }
+}
+
+unsigned long HttpClient::thread_id(void)
+{
+    unsigned long ret;
+
+    ret = (unsigned long)pthread_self();
+    return ret;
+}
+
+void HttpClient::init_locks(void)
+{
+    int i;
+
+    m_lockArray = (pthread_mutex_t *)OPENSSL_malloc(CRYPTO_num_locks() * sizeof(pthread_mutex_t));
+    for (i = 0; i < CRYPTO_num_locks(); i++)
+    {
+        pthread_mutex_init(&(m_lockArray[i]), NULL);
+    }
+
+    CRYPTO_set_id_callback((unsigned long(*)())thread_id);
+    CRYPTO_set_locking_callback((void(*)())lock_callback);
+}
+
+void HttpClient::kill_locks(void)
+{
+    int i;
+
+    CRYPTO_set_locking_callback(NULL);
+    for (i = 0; i < CRYPTO_num_locks(); i++)
+    {
+        pthread_mutex_destroy(&(m_lockArray[i]));
+    }
+
+    OPENSSL_free(m_lockArray);
+}
+
+size_t HttpClient::WriteToString(void *ptr, size_t size, size_t nmemb, void *stream)
 {
     ((std::string *)stream)->append((char *)ptr, 0, size * nmemb);
     return size * nmemb;

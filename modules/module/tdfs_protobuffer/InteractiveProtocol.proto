@@ -313,7 +313,10 @@ message LoginReq_DEV                            //设备登陆请求
   string strDevID = 1;
   string strPassword = 2;
   uint32 uiDeviceType = 3;
-  string strValue = 4;
+  uint32 uiP2pSupplier = 4;
+  string strP2pID = 5;
+  string strP2pServer = 6;
+  string strValue = 7;
 }
 
 message LoginRsp_DEV                            //设备登陆响应

@@ -995,6 +995,9 @@ public:
         std::string m_strDevID;
         std::string m_strPassword;
         unsigned int m_uiDeviceType;
+        unsigned int m_uiP2pSupplier;
+        std::string m_strP2pID;
+        std::string m_strP2pServr;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

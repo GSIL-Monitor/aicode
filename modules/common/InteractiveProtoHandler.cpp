@@ -3566,6 +3566,9 @@ void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessag
     m_strDevID = InteractiveMsg.reqvalue().loginreq_dev_value().strdevid();
     m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strpassword();
     m_uiDeviceType = InteractiveMsg.reqvalue().loginreq_dev_value().uidevicetype();
+    m_uiP2pSupplier = InteractiveMsg.reqvalue().loginreq_dev_value().uip2psupplier();
+    m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pid();
+    m_strP2pServr = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pserver();
 }
 
 void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3576,6 +3579,9 @@ void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &Inter
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdevid(m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strpassword(m_strPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_uidevicetype(m_uiDeviceType);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_uip2psupplier(m_uiP2pSupplier);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strp2pserver(m_strP2pServr);
 }
 
 void InteractiveProtoHandler::LoginRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
