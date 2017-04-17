@@ -1933,21 +1933,76 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
     catch (boost::bad_lexical_cast & e)
     {
-        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input is " << itFind->second);
         return blResult;
     }
     catch (...)
     {
-        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        LOG_ERROR_RLD("Type info is invalid and input is " << itFind->second);
         return blResult;
     }
 
+    unsigned int uiP2pType = 0;
+    itFind = pMsgInfoMap->find("p2ptype");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiP2pType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("P2p type info is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("P2p type info is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::string strP2pserver;
+    itFind = pMsgInfoMap->find("p2pserver");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strP2pserver = itFind->second;
+    }
+
+    std::string strP2pID;
+    itFind = pMsgInfoMap->find("p2pid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strP2pID = itFind->second;
+    }
+
+    unsigned int uiP2pidBuildin = 0;
+    itFind = pMsgInfoMap->find("p2pid_buildin");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiP2pidBuildin = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("P2p id build in info is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("P2p id build in info is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+    
     LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd << 
-        " and device ip is " << strRemoteIP << " and device type is " << uiDevType);
+        " and device ip is " << strRemoteIP << " and device type is " << uiDevType << " and device p2p type is " << uiP2pType <<
+        " and device p2p server is " << strP2pserver << " and device p2p id is " << strP2pID << " and device p2p id build in is " << uiP2pidBuildin);
 
     std::string strValue;
     std::string strSid;
-    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, uiDevType, strSid, strValue))
+    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, uiDevType, uiP2pType, strP2pserver, strP2pID, uiP2pidBuildin, strSid, strValue))
     {
         LOG_ERROR_RLD("Device login handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -5038,7 +5093,8 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
 }
 
 bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
-    const unsigned int &uiDevType, std::string &strSid, std::string &strValue)
+    const unsigned int &uiDevType, const unsigned int uiP2pType, const std::string &strP2pserver, const std::string &strP2pID, 
+    const unsigned int uiP2pidBuildin, std::string &strSid, std::string &strValue)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5050,6 +5106,10 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         DevLoginReq.m_strDevID = strDevID;
         DevLoginReq.m_strPassword = strDevPwd;
         DevLoginReq.m_uiDeviceType = uiDevType;
+        DevLoginReq.m_uiP2pSupplier = uiP2pType;
+        DevLoginReq.m_strP2pServr = strP2pserver;
+        DevLoginReq.m_strP2pID = strP2pID;
+        DevLoginReq.m_uiP2pBuildin = uiP2pidBuildin;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevLoginReq, strSerializeOutPut))

@@ -998,6 +998,7 @@ public:
         unsigned int m_uiP2pSupplier;
         std::string m_strP2pID;
         std::string m_strP2pServr;
+        unsigned int m_uiP2pBuildin;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

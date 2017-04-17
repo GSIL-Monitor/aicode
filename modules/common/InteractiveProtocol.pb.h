@@ -2524,9 +2524,9 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_strp2pserver();
   void set_allocated_strp2pserver(::std::string* strp2pserver);
 
-  // string strValue = 7;
+  // string strValue = 8;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 7;
+  static const int kStrValueFieldNumber = 8;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -2550,6 +2550,12 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::uint32 uip2psupplier() const;
   void set_uip2psupplier(::google::protobuf::uint32 value);
 
+  // uint32 uiP2pBuildin = 7;
+  void clear_uip2pbuildin();
+  static const int kUiP2PBuildinFieldNumber = 7;
+  ::google::protobuf::uint32 uip2pbuildin() const;
+  void set_uip2pbuildin(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.LoginReq_DEV)
  private:
 
@@ -2561,6 +2567,7 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uip2psupplier_;
+  ::google::protobuf::uint32 uip2pbuildin_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -18038,7 +18045,21 @@ inline void LoginReq_DEV::set_allocated_strp2pserver(::std::string* strp2pserver
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strP2pServer)
 }
 
-// string strValue = 7;
+// uint32 uiP2pBuildin = 7;
+inline void LoginReq_DEV::clear_uip2pbuildin() {
+  uip2pbuildin_ = 0u;
+}
+inline ::google::protobuf::uint32 LoginReq_DEV::uip2pbuildin() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.uiP2pBuildin)
+  return uip2pbuildin_;
+}
+inline void LoginReq_DEV::set_uip2pbuildin(::google::protobuf::uint32 value) {
+  
+  uip2pbuildin_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiP2pBuildin)
+}
+
+// string strValue = 8;
 inline void LoginReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

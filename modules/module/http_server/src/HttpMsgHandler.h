@@ -226,7 +226,8 @@ private:
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);
 
     bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
-        const unsigned int &uiDevType, std::string &strSid, std::string &strValue);
+        const unsigned int &uiDevType, const unsigned int uiP2pType, const std::string &strP2pserver, const std::string &strP2pID, 
+        const unsigned int uiP2pidBuildin, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, const unsigned int uiP2pType,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);

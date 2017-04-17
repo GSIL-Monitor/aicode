@@ -313,10 +313,11 @@ message LoginReq_DEV                            //设备登陆请求
   string strDevID = 1;
   string strPassword = 2;
   uint32 uiDeviceType = 3;
-  uint32 uiP2pSupplier = 4;
+  uint32 uiP2pSupplier = 4;                     //P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景
   string strP2pID = 5;
   string strP2pServer = 6;
-  string strValue = 7;
+  uint32 uiP2pBuildin = 7;                      //P2P分配方式，0-动态分配，1-设备烧录
+  string strValue = 8;
 }
 
 message LoginRsp_DEV                            //设备登陆响应
