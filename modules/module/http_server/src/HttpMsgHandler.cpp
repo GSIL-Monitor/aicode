@@ -1942,7 +1942,7 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
         return blResult;
     }
 
-    unsigned int uiP2pType = 0;
+    unsigned int uiP2pType = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("p2ptype");
     if (pMsgInfoMap->end() != itFind)
     {
@@ -1976,7 +1976,7 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
         strP2pID = itFind->second;
     }
 
-    unsigned int uiP2pidBuildin = 0;
+    unsigned int uiP2pidBuildin = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("p2pid_buildin");
     if (pMsgInfoMap->end() != itFind)
     {
