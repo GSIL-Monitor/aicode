@@ -86,10 +86,10 @@ ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='尚云P2Pid库';
 DROP TABLE IF EXISTS `t_p2pid_lt`;
 CREATE TABLE `t_p2pid_lt` (
     `id` VARCHAR(36) NOT NULL,
+    `buildin` INT(11) NOT NULL, #P2P分配方式，0-动态分配，1-设备烧录
     `supplier` VARCHAR(50) NOT NULL, #供应商
     `p2pid` VARCHAR(50) NOT NULL,
     `deviceid` VARCHAR(100) NULL DEFAULT NULL,
-    `cluster` VARCHAR(100) NOT NULL COMMENT '所属服务器集群',
     `validity_period` INT(11) NOT NULL DEFAULT '0' COMMENT '有效期，单位：秒，0代表永久有效',
     `createtime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updatetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -100,7 +100,7 @@ CREATE TABLE `t_p2pid_lt` (
     INDEX `updatetime` (`updatetime`),
     INDEX `status` (`status`)
 )
-ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='尚云P2Pid库';
+ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='浪涛P2Pid库';
 
 
 

@@ -1771,6 +1771,19 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
+    //烧录了P2P信息的设备登录时，同时上报P2P信息，平台记入数据库
+    if (P2P_DEVICE_BUILDIN == LoginReqDev.m_uiP2pBuildin)
+    {
+        if (0XFFFFFFFF == LoginReqDev.m_uiP2pSupplier)
+        {
+            LOG_ERROR_RLD("Login req of device failed, field p2p type is empty");
+            return false;
+        }
+
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertP2pInfoToDB, this, LoginReqDev.m_uiP2pSupplier, LoginReqDev.m_strP2pID,
+            LoginReqDev.m_strDevID, P2P_DEVICE_BUILDIN));
+    }
+
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold),
         boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION);
 
@@ -5308,5 +5321,109 @@ bool AccessManager::QueryUserRelationInfoToDB(const std::string &strUserID, cons
 
     return true;
 
+}
+
+bool AccessManager::IsValidP2pInfo(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID)
+{
+    char sql[1024] = { 0 };
+
+    if (P2P_SUPPLIER_LT == uiP2pSupplier || P2P_SUPPLIER_TUTK == uiP2pSupplier)
+    {
+        const char *supplier;
+        if (P2P_SUPPLIER_LT == uiP2pSupplier)
+        {
+            supplier = "LT";
+        }
+        else
+        {
+            supplier = "TUTK";
+        }
+ 
+        const char *sqlfmt = "select p2pid from t_p2pid_lt where p2pid = '%s' and supplier = '%s' and deviceid = '%s' and status = 0";
+        snprintf(sql, sizeof(sql), sqlfmt, strP2pID.c_str(), supplier, strDeviceID.c_str());
+    }
+    else if (P2P_SUPPLIER_SY == uiP2pSupplier)
+    {
+        //目前尚云P2P不做上报的操作，不做校验操作，直接返回false
+        //const char *sqlfmt = "select p2pid from t_p2pid_sy where p2pid = '%s' and deviceid = '%s' and status = 0";
+        //snprintf(sql, sizeof(sql), sqlfmt, strP2pID.c_str(), strDeviceID.c_str());
+        LOG_INFO_RLD("IsValidP2pInfo completed, skip shangyun p2p info");
+        return false;
+    }
+    else
+    {
+        LOG_ERROR_RLD("IsValidP2pInfo failed, unkown p2p supplier, supplier is " << uiP2pSupplier);
+        return false;
+    }
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("IsValidP2pInfo sql p2pid is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsValidP2pInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("IsValidP2pInfo successful, the supplier is " << uiP2pSupplier <<
+            " and p2pid is " << strP2pID << " and device id is " << strDeviceID);
+        return true;
+    }
+    else
+    {
+        LOG_ERROR_RLD("IsValidP2pInfo failed, the p2pid is added, supplier is " << uiP2pSupplier <<
+            " and p2pid is " << strP2pID << " and device id is " << strDeviceID);
+        return false;
+    }
+}
+
+void AccessManager::InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID, const unsigned int uiBuildin)
+{
+    if (!IsValidP2pInfo(uiP2pSupplier, strP2pID, strDeviceID))
+    {
+        LOG_INFO_RLD("InsertP2pInfoToDB completed, the p2pid info is invalid, p2pid is " << strP2pID << " and supplier is " << uiP2pSupplier);
+        return;
+    }
+
+    char sql[1024] = { 0 };
+
+    if (P2P_SUPPLIER_LT == uiP2pSupplier || P2P_SUPPLIER_TUTK == uiP2pSupplier)
+    {
+        const char *supplier;
+        if (P2P_SUPPLIER_LT == uiP2pSupplier)
+        {
+            supplier = "LT";
+        }
+        else
+        {
+            supplier = "TUTK";
+        }
+
+        const char *sqlfmt = "insert into t_p2pid_lt (id, buildin, supplier, p2pid, deviceid) values(uuid(), %d, '%s', '%s', '%s')";
+        snprintf(sql, sizeof(sql), sqlfmt, uiBuildin, supplier, strP2pID.c_str(), strDeviceID.c_str());
+    }
+    else if (P2P_SUPPLIER_SY == uiP2pSupplier)
+    {
+        //目前尚云P2P不做上报的操作，不做插表操作，直接返回
+        LOG_INFO_RLD("InsertP2pInfoToDB completed, skip shangyun p2p info");
+        return;
+    }
+    else
+    {
+        LOG_ERROR_RLD("InsertP2pInfoToDB failed, unkown p2p supplier, supplier is " << uiP2pSupplier);
+        return;
+    }
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertP2pInfoToDB exec sql failed, sql is " << sql);
+    }
 }
 

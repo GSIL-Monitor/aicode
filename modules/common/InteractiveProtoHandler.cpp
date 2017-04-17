@@ -3567,7 +3567,7 @@ void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessag
     m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strpassword();
     m_uiDeviceType = InteractiveMsg.reqvalue().loginreq_dev_value().uidevicetype();
     m_uiP2pSupplier = InteractiveMsg.reqvalue().loginreq_dev_value().uip2psupplier();
-    m_strPassword = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pid();
+    m_strP2pID = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pid();
     m_strP2pServr = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pserver();
     m_uiP2pBuildin = InteractiveMsg.reqvalue().loginreq_dev_value().uip2pbuildin();
 }

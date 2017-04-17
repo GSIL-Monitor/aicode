@@ -51,6 +51,9 @@ public:
     static const int P2P_SUPPLIER_SY = 2;
     static const int P2P_SUPPLIER_TUTK = 3;
 
+    static const int P2P_DYNAMIC_ALLOCATE = 0;
+    static const int P2P_DEVICE_BUILDIN = 1;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -307,6 +310,10 @@ private:
 
     bool QueryAllConfigurationToDB(std::list<InteractiveProtoHandler::Configuration> &configurationList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool IsValidP2pInfo(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID);
+
+    void InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID, const unsigned int uiBuildin);
 
 
 private:

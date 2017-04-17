@@ -79,7 +79,7 @@ curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3
 curl -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_query_access_domain
 
 设备登录
-curl -F devid=czy_beta_device_id_001 -F devpwd=111111 -F devtype=11 http://172.20.122.252/access.cgi?action=device_login
+curl -F devid=czy_beta_device_id_001 -F devpwd=111111 -F devtype=2 -F p2ptype=1 -F p2pserver= -F p2pid -F p2pid_buildin=1 http://172.20.122.252/access.cgi?action=device_login
 
 设备登出
 curl -F sid=2AC5E55393D3714CB6893320FE67D62F -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_logout
