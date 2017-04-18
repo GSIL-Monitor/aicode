@@ -225,9 +225,22 @@ private:
     bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress, const unsigned int uiP2pType,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);
 
-    bool DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
-        const unsigned int &uiDevType, const unsigned int uiP2pType, const std::string &strP2pserver, const std::string &strP2pID, 
-        const unsigned int uiP2pidBuildin, std::string &strSid, std::string &strValue);
+    typedef struct
+    {
+        std::string m_strDevID;
+        std::string m_strDevPwd;
+        std::string m_strDevIpAddress;
+        unsigned int m_uiDevType;
+        unsigned int m_uiP2pType;
+        std::string m_strP2pserver;
+        std::string m_strP2pID;
+        unsigned int m_uiP2pidBuildin;
+        std::string m_strUserName;
+        std::string m_strUserPwd;
+        std::string m_strDistributor;
+        std::string m_strOtherProperty;
+    } DeviceLoginInfo;
+    bool DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, const unsigned int uiP2pType,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);

@@ -1995,14 +1995,58 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
             return blResult;
         }
     }
-    
+
+    std::string strUserName;
+    itFind = pMsgInfoMap->find("user_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserName = itFind->second;
+    }
+
+    std::string strUserPwd;
+    itFind = pMsgInfoMap->find("user_password");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserPwd = itFind->second;
+    }
+
+    std::string strDistributor;
+    itFind = pMsgInfoMap->find("distributor");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDistributor = itFind->second;
+    }
+
+    std::string strOtherProperty;
+    itFind = pMsgInfoMap->find("other_property");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOtherProperty = itFind->second;
+    }
+        
     LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd << 
         " and device ip is " << strRemoteIP << " and device type is " << uiDevType << " and device p2p type is " << uiP2pType <<
-        " and device p2p server is " << strP2pserver << " and device p2p id is " << strP2pID << " and device p2p id build in is " << uiP2pidBuildin);
+        " and device p2p server is " << strP2pserver << " and device p2p id is " << strP2pID << " and device p2p id build in is " << uiP2pidBuildin <<
+        " and device user name is " << strUserName << " and device user pwd is " << strUserPwd << " and distributor is " << strDistributor << 
+        " and device other property is " << strOtherProperty);
+
+    DeviceLoginInfo devlogininfo;
+    devlogininfo.m_strDevID = strDevID;
+    devlogininfo.m_strDevIpAddress = strRemoteIP;
+    devlogininfo.m_strDevPwd = strDevPwd;
+    devlogininfo.m_strDistributor = strDistributor;
+    devlogininfo.m_strOtherProperty = strOtherProperty;
+    devlogininfo.m_strP2pID = strP2pID;
+    devlogininfo.m_strP2pserver = strP2pserver;
+    devlogininfo.m_strUserName = strUserName;
+    devlogininfo.m_strUserPwd = strUserPwd;
+    devlogininfo.m_uiDevType = uiDevType;
+    devlogininfo.m_uiP2pidBuildin = uiP2pidBuildin;
+    devlogininfo.m_uiP2pType = uiP2pType;
 
     std::string strValue;
     std::string strSid;
-    if (!DeviceLogin(strDevID, strDevPwd, strRemoteIP, uiDevType, uiP2pType, strP2pserver, strP2pID, uiP2pidBuildin, strSid, strValue))
+    if (!DeviceLogin(devlogininfo, strSid, strValue))
     {
         LOG_ERROR_RLD("Device login handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -5092,9 +5136,7 @@ bool HttpMsgHandler::P2pInfo(const std::string &strSid, const std::string &strUs
 
 }
 
-bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string &strDevPwd, const std::string &strDevIpAddress, 
-    const unsigned int &uiDevType, const unsigned int uiP2pType, const std::string &strP2pserver, const std::string &strP2pID, 
-    const unsigned int uiP2pidBuildin, std::string &strSid, std::string &strValue)
+bool HttpMsgHandler::DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string &strSid, std::string &strValue)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5102,14 +5144,18 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         DevLoginReq.m_MsgType = InteractiveProtoHandler::MsgType::LoginReq_DEV_T;
         DevLoginReq.m_uiMsgSeq = 1;
         DevLoginReq.m_strSID = "";
-        DevLoginReq.m_strValue = strDevIpAddress; //这里Value保留值填写的内容是设备的接口ip，没有再独立定义字段
-        DevLoginReq.m_strDevID = strDevID;
-        DevLoginReq.m_strPassword = strDevPwd;
-        DevLoginReq.m_uiDeviceType = uiDevType;
-        DevLoginReq.m_uiP2pSupplier = uiP2pType;
-        DevLoginReq.m_strP2pServr = strP2pserver;
-        DevLoginReq.m_strP2pID = strP2pID;
-        DevLoginReq.m_uiP2pBuildin = uiP2pidBuildin;
+        DevLoginReq.m_strValue = DevLogInfo.m_strDevIpAddress; //这里Value保留值填写的内容是设备的接口ip，没有再独立定义字段
+        DevLoginReq.m_strDevID = DevLogInfo.m_strDevID;
+        DevLoginReq.m_strPassword = DevLogInfo.m_strDevPwd;
+        DevLoginReq.m_uiDeviceType = DevLogInfo.m_uiDevType;
+        DevLoginReq.m_uiP2pSupplier = DevLogInfo.m_uiP2pType;
+        DevLoginReq.m_strP2pServr = DevLogInfo.m_strP2pserver;
+        DevLoginReq.m_strP2pID = DevLogInfo.m_strP2pID;
+        DevLoginReq.m_uiP2pBuildin = DevLogInfo.m_uiP2pidBuildin;
+        DevLoginReq.m_strUserName = DevLogInfo.m_strUserName;
+        DevLoginReq.m_strUserPassword = DevLogInfo.m_strUserPwd;
+        DevLoginReq.m_strDistributor = DevLogInfo.m_strDistributor;
+        DevLoginReq.m_strOtherProperty = DevLogInfo.m_strOtherProperty;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevLoginReq, strSerializeOutPut))
@@ -5142,7 +5188,7 @@ bool HttpMsgHandler::DeviceLogin(const std::string &strDevID, const std::string 
         strValue = DevLoginRsp.m_strValue;
         iRet = DevLoginRsp.m_iRetcode;
 
-        LOG_INFO_RLD("Login device id is " << strDevID << " and session id is " << DevLoginRsp.m_strSID <<
+        LOG_INFO_RLD("Login device id is " << DevLogInfo.m_strDevID << " and session id is " << DevLoginRsp.m_strSID <<
             " and value is " << strValue <<
             " and return code is " << DevLoginRsp.m_iRetcode <<
             " and return msg is " << DevLoginRsp.m_strRetMsg);
