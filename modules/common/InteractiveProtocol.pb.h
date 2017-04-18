@@ -2524,9 +2524,65 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_strp2pserver();
   void set_allocated_strp2pserver(::std::string* strp2pserver);
 
-  // string strValue = 8;
+  // string strUserName = 8;
+  void clear_strusername();
+  static const int kStrUserNameFieldNumber = 8;
+  const ::std::string& strusername() const;
+  void set_strusername(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strusername(::std::string&& value);
+  #endif
+  void set_strusername(const char* value);
+  void set_strusername(const char* value, size_t size);
+  ::std::string* mutable_strusername();
+  ::std::string* release_strusername();
+  void set_allocated_strusername(::std::string* strusername);
+
+  // string strUserPassword = 9;
+  void clear_struserpassword();
+  static const int kStrUserPasswordFieldNumber = 9;
+  const ::std::string& struserpassword() const;
+  void set_struserpassword(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserpassword(::std::string&& value);
+  #endif
+  void set_struserpassword(const char* value);
+  void set_struserpassword(const char* value, size_t size);
+  ::std::string* mutable_struserpassword();
+  ::std::string* release_struserpassword();
+  void set_allocated_struserpassword(::std::string* struserpassword);
+
+  // string strDistributor = 10;
+  void clear_strdistributor();
+  static const int kStrDistributorFieldNumber = 10;
+  const ::std::string& strdistributor() const;
+  void set_strdistributor(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdistributor(::std::string&& value);
+  #endif
+  void set_strdistributor(const char* value);
+  void set_strdistributor(const char* value, size_t size);
+  ::std::string* mutable_strdistributor();
+  ::std::string* release_strdistributor();
+  void set_allocated_strdistributor(::std::string* strdistributor);
+
+  // string strOtherProperty = 11;
+  void clear_strotherproperty();
+  static const int kStrOtherPropertyFieldNumber = 11;
+  const ::std::string& strotherproperty() const;
+  void set_strotherproperty(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strotherproperty(::std::string&& value);
+  #endif
+  void set_strotherproperty(const char* value);
+  void set_strotherproperty(const char* value, size_t size);
+  ::std::string* mutable_strotherproperty();
+  ::std::string* release_strotherproperty();
+  void set_allocated_strotherproperty(::std::string* strotherproperty);
+
+  // string strValue = 12;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 8;
+  static const int kStrValueFieldNumber = 12;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -2564,6 +2620,10 @@ class LoginReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr strpassword_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
   ::google::protobuf::internal::ArenaStringPtr strp2pserver_;
+  ::google::protobuf::internal::ArenaStringPtr strusername_;
+  ::google::protobuf::internal::ArenaStringPtr struserpassword_;
+  ::google::protobuf::internal::ArenaStringPtr strdistributor_;
+  ::google::protobuf::internal::ArenaStringPtr strotherproperty_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uip2psupplier_;
@@ -18059,7 +18119,215 @@ inline void LoginReq_DEV::set_uip2pbuildin(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.uiP2pBuildin)
 }
 
-// string strValue = 8;
+// string strUserName = 8;
+inline void LoginReq_DEV::clear_strusername() {
+  strusername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::strusername() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strUserName)
+  return strusername_.GetNoArena();
+}
+inline void LoginReq_DEV::set_strusername(const ::std::string& value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strUserName)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_strusername(::std::string&& value) {
+  
+  strusername_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strUserName)
+}
+#endif
+inline void LoginReq_DEV::set_strusername(const char* value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strUserName)
+}
+inline void LoginReq_DEV::set_strusername(const char* value, size_t size) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strUserName)
+}
+inline ::std::string* LoginReq_DEV::mutable_strusername() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strUserName)
+  return strusername_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_strusername() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strUserName)
+  
+  return strusername_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_strusername(::std::string* strusername) {
+  if (strusername != NULL) {
+    
+  } else {
+    
+  }
+  strusername_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strusername);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strUserName)
+}
+
+// string strUserPassword = 9;
+inline void LoginReq_DEV::clear_struserpassword() {
+  struserpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::struserpassword() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strUserPassword)
+  return struserpassword_.GetNoArena();
+}
+inline void LoginReq_DEV::set_struserpassword(const ::std::string& value) {
+  
+  struserpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strUserPassword)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_struserpassword(::std::string&& value) {
+  
+  struserpassword_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strUserPassword)
+}
+#endif
+inline void LoginReq_DEV::set_struserpassword(const char* value) {
+  
+  struserpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strUserPassword)
+}
+inline void LoginReq_DEV::set_struserpassword(const char* value, size_t size) {
+  
+  struserpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strUserPassword)
+}
+inline ::std::string* LoginReq_DEV::mutable_struserpassword() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strUserPassword)
+  return struserpassword_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_struserpassword() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strUserPassword)
+  
+  return struserpassword_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_struserpassword(::std::string* struserpassword) {
+  if (struserpassword != NULL) {
+    
+  } else {
+    
+  }
+  struserpassword_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserpassword);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strUserPassword)
+}
+
+// string strDistributor = 10;
+inline void LoginReq_DEV::clear_strdistributor() {
+  strdistributor_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::strdistributor() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strDistributor)
+  return strdistributor_.GetNoArena();
+}
+inline void LoginReq_DEV::set_strdistributor(const ::std::string& value) {
+  
+  strdistributor_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strDistributor)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_strdistributor(::std::string&& value) {
+  
+  strdistributor_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strDistributor)
+}
+#endif
+inline void LoginReq_DEV::set_strdistributor(const char* value) {
+  
+  strdistributor_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strDistributor)
+}
+inline void LoginReq_DEV::set_strdistributor(const char* value, size_t size) {
+  
+  strdistributor_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strDistributor)
+}
+inline ::std::string* LoginReq_DEV::mutable_strdistributor() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strDistributor)
+  return strdistributor_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_strdistributor() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strDistributor)
+  
+  return strdistributor_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_strdistributor(::std::string* strdistributor) {
+  if (strdistributor != NULL) {
+    
+  } else {
+    
+  }
+  strdistributor_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdistributor);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strDistributor)
+}
+
+// string strOtherProperty = 11;
+inline void LoginReq_DEV::clear_strotherproperty() {
+  strotherproperty_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& LoginReq_DEV::strotherproperty() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_DEV.strOtherProperty)
+  return strotherproperty_.GetNoArena();
+}
+inline void LoginReq_DEV::set_strotherproperty(const ::std::string& value) {
+  
+  strotherproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_DEV.strOtherProperty)
+}
+#if LANG_CXX11
+inline void LoginReq_DEV::set_strotherproperty(::std::string&& value) {
+  
+  strotherproperty_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.LoginReq_DEV.strOtherProperty)
+}
+#endif
+inline void LoginReq_DEV::set_strotherproperty(const char* value) {
+  
+  strotherproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.LoginReq_DEV.strOtherProperty)
+}
+inline void LoginReq_DEV::set_strotherproperty(const char* value, size_t size) {
+  
+  strotherproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.LoginReq_DEV.strOtherProperty)
+}
+inline ::std::string* LoginReq_DEV::mutable_strotherproperty() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.LoginReq_DEV.strOtherProperty)
+  return strotherproperty_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* LoginReq_DEV::release_strotherproperty() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.LoginReq_DEV.strOtherProperty)
+  
+  return strotherproperty_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void LoginReq_DEV::set_allocated_strotherproperty(::std::string* strotherproperty) {
+  if (strotherproperty != NULL) {
+    
+  } else {
+    
+  }
+  strotherproperty_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strotherproperty);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_DEV.strOtherProperty)
+}
+
+// string strValue = 12;
 inline void LoginReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

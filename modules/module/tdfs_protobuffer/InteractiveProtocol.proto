@@ -317,7 +317,11 @@ message LoginReq_DEV                            //设备登陆请求
   string strP2pID = 5;
   string strP2pServer = 6;
   uint32 uiP2pBuildin = 7;                      //P2P分配方式，0-动态分配，1-设备烧录
-  string strValue = 8;
+  string strUserName = 8;                       //用户名，P2P穿透使用
+  string strUserPassword = 9;                   //用户密码，P2P穿透使用
+  string strDistributor = 10;                   //经销商
+  string strOtherProperty = 11;
+  string strValue = 12;
 }
 
 message LoginRsp_DEV                            //设备登陆响应

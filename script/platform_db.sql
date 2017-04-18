@@ -146,3 +146,22 @@ CREATE TABLE `t_access_domain_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_device_property`;
+CREATE TABLE `t_device_property` (
+  `id` varchar(36) NOT NULL,
+  `deviceid` varchar(100) NOT NULL,
+  `devicepassword` varchar(100),
+  `typeinfo` int(11) NOT NULL,
+  `username` varchar(100), #用户名称
+  `userpassword` varchar(50), #用户密码
+  `p2pinformation` varchar(1000), #P2P信息，如P2PID、P2P服务器等，使用Json格式填充
+  `distributor` varchar(100), #经销商
+  `otherproperty` varchar(1000), #其他属性，使用Json格式填充
+  `createdate` datetime NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `extend` varchar(4000) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(deviceid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+

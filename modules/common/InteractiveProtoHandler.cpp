@@ -3570,6 +3570,10 @@ void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessag
     m_strP2pID = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pid();
     m_strP2pServr = InteractiveMsg.reqvalue().loginreq_dev_value().strp2pserver();
     m_uiP2pBuildin = InteractiveMsg.reqvalue().loginreq_dev_value().uip2pbuildin();
+    m_strUserName = InteractiveMsg.reqvalue().loginreq_dev_value().strusername();
+    m_strUserPassword = InteractiveMsg.reqvalue().loginreq_dev_value().struserpassword();
+    m_strDistributor = InteractiveMsg.reqvalue().loginreq_dev_value().strdistributor();
+    m_strOtherProperty = InteractiveMsg.reqvalue().loginreq_dev_value().strotherproperty();
 }
 
 void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3584,6 +3588,10 @@ void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &Inter
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strp2pserver(m_strP2pServr);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_uip2pbuildin(m_uiP2pBuildin);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strusername(m_strUserName);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_struserpassword(m_strUserPassword);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdistributor(m_strDistributor);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strotherproperty(m_strOtherProperty);
 }
 
 void InteractiveProtoHandler::LoginRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
