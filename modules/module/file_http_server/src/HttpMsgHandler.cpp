@@ -119,9 +119,10 @@ bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
         }
 
-        this_->WriteMsg(ResultInfoMap, writer, blResult);
     }
     BOOST_SCOPE_EXIT_END
 
@@ -271,7 +272,7 @@ bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer
     {
         if (0 == uiBlockStatus)
         {
-            char cBuffer[256] = { 0 };
+            char cBuffer[1024] = { 0 };
             snprintf(cBuffer, sizeof(cBuffer), "Content-disposition: attachment; filename=\"%s\"\r\nContent-Type: %s\r\n"
                 "Content-Length: %d\r\nStatus: 200 OK\r\n\r\n", strFileID.c_str(), strContentType.c_str(), uiFileSize);
 
