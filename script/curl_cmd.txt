@@ -79,7 +79,7 @@ curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3
 curl -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_query_access_domain
 
 设备登录
-curl -F devid=czy_beta_device_id_001 -F devpwd=111111 -F devtype=2 -F p2ptype=1 -F p2pserver= -F p2pid -F p2pid_buildin=1 http://172.20.122.252/access.cgi?action=device_login
+curl -F devid=czy_beta_device_id_004 -F devpwd=999999 -F devtype=4 -F p2ptype=1 -F p2pserver= -F p2pid=beta_test_110 -F p2pid_buildin=0 -F user_name=lt_user_011 -F user_password=111111 -F distributor=subanni -F other_property='{"host":anni,"port":8888}' http://172.20.122.252/access.cgi?action=device_login
 
 设备登出
 curl -F sid=2AC5E55393D3714CB6893320FE67D62F -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=device_logout
@@ -102,7 +102,7 @@ curl -F sid=2AC5E55393D3714CB6893320FE67D62F -F category=IPC -F sub_category=IPC
 
 
 管理员新增配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=Android_App -F sub_category=Camviews -F latest_version=2.4 -F description=fixed:4bugs -F force_version= -F server_address=172.20.122.251 -F file_name=mailsender -F file_id=5/A3FDD87174731B4DB467E1DC68352338_mailsender -F file_size=20481 -F lease=1800 http://172.20.122.252/access.cgi?action=add_configuration
+curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_PROFESSION_16M_6F_BASE -F latest_version=20170418 -F description=fixed:18bugs -F force_version= -F server_address=47.88.33.242:7000 -F file_name=IPC_PROFESSION_16M_6F_BASE_V4.00.00.201_20170418.img.rom -F file_id=9/5582009E385F6F4889ED8C7033E8B9AF_IPC_PROFESSION_16M_6F_BASE_V4.00.00.201_20170418.img.rom -F file_size=9324156 -F lease=0 http://47.88.33.242:8090/access.cgi?action=add_configuration
 
 管理员删除配置项
 curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_beta_001.img http://172.20.122.252/access.cgi?action=delete_configuration

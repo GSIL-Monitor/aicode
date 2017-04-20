@@ -1784,7 +1784,10 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
             LoginReqDev.m_strDevID, P2P_DEVICE_BUILDIN));
     }
 
-    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold),
+    //记录设备登录时上报的信息到设备属性表
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertDevPropertyToDB, this, LoginReqDev));
+
+    m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strDevSessionTimeoutCountThreshold),
         boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION);
 
     blResult = true;
@@ -1864,7 +1867,21 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
     p2pSvrManager->SetUrl(m_ParamInfo.m_strGetIpInfoSite);
     p2pSvrManager->SetDBManager(&m_DBCache, m_pMysql);
-    if (!p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
+
+    int iRetry = 0;
+    do 
+    {
+        if (p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
+        {
+            break;
+        }
+
+        ++iRetry;
+        LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress <<
+            " and retry " << iRetry << " times");
+    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+
+    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
         LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
         return false;
@@ -2245,14 +2262,29 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     CTimeZone cTimeZone;
     cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
-    if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
-    {
-        LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress);
-        return false;
-    }
 
     AccessDomainInfo DomainInfo;
-    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    int iRetry = 0;
+    do 
+    {
+        if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
+        {
+            LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry + 1 << " times");
+
+            ++iRetry;
+            continue;
+        }
+
+        if (QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+        {
+            break;
+        }
+
+        ++iRetry;
+        LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry << " times");
+    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+
+    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
         LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress);
         return false;
@@ -2313,16 +2345,31 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
     CTimeZone cTimeZone;
     cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
-    if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
-    {
-        LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress);
-        return false;
-    }
 
     AccessDomainInfo DomainInfo;
-    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    int iRetry = 0;
+    do 
     {
-        LOG_ERROR_RLD("Query user access domain name failed, device ip is " << req.m_strDevIpAddress);
+        if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
+        {
+            LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry + 1 << " times");
+
+            ++iRetry;
+            continue;
+        }
+
+        if (QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+        {
+            break;
+        }
+
+        ++iRetry;
+        LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry << " times");
+    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+
+    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
+    {
+        LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress);
         return false;
     }
 
@@ -5424,6 +5471,78 @@ void AccessManager::InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const st
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("InsertP2pInfoToDB exec sql failed, sql is " << sql);
+    }
+}
+
+void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq)
+{
+    Json::Value jsP2pInfo;
+    jsP2pInfo["p2pid"] = loginDevReq.m_strP2pID;
+    jsP2pInfo["p2pserver"] = loginDevReq.m_strP2pServr;
+    jsP2pInfo["p2ptype"] = loginDevReq.m_uiP2pSupplier;
+    jsP2pInfo["p2pid_buildin"] = loginDevReq.m_uiP2pBuildin;
+    Json::FastWriter fastwriter;
+    const std::string &strP2pInfo = fastwriter.write(jsP2pInfo);
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+
+    const char *sqlfmt = "insert into t_device_property values(uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s')"
+        " on duplicate key update id = id";
+    snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_uiDeviceType,
+        loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), strP2pInfo.c_str(), loginDevReq.m_strDistributor.c_str(),
+        loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
+
+    if (!loginDevReq.m_strPassword.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicepassword = '%s'", loginDevReq.m_strPassword.c_str());
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiDeviceType)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", typeinfo = %d", loginDevReq.m_uiDeviceType);
+    }
+
+    if (!loginDevReq.m_strUserName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", username = '%s'", loginDevReq.m_strUserName.c_str());
+    }
+
+    if (!loginDevReq.m_strUserPassword.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", userpassword = '%s'", loginDevReq.m_strUserPassword.c_str());
+    }
+
+    if (!strP2pInfo.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pinformation = '%s'", strP2pInfo.c_str());
+    }
+  
+    if (!loginDevReq.m_strDistributor.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", distributor = '%s'", loginDevReq.m_strDistributor.c_str());
+    }
+
+    if (!loginDevReq.m_strOtherProperty.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", otherproperty = '%s'", loginDevReq.m_strOtherProperty.c_str());
+    }
+   
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertDevPropertyToDB exec sql error, sql is " << sql);
     }
 }
 

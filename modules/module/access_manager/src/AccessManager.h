@@ -54,6 +54,8 @@ public:
     static const int P2P_DYNAMIC_ALLOCATE = 0;
     static const int P2P_DEVICE_BUILDIN = 1;
 
+    static const int GET_TIMEZONE_RETRY_TIMES = 5;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -86,6 +88,7 @@ public:
         std::string m_strMemAddress;
         std::string m_strMemPort;
         std::string m_strSessionTimeoutCountThreshold;
+        std::string m_strDevSessionTimeoutCountThreshold;
         std::string m_strLTUserSite;
         std::string m_strLTUserSiteRC4Key;
         std::string m_strUploadURL;
@@ -314,6 +317,8 @@ private:
     bool IsValidP2pInfo(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID);
 
     void InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID, const unsigned int uiBuildin);
+
+    void InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq);
 
 
 private:

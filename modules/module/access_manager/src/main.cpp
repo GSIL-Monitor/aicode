@@ -244,6 +244,13 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strDevSessionTimeoutCountThreshold = GetConfig("General.DeviceSessionTimeoutCountThreshold");
+    if (strDevSessionTimeoutCountThreshold.empty())
+    {
+        LOG_ERROR_RLD("Device session timout threshold config item not found.");
+        return 0;
+    }
+
     const std::string &strMemcachedAddress = GetConfig("MemCached.MemAddress");
     if (strMemcachedAddress.empty())
     {
@@ -298,6 +305,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strMemAddress = strMemcachedAddress;
     UmgParam.m_strMemPort = strMemcachedPort;
     UmgParam.m_strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
+    UmgParam.m_strDevSessionTimeoutCountThreshold = strDevSessionTimeoutCountThreshold;
     UmgParam.m_strLTUserSite = strLTUserSite;
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
     UmgParam.m_strUploadURL = strUploadURL;
