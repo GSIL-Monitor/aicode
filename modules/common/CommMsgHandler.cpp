@@ -180,7 +180,22 @@ int CommMsgHandler::StartTask()
 int CommMsgHandler::SyncConnect()
 {
     boost::mutex::scoped_lock lock(m_mtx);
-    m_Client->AsyncConnect();
+
+    try
+    {
+        m_Client->AsyncConnect();
+    }
+    catch (boost::system::system_error & e)
+    {
+        LOG_ERROR_RLD("Connect failed and error msg is " << e.what());
+        return FAILED;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Connect failed and error msg is unknown.");
+        return FAILED;
+    }
+
     m_cond.wait(lock);
 
     return m_iOperationStatus;
