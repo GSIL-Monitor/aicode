@@ -60,6 +60,9 @@ public:
         QueryFirmwareUpgradeReq_DEV_T = 10380,   //设备查询固件升级数据
         QueryFirmwareUpgradeRsp_DEV_T = 10390,
 
+        ModifyDevicePropertyReq_DEV_T = 10400,   //修改设备属性
+        ModifyDevicePropertyRsp_DEV_T = 10410,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -539,6 +542,7 @@ public:
 
         std::string m_strUserID;
         Device m_devInfo;
+        std::string m_strDomainName;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -999,9 +1003,12 @@ public:
         std::string m_strP2pID;
         std::string m_strP2pServr;
         unsigned int m_uiP2pBuildin;
+        std::string m_strLicenseKey;
+        std::string m_strPushID;
         std::string m_strUserName;
         std::string m_strUserPassword;
         std::string m_strDistributor;
+        std::string m_strDomainName;
         std::string m_strOtherProperty;
         std::string m_strValue;
 
@@ -1145,6 +1152,16 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryUpgradeSiteRsp_DEV : Rsp
+    {
+        std::string m_strUpgradeSiteUrl;
+        unsigned int m_uiLease;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     struct QueryFirmwareUpgradeReq_DEV : Req
     {
         std::string m_strCategory;
@@ -1165,10 +1182,34 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
-    struct QueryUpgradeSiteRsp_DEV : Rsp
+    struct ModifyDevicePropertyReq_DEV : Req
     {
-        std::string m_strUpgradeSiteUrl;
-        unsigned int m_uiLease;
+        std::string m_strDeviceID;
+        std::string m_strDomainName;
+        std::string m_strCorpID;
+        std::string m_strDeviceName;
+        std::string m_strDeviceIP;
+        std::string m_strWebPort;
+        std::string m_strCtrlPort;
+        std::string m_strProtocol;
+        std::string m_strModel;
+        std::string m_strPostFrequency;
+        std::string m_strVersion;
+        std::string m_strDeviceStatus;
+        std::string m_strServerIP;
+        std::string m_strServerPort;
+        std::string m_strTransfer;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyDevicePropertyRsp_DEV : Rsp
+    {
+        std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1551,6 +1592,11 @@ private:
     bool QueryAllConfigurationReq_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryAllConfigurationRsp_MGR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryAllConfigurationRsp_MGR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ModifyDevicePropertyReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool ModifyDevicePropertyReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ModifyDevicePropertyRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool ModifyDevicePropertyRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 

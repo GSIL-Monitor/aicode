@@ -43,6 +43,8 @@ public:
     static const std::string DEVICE_P2P_INFO_ACTION;
     static const std::string DEVICE_SHAKEHAND_ACTION;
     static const std::string DEVICE_LOGOUT_ACTION;
+    static const std::string DEVICE_SET_PROPERTY_ACTION;
+
 
     static const std::string QUERY_USER_FILE_ACTION;
     static const std::string DOWNLOAD_USER_FILE_ACTION;
@@ -128,6 +130,8 @@ public:
     bool DeviceShakehandHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeviceLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    
+    bool DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     bool QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
@@ -239,6 +243,7 @@ private:
         std::string m_strUserPwd;
         std::string m_strDistributor;
         std::string m_strOtherProperty;
+        std::string m_strDomainName;
     } DeviceLoginInfo;
     bool DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string &strSid, std::string &strValue);
 
@@ -248,6 +253,31 @@ private:
     bool DeviceShakehand(const std::string &strSid, const std::string &strDevID);
 
     bool DeviceLogout(const std::string &strSid, const std::string &strDevID);
+
+    typedef struct
+    {
+        std::string m_strDevid;
+        std::string m_strDomainName;
+        std::string m_strCorpid;
+        std::string m_strDvsname;
+        std::string m_strDvsip;
+        std::string m_strWebport;
+        std::string m_strCtrlport;
+        std::string m_strProtocol;
+        std::string m_strUserid;
+        std::string m_strPassword;
+        std::string m_strModel;
+        std::string m_strPostfrequency;
+        std::string m_strVersion;
+        std::string m_strStatus;
+        std::string m_strServerIp;
+        std::string m_strServerPort;
+        std::string m_strTransfer;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+    } DeviceProperty;
+    
+    bool DeviceSetProperty(const std::string &strSid, const DeviceProperty &devpt);
 
     template<typename T>
     bool QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, 

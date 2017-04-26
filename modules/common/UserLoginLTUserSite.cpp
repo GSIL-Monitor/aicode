@@ -109,7 +109,7 @@ int UserLoginLTUserSite::Login(const string &userName, const string &password)
         break;
     default:
         ret = LOGIN_FAILED;
-        LOG_ERROR_RLD("Login failed, unkown login return code");
+        LOG_ERROR_RLD("Login failed, unknown login return code");
         break;
     }
 

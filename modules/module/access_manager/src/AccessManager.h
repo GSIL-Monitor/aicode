@@ -50,6 +50,7 @@ public:
     static const int P2P_SUPPLIER_LT = 1;
     static const int P2P_SUPPLIER_SY = 2;
     static const int P2P_SUPPLIER_TUTK = 3;
+    static const int P2P_SUPPLIER_VR = 4;
 
     static const int P2P_DYNAMIC_ALLOCATE = 0;
     static const int P2P_DEVICE_BUILDIN = 1;
@@ -317,6 +318,8 @@ private:
     bool IsValidP2pInfo(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID);
 
     void InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const std::string &strP2pID, const std::string &strDeviceID, const unsigned int uiBuildin);
+
+    bool IsValidDeviceDomain(const std::string &strDeviceID, const std::string &strDeviceDomain);
 
     void InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq);
 

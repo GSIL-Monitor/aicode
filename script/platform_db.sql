@@ -10,7 +10,7 @@ CREATE TABLE `t_user_info` (
   `userpassword` varchar(100) DEFAULT NULL,
   `typeinfo` int(11) NOT NULL DEFAULT '0',
   `aliasname` varchar(128), #用户别名
-  `email` varchar(128) NOT NULL, #用户邮箱   
+  `email` varchar(128) NOT NULL, #用户邮箱
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `t_device_info` (
   `deviceid` varchar(100) NOT NULL,
   `devicename` varchar(100) NOT NULL,
   `devicepassword` varchar(100) DEFAULT NULL,
-  `typeinfo` int(11) NOT NULL DEFAULT '0',   
+  `typeinfo` int(11) NOT NULL DEFAULT '0',
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `innerinfo` varchar(4000) DEFAULT NULL,
@@ -77,8 +77,8 @@ DROP TABLE IF EXISTS `t_user_operation_log`;
 CREATE TABLE `t_user_operation_log` (
   `id` varchar(36) NOT NULL,
   `userid` varchar(100) NOT NULL,
-  `deviceid` varchar(100) NOT NULL,  
-  `operationtype` int(11) NOT NULL,  
+  `deviceid` varchar(100) NOT NULL,
+  `operationtype` int(11) NOT NULL,
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `extend` varchar(4000) DEFAULT NULL,
@@ -151,17 +151,38 @@ CREATE TABLE `t_device_property` (
   `id` varchar(36) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
   `devicepassword` varchar(100),
+  `devicedomain` varchar(50), #设备二级域名，与设备ID一一对应
   `typeinfo` int(11) NOT NULL,
   `username` varchar(100), #用户名称
   `userpassword` varchar(50), #用户密码
-  `p2pinformation` varchar(1000), #P2P信息，如P2PID、P2P服务器等
+  `p2pid` varchar(50), #P2PID
+  `p2pserver` varchar(100), #P2P服务器
+  `p2psupplier` int(11), #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
+  `p2pbuildin` int(11), #P2P分配方式，0-动态分配，1-设备烧录
+  `licensekey` varchar(50), #尚云P2P使用
+  `pushid` varchar(50), #尚云P2P2使用
   `distributor` varchar(100), #经销商
+  `corpid` varchar(100),
+  `dvsname` varchar(100),
+  `dvsip` varchar(50),
+  `webport` varchar(50),
+  `ctrlport` varchar(50),
+  `protocol` varchar(50),
+  `model` varchar(50),
+  `postfrequency` varchar(50),
+  `version` varchar(50),
+  `devicestatus` varchar(50),
+  `serverip` varchar(50),
+  `serverport` varchar(50),
+  `transfer` varchar(100),
+  `mobileport` varchar(50),
+  `channelcount` varchar(50),
   `otherproperty` varchar(1000), #其他属性
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY  (deviceid)
+  UNIQUE KEY (deviceid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 

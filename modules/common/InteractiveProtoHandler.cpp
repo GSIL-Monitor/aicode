@@ -1027,6 +1027,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllConfigurationRsp_MGR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllConfigurationRsp_MGR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyDevicePropertyReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyDevicePropertyReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyDevicePropertyReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyDevicePropertyRsp_DEV_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2029,6 +2043,26 @@ bool InteractiveProtoHandler::QueryAllConfigurationRsp_MGR_UnSerializer(const In
     return UnSerializerT<QueryAllConfigurationRsp_MGR, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::ModifyDevicePropertyReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ModifyDevicePropertyReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyDevicePropertyReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ModifyDevicePropertyReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyDevicePropertyRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ModifyDevicePropertyRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -2522,7 +2556,7 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().uistatus();
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strinnerinfo();
-        
+    m_strDomainName = InteractiveMsg.reqvalue().adddevreq_usr_value().strdomainname();
 }
 
 void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2539,7 +2573,7 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
-    
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strdomainname(m_strDomainName);
 }
 
 void InteractiveProtoHandler::AddDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -3573,6 +3607,7 @@ void InteractiveProtoHandler::LoginReq_DEV::UnSerializer(const InteractiveMessag
     m_strUserName = InteractiveMsg.reqvalue().loginreq_dev_value().strusername();
     m_strUserPassword = InteractiveMsg.reqvalue().loginreq_dev_value().struserpassword();
     m_strDistributor = InteractiveMsg.reqvalue().loginreq_dev_value().strdistributor();
+    m_strDomainName = InteractiveMsg.reqvalue().loginreq_dev_value().strdomainname();
     m_strOtherProperty = InteractiveMsg.reqvalue().loginreq_dev_value().strotherproperty();
 }
 
@@ -3591,6 +3626,7 @@ void InteractiveProtoHandler::LoginReq_DEV::Serializer(InteractiveMessage &Inter
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strusername(m_strUserName);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_struserpassword(m_strUserPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdistributor(m_strDistributor);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strdomainname(m_strDomainName);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_dev_value()->set_strotherproperty(m_strOtherProperty);
 }
 
@@ -4165,3 +4201,60 @@ void InteractiveProtoHandler::QueryAllConfigurationRsp_MGR::Serializer(Interacti
     SerializeConfigurationList(m_configurationList, cfgInfo);
 }
 
+void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDeviceID = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdeviceid();
+    m_strDomainName = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdomainname();
+    m_strCorpID = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strcorpid();
+    m_strDeviceName = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdevicename();
+    m_strDeviceIP = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdeviceip();
+    m_strWebPort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strwebport();
+    m_strCtrlPort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strctrlport();
+    m_strProtocol = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strprotocol();
+    m_strModel = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strmodel();
+    m_strPostFrequency = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strpostfrequency();
+    m_strVersion = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strversion();
+    m_strDeviceStatus = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdevicestatus();
+    m_strServerIP = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strserverip();
+    m_strServerPort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strserverport();
+    m_strTransfer = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strtransfer();
+    m_strMobilePort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strmobileport();
+    m_strChannelCount = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strchannelcount();
+}
+
+void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDevicePropertyReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceid(m_strDomainName);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strcorpid(m_strCorpID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdevicename(m_strDeviceName);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceip(m_strDeviceIP);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strwebport(m_strWebPort);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strctrlport(m_strCtrlPort);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strprotocol(m_strProtocol);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strmodel(m_strModel);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strpostfrequency(m_strPostFrequency);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strversion(m_strVersion);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdevicestatus(m_strDeviceStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strserverip(m_strServerIP);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strserverport(m_strServerPort);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strtransfer(m_strTransfer);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strmobileport(m_strMobilePort);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strchannelcount(m_strChannelCount);
+}
+
+void InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().modifydevicepropertyrsp_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDevicePropertyRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_modifydevicepropertyrsp_dev_value()->set_strvalue(m_strValue);
+}

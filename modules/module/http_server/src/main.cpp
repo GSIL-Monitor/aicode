@@ -289,7 +289,8 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_P2P_INFO_ACTION, boost::bind(&HttpMsgHandler::DeviceP2pInfoHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_SHAKEHAND_ACTION, boost::bind(&HttpMsgHandler::DeviceShakehandHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_LOGOUT_ACTION, boost::bind(&HttpMsgHandler::DeviceLogoutHandler, &filehdr, _1, _2));
-
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_SET_PROPERTY_ACTION, boost::bind(&HttpMsgHandler::DeviceSetPropertyHandler, &filehdr, _1, _2));
+    
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::QueryUserFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DOWNLOAD_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::DownloadUserFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_USER_FILE_ACTION, boost::bind(&HttpMsgHandler::DeleteUserFileHandler, &filehdr, _1, _2));

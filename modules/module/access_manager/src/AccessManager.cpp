@@ -1771,6 +1771,13 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
+    if (!IsValidDeviceDomain(LoginReqDev.m_strDevID, LoginReqDev.m_strDomainName))
+    {
+        LOG_ERROR_RLD("Device login vefiry device domain name failed, device id is " << LoginReqDev.m_strDevID <<
+            " and domain name is " << LoginReqDev.m_strDomainName);
+        return false;
+    }
+
     //烧录了P2P信息的设备登录时，同时上报P2P信息，平台记入数据库
     if (P2P_DEVICE_BUILDIN == LoginReqDev.m_uiP2pBuildin)
     {
@@ -1861,7 +1868,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     }
     else
     {
-        LOG_ERROR_RLD("P2p info of device failed, unkown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
+        LOG_ERROR_RLD("P2p info of device failed, unknown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
         return false;
     }
 
@@ -2074,7 +2081,7 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
     }
     else
     {
-        LOG_ERROR_RLD("P2p info of user failed, unkown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
+        LOG_ERROR_RLD("P2p info of user failed, unknown p2p supplier, src id is " << strSrcID << " and supplier is " << req.m_uiP2pSupplier);
         return false;
     }
 
@@ -5399,7 +5406,7 @@ bool AccessManager::IsValidP2pInfo(const unsigned int uiP2pSupplier, const std::
     }
     else
     {
-        LOG_ERROR_RLD("IsValidP2pInfo failed, unkown p2p supplier, supplier is " << uiP2pSupplier);
+        LOG_ERROR_RLD("IsValidP2pInfo failed, unknown p2p supplier, supplier is " << uiP2pSupplier);
         return false;
     }
 
@@ -5464,7 +5471,7 @@ void AccessManager::InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const st
     }
     else
     {
-        LOG_ERROR_RLD("InsertP2pInfoToDB failed, unkown p2p supplier, supplier is " << uiP2pSupplier);
+        LOG_ERROR_RLD("InsertP2pInfoToDB failed, unknown p2p supplier, supplier is " << uiP2pSupplier);
         return;
     }
 
@@ -5474,16 +5481,37 @@ void AccessManager::InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const st
     }
 }
 
+bool AccessManager::IsValidDeviceDomain(const std::string &strDeviceID, const std::string &strDeviceDomain)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select deviceid from t_device_property where deviceid != '%s' and devicedomain = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strDeviceDomain.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("IsValidDeviceDomain sql deviceid is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsValidDeviceDomain exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        LOG_ERROR_RLD("IsValidDeviceDomain failed, the device domain name is used: " << strDeviceDomain);
+        return false;
+    }
+
+    return true;
+}
+
 void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq)
 {
-    Json::Value jsP2pInfo;
-    jsP2pInfo["p2pid"] = loginDevReq.m_strP2pID;
-    jsP2pInfo["p2pserver"] = loginDevReq.m_strP2pServr;
-    jsP2pInfo["p2ptype"] = loginDevReq.m_uiP2pSupplier;
-    jsP2pInfo["p2pid_buildin"] = loginDevReq.m_uiP2pBuildin;
-    Json::FastWriter fastwriter;
-    const std::string &strP2pInfo = fastwriter.write(jsP2pInfo);
-
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
@@ -5492,11 +5520,12 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     int size = sizeof(sql);
     int len;
 
-    const char *sqlfmt = "insert into t_device_property values(uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s')"
+    const char *sqlfmt = "insert into t_device_property values(uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', '%s', %d, '%s')"
         " on duplicate key update id = id";
     snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_uiDeviceType,
-        loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), strP2pInfo.c_str(), loginDevReq.m_strDistributor.c_str(),
-        loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
+        loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), loginDevReq.m_strP2pID.c_str(), loginDevReq.m_strP2pServr.c_str(),
+        loginDevReq.m_uiP2pSupplier, loginDevReq.m_uiP2pBuildin, loginDevReq.m_strLicenseKey.c_str(), loginDevReq.m_strPushID.c_str(),
+        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
 
     if (!loginDevReq.m_strPassword.empty())
     {
@@ -5522,12 +5551,42 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
         snprintf(sql + len, size - len, ", userpassword = '%s'", loginDevReq.m_strUserPassword.c_str());
     }
 
-    if (!strP2pInfo.empty())
+    if (!loginDevReq.m_strP2pID.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", p2pinformation = '%s'", strP2pInfo.c_str());
+        snprintf(sql + len, size - len, ", p2pid = '%s'", loginDevReq.m_strP2pID.c_str());
     }
-  
+
+    if (!loginDevReq.m_strP2pServr.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pserver = '%s'", loginDevReq.m_strP2pServr.c_str());
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiP2pSupplier)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2psupplier = %d", loginDevReq.m_uiP2pSupplier);
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiP2pBuildin)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pbuildin = %d", loginDevReq.m_uiP2pBuildin);
+    }
+
+    if (!loginDevReq.m_strLicenseKey.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", licensekey = '%s'", loginDevReq.m_strLicenseKey.c_str());
+    }
+
+    if (!loginDevReq.m_strPushID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", pushid = '%s'", loginDevReq.m_strPushID.c_str());
+    }
+
     if (!loginDevReq.m_strDistributor.empty())
     {
         len = strlen(sql);
@@ -5539,7 +5598,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
         len = strlen(sql);
         snprintf(sql + len, size - len, ", otherproperty = '%s'", loginDevReq.m_strOtherProperty.c_str());
     }
-   
+
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("InsertDevPropertyToDB exec sql error, sql is " << sql);

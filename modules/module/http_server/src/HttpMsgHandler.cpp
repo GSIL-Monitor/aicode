@@ -66,6 +66,8 @@ const std::string HttpMsgHandler::DEVICE_SHAKEHAND_ACTION("device_shakehand");
 
 const std::string HttpMsgHandler::DEVICE_LOGOUT_ACTION("device_logout");
 
+const std::string HttpMsgHandler::DEVICE_SET_PROPERTY_ACTION("device_set_property");
+
 const std::string HttpMsgHandler::QUERY_USER_FILE_ACTION("query_file");
 
 const std::string HttpMsgHandler::DOWNLOAD_USER_FILE_ACTION("download_file");
@@ -2023,12 +2025,19 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     {
         strOtherProperty = itFind->second;
     }
+
+    std::string strDomainName;
+    itFind = pMsgInfoMap->find("domain_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDomainName = itFind->second;
+    }
         
     LOG_INFO_RLD("Device login info received and  device id is " << strDevID << " and device pwd is " << strDevPwd << 
         " and device ip is " << strRemoteIP << " and device type is " << uiDevType << " and device p2p type is " << uiP2pType <<
         " and device p2p server is " << strP2pserver << " and device p2p id is " << strP2pID << " and device p2p id build in is " << uiP2pidBuildin <<
         " and device user name is " << strUserName << " and device user pwd is " << strUserPwd << " and distributor is " << strDistributor << 
-        " and device other property is " << strOtherProperty);
+        " and device other property is " << strOtherProperty << " and device domain name is " << strDomainName);
 
     DeviceLoginInfo devlogininfo;
     devlogininfo.m_strDevID = strDevID;
@@ -2043,6 +2052,7 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     devlogininfo.m_uiDevType = uiDevType;
     devlogininfo.m_uiP2pidBuildin = uiP2pidBuildin;
     devlogininfo.m_uiP2pType = uiP2pType;
+    devlogininfo.m_strDomainName = strDomainName;
 
     std::string strValue;
     std::string strSid;
@@ -2294,6 +2304,211 @@ bool HttpMsgHandler::DeviceLogoutHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     if (!DeviceLogout(strSid, strDevID))
     {
         LOG_ERROR_RLD("Logout device handle failed and device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("domainname");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device domain name not found.");
+        return blResult;
+    }
+    const std::string strDomainName = itFind->second;
+
+    std::string strCorpid;
+    itFind = pMsgInfoMap->find("corpid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCorpid = itFind->second;
+    }
+
+    std::string strDvsname;
+    itFind = pMsgInfoMap->find("dvsname");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDvsname = itFind->second;
+    }
+
+    std::string strDvsIp;
+    itFind = pMsgInfoMap->find("dvsip");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDvsIp = itFind->second;
+    }
+
+    std::string strWebport;
+    itFind = pMsgInfoMap->find("webport");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strWebport = itFind->second;
+    }
+
+    std::string strCtrlport;
+    itFind = pMsgInfoMap->find("ctrlport");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCtrlport = itFind->second;
+    }
+
+    std::string strProtocol;
+    itFind = pMsgInfoMap->find("protocol");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strProtocol = itFind->second;
+    }
+
+    std::string strUserid;
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserid = itFind->second;
+    }
+
+    std::string strPassword;
+    itFind = pMsgInfoMap->find("password");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPassword = itFind->second;
+    }
+
+    std::string strModel;
+    itFind = pMsgInfoMap->find("model");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strModel = itFind->second;
+    }
+
+    std::string strPostfrequency;
+    itFind = pMsgInfoMap->find("postfrequency");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPostfrequency = itFind->second;
+    }
+
+    std::string strVersion;
+    itFind = pMsgInfoMap->find("version");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVersion = itFind->second;
+    }
+
+    std::string strStatus;
+    itFind = pMsgInfoMap->find("status");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStatus = itFind->second;
+    }
+
+    std::string strServerip;
+    itFind = pMsgInfoMap->find("serverip");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strServerip = itFind->second;
+    }
+
+    std::string strServerport;
+    itFind = pMsgInfoMap->find("serverport");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strServerport = itFind->second;
+    }
+
+    std::string strTransfer;
+    itFind = pMsgInfoMap->find("transfer");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strTransfer = itFind->second;
+    }
+
+    std::string strMobileport;
+    itFind = pMsgInfoMap->find("mobileport");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strMobileport = itFind->second;
+    }
+
+    std::string strChannelcount;
+    itFind = pMsgInfoMap->find("channelcount");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strChannelcount = itFind->second;
+    }    
+
+    LOG_INFO_RLD("Set device property info received and  device id is " << strDevID << " and domain name id is " << strDomainName <<
+        " and corpid is " << strCorpid << " and dvsname is " << strDvsname << " and dvsip is " << strDvsIp << " and webport is " << strWebport <<
+        " and ctrlport is " << strCtrlport << " and protocol is " << strProtocol << " and userid is " << strUserid << " and password is " << strPassword <<
+        " and model is " << strModel << " and postfrequency is " << strPostfrequency << " and version " << strVersion << " and status is " << strStatus <<
+        " and serverip is " << strServerip << " and serverport is " << strServerport << " and transfer" << strTransfer << " and mobileport" << strMobileport <<
+        " and channelcount is " << strChannelcount);
+
+    DeviceProperty devpt;
+    devpt.m_strChannelCount = strChannelcount;
+    devpt.m_strCorpid = strCorpid;
+    devpt.m_strCtrlport = strCtrlport;
+    devpt.m_strDevid = strDevID;
+    devpt.m_strDomainName = strDomainName;
+    devpt.m_strDvsip = strDvsIp;
+    devpt.m_strDvsname = strDvsname;
+    devpt.m_strMobilePort = strMobileport;
+    devpt.m_strModel = strModel;
+    devpt.m_strPassword = strPassword;
+    devpt.m_strPostfrequency = strPostfrequency;
+    devpt.m_strProtocol = strProtocol;
+    devpt.m_strServerIp = strServerip;
+    devpt.m_strServerPort = strServerport;
+    devpt.m_strStatus = strStatus;
+    devpt.m_strTransfer = strTransfer;
+    devpt.m_strUserid = strUserid;
+    devpt.m_strVersion = strVersion;
+    devpt.m_strWebport = strWebport;
+
+    if (!DeviceSetProperty(strSid, devpt))
+    {
+        LOG_ERROR_RLD("Set device property handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
     }
 
@@ -5156,6 +5371,7 @@ bool HttpMsgHandler::DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string 
         DevLoginReq.m_strUserPassword = DevLogInfo.m_strUserPwd;
         DevLoginReq.m_strDistributor = DevLogInfo.m_strDistributor;
         DevLoginReq.m_strOtherProperty = DevLogInfo.m_strOtherProperty;
+        DevLoginReq.m_strDomainName = DevLogInfo.m_strDomainName;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevLoginReq, strSerializeOutPut))
@@ -5379,7 +5595,75 @@ bool HttpMsgHandler::DeviceLogout(const std::string &strSid, const std::string &
         CommMsgHandler::SUCCEED == iRet;
 }
 
+bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DeviceProperty &devpt)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::ModifyDevicePropertyReq_DEV ModDevPtReq;
+        ModDevPtReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevicePropertyReq_DEV_T;
+        ModDevPtReq.m_uiMsgSeq = 1;
+        ModDevPtReq.m_strSID = strSid;
+        ModDevPtReq.m_strChannelCount = devpt.m_strChannelCount;
+        ModDevPtReq.m_strCorpID = devpt.m_strCorpid;
+        ModDevPtReq.m_strCtrlPort = devpt.m_strCtrlport;
+        ModDevPtReq.m_strDeviceID = devpt.m_strDevid;
+        ModDevPtReq.m_strDeviceIP = devpt.m_strDvsip;
+        ModDevPtReq.m_strDeviceName = devpt.m_strDvsname;
+        ModDevPtReq.m_strDeviceStatus = devpt.m_strStatus;
+        ModDevPtReq.m_strDomainName = devpt.m_strDomainName;
+        ModDevPtReq.m_strMobilePort = devpt.m_strMobilePort;
+        ModDevPtReq.m_strModel = devpt.m_strModel;
+        ModDevPtReq.m_strPostFrequency = devpt.m_strPostfrequency;
+        ModDevPtReq.m_strProtocol = devpt.m_strProtocol;
+        ModDevPtReq.m_strServerIP = devpt.m_strServerIp;
+        ModDevPtReq.m_strServerPort = devpt.m_strServerPort;
+        ModDevPtReq.m_strTransfer = devpt.m_strTransfer;
+        ModDevPtReq.m_strVersion = devpt.m_strVersion;
+        ModDevPtReq.m_strWebPort = devpt.m_strWebport;
 
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Set device property req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV ModDevPtRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModDevPtRsp))
+        {
+            LOG_ERROR_RLD("Set device property rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModDevPtRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Set device property and  device id is " << devpt.m_strDevid << " and session id is " << strSid <<
+            " and return code is " << ModDevPtRsp.m_iRetcode <<
+            " and return msg is " << ModDevPtRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
 
 template<typename T>
 bool HttpMsgHandler::QueryUserFile(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiBeginIndex, 
