@@ -3351,6 +3351,8 @@ bool HttpMsgHandler::QueryUploadURLHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("upload_url", strURL));
+
     blResult = true;
 
     return blResult;
