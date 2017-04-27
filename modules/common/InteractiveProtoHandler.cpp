@@ -2557,6 +2557,8 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strinnerinfo();
     m_strDomainName = InteractiveMsg.reqvalue().adddevreq_usr_value().strdomainname();
+    m_strP2pID = InteractiveMsg.reqvalue().adddevreq_usr_value().strp2pid();
+    m_strIpAddress = InteractiveMsg.reqvalue().adddevreq_usr_value().stripaddress();
 }
 
 void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2574,11 +2576,14 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_stripaddress(m_strIpAddress);
 }
 
 void InteractiveProtoHandler::AddDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
     Rsp::UnSerializer(InteractiveMsg);
+    m_strDeviceID = InteractiveMsg.rspvalue().adddevrsp_usr_value().strdeviceid();
     m_strValue = InteractiveMsg.rspvalue().adddevrsp_usr_value().strvalue();
 }
 
@@ -2586,6 +2591,7 @@ void InteractiveProtoHandler::AddDevRsp_USR::Serializer(InteractiveMessage &Inte
 {
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::AddDevRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_adddevrsp_usr_value()->set_strdeviceid(m_strDeviceID);
     InteractiveMsg.mutable_rspvalue()->mutable_adddevrsp_usr_value()->set_strvalue(m_strValue);
 }
 
@@ -4206,9 +4212,11 @@ void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::UnSerializer(const In
     Req::UnSerializer(InteractiveMsg);
     m_strDeviceID = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdeviceid();
     m_strDomainName = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdomainname();
+    m_strP2pID = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strp2pid();
     m_strCorpID = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strcorpid();
     m_strDeviceName = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdevicename();
     m_strDeviceIP = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdeviceip();
+    m_strDeviceIP2 = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strdeviceip2();
     m_strWebPort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strwebport();
     m_strCtrlPort = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strctrlport();
     m_strProtocol = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().strprotocol();
@@ -4228,10 +4236,12 @@ void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::Serializer(Interactiv
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDevicePropertyReq_DEV_T);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceid(m_strDeviceID);
-    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceid(m_strDomainName);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdomainname(m_strDomainName);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strcorpid(m_strCorpID);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdevicename(m_strDeviceName);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceip(m_strDeviceIP);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strdeviceip2(m_strDeviceIP2);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strwebport(m_strWebPort);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strctrlport(m_strCtrlPort);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->set_strprotocol(m_strProtocol);

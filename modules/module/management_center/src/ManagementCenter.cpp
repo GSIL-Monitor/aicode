@@ -10,7 +10,7 @@
 const std::string ManagementCenter::MAX_DATE = "2199-01-01 00:00:00";
 
 ManagementCenter::ManagementCenter(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoManagementHandler),
-m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_timer(boost::bind(&ManagementCenter::ShakehandCluster, this), 300), m_DBTimer(NULL, 600)
+m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_timer(boost::bind(&ManagementCenter::ShakehandCluster, this), 600), m_DBTimer(NULL, 600)
 {
 
 }

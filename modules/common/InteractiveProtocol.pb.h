@@ -5317,6 +5317,34 @@ class ModifyDevicePropertyReq_DEV : public ::google::protobuf::Message /* @@prot
   ::std::string* release_strchannelcount();
   void set_allocated_strchannelcount(::std::string* strchannelcount);
 
+  // string strP2pID = 18;
+  void clear_strp2pid();
+  static const int kStrP2PIDFieldNumber = 18;
+  const ::std::string& strp2pid() const;
+  void set_strp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pid(::std::string&& value);
+  #endif
+  void set_strp2pid(const char* value);
+  void set_strp2pid(const char* value, size_t size);
+  ::std::string* mutable_strp2pid();
+  ::std::string* release_strp2pid();
+  void set_allocated_strp2pid(::std::string* strp2pid);
+
+  // string strDeviceIP2 = 19;
+  void clear_strdeviceip2();
+  static const int kStrDeviceIP2FieldNumber = 19;
+  const ::std::string& strdeviceip2() const;
+  void set_strdeviceip2(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceip2(::std::string&& value);
+  #endif
+  void set_strdeviceip2(const char* value);
+  void set_strdeviceip2(const char* value, size_t size);
+  ::std::string* mutable_strdeviceip2();
+  ::std::string* release_strdeviceip2();
+  void set_allocated_strdeviceip2(::std::string* strdeviceip2);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyDevicePropertyReq_DEV)
  private:
 
@@ -5338,6 +5366,8 @@ class ModifyDevicePropertyReq_DEV : public ::google::protobuf::Message /* @@prot
   ::google::protobuf::internal::ArenaStringPtr strtransfer_;
   ::google::protobuf::internal::ArenaStringPtr strmobileport_;
   ::google::protobuf::internal::ArenaStringPtr strchannelcount_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceip2_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -7795,6 +7825,34 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strdomainname();
   void set_allocated_strdomainname(::std::string* strdomainname);
 
+  // string strP2pID = 4;
+  void clear_strp2pid();
+  static const int kStrP2PIDFieldNumber = 4;
+  const ::std::string& strp2pid() const;
+  void set_strp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strp2pid(::std::string&& value);
+  #endif
+  void set_strp2pid(const char* value);
+  void set_strp2pid(const char* value, size_t size);
+  ::std::string* mutable_strp2pid();
+  ::std::string* release_strp2pid();
+  void set_allocated_strp2pid(::std::string* strp2pid);
+
+  // string strIpAddress = 5;
+  void clear_stripaddress();
+  static const int kStrIpAddressFieldNumber = 5;
+  const ::std::string& stripaddress() const;
+  void set_stripaddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_stripaddress(::std::string&& value);
+  #endif
+  void set_stripaddress(const char* value);
+  void set_stripaddress(const char* value, size_t size);
+  ::std::string* mutable_stripaddress();
+  ::std::string* release_stripaddress();
+  void set_allocated_stripaddress(::std::string* stripaddress);
+
   // .Interactive.Message.Device devInfo = 2;
   bool has_devinfo() const;
   void clear_devinfo();
@@ -7810,6 +7868,8 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdomainname_;
+  ::google::protobuf::internal::ArenaStringPtr strp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr stripaddress_;
   ::Interactive::Message::Device* devinfo_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -7883,9 +7943,23 @@ class AddDevRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // string strValue = 1;
+  // string strDeviceID = 1;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 1;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // string strValue = 2;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 1;
+  static const int kStrValueFieldNumber = 2;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -7901,6 +7975,7 @@ class AddDevRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -22396,6 +22471,110 @@ inline void ModifyDevicePropertyReq_DEV::set_allocated_strchannelcount(::std::st
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.strChannelCount)
 }
 
+// string strP2pID = 18;
+inline void ModifyDevicePropertyReq_DEV::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDevicePropertyReq_DEV::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+inline void ModifyDevicePropertyReq_DEV::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+}
+#if LANG_CXX11
+inline void ModifyDevicePropertyReq_DEV::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+}
+#endif
+inline void ModifyDevicePropertyReq_DEV::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+}
+inline void ModifyDevicePropertyReq_DEV::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDevicePropertyReq_DEV::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.strP2pID)
+}
+
+// string strDeviceIP2 = 19;
+inline void ModifyDevicePropertyReq_DEV::clear_strdeviceip2() {
+  strdeviceip2_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDevicePropertyReq_DEV::strdeviceip2() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+  return strdeviceip2_.GetNoArena();
+}
+inline void ModifyDevicePropertyReq_DEV::set_strdeviceip2(const ::std::string& value) {
+  
+  strdeviceip2_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+}
+#if LANG_CXX11
+inline void ModifyDevicePropertyReq_DEV::set_strdeviceip2(::std::string&& value) {
+  
+  strdeviceip2_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+}
+#endif
+inline void ModifyDevicePropertyReq_DEV::set_strdeviceip2(const char* value) {
+  
+  strdeviceip2_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+}
+inline void ModifyDevicePropertyReq_DEV::set_strdeviceip2(const char* value, size_t size) {
+  
+  strdeviceip2_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::mutable_strdeviceip2() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+  return strdeviceip2_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::release_strdeviceip2() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+  
+  return strdeviceip2_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDevicePropertyReq_DEV::set_allocated_strdeviceip2(::std::string* strdeviceip2) {
+  if (strdeviceip2 != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceip2_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceip2);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
+}
+
 // -------------------------------------------------------------------
 
 // ModifyDevicePropertyRsp_DEV
@@ -24739,11 +24918,167 @@ inline void AddDevReq_USR::set_allocated_strdomainname(::std::string* strdomainn
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strDomainName)
 }
 
+// string strP2pID = 4;
+inline void AddDevReq_USR::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddDevReq_USR::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddDevReq_USR.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+inline void AddDevReq_USR::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddDevReq_USR.strP2pID)
+}
+#if LANG_CXX11
+inline void AddDevReq_USR::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddDevReq_USR.strP2pID)
+}
+#endif
+inline void AddDevReq_USR::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddDevReq_USR.strP2pID)
+}
+inline void AddDevReq_USR::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddDevReq_USR.strP2pID)
+}
+inline ::std::string* AddDevReq_USR::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddDevReq_USR.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddDevReq_USR::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddDevReq_USR.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddDevReq_USR::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strP2pID)
+}
+
+// string strIpAddress = 5;
+inline void AddDevReq_USR::clear_stripaddress() {
+  stripaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddDevReq_USR::stripaddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddDevReq_USR.strIpAddress)
+  return stripaddress_.GetNoArena();
+}
+inline void AddDevReq_USR::set_stripaddress(const ::std::string& value) {
+  
+  stripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddDevReq_USR.strIpAddress)
+}
+#if LANG_CXX11
+inline void AddDevReq_USR::set_stripaddress(::std::string&& value) {
+  
+  stripaddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddDevReq_USR.strIpAddress)
+}
+#endif
+inline void AddDevReq_USR::set_stripaddress(const char* value) {
+  
+  stripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddDevReq_USR.strIpAddress)
+}
+inline void AddDevReq_USR::set_stripaddress(const char* value, size_t size) {
+  
+  stripaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddDevReq_USR.strIpAddress)
+}
+inline ::std::string* AddDevReq_USR::mutable_stripaddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddDevReq_USR.strIpAddress)
+  return stripaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddDevReq_USR::release_stripaddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddDevReq_USR.strIpAddress)
+  
+  return stripaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddDevReq_USR::set_allocated_stripaddress(::std::string* stripaddress) {
+  if (stripaddress != NULL) {
+    
+  } else {
+    
+  }
+  stripaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stripaddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strIpAddress)
+}
+
 // -------------------------------------------------------------------
 
 // AddDevRsp_USR
 
-// string strValue = 1;
+// string strDeviceID = 1;
+inline void AddDevRsp_USR::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddDevRsp_USR::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddDevRsp_USR.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void AddDevRsp_USR::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddDevRsp_USR.strDeviceID)
+}
+#if LANG_CXX11
+inline void AddDevRsp_USR::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddDevRsp_USR.strDeviceID)
+}
+#endif
+inline void AddDevRsp_USR::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddDevRsp_USR.strDeviceID)
+}
+inline void AddDevRsp_USR::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddDevRsp_USR.strDeviceID)
+}
+inline ::std::string* AddDevRsp_USR::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddDevRsp_USR.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddDevRsp_USR::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddDevRsp_USR.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddDevRsp_USR::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevRsp_USR.strDeviceID)
+}
+
+// string strValue = 2;
 inline void AddDevRsp_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

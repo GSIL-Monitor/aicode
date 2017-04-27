@@ -371,10 +371,12 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAppUpgradeReq_USR_T, boost::bind(&AccessManager::QueryAppUpgradeReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryFirmwareUpgradeReq_DEV_T, boost::bind(&AccessManager::QueryFirmwareUpgradeReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T, boost::bind(&AccessManager::QueryUploadURLReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddConfigurationReq_MGR_T, boost::bind(&AccessManager::AddConfigurationReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteConfigurationReq_MGR_T, boost::bind(&AccessManager::DeleteConfigurationReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T, boost::bind(&AccessManager::ModifyConfigurationReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T, boost::bind(&AccessManager::QueryAllConfigurationReqMgr, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevicePropertyReq_DEV_T, boost::bind(&AccessManager::ModifyDevicePropertyReqDevice, &Umg, _1, _2, _3));
 
 
     ccenter.Run(true);

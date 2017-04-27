@@ -487,6 +487,8 @@ message ModifyDevicePropertyReq_DEV             //修改设备属性请求
   string strTransfer = 15;
   string strMobilePort = 16;
   string strChannelCount = 17;
+  string strP2pID = 18;
+  string strDeviceIP2 = 19;
 }
 
 message ModifyDevicePropertyRsp_DEV             //修改设备属性响应
@@ -634,12 +636,15 @@ message AddDevReq_USR                           //添加设备请求，同时建
 {
   string strUserID = 1;
   Device devInfo = 2;
-  string strDomainName = 3;
+  string strDomainName = 3;                     //设备二级域名
+  string strP2pID = 4;                          //设备P2P ID
+  string strIpAddress = 5;                      //设备IP地址
 }
 
 message AddDevRsp_USR                           //添加设备响应。
 {
-  string strValue = 1;
+  string strDeviceID = 1;
+  string strValue = 2;
 }
 
 message DelDevReq_USR                           //删除设备请求

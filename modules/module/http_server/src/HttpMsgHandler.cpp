@@ -841,13 +841,14 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     }
     const std::string strUserID = itFind->second;
 
+    int iFlag = 0;
+    std::string strDevID;
     itFind = pMsgInfoMap->find("devid");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Device id not found.");
-        return blResult;
+        strDevID = itFind->second;
+        ++iFlag;
     }
-    const std::string strDevID = itFind->second;
 
     itFind = pMsgInfoMap->find("devname");
     if (pMsgInfoMap->end() == itFind)
@@ -886,14 +887,62 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strDevInnerInfo = itFind->second;
     }
 
+    std::string strP2pid;
+    itFind = pMsgInfoMap->find("p2pid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strP2pid = itFind->second;
+        ++iFlag;
+    }
+
+    std::string strDomainname;
+    itFind = pMsgInfoMap->find("domainname");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDomainname = itFind->second;
+        ++iFlag;
+    }
+
+    std::string strIpaddress;
+    itFind = pMsgInfoMap->find("ipaddress");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strIpaddress = itFind->second;
+    }
+
+    if (strDevID.empty() && strP2pid.empty() && strDomainname.empty())
+    {
+        LOG_ERROR_RLD("Device id and p2pid and domain name all empty.");
+        return blResult;
+    }
+
+    if (1 < iFlag)
+    {
+        LOG_ERROR_RLD("Device id or p2pid or domain name too much input.");
+        return blResult;
+    }
+
+    DeviceIf devif;
+    devif.m_strDevExtend = strDevExtend;
+    devif.m_strDevID = strDevID;
+    devif.m_strDevInnerInfo = strDevInnerInfo;
+    devif.m_strDevName = strDevName;
+    devif.m_strDevPwd = strDevPwd;
+    devif.m_strDevType = strDevType;
+    devif.m_strDomainname = strDomainname;
+    devif.m_strIpaddress = strIpaddress;
+    devif.m_strP2pid = strP2pid;
+    
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Add device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
         << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
-        << " and device inner info is [" << strDevInnerInfo << "]"
+        << " and device inner info is [" << strDevInnerInfo << "]" << " and p2pid is " << strP2pid << " and domain name is " << strDomainname
+        << " and ip address is " << strIpaddress
         << " and session id is " << strSid);
 
-    if (!AddDevice(strSid, strUserID, strDevID, strDevName, strDevPwd, strDevType, strDevExtend, strDevInnerInfo))
+    std::string strDevIDOut;
+    if (!AddDevice(strSid, strUserID, devif, strDevIDOut))
     {
         LOG_ERROR_RLD("Add device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
         return blResult;
@@ -901,6 +950,7 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devid", strDevIDOut));
 
     blResult = true;
 
@@ -2476,14 +2526,28 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     if (pMsgInfoMap->end() != itFind)
     {
         strChannelcount = itFind->second;
-    }    
+    }
+
+    std::string strP2pid;
+    itFind = pMsgInfoMap->find("p2pid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strP2pid = itFind->second;
+    }
+
+    std::string strDvsip2;
+    itFind = pMsgInfoMap->find("dvsip2");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDvsip2 = itFind->second;
+    }
 
     LOG_INFO_RLD("Set device property info received and  device id is " << strDevID << " and domain name id is " << strDomainName <<
         " and corpid is " << strCorpid << " and dvsname is " << strDvsname << " and dvsip is " << strDvsIp << " and webport is " << strWebport <<
         " and ctrlport is " << strCtrlport << " and protocol is " << strProtocol << " and userid is " << strUserid << " and password is " << strPassword <<
         " and model is " << strModel << " and postfrequency is " << strPostfrequency << " and version " << strVersion << " and status is " << strStatus <<
         " and serverip is " << strServerip << " and serverport is " << strServerport << " and transfer" << strTransfer << " and mobileport" << strMobileport <<
-        " and channelcount is " << strChannelcount);
+        " and channelcount is " << strChannelcount << " and p2pid is " << strP2pid << " and dvsip2 is " << strDvsip2);
 
     DeviceProperty devpt;
     devpt.m_strChannelCount = strChannelcount;
@@ -2505,6 +2569,8 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     devpt.m_strUserid = strUserid;
     devpt.m_strVersion = strVersion;
     devpt.m_strWebport = strWebport;
+    devpt.m_strP2pid = strP2pid;
+    devpt.m_strDvsip2 = strDvsip2;
 
     if (!DeviceSetProperty(strSid, devpt))
     {
@@ -4520,25 +4586,23 @@ bool HttpMsgHandler::Shakehand(const std::string &strSid, const std::string &str
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
-    const std::string &strDevName, const std::string &strDevPwd, const std::string &strDevType, 
-    const std::string &strDevExtend, const std::string &strDevInnerInfo)
+bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
         unsigned int uiTypeInfo = 0;
         try
         {
-            uiTypeInfo = boost::lexical_cast<unsigned int>(strDevType);
+            uiTypeInfo = boost::lexical_cast<unsigned int>(devif.m_strDevType);
         }
         catch (boost::bad_lexical_cast & e)
         {
-            LOG_ERROR_RLD("Add device type info is invalid and error msg is " << e.what() << " and input type is " << strDevType);
+            LOG_ERROR_RLD("Add device type info is invalid and error msg is " << e.what() << " and input type is " << devif.m_strDevType);
             return CommMsgHandler::FAILED;
         }
         catch (...)
         {
-            LOG_ERROR_RLD("Add device type info is invalid" << " and input type is " << strDevType);
+            LOG_ERROR_RLD("Add device type info is invalid" << " and input type is " << devif.m_strDevType);
             return CommMsgHandler::FAILED;
         }
 
@@ -4552,14 +4616,17 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
         AddDevReq.m_strSID = strSid;
         AddDevReq.m_strUserID = strUserID;
         AddDevReq.m_devInfo.m_strCreatedate = strCurrentTime;
-        AddDevReq.m_devInfo.m_strDevID = strDevID;
-        AddDevReq.m_devInfo.m_strDevName = strDevName;
-        AddDevReq.m_devInfo.m_strDevPassword = strDevPwd;
-        AddDevReq.m_devInfo.m_strExtend = strDevExtend;
-        AddDevReq.m_devInfo.m_strInnerinfo = strDevInnerInfo;
+        AddDevReq.m_devInfo.m_strDevID = devif.m_strDevID;
+        AddDevReq.m_devInfo.m_strDevName = devif.m_strDevName;
+        AddDevReq.m_devInfo.m_strDevPassword = devif.m_strDevPwd;
+        AddDevReq.m_devInfo.m_strExtend = devif.m_strDevExtend;
+        AddDevReq.m_devInfo.m_strInnerinfo = devif.m_strDevInnerInfo;
         AddDevReq.m_devInfo.m_uiStatus = 0;
         AddDevReq.m_devInfo.m_uiTypeInfo = uiTypeInfo;
-
+        AddDevReq.m_strDomainName = devif.m_strDomainname;
+        AddDevReq.m_strIpAddress = devif.m_strIpaddress;
+        AddDevReq.m_strP2pID = devif.m_strP2pid;
+        
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddDevReq, strSerializeOutPut))
         {
@@ -4588,6 +4655,8 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
         }
 
         iRet = AddDevRsp.m_iRetcode;
+
+        strDevID = AddDevRsp.m_strDeviceID;
 
         ReturnInfo::RetCode(iRet);
 
@@ -5622,6 +5691,8 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_strTransfer = devpt.m_strTransfer;
         ModDevPtReq.m_strVersion = devpt.m_strVersion;
         ModDevPtReq.m_strWebPort = devpt.m_strWebport;
+        ModDevPtReq.m_strP2pID = devpt.m_strP2pid;
+        ModDevPtReq.m_strDeviceIP2 = devpt.m_strDvsip2;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))

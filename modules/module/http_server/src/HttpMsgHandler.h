@@ -196,8 +196,20 @@ private:
 
     bool Shakehand(const std::string &strSid, const std::string &strUserID);
 
-    bool AddDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName,
-        const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);
+    typedef struct
+    {
+        std::string m_strDevID;
+        std::string m_strDevName;
+        std::string m_strDevPwd;
+        std::string m_strDevType;
+        std::string m_strDevExtend;
+        std::string m_strDevInnerInfo;
+        std::string m_strP2pid;
+        std::string m_strDomainname;
+        std::string m_strIpaddress;
+    } DeviceIf;
+
+    bool AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID);
 
     bool DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID);
 
@@ -275,6 +287,8 @@ private:
         std::string m_strTransfer;
         std::string m_strMobilePort;
         std::string m_strChannelCount;
+        std::string m_strP2pid;
+        std::string m_strDvsip2;
     } DeviceProperty;
     
     bool DeviceSetProperty(const std::string &strSid, const DeviceProperty &devpt);

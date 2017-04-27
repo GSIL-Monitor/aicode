@@ -169,7 +169,6 @@ public:
         unsigned int m_uiStatus;
         std::string m_strExtend;
         std::string m_strInnerinfo;                          //设备上传到平台的信息  
-
     };
 
     struct User
@@ -539,10 +538,11 @@ public:
 
     struct AddDevReq_USR : Req
     {
-
         std::string m_strUserID;
         Device m_devInfo;
         std::string m_strDomainName;
+        std::string m_strP2pID;
+        std::string m_strIpAddress;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -551,7 +551,7 @@ public:
 
     struct AddDevRsp_USR : Rsp
     {
-
+        std::string m_strDeviceID;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -1186,9 +1186,11 @@ public:
     {
         std::string m_strDeviceID;
         std::string m_strDomainName;
+        std::string m_strP2pID;
         std::string m_strCorpID;
         std::string m_strDeviceName;
         std::string m_strDeviceIP;
+        std::string m_strDeviceIP2;
         std::string m_strWebPort;
         std::string m_strCtrlPort;
         std::string m_strProtocol;

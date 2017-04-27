@@ -200,6 +200,8 @@ public:
 
     bool QueryAllConfigurationReqMgr(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool ModifyDevicePropertyReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -323,6 +325,11 @@ private:
 
     void InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq);
 
+    void UpdateDevicePropertyToDB(const InteractiveProtoHandler::ModifyDevicePropertyReq_DEV &modifyDevicePropertyReq);
+
+    bool QueryDevIDByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID);
+
+    bool QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std::string &strDeviceID);
 
 private:
     ParamInfo m_ParamInfo;

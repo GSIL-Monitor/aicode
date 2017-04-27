@@ -165,6 +165,7 @@ CREATE TABLE `t_device_property` (
   `corpid` varchar(100),
   `dvsname` varchar(100),
   `dvsip` varchar(50),
+  `dvsip2` varchar(50),
   `webport` varchar(50),
   `ctrlport` varchar(50),
   `protocol` varchar(50),
@@ -182,7 +183,9 @@ CREATE TABLE `t_device_property` (
   `status` int(11) NOT NULL DEFAULT '0',
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (deviceid)
+  UNIQUE KEY (deviceid),
+  UNIQUE KEY (devicedomain),
+  UNIQUE KEY (p2pid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 

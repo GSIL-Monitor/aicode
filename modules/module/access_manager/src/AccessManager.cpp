@@ -158,7 +158,8 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::AddConfigurationReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::DeleteConfigurationReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -563,16 +564,22 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         }
         else
         {
-            if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
-                m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID, LoginReqUsr.m_userInfo.m_strUserID))
-            {
-                LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+            //用户会直接登录浪涛，不需要平台再作登录浪涛的请求
+            //if (!LoginLTUserSiteReq(LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_userInfo.m_strUserPassword,
+            //    m_ParamInfo.m_strLTUserSite, m_ParamInfo.m_strLTUserSiteRC4Key, strSrcID, LoginReqUsr.m_userInfo.m_strUserID))
+            //{
+            //    LOG_ERROR_RLD("LoginLTUserSiteReq failed, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
 
-                ReturnInfo::RetCode(ReturnInfo::USERNAME_OR_PASSWORD_INVALID_USER);
-                return false;
-            }
+            //    ReturnInfo::RetCode(ReturnInfo::USERNAME_OR_PASSWORD_INVALID_USER);
+            //    return false;
+            //}
 
-            LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+            //LOG_INFO_RLD("LoginLTUserSiteReq seccessful, login user name: " << LoginReqUsr.m_userInfo.m_strUserName);
+            LOG_ERROR_RLD("User login failed, user name or password is invalid, src id is " << strSrcID <<
+                " and user name is " << LoginReqUsr.m_userInfo.m_strUserName);
+
+            ReturnInfo::RetCode(ReturnInfo::USERNAME_OR_PASSWORD_INVALID_USER);
+            return false;
         }
     }
 
@@ -625,8 +632,10 @@ bool AccessManager::LoginLTUserSiteReq(const std::string &strUserName, const std
     RegUsrReq.m_userInfo.m_strUserID = strUserID = CreateUUID();
     RegUsrReq.m_userInfo.m_strUserName = strUserName;
     RegUsrReq.m_userInfo.m_strUserPassword = strPassword;
-    RegUsrReq.m_userInfo.m_strCreatedate = "";
+    RegUsrReq.m_userInfo.m_strAliasName = "";
     RegUsrReq.m_userInfo.m_uiTypeInfo = 0;
+    RegUsrReq.m_userInfo.m_strEmail = strUserName; //浪涛用户名和邮箱名一致
+    RegUsrReq.m_userInfo.m_strCreatedate = "";
     RegUsrReq.m_userInfo.m_uiStatus = NORMAL_STATUS;
     RegUsrReq.m_userInfo.m_strExtend = "";
     RegUsrReq.m_strValue = "";
@@ -802,8 +811,46 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
+    //P2PID、域名、设备ID只能输入一个字段，如果没有输入设备ID，则根据P2PID或者域名查询设备ID
+    unsigned int counts = 0;
+    std::string strDeviceID;
+
+    if (!req.m_devInfo.m_strDevID.empty())
+    {
+        strDeviceID = req.m_devInfo.m_strDevID;
+        ++counts;
+    }
+
+    if (!req.m_strDomainName.empty())
+    {
+        if (strDeviceID.empty() && !QueryDevIDByDevDomain(req.m_strDomainName, strDeviceID))
+        {
+            LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
+                " and device domain name is " << req.m_strDomainName);
+            return false;
+        }
+        ++counts;
+    }
+
+    if (!req.m_strP2pID.empty())
+    {
+        if (strDeviceID.empty() && !QueryDevIDByDevP2pID(req.m_strP2pID, strDeviceID))
+        {
+            LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
+                " and device p2pid is " << req.m_strP2pID);
+            return false;
+        }
+        ++counts;
+    }
+
+    if (1 != counts)
+    {
+        LOG_ERROR_RLD("Add device input error, src id is " << strSrcID << ", only allow input one of deviceid|domainname|p2pid");
+        return false;
+    }
+
     std::string strUserID;
-    if (!QueryOwnerUserIDByDeviceID(req.m_devInfo.m_strDevID, strUserID))
+    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID))
     {
         LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
@@ -819,7 +866,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         }
 
         InteractiveProtoHandler::Device DevInfo;
-        DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
+        DevInfo.m_strDevID = strDeviceID;
         DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
         DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
         DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
@@ -842,7 +889,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
         m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
 
-        AddNoOwnerFile(req.m_strUserID, req.m_devInfo.m_strDevID);
+        //m_DBRuner.Post(boost::bind(&AccessManager::AddNoOwnerFile, this, req.m_strUserID, strDeviceID));
 
         blResult = true;
     }
@@ -1771,7 +1818,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
-    if (!IsValidDeviceDomain(LoginReqDev.m_strDevID, LoginReqDev.m_strDomainName))
+    if (!LoginReqDev.m_strDomainName.empty() && !IsValidDeviceDomain(LoginReqDev.m_strDevID, LoginReqDev.m_strDomainName))
     {
         LOG_ERROR_RLD("Device login vefiry device domain name failed, device id is " << LoginReqDev.m_strDevID <<
             " and domain name is " << LoginReqDev.m_strDomainName);
@@ -2820,7 +2867,8 @@ bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std:
     configuration.m_uiFileSize = req.m_configuration.m_uiFileSize;
     configuration.m_strFilePath = "http://" + req.m_configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + req.m_configuration.m_strFileID;
     configuration.m_uiLeaseDuration = req.m_configuration.m_uiLeaseDuration;
-    configuration.m_strUpdateDate = req.m_configuration.m_strUpdateDate;
+    //configuration.m_strUpdateDate = req.m_configuration.m_strUpdateDate;
+    configuration.m_strUpdateDate = strCurrentTime;
     configuration.m_uiStatus = NORMAL_STATUS;
     configuration.m_strExtend = "";
 
@@ -2987,6 +3035,57 @@ bool AccessManager::QueryAllConfigurationReqMgr(const std::string &strMsg, const
     {
         LOG_ERROR_RLD("Query all configuration item failed, src id is " << strSrcID);
     }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ModifyDevicePropertyReq_DEV req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevicePropertyRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify device property rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify device property rsp already send, dst id is " << strSrcID <<
+            " and device id is " << req.m_strDeviceID <<
+            " and domain name is " << req.m_strDomainName <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify device property req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!req.m_strDomainName.empty() && !IsValidDeviceDomain(req.m_strDeviceID, req.m_strDomainName))
+    {
+        LOG_ERROR_RLD("Modify device property vefiry device domain name failed, device id is " << req.m_strDeviceID <<
+            " and domain name is " << req.m_strDomainName);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::UpdateDevicePropertyToDB, this, req));
 
     blResult = true;
 
@@ -5520,17 +5619,25 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     int size = sizeof(sql);
     int len;
 
-    const char *sqlfmt = "insert into t_device_property values(uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', '%s', %d, '%s')"
+    const char *sqlfmt = "insert into t_device_property (id, deviceid, devicepassword, devicedomain, typeinfo, username, userpassword,"
+        " p2pid, p2pserver, p2psupplier, p2pbuildin, licensekey, pushid, distributor, otherproperty, createdate, status, extend)"
+        " values(uuid(), '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', '%s', %d, '%s')"
         " on duplicate key update id = id";
-    snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_uiDeviceType,
+    snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_strDomainName.c_str(), loginDevReq.m_uiDeviceType,
         loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), loginDevReq.m_strP2pID.c_str(), loginDevReq.m_strP2pServr.c_str(),
         loginDevReq.m_uiP2pSupplier, loginDevReq.m_uiP2pBuildin, loginDevReq.m_strLicenseKey.c_str(), loginDevReq.m_strPushID.c_str(),
-        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
+        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "null");
 
     if (!loginDevReq.m_strPassword.empty())
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", devicepassword = '%s'", loginDevReq.m_strPassword.c_str());
+    }
+
+    if (!loginDevReq.m_strDomainName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicedomain = '%s'", loginDevReq.m_strDomainName.c_str());
     }
 
     if (0xFFFFFFFF != loginDevReq.m_uiDeviceType)
@@ -5603,5 +5710,235 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     {
         LOG_ERROR_RLD("InsertDevPropertyToDB exec sql error, sql is " << sql);
     }
+}
+
+void AccessManager::UpdateDevicePropertyToDB(const InteractiveProtoHandler::ModifyDevicePropertyReq_DEV &modifyDevicePropertyReq)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+    snprintf(sql, size, "update t_device_property set id = id");
+
+    bool blModified = false;
+
+    if (!modifyDevicePropertyReq.m_strDomainName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicedomain = '%s'", modifyDevicePropertyReq.m_strDomainName.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strP2pID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pid = '%s'", modifyDevicePropertyReq.m_strP2pID.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strCorpID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", corpid = '%s'", modifyDevicePropertyReq.m_strCorpID.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strDeviceName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", dvsname = '%s'", modifyDevicePropertyReq.m_strDeviceName.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strDeviceIP.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", dvsip = '%s'", modifyDevicePropertyReq.m_strDeviceIP.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strDeviceIP2.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", dvsip2 = '%s'", modifyDevicePropertyReq.m_strDeviceIP2.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strWebPort.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", webport = '%s'", modifyDevicePropertyReq.m_strWebPort.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strCtrlPort.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", ctrlport = '%s'", modifyDevicePropertyReq.m_strCtrlPort.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strProtocol.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", protocol = '%s'", modifyDevicePropertyReq.m_strProtocol.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strModel.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", model = '%s'", modifyDevicePropertyReq.m_strModel.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strPostFrequency.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", postfrequency = '%s'", modifyDevicePropertyReq.m_strPostFrequency.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strVersion.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", version = '%s'", modifyDevicePropertyReq.m_strVersion.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strDeviceStatus.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicestatus = '%s'", modifyDevicePropertyReq.m_strDeviceStatus.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strServerIP.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", serverip = '%s'", modifyDevicePropertyReq.m_strServerIP.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strServerPort.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", serverport = '%s'", modifyDevicePropertyReq.m_strServerPort.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strTransfer.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", transfer = '%s'", modifyDevicePropertyReq.m_strTransfer.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strMobilePort.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", mobileport = '%s'", modifyDevicePropertyReq.m_strMobilePort.c_str());
+
+        blModified = true;
+    }
+
+    if (!modifyDevicePropertyReq.m_strChannelCount.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", channelcount = '%s'", modifyDevicePropertyReq.m_strChannelCount.c_str());
+
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("UpdateDevicePropertyToDB completed, there is no change");
+        return;
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " where deviceid = '%s'", modifyDevicePropertyReq.m_strDeviceID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UpdateDevicePropertyToDB exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryDevIDByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select deviceid from t_device_property where devicedomain = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceDomain.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strDeviceID = strColumn;
+        Result = strDeviceID;
+
+        LOG_INFO_RLD("QueryDeveIDByDevDomain sql deviceid is " << strDeviceID);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDeveIDByDevDomain exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryDeveIDByDevDomain sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    strDeviceID = boost::any_cast<std::string>(ResultList.front());
+    return true;
+}
+
+bool AccessManager::QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std::string &strDeviceID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select deviceid from t_device_property where p2pid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceP2pID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strDeviceID = strColumn;
+        Result = strDeviceID;
+
+        LOG_INFO_RLD("QueryDevIDByDevP2pID sql deviceid is " << strDeviceID);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDevIDByDevP2pID exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryDevIDByDevP2pID sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    strDeviceID = boost::any_cast<std::string>(ResultList.front());
+    return true;
 }
 
