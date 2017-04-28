@@ -197,7 +197,8 @@ message Device                                  //设备信息对象
   uint32 uiStatus = 6;
   string strExtend = 7;
   string strInnerinfo = 8;                      //设备上传到平台的信息
-
+  string strP2pID = 9;                          //设备二级域名
+  string strDomainName = 10;                    //设备P2P ID
 }
 
 message User                                    //用户信息对象
@@ -636,9 +637,6 @@ message AddDevReq_USR                           //添加设备请求，同时建
 {
   string strUserID = 1;
   Device devInfo = 2;
-  string strDomainName = 3;                     //设备二级域名
-  string strP2pID = 4;                          //设备P2P ID
-  string strIpAddress = 5;                      //设备IP地址
 }
 
 message AddDevRsp_USR                           //添加设备响应。

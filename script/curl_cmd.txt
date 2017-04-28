@@ -5,13 +5,13 @@ curl -F username=中文用户001@anni.com http://172.20.122.252/access.cgi?actio
 curl -F username=中文用户001@anni.com -F userpwd=123456 -F type=10 -F extend="中文扩展信息001" -F aliasname="中文别名001" -F email=beta001@anni.com http://172.20.122.252/access.cgi?action=register_user
 
 用户注销
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F username=czy@qq.com -F userpwd=111111 http://172.20.122.252/access.cgi?action=unregister_user
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F username=czy@qq.com -F userpwd=111111 http://172.20.122.252/access.cgi?action=unregister_user
 
 查询用户信息
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=query_userinfo
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=query_userinfo
 
 修改用户信息
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F email=zycai@annigroup.com -F olduserpwd=123456 -F newuserpwd=111111 -F type=2 -F extend="修改中文扩展信息" http://172.20.122.252/access.cgi?action=modify_userinfo
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F email=zycai@annigroup.com -F olduserpwd=123456 -F newuserpwd=111111 -F type=2 -F extend="修改中文扩展信息" http://172.20.122.252/access.cgi?action=modify_userinfo
 
 用户找回密码
 curl -F username=中文用户001@anni.com -F email=zycai@annigroup.com http://172.20.122.252/access.cgi?action=retrieve_pwd
@@ -20,58 +20,58 @@ curl -F username=中文用户001@anni.com -F email=zycai@annigroup.com http://17
 curl -F username=中文用户001@anni.com -F userpwd=123456 -F terminaltype=4 http://172.20.122.252/access.cgi?action=user_login
 
 用户登出
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 http://172.20.122.252/access.cgi?action=user_logout
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 http://172.20.122.252/access.cgi?action=user_logout
 
 用户握手
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 http://172.20.122.252/access.cgi?action=user_shakehand
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 http://172.20.122.252/access.cgi?action=user_shakehand
 
 用户增加设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 -F devname=中文设备名称001 -F devpwd=123456 -F devtype=8 -F devextend=deviceextend001 -F devinnerinfo=innerinfo001 http://172.20.122.252/access.cgi?action=add_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid= -F domainname= -F p2pid=beta_p2pid_01 -F devname=中文设备名称001 -F devpwd=123456 -F devtype=8 -F devextend=deviceextend001 -F devinnerinfo=innerinfo001 http://172.20.122.252/access.cgi?action=add_device
 
 用户删除设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=delete_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=delete_device
 
 用户修改设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 -F devname=中文设备名称001 -F devpwd=111111 -F devtype=2 http://172.20.122.252/access.cgi?action=modify_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 -F devname=中文设备名称001 -F devpwd=111111 -F devtype=2 http://172.20.122.252/access.cgi?action=modify_device
 
 用户查询设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=query_deviceinfo
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=query_deviceinfo
 
 用户查询用户绑定的设备关系
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_device_of_user
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_device_of_user
 
 用户查询设备绑定的用户关系
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F devid=czy_beta_device_id_001 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_user_of_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F devid=czy_beta_device_id_001 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_user_of_device
 
 用户分享设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F userid_shared=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_beta_device_id_001 -F begindate="2017-03-08 10:30:30" -F enddate="2199-12-31 23:59:59" http://172.20.122.252/access.cgi?action=sharing_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F userid_shared=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_beta_device_id_001 -F begindate="2017-03-08 10:30:30" -F enddate="2199-12-31 23:59:59" http://172.20.122.252/access.cgi?action=sharing_device
 
 用户取消分享设备
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F userid_shared=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=cancelshared_device
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F userid_shared=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_beta_device_id_001 http://172.20.122.252/access.cgi?action=cancelshared_device
 
 用户添加好友
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F friendid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=add_friend
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F friendid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=add_friend
 
 用户删除好友
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F friendid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=delete_friend
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F friendid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=delete_friend
 
 用户查询好友
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_friend
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F beginindex=0 http://172.20.122.252/access.cgi?action=query_friend
 
 用户查询p2p服务
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 -F p2p_type=1 http://172.20.122.252/access.cgi?action=query_p2pserver
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=C0C027EB494ACE4BA13FBC8AC8DBF928 -F devid=czy_beta_device_id_001 -F p2p_type=1 http://172.20.122.252/access.cgi?action=query_p2pserver
 
 用户查询APP升级版本
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=Android_App -F sub_category=Camviews -F current_version=1.3 http://172.20.122.252/access.cgi?action=query_app_upgrade
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F category=Android_App -F sub_category=Camviews -F current_version=1.3 http://172.20.122.252/access.cgi?action=query_app_upgrade
 
 用户查询文件
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=query_file
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://172.20.122.252/access.cgi?action=query_file
 
 用户下载文件
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.252/access.cgi?action=download_file
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.252/access.cgi?action=download_file
 
 用户删除文件
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.252/access.cgi?action=delete_file
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F fileid=czy04debugD076BC44BCBAD44938B690B6 http://172.20.122.252/access.cgi?action=delete_file
 
 
 
@@ -105,16 +105,16 @@ curl -F sid=4B0F34BA8B278B4DAA525CDD1F17150B -F devid=czy_beta_device_id_004 -F 
 
 
 管理员新增配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=Doorbell -F sub_category=Hi3518eV200_OV9732 -F latest_version=2017042602 -F description=fixed:5bugs -F force_version= -F server_address=47.88.33.242:7000 -F file_name=DS_6K_DBELL_OV9732\(1\).rom -F file_id=9/AA466F152C7B7044A2EEA469B75E23AC_DS_6K_DBELL_OV9732\(1\).rom -F file_size=2391022 -F lease=0 http://47.88.33.242:8090/access.cgi?action=add_configuration
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F category=Doorbell -F sub_category=Hi3518eV200_OV9732 -F latest_version=2017042602 -F description=fixed:5bugs -F force_version= -F server_address=47.88.33.242:7000 -F file_name=DS_6K_DBELL_OV9732\(2\).rom -F file_id=9/4263D01087414B49B46409F43C6E4652_DS_6K_DBELL_OV9732\(2\).rom -F file_size=2382293 -F lease=0 http://47.88.33.242:8090/access.cgi?action=add_configuration
 
 管理员删除配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=Doorbell -F sub_category=Hi3518eV200_OV9732 http://47.88.33.242:8090/access.cgi?action=delete_configuration
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F category=Doorbell -F sub_category=Hi3518eV200_OV9732 http://47.88.33.242:8090/access.cgi?action=delete_configuration
 
 管理员修改配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 -F category=IPC -F sub_category=IPC_beta_001.img -F latest_version=1.8 -F description=fixed:15bugs -F force_version=3.4 -F file_name=mailsender -F lease=2400 http://172.20.122.252/access.cgi?action=modify_configuration
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 -F category=IPC -F sub_category=IPC_beta_001.img -F latest_version=1.8 -F description=fixed:15bugs -F force_version=3.4 -F file_name=mailsender -F lease=2400 http://172.20.122.252/access.cgi?action=modify_configuration
 
 管理员查询所有配置项
-curl -F sid=1C399135C2F5C044A39E6B9F977958A7 http://47.88.33.242:8090/access.cgi?action=query_all_configuration
+curl -F sid=979820F7FDBEDE418AAE9C93A6BCAE76 http://47.88.33.242:8090/access.cgi?action=query_all_configuration
 
 
 

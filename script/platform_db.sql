@@ -28,6 +28,8 @@ CREATE TABLE `t_device_info` (
   `devicename` varchar(100) NOT NULL,
   `devicepassword` varchar(100) DEFAULT NULL,
   `typeinfo` int(11) NOT NULL DEFAULT '0',
+  `p2pid` varchar(50),
+  `domainname` varchar(100),
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `innerinfo` varchar(4000) DEFAULT NULL,
@@ -180,12 +182,11 @@ CREATE TABLE `t_device_property` (
   `channelcount` varchar(50),
   `otherproperty` varchar(1000), #其他属性
   `createdate` datetime NOT NULL,
+  `updatedate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
   `extend` varchar(4000) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (deviceid),
-  UNIQUE KEY (devicedomain),
-  UNIQUE KEY (p2pid)
+  UNIQUE KEY (deviceid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 

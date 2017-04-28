@@ -773,9 +773,10 @@ bool AccessManager::ShakehandReq(const std::string &strMsg, const std::string &s
 bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
+    std::string strDeviceID;
     InteractiveProtoHandler::AddDevReq_USR req;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
@@ -783,6 +784,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strDeviceID = blResult ? strDeviceID : "";
         rsp.m_strValue = "value";
 
         std::string strSerializeOutPut;
@@ -813,8 +815,6 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
     //P2PID、域名、设备ID只能输入一个字段，如果没有输入设备ID，则根据P2PID或者域名查询设备ID
     unsigned int counts = 0;
-    std::string strDeviceID;
-
     if (!req.m_devInfo.m_strDevID.empty())
     {
         strDeviceID = req.m_devInfo.m_strDevID;
@@ -846,6 +846,18 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     if (1 != counts)
     {
         LOG_ERROR_RLD("Add device input error, src id is " << strSrcID << ", only allow input one of deviceid|domainname|p2pid");
+
+        ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_MUCH);
+        return false;
+    }
+
+    if (strDeviceID.empty())
+    {
+        LOG_ERROR_RLD("Add device failed, the device is not recorded, src id is " << strSrcID <<
+            " and p2p id is " << req.m_strP2pID <<
+            " and domain name is " << req.m_strDomainName);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_RECORDED_USER);
         return false;
     }
 
@@ -1743,7 +1755,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
         LoginRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::LoginRsp_DEV_T;
         LoginRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         LoginRspUsr.m_strSID = strSessionID;
-        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        LoginRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         LoginRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         LoginRspUsr.m_strValue = strValue;
 
@@ -1822,6 +1834,17 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     {
         LOG_ERROR_RLD("Device login vefiry device domain name failed, device id is " << LoginReqDev.m_strDevID <<
             " and domain name is " << LoginReqDev.m_strDomainName);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
+        return false;
+    }
+
+    if (!LoginReqDev.m_strP2pID.empty() && !IsValidP2pIDProperty(LoginReqDev.m_strDevID, LoginReqDev.m_strP2pID))
+    {
+        LOG_ERROR_RLD("Device login vefiry device p2p id failed, device id is " << LoginReqDev.m_strDevID <<
+            " and p2p id is " << LoginReqDev.m_strP2pID);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
         return false;
     }
 
@@ -3053,7 +3076,7 @@ bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, con
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevicePropertyRsp_DEV_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
 
@@ -3082,6 +3105,17 @@ bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, con
     {
         LOG_ERROR_RLD("Modify device property vefiry device domain name failed, device id is " << req.m_strDeviceID <<
             " and domain name is " << req.m_strDomainName);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
+        return false;
+    }
+
+    if (!req.m_strP2pID.empty() && !IsValidP2pIDProperty(req.m_strDeviceID, req.m_strP2pID))
+    {
+        LOG_ERROR_RLD("Modify device property vefiry device p2p id failed, device id is " << req.m_strDeviceID <<
+            " and p2p id is " << req.m_strP2pID);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
         return false;
     }
 
@@ -5589,7 +5623,6 @@ bool AccessManager::IsValidDeviceDomain(const std::string &strDeviceID, const st
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
         Result = strColumn;
-
         LOG_INFO_RLD("IsValidDeviceDomain sql deviceid is " << strColumn);
     };
 
@@ -5603,6 +5636,34 @@ bool AccessManager::IsValidDeviceDomain(const std::string &strDeviceID, const st
     if (!ResultList.empty())
     {
         LOG_ERROR_RLD("IsValidDeviceDomain failed, the device domain name is used: " << strDeviceDomain);
+        return false;
+    }
+
+    return true;
+}
+
+bool AccessManager::IsValidP2pIDProperty(const std::string &strDeviceID, const std::string &strP2pID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select deviceid from t_device_property where deviceid != '%s' and p2pid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strP2pID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+        LOG_INFO_RLD("IsValidP2pIDProperty sql deviceid is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsValidP2pIDProperty exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        LOG_ERROR_RLD("IsValidP2pIDProperty failed, the device p2pid is used: " << strP2pID);
         return false;
     }
 
@@ -5904,10 +5965,12 @@ bool AccessManager::QueryDevIDByDevDomain(const std::string &strDeviceDomain, st
     if (ResultList.empty())
     {
         LOG_ERROR_RLD("QueryDeveIDByDevDomain sql result is empty, sql is " << sql);
-        return false;
+    }
+    else
+    {
+        strDeviceID = boost::any_cast<std::string>(ResultList.front());
     }
 
-    strDeviceID = boost::any_cast<std::string>(ResultList.front());
     return true;
 }
 
@@ -5935,10 +5998,12 @@ bool AccessManager::QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std:
     if (ResultList.empty())
     {
         LOG_ERROR_RLD("QueryDevIDByDevP2pID sql result is empty, sql is " << sql);
-        return false;
+    }
+    else
+    {
+        strDeviceID = boost::any_cast<std::string>(ResultList.front());
     }
 
-    strDeviceID = boost::any_cast<std::string>(ResultList.front());
     return true;
 }
 

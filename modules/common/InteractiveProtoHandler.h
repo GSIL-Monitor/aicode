@@ -165,6 +165,8 @@ public:
         std::string m_strDevName;
         std::string m_strDevPassword;
         unsigned int m_uiTypeInfo;
+        std::string m_strP2pID;
+        std::string m_strDomainName;
         std::string m_strCreatedate;
         unsigned int m_uiStatus;
         std::string m_strExtend;
@@ -540,9 +542,6 @@ public:
     {
         std::string m_strUserID;
         Device m_devInfo;
-        std::string m_strDomainName;
-        std::string m_strP2pID;
-        std::string m_strIpAddress;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

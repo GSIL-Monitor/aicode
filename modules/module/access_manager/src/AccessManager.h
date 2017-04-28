@@ -323,6 +323,8 @@ private:
 
     bool IsValidDeviceDomain(const std::string &strDeviceID, const std::string &strDeviceDomain);
 
+    bool IsValidP2pIDProperty(const std::string &strDeviceID, const std::string &strP2pID);
+
     void InsertDevPropertyToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq);
 
     void UpdateDevicePropertyToDB(const InteractiveProtoHandler::ModifyDevicePropertyReq_DEV &modifyDevicePropertyReq);

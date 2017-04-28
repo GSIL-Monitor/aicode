@@ -213,8 +213,7 @@ private:
 
     bool DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID);
 
-    bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strDevName,
-        const std::string &strDevPwd, const std::string &strDevType, const std::string &strDevExtend, const std::string &strDevInnerInfo);
+    bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif);
 
     template<typename T>
     bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo);

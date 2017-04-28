@@ -16,10 +16,15 @@ const int ReturnInfo::USERNAME_OR_PASSWORD_INVALID_USER = 1004;    //”√ªß√˚ªÚ’ﬂ√
 const int ReturnInfo::EMAIL_NOT_MATCHED_USER = 1005;               //” œ‰”Î”√ªß√˚≤ª∆•≈‰
 const int ReturnInfo::DEVICE_IS_ADDED_USER = 1006;                 //…Ë±∏“—æ≠±ªÃÌº”
 const int ReturnInfo::DEVICE_NOT_BELONG_TO_USER = 1007;            //…Ë±∏≤ªπÈ Ù”⁄”√ªß
+const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //…Ë±∏Œ¥º«¬º
 
-const int ReturnInfo::DEVICEID_NOT_EXISTED_DEV = 2000;             //…Ë±∏ID≤ª¥Ê‘⁄
-const int ReturnInfo::PASSWORD_INVALID_DEV = 2001;                 //…Ë±∏√‹¬Î≤ª’˝»∑
+const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //…Ë±∏∂˛º∂”Ú√˚“—±ª π”√
+const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //…Ë±∏P2PID“—±ª π”√
+//Œ¥ π”√£¨’ºŒª
+const int ReturnInfo::DEVICEID_NOT_EXISTED_DEV = 2998;             //…Ë±∏ID≤ª¥Ê‘⁄
+const int ReturnInfo::PASSWORD_INVALID_DEV = 2999;                 //…Ë±∏√‹¬Î≤ª’˝»∑
 
+const int ReturnInfo::INPUT_PARAMETER_TOO_MUCH = 998;              // ‰»Î≤Œ ˝π˝∂‡
 const int ReturnInfo::INPUT_PARAMETER_TOO_LESS = 999;              // ‰»Î≤Œ ˝≤ª◊„
 
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;

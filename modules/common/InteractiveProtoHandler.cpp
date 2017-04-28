@@ -58,6 +58,8 @@ template<typename T> void UnSerializeDevList(std::list<T> &devInfoList,
         devInfo.m_strDevName = srcDevInfoList.Get(i).strdevname();
         devInfo.m_strDevPassword = srcDevInfoList.Get(i).strdevpassword();
         devInfo.m_uiTypeInfo = srcDevInfoList.Get(i).uitypeinfo();
+        devInfo.m_strP2pID = srcDevInfoList.Get(i).strp2pid();
+        devInfo.m_strDomainName = srcDevInfoList.Get(i).strdomainname();
         devInfo.m_strCreatedate = srcDevInfoList.Get(i).strcreatedate();
         devInfo.m_uiStatus = srcDevInfoList.Get(i).uistatus();
         devInfo.m_strExtend = srcDevInfoList.Get(i).strextend();
@@ -84,6 +86,8 @@ template<typename T> void SerializeDevList(const std::list<T> &devInfoList,
         pDstDevInfoList->Mutable(i)->set_strdevname(itBegin->m_strDevName);
         pDstDevInfoList->Mutable(i)->set_strdevpassword(itBegin->m_strDevPassword);
         pDstDevInfoList->Mutable(i)->set_uitypeinfo(itBegin->m_uiTypeInfo);
+        pDstDevInfoList->Mutable(i)->set_strp2pid(itBegin->m_strP2pID);
+        pDstDevInfoList->Mutable(i)->set_strdomainname(itBegin->m_strDomainName);
         pDstDevInfoList->Mutable(i)->set_strcreatedate(itBegin->m_strCreatedate);
         pDstDevInfoList->Mutable(i)->set_uistatus(itBegin->m_uiStatus);
         pDstDevInfoList->Mutable(i)->set_strextend(itBegin->m_strExtend);
@@ -2556,9 +2560,6 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().uistatus();
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strinnerinfo();
-    m_strDomainName = InteractiveMsg.reqvalue().adddevreq_usr_value().strdomainname();
-    m_strP2pID = InteractiveMsg.reqvalue().adddevreq_usr_value().strp2pid();
-    m_strIpAddress = InteractiveMsg.reqvalue().adddevreq_usr_value().stripaddress();
 }
 
 void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2575,9 +2576,6 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
-    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strdomainname(m_strDomainName);
-    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strp2pid(m_strP2pID);
-    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_stripaddress(m_strIpAddress);
 }
 
 void InteractiveProtoHandler::AddDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -2677,6 +2675,8 @@ void InteractiveProtoHandler::ModifyDevReq_USR::UnSerializer(const InteractiveMe
     m_devInfo.m_strDevName = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdevname();
     m_devInfo.m_strDevPassword = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdevpassword();
     m_devInfo.m_uiTypeInfo = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().uitypeinfo();
+    m_devInfo.m_strP2pID = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strp2pid();
+    m_devInfo.m_strDomainName = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdomainname();
     m_devInfo.m_strCreatedate = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strcreatedate();
     m_devInfo.m_uiStatus = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().uistatus();
     m_devInfo.m_strExtend = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strextend();
@@ -2694,6 +2694,8 @@ void InteractiveProtoHandler::ModifyDevReq_USR::Serializer(InteractiveMessage &I
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strp2pid(m_devInfo.m_strP2pID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdomainname(m_devInfo.m_strDomainName);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strcreatedate(m_devInfo.m_strCreatedate);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
@@ -2741,6 +2743,8 @@ void InteractiveProtoHandler::QueryDevInfoRsp_USR::UnSerializer(const Interactiv
     m_devInfo.m_strDevID = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevid();
     m_devInfo.m_strDevName = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevname();
     m_devInfo.m_strDevPassword = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdevpassword();
+    m_devInfo.m_strP2pID = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strp2pid();
+    m_devInfo.m_strDomainName = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strdomainname();
     m_devInfo.m_strExtend = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strextend();
     m_devInfo.m_strInnerinfo = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().strinnerinfo();
     m_devInfo.m_uiStatus = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().uistatus();
@@ -2759,6 +2763,8 @@ void InteractiveProtoHandler::QueryDevInfoRsp_USR::Serializer(InteractiveMessage
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevid(m_devInfo.m_strDevID);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdevpassword(m_devInfo.m_strDevPassword);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strp2pid(m_devInfo.m_strP2pID);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strdomainname(m_devInfo.m_strDomainName);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strextend(m_devInfo.m_strExtend);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_strinnerinfo(m_devInfo.m_strInnerinfo);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);

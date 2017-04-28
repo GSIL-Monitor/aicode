@@ -25,12 +25,16 @@ public:
     static const int EMAIL_NOT_MATCHED_USER;             //邮箱与用户名不匹配
     static const int DEVICE_IS_ADDED_USER;               //设备已经被添加
     static const int DEVICE_NOT_BELONG_TO_USER;          //设备不归属于用户
+    static const int DEVICE_NOT_RECORDED_USER;           //设备未记录
 
     //设备相关的错误代码
     static const int DEVICEID_NOT_EXISTED_DEV;           //设备ID不存在
     static const int PASSWORD_INVALID_DEV;               //设备密码不正确
+    static const int DEVICE_DOMAIN_USED_DEV;             //设备二级域名已被使用
+    static const int DEVICE_P2PID_USED_DEV;              //设备P2PID已被使用
 
     //其他错误代码
+    static const int INPUT_PARAMETER_TOO_MUCH;           //输入参数过多
     static const int INPUT_PARAMETER_TOO_LESS;           //输入参数不足
 
     static int RetCode();
