@@ -1194,8 +1194,8 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devinnerinfo", devinfo.m_strInnerinfo));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("createdate", devinfo.m_strCreatedate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("status", boost::lexical_cast<std::string>(devinfo.m_uiStatus)));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainname", boost::lexical_cast<std::string>(devinfo.m_strDomainName)));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", boost::lexical_cast<std::string>(devinfo.m_strP2pID)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainname", devinfo.m_strDomainName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", devinfo.m_strP2pID));
     
     blResult = true;
 
@@ -4790,6 +4790,8 @@ bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &
         ModifyDevReq.m_devInfo.m_strInnerinfo = devif.m_strDevInnerInfo;
         ModifyDevReq.m_devInfo.m_uiStatus = 0xFFFFFFFF;
         ModifyDevReq.m_devInfo.m_uiTypeInfo = uiTypeInfo;
+        ModifyDevReq.m_devInfo.m_strDomainName = devif.m_strDomainname;
+        ModifyDevReq.m_devInfo.m_strP2pID = devif.m_strP2pid;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModifyDevReq, strSerializeOutPut))
