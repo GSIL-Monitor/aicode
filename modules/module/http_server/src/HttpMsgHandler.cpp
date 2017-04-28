@@ -842,7 +842,7 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     const std::string strUserID = itFind->second;
 
     itFind = pMsgInfoMap->find("devid");
-    if (pMsgInfoMap->end() != itFind)
+    if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Device id not found.");
         return blResult;
