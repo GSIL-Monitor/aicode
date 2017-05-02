@@ -773,10 +773,9 @@ bool AccessManager::ShakehandReq(const std::string &strMsg, const std::string &s
 bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     bool blResult = false;
-    std::string strDeviceID;
     InteractiveProtoHandler::AddDevReq_USR req;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
@@ -784,7 +783,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        rsp.m_strDeviceID = blResult ? strDeviceID : "";
+        rsp.m_strDeviceID = blResult ? req.m_devInfo.m_strDevID : "";
         rsp.m_strValue = "value";
 
         std::string strSerializeOutPut;
@@ -808,61 +807,62 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
+    //P2PID、域名、设备ID只能输入一个字段，如果没有输入设备ID，则根据P2PID或者域名查询设备ID
+    //std::string strDeviceID;
+    //unsigned int counts = 0;
+    //if (!req.m_devInfo.m_strDevID.empty())
+    //{
+    //    strDeviceID = req.m_devInfo.m_strDevID;
+    //    ++counts;
+    //}
+
+    //if (!req.m_devInfo.m_strDomainName.empty())
+    //{
+    //    if (strDeviceID.empty() && !QueryDevIDByDevDomain(req.m_devInfo.m_strDomainName, strDeviceID))
+    //    {
+    //        LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
+    //            " and device domain name is " << req.m_devInfo.m_strDomainName);
+    //        return false;
+    //    }
+    //    ++counts;
+    //}
+
+    //if (!req.m_devInfo.m_strP2pID.empty())
+    //{
+    //    if (strDeviceID.empty() && !QueryDevIDByDevP2pID(req.m_devInfo.m_strP2pID, strDeviceID))
+    //    {
+    //        LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
+    //            " and device p2pid is " << req.m_devInfo.m_strP2pID);
+    //        return false;
+    //    }
+    //    ++counts;
+    //}
+
+    //if (1 != counts)
+    //{
+    //    LOG_ERROR_RLD("Add device input error, src id is " << strSrcID << ", only allow input one of deviceid|domainname|p2pid");
+
+    //    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_MUCH);
+    //    return false;
+    //}
+
+    //if (strDeviceID.empty())
+    //{
+    //    LOG_ERROR_RLD("Add device failed, the device is not recorded, src id is " << strSrcID <<
+    //        " and p2p id is " << req.m_strP2pID <<
+    //        " and domain name is " << req.m_strDomainName);
+
+    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_RECORDED_USER);
+    //    return false;
+    //}
+
     //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    //P2PID、域名、设备ID只能输入一个字段，如果没有输入设备ID，则根据P2PID或者域名查询设备ID
-    unsigned int counts = 0;
-    if (!req.m_devInfo.m_strDevID.empty())
-    {
-        strDeviceID = req.m_devInfo.m_strDevID;
-        ++counts;
-    }
-
-    if (!req.m_strDomainName.empty())
-    {
-        if (strDeviceID.empty() && !QueryDevIDByDevDomain(req.m_strDomainName, strDeviceID))
-        {
-            LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
-                " and device domain name is " << req.m_strDomainName);
-            return false;
-        }
-        ++counts;
-    }
-
-    if (!req.m_strP2pID.empty())
-    {
-        if (strDeviceID.empty() && !QueryDevIDByDevP2pID(req.m_strP2pID, strDeviceID))
-        {
-            LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
-                " and device p2pid is " << req.m_strP2pID);
-            return false;
-        }
-        ++counts;
-    }
-
-    if (1 != counts)
-    {
-        LOG_ERROR_RLD("Add device input error, src id is " << strSrcID << ", only allow input one of deviceid|domainname|p2pid");
-
-        ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_MUCH);
-        return false;
-    }
-
-    if (strDeviceID.empty())
-    {
-        LOG_ERROR_RLD("Add device failed, the device is not recorded, src id is " << strSrcID <<
-            " and p2p id is " << req.m_strP2pID <<
-            " and domain name is " << req.m_strDomainName);
-
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_RECORDED_USER);
-        return false;
-    }
-
     std::string strUserID;
-    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID))
+    if (!QueryOwnerUserIDByDeviceID(req.m_devInfo.m_strDevID, strUserID))
     {
         LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
@@ -878,10 +878,12 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         }
 
         InteractiveProtoHandler::Device DevInfo;
-        DevInfo.m_strDevID = strDeviceID;
+        DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
         DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
         DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
         DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
+        DevInfo.m_strP2pID = req.m_devInfo.m_strP2pID;
+        DevInfo.m_strDomainName = req.m_devInfo.m_strDomainName;
         DevInfo.m_strCreatedate = strCurrentTime;
         DevInfo.m_uiStatus = NORMAL_STATUS;
         DevInfo.m_strInnerinfo = req.m_devInfo.m_strInnerinfo;
@@ -1048,6 +1050,8 @@ bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string
         rsp.m_devInfo.m_strDevID = dev.m_strDevID;
         rsp.m_devInfo.m_strDevName = dev.m_strDevName;
         rsp.m_devInfo.m_strDevPassword = dev.m_strDevPassword;
+        rsp.m_devInfo.m_strP2pID = dev.m_strP2pID;
+        rsp.m_devInfo.m_strDomainName = dev.m_strDomainName;
         rsp.m_devInfo.m_strExtend = dev.m_strExtend;
         rsp.m_devInfo.m_strInnerinfo = dev.m_strInnerinfo;
         rsp.m_devInfo.m_uiStatus = dev.m_uiStatus;
@@ -4941,10 +4945,10 @@ void AccessManager::InsertDeviceToDB(const std::string &strUuid, const Interacti
 
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_device_info("
-        "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend) values('%s',"
-        "'%s','%s','%s','%d','%s', '%d','%s', '%s')";
+        "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend, p2pid, domainname) values('%s',"
+        "'%s','%s','%s','%d','%s', '%d', '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUuid.c_str(), DevInfo.m_strDevID.c_str(), DevInfo.m_strDevName.c_str(), DevInfo.m_strDevPassword.c_str(), DevInfo.m_uiTypeInfo,
-        DevInfo.m_strCreatedate.c_str(), DevInfo.m_uiStatus, strInner.c_str(), DevInfo.m_strExtend.c_str());
+        DevInfo.m_strCreatedate.c_str(), DevInfo.m_uiStatus, strInner.c_str(), DevInfo.m_strExtend.c_str(), DevInfo.m_strP2pID.c_str(), DevInfo.m_strDomainName.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -5056,6 +5060,20 @@ void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
     {
         char cTmp[256] = { 0 };
         snprintf(cTmp, sizeof(cTmp), ", typeinfo = '%u' ", DevInfo.m_uiTypeInfo);
+        strSql += cTmp;
+    }
+
+    if (!DevInfo.m_strP2pID.empty())
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", p2pid = '%s' ", DevInfo.m_strP2pID.c_str());
+        strSql += cTmp;
+    }
+
+    if (!DevInfo.m_strDomainName.empty())
+    {
+        char cTmp[256] = { 0 };
+        snprintf(cTmp, sizeof(cTmp), ", domainname = '%s' ", DevInfo.m_strDomainName.c_str());
         strSql += cTmp;
     }
 
@@ -5254,7 +5272,7 @@ bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveP
 bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend from t_device_info where deviceid = '%s' and status = 0";
+    const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend, p2pid, domainname from t_device_info where deviceid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str());
     std::string strSql = sql;
 
@@ -5268,6 +5286,8 @@ bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractivePro
         dev.m_strDevID = Result.m_strDevID;
         dev.m_strDevName = Result.m_strDevName;
         dev.m_strDevPassword = Result.m_strDevPassword;
+        dev.m_strP2pID = Result.m_strP2pID;
+        dev.m_strDomainName = Result.m_strDomainName;
         dev.m_uiStatus = Result.m_uiStatus;
         dev.m_uiTypeInfo = Result.m_uiTypeInfo;
         dev.m_strInnerinfo = Result.m_strInnerinfo;
@@ -5305,6 +5325,13 @@ bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractivePro
             case 7:
                 dev.m_strExtend = strColumn;
                 break;
+            case 8:
+                dev.m_strP2pID = strColumn;
+                break;
+            case 9:
+                dev.m_strDomainName = strColumn;
+                break;
+
             default:
                 LOG_ERROR_RLD("UserInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
                 break;
