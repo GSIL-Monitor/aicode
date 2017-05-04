@@ -8,6 +8,7 @@
 #include <string>
 #include <boost/thread/mutex.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/shared_array.hpp>
 
 class ClientComm;
 class TimeOutHandler;
@@ -21,7 +22,7 @@ typedef struct
     std::string strSrcID;
     std::string strDstID;
     std::string strType;
-    boost::shared_ptr<char> pContentBuffer;
+    boost::shared_array<char> pContentBuffer;
     unsigned int uiContentBufferLen;
 } ClientMsg;
 typedef boost::function<void(const boost::system::error_code&, std::list<ClientMsg> *pClientMsgList, void *)> ClientReadCB;

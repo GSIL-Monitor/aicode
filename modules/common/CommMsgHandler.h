@@ -7,6 +7,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
 #include "ClientCommInterface.h"
+#include <boost/shared_array.hpp>
 #include "NetComm.h"
 
 
@@ -14,7 +15,7 @@ class CommMsgHandler : public boost::enable_shared_from_this<CommMsgHandler>
 {
 public:
     struct Packet {
-        boost::shared_ptr<char> pBuffer;
+        boost::shared_array<char> pBuffer;
         int   buflen;
         Packet() : buflen(0){};
         ~Packet(){};
@@ -80,7 +81,7 @@ private:
 
     boost::shared_ptr<ClientCommInterface> m_Client;
 
-    std::queue<std::pair<boost::shared_ptr<char>, unsigned int> > m_ReadBuff;
+    std::queue<std::pair<boost::shared_array<char>, unsigned int> > m_ReadBuff;
 
     std::queue<boost::function<int()> > m_func;
 

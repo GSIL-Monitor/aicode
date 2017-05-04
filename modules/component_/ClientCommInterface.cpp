@@ -190,7 +190,7 @@ void ClientCommInterface::ShakehandHandler::ReadCBInner(const boost::system::err
         while (itBegin != itEnd)
         {
             if (itBegin->strSrcID == "0" && itBegin->strDstID == "0" && itBegin->strType == "0" &&
-                itBegin->uiContentBufferLen == 1 && (*(itBegin->pContentBuffer) == '0'))
+                itBegin->uiContentBufferLen == 1 && (itBegin->pContentBuffer[0] == '0'))
             {                    
                 pClientMsgList->erase(itBegin++);
                 continue;
