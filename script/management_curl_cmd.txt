@@ -1,5 +1,8 @@
 增加集群代理
-curl -F clusterid=BDCD70A9D645B149B7174D0FB24D4497 -F management_address=172.20.122.252 http://172.20.122.252/access.cgi?action=cluster_shakehand
+curl -F clusterid=BDCD70A9D645B149B7174D0FB24D4497 -F management_address=172.20.122.252 http://172.20.122.252/access.cgi?action=add_cluster_agent
+
+增加集群代理
+curl -F clusterid=BDCD70A9D645B149B7174D0FB24D4497 http://172.20.122.252/access.cgi?action=delete_cluster_agent
 
 集群握手
 curl -F clusterid=BDCD70A9D645B149B7174D0FB24D4497 http://172.20.122.252/access.cgi?action=cluster_shakehand

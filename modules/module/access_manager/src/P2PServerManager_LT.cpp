@@ -4,6 +4,8 @@
 
 #include "P2PServerManager_LT.h"
 
+boost::mutex P2PServerManager_LT::m_p2pMutex;
+
 P2PServerManager_LT::P2PServerManager_LT(const string &strSupplier)
 {
     m_sFlag = strSupplier;
@@ -39,6 +41,7 @@ bool P2PServerManager_LT::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparam
 
     if ("" == sUserID)
     {
+        boost::unique_lock<boost::mutex> lock(m_p2pMutex);
         if (AllocateP2pID(sDeviceID, p2pparams))
         {
             return UpdateP2PID(sDeviceID, p2pparams.sP2Pid);
@@ -139,7 +142,7 @@ bool P2PServerManager_LT::AllocateP2pID(const string &strDeviceID, P2PConnectPar
     };
 
     std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("AllocateP2pID sql failed, sql is " << sql);
         return false;

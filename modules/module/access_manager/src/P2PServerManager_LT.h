@@ -27,6 +27,8 @@ private:
     bool GetP2pID(const string &strDeviceID, P2PConnectParam &p2pparams);
     bool AllocateP2pID(const string &strDeviceID, P2PConnectParam &p2pparams);
     bool UpdateP2PID(const string &strDeviceID, const string &strP2pID);
+
+    static boost::mutex m_p2pMutex;
 };
 
 

@@ -5714,7 +5714,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_strDomainName.c_str(), loginDevReq.m_uiDeviceType,
         loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), loginDevReq.m_strP2pID.c_str(), loginDevReq.m_strP2pServr.c_str(),
         loginDevReq.m_uiP2pSupplier, loginDevReq.m_uiP2pBuildin, loginDevReq.m_strLicenseKey.c_str(), loginDevReq.m_strPushID.c_str(),
-        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "null");
+        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
 
     if (!loginDevReq.m_strPassword.empty())
     {
@@ -5805,7 +5805,7 @@ void AccessManager::UpdateDevicePropertyToDB(const InteractiveProtoHandler::Modi
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    snprintf(sql, size, "update t_device_property set id = id");
+    snprintf(sql, size, "update t_device_property set updatedate = current_time");
 
     bool blModified = false;
 

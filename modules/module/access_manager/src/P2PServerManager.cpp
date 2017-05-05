@@ -65,13 +65,12 @@ bool P2PServerManager::AllocP2PID(TimeZone timezone, string sDevID)
     bRet = GetP2pIDByDevID(sDevID, m_p2pConnectParams);
     if (bRet == false)
     {
-        P2PServerManager::m_smutex.lock();
+        boost::unique_lock<boost::mutex> lock(m_smutex);
         bRet = GetFreeP2pID(timezone.sCode, m_table_name, m_p2pConnectParams);
         if (bRet)
         {
             bRet = UpdateP2PID(m_p2pConnectParams.sP2Pid, sDevID);
         }
-        P2PServerManager::m_smutex.unlock();
     }
     return bRet;
 }
@@ -218,7 +217,7 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
     snprintf(sql, sizeof(sql), sqlfmt, strP2pIDTableName.c_str(), strCnCode.c_str(), m_sFlag.c_str());
 
     bool bRet = false;
-    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
         switch (uiColumnNum)
         {
@@ -235,19 +234,32 @@ bool P2PServerManager::GetFreeP2pID(const std::string &strCnCode, const std::str
         case 3:
             p2pparams.sparam2 = strColumn;
             bRet = true;
+            Result = p2pparams;
             break;
         default:
             LOG_ERROR_RLD("Unknown sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
             break;
         }
-
     };
 
-    if (!m_pMysql->QueryExec(std::string(sql), SqlFunc))
+    std::list<boost::any> ResultList;
+    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("GetFreeP2pID sql failed, sql is " << sql);
         return false;
     }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("GetFreeP2pID exec sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto ResultInfo = boost::any_cast<P2PConnectParam>(ResultList.front());
+    p2pparams.sP2Pid = ResultInfo.sP2Pid;
+    p2pparams.nTime = ResultInfo.nTime;
+    p2pparams.sparam1 = ResultInfo.sparam1;
+    p2pparams.sparam2 = ResultInfo.sparam2;
 
     return bRet;
 }
