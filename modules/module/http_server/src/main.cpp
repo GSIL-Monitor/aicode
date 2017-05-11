@@ -174,12 +174,15 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    const std::string &strShakehandOfChannelInterval = cfg.GetItem("Channel.ShakehandOfChannelInterval");
+    std::string strShakehandOfChannelInterval = cfg.GetItem("Channel.ShakehandOfChannelInterval");
     if (strShakehandOfChannelInterval.empty())
     {
         LOG_ERROR_RLD("ShakehandOfChannelInterval config item not found.");
         return 0;
     }
+
+    //
+    strShakehandOfChannelInterval = "0";
 
     const std::string &strSelfID = cfg.GetItem("General.SelfID");
     if (strSelfID.empty())
@@ -311,6 +314,13 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_APP_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryAppUpgradeHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryDevUpgradeHandler, &filehdr, _1, _2));
 
+    ////
+    //auto ft = [&]()
+    //{
+    //    boost::this_thread::sleep(boost::posix_time::seconds(300));
+    //    _exit(1);
+    //};
+    //new boost::thread(ft);
 
     fcgimgr.Run(true);
     return 0;
