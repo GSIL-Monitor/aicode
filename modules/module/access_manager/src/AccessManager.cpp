@@ -60,21 +60,25 @@ bool AccessManager::Init()
         if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
         {
             LOG_ERROR_RLD("Exec sql charset to utf8 failed, sql is SET NAMES utf8");
-            return;
+        }
+        else
+        {
+            LOG_INFO_RLD("Set db to utf8 success.");
         }
 
-        LOG_INFO_RLD("Set db to utp8 success.");
+        if (!RefreshAccessDomainName())
+        {
+            LOG_ERROR_RLD("Refresh access domain name failed.");
+        }
+        else
+        {
+            LOG_INFO_RLD("Refresh access domain name success");
+        }
     };
 
     m_DBTimer.SetTimeOutCallBack(TmFunc);
     
     m_DBTimer.Run(true);
-
-    if (!InitDefaultAccessDomainName())
-    {
-        LOG_ERROR_RLD("Init default access domain name failed.");
-        return false;
-    }
 
     m_DBCache.SetSqlCB(boost::bind(&AccessManager::UserInfoSqlCB, this, _1, _2, _3, _4));
     
@@ -1957,6 +1961,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
             break;
         }
 
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
         ++iRetry;
         LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress <<
             " and retry " << iRetry << " times");
@@ -2350,9 +2355,9 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     {
         if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
         {
-            LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry + 1 << " times");
+            LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress << " and retry " << ++iRetry << " times");
 
-            ++iRetry;
+            boost::this_thread::sleep(boost::posix_time::seconds(1));
             continue;
         }
 
@@ -2433,9 +2438,9 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
     {
         if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
         {
-            LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry + 1 << " times");
+            LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress << " and retry " << ++iRetry << " times");
 
-            ++iRetry;
+            boost::this_thread::sleep(boost::posix_time::seconds(1));
             continue;
         }
 
@@ -3620,6 +3625,7 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
         strKey += "|" + strAreaID;
     }
 
+    boost::unique_lock<boost::mutex> lock(m_domainMutex);
     auto itPos = m_AreaDomainMap.find(strKey);
     if (itPos == m_AreaDomainMap.end())
     {
@@ -3689,7 +3695,7 @@ bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID,
     }
 }
 
-bool AccessManager::InitDefaultAccessDomainName()
+bool AccessManager::RefreshAccessDomainName()
 {
     std::string strSql = "select countryid, areaid, domainname, leaseduration from t_access_domain_info where status = 0";
 
@@ -3697,6 +3703,10 @@ bool AccessManager::InitDefaultAccessDomainName()
     std::string strAreaID;
     std::string strDomainName;
     unsigned int uiLease;
+
+    boost::unique_lock<boost::mutex> lock(m_domainMutex);
+    m_AreaDomainMap.clear();
+
     auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
         switch (uiColumnNum)
@@ -3752,7 +3762,7 @@ bool AccessManager::InitDefaultAccessDomainName()
 
     if (!m_pMysql->QueryExec(strSql, FuncTmp))
     {
-        LOG_ERROR_RLD("InitDefaultAccessDomainName sql failed, sql is " << strSql);
+        LOG_ERROR_RLD("RefreshAccessDomainName sql failed, sql is " << strSql);
         return false;
     }
 

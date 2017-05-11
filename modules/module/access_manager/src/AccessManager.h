@@ -291,7 +291,7 @@ private:
 
     bool QueryAccessDomainInfoByArea(const std::string &strCountryID, const std::string &strAreaID, AccessDomainInfo &DomainInfo);
 
-    bool InitDefaultAccessDomainName();
+    bool RefreshAccessDomainName();
 
     bool QueryUpgradeSiteToDB(std::string &strUpgradeUrl, unsigned int &uiLease);
 
@@ -353,6 +353,7 @@ private:
     SessionMgr m_SessionMgr;
 
     std::map<std::string, std::list<AccessDomainInfo>> m_AreaDomainMap;
+    boost::mutex m_domainMutex;
 
     boost::shared_ptr<ClusterAccessCollector> m_pClusterAccessCollector;
 
