@@ -173,12 +173,15 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    const std::string &strShakehandOfChannelInterval = cfg.GetItem("Channel.ShakehandOfChannelInterval");
+    std::string strShakehandOfChannelInterval = cfg.GetItem("Channel.ShakehandOfChannelInterval");
     if (strShakehandOfChannelInterval.empty())
     {
         LOG_ERROR_RLD("ShakehandOfChannelInterval config item not found.");
         return 0;
     }
+
+    //
+    strShakehandOfChannelInterval = "0";
 
     const std::string &strSelfID = cfg.GetItem("General.SelfID");
     if (strSelfID.empty())
