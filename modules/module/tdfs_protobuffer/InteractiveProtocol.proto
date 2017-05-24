@@ -387,6 +387,7 @@ message P2pInfoReq_DEV                          //p2p服务器信息请求
   string strDevID = 1;
   string strDevIpAddress = 2;
   uint32 uiP2pSupplier = 3;
+  string strDomainName = 4;                     //通过设备二级域名获取P2P信息
 }
 
 message P2pInfoRsp_DEV                          //p2p服务器信息响应

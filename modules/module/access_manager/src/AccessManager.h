@@ -329,7 +329,7 @@ private:
 
     void UpdateDevicePropertyToDB(const InteractiveProtoHandler::ModifyDevicePropertyReq_DEV &modifyDevicePropertyReq);
 
-    bool QueryDevIDByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID);
+    bool QueryDevPropertyByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID, std::string &strP2pID);
 
     bool QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std::string &strDeviceID);
 

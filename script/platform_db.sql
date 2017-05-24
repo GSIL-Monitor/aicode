@@ -148,45 +148,99 @@ CREATE TABLE `t_access_domain_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `t_device_property`;
-CREATE TABLE `t_device_property` (
+DROP TABLE IF EXISTS `t_device_parameter_ipc`;
+CREATE TABLE `t_device_parameter_ipc` (
   `id` varchar(36) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
-  `devicepassword` varchar(100),
-  `devicedomain` varchar(50), #设备二级域名，与设备ID一一对应
+  `devicepassword` varchar(100) DEFAULT '',
+  `devicedomain` varchar(50) DEFAULT '', #设备二级域名，与设备ID一一对应
   `typeinfo` int(11) NOT NULL,
-  `username` varchar(100), #用户名称
-  `userpassword` varchar(50), #用户密码
-  `p2pid` varchar(50), #P2PID
-  `p2pserver` varchar(100), #P2P服务器
-  `p2psupplier` int(11), #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
-  `p2pbuildin` int(11), #P2P分配方式，0-动态分配，1-设备烧录
-  `licensekey` varchar(50), #尚云P2P使用
-  `pushid` varchar(50), #尚云P2P2使用
-  `distributor` varchar(100), #经销商
-  `corpid` varchar(100),
-  `dvsname` varchar(100),
-  `dvsip` varchar(50),
-  `dvsip2` varchar(50),
-  `webport` varchar(50),
-  `ctrlport` varchar(50),
-  `protocol` varchar(50),
-  `model` varchar(50),
-  `postfrequency` varchar(50),
-  `version` varchar(50),
-  `devicestatus` varchar(50),
-  `serverip` varchar(50),
-  `serverport` varchar(50),
-  `transfer` varchar(100),
-  `mobileport` varchar(50),
-  `channelcount` varchar(50),
-  `otherproperty` varchar(1000), #其他属性
+  `username` varchar(100) DEFAULT '', #用户名称
+  `userpassword` varchar(50) DEFAULT '', #用户密码
+  `p2pid` varchar(50) DEFAULT '', #P2PID
+  `p2pserver` varchar(100) DEFAULT '', #P2P服务器
+  `p2psupplier` int(11) DEFAULT '0', #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
+  `p2pbuildin` int(11) DEFAULT '-1', #P2P分配方式，0-动态分配，1-设备烧录
+  `licensekey` varchar(50) DEFAULT '', #尚云P2P使用
+  `pushid` varchar(50) DEFAULT '', #尚云P2P2使用
+  `distributor` varchar(100) DEFAULT '', #经销商
+  `corpid` varchar(100) DEFAULT '',
+  `dvsname` varchar(100) DEFAULT '',
+  `dvsip` varchar(50) DEFAULT '',
+  `dvsip2` varchar(50) DEFAULT '',
+  `webport` varchar(50) DEFAULT '',
+  `ctrlport` varchar(50) DEFAULT '',
+  `protocol` varchar(50) DEFAULT '',
+  `model` varchar(50) DEFAULT '',
+  `postfrequency` varchar(50) DEFAULT '',
+  `version` varchar(50) DEFAULT '',
+  `devicestatus` varchar(50) DEFAULT '',
+  `serverip` varchar(50) DEFAULT '',
+  `serverport` varchar(50) DEFAULT '',
+  `transfer` varchar(100) DEFAULT '',
+  `mobileport` varchar(50) DEFAULT '',
+  `channelcount` varchar(50) DEFAULT '',
+  `otherproperty` varchar(1000) DEFAULT '', #其他属性
   `createdate` datetime NOT NULL,
   `updatedate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0',
-  `extend` varchar(4000) DEFAULT NULL,
+  `extend` varchar(4000) DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY (deviceid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_device_parameter_doorbell`;
+CREATE TABLE `t_device_parameter_doorbell` (
+  `id` varchar(36) NOT NULL,
+  `deviceid` varchar(100) NOT NULL,
+  `devicepassword` varchar(100) DEFAULT '',
+  `devicedomain` varchar(50) DEFAULT '',          #设备二级域名，与设备ID一一对应
+  `typeinfo` int(11) NOT NULL,
+  `username` varchar(100) DEFAULT '',             #用户名称
+  `userpassword` varchar(50) DEFAULT '',          #用户密码
+  `p2pserver` varchar(100) DEFAULT '',            #P2P服务器
+  `p2psupplier` int(11) DEFAULT '0',              #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
+  `p2pbuildin` int(11) DEFAULT '-1',              #P2P分配方式，0-动态分配，1-设备烧录
+  `licensekey` varchar(50) DEFAULT '',            #尚云P2P使用
+  `pushid` varchar(50) DEFAULT '',                #尚云P2P2使用
+  `distributor` varchar(100) DEFAULT '',          #经销商
+  `doorbell_name` varchar(50) DEFAULT '',         #设备名称
+  `serial_number` varchar(50) DEFAULT '',         #序列号
+  `doorbell_p2pid` varchar(50) DEFAULT '',        #P2P ID
+  `battery_capacity` varchar(50) DEFAULT '',      #电池容量
+  `charging_state` varchar(50) DEFAULT '',        #充电状态
+  `wifi_signal` varchar(50) DEFAULT '',           #WIFI信号
+  `volume_level` varchar(50) DEFAULT '',          #音量大小
+  `version_number` varchar(50) DEFAULT '',        #版本号信息
+  `channel_number` varchar(50) DEFAULT '',        #通道号
+  `coding_type` varchar(50) DEFAULT '',           #编码类型
+  `pir_alarm_swtich` varchar(50) DEFAULT '',      #PIR报警开关
+  `doorbell_switch` varchar(50) DEFAULT '',       #门铃开关
+  `pir_alarm_level` varchar(50) DEFAULT '',       #PIR报警等级
+  `pir_ineffective_time` varchar(50) DEFAULT '',  #PIR不生效时间配置项
+  `current_wifi` varchar(50) DEFAULT '',          #当前WIFI
+  `otherproperty` varchar(1000) DEFAULT '',       #其他属性
+  `createdate` datetime NOT NULL,
+  `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (deviceid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_device_event_info`;
+CREATE TABLE `t_device_event_info` (
+  `id` varchar(36) NOT NULL,
+  `deviceid` varchar(32) NOT NULL,
+  `devicetype` int(11) DEFAULT '-1',
+  `eventtype` varchar(50) NOT NULL,     #事件类型，支持Motion、Ring、LowPower
+  `eventstate` varchar(50) DEFAULT '',  #时间状态，Motion支持Motion、Answered Motion，Ring支持Accepted Ring、Missed Ring、Message Ring
+  `readstate` varchar(50) NOT NULL,     #查看状态，包括Unread、Read
+  `fileid` varchar(200) DEFAULT '',
+  `createdate` datetime NOT NULL,
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (deviceid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

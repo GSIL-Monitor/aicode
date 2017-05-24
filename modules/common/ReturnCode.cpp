@@ -20,6 +20,7 @@ const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //设备未记录
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //设备二级域名已被使用
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //设备P2PID已被使用
+const int ReturnInfo::DEVICE_DOMAINNAME_INVALID = 2002;            //设备二级域名不可用
 //未使用，占位
 const int ReturnInfo::DEVICEID_NOT_EXISTED_DEV = 2998;             //设备ID不存在
 const int ReturnInfo::PASSWORD_INVALID_DEV = 2999;                 //设备密码不正确

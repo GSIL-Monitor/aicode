@@ -2188,6 +2188,8 @@ bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
 
 bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
@@ -2198,7 +2200,7 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         if (!blResult)
         {
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
         }
 
@@ -2214,13 +2216,19 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strSid = itFind->second;
 
+    unsigned int uiCount = 0;
+    std::string strDevID;
     itFind = pMsgInfoMap->find("devid");
     if (pMsgInfoMap->end() == itFind)
     {
-        LOG_ERROR_RLD("Device id not found.");
-        return blResult;
+        LOG_INFO_RLD("Device id not found.");
+        //return blResult;
     }
-    const std::string strDevID = itFind->second;
+    else
+    {
+        ++uiCount;
+        strDevID = itFind->second;
+    }
 
     itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
     if (pMsgInfoMap->end() == itFind)
@@ -2255,15 +2263,32 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         return blResult;
     }
 
+    std::string strDomainName;
+    itFind = pMsgInfoMap->find("domainname");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        if (0 == uiCount)
+        {
+            LOG_ERROR_RLD("Device id and domainname both not found.");
+            return blResult;
+        }
+    }
+    else
+    {
+        strDomainName = itFind->second;
+    }
+
     LOG_INFO_RLD("Device p2p info received and  session id is " << strSid << " and device id is " << strDevID << " and device remote ip is " << strRemoteIP
-        << " and p2p type is " << uiP2pType);
+        << " and p2p type is " << uiP2pType << " and domainname is " << strDomainName);
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
     std::string strLicenseKey;
     std::string strPushID;
-    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, uiP2pType, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
+    if (!DeviceP2pInfo(strSid, strDevID, strRemoteIP, uiP2pType, strDomainName, strP2pServer, strP2pID, uiLease, strLicenseKey, strPushID))
     {
         LOG_ERROR_RLD("Device p2p info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -5516,7 +5541,7 @@ bool HttpMsgHandler::DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string 
 }
 
 bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, const unsigned int uiP2pType,
-    std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID)
+    const std::string &strDomainName, std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5527,6 +5552,7 @@ bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string 
         DevP2pInfoReq.m_strDevID = strDevID;
         DevP2pInfoReq.m_strDevIpAddress = strDevIpAddress;
         DevP2pInfoReq.m_uiP2pSupplier = uiP2pType;
+        DevP2pInfoReq.m_strDomainName = strDomainName;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevP2pInfoReq, strSerializeOutPut))
@@ -5562,6 +5588,8 @@ bool HttpMsgHandler::DeviceP2pInfo(const std::string &strSid, const std::string 
         strPushID = DevP2pInfoRsp.m_strPushID;
 
         iRet = DevP2pInfoRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("P2p info of device id is " << strDevID << " and session id is " << DevP2pInfoRsp.m_strSID <<
             " and p2p server is " << strP2pServer << " and p2p id is " << strP2pID << " and lease is " << uiLease << " and license key is " << strLicenseKey <<

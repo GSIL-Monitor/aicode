@@ -1032,6 +1032,7 @@ public:
         std::string m_strDevID;
         std::string m_strDevIpAddress;
         unsigned int m_uiP2pSupplier;
+        std::string m_strDomainName;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

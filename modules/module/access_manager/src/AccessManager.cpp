@@ -822,7 +822,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
     //if (!req.m_devInfo.m_strDomainName.empty())
     //{
-    //    if (strDeviceID.empty() && !QueryDevIDByDevDomain(req.m_devInfo.m_strDomainName, strDeviceID))
+    //    if (strDeviceID.empty() && !QueryDevPropertyByDevDomain(req.m_devInfo.m_strDomainName, strDeviceID))
     //    {
     //        LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
     //            " and device domain name is " << req.m_devInfo.m_strDomainName);
@@ -1886,6 +1886,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
     InteractiveProtoHandler::P2pInfoReq_DEV req;
 
+    std::string strDeviceID;
     std::string strP2pServer;
     std::string strP2pID;
     unsigned int uiLease = 0;
@@ -1898,7 +1899,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::P2pInfoRsp_DEV_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strP2pID = blResult ? strP2pID : "";
         rsp.m_strP2pServer = blResult ? strP2pServer : "";
@@ -1915,7 +1916,8 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("P2p info of device rsp already send, dst id is " << strSrcID << " and device id is " << req.m_strDevID <<
-            " and device ip is " << req.m_strDevIpAddress << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
+            " and domainname is " << req.m_strDomainName << " and device ip is " << req.m_strDevIpAddress <<
+            " and p2p supplier is " << req.m_uiP2pSupplier << " and p2p id is " << strP2pID << " and p2p server is " << strP2pServer <<
             " and lease is " << uiLease << " and liecense key is " << strLicenseKey << " and push id is " << strPushID <<
             " and session id is " << req.m_strSID <<
             " and result is " << blResult);
@@ -1927,6 +1929,37 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     {
         LOG_ERROR_RLD("P2p info of device req unserialize failed, src id is " << strSrcID);
         return false;
+    }
+
+    //根据二级域名获取设备ID
+    if (req.m_strDevID.empty())
+    {
+        if (req.m_strDomainName.empty())
+        {
+            LOG_ERROR_RLD("P2p info of device failed, device id and domainname are both empty, src id is " << strSrcID);
+
+            ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+            return false;
+        }
+        else if (!QueryDevPropertyByDevDomain(req.m_strDomainName, strDeviceID, strP2pID) || strDeviceID.empty())
+        {
+            LOG_ERROR_RLD("P2p info of device failed, get device id by domainname error, src id is " << strSrcID <<
+                " and domainname is " << req.m_strDomainName);
+
+            ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAINNAME_INVALID);
+            return false;
+        }
+        else if (!strP2pID.empty())
+        {
+            LOG_INFO_RLD("P2p info of device successful, device p2p id is built-in, p2pid is " << strP2pID);
+
+            blResult = true;
+            return blResult;
+        }
+    }
+    else
+    {
+        strDeviceID = req.m_strDevID;
     }
 
     //获取p2pid和p2pserver
@@ -1956,20 +1989,20 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     int iRetry = 0;
     do 
     {
-        if (p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, req.m_strDevID, req.m_strDevIpAddress))
+        if (p2pSvrManager->DeviceRequestP2PConnectParam(p2pConnParam, strDeviceID, req.m_strDevIpAddress))
         {
             break;
         }
 
         boost::this_thread::sleep(boost::posix_time::seconds(1));
         ++iRetry;
-        LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress <<
+        LOG_ERROR_RLD("Get device p2p info failed, device id is " << strDeviceID << " and ip is " << req.m_strDevIpAddress <<
             " and retry " << iRetry << " times");
     } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
 
     if (GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
-        LOG_ERROR_RLD("Get device p2p info failed, device id is " << req.m_strDevID << " and ip is " << req.m_strDevIpAddress);
+        LOG_ERROR_RLD("Get device p2p info failed, device id is " << strDeviceID << " and ip is " << req.m_strDevIpAddress);
         return false;
     }
 
@@ -4238,8 +4271,8 @@ bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler:
 {
     char sql[256] = { 0 };
     const char *sqlfmt = "select category, subcategory, latestversion, description, forceversion, filename, filesize, filepath, leaseduration, updatedate"
-        " from t_configuration_info where status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt);
+        " from t_configuration_info where status = 0 limit %u, %u";
+    snprintf(sql, sizeof(sql), sqlfmt, uiBeginIndex, uiPageSize);
 
     InteractiveProtoHandler::Configuration configuration;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
@@ -5654,7 +5687,7 @@ void AccessManager::InsertP2pInfoToDB(const unsigned int uiP2pSupplier, const st
 bool AccessManager::IsValidDeviceDomain(const std::string &strDeviceID, const std::string &strDeviceDomain)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select deviceid from t_device_property where deviceid != '%s' and devicedomain = '%s' and status = 0";
+    const char *sqlfmt = "select deviceid from t_device_parameter_ipc where deviceid != '%s' and devicedomain = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strDeviceDomain.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
@@ -5682,7 +5715,7 @@ bool AccessManager::IsValidDeviceDomain(const std::string &strDeviceID, const st
 bool AccessManager::IsValidP2pIDProperty(const std::string &strDeviceID, const std::string &strP2pID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select deviceid from t_device_property where deviceid != '%s' and p2pid = '%s' and status = 0";
+    const char *sqlfmt = "select deviceid from t_device_parameter_ipc where deviceid != '%s' and p2pid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strP2pID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
@@ -5717,7 +5750,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     int size = sizeof(sql);
     int len;
 
-    const char *sqlfmt = "insert into t_device_property (id, deviceid, devicepassword, devicedomain, typeinfo, username, userpassword,"
+    const char *sqlfmt = "insert into t_device_parameter_ipc (id, deviceid, devicepassword, devicedomain, typeinfo, username, userpassword,"
         " p2pid, p2pserver, p2psupplier, p2pbuildin, licensekey, pushid, distributor, otherproperty, createdate, status, extend)"
         " values(uuid(), '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', '%s', %d, '%s')"
         " on duplicate key update id = id";
@@ -5815,7 +5848,7 @@ void AccessManager::UpdateDevicePropertyToDB(const InteractiveProtoHandler::Modi
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    snprintf(sql, size, "update t_device_property set updatedate = current_time");
+    snprintf(sql, size, "update t_device_parameter_ipc set updatedate = current_time");
 
     bool blModified = false;
 
@@ -5978,34 +6011,54 @@ void AccessManager::UpdateDevicePropertyToDB(const InteractiveProtoHandler::Modi
     }
 }
 
-bool AccessManager::QueryDevIDByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID)
+bool AccessManager::QueryDevPropertyByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID, std::string &strP2pID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select deviceid from t_device_property where devicedomain = '%s'";
+    const char *sqlfmt = "select deviceid, p2pid from t_device_parameter_ipc where devicedomain = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceDomain.c_str());
+
+    struct DevProperty
+    {
+        std::string strDeviceID;
+        std::string strP2pID;
+    };
+    DevProperty devProperty;
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
-        strDeviceID = strColumn;
-        Result = strDeviceID;
+        switch (uiColumnNum)
+        {
+        case 0:
+            devProperty.strDeviceID = strColumn;
+            break;
+        case 1:
+            devProperty.strP2pID = strColumn;
+            Result = devProperty;
+            break;
 
-        LOG_INFO_RLD("QueryDeveIDByDevDomain sql deviceid is " << strDeviceID);
+        default:
+            LOG_ERROR_RLD("QueryDevPropertyByDevDomain sql callback error, row num is " <<
+                uiRowNum << " and column num is " << uiColumnNum << " and value is " << strColumn);
+            break;
+        }
     };
 
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
-        LOG_ERROR_RLD("QueryDeveIDByDevDomain exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("QueryDevPropertyByDevDomain exec sql failed, sql is " << sql);
         return false;
     }
 
     if (ResultList.empty())
     {
-        LOG_ERROR_RLD("QueryDeveIDByDevDomain sql result is empty, sql is " << sql);
+        LOG_ERROR_RLD("QueryDevPropertyByDevDomain sql result is empty, sql is " << sql);
     }
     else
     {
-        strDeviceID = boost::any_cast<std::string>(ResultList.front());
+        auto result = boost::any_cast<DevProperty>(ResultList.front());
+        strDeviceID = result.strDeviceID;
+        strP2pID = result.strP2pID;
     }
 
     return true;
@@ -6014,7 +6067,7 @@ bool AccessManager::QueryDevIDByDevDomain(const std::string &strDeviceDomain, st
 bool AccessManager::QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std::string &strDeviceID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select deviceid from t_device_property where p2pid = '%s'";
+    const char *sqlfmt = "select deviceid from t_device_parameter_ipc where p2pid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceP2pID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)

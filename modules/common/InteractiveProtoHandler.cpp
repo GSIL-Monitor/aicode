@@ -3665,6 +3665,7 @@ void InteractiveProtoHandler::P2pInfoReq_DEV::UnSerializer(const InteractiveMess
     m_strDevID = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevid();
     m_strDevIpAddress = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdevipaddress();
     m_uiP2pSupplier = InteractiveMsg.reqvalue().p2pinforeq_dev_value().uip2psupplier();
+    m_strDomainName = InteractiveMsg.reqvalue().p2pinforeq_dev_value().strdomainname();
 }
 
 void InteractiveProtoHandler::P2pInfoReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -3674,6 +3675,7 @@ void InteractiveProtoHandler::P2pInfoReq_DEV::Serializer(InteractiveMessage &Int
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevid(m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
     InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_uip2psupplier(m_uiP2pSupplier);
+    InteractiveMsg.mutable_reqvalue()->mutable_p2pinforeq_dev_value()->set_strdomainname(m_strDomainName);
 }
 
 void InteractiveProtoHandler::P2pInfoRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)

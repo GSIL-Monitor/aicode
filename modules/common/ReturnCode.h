@@ -32,6 +32,7 @@ public:
     static const int PASSWORD_INVALID_DEV;               //设备密码不正确
     static const int DEVICE_DOMAIN_USED_DEV;             //设备二级域名已被使用
     static const int DEVICE_P2PID_USED_DEV;              //设备P2PID已被使用
+    static const int DEVICE_DOMAINNAME_INVALID;          //设备二级域名不可用
 
     //其他错误代码
     static const int INPUT_PARAMETER_TOO_MUCH;           //输入参数过多

@@ -3696,6 +3696,20 @@ class P2pInfoReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_strdevipaddress();
   void set_allocated_strdevipaddress(::std::string* strdevipaddress);
 
+  // string strDomainName = 4;
+  void clear_strdomainname();
+  static const int kStrDomainNameFieldNumber = 4;
+  const ::std::string& strdomainname() const;
+  void set_strdomainname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdomainname(::std::string&& value);
+  #endif
+  void set_strdomainname(const char* value);
+  void set_strdomainname(const char* value, size_t size);
+  ::std::string* mutable_strdomainname();
+  ::std::string* release_strdomainname();
+  void set_allocated_strdomainname(::std::string* strdomainname);
+
   // uint32 uiP2pSupplier = 3;
   void clear_uip2psupplier();
   static const int kUiP2PSupplierFieldNumber = 3;
@@ -3708,6 +3722,7 @@ class P2pInfoReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  ::google::protobuf::internal::ArenaStringPtr strdomainname_;
   ::google::protobuf::uint32 uip2psupplier_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -20001,6 +20016,58 @@ inline void P2pInfoReq_DEV::set_uip2psupplier(::google::protobuf::uint32 value) 
   
   uip2psupplier_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_DEV.uiP2pSupplier)
+}
+
+// string strDomainName = 4;
+inline void P2pInfoReq_DEV::clear_strdomainname() {
+  strdomainname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& P2pInfoReq_DEV::strdomainname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+  return strdomainname_.GetNoArena();
+}
+inline void P2pInfoReq_DEV::set_strdomainname(const ::std::string& value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+}
+#if LANG_CXX11
+inline void P2pInfoReq_DEV::set_strdomainname(::std::string&& value) {
+  
+  strdomainname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+}
+#endif
+inline void P2pInfoReq_DEV::set_strdomainname(const char* value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+}
+inline void P2pInfoReq_DEV::set_strdomainname(const char* value, size_t size) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+}
+inline ::std::string* P2pInfoReq_DEV::mutable_strdomainname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+  return strdomainname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* P2pInfoReq_DEV::release_strdomainname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.P2pInfoReq_DEV.strDomainName)
+  
+  return strdomainname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void P2pInfoReq_DEV::set_allocated_strdomainname(::std::string* strdomainname) {
+  if (strdomainname != NULL) {
+    
+  } else {
+    
+  }
+  strdomainname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdomainname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.P2pInfoReq_DEV.strDomainName)
 }
 
 // -------------------------------------------------------------------
