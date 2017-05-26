@@ -314,6 +314,9 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_APP_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryAppUpgradeHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION, boost::bind(&HttpMsgHandler::QueryDevUpgradeHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_PARAM_ACTION, boost::bind(&HttpMsgHandler::QueryDevParamHandler, &filehdr, _1, _2));
+
+
     ////
     //auto ft = [&]()
     //{

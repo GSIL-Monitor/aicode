@@ -38,11 +38,16 @@ public:
 
     typedef boost::function<void(const std::string &)> TMOUT_CB;
 
-    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0);
+    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0,
+        const std::string &strID = "");
 
     bool Exist(const std::string &strSessionID);
     
+    bool ExistID(const std::string &strID); //用户id或者设备id，判断该用户或者设备是否在线
+
     bool Reset(const std::string &strSessionID);
+
+    bool ResetID(const std::string &strID);
 
     bool Remove(const std::string &strSessionID);
 

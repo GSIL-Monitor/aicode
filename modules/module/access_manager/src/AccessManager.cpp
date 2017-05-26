@@ -602,7 +602,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold), 
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION);
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION, LoginReqUsr.m_userInfo.m_strUserID);
         
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList))
     {
@@ -763,6 +763,7 @@ bool AccessManager::ShakehandReq(const std::string &strMsg, const std::string &s
     }
 
     m_SessionMgr.Reset(ShakehandReqUsr.m_strSID);
+    m_SessionMgr.ResetID(ShakehandReqUsr.m_strUserID);
     
     LOG_INFO_RLD("Shake hand user received and user id is " << ShakehandReqUsr.m_strUserID << " and session id is " << ShakehandReqUsr.m_strSID);
 
@@ -1880,7 +1881,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     }
 
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strDevSessionTimeoutCountThreshold),
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION);
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION, LoginReqDev.m_strDevID);
 
     blResult = true;
 
@@ -2062,6 +2063,7 @@ bool AccessManager::ShakehandReqDevice(const std::string &strMsg, const std::str
     }
 
     m_SessionMgr.Reset(ShakehandReqDev.m_strSID);
+    m_SessionMgr.ResetID(ShakehandReqDev.m_strDevID);
 
     LOG_INFO_RLD("Shakehand device received and device id is " << ShakehandReqDev.m_strDevID << " and session id is " << ShakehandReqDev.m_strSID);
 
@@ -5085,7 +5087,7 @@ void AccessManager::InsertDeviceToDB(const std::string &strUuid, const Interacti
     const std::string &strInner = DevInfo.m_strInnerinfo.empty() ? 
         DevInfo.m_strInnerinfo : Encode64((const unsigned char *)DevInfo.m_strInnerinfo.c_str(), DevInfo.m_strInnerinfo.size());
 
-    char sql[1024] = { 0 };
+    char sql[2048] = { 0 };
     const char* sqlfmt = "insert into t_device_info("
         "id,deviceid,devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend, p2pid, domainname) values('%s',"
         "'%s','%s','%s','%d','%s', '%d', '%s', '%s', '%s', '%s')";
@@ -5237,14 +5239,14 @@ void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
     {
         const std::string &strInner = Encode64((const unsigned char *)DevInfo.m_strInnerinfo.c_str(), DevInfo.m_strInnerinfo.size());
 
-        char cTmp[256] = { 0 };
+        char cTmp[2048] = { 0 };
         snprintf(cTmp, sizeof(cTmp), ", innerinfo = '%s' ", strInner.c_str());
         strSql += cTmp;
     }
 
     if (!DevInfo.m_strExtend.empty())
     {
-        char cTmp[256] = { 0 };
+        char cTmp[2048] = { 0 };
         snprintf(cTmp, sizeof(cTmp), ", extend = '%s' ", DevInfo.m_strExtend.c_str());
         strSql += cTmp;
     }

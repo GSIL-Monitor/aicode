@@ -100,6 +100,8 @@ const std::string HttpMsgHandler::QUERY_APP_UPGRADE_ACTION("query_app_upgrade");
 
 const std::string HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION("query_firmware_upgrade");
 
+const std::string HttpMsgHandler::QUERY_DEVICE_PARAM_ACTION("query_device_parameter");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -2449,14 +2451,50 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     }
     const std::string strDevID = itFind->second;
 
+    std::string strDomainName;
     itFind = pMsgInfoMap->find("domainname");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Device domain name not found.");
+        strDomainName = itFind->second;
+    }
+    
+    std::string strDevType = "1"; //默认值为ipc
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevType = itFind->second;
+    }
+
+    std::string strReqSrc;
+    itFind = pMsgInfoMap->find("request_src");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqSrc = itFind->second;
+    }
+
+    if (strDevType == "0" && strReqSrc.empty()) //门铃类型时，请求源不能为空
+    {
+        LOG_ERROR_RLD("Device type is doorbell and request src is empty.");
         return blResult;
     }
-    const std::string strDomainName = itFind->second;
 
+    unsigned int uiDevType = 1; //默认为ipc类型。
+
+    try
+    {
+        uiDevType = boost::lexical_cast<unsigned int>(strDevType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device type is is invalid and input is " << itFind->second);
+        return blResult;
+    }
+        
     std::string strCorpid;
     itFind = pMsgInfoMap->find("corpid");
     if (pMsgInfoMap->end() != itFind)
@@ -2590,18 +2628,131 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strDvsip2 = itFind->second;
     }
 
-    LOG_INFO_RLD("Set device property info received and  device id is " << strDevID << " and domain name id is " << strDomainName <<
+    std::string strDoorbellName;
+    itFind = pMsgInfoMap->find("doorbell_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDoorbellName = itFind->second;
+    }
+
+    std::string strSerialNum;
+    itFind = pMsgInfoMap->find("serial_number");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strSerialNum = itFind->second;
+    }
+
+    std::string strDoorbellP2pid;
+    itFind = pMsgInfoMap->find("doorbell_p2pid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDoorbellP2pid = itFind->second;
+    }
+
+    std::string strBatteryCap;
+    itFind = pMsgInfoMap->find("battery_capacity");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBatteryCap = itFind->second;
+    }
+
+    std::string strChargeState;
+    itFind = pMsgInfoMap->find("charging_state");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strChargeState = itFind->second;
+    }
+
+    std::string strWifiSig;
+    itFind = pMsgInfoMap->find("wifi_signal");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strWifiSig = itFind->second;
+    }
+
+    std::string strVolumeLevel;
+    itFind = pMsgInfoMap->find("volume_level");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVolumeLevel = itFind->second;
+    }
+
+    std::string strVersionNum;
+    itFind = pMsgInfoMap->find("version_number");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVersionNum = itFind->second;
+    }
+
+    std::string strChannelNum;
+    itFind = pMsgInfoMap->find("channel_number");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strChannelNum = itFind->second;
+    }
+
+    std::string strCodeType;
+    itFind = pMsgInfoMap->find("coding_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCodeType = itFind->second;
+    }
+
+    std::string strPirAlarmSwitch;
+    itFind = pMsgInfoMap->find("pir_alarm_swtich");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPirAlarmSwitch = itFind->second;
+    }
+
+    std::string strDoorbellSwitch;
+    itFind = pMsgInfoMap->find("doorbell_switch");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDoorbellSwitch = itFind->second;
+    }
+
+    std::string strPirAlarmLevel;
+    itFind = pMsgInfoMap->find("pir_alarm_level");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPirAlarmLevel = itFind->second;
+    }
+
+    std::string strPirInEffectiveTime;
+    itFind = pMsgInfoMap->find("pir_ineffective_time");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPirInEffectiveTime = itFind->second;
+    }
+
+    std::string strCurrentWifi;
+    itFind = pMsgInfoMap->find("current_wifi");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCurrentWifi = itFind->second;
+    }
+    
+
+    LOG_INFO_RLD("Set device property info received and  device id is " << strDevID << " and device type is " << uiDevType << 
+        " and domain name id is " << strDomainName <<
         " and corpid is " << strCorpid << " and dvsname is " << strDvsname << " and dvsip is " << strDvsIp << " and webport is " << strWebport <<
         " and ctrlport is " << strCtrlport << " and protocol is " << strProtocol << " and userid is " << strUserid << " and password is " << strPassword <<
         " and model is " << strModel << " and postfrequency is " << strPostfrequency << " and version " << strVersion << " and status is " << strStatus <<
         " and serverip is " << strServerip << " and serverport is " << strServerport << " and transfer" << strTransfer << " and mobileport" << strMobileport <<
-        " and channelcount is " << strChannelcount << " and p2pid is " << strP2pid << " and dvsip2 is " << strDvsip2);
+        " and channelcount is " << strChannelcount << " and p2pid is " << strP2pid << " and dvsip2 is " << strDvsip2 <<
+        " and doorbell name is " << strDoorbellName << " and doorbell serial num is " << strSerialNum << " and doorbell p2pid is " << strDoorbellP2pid <<
+        " and battery cap is " << strBatteryCap << " and charge state is " << strChargeState << " and wifi signal is " << strWifiSig <<
+        " and volume level is " << strVolumeLevel << " and version number is " << strVersionNum << " and channel num is " << strChannelNum <<
+        " and coding type is " << strCodeType << " and pir alarm switch is " << strPirAlarmSwitch << " and doorbell switch is " << strDoorbellSwitch <<
+        " and pir alarm level is " << strPirAlarmLevel << " and pir ineffective time is " << strPirInEffectiveTime << " and currenct wifi is " << strCurrentWifi);
 
     DeviceProperty devpt;
     devpt.m_strChannelCount = strChannelcount;
     devpt.m_strCorpid = strCorpid;
     devpt.m_strCtrlport = strCtrlport;
     devpt.m_strDevid = strDevID;
+    devpt.m_uiDevType = uiDevType;
     devpt.m_strDomainName = strDomainName;
     devpt.m_strDvsip = strDvsIp;
     devpt.m_strDvsname = strDvsname;
@@ -2619,6 +2770,21 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     devpt.m_strWebport = strWebport;
     devpt.m_strP2pid = strP2pid;
     devpt.m_strDvsip2 = strDvsip2;
+    devpt.m_strDoorbellName = strDoorbellName;
+    devpt.m_strSerialNum = strSerialNum;
+    devpt.m_strDoorbellP2pid = strDoorbellP2pid;
+    devpt.m_strBatteryCap = strBatteryCap;
+    devpt.m_strChargingState = strChargeState;
+    devpt.m_strWifiSig = strWifiSig;
+    devpt.m_strVolumeLevel = strVolumeLevel;
+    devpt.m_strVersionNum = strVersionNum;
+    devpt.m_strChannelNum = strChannelNum;
+    devpt.m_strCodingType = strCodeType;
+    devpt.m_strPirAlarmSwitch = strPirAlarmSwitch;
+    devpt.m_strDoorbellSwitch = strDoorbellSwitch;
+    devpt.m_strPirAlarmLevel = strPirAlarmLevel;
+    devpt.m_strPirIneffectiveTime = strPirInEffectiveTime;
+    devpt.m_strCurrentWifi = strCurrentWifi;
 
     if (!DeviceSetProperty(strSid, devpt))
     {
@@ -4073,6 +4239,102 @@ bool HttpMsgHandler::QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     blResult = true;
 
     return blResult;
+}
+
+bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return blResult;
+    }
+    const std::string strDevType = itFind->second;
+
+    unsigned int uiDevType = 0;
+    try
+    {
+        uiDevType = boost::lexical_cast<unsigned int>(strDevType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Type info is invalid and input is " << itFind->second);
+        return blResult;
+    }
+    
+    itFind = pMsgInfoMap->find("query_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Query type not found.");
+        return blResult;
+    }
+    const std::string strQueryType = itFind->second;
+    
+    LOG_INFO_RLD("Query device param info received and device id is " << strDevID << " and device type is " << strDevType
+        << " and query type is " << strQueryType << " and session id is " << strSid);
+
+    DeviceProperty devpt;
+    if (!QueryDevParam(strSid, strDevID, uiDevType, strQueryType, devpt))
+    {
+        LOG_ERROR_RLD("Query device param handle failed and device id is " << strDevID << " and device type is " << uiDevType
+            << " and query type is " << strQueryType << " and session id is " << strSid);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_name", devpt.m_strDoorbellName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("volume_level", devpt.m_strVolumeLevel));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_switch", devpt.m_strPirAlarmSwitch));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_switch", devpt.m_strDoorbellSwitch));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_level", devpt.m_strPirAlarmLevel));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_ineffective_time", devpt.m_strPirIneffectiveTime));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+    return true;
 }
 
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
@@ -5726,6 +5988,7 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDevicePropertyReq_DEV_T;
         ModDevPtReq.m_uiMsgSeq = 1;
         ModDevPtReq.m_strSID = strSid;
+        ModDevPtReq.m_uiDeviceType = devpt.m_uiDevType;
         ModDevPtReq.m_strChannelCount = devpt.m_strChannelCount;
         ModDevPtReq.m_strCorpID = devpt.m_strCorpid;
         ModDevPtReq.m_strCtrlPort = devpt.m_strCtrlport;
@@ -5745,7 +6008,22 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_strWebPort = devpt.m_strWebport;
         ModDevPtReq.m_strP2pID = devpt.m_strP2pid;
         ModDevPtReq.m_strDeviceIP2 = devpt.m_strDvsip2;
-
+        ModDevPtReq.m_doorbellParameter.m_strDoorbellName = devpt.m_strDoorbellName;
+        ModDevPtReq.m_doorbellParameter.m_strSerialNumber = devpt.m_strSerialNum;
+        ModDevPtReq.m_doorbellParameter.m_strDoorbellP2Pid = devpt.m_strDoorbellP2pid;
+        ModDevPtReq.m_doorbellParameter.m_strBatteryCapacity = devpt.m_strBatteryCap;
+        ModDevPtReq.m_doorbellParameter.m_strChargingState = devpt.m_strChargingState;
+        ModDevPtReq.m_doorbellParameter.m_strWifiSignal = devpt.m_strWifiSig;
+        ModDevPtReq.m_doorbellParameter.m_strVolumeLevel = devpt.m_strVolumeLevel;
+        ModDevPtReq.m_doorbellParameter.m_strVersionNumber = devpt.m_strVersionNum;
+        ModDevPtReq.m_doorbellParameter.m_strChannelNumber = devpt.m_strChannelNum;
+        ModDevPtReq.m_doorbellParameter.m_strCodingType = devpt.m_strCodingType;
+        ModDevPtReq.m_doorbellParameter.m_strPIRAlarmSwtich = devpt.m_strPirAlarmSwitch;
+        ModDevPtReq.m_doorbellParameter.m_strDoorbellSwitch = devpt.m_strDoorbellSwitch;
+        ModDevPtReq.m_doorbellParameter.m_strPIRAlarmLevel = devpt.m_strPirAlarmLevel;
+        ModDevPtReq.m_doorbellParameter.m_strPIRIneffectiveTime = devpt.m_strPirIneffectiveTime;
+        ModDevPtReq.m_doorbellParameter.m_strCurrentWifi = devpt.m_strCurrentWifi;
+        
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))
         {
@@ -6782,6 +7060,69 @@ bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::
             " and description is " << strDesc << " and force upgrade is " << strForceUpgrade << " and update date is " << strUpdateDate <<
             " and return code is " << QueryDevVerRsp.m_iRetcode <<
             " and return msg is " << QueryDevVerRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string &strDevID, const unsigned int uiDevType, const std::string &strQueryType, DeviceProperty &devpt)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryDeviceParameterReq_DEV QueryDevParamReq;
+        QueryDevParamReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceParameterReq_DEV_T;
+        QueryDevParamReq.m_uiMsgSeq = 1;
+        QueryDevParamReq.m_strSID = strSid;
+        QueryDevParamReq.m_strDeviceID = strDevID;
+        QueryDevParamReq.m_strQueryType = strQueryType;
+        QueryDevParamReq.m_uiDeviceType = uiDevType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevParamReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device param req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryDeviceParameterRsp_DEV QueryDevParamRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevParamRsp))
+        {
+            LOG_ERROR_RLD("Query device param rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        devpt.m_strDoorbellName = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellName;
+        devpt.m_strVolumeLevel = QueryDevParamRsp.m_doorbellParameter.m_strVolumeLevel;
+        devpt.m_strPirAlarmSwitch = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmSwtich;
+        devpt.m_strDoorbellSwitch = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellSwitch;
+        devpt.m_strPirAlarmLevel = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmLevel;
+        devpt.m_strPirIneffectiveTime = QueryDevParamRsp.m_doorbellParameter.m_strPIRIneffectiveTime;
+
+        iRet = QueryDevParamRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device param info and doorbell name is " << devpt.m_strDoorbellName << " and volume level is " << devpt.m_strVolumeLevel <<
+            " and pir alarm switch is " << devpt.m_strPirAlarmSwitch << " and doorbell switch is " << devpt.m_strDoorbellSwitch << 
+            " and pir alarm level is " << devpt.m_strPirAlarmLevel << " and pir ineffective time is " << devpt.m_strPirIneffectiveTime);
 
         return CommMsgHandler::SUCCEED;
     };

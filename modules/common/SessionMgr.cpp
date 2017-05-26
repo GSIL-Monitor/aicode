@@ -64,7 +64,8 @@ void SessionMgr::Stop()
     m_TimeOutObj.Stop();
 }
 
-bool SessionMgr::Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType)
+bool SessionMgr::Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType,
+    const std::string &strID)
 {
     if (0 == uiThreshold)
     {
@@ -84,6 +85,22 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     {
         LOG_ERROR_RLD("Create session failed because memcache error.");
         return false;
+    }
+
+    if (!strID.empty())
+    {
+        Json::Value jsBody;
+        jsBody["id"] = strID;
+        jsBody["sid"] = strSessionID;
+        jsBody["threshold"] = uiThreshold;
+        Json::FastWriter fastwriter;
+        const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+        if (!MemCacheCreate(strID, strBody, uiThreshold))
+        {
+            LOG_ERROR_RLD("Create id failed because memcache error.");
+            return false;
+        }
     }
 
     boost::shared_ptr<SessionTimer> pSessionTimer(new SessionTimer);
@@ -120,6 +137,18 @@ bool SessionMgr::Exist(const std::string &strSessionID)
     }
 
     LOG_INFO_RLD("Session already exist and session id is " << strSessionID);
+    return true;
+}
+
+bool SessionMgr::ExistID(const std::string &strID)
+{
+    if (!MemCacheExist(strID))
+    {
+        LOG_ERROR_RLD("ID not found in memcache and id is " << strID);
+        return false;
+    }
+
+    LOG_INFO_RLD("ID already exist and id is " << strID);
     return true;
 }
 
@@ -169,6 +198,55 @@ bool SessionMgr::Reset(const std::string &strSessionID)
     }
     
     LOG_INFO_RLD("Session was reseted and session id is " << strSessionID << " and threshold is " << jThreshold.asUInt());
+    return true;
+}
+
+bool SessionMgr::ResetID(const std::string &strID)
+{
+    std::string strValue;
+    if (!MemCacheGet(strID, strValue))
+    {
+        LOG_ERROR_RLD("Reset id failed beacuse key not found from memcached and key is " << strID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Reset id failed beacuse value parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Reset id failed beacuse json root parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jThreshold = root["threshold"];
+
+    if (jThreshold.isNull())
+    {
+        LOG_ERROR_RLD("Reset id failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    ////
+    //if (!jThreshold.isUInt())
+    //{
+    //    LOG_ERROR_RLD("Reset session failed beacuse json threshold parsed as uint is invalid and key is " << strSessionID << " and value is " << strValue);
+    //    return false;
+    //}
+
+
+    if (!MemCacheReset(strID, strValue, jThreshold.asUInt()))
+    {
+        LOG_ERROR_RLD("Rest id failed becasue memecache failed, id is " << strID);
+        return false;
+    }
+
+    LOG_INFO_RLD("ID was reseted and id is " << strID << " and threshold is " << jThreshold.asUInt());
     return true;
 }
 

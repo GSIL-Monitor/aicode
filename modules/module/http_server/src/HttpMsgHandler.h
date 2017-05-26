@@ -66,6 +66,8 @@ public:
     static const std::string QUERY_APP_UPGRADE_ACTION;
     static const std::string QUERY_DEV_UPGRADE_ACTION;
 
+    static const std::string QUERY_DEVICE_PARAM_ACTION;
+
     
     typedef struct _ParamInfo
     {
@@ -164,6 +166,8 @@ public:
 
     bool QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -174,6 +178,76 @@ private:
     bool AddUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
     
 private:
+    typedef struct
+    {
+        std::string m_strDevid;
+        unsigned int m_uiDevType;
+        std::string m_strDomainName;
+        std::string m_strCorpid;
+        std::string m_strDvsname;
+        std::string m_strDvsip;
+        std::string m_strWebport;
+        std::string m_strCtrlport;
+        std::string m_strProtocol;
+        std::string m_strUserid;
+        std::string m_strPassword;
+        std::string m_strModel;
+        std::string m_strPostfrequency;
+        std::string m_strVersion;
+        std::string m_strStatus;
+        std::string m_strServerIp;
+        std::string m_strServerPort;
+        std::string m_strTransfer;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+        std::string m_strP2pid;
+        std::string m_strDvsip2;
+        std::string m_strDoorbellName;
+        std::string m_strSerialNum;
+        std::string m_strDoorbellP2pid;
+        std::string m_strBatteryCap;
+        std::string m_strChargingState;
+        std::string m_strWifiSig;
+        std::string m_strVolumeLevel;
+        std::string m_strVersionNum;
+        std::string m_strChannelNum;
+        std::string m_strCodingType;
+        std::string m_strPirAlarmSwitch;
+        std::string m_strDoorbellSwitch;
+        std::string m_strPirAlarmLevel;
+        std::string m_strPirIneffectiveTime;
+        std::string m_strCurrentWifi;
+    } DeviceProperty;
+
+    typedef struct
+    {
+        std::string m_strDevID;
+        std::string m_strDevPwd;
+        std::string m_strDevIpAddress;
+        unsigned int m_uiDevType;
+        unsigned int m_uiP2pType;
+        std::string m_strP2pserver;
+        std::string m_strP2pID;
+        unsigned int m_uiP2pidBuildin;
+        std::string m_strUserName;
+        std::string m_strUserPwd;
+        std::string m_strDistributor;
+        std::string m_strOtherProperty;
+        std::string m_strDomainName;
+    } DeviceLoginInfo;
+
+    typedef struct
+    {
+        std::string m_strDevID;
+        std::string m_strDevName;
+        std::string m_strDevPwd;
+        std::string m_strDevType;
+        std::string m_strDevExtend;
+        std::string m_strDevInnerInfo;
+        std::string m_strP2pid;
+        std::string m_strDomainname;
+        std::string m_strIpaddress;
+    } DeviceIf;
 
     bool PreCommonHandler(const std::string &strMsgReceived);
 
@@ -195,19 +269,6 @@ private:
     bool UserLogout(const std::string &strSid, const std::string &strUserID);
 
     bool Shakehand(const std::string &strSid, const std::string &strUserID);
-
-    typedef struct
-    {
-        std::string m_strDevID;
-        std::string m_strDevName;
-        std::string m_strDevPwd;
-        std::string m_strDevType;
-        std::string m_strDevExtend;
-        std::string m_strDevInnerInfo;
-        std::string m_strP2pid;
-        std::string m_strDomainname;
-        std::string m_strIpaddress;
-    } DeviceIf;
 
     bool AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID);
 
@@ -239,23 +300,7 @@ private:
 
     bool P2pInfo(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strUserIpAddress, const unsigned int uiP2pType,
         std::string &strP2pServer, std::string &strP2pID, unsigned int &uiLease, std::string &strLicenseKey, std::string &strPushID);
-
-    typedef struct
-    {
-        std::string m_strDevID;
-        std::string m_strDevPwd;
-        std::string m_strDevIpAddress;
-        unsigned int m_uiDevType;
-        unsigned int m_uiP2pType;
-        std::string m_strP2pserver;
-        std::string m_strP2pID;
-        unsigned int m_uiP2pidBuildin;
-        std::string m_strUserName;
-        std::string m_strUserPwd;
-        std::string m_strDistributor;
-        std::string m_strOtherProperty;
-        std::string m_strDomainName;
-    } DeviceLoginInfo;
+        
     bool DeviceLogin(const DeviceLoginInfo &DevLogInfo, std::string &strSid, std::string &strValue);
 
     bool DeviceP2pInfo(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, const unsigned int uiP2pType,
@@ -264,31 +309,6 @@ private:
     bool DeviceShakehand(const std::string &strSid, const std::string &strDevID);
 
     bool DeviceLogout(const std::string &strSid, const std::string &strDevID);
-
-    typedef struct
-    {
-        std::string m_strDevid;
-        std::string m_strDomainName;
-        std::string m_strCorpid;
-        std::string m_strDvsname;
-        std::string m_strDvsip;
-        std::string m_strWebport;
-        std::string m_strCtrlport;
-        std::string m_strProtocol;
-        std::string m_strUserid;
-        std::string m_strPassword;
-        std::string m_strModel;
-        std::string m_strPostfrequency;
-        std::string m_strVersion;
-        std::string m_strStatus;
-        std::string m_strServerIp;
-        std::string m_strServerPort;
-        std::string m_strTransfer;
-        std::string m_strMobilePort;
-        std::string m_strChannelCount;
-        std::string m_strP2pid;
-        std::string m_strDvsip2;
-    } DeviceProperty;
     
     bool DeviceSetProperty(const std::string &strSid, const DeviceProperty &devpt);
 
@@ -336,6 +356,8 @@ private:
     bool QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, std::string &strNewVersionValid,
         std::string &strFirmwareName, std::string &strFirmwarePath, unsigned int &uiFirmwareSize, std::string &strNewVersion, std::string &strDesc,
         std::string &strForceUpgrade, std::string &strUpdateDate);
+
+    bool QueryDevParam(const std::string &strSid, const std::string &strDevID, const unsigned int uiDevType, const std::string &strQueryType, DeviceProperty &devpt);
 
 private:
     ParamInfo m_ParamInfo;
