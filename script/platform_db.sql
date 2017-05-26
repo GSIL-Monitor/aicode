@@ -234,7 +234,7 @@ CREATE TABLE `t_device_event_info` (
   `deviceid` varchar(32) NOT NULL,
   `devicetype` int(11) DEFAULT '-1',
   `eventtype` varchar(50) NOT NULL,     #事件类型，支持Motion、Ring、LowPower
-  `eventstate` varchar(50) DEFAULT '',  #时间状态，Motion支持Motion、Answered Motion，Ring支持Accepted Ring、Missed Ring、Message Ring
+  `eventstate` varchar(50) DEFAULT '',  #时间状态，Motion支持Motion、Answered_Motion，Ring支持Accepted_Ring、Missed_Ring、Message_Ring
   `readstate` varchar(50) NOT NULL,     #查看状态，包括Unread、Read
   `fileid` varchar(200) DEFAULT '',
   `createdate` datetime NOT NULL,

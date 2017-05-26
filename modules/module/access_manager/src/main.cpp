@@ -377,6 +377,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T, boost::bind(&AccessManager::ModifyConfigurationReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T, boost::bind(&AccessManager::QueryAllConfigurationReqMgr, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevicePropertyReq_DEV_T, boost::bind(&AccessManager::ModifyDevicePropertyReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceParameterReq_DEV_T, boost::bind(&AccessManager::QueryDeviceParameterReqDevice, &Umg, _1, _2, _3));
 
 
     ccenter.Run(true);

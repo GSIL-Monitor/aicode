@@ -57,6 +57,9 @@ public:
 
     static const int GET_TIMEZONE_RETRY_TIMES = 5;
 
+    static const int DEVICE_TYPE_DOORBELL = 0;
+    static const int DEVICE_TYPE_IPC = 1;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -202,6 +205,8 @@ public:
 
     bool ModifyDevicePropertyReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryDeviceParameterReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -332,6 +337,16 @@ private:
     bool QueryDevPropertyByDevDomain(const std::string &strDeviceDomain, std::string &strDeviceID, std::string &strP2pID);
 
     bool QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std::string &strDeviceID);
+
+    void InsertDoorbellParameterToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq);
+   
+    void UpdateDoorbellParameterToDB(const std::string &strDeviceID, const InteractiveProtoHandler::DoorbellParameter &doorbellParameter);
+
+    bool QueryDeviceParameterToDB(const std::string &strDeviceID, const unsigned int uiDeviceType, const std::string &strQueryType,
+        InteractiveProtoHandler::DoorbellParameter &doorbellParameter);
+
+    bool QueryDoorbellParameterToDB(const std::string &strDeviceID, const std::string &strQueryType,
+        InteractiveProtoHandler::DoorbellParameter &doorbellParameter);
 
 private:
     ParamInfo m_ParamInfo;

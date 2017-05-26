@@ -1870,7 +1870,14 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     }
 
     //记录设备登录时上报的信息到设备属性表
-    m_DBRuner.Post(boost::bind(&AccessManager::InsertDevPropertyToDB, this, LoginReqDev));
+    if (DEVICE_TYPE_DOORBELL == LoginReqDev.m_uiDeviceType)
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertDoorbellParameterToDB, this, LoginReqDev));
+    }
+    else
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertDevPropertyToDB, this, LoginReqDev));
+    }
 
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strDevSessionTimeoutCountThreshold),
         boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION);
@@ -3161,7 +3168,99 @@ bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, con
         return false;
     }
 
-    m_DBRuner.Post(boost::bind(&AccessManager::UpdateDevicePropertyToDB, this, req));
+    if (DEVICE_TYPE_DOORBELL == req.m_uiDeviceType)
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::UpdateDoorbellParameterToDB, this, req.m_strDeviceID, req.m_doorbellParameter));
+    }
+    else if(DEVICE_TYPE_IPC == req.m_uiDeviceType)
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::UpdateDevicePropertyToDB, this, req));
+    }
+    else
+    {
+        LOG_ERROR_RLD("Modify device property failed, device type is invalid: " << req.m_uiDeviceType << " and src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryDeviceParameterReq_DEV req;
+    InteractiveProtoHandler::DoorbellParameter doorbellParameter;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &doorbellParameter)
+    {
+        InteractiveProtoHandler::QueryDeviceParameterRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceParameterRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_doorbellParameter.m_strDoorbellName = doorbellParameter.m_strDoorbellName;
+            rsp.m_doorbellParameter.m_strSerialNumber = doorbellParameter.m_strSerialNumber;
+            rsp.m_doorbellParameter.m_strDoorbellP2Pid = doorbellParameter.m_strDoorbellP2Pid;
+            rsp.m_doorbellParameter.m_strBatteryCapacity = doorbellParameter.m_strBatteryCapacity;
+            rsp.m_doorbellParameter.m_strChargingState = doorbellParameter.m_strChargingState;
+            rsp.m_doorbellParameter.m_strWifiSignal = doorbellParameter.m_strWifiSignal;
+            rsp.m_doorbellParameter.m_strVolumeLevel = doorbellParameter.m_strVolumeLevel;
+            rsp.m_doorbellParameter.m_strVersionNumber = doorbellParameter.m_strVersionNumber;
+            rsp.m_doorbellParameter.m_strChannelNumber = doorbellParameter.m_strChannelNumber;
+            rsp.m_doorbellParameter.m_strCodingType = doorbellParameter.m_strCodingType;
+            rsp.m_doorbellParameter.m_strPIRAlarmSwtich = doorbellParameter.m_strPIRAlarmSwtich;
+            rsp.m_doorbellParameter.m_strDoorbellSwitch = doorbellParameter.m_strDoorbellSwitch;
+            rsp.m_doorbellParameter.m_strPIRAlarmLevel = doorbellParameter.m_strPIRAlarmLevel;
+            rsp.m_doorbellParameter.m_strPIRIneffectiveTime = doorbellParameter.m_strPIRIneffectiveTime;
+            rsp.m_doorbellParameter.m_strCurrentWifi = doorbellParameter.m_strCurrentWifi;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device parameter rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query device parameter rsp already send, dst id is " << strSrcID <<
+            " and device name is " << doorbellParameter.m_strDoorbellName <<
+            " and serial number is " << doorbellParameter.m_strSerialNumber <<
+            " and device p2pid is " << doorbellParameter.m_strDoorbellP2Pid <<
+            " and battery capacity is " << doorbellParameter.m_strBatteryCapacity <<
+            " and charging state is " << doorbellParameter.m_strChargingState <<
+            " and wifi signal is " << doorbellParameter.m_strWifiSignal <<
+            " and volume level is " << doorbellParameter.m_strVolumeLevel <<
+            " and version number is " << doorbellParameter.m_strVersionNumber <<
+            " and channel number is " << doorbellParameter.m_strChannelNumber <<
+            " and coding type is " << doorbellParameter.m_strCodingType <<
+            " and PIR alarm switch is " << doorbellParameter.m_strPIRAlarmSwtich <<
+            " and doorbell switch is " << doorbellParameter.m_strDoorbellSwitch <<
+            " and PIR alarm level is " << doorbellParameter.m_strPIRAlarmLevel <<
+            " and PIR ineffective time is " << doorbellParameter.m_strPIRIneffectiveTime <<
+            " and current wifi is " << doorbellParameter.m_strCurrentWifi <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query device parameter req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryDeviceParameterToDB(req.m_strDeviceID, req.m_uiDeviceType, req.m_strQueryType, doorbellParameter))
+    {
+        LOG_ERROR_RLD("Query device parameter failed, src id is " << strSrcID);
+        return false;
+    }
 
     blResult = true;
 
@@ -6093,6 +6192,369 @@ bool AccessManager::QueryDevIDByDevP2pID(const std::string &strDeviceP2pID, std:
     {
         strDeviceID = boost::any_cast<std::string>(ResultList.front());
     }
+
+    return true;
+}
+
+void AccessManager::InsertDoorbellParameterToDB(const InteractiveProtoHandler::LoginReq_DEV &loginDevReq)
+{
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+
+    const char *sqlfmt = "insert into t_device_parameter_doorbell (id, deviceid, devicepassword, devicedomain, typeinfo, username, userpassword,"
+        " doorbell_p2pid, p2pserver, p2psupplier, p2pbuildin, licensekey, pushid, distributor, otherproperty, createdate, status, extend)"
+        " values(uuid(), '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', '%s', %d, '%s')"
+        " on duplicate key update id = id";
+    snprintf(sql, size, sqlfmt, loginDevReq.m_strDevID.c_str(), loginDevReq.m_strPassword.c_str(), loginDevReq.m_strDomainName.c_str(), loginDevReq.m_uiDeviceType,
+        loginDevReq.m_strUserName.c_str(), loginDevReq.m_strUserPassword.c_str(), loginDevReq.m_strP2pID.c_str(), loginDevReq.m_strP2pServr.c_str(),
+        loginDevReq.m_uiP2pSupplier, loginDevReq.m_uiP2pBuildin, loginDevReq.m_strLicenseKey.c_str(), loginDevReq.m_strPushID.c_str(),
+        loginDevReq.m_strDistributor.c_str(), loginDevReq.m_strOtherProperty.c_str(), strCurrentTime.c_str(), NORMAL_STATUS, "");
+
+    if (!loginDevReq.m_strPassword.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicepassword = '%s'", loginDevReq.m_strPassword.c_str());
+    }
+
+    if (!loginDevReq.m_strDomainName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", devicedomain = '%s'", loginDevReq.m_strDomainName.c_str());
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiDeviceType)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", typeinfo = %d", loginDevReq.m_uiDeviceType);
+    }
+
+    if (!loginDevReq.m_strUserName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", username = '%s'", loginDevReq.m_strUserName.c_str());
+    }
+
+    if (!loginDevReq.m_strUserPassword.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", userpassword = '%s'", loginDevReq.m_strUserPassword.c_str());
+    }
+
+    if (!loginDevReq.m_strP2pID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", doorbell_p2pid = '%s'", loginDevReq.m_strP2pID.c_str());
+    }
+
+    if (!loginDevReq.m_strP2pServr.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pserver = '%s'", loginDevReq.m_strP2pServr.c_str());
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiP2pSupplier)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2psupplier = %d", loginDevReq.m_uiP2pSupplier);
+    }
+
+    if (0xFFFFFFFF != loginDevReq.m_uiP2pBuildin)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", p2pbuildin = %d", loginDevReq.m_uiP2pBuildin);
+    }
+
+    if (!loginDevReq.m_strLicenseKey.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", licensekey = '%s'", loginDevReq.m_strLicenseKey.c_str());
+    }
+
+    if (!loginDevReq.m_strPushID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", pushid = '%s'", loginDevReq.m_strPushID.c_str());
+    }
+
+    if (!loginDevReq.m_strDistributor.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", distributor = '%s'", loginDevReq.m_strDistributor.c_str());
+    }
+
+    if (!loginDevReq.m_strOtherProperty.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", otherproperty = '%s'", loginDevReq.m_strOtherProperty.c_str());
+    }
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertDoorbellParameterToDB exec sql error, sql is " << sql);
+    }
+}
+
+void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, const InteractiveProtoHandler::DoorbellParameter &doorbellParameter)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+    snprintf(sql, size, "update t_device_parameter_doorbell set updatedate = current_time");
+
+    bool blModified = false;
+
+    if (!doorbellParameter.m_strDoorbellName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", doorbell_name = '%s'", doorbellParameter.m_strDoorbellName.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strSerialNumber.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", serial_number = '%s'", doorbellParameter.m_strSerialNumber.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strDoorbellP2Pid.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", doorbell_p2pid = '%s'", doorbellParameter.m_strDoorbellP2Pid.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strBatteryCapacity.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", battery_capacity = '%s'", doorbellParameter.m_strBatteryCapacity.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strChargingState.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", charging_state = '%s'", doorbellParameter.m_strChargingState.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strWifiSignal.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", wifi_signal = '%s'", doorbellParameter.m_strWifiSignal.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strVolumeLevel.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", volume_level = '%s'", doorbellParameter.m_strVolumeLevel.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strVersionNumber.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", version_number = '%s'", doorbellParameter.m_strVersionNumber.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strChannelNumber.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", channel_number = '%s'", doorbellParameter.m_strChannelNumber.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strCodingType.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", coding_type = '%s'", doorbellParameter.m_strCodingType.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strPIRAlarmSwtich.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", pir_alarm_swtich = '%s'", doorbellParameter.m_strPIRAlarmSwtich.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strDoorbellSwitch.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", doorbell_switch = '%s'", doorbellParameter.m_strDoorbellSwitch.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strPIRAlarmLevel.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", pir_alarm_level = '%s'", doorbellParameter.m_strPIRAlarmLevel.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strPIRIneffectiveTime.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", pir_ineffective_time = '%s'", doorbellParameter.m_strPIRIneffectiveTime.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strCurrentWifi.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", current_wifi = '%s'", doorbellParameter.m_strCurrentWifi.c_str());
+
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("UpdateDoorbellParameterToDB completed, there is no change");
+        return;
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " where deviceid = '%s'", strDeviceID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UpdateDoorbellParameterToDB exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryDeviceParameterToDB(const std::string &strDeviceID, const unsigned int uiDeviceType, const std::string &strQueryType,
+    InteractiveProtoHandler::DoorbellParameter &doorbellParameter)
+{
+    if (DEVICE_TYPE_DOORBELL == uiDeviceType)
+    {
+        return QueryDoorbellParameterToDB(strDeviceID, strQueryType, doorbellParameter);
+    }
+    else if (DEVICE_TYPE_IPC == uiDeviceType)
+    {
+        return true;
+    }
+    else
+    {
+        LOG_ERROR_RLD("QueryDeviceParameterToDB failed, unknown device type: " << uiDeviceType);
+        return false;
+    }
+}
+
+bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, const std::string &strQueryType, InteractiveProtoHandler::DoorbellParameter &doorbellParameter)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level, version_number, channel_number, coding_type,"
+        " pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time current_wifi from t_device_parameter_doorbell"
+        " where deviceid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            doorbellParameter.m_strDoorbellName = strColumn;
+            break;
+        case 1:
+            doorbellParameter.m_strVersionNumber = strColumn;
+            break;
+        case 2:
+            doorbellParameter.m_strDoorbellP2Pid = strColumn;
+            break;
+        case 3:
+            doorbellParameter.m_strBatteryCapacity = strColumn;
+            break;
+        case 4:
+            doorbellParameter.m_strChargingState = strColumn;
+            break;
+        case 5:
+            doorbellParameter.m_strWifiSignal = strColumn;
+            break;
+        case 6:
+            doorbellParameter.m_strVolumeLevel = strColumn;
+            break;
+        case 7:
+            doorbellParameter.m_strVersionNumber = strColumn;
+            break;
+        case 8:
+            doorbellParameter.m_strChannelNumber = strColumn;
+            break;
+        case 9:
+            doorbellParameter.m_strCodingType = strColumn;
+            break;
+        case 10:
+            doorbellParameter.m_strPIRAlarmSwtich = strColumn;
+            break;
+        case 11:
+            doorbellParameter.m_strDoorbellSwitch = strColumn;
+            break;
+        case 12:
+            doorbellParameter.m_strPIRAlarmLevel = strColumn;
+            break;
+        case 13:
+            doorbellParameter.m_strPIRIneffectiveTime = strColumn;
+            break;
+        case 14:
+            doorbellParameter.m_strCurrentWifi = strColumn;
+            Result = doorbellParameter;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryDoorbellParameterToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryDoorbellParameterToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryDoorbellParameterToDB sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto result = boost::any_cast<InteractiveProtoHandler::DoorbellParameter>(ResultList.front());
+    doorbellParameter.m_strDoorbellName = result.m_strDoorbellName;
+    doorbellParameter.m_strSerialNumber = result.m_strSerialNumber;
+    doorbellParameter.m_strDoorbellP2Pid = result.m_strDoorbellP2Pid;
+    doorbellParameter.m_strBatteryCapacity = result.m_strBatteryCapacity;
+    doorbellParameter.m_strChargingState = result.m_strChargingState;
+    doorbellParameter.m_strWifiSignal = result.m_strWifiSignal;
+    doorbellParameter.m_strVolumeLevel = result.m_strVolumeLevel;
+    doorbellParameter.m_strVersionNumber = result.m_strVersionNumber;
+    doorbellParameter.m_strChannelNumber = result.m_strChannelNumber;
+    doorbellParameter.m_strCodingType = result.m_strCodingType;
+    doorbellParameter.m_strPIRAlarmSwtich = result.m_strPIRAlarmSwtich;
+    doorbellParameter.m_strDoorbellSwitch = result.m_strDoorbellSwitch;
+    doorbellParameter.m_strPIRAlarmLevel = result.m_strPIRAlarmLevel;
+    doorbellParameter.m_strPIRIneffectiveTime = result.m_strPIRIneffectiveTime;
+    doorbellParameter.m_strCurrentWifi = result.m_strCurrentWifi;
 
     return true;
 }

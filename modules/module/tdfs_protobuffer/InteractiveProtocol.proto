@@ -79,8 +79,10 @@ enum MsgType
   QueryFirmwareUpgradeReq_DEV_T = 10380;   //设备查询升级版本数据
   QueryFirmwareUpgradeRsp_DEV_T = 10390;
 
-  ModifyDevicePropertyReq_DEV_T = 10400;        //修改设备属性
+  ModifyDevicePropertyReq_DEV_T = 10400;   //修改设备属性
   ModifyDevicePropertyRsp_DEV_T = 10410;
+  QueryDeviceParameterReq_DEV_T = 10420;   //查询设备参数
+  QueryDeviceParameterRsp_DEV_T = 10430;
 
   ////////////////////////////////////////////////////////
   
@@ -295,6 +297,24 @@ message Configuration                           //配置项内容
   string strExtend = 14;
 }
 
+message DoorbellParameter                       //门铃参数
+{
+  string strDoorbellName = 1;                   //设备名称
+  string strSerialNumber = 2;                   //序列号
+  string strDoorbellP2Pid = 3;                  //P2P ID
+  string strBatteryCapacity = 4;                //电池容量
+  string strChargingState = 5;                  //充电状态
+  string strWifiSignal = 6;                     //WIFI信号
+  string strVolumeLevel = 7;                    //音量大小
+  string strVersionNumber = 8;                  //版本号信息
+  string strChannelNumber = 9;                  //通道号
+  string strCodingType = 10;                    //编码类型
+  string strPIRAlarmSwtich = 11;                //PIR报警开关
+  string strDoorbellSwitch = 12;                //门铃开关
+  string strPIRAlarmLevel = 13;                 //PIR报警等级
+  string strPIRIneffectiveTime = 14;            //PIR不生效时间配置项
+  string strCurrentWifi = 15;                   //当前WIFI
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -491,6 +511,9 @@ message ModifyDevicePropertyReq_DEV             //修改设备属性请求
   string strChannelCount = 17;
   string strP2pID = 18;
   string strDeviceIP2 = 19;
+  uint32 uiDeviceType = 20;
+  string strRequestSource = 21;                 //修改请求发起者，app-用户APP，device-设备程序
+  DoorbellParameter doorbellParameter = 22;
 }
 
 message ModifyDevicePropertyRsp_DEV             //修改设备属性响应
@@ -498,6 +521,17 @@ message ModifyDevicePropertyRsp_DEV             //修改设备属性响应
   string strValue = 1;
 }
 
+message QueryDeviceParameterReq_DEV             //查询设备参数请求
+{
+  string strDeviceID = 1;
+  uint32 uiDeviceType = 2;
+  string strQueryType = 3;                      //查询类型，all-全部查询，modified-修改部分查询
+}
+
+message QueryDeviceParameterRsp_DEV             //查询设备参数响应
+{
+  DoorbellParameter doorbellParameter = 1;
+}
 
 
 ////////////////////////////////////////////////////////
@@ -1008,6 +1042,7 @@ message Req
   QueryFirmwareUpgradeReq_DEV QueryFirmwareUpgradeReq_DEV_Value = 64;      //设备查询升级版本数据
 
   ModifyDevicePropertyReq_DEV ModifyDevicePropertyReq_DEV_Value = 800;     //修改设备属性
+  QueryDeviceParameterReq_DEV QueryDeviceParameterReq_DEV_Value = 810;     //查询设备参数
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1090,6 +1125,7 @@ message Rsp
   QueryFirmwareUpgradeRsp_DEV QueryFirmwareUpgradeRsp_DEV_Value = 84;     //设备查询升级版本数据
  
   ModifyDevicePropertyRsp_DEV ModifyDevicePropertyRsp_DEV_Value = 800;     //修改设备属性
+  QueryDeviceParameterRsp_DEV QueryDeviceParameterRsp_DEV_Value = 810;     //查询设备参数
 
  ////////////////////////////////////////////////////////////////////////////////////////////////
 

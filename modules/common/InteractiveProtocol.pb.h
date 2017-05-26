@@ -113,6 +113,9 @@ extern DeviceDefaultTypeInternal _Device_default_instance_;
 class DeviceAccessRecord;
 class DeviceAccessRecordDefaultTypeInternal;
 extern DeviceAccessRecordDefaultTypeInternal _DeviceAccessRecord_default_instance_;
+class DoorbellParameter;
+class DoorbellParameterDefaultTypeInternal;
+extern DoorbellParameterDefaultTypeInternal _DoorbellParameter_default_instance_;
 class DownloadFileReq_USR;
 class DownloadFileReq_USRDefaultTypeInternal;
 extern DownloadFileReq_USRDefaultTypeInternal _DownloadFileReq_USR_default_instance_;
@@ -269,6 +272,12 @@ extern QueryDevReq_USRDefaultTypeInternal _QueryDevReq_USR_default_instance_;
 class QueryDevRsp_USR;
 class QueryDevRsp_USRDefaultTypeInternal;
 extern QueryDevRsp_USRDefaultTypeInternal _QueryDevRsp_USR_default_instance_;
+class QueryDeviceParameterReq_DEV;
+class QueryDeviceParameterReq_DEVDefaultTypeInternal;
+extern QueryDeviceParameterReq_DEVDefaultTypeInternal _QueryDeviceParameterReq_DEV_default_instance_;
+class QueryDeviceParameterRsp_DEV;
+class QueryDeviceParameterRsp_DEVDefaultTypeInternal;
+extern QueryDeviceParameterRsp_DEVDefaultTypeInternal _QueryDeviceParameterRsp_DEV_default_instance_;
 class QueryFileReq_USR;
 class QueryFileReq_USRDefaultTypeInternal;
 extern QueryFileReq_USRDefaultTypeInternal _QueryFileReq_USR_default_instance_;
@@ -425,6 +434,8 @@ enum MsgType {
   QueryFirmwareUpgradeRsp_DEV_T = 10390,
   ModifyDevicePropertyReq_DEV_T = 10400,
   ModifyDevicePropertyRsp_DEV_T = 10410,
+  QueryDeviceParameterReq_DEV_T = 10420,
+  QueryDeviceParameterRsp_DEV_T = 10430,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -2207,6 +2218,307 @@ class Configuration : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::uint32 uifilesize_;
   ::google::protobuf::uint32 uileaseduration_;
   ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DoorbellParameter) */ {
+ public:
+  DoorbellParameter();
+  virtual ~DoorbellParameter();
+
+  DoorbellParameter(const DoorbellParameter& from);
+
+  inline DoorbellParameter& operator=(const DoorbellParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DoorbellParameter& default_instance();
+
+  static inline const DoorbellParameter* internal_default_instance() {
+    return reinterpret_cast<const DoorbellParameter*>(
+               &_DoorbellParameter_default_instance_);
+  }
+
+  void Swap(DoorbellParameter* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DoorbellParameter* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DoorbellParameter* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DoorbellParameter& from);
+  void MergeFrom(const DoorbellParameter& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DoorbellParameter* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDoorbellName = 1;
+  void clear_strdoorbellname();
+  static const int kStrDoorbellNameFieldNumber = 1;
+  const ::std::string& strdoorbellname() const;
+  void set_strdoorbellname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdoorbellname(::std::string&& value);
+  #endif
+  void set_strdoorbellname(const char* value);
+  void set_strdoorbellname(const char* value, size_t size);
+  ::std::string* mutable_strdoorbellname();
+  ::std::string* release_strdoorbellname();
+  void set_allocated_strdoorbellname(::std::string* strdoorbellname);
+
+  // string strSerialNumber = 2;
+  void clear_strserialnumber();
+  static const int kStrSerialNumberFieldNumber = 2;
+  const ::std::string& strserialnumber() const;
+  void set_strserialnumber(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strserialnumber(::std::string&& value);
+  #endif
+  void set_strserialnumber(const char* value);
+  void set_strserialnumber(const char* value, size_t size);
+  ::std::string* mutable_strserialnumber();
+  ::std::string* release_strserialnumber();
+  void set_allocated_strserialnumber(::std::string* strserialnumber);
+
+  // string strDoorbellP2Pid = 3;
+  void clear_strdoorbellp2pid();
+  static const int kStrDoorbellP2PidFieldNumber = 3;
+  const ::std::string& strdoorbellp2pid() const;
+  void set_strdoorbellp2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdoorbellp2pid(::std::string&& value);
+  #endif
+  void set_strdoorbellp2pid(const char* value);
+  void set_strdoorbellp2pid(const char* value, size_t size);
+  ::std::string* mutable_strdoorbellp2pid();
+  ::std::string* release_strdoorbellp2pid();
+  void set_allocated_strdoorbellp2pid(::std::string* strdoorbellp2pid);
+
+  // string strBatteryCapacity = 4;
+  void clear_strbatterycapacity();
+  static const int kStrBatteryCapacityFieldNumber = 4;
+  const ::std::string& strbatterycapacity() const;
+  void set_strbatterycapacity(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbatterycapacity(::std::string&& value);
+  #endif
+  void set_strbatterycapacity(const char* value);
+  void set_strbatterycapacity(const char* value, size_t size);
+  ::std::string* mutable_strbatterycapacity();
+  ::std::string* release_strbatterycapacity();
+  void set_allocated_strbatterycapacity(::std::string* strbatterycapacity);
+
+  // string strChargingState = 5;
+  void clear_strchargingstate();
+  static const int kStrChargingStateFieldNumber = 5;
+  const ::std::string& strchargingstate() const;
+  void set_strchargingstate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strchargingstate(::std::string&& value);
+  #endif
+  void set_strchargingstate(const char* value);
+  void set_strchargingstate(const char* value, size_t size);
+  ::std::string* mutable_strchargingstate();
+  ::std::string* release_strchargingstate();
+  void set_allocated_strchargingstate(::std::string* strchargingstate);
+
+  // string strWifiSignal = 6;
+  void clear_strwifisignal();
+  static const int kStrWifiSignalFieldNumber = 6;
+  const ::std::string& strwifisignal() const;
+  void set_strwifisignal(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strwifisignal(::std::string&& value);
+  #endif
+  void set_strwifisignal(const char* value);
+  void set_strwifisignal(const char* value, size_t size);
+  ::std::string* mutable_strwifisignal();
+  ::std::string* release_strwifisignal();
+  void set_allocated_strwifisignal(::std::string* strwifisignal);
+
+  // string strVolumeLevel = 7;
+  void clear_strvolumelevel();
+  static const int kStrVolumeLevelFieldNumber = 7;
+  const ::std::string& strvolumelevel() const;
+  void set_strvolumelevel(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvolumelevel(::std::string&& value);
+  #endif
+  void set_strvolumelevel(const char* value);
+  void set_strvolumelevel(const char* value, size_t size);
+  ::std::string* mutable_strvolumelevel();
+  ::std::string* release_strvolumelevel();
+  void set_allocated_strvolumelevel(::std::string* strvolumelevel);
+
+  // string strVersionNumber = 8;
+  void clear_strversionnumber();
+  static const int kStrVersionNumberFieldNumber = 8;
+  const ::std::string& strversionnumber() const;
+  void set_strversionnumber(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversionnumber(::std::string&& value);
+  #endif
+  void set_strversionnumber(const char* value);
+  void set_strversionnumber(const char* value, size_t size);
+  ::std::string* mutable_strversionnumber();
+  ::std::string* release_strversionnumber();
+  void set_allocated_strversionnumber(::std::string* strversionnumber);
+
+  // string strChannelNumber = 9;
+  void clear_strchannelnumber();
+  static const int kStrChannelNumberFieldNumber = 9;
+  const ::std::string& strchannelnumber() const;
+  void set_strchannelnumber(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strchannelnumber(::std::string&& value);
+  #endif
+  void set_strchannelnumber(const char* value);
+  void set_strchannelnumber(const char* value, size_t size);
+  ::std::string* mutable_strchannelnumber();
+  ::std::string* release_strchannelnumber();
+  void set_allocated_strchannelnumber(::std::string* strchannelnumber);
+
+  // string strCodingType = 10;
+  void clear_strcodingtype();
+  static const int kStrCodingTypeFieldNumber = 10;
+  const ::std::string& strcodingtype() const;
+  void set_strcodingtype(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcodingtype(::std::string&& value);
+  #endif
+  void set_strcodingtype(const char* value);
+  void set_strcodingtype(const char* value, size_t size);
+  ::std::string* mutable_strcodingtype();
+  ::std::string* release_strcodingtype();
+  void set_allocated_strcodingtype(::std::string* strcodingtype);
+
+  // string strPIRAlarmSwtich = 11;
+  void clear_strpiralarmswtich();
+  static const int kStrPIRAlarmSwtichFieldNumber = 11;
+  const ::std::string& strpiralarmswtich() const;
+  void set_strpiralarmswtich(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpiralarmswtich(::std::string&& value);
+  #endif
+  void set_strpiralarmswtich(const char* value);
+  void set_strpiralarmswtich(const char* value, size_t size);
+  ::std::string* mutable_strpiralarmswtich();
+  ::std::string* release_strpiralarmswtich();
+  void set_allocated_strpiralarmswtich(::std::string* strpiralarmswtich);
+
+  // string strDoorbellSwitch = 12;
+  void clear_strdoorbellswitch();
+  static const int kStrDoorbellSwitchFieldNumber = 12;
+  const ::std::string& strdoorbellswitch() const;
+  void set_strdoorbellswitch(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdoorbellswitch(::std::string&& value);
+  #endif
+  void set_strdoorbellswitch(const char* value);
+  void set_strdoorbellswitch(const char* value, size_t size);
+  ::std::string* mutable_strdoorbellswitch();
+  ::std::string* release_strdoorbellswitch();
+  void set_allocated_strdoorbellswitch(::std::string* strdoorbellswitch);
+
+  // string strPIRAlarmLevel = 13;
+  void clear_strpiralarmlevel();
+  static const int kStrPIRAlarmLevelFieldNumber = 13;
+  const ::std::string& strpiralarmlevel() const;
+  void set_strpiralarmlevel(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpiralarmlevel(::std::string&& value);
+  #endif
+  void set_strpiralarmlevel(const char* value);
+  void set_strpiralarmlevel(const char* value, size_t size);
+  ::std::string* mutable_strpiralarmlevel();
+  ::std::string* release_strpiralarmlevel();
+  void set_allocated_strpiralarmlevel(::std::string* strpiralarmlevel);
+
+  // string strPIRIneffectiveTime = 14;
+  void clear_strpirineffectivetime();
+  static const int kStrPIRIneffectiveTimeFieldNumber = 14;
+  const ::std::string& strpirineffectivetime() const;
+  void set_strpirineffectivetime(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpirineffectivetime(::std::string&& value);
+  #endif
+  void set_strpirineffectivetime(const char* value);
+  void set_strpirineffectivetime(const char* value, size_t size);
+  ::std::string* mutable_strpirineffectivetime();
+  ::std::string* release_strpirineffectivetime();
+  void set_allocated_strpirineffectivetime(::std::string* strpirineffectivetime);
+
+  // string strCurrentWifi = 15;
+  void clear_strcurrentwifi();
+  static const int kStrCurrentWifiFieldNumber = 15;
+  const ::std::string& strcurrentwifi() const;
+  void set_strcurrentwifi(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcurrentwifi(::std::string&& value);
+  #endif
+  void set_strcurrentwifi(const char* value);
+  void set_strcurrentwifi(const char* value, size_t size);
+  ::std::string* mutable_strcurrentwifi();
+  ::std::string* release_strcurrentwifi();
+  void set_allocated_strcurrentwifi(::std::string* strcurrentwifi);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DoorbellParameter)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdoorbellname_;
+  ::google::protobuf::internal::ArenaStringPtr strserialnumber_;
+  ::google::protobuf::internal::ArenaStringPtr strdoorbellp2pid_;
+  ::google::protobuf::internal::ArenaStringPtr strbatterycapacity_;
+  ::google::protobuf::internal::ArenaStringPtr strchargingstate_;
+  ::google::protobuf::internal::ArenaStringPtr strwifisignal_;
+  ::google::protobuf::internal::ArenaStringPtr strvolumelevel_;
+  ::google::protobuf::internal::ArenaStringPtr strversionnumber_;
+  ::google::protobuf::internal::ArenaStringPtr strchannelnumber_;
+  ::google::protobuf::internal::ArenaStringPtr strcodingtype_;
+  ::google::protobuf::internal::ArenaStringPtr strpiralarmswtich_;
+  ::google::protobuf::internal::ArenaStringPtr strdoorbellswitch_;
+  ::google::protobuf::internal::ArenaStringPtr strpiralarmlevel_;
+  ::google::protobuf::internal::ArenaStringPtr strpirineffectivetime_;
+  ::google::protobuf::internal::ArenaStringPtr strcurrentwifi_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -5390,6 +5702,35 @@ class ModifyDevicePropertyReq_DEV : public ::google::protobuf::Message /* @@prot
   ::std::string* release_strdeviceip2();
   void set_allocated_strdeviceip2(::std::string* strdeviceip2);
 
+  // string strRequestSource = 21;
+  void clear_strrequestsource();
+  static const int kStrRequestSourceFieldNumber = 21;
+  const ::std::string& strrequestsource() const;
+  void set_strrequestsource(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strrequestsource(::std::string&& value);
+  #endif
+  void set_strrequestsource(const char* value);
+  void set_strrequestsource(const char* value, size_t size);
+  ::std::string* mutable_strrequestsource();
+  ::std::string* release_strrequestsource();
+  void set_allocated_strrequestsource(::std::string* strrequestsource);
+
+  // .Interactive.Message.DoorbellParameter doorbellParameter = 22;
+  bool has_doorbellparameter() const;
+  void clear_doorbellparameter();
+  static const int kDoorbellParameterFieldNumber = 22;
+  const ::Interactive::Message::DoorbellParameter& doorbellparameter() const;
+  ::Interactive::Message::DoorbellParameter* mutable_doorbellparameter();
+  ::Interactive::Message::DoorbellParameter* release_doorbellparameter();
+  void set_allocated_doorbellparameter(::Interactive::Message::DoorbellParameter* doorbellparameter);
+
+  // uint32 uiDeviceType = 20;
+  void clear_uidevicetype();
+  static const int kUiDeviceTypeFieldNumber = 20;
+  ::google::protobuf::uint32 uidevicetype() const;
+  void set_uidevicetype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyDevicePropertyReq_DEV)
  private:
 
@@ -5413,6 +5754,9 @@ class ModifyDevicePropertyReq_DEV : public ::google::protobuf::Message /* @@prot
   ::google::protobuf::internal::ArenaStringPtr strchannelcount_;
   ::google::protobuf::internal::ArenaStringPtr strp2pid_;
   ::google::protobuf::internal::ArenaStringPtr strdeviceip2_;
+  ::google::protobuf::internal::ArenaStringPtr strrequestsource_;
+  ::Interactive::Message::DoorbellParameter* doorbellparameter_;
+  ::google::protobuf::uint32 uidevicetype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -5504,6 +5848,205 @@ class ModifyDevicePropertyRsp_DEV : public ::google::protobuf::Message /* @@prot
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryDeviceParameterReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDeviceParameterReq_DEV) */ {
+ public:
+  QueryDeviceParameterReq_DEV();
+  virtual ~QueryDeviceParameterReq_DEV();
+
+  QueryDeviceParameterReq_DEV(const QueryDeviceParameterReq_DEV& from);
+
+  inline QueryDeviceParameterReq_DEV& operator=(const QueryDeviceParameterReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDeviceParameterReq_DEV& default_instance();
+
+  static inline const QueryDeviceParameterReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryDeviceParameterReq_DEV*>(
+               &_QueryDeviceParameterReq_DEV_default_instance_);
+  }
+
+  void Swap(QueryDeviceParameterReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDeviceParameterReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryDeviceParameterReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryDeviceParameterReq_DEV& from);
+  void MergeFrom(const QueryDeviceParameterReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryDeviceParameterReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDeviceID = 1;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 1;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // string strQueryType = 3;
+  void clear_strquerytype();
+  static const int kStrQueryTypeFieldNumber = 3;
+  const ::std::string& strquerytype() const;
+  void set_strquerytype(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strquerytype(::std::string&& value);
+  #endif
+  void set_strquerytype(const char* value);
+  void set_strquerytype(const char* value, size_t size);
+  ::std::string* mutable_strquerytype();
+  ::std::string* release_strquerytype();
+  void set_allocated_strquerytype(::std::string* strquerytype);
+
+  // uint32 uiDeviceType = 2;
+  void clear_uidevicetype();
+  static const int kUiDeviceTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uidevicetype() const;
+  void set_uidevicetype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDeviceParameterReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strquerytype_;
+  ::google::protobuf::uint32 uidevicetype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryDeviceParameterRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDeviceParameterRsp_DEV) */ {
+ public:
+  QueryDeviceParameterRsp_DEV();
+  virtual ~QueryDeviceParameterRsp_DEV();
+
+  QueryDeviceParameterRsp_DEV(const QueryDeviceParameterRsp_DEV& from);
+
+  inline QueryDeviceParameterRsp_DEV& operator=(const QueryDeviceParameterRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDeviceParameterRsp_DEV& default_instance();
+
+  static inline const QueryDeviceParameterRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const QueryDeviceParameterRsp_DEV*>(
+               &_QueryDeviceParameterRsp_DEV_default_instance_);
+  }
+
+  void Swap(QueryDeviceParameterRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDeviceParameterRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryDeviceParameterRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryDeviceParameterRsp_DEV& from);
+  void MergeFrom(const QueryDeviceParameterRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryDeviceParameterRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.DoorbellParameter doorbellParameter = 1;
+  bool has_doorbellparameter() const;
+  void clear_doorbellparameter();
+  static const int kDoorbellParameterFieldNumber = 1;
+  const ::Interactive::Message::DoorbellParameter& doorbellparameter() const;
+  ::Interactive::Message::DoorbellParameter* mutable_doorbellparameter();
+  ::Interactive::Message::DoorbellParameter* release_doorbellparameter();
+  void set_allocated_doorbellparameter(::Interactive::Message::DoorbellParameter* doorbellparameter);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDeviceParameterRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::DoorbellParameter* doorbellparameter_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -13781,6 +14324,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ModifyDevicePropertyReq_DEV* release_modifydevicepropertyreq_dev_value();
   void set_allocated_modifydevicepropertyreq_dev_value(::Interactive::Message::ModifyDevicePropertyReq_DEV* modifydevicepropertyreq_dev_value);
 
+  // .Interactive.Message.QueryDeviceParameterReq_DEV QueryDeviceParameterReq_DEV_Value = 810;
+  bool has_querydeviceparameterreq_dev_value() const;
+  void clear_querydeviceparameterreq_dev_value();
+  static const int kQueryDeviceParameterReqDEVValueFieldNumber = 810;
+  const ::Interactive::Message::QueryDeviceParameterReq_DEV& querydeviceparameterreq_dev_value() const;
+  ::Interactive::Message::QueryDeviceParameterReq_DEV* mutable_querydeviceparameterreq_dev_value();
+  ::Interactive::Message::QueryDeviceParameterReq_DEV* release_querydeviceparameterreq_dev_value();
+  void set_allocated_querydeviceparameterreq_dev_value(::Interactive::Message::QueryDeviceParameterReq_DEV* querydeviceparameterreq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -14158,6 +14710,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUpgradeSiteReq_DEV* queryupgradesitereq_dev_value_;
   ::Interactive::Message::QueryFirmwareUpgradeReq_DEV* queryfirmwareupgradereq_dev_value_;
   ::Interactive::Message::ModifyDevicePropertyReq_DEV* modifydevicepropertyreq_dev_value_;
+  ::Interactive::Message::QueryDeviceParameterReq_DEV* querydeviceparameterreq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -14400,6 +14953,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::ModifyDevicePropertyRsp_DEV* mutable_modifydevicepropertyrsp_dev_value();
   ::Interactive::Message::ModifyDevicePropertyRsp_DEV* release_modifydevicepropertyrsp_dev_value();
   void set_allocated_modifydevicepropertyrsp_dev_value(::Interactive::Message::ModifyDevicePropertyRsp_DEV* modifydevicepropertyrsp_dev_value);
+
+  // .Interactive.Message.QueryDeviceParameterRsp_DEV QueryDeviceParameterRsp_DEV_Value = 810;
+  bool has_querydeviceparameterrsp_dev_value() const;
+  void clear_querydeviceparameterrsp_dev_value();
+  static const int kQueryDeviceParameterRspDEVValueFieldNumber = 810;
+  const ::Interactive::Message::QueryDeviceParameterRsp_DEV& querydeviceparameterrsp_dev_value() const;
+  ::Interactive::Message::QueryDeviceParameterRsp_DEV* mutable_querydeviceparameterrsp_dev_value();
+  ::Interactive::Message::QueryDeviceParameterRsp_DEV* release_querydeviceparameterrsp_dev_value();
+  void set_allocated_querydeviceparameterrsp_dev_value(::Interactive::Message::QueryDeviceParameterRsp_DEV* querydeviceparameterrsp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -14767,6 +15329,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUpgradeSiteRsp_DEV* queryupgradesitersp_dev_value_;
   ::Interactive::Message::QueryFirmwareUpgradeRsp_DEV* queryfirmwareupgradersp_dev_value_;
   ::Interactive::Message::ModifyDevicePropertyRsp_DEV* modifydevicepropertyrsp_dev_value_;
+  ::Interactive::Message::QueryDeviceParameterRsp_DEV* querydeviceparameterrsp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -18254,6 +18817,790 @@ inline void Configuration::set_allocated_strextend(::std::string* strextend) {
   }
   strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Configuration.strExtend)
+}
+
+// -------------------------------------------------------------------
+
+// DoorbellParameter
+
+// string strDoorbellName = 1;
+inline void DoorbellParameter::clear_strdoorbellname() {
+  strdoorbellname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strdoorbellname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strDoorbellName)
+  return strdoorbellname_.GetNoArena();
+}
+inline void DoorbellParameter::set_strdoorbellname(const ::std::string& value) {
+  
+  strdoorbellname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strDoorbellName)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strdoorbellname(::std::string&& value) {
+  
+  strdoorbellname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strDoorbellName)
+}
+#endif
+inline void DoorbellParameter::set_strdoorbellname(const char* value) {
+  
+  strdoorbellname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strDoorbellName)
+}
+inline void DoorbellParameter::set_strdoorbellname(const char* value, size_t size) {
+  
+  strdoorbellname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strDoorbellName)
+}
+inline ::std::string* DoorbellParameter::mutable_strdoorbellname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strDoorbellName)
+  return strdoorbellname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strdoorbellname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strDoorbellName)
+  
+  return strdoorbellname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strdoorbellname(::std::string* strdoorbellname) {
+  if (strdoorbellname != NULL) {
+    
+  } else {
+    
+  }
+  strdoorbellname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdoorbellname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strDoorbellName)
+}
+
+// string strSerialNumber = 2;
+inline void DoorbellParameter::clear_strserialnumber() {
+  strserialnumber_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strserialnumber() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strSerialNumber)
+  return strserialnumber_.GetNoArena();
+}
+inline void DoorbellParameter::set_strserialnumber(const ::std::string& value) {
+  
+  strserialnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strSerialNumber)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strserialnumber(::std::string&& value) {
+  
+  strserialnumber_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strSerialNumber)
+}
+#endif
+inline void DoorbellParameter::set_strserialnumber(const char* value) {
+  
+  strserialnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strSerialNumber)
+}
+inline void DoorbellParameter::set_strserialnumber(const char* value, size_t size) {
+  
+  strserialnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strSerialNumber)
+}
+inline ::std::string* DoorbellParameter::mutable_strserialnumber() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strSerialNumber)
+  return strserialnumber_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strserialnumber() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strSerialNumber)
+  
+  return strserialnumber_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strserialnumber(::std::string* strserialnumber) {
+  if (strserialnumber != NULL) {
+    
+  } else {
+    
+  }
+  strserialnumber_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strserialnumber);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strSerialNumber)
+}
+
+// string strDoorbellP2Pid = 3;
+inline void DoorbellParameter::clear_strdoorbellp2pid() {
+  strdoorbellp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strdoorbellp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+  return strdoorbellp2pid_.GetNoArena();
+}
+inline void DoorbellParameter::set_strdoorbellp2pid(const ::std::string& value) {
+  
+  strdoorbellp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strdoorbellp2pid(::std::string&& value) {
+  
+  strdoorbellp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+}
+#endif
+inline void DoorbellParameter::set_strdoorbellp2pid(const char* value) {
+  
+  strdoorbellp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+}
+inline void DoorbellParameter::set_strdoorbellp2pid(const char* value, size_t size) {
+  
+  strdoorbellp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+}
+inline ::std::string* DoorbellParameter::mutable_strdoorbellp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+  return strdoorbellp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strdoorbellp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+  
+  return strdoorbellp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strdoorbellp2pid(::std::string* strdoorbellp2pid) {
+  if (strdoorbellp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strdoorbellp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdoorbellp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strDoorbellP2Pid)
+}
+
+// string strBatteryCapacity = 4;
+inline void DoorbellParameter::clear_strbatterycapacity() {
+  strbatterycapacity_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strbatterycapacity() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+  return strbatterycapacity_.GetNoArena();
+}
+inline void DoorbellParameter::set_strbatterycapacity(const ::std::string& value) {
+  
+  strbatterycapacity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strbatterycapacity(::std::string&& value) {
+  
+  strbatterycapacity_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+}
+#endif
+inline void DoorbellParameter::set_strbatterycapacity(const char* value) {
+  
+  strbatterycapacity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+}
+inline void DoorbellParameter::set_strbatterycapacity(const char* value, size_t size) {
+  
+  strbatterycapacity_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+}
+inline ::std::string* DoorbellParameter::mutable_strbatterycapacity() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+  return strbatterycapacity_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strbatterycapacity() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+  
+  return strbatterycapacity_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strbatterycapacity(::std::string* strbatterycapacity) {
+  if (strbatterycapacity != NULL) {
+    
+  } else {
+    
+  }
+  strbatterycapacity_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbatterycapacity);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strBatteryCapacity)
+}
+
+// string strChargingState = 5;
+inline void DoorbellParameter::clear_strchargingstate() {
+  strchargingstate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strchargingstate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strChargingState)
+  return strchargingstate_.GetNoArena();
+}
+inline void DoorbellParameter::set_strchargingstate(const ::std::string& value) {
+  
+  strchargingstate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strChargingState)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strchargingstate(::std::string&& value) {
+  
+  strchargingstate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strChargingState)
+}
+#endif
+inline void DoorbellParameter::set_strchargingstate(const char* value) {
+  
+  strchargingstate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strChargingState)
+}
+inline void DoorbellParameter::set_strchargingstate(const char* value, size_t size) {
+  
+  strchargingstate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strChargingState)
+}
+inline ::std::string* DoorbellParameter::mutable_strchargingstate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strChargingState)
+  return strchargingstate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strchargingstate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strChargingState)
+  
+  return strchargingstate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strchargingstate(::std::string* strchargingstate) {
+  if (strchargingstate != NULL) {
+    
+  } else {
+    
+  }
+  strchargingstate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strchargingstate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strChargingState)
+}
+
+// string strWifiSignal = 6;
+inline void DoorbellParameter::clear_strwifisignal() {
+  strwifisignal_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strwifisignal() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strWifiSignal)
+  return strwifisignal_.GetNoArena();
+}
+inline void DoorbellParameter::set_strwifisignal(const ::std::string& value) {
+  
+  strwifisignal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strWifiSignal)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strwifisignal(::std::string&& value) {
+  
+  strwifisignal_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strWifiSignal)
+}
+#endif
+inline void DoorbellParameter::set_strwifisignal(const char* value) {
+  
+  strwifisignal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strWifiSignal)
+}
+inline void DoorbellParameter::set_strwifisignal(const char* value, size_t size) {
+  
+  strwifisignal_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strWifiSignal)
+}
+inline ::std::string* DoorbellParameter::mutable_strwifisignal() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strWifiSignal)
+  return strwifisignal_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strwifisignal() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strWifiSignal)
+  
+  return strwifisignal_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strwifisignal(::std::string* strwifisignal) {
+  if (strwifisignal != NULL) {
+    
+  } else {
+    
+  }
+  strwifisignal_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strwifisignal);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strWifiSignal)
+}
+
+// string strVolumeLevel = 7;
+inline void DoorbellParameter::clear_strvolumelevel() {
+  strvolumelevel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strvolumelevel() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strVolumeLevel)
+  return strvolumelevel_.GetNoArena();
+}
+inline void DoorbellParameter::set_strvolumelevel(const ::std::string& value) {
+  
+  strvolumelevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strVolumeLevel)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strvolumelevel(::std::string&& value) {
+  
+  strvolumelevel_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strVolumeLevel)
+}
+#endif
+inline void DoorbellParameter::set_strvolumelevel(const char* value) {
+  
+  strvolumelevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strVolumeLevel)
+}
+inline void DoorbellParameter::set_strvolumelevel(const char* value, size_t size) {
+  
+  strvolumelevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strVolumeLevel)
+}
+inline ::std::string* DoorbellParameter::mutable_strvolumelevel() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strVolumeLevel)
+  return strvolumelevel_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strvolumelevel() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strVolumeLevel)
+  
+  return strvolumelevel_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strvolumelevel(::std::string* strvolumelevel) {
+  if (strvolumelevel != NULL) {
+    
+  } else {
+    
+  }
+  strvolumelevel_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvolumelevel);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strVolumeLevel)
+}
+
+// string strVersionNumber = 8;
+inline void DoorbellParameter::clear_strversionnumber() {
+  strversionnumber_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strversionnumber() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strVersionNumber)
+  return strversionnumber_.GetNoArena();
+}
+inline void DoorbellParameter::set_strversionnumber(const ::std::string& value) {
+  
+  strversionnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strVersionNumber)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strversionnumber(::std::string&& value) {
+  
+  strversionnumber_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strVersionNumber)
+}
+#endif
+inline void DoorbellParameter::set_strversionnumber(const char* value) {
+  
+  strversionnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strVersionNumber)
+}
+inline void DoorbellParameter::set_strversionnumber(const char* value, size_t size) {
+  
+  strversionnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strVersionNumber)
+}
+inline ::std::string* DoorbellParameter::mutable_strversionnumber() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strVersionNumber)
+  return strversionnumber_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strversionnumber() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strVersionNumber)
+  
+  return strversionnumber_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strversionnumber(::std::string* strversionnumber) {
+  if (strversionnumber != NULL) {
+    
+  } else {
+    
+  }
+  strversionnumber_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversionnumber);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strVersionNumber)
+}
+
+// string strChannelNumber = 9;
+inline void DoorbellParameter::clear_strchannelnumber() {
+  strchannelnumber_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strchannelnumber() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strChannelNumber)
+  return strchannelnumber_.GetNoArena();
+}
+inline void DoorbellParameter::set_strchannelnumber(const ::std::string& value) {
+  
+  strchannelnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strChannelNumber)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strchannelnumber(::std::string&& value) {
+  
+  strchannelnumber_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strChannelNumber)
+}
+#endif
+inline void DoorbellParameter::set_strchannelnumber(const char* value) {
+  
+  strchannelnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strChannelNumber)
+}
+inline void DoorbellParameter::set_strchannelnumber(const char* value, size_t size) {
+  
+  strchannelnumber_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strChannelNumber)
+}
+inline ::std::string* DoorbellParameter::mutable_strchannelnumber() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strChannelNumber)
+  return strchannelnumber_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strchannelnumber() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strChannelNumber)
+  
+  return strchannelnumber_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strchannelnumber(::std::string* strchannelnumber) {
+  if (strchannelnumber != NULL) {
+    
+  } else {
+    
+  }
+  strchannelnumber_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strchannelnumber);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strChannelNumber)
+}
+
+// string strCodingType = 10;
+inline void DoorbellParameter::clear_strcodingtype() {
+  strcodingtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strcodingtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strCodingType)
+  return strcodingtype_.GetNoArena();
+}
+inline void DoorbellParameter::set_strcodingtype(const ::std::string& value) {
+  
+  strcodingtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strCodingType)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strcodingtype(::std::string&& value) {
+  
+  strcodingtype_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strCodingType)
+}
+#endif
+inline void DoorbellParameter::set_strcodingtype(const char* value) {
+  
+  strcodingtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strCodingType)
+}
+inline void DoorbellParameter::set_strcodingtype(const char* value, size_t size) {
+  
+  strcodingtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strCodingType)
+}
+inline ::std::string* DoorbellParameter::mutable_strcodingtype() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strCodingType)
+  return strcodingtype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strcodingtype() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strCodingType)
+  
+  return strcodingtype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strcodingtype(::std::string* strcodingtype) {
+  if (strcodingtype != NULL) {
+    
+  } else {
+    
+  }
+  strcodingtype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcodingtype);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strCodingType)
+}
+
+// string strPIRAlarmSwtich = 11;
+inline void DoorbellParameter::clear_strpiralarmswtich() {
+  strpiralarmswtich_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strpiralarmswtich() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+  return strpiralarmswtich_.GetNoArena();
+}
+inline void DoorbellParameter::set_strpiralarmswtich(const ::std::string& value) {
+  
+  strpiralarmswtich_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strpiralarmswtich(::std::string&& value) {
+  
+  strpiralarmswtich_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+}
+#endif
+inline void DoorbellParameter::set_strpiralarmswtich(const char* value) {
+  
+  strpiralarmswtich_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+}
+inline void DoorbellParameter::set_strpiralarmswtich(const char* value, size_t size) {
+  
+  strpiralarmswtich_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+}
+inline ::std::string* DoorbellParameter::mutable_strpiralarmswtich() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+  return strpiralarmswtich_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strpiralarmswtich() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+  
+  return strpiralarmswtich_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strpiralarmswtich(::std::string* strpiralarmswtich) {
+  if (strpiralarmswtich != NULL) {
+    
+  } else {
+    
+  }
+  strpiralarmswtich_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpiralarmswtich);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strPIRAlarmSwtich)
+}
+
+// string strDoorbellSwitch = 12;
+inline void DoorbellParameter::clear_strdoorbellswitch() {
+  strdoorbellswitch_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strdoorbellswitch() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+  return strdoorbellswitch_.GetNoArena();
+}
+inline void DoorbellParameter::set_strdoorbellswitch(const ::std::string& value) {
+  
+  strdoorbellswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strdoorbellswitch(::std::string&& value) {
+  
+  strdoorbellswitch_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+}
+#endif
+inline void DoorbellParameter::set_strdoorbellswitch(const char* value) {
+  
+  strdoorbellswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+}
+inline void DoorbellParameter::set_strdoorbellswitch(const char* value, size_t size) {
+  
+  strdoorbellswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+}
+inline ::std::string* DoorbellParameter::mutable_strdoorbellswitch() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+  return strdoorbellswitch_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strdoorbellswitch() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+  
+  return strdoorbellswitch_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strdoorbellswitch(::std::string* strdoorbellswitch) {
+  if (strdoorbellswitch != NULL) {
+    
+  } else {
+    
+  }
+  strdoorbellswitch_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdoorbellswitch);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strDoorbellSwitch)
+}
+
+// string strPIRAlarmLevel = 13;
+inline void DoorbellParameter::clear_strpiralarmlevel() {
+  strpiralarmlevel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strpiralarmlevel() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+  return strpiralarmlevel_.GetNoArena();
+}
+inline void DoorbellParameter::set_strpiralarmlevel(const ::std::string& value) {
+  
+  strpiralarmlevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strpiralarmlevel(::std::string&& value) {
+  
+  strpiralarmlevel_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+}
+#endif
+inline void DoorbellParameter::set_strpiralarmlevel(const char* value) {
+  
+  strpiralarmlevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+}
+inline void DoorbellParameter::set_strpiralarmlevel(const char* value, size_t size) {
+  
+  strpiralarmlevel_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+}
+inline ::std::string* DoorbellParameter::mutable_strpiralarmlevel() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+  return strpiralarmlevel_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strpiralarmlevel() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+  
+  return strpiralarmlevel_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strpiralarmlevel(::std::string* strpiralarmlevel) {
+  if (strpiralarmlevel != NULL) {
+    
+  } else {
+    
+  }
+  strpiralarmlevel_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpiralarmlevel);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strPIRAlarmLevel)
+}
+
+// string strPIRIneffectiveTime = 14;
+inline void DoorbellParameter::clear_strpirineffectivetime() {
+  strpirineffectivetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strpirineffectivetime() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+  return strpirineffectivetime_.GetNoArena();
+}
+inline void DoorbellParameter::set_strpirineffectivetime(const ::std::string& value) {
+  
+  strpirineffectivetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strpirineffectivetime(::std::string&& value) {
+  
+  strpirineffectivetime_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+}
+#endif
+inline void DoorbellParameter::set_strpirineffectivetime(const char* value) {
+  
+  strpirineffectivetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+}
+inline void DoorbellParameter::set_strpirineffectivetime(const char* value, size_t size) {
+  
+  strpirineffectivetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+}
+inline ::std::string* DoorbellParameter::mutable_strpirineffectivetime() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+  return strpirineffectivetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strpirineffectivetime() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+  
+  return strpirineffectivetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strpirineffectivetime(::std::string* strpirineffectivetime) {
+  if (strpirineffectivetime != NULL) {
+    
+  } else {
+    
+  }
+  strpirineffectivetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpirineffectivetime);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strPIRIneffectiveTime)
+}
+
+// string strCurrentWifi = 15;
+inline void DoorbellParameter::clear_strcurrentwifi() {
+  strcurrentwifi_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strcurrentwifi() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strCurrentWifi)
+  return strcurrentwifi_.GetNoArena();
+}
+inline void DoorbellParameter::set_strcurrentwifi(const ::std::string& value) {
+  
+  strcurrentwifi_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strCurrentWifi)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strcurrentwifi(::std::string&& value) {
+  
+  strcurrentwifi_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strCurrentWifi)
+}
+#endif
+inline void DoorbellParameter::set_strcurrentwifi(const char* value) {
+  
+  strcurrentwifi_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strCurrentWifi)
+}
+inline void DoorbellParameter::set_strcurrentwifi(const char* value, size_t size) {
+  
+  strcurrentwifi_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strCurrentWifi)
+}
+inline ::std::string* DoorbellParameter::mutable_strcurrentwifi() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strCurrentWifi)
+  return strcurrentwifi_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strcurrentwifi() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strCurrentWifi)
+  
+  return strcurrentwifi_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strcurrentwifi(::std::string* strcurrentwifi) {
+  if (strcurrentwifi != NULL) {
+    
+  } else {
+    
+  }
+  strcurrentwifi_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcurrentwifi);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strCurrentWifi)
 }
 
 // -------------------------------------------------------------------
@@ -22731,6 +24078,111 @@ inline void ModifyDevicePropertyReq_DEV::set_allocated_strdeviceip2(::std::strin
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.strDeviceIP2)
 }
 
+// uint32 uiDeviceType = 20;
+inline void ModifyDevicePropertyReq_DEV::clear_uidevicetype() {
+  uidevicetype_ = 0u;
+}
+inline ::google::protobuf::uint32 ModifyDevicePropertyReq_DEV::uidevicetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDevicePropertyReq_DEV.uiDeviceType)
+  return uidevicetype_;
+}
+inline void ModifyDevicePropertyReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
+  
+  uidevicetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDevicePropertyReq_DEV.uiDeviceType)
+}
+
+// string strRequestSource = 21;
+inline void ModifyDevicePropertyReq_DEV::clear_strrequestsource() {
+  strrequestsource_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDevicePropertyReq_DEV::strrequestsource() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+  return strrequestsource_.GetNoArena();
+}
+inline void ModifyDevicePropertyReq_DEV::set_strrequestsource(const ::std::string& value) {
+  
+  strrequestsource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+}
+#if LANG_CXX11
+inline void ModifyDevicePropertyReq_DEV::set_strrequestsource(::std::string&& value) {
+  
+  strrequestsource_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+}
+#endif
+inline void ModifyDevicePropertyReq_DEV::set_strrequestsource(const char* value) {
+  
+  strrequestsource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+}
+inline void ModifyDevicePropertyReq_DEV::set_strrequestsource(const char* value, size_t size) {
+  
+  strrequestsource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::mutable_strrequestsource() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+  return strrequestsource_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDevicePropertyReq_DEV::release_strrequestsource() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+  
+  return strrequestsource_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDevicePropertyReq_DEV::set_allocated_strrequestsource(::std::string* strrequestsource) {
+  if (strrequestsource != NULL) {
+    
+  } else {
+    
+  }
+  strrequestsource_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strrequestsource);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.strRequestSource)
+}
+
+// .Interactive.Message.DoorbellParameter doorbellParameter = 22;
+inline bool ModifyDevicePropertyReq_DEV::has_doorbellparameter() const {
+  return this != internal_default_instance() && doorbellparameter_ != NULL;
+}
+inline void ModifyDevicePropertyReq_DEV::clear_doorbellparameter() {
+  if (GetArenaNoVirtual() == NULL && doorbellparameter_ != NULL) delete doorbellparameter_;
+  doorbellparameter_ = NULL;
+}
+inline const ::Interactive::Message::DoorbellParameter& ModifyDevicePropertyReq_DEV::doorbellparameter() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDevicePropertyReq_DEV.doorbellParameter)
+  return doorbellparameter_ != NULL ? *doorbellparameter_
+                         : *::Interactive::Message::DoorbellParameter::internal_default_instance();
+}
+inline ::Interactive::Message::DoorbellParameter* ModifyDevicePropertyReq_DEV::mutable_doorbellparameter() {
+  
+  if (doorbellparameter_ == NULL) {
+    doorbellparameter_ = new ::Interactive::Message::DoorbellParameter;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDevicePropertyReq_DEV.doorbellParameter)
+  return doorbellparameter_;
+}
+inline ::Interactive::Message::DoorbellParameter* ModifyDevicePropertyReq_DEV::release_doorbellparameter() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDevicePropertyReq_DEV.doorbellParameter)
+  
+  ::Interactive::Message::DoorbellParameter* temp = doorbellparameter_;
+  doorbellparameter_ = NULL;
+  return temp;
+}
+inline void ModifyDevicePropertyReq_DEV::set_allocated_doorbellparameter(::Interactive::Message::DoorbellParameter* doorbellparameter) {
+  delete doorbellparameter_;
+  doorbellparameter_ = doorbellparameter;
+  if (doorbellparameter) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyReq_DEV.doorbellParameter)
+}
+
 // -------------------------------------------------------------------
 
 // ModifyDevicePropertyRsp_DEV
@@ -22785,6 +24237,171 @@ inline void ModifyDevicePropertyRsp_DEV::set_allocated_strvalue(::std::string* s
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDevicePropertyRsp_DEV.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryDeviceParameterReq_DEV
+
+// string strDeviceID = 1;
+inline void QueryDeviceParameterReq_DEV::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDeviceParameterReq_DEV::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void QueryDeviceParameterReq_DEV::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+}
+#if LANG_CXX11
+inline void QueryDeviceParameterReq_DEV::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+}
+#endif
+inline void QueryDeviceParameterReq_DEV::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+}
+inline void QueryDeviceParameterReq_DEV::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+}
+inline ::std::string* QueryDeviceParameterReq_DEV::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDeviceParameterReq_DEV::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDeviceParameterReq_DEV::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceParameterReq_DEV.strDeviceID)
+}
+
+// uint32 uiDeviceType = 2;
+inline void QueryDeviceParameterReq_DEV::clear_uidevicetype() {
+  uidevicetype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryDeviceParameterReq_DEV::uidevicetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceParameterReq_DEV.uiDeviceType)
+  return uidevicetype_;
+}
+inline void QueryDeviceParameterReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
+  
+  uidevicetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceParameterReq_DEV.uiDeviceType)
+}
+
+// string strQueryType = 3;
+inline void QueryDeviceParameterReq_DEV::clear_strquerytype() {
+  strquerytype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDeviceParameterReq_DEV::strquerytype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+  return strquerytype_.GetNoArena();
+}
+inline void QueryDeviceParameterReq_DEV::set_strquerytype(const ::std::string& value) {
+  
+  strquerytype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+}
+#if LANG_CXX11
+inline void QueryDeviceParameterReq_DEV::set_strquerytype(::std::string&& value) {
+  
+  strquerytype_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+}
+#endif
+inline void QueryDeviceParameterReq_DEV::set_strquerytype(const char* value) {
+  
+  strquerytype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+}
+inline void QueryDeviceParameterReq_DEV::set_strquerytype(const char* value, size_t size) {
+  
+  strquerytype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+}
+inline ::std::string* QueryDeviceParameterReq_DEV::mutable_strquerytype() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+  return strquerytype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDeviceParameterReq_DEV::release_strquerytype() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+  
+  return strquerytype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDeviceParameterReq_DEV::set_allocated_strquerytype(::std::string* strquerytype) {
+  if (strquerytype != NULL) {
+    
+  } else {
+    
+  }
+  strquerytype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strquerytype);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceParameterReq_DEV.strQueryType)
+}
+
+// -------------------------------------------------------------------
+
+// QueryDeviceParameterRsp_DEV
+
+// .Interactive.Message.DoorbellParameter doorbellParameter = 1;
+inline bool QueryDeviceParameterRsp_DEV::has_doorbellparameter() const {
+  return this != internal_default_instance() && doorbellparameter_ != NULL;
+}
+inline void QueryDeviceParameterRsp_DEV::clear_doorbellparameter() {
+  if (GetArenaNoVirtual() == NULL && doorbellparameter_ != NULL) delete doorbellparameter_;
+  doorbellparameter_ = NULL;
+}
+inline const ::Interactive::Message::DoorbellParameter& QueryDeviceParameterRsp_DEV::doorbellparameter() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceParameterRsp_DEV.doorbellParameter)
+  return doorbellparameter_ != NULL ? *doorbellparameter_
+                         : *::Interactive::Message::DoorbellParameter::internal_default_instance();
+}
+inline ::Interactive::Message::DoorbellParameter* QueryDeviceParameterRsp_DEV::mutable_doorbellparameter() {
+  
+  if (doorbellparameter_ == NULL) {
+    doorbellparameter_ = new ::Interactive::Message::DoorbellParameter;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceParameterRsp_DEV.doorbellParameter)
+  return doorbellparameter_;
+}
+inline ::Interactive::Message::DoorbellParameter* QueryDeviceParameterRsp_DEV::release_doorbellparameter() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceParameterRsp_DEV.doorbellParameter)
+  
+  ::Interactive::Message::DoorbellParameter* temp = doorbellparameter_;
+  doorbellparameter_ = NULL;
+  return temp;
+}
+inline void QueryDeviceParameterRsp_DEV::set_allocated_doorbellparameter(::Interactive::Message::DoorbellParameter* doorbellparameter) {
+  delete doorbellparameter_;
+  doorbellparameter_ = doorbellparameter;
+  if (doorbellparameter) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceParameterRsp_DEV.doorbellParameter)
 }
 
 // -------------------------------------------------------------------
@@ -30721,6 +32338,45 @@ inline void Req::set_allocated_modifydevicepropertyreq_dev_value(::Interactive::
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyDevicePropertyReq_DEV_Value)
 }
 
+// .Interactive.Message.QueryDeviceParameterReq_DEV QueryDeviceParameterReq_DEV_Value = 810;
+inline bool Req::has_querydeviceparameterreq_dev_value() const {
+  return this != internal_default_instance() && querydeviceparameterreq_dev_value_ != NULL;
+}
+inline void Req::clear_querydeviceparameterreq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querydeviceparameterreq_dev_value_ != NULL) delete querydeviceparameterreq_dev_value_;
+  querydeviceparameterreq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDeviceParameterReq_DEV& Req::querydeviceparameterreq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryDeviceParameterReq_DEV_Value)
+  return querydeviceparameterreq_dev_value_ != NULL ? *querydeviceparameterreq_dev_value_
+                         : *::Interactive::Message::QueryDeviceParameterReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDeviceParameterReq_DEV* Req::mutable_querydeviceparameterreq_dev_value() {
+  
+  if (querydeviceparameterreq_dev_value_ == NULL) {
+    querydeviceparameterreq_dev_value_ = new ::Interactive::Message::QueryDeviceParameterReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryDeviceParameterReq_DEV_Value)
+  return querydeviceparameterreq_dev_value_;
+}
+inline ::Interactive::Message::QueryDeviceParameterReq_DEV* Req::release_querydeviceparameterreq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryDeviceParameterReq_DEV_Value)
+  
+  ::Interactive::Message::QueryDeviceParameterReq_DEV* temp = querydeviceparameterreq_dev_value_;
+  querydeviceparameterreq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_querydeviceparameterreq_dev_value(::Interactive::Message::QueryDeviceParameterReq_DEV* querydeviceparameterreq_dev_value) {
+  delete querydeviceparameterreq_dev_value_;
+  querydeviceparameterreq_dev_value_ = querydeviceparameterreq_dev_value;
+  if (querydeviceparameterreq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDeviceParameterReq_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
 inline bool Req::has_msgprehandlerreq_usr_value() const {
   return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
@@ -32858,6 +34514,45 @@ inline void Rsp::set_allocated_modifydevicepropertyrsp_dev_value(::Interactive::
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyDevicePropertyRsp_DEV_Value)
 }
 
+// .Interactive.Message.QueryDeviceParameterRsp_DEV QueryDeviceParameterRsp_DEV_Value = 810;
+inline bool Rsp::has_querydeviceparameterrsp_dev_value() const {
+  return this != internal_default_instance() && querydeviceparameterrsp_dev_value_ != NULL;
+}
+inline void Rsp::clear_querydeviceparameterrsp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && querydeviceparameterrsp_dev_value_ != NULL) delete querydeviceparameterrsp_dev_value_;
+  querydeviceparameterrsp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDeviceParameterRsp_DEV& Rsp::querydeviceparameterrsp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryDeviceParameterRsp_DEV_Value)
+  return querydeviceparameterrsp_dev_value_ != NULL ? *querydeviceparameterrsp_dev_value_
+                         : *::Interactive::Message::QueryDeviceParameterRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDeviceParameterRsp_DEV* Rsp::mutable_querydeviceparameterrsp_dev_value() {
+  
+  if (querydeviceparameterrsp_dev_value_ == NULL) {
+    querydeviceparameterrsp_dev_value_ = new ::Interactive::Message::QueryDeviceParameterRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryDeviceParameterRsp_DEV_Value)
+  return querydeviceparameterrsp_dev_value_;
+}
+inline ::Interactive::Message::QueryDeviceParameterRsp_DEV* Rsp::release_querydeviceparameterrsp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryDeviceParameterRsp_DEV_Value)
+  
+  ::Interactive::Message::QueryDeviceParameterRsp_DEV* temp = querydeviceparameterrsp_dev_value_;
+  querydeviceparameterrsp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_querydeviceparameterrsp_dev_value(::Interactive::Message::QueryDeviceParameterRsp_DEV* querydeviceparameterrsp_dev_value) {
+  delete querydeviceparameterrsp_dev_value_;
+  querydeviceparameterrsp_dev_value_ = querydeviceparameterrsp_dev_value;
+  if (querydeviceparameterrsp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDeviceParameterRsp_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
 inline bool Rsp::has_msgprehandlerrsp_usr_value() const {
   return this != internal_default_instance() && msgprehandlerrsp_usr_value_ != NULL;
@@ -34503,6 +36198,12 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

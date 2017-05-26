@@ -62,6 +62,8 @@ public:
 
         ModifyDevicePropertyReq_DEV_T = 10400,   //修改设备属性
         ModifyDevicePropertyRsp_DEV_T = 10410,
+        QueryDeviceParameterReq_DEV_T = 10420,
+        QueryDeviceParameterRsp_DEV_T = 10430,
 
         ////////////////////////////////////////////////////////
 
@@ -289,6 +291,25 @@ public:
         std::string m_strDescription;
         unsigned int m_uiForceUpgrade;
         std::string m_strUpdateDate;
+    };
+
+    struct DoorbellParameter
+    {
+        std::string m_strDoorbellName;
+        std::string m_strSerialNumber;
+        std::string m_strDoorbellP2Pid;
+        std::string m_strBatteryCapacity;
+        std::string m_strChargingState;
+        std::string m_strWifiSignal;
+        std::string m_strVolumeLevel;
+        std::string m_strVersionNumber;
+        std::string m_strChannelNumber;
+        std::string m_strCodingType;
+        std::string m_strPIRAlarmSwtich;
+        std::string m_strDoorbellSwitch;
+        std::string m_strPIRAlarmLevel;
+        std::string m_strPIRIneffectiveTime;
+        std::string m_strCurrentWifi;
     };
 
     struct Req
@@ -1203,6 +1224,9 @@ public:
         std::string m_strTransfer;
         std::string m_strMobilePort;
         std::string m_strChannelCount;
+        unsigned int m_uiDeviceType;
+        std::string m_strRequestSource;
+        DoorbellParameter m_doorbellParameter;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1217,6 +1241,27 @@ public:
 
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
+
+    struct QueryDeviceParameterReq_DEV : Req
+    {
+        std::string m_strDeviceID;
+        unsigned int m_uiDeviceType;
+        std::string m_strQueryType;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDeviceParameterRsp_DEV : Rsp
+    {
+        DoorbellParameter m_doorbellParameter;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct GetDeviceAccessRecordReq_INNER : Req
     {
@@ -1600,6 +1645,10 @@ private:
     bool ModifyDevicePropertyRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool ModifyDevicePropertyRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool QueryDeviceParameterReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryDeviceParameterReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryDeviceParameterRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryDeviceParameterRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    
