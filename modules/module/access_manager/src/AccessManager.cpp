@@ -17,6 +17,9 @@ const std::string AccessManager::ANDROID_APP = "Android_App";
 const std::string AccessManager::IOS_APP = "iOS_App";
 const std::string AccessManager::IPC = "IPC";
 
+const std::string AccessManager::ONLINE = "online";
+const std::string AccessManager::OFFLINE = "offline";
+
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache)),
 m_DBTimer(NULL, 600)
@@ -163,7 +166,9 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::DeleteConfigurationReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::ModifyConfigurationReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -1039,8 +1044,11 @@ bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string
 
     InteractiveProtoHandler::QueryDevInfoReq_USR req;
     InteractiveProtoHandler::Device dev;
+    std::string strVersion;
+    std::string strUpdateDate;
+    std::string strOnlineStatus;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &dev, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &dev, &writer, &strSrcID, &strVersion, &strUpdateDate, &strOnlineStatus)
     {
         InteractiveProtoHandler::QueryDevInfoRsp_USR rsp;
 
@@ -1049,6 +1057,9 @@ bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strVersion = blResult ? strVersion : "";
+        rsp.m_strUpdateDate = blResult ? strUpdateDate : "";
+        rsp.m_strOnlineStatus = blResult ? strOnlineStatus : "";
         rsp.m_strValue = "value";
 
         rsp.m_devInfo.m_strCreatedate = dev.m_strCreatedate;
@@ -1086,6 +1097,22 @@ bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string
     {
         LOG_ERROR_RLD("Query device info from db failed, device id is " << req.m_strDevID);
         return false;
+    }
+
+    if (!QueryDeviceDateAndVersionToDB(req.m_strDevID, dev.m_uiTypeInfo, strUpdateDate, strVersion))
+    {
+        //已查到关键信息，此处只做日志记录，不返回错误
+        LOG_ERROR_RLD("Query device updatedate and version from db failed, device id is " << req.m_strDevID);
+        //return false;
+    }
+
+    if (m_SessionMgr.ExistID(req.m_strDevID))
+    {
+        strOnlineStatus = ONLINE;
+    }
+    else
+    {
+        strOnlineStatus = OFFLINE;
     }
     
     blResult = true;
@@ -1949,20 +1976,34 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
             ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
             return false;
         }
-        else if (!QueryDevPropertyByDevDomain(req.m_strDomainName, strDeviceID, strP2pID) || strDeviceID.empty())
+        else
         {
-            LOG_ERROR_RLD("P2p info of device failed, get device id by domainname error, src id is " << strSrcID <<
-                " and domainname is " << req.m_strDomainName);
+            if (!QueryDevPropertyByDevDomain(req.m_strDomainName, strDeviceID, strP2pID) || strDeviceID.empty())
+            {
+                LOG_ERROR_RLD("P2p info of device failed, get device id by domainname error, src id is " << strSrcID <<
+                    " and domainname is " << req.m_strDomainName);
+                ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAINNAME_INVALID);
+                return false;
+            }
 
-            ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAINNAME_INVALID);
-            return false;
-        }
-        else if (!strP2pID.empty())
-        {
-            LOG_INFO_RLD("P2p info of device successful, device p2p id is built-in, p2pid is " << strP2pID);
+            if (strP2pID.empty())
+            {
+                if (0xFFFF == req.m_uiP2pSupplier)
+                {
+                    LOG_ERROR_RLD("P2p info of device failed, the divice not assign P2PID, src id is " << strSrcID <<
+                        " and domainname is " << req.m_strDomainName);
+                    ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAINNAME_INVALID);
+                    return false;
+                }
+            }
+            else
+            {
+                LOG_INFO_RLD("P2p info of device successful, device p2p id is built-in, p2pid is " << strP2pID);
 
-            blResult = true;
-            return blResult;
+                blResult = true;
+                return blResult;
+            }
+
         }
     }
     else
@@ -3261,6 +3302,53 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
     if (!QueryDeviceParameterToDB(req.m_strDeviceID, req.m_uiDeviceType, req.m_strQueryType, doorbellParameter))
     {
         LOG_ERROR_RLD("Query device parameter failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryIfP2pIDValidReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryIfP2pIDValidReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryIfP2pIDValidRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query if p2pID valid rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query if p2pID valid rsp already send, dst id is " << strSrcID <<
+            " and p2pid is " << req.m_strP2pID <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query if p2pID valid req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryIfP2pIDValidToDB(req.m_strP2pID))
+    {
+        LOG_ERROR_RLD("Query if p2pID valid failed, p2p id is " << req.m_strP2pID);
         return false;
     }
 
@@ -6561,3 +6649,116 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
     return true;
 }
 
+bool AccessManager::QueryDeviceDateAndVersionToDB(const std::string &strDeviceID, const unsigned int uiDeviceType,
+    std::string &strUpdateDate, std::string &strVersion)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt;
+
+    if (DEVICE_TYPE_DOORBELL == uiDeviceType)
+    {
+        sqlfmt = "select version_number, updatedate from t_device_parameter_doorbell where deviceid = '%s' and status = 0";
+    }
+    else if (DEVICE_TYPE_IPC == uiDeviceType)
+    {
+        sqlfmt = "select version, updatedate from t_device_parameter_ipc  where deviceid = '%s' and status = 0";
+    }
+    else
+    {
+        LOG_ERROR_RLD("QueryDeviceDateAndVersionToDB, unknown device type: " << uiDeviceType);
+        return false;
+    }
+    
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
+
+    struct DeviceParam 
+    {
+        std::string strVersion;
+        std::string strUpdateDate;
+    };
+    DeviceParam deviceParam;
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            deviceParam.strVersion = strColumn;
+            break;
+        case 1:
+            deviceParam.strUpdateDate = strColumn;
+            Result = deviceParam;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryDeviceDateAndVersionToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryDeviceDateAndVersionToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryDeviceDateAndVersionToDB sql result is empty, sql is << " << sql);
+        return true;
+    }
+
+    auto result = boost::any_cast<DeviceParam>(ResultList.front());
+    strVersion = result.strVersion;
+    strUpdateDate = result.strUpdateDate;
+
+    return true;
+}
+
+bool AccessManager::QueryIfP2pIDValidToDB(const std::string &strP2pID)
+{
+    char sql[1024] = { 0 };
+    unsigned int size = sizeof(sql);
+    const char *sqlfmt = "select deviceid from t_device_parameter_ipc where p2pid = '%s' and status = 0";
+    snprintf(sql, size, sqlfmt, strP2pID.c_str());
+
+    std::string strDeviceID;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strDeviceID = strColumn;
+        Result = strDeviceID;
+
+        LOG_INFO_RLD("QueryIfP2pIDValidToDB sql device id is " << strDeviceID);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryIfP2pIDValidToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        return true;
+    }
+
+    memset(sql, 0, size);
+    sqlfmt = "select deviceid from t_device_parameter_doorbell where doorbell_p2pid = '%s' and status = 0";
+    snprintf(sql, size, sqlfmt, strP2pID.c_str());
+
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryIfP2pIDValidToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryIfP2pIDValidToDB sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    return true;
+}

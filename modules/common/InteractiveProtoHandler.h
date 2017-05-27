@@ -132,6 +132,9 @@ public:
         QueryAppUpgradeReq_USR_T = 20620,          //用户查询APP升级版本数据
         QueryAppUpgradeRsp_USR_T = 20630,
 
+        QueryIfP2pIDValidReq_USR_T = 20640,        //用户查询P2PID是否有效
+        QueryIfP2pIDValidRsp_USR_T = 20650,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -635,6 +638,9 @@ public:
     struct QueryDevInfoRsp_USR : Rsp
     {
         Device m_devInfo;
+        std::string m_strVersion;
+        std::string m_strOnlineStatus;
+        std::string m_strUpdateDate;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -874,6 +880,25 @@ public:
     struct QueryAppUpgradeRsp_USR : Rsp
     {
         AppUpgrade m_appUpgrade;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryIfP2pIDValidReq_USR : Req
+    {
+        std::string m_strP2pID;
+        unsigned int m_uiSuppliser;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryIfP2pIDValidRsp_USR : Rsp
+    {
+        std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1649,6 +1674,11 @@ private:
     bool QueryDeviceParameterReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryDeviceParameterRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryDeviceParameterRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryIfP2pIDValidReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryIfP2pIDValidReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryIfP2pIDValidRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryIfP2pIDValidRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

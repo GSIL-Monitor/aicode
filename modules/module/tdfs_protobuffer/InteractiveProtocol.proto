@@ -154,6 +154,9 @@ enum MsgType
   QueryAppUpgradeReq_USR_T = 20620;             //用户查询升级版本数据
   QueryAppUpgradeRsp_USR_T = 20630;
 
+  QueryIfP2pIDValidReq_USR_T = 20640;           //用户查询P2PID是否有效
+  QueryIfP2pIDValidRsp_USR_T = 20650;
+
   ///////////////////////////////////////////////////////
   
   GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
@@ -712,7 +715,10 @@ message QueryDevInfoReq_USR                     //查询设备信息请求
 message QueryDevInfoRsp_USR                     //查询设备信息响应
 {
   Device devInfo = 1;
-  string strValue = 2;
+  string strVersion = 2;
+  string strOnlineStatus = 3;                   //在线状态，online-在线，offline-离线
+  string strUpdateDate = 4;
+  string strValue = 5;
 }
 
 message QueryDevReq_USR                         //查询用户关联设备的信息，这里要考虑到分页处理
@@ -902,6 +908,16 @@ message QueryAppUpgradeRsp_USR                  //用户APP查询升级数据响
   string strUpdateDate = 8;
 }
 
+message QueryIfP2pIDValidReq_USR                //用户查询P2PID是否有效请求
+{
+  string strP2pID = 1;
+  uint32 uiP2pType = 2;                         //P2P类型，1：浪涛，2：尚云，3：TUTK
+}
+
+message QueryIfP2pIDValidRsp_USR                //用户查询P2PID是否有效响应
+{
+  string strValue = 1;
+}
 
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
@@ -1081,6 +1097,7 @@ message Req
   QueryAccessDomainNameReq_USR QueryAccessDomainNameReq_USR_Value = 350;   //用户查询接入服务器域名
 
   QueryAppUpgradeReq_USR QueryAppUpgradeReq_USR_Value = 360;     //用户查询升级版本数据
+  QueryIfP2pIDValidReq_USR QueryIfP2pIDValidReq_USR_Value = 370; //用户查询P2PID是否有效
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1164,6 +1181,7 @@ message Rsp
   QueryAccessDomainNameRsp_USR QueryAccessDomainNameRsp_USR_Value = 350;   //用户查询接入服务器域名
   
   QueryAppUpgradeRsp_USR QueryAppUpgradeRsp_USR_Value = 360;       //用户查询升级版本数据
+  QueryIfP2pIDValidRsp_USR QueryIfP2pIDValidRsp_USR_Value = 370;   //用户查询P2PID是否有效
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

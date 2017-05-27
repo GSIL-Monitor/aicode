@@ -102,6 +102,8 @@ const std::string HttpMsgHandler::QUERY_DEV_UPGRADE_ACTION("query_firmware_upgra
 
 const std::string HttpMsgHandler::QUERY_DEVICE_PARAM_ACTION("query_device_parameter");
 
+const std::string HttpMsgHandler::CHECK_DEVICE_P2PID_ACTION("check_device_p2pid");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1179,8 +1181,11 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     LOG_INFO_RLD("Query device info received and  devcie id is " << strDevID
         << " and session id is " << strSid);
 
+    std::string strUpdateDate;
+    std::string strVersion;
+    std::string strOnline;
     InteractiveProtoHandler::Device devinfo;
-    if (!QueryDeviceInfo<InteractiveProtoHandler::Device>(strSid, strDevID, devinfo))
+    if (!QueryDeviceInfo<InteractiveProtoHandler::Device>(strSid, strDevID, devinfo, strUpdateDate, strVersion, strOnline))
     {
         LOG_ERROR_RLD("Query device info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -1198,7 +1203,10 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("status", boost::lexical_cast<std::string>(devinfo.m_uiStatus)));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainname", devinfo.m_strDomainName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", devinfo.m_strP2pID));
-    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("updatedate", strUpdateDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version", strVersion));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("online", strOnline));
+        
     blResult = true;
 
     return blResult;
@@ -1933,6 +1941,74 @@ bool HttpMsgHandler::P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, M
 
 }
 
+bool HttpMsgHandler::CheckDeviceP2pidHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("p2pid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("P2p id not found.");
+        return blResult;
+    }
+    const std::string strP2pid = itFind->second;
+
+    std::string strP2pType;
+    unsigned int uiP2pType = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("p2p_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strP2pType = itFind->second;
+        try
+        {
+            uiP2pType = boost::lexical_cast<unsigned int>(strP2pType);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Check p2p id type of user is invalid and error msg is " << e.what() << " and input is " << strP2pType);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Check p2p id type of user is invalid and input is " << strP2pType);
+            return blResult;
+        }
+    }
+    
+    LOG_INFO_RLD("Check p2p id info received and  p2p id is " << strP2pid << " and p2p type is " << uiP2pType);
+
+    if (!CheckDeviceP2pid(strP2pid, uiP2pType))
+    {
+        LOG_ERROR_RLD("Check p2p id info handle failed and p2p id is " << strP2pid << " and p2p type is " << uiP2pType);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+
+}
+
 bool HttpMsgHandler::DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
@@ -2210,14 +2286,13 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     BOOST_SCOPE_EXIT_END
 
+    std::string strSid;
     auto itFind = pMsgInfoMap->find("sid");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Sid not found.");
-        return blResult;
+        strSid = itFind->second;
     }
-    const std::string strSid = itFind->second;
-
+    
     unsigned int uiCount = 0;
     std::string strDevID;
     itFind = pMsgInfoMap->find("devid");
@@ -2240,29 +2315,26 @@ bool HttpMsgHandler::DeviceP2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strRemoteIP = itFind->second;
 
+    std::string strP2pType;
+    unsigned int uiP2pType = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("p2p_type");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Device p2p type not found.");
-        return blResult;
-    }
-    const std::string strP2pType = itFind->second;
-
-    unsigned int uiP2pType = 0;
-
-    try
-    {
-        uiP2pType = boost::lexical_cast<unsigned int>(strP2pType);
-    }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Query p2p type of device is invalid and error msg is " << e.what() << " and input is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Query p2p type of device is invalid and input is " << itFind->second);
-        return blResult;
+        strP2pType = itFind->second;
+        try
+        {
+            uiP2pType = boost::lexical_cast<unsigned int>(strP2pType);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query p2p type of device is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query p2p type of device is invalid and input is " << itFind->second);
+            return blResult;
+        }
     }
 
     std::string strDomainName;
@@ -5126,7 +5198,8 @@ bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &
 }
 
 template<typename T>
-bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo)
+bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo,
+    std::string &strUpdateDate, std::string &strVersion, std::string &strOnline)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5165,6 +5238,9 @@ bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::strin
         }
 
         DevInfo = QueryDevInfoRsp.m_devInfo;
+        strUpdateDate = QueryDevInfoRsp.m_strUpdateDate;
+        strVersion = QueryDevInfoRsp.m_strVersion;
+        strOnline = QueryDevInfoRsp.m_strOnlineStatus;
 
         iRet = QueryDevInfoRsp.m_iRetcode;
 
@@ -7122,7 +7198,63 @@ bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string 
 
         LOG_INFO_RLD("Query device param info and doorbell name is " << devpt.m_strDoorbellName << " and volume level is " << devpt.m_strVolumeLevel <<
             " and pir alarm switch is " << devpt.m_strPirAlarmSwitch << " and doorbell switch is " << devpt.m_strDoorbellSwitch << 
-            " and pir alarm level is " << devpt.m_strPirAlarmLevel << " and pir ineffective time is " << devpt.m_strPirIneffectiveTime);
+            " and pir alarm level is " << devpt.m_strPirAlarmLevel << " and pir ineffective time is " << devpt.m_strPirIneffectiveTime <<
+            " and return code is " << QueryDevParamRsp.m_iRetcode <<
+            " and return msg is " << QueryDevParamRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::CheckDeviceP2pid(const std::string &strP2pid, const unsigned int uiP2pType)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryIfP2pIDValidReq_USR QueryP2pidValidReq;
+        QueryP2pidValidReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T;
+        QueryP2pidValidReq.m_uiMsgSeq = 1;
+        QueryP2pidValidReq.m_strSID = "";
+        QueryP2pidValidReq.m_strP2pID = strP2pid;
+        QueryP2pidValidReq.m_uiSuppliser = uiP2pType;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryP2pidValidReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Check device p2p id req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR QueryP2pidValidRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryP2pidValidRsp))
+        {
+            LOG_ERROR_RLD("Check device p2p id rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+        
+        iRet = QueryP2pidValidRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Check device p2p id info and doorbell name is " << " and return code is " << QueryP2pidValidRsp.m_iRetcode <<
+            " and return msg is " << QueryP2pidValidRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

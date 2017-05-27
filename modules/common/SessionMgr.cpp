@@ -89,18 +89,20 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
 
     if (!strID.empty())
     {
-        Json::Value jsBody;
-        jsBody["id"] = strID;
-        jsBody["sid"] = strSessionID;
-        jsBody["threshold"] = uiThreshold;
-        Json::FastWriter fastwriter;
-        const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
-
-        if (!MemCacheCreate(strID, strBody, uiThreshold))
+        if (!MemCacheExist(strID))
         {
-            LOG_ERROR_RLD("Create id failed because memcache error.");
-            return false;
-        }
+            Json::Value jsBody;
+            jsBody["id"] = strID;
+            jsBody["threshold"] = uiThreshold;
+            Json::FastWriter fastwriter;
+            const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+            if (!MemCacheCreate(strID, strBody, uiThreshold))
+            {
+                LOG_ERROR_RLD("Create id failed because memcache error.");
+                return false;
+            }
+        }        
     }
 
     boost::shared_ptr<SessionTimer> pSessionTimer(new SessionTimer);

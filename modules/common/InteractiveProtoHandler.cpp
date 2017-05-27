@@ -1059,6 +1059,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceParameterRsp_DEV_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceParameterRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryIfP2pIDValidReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryIfP2pIDValidReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryIfP2pIDValidReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryIfP2pIDValidRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2101,6 +2115,26 @@ bool InteractiveProtoHandler::QueryDeviceParameterRsp_DEV_UnSerializer(const Int
     return UnSerializerT<QueryDeviceParameterRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::QueryIfP2pIDValidReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryIfP2pIDValidReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryIfP2pIDValidReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryIfP2pIDValidReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryIfP2pIDValidRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryIfP2pIDValidRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -2788,6 +2822,9 @@ void InteractiveProtoHandler::QueryDevInfoRsp_USR::UnSerializer(const Interactiv
     m_devInfo.m_uiStatus = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().uistatus();
     m_devInfo.m_uiTypeInfo = InteractiveMsg.rspvalue().querydevinforsp_usr_value().devinfo().uitypeinfo();
 
+    m_strVersion = InteractiveMsg.rspvalue().querydevinforsp_usr_value().strversion();
+    m_strOnlineStatus = InteractiveMsg.rspvalue().querydevinforsp_usr_value().stronlinestatus();
+    m_strUpdateDate = InteractiveMsg.rspvalue().querydevinforsp_usr_value().strupdatedate();
     m_strValue = InteractiveMsg.rspvalue().querydevinforsp_usr_value().strvalue();
 
 }
@@ -2808,6 +2845,9 @@ void InteractiveProtoHandler::QueryDevInfoRsp_USR::Serializer(InteractiveMessage
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_uistatus(m_devInfo.m_uiStatus);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->mutable_devinfo()->set_uitypeinfo(m_devInfo.m_uiTypeInfo);
 
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->set_strversion(m_strVersion);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->set_stronlinestatus(m_strOnlineStatus);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->set_strupdatedate(m_strUpdateDate);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevinforsp_usr_value()->set_strvalue(m_strValue);
 
 
@@ -4406,3 +4446,33 @@ void InteractiveProtoHandler::QueryDeviceParameterRsp_DEV::Serializer(Interactiv
     InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strpirineffectivetime(m_doorbellParameter.m_strPIRIneffectiveTime);
     InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strcurrentwifi(m_doorbellParameter.m_strCurrentWifi);
 }
+
+void InteractiveProtoHandler::QueryIfP2pIDValidReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strP2pID = InteractiveMsg.reqvalue().queryifp2pidvalidreq_usr_value().strp2pid();
+    m_uiSuppliser = InteractiveMsg.reqvalue().queryifp2pidvalidreq_usr_value().uip2ptype();
+}
+
+void InteractiveProtoHandler::QueryIfP2pIDValidReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryIfP2pIDValidReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryifp2pidvalidreq_usr_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryifp2pidvalidreq_usr_value()->set_uip2ptype(m_uiSuppliser);
+
+}
+
+void InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().queryifp2pidvalidrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryIfP2pIDValidRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryifp2pidvalidrsp_usr_value()->set_strvalue(m_strValue);
+}
+

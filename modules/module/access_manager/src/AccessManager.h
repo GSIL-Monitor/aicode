@@ -60,6 +60,9 @@ public:
     static const int DEVICE_TYPE_DOORBELL = 0;
     static const int DEVICE_TYPE_IPC = 1;
 
+    static const std::string ONLINE;
+    static const std::string OFFLINE;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -207,6 +210,8 @@ public:
 
     bool QueryDeviceParameterReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryIfP2pIDValidReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -347,6 +352,11 @@ private:
 
     bool QueryDoorbellParameterToDB(const std::string &strDeviceID, const std::string &strQueryType,
         InteractiveProtoHandler::DoorbellParameter &doorbellParameter);
+
+    bool QueryDeviceDateAndVersionToDB(const std::string &strDeviceID, const unsigned int uiDeviceType,
+        std::string &strUpdateDate, std::string &strVersion);
+
+    bool QueryIfP2pIDValidToDB(const std::string &strP2pID);
 
 private:
     ParamInfo m_ParamInfo;

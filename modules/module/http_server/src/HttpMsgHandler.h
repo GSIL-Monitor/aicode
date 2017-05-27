@@ -68,6 +68,8 @@ public:
 
     static const std::string QUERY_DEVICE_PARAM_ACTION;
 
+    static const std::string CHECK_DEVICE_P2PID_ACTION;
+
     
     typedef struct _ParamInfo
     {
@@ -123,6 +125,8 @@ public:
     bool QueryFriendHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool P2pInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool CheckDeviceP2pidHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     bool DeviceLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
@@ -277,7 +281,7 @@ private:
     bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif);
 
     template<typename T>
-    bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo);
+    bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo, std::string &strUpdateDate, std::string &strVersion, std::string &strOnline);
 
     template<typename T>
     bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList, 
@@ -358,6 +362,8 @@ private:
         std::string &strForceUpgrade, std::string &strUpdateDate);
 
     bool QueryDevParam(const std::string &strSid, const std::string &strDevID, const unsigned int uiDevType, const std::string &strQueryType, DeviceProperty &devpt);
+
+    bool CheckDeviceP2pid(const std::string &strP2pid, const unsigned int uiP2pType);
 
 private:
     ParamInfo m_ParamInfo;
