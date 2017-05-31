@@ -784,8 +784,9 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 {
     bool blResult = false;
     InteractiveProtoHandler::AddDevReq_USR req;
+    std::string strDeviceID;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
@@ -793,7 +794,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        rsp.m_strDeviceID = blResult ? req.m_devInfo.m_strDevID : "";
+        rsp.m_strDeviceID = blResult ? strDeviceID : "";
         rsp.m_strValue = "value";
 
         std::string strSerializeOutPut;
@@ -817,54 +818,20 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
-    //P2PID、域名、设备ID只能输入一个字段，如果没有输入设备ID，则根据P2PID或者域名查询设备ID
-    //std::string strDeviceID;
-    //unsigned int counts = 0;
-    //if (!req.m_devInfo.m_strDevID.empty())
-    //{
-    //    strDeviceID = req.m_devInfo.m_strDevID;
-    //    ++counts;
-    //}
+    //检查设备是否已经向平台上报过数据
+    if (!QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
+    {
+        LOG_ERROR_RLD("Add device failed, the device p2pid is not recorded, src id is " << strSrcID <<
+            " and p2p id is " << req.m_devInfo.m_strP2pID);
 
-    //if (!req.m_devInfo.m_strDomainName.empty())
-    //{
-    //    if (strDeviceID.empty() && !QueryDevPropertyByDevDomain(req.m_devInfo.m_strDomainName, strDeviceID))
-    //    {
-    //        LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
-    //            " and device domain name is " << req.m_devInfo.m_strDomainName);
-    //        return false;
-    //    }
-    //    ++counts;
-    //}
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER);
+        return false;
+    }
 
-    //if (!req.m_devInfo.m_strP2pID.empty())
-    //{
-    //    if (strDeviceID.empty() && !QueryDevIDByDevP2pID(req.m_devInfo.m_strP2pID, strDeviceID))
-    //    {
-    //        LOG_ERROR_RLD("Add device query device id failed, src id is " << strSrcID <<
-    //            " and device p2pid is " << req.m_devInfo.m_strP2pID);
-    //        return false;
-    //    }
-    //    ++counts;
-    //}
-
-    //if (1 != counts)
-    //{
-    //    LOG_ERROR_RLD("Add device input error, src id is " << strSrcID << ", only allow input one of deviceid|domainname|p2pid");
-
-    //    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_MUCH);
-    //    return false;
-    //}
-
-    //if (strDeviceID.empty())
-    //{
-    //    LOG_ERROR_RLD("Add device failed, the device is not recorded, src id is " << strSrcID <<
-    //        " and p2p id is " << req.m_strP2pID <<
-    //        " and domain name is " << req.m_strDomainName);
-
-    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_RECORDED_USER);
-    //    return false;
-    //}
+    if (DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
+    {
+        strDeviceID = req.m_devInfo.m_strDevID;
+    }
 
     //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
@@ -872,7 +839,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     strCurrentTime.replace(pos, 1, std::string(" "));
 
     std::string strUserID;
-    if (!QueryOwnerUserIDByDeviceID(req.m_devInfo.m_strDevID, strUserID))
+    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID))
     {
         LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
@@ -888,7 +855,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         }
 
         InteractiveProtoHandler::Device DevInfo;
-        DevInfo.m_strDevID = req.m_devInfo.m_strDevID;
+        DevInfo.m_strDevID = strDeviceID;
         DevInfo.m_strDevName = req.m_devInfo.m_strDevName;
         DevInfo.m_strDevPassword = req.m_devInfo.m_strDevPassword;
         DevInfo.m_uiTypeInfo = req.m_devInfo.m_uiTypeInfo;
@@ -907,7 +874,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         relation.m_strBeginDate = strCurrentTime;
         relation.m_strEndDate = MAX_DATE;
         relation.m_strCreateDate = strCurrentTime;
-        relation.m_strDevID = req.m_devInfo.m_strDevID;
+        relation.m_strDevID = strDeviceID;
         relation.m_strExtend = req.m_devInfo.m_strExtend;
         relation.m_strUsrID = req.m_strUserID;
 
@@ -1988,7 +1955,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
             if (strP2pID.empty())
             {
-                if (0xFFFF == req.m_uiP2pSupplier)
+                if (0xFFFFFFFF == req.m_uiP2pSupplier)
                 {
                     LOG_ERROR_RLD("P2p info of device failed, the divice not assign P2PID, src id is " << strSrcID <<
                         " and domainname is " << req.m_strDomainName);
@@ -6554,9 +6521,9 @@ bool AccessManager::QueryDeviceParameterToDB(const std::string &strDeviceID, con
 bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, const std::string &strQueryType, InteractiveProtoHandler::DoorbellParameter &doorbellParameter)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level, version_number, channel_number, coding_type,"
-        " pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time current_wifi from t_device_parameter_doorbell"
-        " where deviceid = '%s'";
+    const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level,"
+        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi"
+        " from t_device_parameter_doorbell where deviceid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
@@ -6567,7 +6534,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
             doorbellParameter.m_strDoorbellName = strColumn;
             break;
         case 1:
-            doorbellParameter.m_strVersionNumber = strColumn;
+            doorbellParameter.m_strSerialNumber = strColumn;
             break;
         case 2:
             doorbellParameter.m_strDoorbellP2Pid = strColumn;
@@ -6760,5 +6727,48 @@ bool AccessManager::QueryIfP2pIDValidToDB(const std::string &strP2pID)
         return false;
     }
 
+    return true;
+}
+
+bool AccessManager::QueryIfDeviceReportedToDB(const std::string &strP2PID, const unsigned int uiDeviceType, std::string &strDeviceID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt;
+    if (DEVICE_TYPE_DOORBELL == uiDeviceType)
+    {
+        sqlfmt = "select deviceid from t_device_parameter_doorbell where doorbell_p2pid = '%s' and status = 0";
+    }
+    else if (DEVICE_TYPE_IPC == uiDeviceType)
+    {
+        sqlfmt = "select deviceid from t_device_parameter_ipc where p2pid = '%s' and status = 0";
+    }
+    else
+    {
+        LOG_ERROR_RLD("QueryIfDeviceReportedToDB failed, unknown device type: " << uiDeviceType);
+        return false;
+    }
+    snprintf(sql, sizeof(sql), sqlfmt, strP2PID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("QueryIfDeviceReportedToDB sql result id is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryIfDeviceReportedToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryIfDeviceReportedToDB sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    strDeviceID = boost::any_cast<std::string>(ResultList.front());
     return true;
 }

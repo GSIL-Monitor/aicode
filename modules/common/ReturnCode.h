@@ -26,6 +26,7 @@ public:
     static const int DEVICE_IS_ADDED_USER;               //设备已经被添加
     static const int DEVICE_NOT_BELONG_TO_USER;          //设备不归属于用户
     static const int DEVICE_NOT_RECORDED_USER;           //设备未记录
+    static const int DEVICE_P2PID_NOT_RECORDED_USER;     //设备P2PID未记录
 
     //设备相关的错误代码
     static const int DEVICEID_NOT_EXISTED_DEV;           //设备ID不存在

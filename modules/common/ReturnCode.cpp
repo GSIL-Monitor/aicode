@@ -17,6 +17,7 @@ const int ReturnInfo::EMAIL_NOT_MATCHED_USER = 1005;               //” œ‰”Î”√ªß√
 const int ReturnInfo::DEVICE_IS_ADDED_USER = 1006;                 //…Ë±∏“—æ≠±ªÃÌº”
 const int ReturnInfo::DEVICE_NOT_BELONG_TO_USER = 1007;            //…Ë±∏≤ªπÈ Ù”⁄”√ªß
 const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //…Ë±∏Œ¥º«¬º
+const int ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER = 1009;       //…Ë±∏P2PIDŒ¥º«¬º
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //…Ë±∏∂˛º∂”Ú√˚“—±ª π”√
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //…Ë±∏P2PID“—±ª π”√

@@ -2537,19 +2537,6 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strDevType = itFind->second;
     }
 
-    std::string strReqSrc;
-    itFind = pMsgInfoMap->find("request_src");
-    if (pMsgInfoMap->end() != itFind)
-    {
-        strReqSrc = itFind->second;
-    }
-
-    if (strDevType == "0" && strReqSrc.empty()) //门铃类型时，请求源不能为空
-    {
-        LOG_ERROR_RLD("Device type is doorbell and request src is empty.");
-        return blResult;
-    }
-
     unsigned int uiDevType = 1; //默认为ipc类型。
 
     try
@@ -4373,14 +4360,13 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         return blResult;
     }
     
+    std::string strQueryType("all");
     itFind = pMsgInfoMap->find("query_type");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Query type not found.");
-        return blResult;
+        strQueryType = itFind->second;
     }
-    const std::string strQueryType = itFind->second;
-    
+        
     LOG_INFO_RLD("Query device param info received and device id is " << strDevID << " and device type is " << strDevType
         << " and query type is " << strQueryType << " and session id is " << strSid);
 
@@ -4391,14 +4377,32 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
             << " and query type is " << strQueryType << " and session id is " << strSid);
         return blResult;
     }
+    
+    if (0 == uiDevType) //门铃设备
+    {
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_name", devpt.m_strDoorbellName));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("volume_level", devpt.m_strVolumeLevel));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_switch", devpt.m_strPirAlarmSwitch));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_switch", devpt.m_strDoorbellSwitch));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_level", devpt.m_strPirAlarmLevel));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_ineffective_time", devpt.m_strPirIneffectiveTime));
 
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_name", devpt.m_strDoorbellName));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("volume_level", devpt.m_strVolumeLevel));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_switch", devpt.m_strPirAlarmSwitch));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_switch", devpt.m_strDoorbellSwitch));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_level", devpt.m_strPirAlarmLevel));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_ineffective_time", devpt.m_strPirIneffectiveTime));
 
+        if (strQueryType == "all")
+        {
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("serial_number", devpt.m_strSerialNum));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_p2pid", devpt.m_strDoorbellP2pid));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("battery_capacity", devpt.m_strBatteryCap));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("charging_state", devpt.m_strChargingState));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("wifi_signal", devpt.m_strWifiSig));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version_number", devpt.m_strVersionNum));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("channel_number", devpt.m_strChannelNum));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("coding_type", devpt.m_strCodingType));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("current_wifi", devpt.m_strCurrentWifi));
+        }
+    }
+
+    
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -7187,20 +7191,36 @@ bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string 
             return iRet = CommMsgHandler::FAILED;
         }
 
-        devpt.m_strDoorbellName = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellName;
-        devpt.m_strVolumeLevel = QueryDevParamRsp.m_doorbellParameter.m_strVolumeLevel;
-        devpt.m_strPirAlarmSwitch = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmSwtich;
-        devpt.m_strDoorbellSwitch = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellSwitch;
-        devpt.m_strPirAlarmLevel = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmLevel;
-        devpt.m_strPirIneffectiveTime = QueryDevParamRsp.m_doorbellParameter.m_strPIRIneffectiveTime;
+        if (0 == uiDevType) //门铃设备
+        {
+            devpt.m_strDoorbellName = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellName;
+            devpt.m_strVolumeLevel = QueryDevParamRsp.m_doorbellParameter.m_strVolumeLevel;
+            devpt.m_strPirAlarmSwitch = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmSwtich;
+            devpt.m_strDoorbellSwitch = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellSwitch;
+            devpt.m_strPirAlarmLevel = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmLevel;
+            devpt.m_strPirIneffectiveTime = QueryDevParamRsp.m_doorbellParameter.m_strPIRIneffectiveTime;
 
+            if (strQueryType == "all")
+            {
+                devpt.m_strSerialNum = QueryDevParamRsp.m_doorbellParameter.m_strSerialNumber;
+                devpt.m_strDoorbellP2pid = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellP2Pid;
+                devpt.m_strBatteryCap = QueryDevParamRsp.m_doorbellParameter.m_strBatteryCapacity;
+                devpt.m_strChargingState = QueryDevParamRsp.m_doorbellParameter.m_strChargingState;
+                devpt.m_strWifiSig = QueryDevParamRsp.m_doorbellParameter.m_strWifiSignal;
+                devpt.m_strVersionNum = QueryDevParamRsp.m_doorbellParameter.m_strVersionNumber;
+                devpt.m_strChannelNum = QueryDevParamRsp.m_doorbellParameter.m_strChannelNumber;
+                devpt.m_strCodingType = QueryDevParamRsp.m_doorbellParameter.m_strCodingType;
+                devpt.m_strCurrentWifi = QueryDevParamRsp.m_doorbellParameter.m_strCurrentWifi;
+            }
+
+            LOG_INFO_RLD("Query device param info and doorbell name is " << devpt.m_strDoorbellName << " and volume level is " << devpt.m_strVolumeLevel <<
+                " and pir alarm switch is " << devpt.m_strPirAlarmSwitch << " and doorbell switch is " << devpt.m_strDoorbellSwitch <<
+                " and pir alarm level is " << devpt.m_strPirAlarmLevel << " and pir ineffective time is " << devpt.m_strPirIneffectiveTime <<
+                " and return code is " << QueryDevParamRsp.m_iRetcode <<
+                " and return msg is " << QueryDevParamRsp.m_strRetMsg);
+        }
+        
         iRet = QueryDevParamRsp.m_iRetcode;
-
-        LOG_INFO_RLD("Query device param info and doorbell name is " << devpt.m_strDoorbellName << " and volume level is " << devpt.m_strVolumeLevel <<
-            " and pir alarm switch is " << devpt.m_strPirAlarmSwitch << " and doorbell switch is " << devpt.m_strDoorbellSwitch << 
-            " and pir alarm level is " << devpt.m_strPirAlarmLevel << " and pir ineffective time is " << devpt.m_strPirIneffectiveTime <<
-            " and return code is " << QueryDevParamRsp.m_iRetcode <<
-            " and return msg is " << QueryDevParamRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

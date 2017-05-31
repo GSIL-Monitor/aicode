@@ -358,6 +358,8 @@ private:
 
     bool QueryIfP2pIDValidToDB(const std::string &strP2pID);
 
+    bool QueryIfDeviceReportedToDB(const std::string &strP2PID, const unsigned int uiDeviceType, std::string &strDeviceID);
+
 private:
     ParamInfo m_ParamInfo;
 

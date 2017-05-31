@@ -4403,7 +4403,7 @@ void InteractiveProtoHandler::QueryDeviceParameterReq_DEV::Serializer(Interactiv
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceParameterReq_DEV_T);
     InteractiveMsg.mutable_reqvalue()->mutable_querydeviceparameterreq_dev_value()->set_strdeviceid(m_strDeviceID);
     InteractiveMsg.mutable_reqvalue()->mutable_querydeviceparameterreq_dev_value()->set_uidevicetype(m_uiDeviceType);
-    InteractiveMsg.mutable_reqvalue()->mutable_querydeviceparameterreq_dev_value()->set_strdeviceid(m_strQueryType);
+    InteractiveMsg.mutable_reqvalue()->mutable_querydeviceparameterreq_dev_value()->set_strquerytype(m_strQueryType);
 }
 
 void InteractiveProtoHandler::QueryDeviceParameterRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
