@@ -422,6 +422,54 @@ void SerializeConfigurationList(const std::list<InteractiveProtoHandler::Configu
     }
 }
 
+void UnSerializeDeviceEventList(std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList,
+    const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceEvent > &srcDeviceEventList)
+{
+    deviceEventList.clear();
+
+    unsigned int iCount = srcDeviceEventList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        auto srcDeviceEvent = srcDeviceEventList.Get(i);
+        InteractiveProtoHandler::DeviceEvent deviceEvent;
+        deviceEvent.m_strEventID = srcDeviceEvent.strdeviceid();
+        deviceEvent.m_uiDeviceType = srcDeviceEvent.uidevicetype();
+        deviceEvent.m_strEventID = srcDeviceEvent.streventid();
+        deviceEvent.m_uiEventType = srcDeviceEvent.uieventtype();
+        deviceEvent.m_uiEventState = srcDeviceEvent.uieventstate();
+        deviceEvent.m_strFileUrl = srcDeviceEvent.strfileurl();
+
+        deviceEventList.push_back(std::move(deviceEvent));
+    }
+}
+
+void SerializeDeviceEventList(const std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList,
+    ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceEvent >* pDstDeviceEventList)
+{
+    unsigned int iCount = deviceEventList.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstDeviceEventList->Add();
+    }
+
+    auto itBegin = deviceEventList.begin();
+    auto itEnd = deviceEventList.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstDeviceEvent = pDstDeviceEventList->Mutable(i);
+        pDstDeviceEvent->set_strdeviceid(itBegin->m_strDeviceID);
+        pDstDeviceEvent->set_uidevicetype(itBegin->m_uiDeviceType);
+        pDstDeviceEvent->set_streventid(itBegin->m_strEventID);
+        pDstDeviceEvent->set_uieventtype(itBegin->m_uiEventType);
+        pDstDeviceEvent->set_uieventstate(itBegin->m_uiEventState);
+        pDstDeviceEvent->set_strfileurl(itBegin->m_strFileUrl);
+
+        ++i;
+        ++itBegin;
+    }
+}
+
 
 InteractiveProtoHandler::InteractiveProtoHandler()
 {
@@ -1073,6 +1121,48 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryIfP2pIDValidRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryPlatformPushStatusReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryPlatformPushStatusRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeviceEventReportReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeviceEventReportReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeviceEventReportReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeviceEventReportRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeviceEventReportRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeviceEventReportRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceEventReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceEventReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllDeviceEventReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllDeviceEventRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2133,6 +2223,66 @@ bool InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_Serializer(const Req &rsp
 bool InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryIfP2pIDValidRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryPlatformPushStatusReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryPlatformPushStatusReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryPlatformPushStatusRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryPlatformPushStatusRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DeviceEventReportReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<DeviceEventReportReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::DeviceEventReportReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<DeviceEventReportReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::DeviceEventReportRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DeviceEventReportRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DeviceEventReportRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DeviceEventReportRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllDeviceEventReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryAllDeviceEventReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllDeviceEventRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryAllDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 
@@ -4460,7 +4610,6 @@ void InteractiveProtoHandler::QueryIfP2pIDValidReq_USR::Serializer(InteractiveMe
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryIfP2pIDValidReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_queryifp2pidvalidreq_usr_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_reqvalue()->mutable_queryifp2pidvalidreq_usr_value()->set_uip2ptype(m_uiSuppliser);
-
 }
 
 void InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4474,5 +4623,105 @@ void InteractiveProtoHandler::QueryIfP2pIDValidRsp_USR::Serializer(InteractiveMe
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryIfP2pIDValidRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_queryifp2pidvalidrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDeviceID = InteractiveMsg.reqvalue().queryplatformpushstatusreq_dev_value().strdeviceid();
+}
+
+void InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryPlatformPushStatusReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryplatformpushstatusreq_dev_value()->set_strdeviceid(m_strDeviceID);
+
+}
+
+void InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strStatus = InteractiveMsg.rspvalue().queryplatformpushstatusrsp_dev_value().strstatus();
+}
+
+void InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryPlatformPushStatusRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryplatformpushstatusrsp_dev_value()->set_strstatus(m_strStatus);
+}
+
+void InteractiveProtoHandler::DeviceEventReportReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDeviceID = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().strdeviceid();
+    m_uiDeviceType = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().uidevicetype();
+    m_uiEventType = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().uieventtype();
+    m_uiEventState = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().uieventstate();
+    m_strFileID = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().strfileid();
+}
+
+void InteractiveProtoHandler::DeviceEventReportReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeviceEventReportReq_DEV_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_uidevicetype(m_uiDeviceType);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_uieventtype(m_uiEventType);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_uieventstate(m_uiEventState);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_strfileid(m_strFileID);
+}
+
+void InteractiveProtoHandler::DeviceEventReportRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strEventID = InteractiveMsg.rspvalue().deviceeventreportrsp_dev_value().streventid();
+}
+
+void InteractiveProtoHandler::DeviceEventReportRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeviceEventReportRsp_DEV_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_deviceeventreportrsp_dev_value()->set_streventid(m_strEventID);
+}
+
+void InteractiveProtoHandler::QueryAllDeviceEventReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().struserid();
+    m_strDeviceID = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().strdeviceid();
+    m_uiDeviceShared = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uideviceshared();
+    m_uiEventType = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uieventtype();
+    m_uiReadState = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uireadstate();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uibeginindex();
+}
+
+void InteractiveProtoHandler::QueryAllDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAllDeviceEventReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uideviceshared(m_uiDeviceShared);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uieventtype(m_uiEventType);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uireadstate(m_uiReadState);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+}
+
+void InteractiveProtoHandler::QueryAllDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    UnSerializeDeviceEventList(m_deviceEventList, InteractiveMsg.rspvalue().queryalldeviceeventrsp_usr_value().deviceevent());
+}
+
+void InteractiveProtoHandler::QueryAllDeviceEventRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAllDeviceEventRsp_USR_T);
+
+    auto cfgInfo = InteractiveMsg.mutable_rspvalue()->mutable_queryalldeviceeventrsp_usr_value()->mutable_deviceevent();
+    SerializeDeviceEventList(m_deviceEventList, cfgInfo);
 }
 

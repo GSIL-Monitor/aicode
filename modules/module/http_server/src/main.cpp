@@ -317,6 +317,12 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_PARAM_ACTION, boost::bind(&HttpMsgHandler::QueryDevParamHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::CHECK_DEVICE_P2PID_ACTION, boost::bind(&HttpMsgHandler::CheckDeviceP2pidHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_PUSH_STATUS_ACTION, boost::bind(&HttpMsgHandler::QueryPushStatusHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_EVENT_REPORT_ACTION, boost::bind(&HttpMsgHandler::DeviceEventReportHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceEventHandler, &filehdr, _1, _2));
+
+
+
     ////
     //auto ft = [&]()
     //{

@@ -84,6 +84,12 @@ enum MsgType
   QueryDeviceParameterReq_DEV_T = 10420;   //查询设备参数
   QueryDeviceParameterRsp_DEV_T = 10430;
 
+  QueryPlatformPushStatusReq_DEV_T = 10500;  //查询平台是否支持消息推送
+  QueryPlatformPushStatusRsp_DEV_T = 10510;
+
+  DeviceEventReportReq_DEV_T = 10600;        //设备事件上报
+  DeviceEventReportRsp_DEV_T = 10610;
+
   ////////////////////////////////////////////////////////
   
   MsgPreHandlerReq_USR_T = 19990;    //消息预处理
@@ -156,6 +162,11 @@ enum MsgType
 
   QueryIfP2pIDValidReq_USR_T = 20640;           //用户查询P2PID是否有效
   QueryIfP2pIDValidRsp_USR_T = 20650;
+
+  QueryAllDeviceEventReq_USR_T = 20700;         //查看设备事件请求
+  QueryAllDeviceEventRsp_USR_T = 20710;
+  DeleteDeviceEventReq_USR_T = 20720;           //删除设备事件请求
+  DeleteDeviceEventRsp_USR_T = 20730;
 
   ///////////////////////////////////////////////////////
   
@@ -317,6 +328,16 @@ message DoorbellParameter                       //门铃参数
   string strPIRAlarmLevel = 13;                 //PIR报警等级
   string strPIRIneffectiveTime = 14;            //PIR不生效时间配置项
   string strCurrentWifi = 15;                   //当前WIFI
+}
+
+message DeviceEvent                             //设备事件
+{
+  string strDeviceID = 1;
+  uint32 uiDeviceType = 2;
+  string strEventID = 3;
+  uint32 uiEventType = 4;
+  uint32 uiEventState = 5;
+  string strFileUrl = 6;
 }
 
 
@@ -536,6 +557,30 @@ message QueryDeviceParameterRsp_DEV             //查询设备参数响应
   DoorbellParameter doorbellParameter = 1;
 }
 
+message QueryPlatformPushStatusReq_DEV          //查询平台是否支持消息推送请求
+{
+  string strDeviceID = 1;
+}
+
+message QueryPlatformPushStatusRsp_DEV          //查询平台是否支持消息推送响应
+{
+  string strStatus = 1;                         //yes-支持，no-不支持
+}
+
+message DeviceEventReportReq_DEV                //设备事件上报请求
+{
+  string strDeviceID = 1;
+  uint32 uiDeviceType = 2;
+  uint32 uiEventType = 3;                       //事件类型：0，ALL；1，Motion； 2，Ring；3，Low voltage
+  uint32 uiEventState = 4;                      //事件状态：当事件类型为Motion时，状态为0（Motion），1（Answered Motion）；当事件类型为Ring时，状态为0（Accepted Ring），1（Missed Ring），2（Message Ring）；当事件类型为LowVoltage时，状态为0；
+  string strFileID = 5;
+}
+
+message DeviceEventReportRsp_DEV                //设备事件上报响应
+{
+  string strEventID = 1;
+}
+
 
 ////////////////////////////////////////////////////////
 
@@ -699,6 +744,7 @@ message ModifyDevReq_USR                        //修改设备信息请求
 {
   string strUserID = 1;
   Device devInfo = 2;
+  uint32 uiDeviceShared = 3;                    //设备是否为其他用户共享的，0-否，1-是
 }
 
 message ModifyDevRsp_USR                        //修改设备信息响应
@@ -834,6 +880,7 @@ message P2pInfoRsp_USR                          //p2p服务器信息响应
   string strLicenseKey = 4;
   string strPushID = 5;
 }
+
 message DeleteFileReq_USR                       //用户删除文件请求
 {
   string strUserID = 1;
@@ -915,6 +962,33 @@ message QueryIfP2pIDValidReq_USR                //用户查询P2PID是否有效�
 }
 
 message QueryIfP2pIDValidRsp_USR                //用户查询P2PID是否有效响应
+{
+  string strValue = 1;
+}
+
+message QueryAllDeviceEventReq_USR              //查看设备事件请求
+{
+  string strUserID = 1;
+  string strDeviceID = 2;
+  uint32 uiDeviceShared = 3;                    //是否被分享的设备：0，否，1，是
+  uint32 uiEventType = 4;                       //事件类型：0，ALL；1，Motion； 2，Ring；3，Low voltage
+  uint32 uiReadState = 5;                       //查看：0，全部；1，未查看；2，已查看
+  uint32 uiBeginIndex = 6;
+}
+
+message QueryAllDeviceEventRsp_USR              //查看设备事件响应
+{
+  repeated DeviceEvent deviceEvent = 1;
+}
+
+message DeleteDeviceEventReq_USR                //删除设备事件请求
+{
+  string strUserID = 1;
+  string strDeviceID = 2;
+  string strEventID = 3;
+}
+
+message DeleteDeviceEventRsp_USR                //删除设备事件响应
 {
   string strValue = 1;
 }
@@ -1060,6 +1134,10 @@ message Req
   ModifyDevicePropertyReq_DEV ModifyDevicePropertyReq_DEV_Value = 800;     //修改设备属性
   QueryDeviceParameterReq_DEV QueryDeviceParameterReq_DEV_Value = 810;     //查询设备参数
 
+  QueryPlatformPushStatusReq_DEV QueryPlatformPushStatusReq_DEV_Value = 900;  //查询平台是否支持消息推送
+
+  DeviceEventReportReq_DEV DeviceEventReportReq_DEV_Value = 1000;  //设备事件上报
+
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;            //消息预处理
@@ -1098,6 +1176,9 @@ message Req
 
   QueryAppUpgradeReq_USR QueryAppUpgradeReq_USR_Value = 360;     //用户查询升级版本数据
   QueryIfP2pIDValidReq_USR QueryIfP2pIDValidReq_USR_Value = 370; //用户查询P2PID是否有效
+
+  QueryAllDeviceEventReq_USR QueryAllDeviceEventReq_USR_Value = 400; //查看设备事件
+  DeleteDeviceEventReq_USR DeleteDeviceEventReq_USR_Value = 410;     //删除设备事件
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1144,6 +1225,10 @@ message Rsp
   ModifyDevicePropertyRsp_DEV ModifyDevicePropertyRsp_DEV_Value = 800;     //修改设备属性
   QueryDeviceParameterRsp_DEV QueryDeviceParameterRsp_DEV_Value = 810;     //查询设备参数
 
+  QueryPlatformPushStatusRsp_DEV QueryPlatformPushStatusRsp_DEV_Value = 900;  //查询平台是否支持消息推送
+
+  DeviceEventReportRsp_DEV DeviceEventReportRsp_DEV_Value = 1000;  //设备事件上报
+
  ////////////////////////////////////////////////////////////////////////////////////////////////
 
   MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;            //消息预处理
@@ -1182,6 +1267,9 @@ message Rsp
   
   QueryAppUpgradeRsp_USR QueryAppUpgradeRsp_USR_Value = 360;       //用户查询升级版本数据
   QueryIfP2pIDValidRsp_USR QueryIfP2pIDValidRsp_USR_Value = 370;   //用户查询P2PID是否有效
+
+  QueryAllDeviceEventRsp_USR QueryAllDeviceEventRsp_USR_Value = 500; //查看设备事件
+  DeleteDeviceEventRsp_USR DeleteDeviceEventRsp_USR_Value = 510;     //删除设备事件
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

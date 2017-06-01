@@ -65,6 +65,12 @@ public:
         QueryDeviceParameterReq_DEV_T = 10420,
         QueryDeviceParameterRsp_DEV_T = 10430,
 
+        QueryPlatformPushStatusReq_DEV_T = 10500,  //查询平台是否支持消息推送
+        QueryPlatformPushStatusRsp_DEV_T = 10510,
+
+        DeviceEventReportReq_DEV_T = 10600,        //设备事件上报
+        DeviceEventReportRsp_DEV_T = 10610,
+
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -134,6 +140,11 @@ public:
 
         QueryIfP2pIDValidReq_USR_T = 20640,        //用户查询P2PID是否有效
         QueryIfP2pIDValidRsp_USR_T = 20650,
+
+        QueryAllDeviceEventReq_USR_T = 20700,      //查看设备事件请求
+        QueryAllDeviceEventRsp_USR_T = 20710,
+        DeleteDeviceEventReq_USR_T = 20720,        //删除设备事件请求
+        DeleteDeviceEventRsp_USR_T = 20730,
 
         ///////////////////////////////////////////////////////
 
@@ -314,6 +325,17 @@ public:
         std::string m_strPIRIneffectiveTime;
         std::string m_strCurrentWifi;
     };
+
+    struct DeviceEvent
+    {
+        std::string m_strDeviceID;
+        unsigned int m_uiDeviceType;
+        std::string m_strEventID;
+        unsigned int m_uiEventType;
+        unsigned int m_uiEventState;
+        std::string m_strFileUrl;
+    };
+
 
     struct Req
     {
@@ -905,6 +927,29 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryAllDeviceEventReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::string m_strDeviceID;
+        unsigned int m_uiDeviceShared;
+        unsigned int m_uiEventType;
+        unsigned int m_uiReadState;
+        unsigned int m_uiBeginIndex;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllDeviceEventRsp_USR : Rsp
+    {
+        std::list<DeviceEvent> m_deviceEventList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct AddFileReq_DEV : Req
     {
@@ -1281,6 +1326,46 @@ public:
     struct QueryDeviceParameterRsp_DEV : Rsp
     {
         DoorbellParameter m_doorbellParameter;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryPlatformPushStatusReq_DEV : Req
+    {
+        std::string m_strDeviceID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryPlatformPushStatusRsp_DEV : Rsp
+    {
+        std::string m_strStatus;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeviceEventReportReq_DEV : Req
+    {
+        std::string m_strDeviceID;
+        unsigned int m_uiDeviceType;
+        unsigned int m_uiEventType;
+        unsigned int m_uiEventState;
+        std::string m_strFileID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeviceEventReportRsp_DEV : Rsp
+    {
+        std::string m_strEventID;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1679,6 +1764,21 @@ private:
     bool QueryIfP2pIDValidReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryIfP2pIDValidRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryIfP2pIDValidRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryPlatformPushStatusReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool QueryPlatformPushStatusReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryPlatformPushStatusRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryPlatformPushStatusRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DeviceEventReportReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool DeviceEventReportReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DeviceEventReportRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool DeviceEventReportRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAllDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAllDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAllDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAllDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

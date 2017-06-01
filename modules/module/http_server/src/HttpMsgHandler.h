@@ -69,6 +69,10 @@ public:
     static const std::string QUERY_DEVICE_PARAM_ACTION;
 
     static const std::string CHECK_DEVICE_P2PID_ACTION;
+    static const std::string QUERY_PUSH_STATUS_ACTION;
+    static const std::string DEVICE_EVENT_REPORT_ACTION;
+    static const std::string QUERY_DEVICE_EVENT_ACTION;
+
 
     
     typedef struct _ParamInfo
@@ -172,6 +176,12 @@ public:
 
     bool QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool QueryPushStatusHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeviceEventReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -252,6 +262,17 @@ private:
         std::string m_strDomainname;
         std::string m_strIpaddress;
     } DeviceIf;
+
+    typedef struct
+    {
+        std::string m_strDevID;
+        unsigned int m_uiDevType;
+        unsigned int m_uiEventType;
+        unsigned int m_uiEventStatus;
+        std::string m_strFileID;
+        std::string m_strEventID;
+        std::string m_strFileURL;
+    } Event;
 
     bool PreCommonHandler(const std::string &strMsgReceived);
 
@@ -364,6 +385,13 @@ private:
     bool QueryDevParam(const std::string &strSid, const std::string &strDevID, const unsigned int uiDevType, const std::string &strQueryType, DeviceProperty &devpt);
 
     bool CheckDeviceP2pid(const std::string &strP2pid, const unsigned int uiP2pType);
+
+    bool QueryPushStatus(const std::string &strDevID, std::string &strPushStatus);
+
+    bool DeviceEventReport(const std::string &strSid, Event &ev);
+
+    bool QueryDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiDevShared, const unsigned int uiEventType,
+        const unsigned int uiView, const unsigned int uiBeginIndex, std::list<Event> &evlist);
 
 private:
     ParamInfo m_ParamInfo;

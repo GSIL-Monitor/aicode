@@ -104,6 +104,12 @@ const std::string HttpMsgHandler::QUERY_DEVICE_PARAM_ACTION("query_device_parame
 
 const std::string HttpMsgHandler::CHECK_DEVICE_P2PID_ACTION("check_device_p2pid");
 
+const std::string HttpMsgHandler::QUERY_PUSH_STATUS_ACTION("device_query_push_status");
+
+const std::string HttpMsgHandler::DEVICE_EVENT_REPORT_ACTION("device_event_report");
+
+const std::string HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION("device_event_query");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -4413,6 +4419,365 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     return true;
 }
 
+bool HttpMsgHandler::QueryPushStatusHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Devid not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+    
+    LOG_INFO_RLD("Query push status info received and device id is " << strDevID);
+
+    std::string strPushStatus;
+    if (!QueryPushStatus(strDevID, strPushStatus))
+    {
+        LOG_ERROR_RLD("Query push status handle failed and device id is " << strDevID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("push_status", strPushStatus));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DeviceEventReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return blResult;
+    }
+
+    unsigned int uiDevType = 0;
+    try
+    {
+        uiDevType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device event report info of device type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device event report info of device type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("event_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event type not found.");
+        return blResult;
+    }
+
+    unsigned int uiEventType = 0;
+    try
+    {
+        uiEventType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device event report info of event type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device event report info of event type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("event_status");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event status not found.");
+        return blResult;
+    }
+
+    unsigned int uiEventStatus = 0;
+    try
+    {
+        uiEventStatus = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device event report info of event status is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device event report info of event status is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    std::string strFileid;
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileid = itFind->second;
+    }
+    
+    LOG_INFO_RLD("Device event report info received and device id is " << strDevID << " and device type is " << uiDevType
+        << " and event type is " << uiEventType << " and event status is " << uiEventStatus << " and file id is " << strFileid 
+        << " and sid is " << strSid);
+
+    Event ev;
+    ev.m_strDevID = strDevID;
+    ev.m_uiDevType = uiDevType;
+    ev.m_uiEventStatus = uiEventStatus;
+    ev.m_uiEventType = uiEventType;
+    ev.m_strFileID = strFileid;
+    if (!DeviceEventReport(strSid, ev))
+    {
+        LOG_ERROR_RLD("Device event report handle failed and device id is " << strDevID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("event_id", ev.m_strEventID));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsEventList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEventList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsEventList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+    
+    unsigned int uiDevShared = 0;
+    itFind = pMsgInfoMap->find("dev_shared");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDevShared = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event query info of device shared is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event query info of device shared is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiEventType = 2;
+    itFind = pMsgInfoMap->find("event_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiEventType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event query info of event type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event query info of event type is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiView = 1;
+    itFind = pMsgInfoMap->find("view_already");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiView = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event query info of view is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event query info of view is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event query info of begin index is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event query info of begin index is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }    
+
+    LOG_INFO_RLD("Query device event info received and  user id is " << strUserID <<
+        " and device id is " << strDevID << " and device shared is " << uiDevShared << " and event type is " << uiEventType <<
+        " and view is " << uiView << " and begin index is " << uiBeginIndex);
+
+    std::list<Event> evlist;
+    if (!QueryDeviceEvent(strSid, strUserID, strDevID, uiDevShared, uiEventType, uiView, uiBeginIndex, evlist))
+    {
+        LOG_ERROR_RLD("Query device event handle failed");
+        return blResult;
+    }
+
+    auto itBegin = evlist.begin();
+    auto itEnd = evlist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsEvent;
+        jsEvent["devid"] = itBegin->m_strDevID;
+        jsEvent["event_id"] = itBegin->m_strEventID;
+        jsEvent["fileurl"] = itBegin->m_strFileURL;
+        jsEvent["devtype"] = itBegin->m_uiDevType;
+        jsEvent["event_status"] = itBegin->m_uiEventStatus;
+        jsEvent["event_type"] = itBegin->m_uiEventType;
+
+        jsEventList.append(jsEvent);
+
+        ++itBegin;
+    }
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -7273,7 +7638,7 @@ bool HttpMsgHandler::CheckDeviceP2pid(const std::string &strP2pid, const unsigne
         
         iRet = QueryP2pidValidRsp.m_iRetcode;
 
-        LOG_INFO_RLD("Check device p2p id info and doorbell name is " << " and return code is " << QueryP2pidValidRsp.m_iRetcode <<
+        LOG_INFO_RLD("Check device p2p id info" << " and return code is " << QueryP2pidValidRsp.m_iRetcode <<
             " and return msg is " << QueryP2pidValidRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
@@ -7285,5 +7650,198 @@ bool HttpMsgHandler::CheckDeviceP2pid(const std::string &strP2pid, const unsigne
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryPushStatus(const std::string &strDevID, std::string &strPushStatus)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV QueryPushStatusReq;
+        QueryPushStatusReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T;
+        QueryPushStatusReq.m_uiMsgSeq = 1;
+        QueryPushStatusReq.m_strSID = "";
+        QueryPushStatusReq.m_strDeviceID = strDevID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPushStatusReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query push status req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV QueryPushStatusRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryPushStatusRsp))
+        {
+            LOG_ERROR_RLD("Query push status rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strPushStatus = QueryPushStatusRsp.m_strStatus;
+
+        iRet = QueryPushStatusRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query push status info and device id is " << strDevID << " and push status is " << strPushStatus <<
+            " and return code is " << QueryPushStatusRsp.m_iRetcode <<
+            " and return msg is " << QueryPushStatusRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeviceEventReport(const std::string &strSid, Event &ev)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DeviceEventReportReq_DEV DevEventReportReq;
+        DevEventReportReq.m_MsgType = InteractiveProtoHandler::MsgType::DeviceEventReportReq_DEV_T;
+        DevEventReportReq.m_uiMsgSeq = 1;
+        DevEventReportReq.m_strSID = strSid;
+        DevEventReportReq.m_strDeviceID = ev.m_strDevID;
+        DevEventReportReq.m_strFileID = ev.m_strFileID;
+        DevEventReportReq.m_uiDeviceType = ev.m_uiDevType;
+        DevEventReportReq.m_uiEventState = ev.m_uiEventStatus;
+        DevEventReportReq.m_uiEventType = ev.m_uiEventType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DevEventReportReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Device event report req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DeviceEventReportRsp_DEV DevEventReportRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DevEventReportRsp))
+        {
+            LOG_ERROR_RLD("Device event report rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        ev.m_strEventID = DevEventReportRsp.m_strEventID;
+
+        iRet = DevEventReportRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Device event report info and device id is " << ev.m_strDevID << " and event id is " << ev.m_strDevID <<
+            " and return code is " << DevEventReportRsp.m_iRetcode <<
+            " and return msg is " << DevEventReportRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiDevShared, 
+    const unsigned int uiEventType, const unsigned int uiView, const unsigned int uiBeginIndex, std::list<Event> &evlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAllDeviceEventReq_USR QueryDevEventReportReq;
+        QueryDevEventReportReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllDeviceEventReq_USR_T;
+        QueryDevEventReportReq.m_uiMsgSeq = 1;
+        QueryDevEventReportReq.m_strSID = strSid;
+        QueryDevEventReportReq.m_strDeviceID = strDevID;
+        QueryDevEventReportReq.m_strUserID = strUserID;
+        QueryDevEventReportReq.m_uiBeginIndex = uiBeginIndex;
+        QueryDevEventReportReq.m_uiDeviceShared = uiDevShared;
+        QueryDevEventReportReq.m_uiEventType = uiEventType;
+        QueryDevEventReportReq.m_uiReadState = uiView;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevEventReportReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device event report req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryAllDeviceEventRsp_USR QueryDevEventReportRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevEventReportRsp))
+        {
+            LOG_ERROR_RLD("Query device event report rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        evlist.clear();               
+        for (auto it : QueryDevEventReportRsp.m_deviceEventList)
+        {
+            Event ev;
+            ev.m_strDevID = it.m_strDeviceID;
+            ev.m_strEventID = it.m_strEventID;
+            ev.m_strFileURL = it.m_strFileUrl;
+            ev.m_uiDevType = it.m_uiDeviceType;
+            ev.m_uiEventStatus = it.m_uiEventState;
+            ev.m_uiEventType = it.m_uiEventType;
+            evlist.push_back(std::move(ev));
+        }
+
+        iRet = QueryDevEventReportRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device event report info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and device id is " << strDevID << " and device shared is " << uiDevShared << " event type is " << uiEventType <<
+            " and view is " << uiView << " and begin index is " << uiBeginIndex <<
+            " and return code is " << QueryDevEventReportRsp.m_iRetcode <<
+            " and return msg is " << QueryDevEventReportRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+
 }
 
