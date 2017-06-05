@@ -110,6 +110,8 @@ const std::string HttpMsgHandler::DEVICE_EVENT_REPORT_ACTION("device_event_repor
 
 const std::string HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION("device_event_query");
 
+const std::string HttpMsgHandler::DELETE_DEVICE_EVENT_ACTION("device_event_delete");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -1118,6 +1120,26 @@ bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
         strIpaddress = itFind->second;
     }
 
+    unsigned int uiDevShared = 0; //是否是被分享的设备，0，否；1，是，默认值为0
+    itFind = pMsgInfoMap->find("dev_shared");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDevShared = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Modify device info of device shared is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Modify device info of device shared is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+    
     DeviceIf devif;
     devif.m_strDevExtend = strDevExtend;
     devif.m_strDevID = strDevID;
@@ -1129,7 +1151,7 @@ bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     devif.m_strIpaddress = strIpaddress;
     devif.m_strP2pid = strP2pid;
 
-    if (!ModifyDevice(strSid, strUserID, devif))
+    if (!ModifyDevice(strSid, strUserID, devif, uiDevShared))
     {
         LOG_ERROR_RLD("Modify device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
         return blResult;
@@ -1138,7 +1160,7 @@ bool HttpMsgHandler::ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     LOG_INFO_RLD("Modify device info received and  user id is " << strUserID << " and devcie id is " << strDevID << " and device name is " << strDevName
         << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
         << " and device inner info is [" << strDevInnerInfo << "]" << " and device domain name is " << strDomainname << " and p2p id is " << strP2pid
-        << " and session id is " << strSid);
+        << " and session id is " << strSid << " and device shared is " << uiDevShared);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -1184,14 +1206,46 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
     const std::string strDevID = itFind->second;
 
-    LOG_INFO_RLD("Query device info received and  devcie id is " << strDevID
-        << " and session id is " << strSid);
+    std::string strUserID;
+    unsigned int uiDevShared = 0; //是否是被分享的设备，0，否；1，是，默认值为0
+    itFind = pMsgInfoMap->find("dev_shared");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDevShared = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Query device info of device shared is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Query device info of device shared is invalid and input is " << itFind->second);
+            return blResult;
+        }
+
+        if (uiDevShared)
+        {
+            itFind = pMsgInfoMap->find("userid");
+            if (pMsgInfoMap->end() == itFind)
+            {
+                LOG_ERROR_RLD("User id not found.");
+                return blResult;
+            }
+            strUserID = itFind->second;
+        }
+    }
+
+    LOG_INFO_RLD("Query device info received and  devcie id is " << strDevID << " and device shared is " << uiDevShared << " and user id is "
+        << strUserID << " and session id is " << strSid);
 
     std::string strUpdateDate;
     std::string strVersion;
     std::string strOnline;
     InteractiveProtoHandler::Device devinfo;
-    if (!QueryDeviceInfo<InteractiveProtoHandler::Device>(strSid, strDevID, devinfo, strUpdateDate, strVersion, strOnline))
+    if (!QueryDeviceInfo<InteractiveProtoHandler::Device>(strSid, strDevID, devinfo, strUpdateDate, strVersion, strOnline, uiDevShared, strUserID))
     {
         LOG_ERROR_RLD("Query device info handle failed and device id is " << strDevID << " and sid is " << strSid);
         return blResult;
@@ -2536,14 +2590,14 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strDomainName = itFind->second;
     }
     
-    std::string strDevType = "1"; //默认值为ipc
+    std::string strDevType = "0"; //默认值为门铃
     itFind = pMsgInfoMap->find("devtype");
     if (pMsgInfoMap->end() != itFind)
     {
         strDevType = itFind->second;
     }
 
-    unsigned int uiDevType = 1; //默认为ipc类型。
+    unsigned int uiDevType = 0; //默认为门铃类型。
 
     try
     {
@@ -3164,6 +3218,49 @@ bool HttpMsgHandler::DeleteUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInf
     blResult = true;
 
     return blResult;
+}
+
+bool HttpMsgHandler::ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter wr)
+{
+    auto itFind = pMsgInfoMap->find("compact_msg");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        const std::string &strValue = itFind->second;
+
+        LOG_INFO_RLD("Compact msg is " << strValue);
+        
+        Json::Reader reader;
+        Json::Value root;
+        if (!reader.parse(strValue, root, false))
+        {
+            LOG_ERROR_RLD("Compact msg parse failed beacuse value parsed failed and value is " << strValue);
+            return false;
+        }
+        
+        if (!root.isObject())
+        {
+            LOG_ERROR_RLD("Compact msg parse failed beacuse json root parsed failed and value is " << strValue);
+            return false;
+        }
+
+        Json::Value::Members members = root.getMemberNames();
+        auto itBegin = members.begin();
+        auto itEnd = members.end();
+        while (itBegin != itEnd)
+        {
+            if (root[*itBegin].type() == Json::stringValue) //目前只支持string类型json字段
+            {
+                pMsgInfoMap->insert(MsgInfoMap::value_type(*itBegin, root[*itBegin].asString()));
+            }
+
+            ++itBegin;
+        }
+
+        pMsgInfoMap->erase(itFind);         
+
+    }
+
+    return true;
 }
 
 bool HttpMsgHandler::AddDeviceFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
@@ -4778,6 +4875,75 @@ bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgI
     return blResult;
 }
 
+bool HttpMsgHandler::DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("event_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event id not found.");
+        return blResult;
+    }
+    const std::string strEventID = itFind->second;
+    
+    LOG_INFO_RLD("Delete device event info received and sid is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
+        << " and event id is " << strEventID);
+
+    if (!DeleteDeviceEvent(strSid, strUserID, strDevID, strEventID))
+    {
+        LOG_ERROR_RLD("Delete device event handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -5482,7 +5648,7 @@ bool HttpMsgHandler::DeleteDevice(const std::string &strSid, const std::string &
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif)
+bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, const unsigned int uiDevShared)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5520,6 +5686,7 @@ bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &
         ModifyDevReq.m_devInfo.m_uiTypeInfo = uiTypeInfo;
         ModifyDevReq.m_devInfo.m_strDomainName = devif.m_strDomainname;
         ModifyDevReq.m_devInfo.m_strP2pID = devif.m_strP2pid;
+        ModifyDevReq.m_uiDeviceShared = uiDevShared;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModifyDevReq, strSerializeOutPut))
@@ -5568,7 +5735,7 @@ bool HttpMsgHandler::ModifyDevice(const std::string &strSid, const std::string &
 
 template<typename T>
 bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo,
-    std::string &strUpdateDate, std::string &strVersion, std::string &strOnline)
+    std::string &strUpdateDate, std::string &strVersion, std::string &strOnline, const unsigned int uiDevShared, const std::string &strUserID)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -5578,6 +5745,8 @@ bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::strin
         QueryDevInfoReq.m_strSID = strSid;
         QueryDevInfoReq.m_strValue = "";
         QueryDevInfoReq.m_strDevID = strDevID;
+        QueryDevInfoReq.m_uiDeviceShared = uiDevShared;
+        QueryDevInfoReq.m_strUserID = strUserID;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevInfoReq, strSerializeOutPut))
@@ -7841,7 +8010,63 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
 
+bool HttpMsgHandler::DeleteDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strEventID)
+{
+    //
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DeleteDeviceEventReq_USR DelDevEventReportReq;
+        DelDevEventReportReq.m_MsgType = InteractiveProtoHandler::MsgType::DeleteDeviceEventReq_USR_T;
+        DelDevEventReportReq.m_uiMsgSeq = 1;
+        DelDevEventReportReq.m_strSID = strSid;
+        DelDevEventReportReq.m_strDeviceID = strDevID;
+        DelDevEventReportReq.m_strUserID = strUserID;
+        DelDevEventReportReq.m_strEventID = strEventID;
 
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelDevEventReportReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete device event req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DeleteDeviceEventRsp_USR DelDevEventReportRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelDevEventReportRsp))
+        {
+            LOG_ERROR_RLD("Delete device event rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+        
+        iRet = DelDevEventReportRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete device event info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and device id is " << strDevID << " and event id is " << strEventID <<
+            " and return code is " << DelDevEventReportRsp.m_iRetcode <<
+            " and return msg is " << DelDevEventReportRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 

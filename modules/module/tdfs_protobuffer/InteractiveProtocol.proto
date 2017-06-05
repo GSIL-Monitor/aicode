@@ -754,8 +754,10 @@ message ModifyDevRsp_USR                        //修改设备信息响应
 
 message QueryDevInfoReq_USR                     //查询设备信息请求
 {
-  string strDevID = 1;
-  string strValue = 2;
+  string strUserID = 1;
+  string strDevID = 2;
+  uint32 uiDeviceShared = 3;
+  string strValue = 4;
 }
 
 message QueryDevInfoRsp_USR                     //查询设备信息响应

@@ -168,7 +168,8 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::QueryAllConfigurationReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -819,7 +820,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     }
 
     //检查设备是否已经向平台上报过数据
-    if (!QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
+    if (!req.m_devInfo.m_strP2pID.empty() && !QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
     {
         LOG_ERROR_RLD("Add device failed, the device p2pid is not recorded, src id is " << strSrcID <<
             " and p2p id is " << req.m_devInfo.m_strP2pID);
@@ -878,7 +879,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         relation.m_strExtend = req.m_devInfo.m_strExtend;
         relation.m_strUsrID = req.m_strUserID;
 
-        m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation));
+        m_DBRuner.Post(boost::bind(&AccessManager::InsertRelationToDB, this, strUuid, relation, req.m_devInfo.m_strDevName));
 
         //m_DBRuner.Post(boost::bind(&AccessManager::AddNoOwnerFile, this, req.m_strUserID, strDeviceID));
 
@@ -997,11 +998,18 @@ bool AccessManager::ModDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
-    m_DBRuner.Post(boost::bind(&AccessManager::ModDeviceToDB, this, req.m_devInfo));
+    if (DEVICE_SHAREDWITH_USER == req.m_uiDeviceShared)
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::ModifySharedDeviceNameToDB, this, req.m_strUserID,
+            req.m_devInfo.m_strDevID, req.m_devInfo.m_strDevName));
+    }
+    else
+    {
+        m_DBRuner.Post(boost::bind(&AccessManager::ModDeviceToDB, this, req.m_devInfo));
+    }
 
     blResult = true;
-
-
+    
     return blResult;    
 }
 
@@ -1060,7 +1068,7 @@ bool AccessManager::QueryDevInfoReq(const std::string &strMsg, const std::string
         return false;
     }
     
-    if (!QueryDevInfoToDB(req.m_strDevID, dev))
+    if (!QueryDevInfoToDB(req.m_strUserID, req.m_strDevID, req.m_uiDeviceShared, dev, false))
     {
         LOG_ERROR_RLD("Query device info from db failed, device id is " << req.m_strDevID);
         return false;
@@ -3324,6 +3332,210 @@ bool AccessManager::QueryIfP2pIDValidReqUser(const std::string &strMsg, const st
     return blResult;
 }
 
+bool AccessManager::QueryPlatformPushStatusReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryPlatformPushStatusReq_DEV req;
+    std::string strStatus;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strStatus)
+    {
+        InteractiveProtoHandler::QueryPlatformPushStatusRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryPlatformPushStatusRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strStatus = blResult ? strStatus : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query platform push status rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query platform push status rsp already send, dst id is " << strSrcID <<
+            " and push status is " << rsp.m_strStatus);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query platform push status req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryPlatformPushStatusToDB(strStatus))
+    {
+        LOG_ERROR_RLD("Query platform push status failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DeviceEventReportReq_DEV req;
+    std::string strEventID;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strEventID)
+    {
+        InteractiveProtoHandler::DeviceEventReportRsp_DEV rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeviceEventReportRsp_DEV_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strEventID = blResult ? strEventID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Device event report rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Device event report rsp already send, dst id is " << strSrcID <<
+            " and event id is " << rsp.m_strEventID);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Device event report req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    strEventID = CreateUUID();
+
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceEventReportToDB, this, strEventID, req.m_strDeviceID,
+        req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, req.m_strFileID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAllDeviceEventReq_USR req;
+    std::list<InteractiveProtoHandler::DeviceEvent> deviceEventList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &deviceEventList)
+    {
+        InteractiveProtoHandler::QueryAllDeviceEventRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllDeviceEventRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_deviceEventList.swap(deviceEventList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all device event rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all device event rsp already send, dst id is " << strSrcID <<
+            " and user id is " << req.m_strUserID <<
+            " and device id is " << req.m_strDeviceID <<
+            " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &deviceEvent : rsp.m_deviceEventList)
+            {
+                LOG_INFO_RLD("Device event info[" << i << "]: "
+                    " device id is " << deviceEvent.m_strDeviceID <<
+                    " and device type is " << deviceEvent.m_uiDeviceType <<
+                    " and event id is " << deviceEvent.m_strEventID <<
+                    " and event type is " << deviceEvent.m_uiEventType <<
+                    " and event state is " << deviceEvent.m_uiEventState <<
+                    " and file url is " << deviceEvent.m_strFileUrl);
+
+                ++i;
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query all device event req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAllDeviceEventToDB(req.m_strDeviceID, req.m_uiEventType, req.m_uiReadState, deviceEventList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all device event failed, src id is " << strSrcID);
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DeleteDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DeleteDeviceEventReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::DeleteDeviceEventRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeleteDeviceEventRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete device event rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete device event rsp already send, dst id is " << strSrcID <<
+            " and event id is " << req.m_strEventID);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete device event req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceEventToDB, this, req.m_strEventID));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -4639,7 +4851,7 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
     std::list<std::string> &strDevNameList, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, dev.devicename"
+    const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, dev.devicename, rel.devicename"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
         " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
@@ -5072,8 +5284,18 @@ void AccessManager::DevInfoRelationSqlCB(const boost::uint32_t uiRowNum, const b
         relationInfo.m_strValue = strColumn;
         break;
     case 8:
-        pStrDevNameList->push_back(strColumn);
+        if (DEVICE_SHAREDWITH_USER != relationInfo.m_uiRelation)
+        {
+            pStrDevNameList->push_back(strColumn);
+        }
         break;
+    case 9:
+        if (DEVICE_SHAREDWITH_USER == relationInfo.m_uiRelation)
+        {
+            pStrDevNameList->push_back(strColumn);
+        }
+        break;
+
     default:
         LOG_ERROR_RLD("DevInfoSqlCB error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
         break;
@@ -5155,14 +5377,15 @@ void AccessManager::InsertDeviceToDB(const std::string &strUuid, const Interacti
     }
 }
 
-void AccessManager::InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation)
+void AccessManager::InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation, const std::string &strDeviceName)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "insert into t_user_device_relation("
-        "id, userid, deviceid, relation, devicekeyid, begindate, enddate, createdate, status, extend) values(uuid(),"
-        "'%s','%s', '%d', '%s', '%s', '%s', '%s','%d', '%s')";
+        "id, userid, deviceid, relation, devicekeyid, begindate, enddate, createdate, status, extend, devicename) values(uuid(),"
+        "'%s','%s', '%d', '%s', '%s', '%s', '%s','%d', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation, strUuid.c_str(),
-        relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus, relation.m_strExtend.c_str());
+        relation.m_strBeginDate.c_str(), relation.m_strEndDate.c_str(), relation.m_strCreateDate.c_str(), relation.m_iStatus,
+        relation.m_strExtend.c_str(), strDeviceName.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -5325,6 +5548,20 @@ void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
     
 }
 
+void AccessManager::ModifySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID,
+    const std::string &strDeviceName)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_user_device_relation set devicename = '%s' where userid = '%s' and"
+        " devicekeyid = (select id from t_device_info where deviceid = '%s' and status = 0) and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceName.c_str(), strUserID.c_str(), strDeviceID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifySharedDeviceNameToDB exec sql failed, sql is " << sql);
+    }
+}
+
 void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
 {
     bool blExist = false;
@@ -5343,14 +5580,26 @@ void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
     }
         
     char sql[256] = { 0 };
-    const char *sqlfmt = "select id from t_device_info where deviceid = '%s' and status = 0";
+    const char *sqlfmt = "select id, devicename from t_device_info where deviceid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, relation.m_strDevID.c_str());
 
     std::string strUuid;
+    std::string strDeviceName;
     auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
-        strUuid = strColumn;
-        LOG_INFO_RLD("The device key id from db is " << strUuid);
+        switch (uiColumnNum)
+        {
+        case 0:
+            strUuid = strColumn;
+            break;
+        case 1:
+            strDeviceName = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("SharingRelationToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
     };
 
     if (!m_pMysql->QueryExec(std::string(sql), FuncTmp))
@@ -5359,7 +5608,7 @@ void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
         return;
     }
 
-    InsertRelationToDB(strUuid, relation);
+    InsertRelationToDB(strUuid, relation, strDeviceName);
 }
 
 void AccessManager::CancelSharedRelationToDB(const RelationOfUsrAndDev &relation)
@@ -5468,7 +5717,8 @@ bool AccessManager::QueryUserInfoToDB(const std::string &strUserID, InteractiveP
 
 }
 
-bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
+bool AccessManager::QueryDevInfoToDB(const std::string &strUserID, const std::string &strDevID, const unsigned int uiDeviceShared,
+    InteractiveProtoHandler::Device &dev, const bool IsNeedCache /*= true*/)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select deviceid, devicename, devicepassword, typeinfo, createdate, status, innerinfo, extend, p2pid, domainname from t_device_info where deviceid = '%s' and status = 0";
@@ -5540,6 +5790,13 @@ bool AccessManager::QueryDevInfoToDB(const std::string &strDevID, InteractivePro
         if (!m_pMysql->QueryExec(strSql, FuncTmp)) //boost::bind(FuncTmp, _1, _2, _3, uiResult)))
         {
             LOG_ERROR_RLD("Query device info failed and device id is " << strDevID);
+            return false;
+        }
+
+        if (DEVICE_SHAREDWITH_USER == uiDeviceShared && !QuerySharedDeviceNameToDB(strUserID, strDevID, dev.m_strDevName))
+        {
+            LOG_ERROR_RLD("Query device info failed, query shared device name error, user id is " << strUserID <<
+                " and device id is " << strDevID);
             return false;
         }
 
@@ -6770,5 +7027,174 @@ bool AccessManager::QueryIfDeviceReportedToDB(const std::string &strP2PID, const
     }
 
     strDeviceID = boost::any_cast<std::string>(ResultList.front());
+    return true;
+}
+
+bool AccessManager::QueryPlatformPushStatusToDB(std::string &strStatus)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select description from t_configuration_info where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, "Platform_Feature", "Push_Support");
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("QueryPlatformPushStatusToDB sql result description is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryPlatformPushStatusToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryPlatformPushStatusToDB sql result is empty, sql is " << sql);
+        strStatus = "0";
+    }
+    else
+    {
+        strStatus = boost::any_cast<std::string>(ResultList.front());
+    }
+
+    return true;
+}
+
+void AccessManager::InsertDeviceEventReportToDB(const std::string &strEventID, const std::string &strDeviceID, const unsigned int uiDeviceType,
+    const unsigned int uiEventType, const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID)
+{
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_device_event_info (id, eventid, deviceid, devicetype, eventtype, eventstate, readstate, fileid, createdate, status)"
+        " values(uuid(), '%s', '%s', %d,  %d,  %d,  %d, '%s', '%s', %d)";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strDeviceID.c_str(), uiDeviceType, uiEventType, uiEventState, uiMessageStatus,
+        strFileID.c_str(), strCurrentTime.c_str(), NORMAL_STATUS);
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertDeviceEventReportToDB exec sql error, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, const unsigned int uiEventType, const unsigned int uiReadState,
+    std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid from t_device_event_info"
+        " where deviceid = '%s' and eventtype = %d and status = 0";
+    snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiEventType, uiReadState, uiBeginIndex, uiPageSize);
+
+    len = strlen(sql);
+    if (EVENT_MESSAGE_ALL == uiReadState)
+    {
+        snprintf(sql + len, size - len, " limit %d, %d", uiBeginIndex, uiPageSize);
+    }
+    else
+    {
+        snprintf(sql + len, size - len, " and readstate = %d limit %d, %d", uiReadState, uiBeginIndex, uiPageSize);
+    }
+
+    InteractiveProtoHandler::DeviceEvent deviceEvent;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            deviceEvent.m_strDeviceID = strColumn;
+            break;
+        case 1:
+            deviceEvent.m_uiDeviceType = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 2:
+            deviceEvent.m_strEventID = strColumn;
+            break;
+        case 3:
+            deviceEvent.m_uiEventType = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 4:
+            deviceEvent.m_uiEventState = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 5:
+            deviceEvent.m_strFileUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) +
+                "download_file&fileid=" + strColumn;
+            Result = deviceEvent;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllDeviceEventToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryAllDeviceEventToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryAllDeviceEventToDB sql result is empty, sql is " << sql);
+        return true;
+    }
+
+    for (auto &result : ResultList)
+    {
+        deviceEventList.push_back(std::move(boost::any_cast<InteractiveProtoHandler::DeviceEvent>(result)));
+    }
+
+    return true;
+}
+
+void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_device_event_info set status = %d where eventid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, strEventID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteDeviceEventToDB exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID,
+    std::string &strDeviceName)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select devicename from t_user_device_relation where userid = '%s' and"
+        " devicekeyid = (select id from t_device_info where deviceid = '%s' and status = 0) and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strDeviceID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("QuerySharedDeviceNameToDB sql result device name is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QuerySharedDeviceNameToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QuerySharedDeviceNameToDB sql result is empty, sql is " << sql);
+        return true;
+    }
+
+    strDeviceName = boost::any_cast<std::string>(ResultList.front());
     return true;
 }

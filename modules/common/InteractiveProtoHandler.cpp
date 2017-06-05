@@ -432,7 +432,7 @@ void UnSerializeDeviceEventList(std::list<InteractiveProtoHandler::DeviceEvent> 
     {
         auto srcDeviceEvent = srcDeviceEventList.Get(i);
         InteractiveProtoHandler::DeviceEvent deviceEvent;
-        deviceEvent.m_strEventID = srcDeviceEvent.strdeviceid();
+        deviceEvent.m_strDeviceID = srcDeviceEvent.strdeviceid();
         deviceEvent.m_uiDeviceType = srcDeviceEvent.uidevicetype();
         deviceEvent.m_strEventID = srcDeviceEvent.streventid();
         deviceEvent.m_uiEventType = srcDeviceEvent.uieventtype();
@@ -1163,6 +1163,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllDeviceEventRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteDeviceEventReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteDeviceEventReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteDeviceEventReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteDeviceEventRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteDeviceEventRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteDeviceEventRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2285,6 +2299,26 @@ bool InteractiveProtoHandler::QueryAllDeviceEventRsp_USR_UnSerializer(const Inte
     return UnSerializerT<QueryAllDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
+bool InteractiveProtoHandler::DeleteDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<DeleteDeviceEventReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<DeleteDeviceEventReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteDeviceEventRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DeleteDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -2892,6 +2926,7 @@ void InteractiveProtoHandler::ModifyDevReq_USR::UnSerializer(const InteractiveMe
 {
     Req::UnSerializer(InteractiveMsg);
     m_strUserID = InteractiveMsg.reqvalue().modifydevreq_usr_value().struserid();
+    m_uiDeviceShared = InteractiveMsg.reqvalue().modifydevreq_usr_value().uideviceshared();
 
     m_devInfo.m_strDevID = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdevid();
     m_devInfo.m_strDevName = InteractiveMsg.reqvalue().modifydevreq_usr_value().devinfo().strdevname();
@@ -2911,6 +2946,7 @@ void InteractiveProtoHandler::ModifyDevReq_USR::Serializer(InteractiveMessage &I
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDevReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->set_uideviceshared(m_uiDeviceShared);
 
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdevid(m_devInfo.m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevreq_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
@@ -2942,9 +2978,10 @@ void InteractiveProtoHandler::QueryDevInfoReq_USR::UnSerializer(const Interactiv
 {
     Req::UnSerializer(InteractiveMsg);
 
+    m_strUserID = InteractiveMsg.reqvalue().querydevinforeq_usr_value().struserid();
     m_strDevID = InteractiveMsg.reqvalue().querydevinforeq_usr_value().strdevid();
+    m_uiDeviceShared = InteractiveMsg.reqvalue().querydevinforeq_usr_value().uideviceshared();
     m_strValue = InteractiveMsg.reqvalue().querydevinforeq_usr_value().strvalue();
-
 }
 
 void InteractiveProtoHandler::QueryDevInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -2952,9 +2989,10 @@ void InteractiveProtoHandler::QueryDevInfoReq_USR::Serializer(InteractiveMessage
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDevInfoReq_USR_T);
 
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_struserid(m_strUserID);
     InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_uideviceshared(m_uiDeviceShared);
     InteractiveMsg.mutable_reqvalue()->mutable_querydevinforeq_usr_value()->set_strvalue(m_strValue);
-
 }
 
 void InteractiveProtoHandler::QueryDevInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4723,5 +4761,35 @@ void InteractiveProtoHandler::QueryAllDeviceEventRsp_USR::Serializer(Interactive
 
     auto cfgInfo = InteractiveMsg.mutable_rspvalue()->mutable_queryalldeviceeventrsp_usr_value()->mutable_deviceevent();
     SerializeDeviceEventList(m_deviceEventList, cfgInfo);
+}
+
+void InteractiveProtoHandler::DeleteDeviceEventReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().deletedeviceeventreq_usr_value().struserid();
+    m_strDeviceID = InteractiveMsg.reqvalue().deletedeviceeventreq_usr_value().strdeviceid();
+    m_strEventID = InteractiveMsg.reqvalue().deletedeviceeventreq_usr_value().streventid();
+}
+
+void InteractiveProtoHandler::DeleteDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteDeviceEventReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletedeviceeventreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletedeviceeventreq_usr_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletedeviceeventreq_usr_value()->set_streventid(m_strEventID);
+}
+
+void InteractiveProtoHandler::DeleteDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().deletedeviceeventrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::DeleteDeviceEventRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteDeviceEventRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_deletedeviceeventrsp_usr_value()->set_strvalue(m_strValue);
 }
 

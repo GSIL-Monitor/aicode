@@ -379,6 +379,10 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDevicePropertyReq_DEV_T, boost::bind(&AccessManager::ModifyDevicePropertyReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceParameterReq_DEV_T, boost::bind(&AccessManager::QueryDeviceParameterReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T, boost::bind(&AccessManager::QueryIfP2pIDValidReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T, boost::bind(&AccessManager::QueryPlatformPushStatusReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeviceEventReportReq_DEV_T, boost::bind(&AccessManager::DeviceEventReportReqDevice, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllDeviceEventReq_USR_T, boost::bind(&AccessManager::QueryAllDeviceEventReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteDeviceEventReq_USR_T, boost::bind(&AccessManager::DeleteDeviceEventReqUser, &Umg, _1, _2, _3));
 
 
     ccenter.Run(true);

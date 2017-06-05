@@ -631,6 +631,7 @@ public:
 
         std::string m_strUserID;
         Device m_devInfo;
+        unsigned int m_uiDeviceShared;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -649,7 +650,9 @@ public:
 
     struct QueryDevInfoReq_USR : Req
     {
+        std::string m_strUserID;
         std::string m_strDevID;
+        unsigned int m_uiDeviceShared;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
@@ -944,6 +947,26 @@ public:
     struct QueryAllDeviceEventRsp_USR : Rsp
     {
         std::list<DeviceEvent> m_deviceEventList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteDeviceEventReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::string m_strDeviceID;
+        std::string m_strEventID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteDeviceEventRsp_USR : Rsp
+    {
+        std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1779,6 +1802,11 @@ private:
     bool QueryAllDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryAllDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryAllDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DeleteDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool DeleteDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DeleteDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

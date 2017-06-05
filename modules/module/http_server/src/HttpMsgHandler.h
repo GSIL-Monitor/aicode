@@ -72,7 +72,7 @@ public:
     static const std::string QUERY_PUSH_STATUS_ACTION;
     static const std::string DEVICE_EVENT_REPORT_ACTION;
     static const std::string QUERY_DEVICE_EVENT_ACTION;
-
+    static const std::string DELETE_DEVICE_EVENT_ACTION;
 
     
     typedef struct _ParamInfo
@@ -87,6 +87,8 @@ public:
 
     HttpMsgHandler(const ParamInfo &parminfo);
     ~HttpMsgHandler();
+
+    bool ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool RegisterUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -181,6 +183,8 @@ public:
     bool DeviceEventReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
@@ -299,10 +303,11 @@ private:
 
     bool DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID);
 
-    bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif);
+    bool ModifyDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, const unsigned int uiDevShared);
 
     template<typename T>
-    bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo, std::string &strUpdateDate, std::string &strVersion, std::string &strOnline);
+    bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo, std::string &strUpdateDate, std::string &strVersion, std::string &strOnline,
+        const unsigned int uiDevShared, const std::string &strUserID);
 
     template<typename T>
     bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList, 
@@ -392,6 +397,8 @@ private:
 
     bool QueryDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiDevShared, const unsigned int uiEventType,
         const unsigned int uiView, const unsigned int uiBeginIndex, std::list<Event> &evlist);
+
+    bool DeleteDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strEventID);
 
 private:
     ParamInfo m_ParamInfo;

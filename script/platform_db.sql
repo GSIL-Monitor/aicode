@@ -48,6 +48,7 @@ CREATE TABLE `t_user_device_relation` (
   `deviceid` varchar(100) NOT NULL,
   `relation` int(11) NOT NULL DEFAULT '0', #关系包括，拥有0、被分享1、分享中2、转移3，目前只用0、1、2
   `devicekeyid` varchar(36) NOT NULL, #设备信息表主键-id
+  `devicename` varchar(100) DEFAULT '', #共享设备的名称
   `begindate` datetime NOT NULL,
   `enddate` datetime NOT NULL,
   `createdate` datetime NOT NULL,
@@ -121,17 +122,17 @@ CREATE TABLE `t_configuration_info` (
   `id` varchar(36) NOT NULL,
   `category` varchar(50) NOT NULL, #配置类别，如用户APP、门铃、IPC
   `subcategory` varchar(100) NOT NULL, #配置类别子项目
-  `latestversion` varchar(20), #最新版本
-  `description` varchar(500), #版本详情描述
-  `forceversion` varchar(20), #强制升级的版本
-  `filename` varchar(100),
-  `fileid` varchar(256),
+  `latestversion` varchar(20) DEFAULT '', #最新版本
+  `description` varchar(500) DEFAULT '', #版本详情描述
+  `forceversion` varchar(20) DEFAULT '', #强制升级的版本
+  `filename` varchar(100) DEFAULT '',
+  `fileid` varchar(256) DEFAULT '',
   `filesize` int(11),
-  `filepath` varchar(256),
+  `filepath` varchar(256) DEFAULT '',
   `leaseduration` int(11),
-  `updatedate` datetime NOT NULL,
+  `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
-  `extend` varchar(4000) DEFAULT NULL,
+  `extend` varchar(4000) DEFAULT '',
   PRIMARY KEY (`id`),
   INDEX index_ref1(category, subcategory)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -231,16 +232,18 @@ CREATE TABLE `t_device_parameter_doorbell` (
 DROP TABLE IF EXISTS `t_device_event_info`;
 CREATE TABLE `t_device_event_info` (
   `id` varchar(36) NOT NULL,
+  `eventid` varchar(32) NOT NULL,
   `deviceid` varchar(32) NOT NULL,
   `devicetype` int(11) DEFAULT '-1',
-  `eventtype` varchar(50) NOT NULL,     #事件类型，支持Motion、Ring、LowPower
-  `eventstate` varchar(50) DEFAULT '',  #时间状态，Motion支持Motion、Answered_Motion，Ring支持Accepted_Ring、Missed_Ring、Message_Ring
-  `readstate` varchar(50) NOT NULL,     #查看状态，包括Unread、Read
+  `eventtype` int(11) NOT NULL,     #事件类型，支持Motion、Ring、LowPower
+  `eventstate` int(11),             #时间状态，Motion支持Motion、Answered_Motion，Ring支持Accepted_Ring、Missed_Ring、Message_Ring
+  `readstate` int(11) NOT NULL,     #查看状态，包括Unread、Read
   `fileid` varchar(200) DEFAULT '',
   `createdate` datetime NOT NULL,
   `status` int(11) DEFAULT '0',
   `extend` varchar(4000) DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY (deviceid)
+  INDEX index_ref1(eventid),
+  INDEX index_ref2(deviceid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

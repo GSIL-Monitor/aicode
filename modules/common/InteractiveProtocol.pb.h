@@ -9592,9 +9592,23 @@ class QueryDevInfoReq_USR : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // string strDevID = 1;
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strDevID = 2;
   void clear_strdevid();
-  static const int kStrDevIDFieldNumber = 1;
+  static const int kStrDevIDFieldNumber = 2;
   const ::std::string& strdevid() const;
   void set_strdevid(const ::std::string& value);
   #if LANG_CXX11
@@ -9606,9 +9620,9 @@ class QueryDevInfoReq_USR : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_strdevid();
   void set_allocated_strdevid(::std::string* strdevid);
 
-  // string strValue = 2;
+  // string strValue = 4;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 4;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -9620,12 +9634,20 @@ class QueryDevInfoReq_USR : public ::google::protobuf::Message /* @@protoc_inser
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
+  // uint32 uiDeviceShared = 3;
+  void clear_uideviceshared();
+  static const int kUiDeviceSharedFieldNumber = 3;
+  ::google::protobuf::uint32 uideviceshared() const;
+  void set_uideviceshared(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDevInfoReq_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uideviceshared_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -29019,7 +29041,59 @@ inline void ModifyDevRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
 
 // QueryDevInfoReq_USR
 
-// string strDevID = 1;
+// string strUserID = 1;
+inline void QueryDevInfoReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDevInfoReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryDevInfoReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryDevInfoReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+}
+#endif
+inline void QueryDevInfoReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+}
+inline void QueryDevInfoReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+}
+inline ::std::string* QueryDevInfoReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDevInfoReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDevInfoReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoReq_USR.strUserID)
+}
+
+// string strDevID = 2;
 inline void QueryDevInfoReq_USR::clear_strdevid() {
   strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -29071,7 +29145,21 @@ inline void QueryDevInfoReq_USR::set_allocated_strdevid(::std::string* strdevid)
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDevInfoReq_USR.strDevID)
 }
 
-// string strValue = 2;
+// uint32 uiDeviceShared = 3;
+inline void QueryDevInfoReq_USR::clear_uideviceshared() {
+  uideviceshared_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryDevInfoReq_USR::uideviceshared() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDevInfoReq_USR.uiDeviceShared)
+  return uideviceshared_;
+}
+inline void QueryDevInfoReq_USR::set_uideviceshared(::google::protobuf::uint32 value) {
+  
+  uideviceshared_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDevInfoReq_USR.uiDeviceShared)
+}
+
+// string strValue = 4;
 inline void QueryDevInfoReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -63,6 +63,13 @@ public:
     static const std::string ONLINE;
     static const std::string OFFLINE;
 
+    static const int EVENT_MESSAGE_ALL = 0;
+    static const int EVENT_MESSAGE_UNREAD = 1;
+    static const int EVENT_MESSAGE_READ = 2;
+
+    static const int DEVICE_BELONGTO_USER = 0;
+    static const int DEVICE_SHAREDWITH_USER = 1;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -212,6 +219,14 @@ public:
 
     bool QueryIfP2pIDValidReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryPlatformPushStatusReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeviceEventReportReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -240,7 +255,7 @@ private:
 
     void InsertDeviceToDB(const std::string &strUuid, const InteractiveProtoHandler::Device &DevInfo);
 
-    void InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation);
+    void InsertRelationToDB(const std::string &strUuid, const RelationOfUsrAndDev &relation, const std::string &strDeviceName);
 
     void RemoveRelationToDB(const RelationOfUsrAndDev &relation);
 
@@ -248,13 +263,16 @@ private:
 
     void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
+    void ModifySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, const std::string &strDeviceName);
+    
     void SharingRelationToDB(const RelationOfUsrAndDev &relation);
 
     void CancelSharedRelationToDB(const RelationOfUsrAndDev &relation);
 
     bool QueryUserInfoToDB(const std::string &strUserID, InteractiveProtoHandler::User &usr, const bool IsNeedCache = true);
 
-    bool QueryDevInfoToDB(const std::string &strDevID, InteractiveProtoHandler::Device &dev, const bool IsNeedCache = true);
+    bool QueryDevInfoToDB(const std::string &strUserID, const std::string &strDevID, const unsigned int uiDeviceShared,
+        InteractiveProtoHandler::Device &dev, const bool IsNeedCache = true);
 
     void AddFriendsToDB(const RelationOfUsr &relation);
 
@@ -359,6 +377,18 @@ private:
     bool QueryIfP2pIDValidToDB(const std::string &strP2pID);
 
     bool QueryIfDeviceReportedToDB(const std::string &strP2PID, const unsigned int uiDeviceType, std::string &strDeviceID);
+
+    bool QueryPlatformPushStatusToDB(std::string &strStatus);
+
+    void InsertDeviceEventReportToDB(const std::string &strEventID, const std::string &strDeviceID, const unsigned int uiDeviceType,
+        const unsigned int uiEventType, const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID);
+
+    bool QueryAllDeviceEventToDB(const std::string &strDeviceID, const unsigned int uiEventType, const unsigned int uiReadState,
+        std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void DeleteDeviceEventToDB(const std::string &strEventID);
+
+    bool QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, std::string &strDeviceName);
 
 private:
     ParamInfo m_ParamInfo;
