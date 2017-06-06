@@ -92,7 +92,7 @@ bool P2PServerManager_LT::GetP2pID(const string &strDeviceID, P2PConnectParam &p
     };
 
     std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("GetP2pID sql failed, sql is " << sql);
         return false;

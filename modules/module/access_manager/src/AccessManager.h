@@ -390,6 +390,10 @@ private:
 
     bool QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, std::string &strDeviceName);
 
+    void RemoveExpiredDeviceEventToDB(const std::string &strDeviceID);
+
+    bool QueryDeviceEventExpireTimeToDB(int &iExpireTime);
+
 private:
     ParamInfo m_ParamInfo;
 

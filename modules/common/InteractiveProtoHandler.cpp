@@ -4256,6 +4256,7 @@ void InteractiveProtoHandler::QueryFirmwareUpgradeReq_DEV::UnSerializer(const In
     m_strCategory = InteractiveMsg.reqvalue().queryfirmwareupgradereq_dev_value().strcategory();
     m_strSubCategory = InteractiveMsg.reqvalue().queryfirmwareupgradereq_dev_value().strsubcategory();
     m_strCurrentVersion = InteractiveMsg.reqvalue().queryfirmwareupgradereq_dev_value().strcurrentversion();
+    m_strDeviceID = InteractiveMsg.reqvalue().queryfirmwareupgradereq_dev_value().strdeviceid();
 }
 
 void InteractiveProtoHandler::QueryFirmwareUpgradeReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4265,6 +4266,7 @@ void InteractiveProtoHandler::QueryFirmwareUpgradeReq_DEV::Serializer(Interactiv
     InteractiveMsg.mutable_reqvalue()->mutable_queryfirmwareupgradereq_dev_value()->set_strcategory(m_strCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfirmwareupgradereq_dev_value()->set_strsubcategory(m_strSubCategory);
     InteractiveMsg.mutable_reqvalue()->mutable_queryfirmwareupgradereq_dev_value()->set_strcurrentversion(m_strCurrentVersion);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryfirmwareupgradereq_dev_value()->set_strdeviceid(m_strDeviceID);
 }
 
 void InteractiveProtoHandler::QueryFirmwareUpgradeRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4520,6 +4522,7 @@ void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::UnSerializer(const In
     m_doorbellParameter.m_strPIRAlarmLevel = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().doorbellparameter().strpiralarmlevel();
     m_doorbellParameter.m_strPIRIneffectiveTime = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().doorbellparameter().strpirineffectivetime();
     m_doorbellParameter.m_strCurrentWifi = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().doorbellparameter().strcurrentwifi();
+    m_doorbellParameter.m_strSubCategory = InteractiveMsg.reqvalue().modifydevicepropertyreq_dev_value().doorbellparameter().strsubcategory();
 }
 
 void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4562,6 +4565,7 @@ void InteractiveProtoHandler::ModifyDevicePropertyReq_DEV::Serializer(Interactiv
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->mutable_doorbellparameter()->set_strpiralarmlevel(m_doorbellParameter.m_strPIRAlarmLevel);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->mutable_doorbellparameter()->set_strpirineffectivetime(m_doorbellParameter.m_strPIRIneffectiveTime);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->mutable_doorbellparameter()->set_strcurrentwifi(m_doorbellParameter.m_strCurrentWifi);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydevicepropertyreq_dev_value()->mutable_doorbellparameter()->set_strsubcategory(m_doorbellParameter.m_strSubCategory);
 }
 
 void InteractiveProtoHandler::ModifyDevicePropertyRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4612,6 +4616,7 @@ void InteractiveProtoHandler::QueryDeviceParameterRsp_DEV::UnSerializer(const In
     m_doorbellParameter.m_strPIRAlarmLevel = InteractiveMsg.rspvalue().querydeviceparameterrsp_dev_value().doorbellparameter().strpiralarmlevel();
     m_doorbellParameter.m_strPIRIneffectiveTime = InteractiveMsg.rspvalue().querydeviceparameterrsp_dev_value().doorbellparameter().strpirineffectivetime();
     m_doorbellParameter.m_strCurrentWifi = InteractiveMsg.rspvalue().querydeviceparameterrsp_dev_value().doorbellparameter().strcurrentwifi();
+    m_doorbellParameter.m_strSubCategory = InteractiveMsg.rspvalue().querydeviceparameterrsp_dev_value().doorbellparameter().strsubcategory();
 }
 
 void InteractiveProtoHandler::QueryDeviceParameterRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4633,6 +4638,7 @@ void InteractiveProtoHandler::QueryDeviceParameterRsp_DEV::Serializer(Interactiv
     InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strpiralarmlevel(m_doorbellParameter.m_strPIRAlarmLevel);
     InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strpirineffectivetime(m_doorbellParameter.m_strPIRIneffectiveTime);
     InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strcurrentwifi(m_doorbellParameter.m_strCurrentWifi);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydeviceparameterrsp_dev_value()->mutable_doorbellparameter()->set_strsubcategory(m_doorbellParameter.m_strSubCategory);
 }
 
 void InteractiveProtoHandler::QueryIfP2pIDValidReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

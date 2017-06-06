@@ -99,7 +99,7 @@ int HttpClient::Get(const std::string &url, std::string &response)
     * 如果不设置这个选项，libcurl将会发信号打断这个wait从而导致程序退出。
     */
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     ret = curl_easy_perform(curl);
@@ -127,7 +127,7 @@ int HttpClient::Post(const std::string &url, const std::string &request, std::st
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     int ret = curl_easy_perform(curl);
@@ -161,7 +161,7 @@ int HttpClient::PostForm(const std::string &url, const std::map<std::string, std
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     for (auto &form : reqFormMap)
@@ -211,7 +211,7 @@ int HttpClient::HttpsGet(const std::string &url, const std::list<std::string> &s
     * 如果不设置这个选项，libcurl将会发信号打断这个wait从而导致程序退出。
     */
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     ret = curl_easy_perform(curl);
@@ -243,7 +243,7 @@ int HttpClient::HttpsPost(const std::string &url, const std::string &request, st
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     int ret = curl_easy_perform(curl);
@@ -278,7 +278,7 @@ int HttpClient::HttpsPostForm(const std::string &url, const std::map<std::string
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
     for (auto &form : reqFormMap)

@@ -324,6 +324,7 @@ public:
         std::string m_strPIRAlarmLevel;
         std::string m_strPIRIneffectiveTime;
         std::string m_strCurrentWifi;
+        std::string m_strSubCategory;
     };
 
     struct DeviceEvent
@@ -1281,6 +1282,7 @@ public:
         std::string m_strCategory;
         std::string m_strSubCategory;
         std::string m_strCurrentVersion;
+        std::string m_strDeviceID;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

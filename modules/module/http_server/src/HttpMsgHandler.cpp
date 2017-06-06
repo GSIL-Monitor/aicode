@@ -2796,13 +2796,36 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strVolumeLevel = itFind->second;
     }
 
+    std::string strSubCategory;
     std::string strVersionNum;
+    bool blFlag = false;
     itFind = pMsgInfoMap->find("version_number");
     if (pMsgInfoMap->end() != itFind)
     {
+        blFlag = true;
+
         strVersionNum = itFind->second;
+
+        itFind = pMsgInfoMap->find("sub_category");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Device set property error because sub category not found when version number was already set and device id is " << strDevID
+                << " and version number is " << strVersionNum);
+            return blResult;
+        }
+
+        strSubCategory = itFind->second;
     }
 
+    if (!blFlag)
+    {
+        itFind = pMsgInfoMap->find("sub_category");
+        if (pMsgInfoMap->end() != itFind)
+        {
+            strSubCategory = itFind->second;
+        }
+    }
+    
     std::string strChannelNum;
     itFind = pMsgInfoMap->find("channel_number");
     if (pMsgInfoMap->end() != itFind)
@@ -2864,7 +2887,8 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         " and battery cap is " << strBatteryCap << " and charge state is " << strChargeState << " and wifi signal is " << strWifiSig <<
         " and volume level is " << strVolumeLevel << " and version number is " << strVersionNum << " and channel num is " << strChannelNum <<
         " and coding type is " << strCodeType << " and pir alarm switch is " << strPirAlarmSwitch << " and doorbell switch is " << strDoorbellSwitch <<
-        " and pir alarm level is " << strPirAlarmLevel << " and pir ineffective time is " << strPirInEffectiveTime << " and currenct wifi is " << strCurrentWifi);
+        " and pir alarm level is " << strPirAlarmLevel << " and pir ineffective time is " << strPirInEffectiveTime << " and currenct wifi is " << strCurrentWifi <<
+        " and sub category is " << strSubCategory);
 
     DeviceProperty devpt;
     devpt.m_strChannelCount = strChannelcount;
@@ -2904,6 +2928,7 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     devpt.m_strPirAlarmLevel = strPirAlarmLevel;
     devpt.m_strPirIneffectiveTime = strPirInEffectiveTime;
     devpt.m_strCurrentWifi = strCurrentWifi;
+    devpt.m_strSubCategory = strSubCategory;
 
     if (!DeviceSetProperty(strSid, devpt))
     {
@@ -4351,24 +4376,46 @@ bool HttpMsgHandler::QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     }
     const std::string strCategory = itFind->second;
 
-    itFind = pMsgInfoMap->find("sub_category");
-    if (pMsgInfoMap->end() == itFind)
+    std::string strSubcategory;
+    std::string strCurrentVersion;
+    std::string strDevID;
+    if (strCategory == "IPC")
     {
-        LOG_ERROR_RLD("Sub category not found.");
-        return blResult;
-    }
-    const std::string strSubcategory = itFind->second;
+        itFind = pMsgInfoMap->find("sub_category");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Sub category not found.");
+            return blResult;
+        }
+        strSubcategory = itFind->second;
 
-    itFind = pMsgInfoMap->find("current_version");
-    if (pMsgInfoMap->end() == itFind)
+        itFind = pMsgInfoMap->find("current_version");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Current version not found.");
+            return blResult;
+        }
+        strCurrentVersion = itFind->second;
+
+    }
+    else if (strCategory == "Doorbell")
     {
-        LOG_ERROR_RLD("Current version not found.");
+        itFind = pMsgInfoMap->find("devid");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Device id not found.");
+            return blResult;
+        }
+        strDevID = itFind->second;
+    }
+    else
+    {
+        LOG_ERROR_RLD("Category is invalid and value is " << strCategory);
         return blResult;
     }
-    const std::string strCurrentVersion = itFind->second;
 
     LOG_INFO_RLD("Query device firmware upgrade info received and category is " << strCategory << " and subcategory is " << strSubcategory
-        << " and current version is " << strCurrentVersion);
+        << " and current version is " << strCurrentVersion << " and device id is " << strDevID);
 
     std::string strNewVersionValid;
     std::string strFirmwareName;
@@ -4378,7 +4425,7 @@ bool HttpMsgHandler::QueryDevUpgradeHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
     std::string strDesc;
     std::string strForceUpgrade;
     std::string strUpdateDate;
-    if (!QueryDevUpgrade(strCategory, strSubcategory, strCurrentVersion, strNewVersionValid, strFirmwareName, strFirmwarePath, uiFirmwareSize,
+    if (!QueryDevUpgrade(strCategory, strSubcategory, strCurrentVersion, strDevID, strNewVersionValid, strFirmwareName, strFirmwarePath, uiFirmwareSize,
         strNewVersion, strDesc, strForceUpgrade, strUpdateDate))
     {
         LOG_ERROR_RLD("Query device firmware upgrade handle failed and category is " << strCategory << " and subgategory is " << strSubcategory <<
@@ -4502,6 +4549,8 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("channel_number", devpt.m_strChannelNum));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("coding_type", devpt.m_strCodingType));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("current_wifi", devpt.m_strCurrentWifi));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sub_category", devpt.m_strSubCategory));
+
         }
     }
 
@@ -6637,6 +6686,7 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_doorbellParameter.m_strPIRAlarmLevel = devpt.m_strPirAlarmLevel;
         ModDevPtReq.m_doorbellParameter.m_strPIRIneffectiveTime = devpt.m_strPirIneffectiveTime;
         ModDevPtReq.m_doorbellParameter.m_strCurrentWifi = devpt.m_strCurrentWifi;
+        ModDevPtReq.m_doorbellParameter.m_strSubCategory = devpt.m_strSubCategory;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))
@@ -7618,6 +7668,7 @@ bool HttpMsgHandler::QueryAppUpgrade(const std::string &strCategory, const std::
 }
 
 bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, 
+    const std::string &strDevID,
     std::string &strNewVersionValid, std::string &strFirmwareName, std::string &strFirmwarePath, unsigned int &uiFirmwareSize, 
     std::string &strNewVersion, std::string &strDesc, std::string &strForceUpgrade, std::string &strUpdateDate)
 {
@@ -7630,6 +7681,7 @@ bool HttpMsgHandler::QueryDevUpgrade(const std::string &strCategory, const std::
         QueryDevVerReq.m_strCategory = strCategory;
         QueryDevVerReq.m_strSubCategory = strSubcategory;
         QueryDevVerReq.m_strCurrentVersion = strCurrentVersion;
+        QueryDevVerReq.m_strDeviceID = strDevID;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevVerReq, strSerializeOutPut))
@@ -7745,6 +7797,7 @@ bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string 
                 devpt.m_strChannelNum = QueryDevParamRsp.m_doorbellParameter.m_strChannelNumber;
                 devpt.m_strCodingType = QueryDevParamRsp.m_doorbellParameter.m_strCodingType;
                 devpt.m_strCurrentWifi = QueryDevParamRsp.m_doorbellParameter.m_strCurrentWifi;
+                devpt.m_strSubCategory = QueryDevParamRsp.m_doorbellParameter.m_strSubCategory;
             }
 
             LOG_INFO_RLD("Query device param info and doorbell name is " << devpt.m_strDoorbellName << " and volume level is " << devpt.m_strVolumeLevel <<

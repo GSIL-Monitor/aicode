@@ -2543,6 +2543,20 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strcurrentwifi();
   void set_allocated_strcurrentwifi(::std::string* strcurrentwifi);
 
+  // string strSubCategory = 16;
+  void clear_strsubcategory();
+  static const int kStrSubCategoryFieldNumber = 16;
+  const ::std::string& strsubcategory() const;
+  void set_strsubcategory(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsubcategory(::std::string&& value);
+  #endif
+  void set_strsubcategory(const char* value);
+  void set_strsubcategory(const char* value, size_t size);
+  ::std::string* mutable_strsubcategory();
+  ::std::string* release_strsubcategory();
+  void set_allocated_strsubcategory(::std::string* strsubcategory);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.DoorbellParameter)
  private:
 
@@ -2562,6 +2576,7 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::internal::ArenaStringPtr strpiralarmlevel_;
   ::google::protobuf::internal::ArenaStringPtr strpirineffectivetime_;
   ::google::protobuf::internal::ArenaStringPtr strcurrentwifi_;
+  ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -5370,6 +5385,20 @@ class QueryFirmwareUpgradeReq_DEV : public ::google::protobuf::Message /* @@prot
   ::std::string* release_strcurrentversion();
   void set_allocated_strcurrentversion(::std::string* strcurrentversion);
 
+  // string strDeviceID = 4;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 4;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryFirmwareUpgradeReq_DEV)
  private:
 
@@ -5377,6 +5406,7 @@ class QueryFirmwareUpgradeReq_DEV : public ::google::protobuf::Message /* @@prot
   ::google::protobuf::internal::ArenaStringPtr strcategory_;
   ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
   ::google::protobuf::internal::ArenaStringPtr strcurrentversion_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -20986,6 +21016,58 @@ inline void DoorbellParameter::set_allocated_strcurrentwifi(::std::string* strcu
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strCurrentWifi)
 }
 
+// string strSubCategory = 16;
+inline void DoorbellParameter::clear_strsubcategory() {
+  strsubcategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strsubcategory() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strSubCategory)
+  return strsubcategory_.GetNoArena();
+}
+inline void DoorbellParameter::set_strsubcategory(const ::std::string& value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strsubcategory(::std::string&& value) {
+  
+  strsubcategory_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+#endif
+inline void DoorbellParameter::set_strsubcategory(const char* value) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+inline void DoorbellParameter::set_strsubcategory(const char* value, size_t size) {
+  
+  strsubcategory_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+inline ::std::string* DoorbellParameter::mutable_strsubcategory() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strSubCategory)
+  return strsubcategory_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strsubcategory() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strSubCategory)
+  
+  return strsubcategory_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strsubcategory(::std::string* strsubcategory) {
+  if (strsubcategory != NULL) {
+    
+  } else {
+    
+  }
+  strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+
 // -------------------------------------------------------------------
 
 // DeviceEvent
@@ -24363,6 +24445,58 @@ inline void QueryFirmwareUpgradeReq_DEV::set_allocated_strcurrentversion(::std::
   }
   strcurrentversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcurrentversion);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strCurrentVersion)
+}
+
+// string strDeviceID = 4;
+inline void QueryFirmwareUpgradeReq_DEV::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryFirmwareUpgradeReq_DEV::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+}
+#if LANG_CXX11
+inline void QueryFirmwareUpgradeReq_DEV::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+}
+#endif
+inline void QueryFirmwareUpgradeReq_DEV::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryFirmwareUpgradeReq_DEV::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryFirmwareUpgradeReq_DEV::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryFirmwareUpgradeReq_DEV.strDeviceID)
 }
 
 // -------------------------------------------------------------------

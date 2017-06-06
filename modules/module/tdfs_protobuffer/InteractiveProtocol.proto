@@ -328,6 +328,7 @@ message DoorbellParameter                       //门铃参数
   string strPIRAlarmLevel = 13;                 //PIR报警等级
   string strPIRIneffectiveTime = 14;            //PIR不生效时间配置项
   string strCurrentWifi = 15;                   //当前WIFI
+  string strSubCategory = 16;                   //门铃类别
 }
 
 message DeviceEvent                             //设备事件
@@ -500,6 +501,7 @@ message QueryFirmwareUpgradeReq_DEV             //设备查询升级数据请求
   string strCategory = 1;
   string strSubCategory = 2;
   string strCurrentVersion = 3;
+  string strDeviceID = 4;
 }
 
 message QueryFirmwareUpgradeRsp_DEV             //设备查询升级数据响应

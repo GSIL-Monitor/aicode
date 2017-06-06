@@ -235,6 +235,7 @@ private:
         std::string m_strPirAlarmLevel;
         std::string m_strPirIneffectiveTime;
         std::string m_strCurrentWifi;
+        std::string m_strSubCategory;
     } DeviceProperty;
 
     typedef struct
@@ -383,7 +384,8 @@ private:
         std::string &strAppName, std::string &strAppPath, unsigned int &uiAppSize, std::string &strNewVersion, std::string &strDesc, 
         std::string &strForceUpgrade, std::string &strUpdateDate);
 
-    bool QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, std::string &strNewVersionValid,
+    bool QueryDevUpgrade(const std::string &strCategory, const std::string &strSubcategory, const std::string &strCurrentVersion, 
+        const std::string &strDevID, std::string &strNewVersionValid,
         std::string &strFirmwareName, std::string &strFirmwarePath, unsigned int &uiFirmwareSize, std::string &strNewVersion, std::string &strDesc,
         std::string &strForceUpgrade, std::string &strUpdateDate);
 

@@ -2836,11 +2836,32 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
         return false;
     }
 
-    if (!QueryFirwareUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, firmwareUpgrade))
+    if ("Doorbell" == req.m_strCategory)
     {
-        LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
-            " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion);
-        return false;
+        InteractiveProtoHandler::DoorbellParameter doorbellParameter;
+        if (!QueryDoorbellParameterToDB(req.m_strDeviceID, "All", doorbellParameter))
+        {
+            LOG_ERROR_RLD("Query firmware upgrade failed, query doorbell parameter error, src id is " << strSrcID <<
+                " and device id is " << req.m_strDeviceID);
+            return false;
+        }
+
+        if (!QueryFirwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        {
+            LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
+                " and sub category is " << doorbellParameter.m_strSubCategory <<
+                " and current version is " << doorbellParameter.m_strVersionNumber);
+            return false;
+        }
+    }
+    else
+    {
+        if (!QueryFirwareUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, firmwareUpgrade))
+        {
+            LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
+                " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion);
+            return false;
+        }
     }
 
     blResult = true;
@@ -3238,6 +3259,7 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             rsp.m_doorbellParameter.m_strPIRAlarmLevel = doorbellParameter.m_strPIRAlarmLevel;
             rsp.m_doorbellParameter.m_strPIRIneffectiveTime = doorbellParameter.m_strPIRIneffectiveTime;
             rsp.m_doorbellParameter.m_strCurrentWifi = doorbellParameter.m_strCurrentWifi;
+            rsp.m_doorbellParameter.m_strSubCategory = doorbellParameter.m_strSubCategory;
         }
 
         std::string strSerializeOutPut;
@@ -3264,6 +3286,7 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             " and PIR alarm level is " << doorbellParameter.m_strPIRAlarmLevel <<
             " and PIR ineffective time is " << doorbellParameter.m_strPIRIneffectiveTime <<
             " and current wifi is " << doorbellParameter.m_strCurrentWifi <<
+            " and sub category is " << doorbellParameter.m_strSubCategory <<
             " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -3487,7 +3510,10 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
     if (!QueryAllDeviceEventToDB(req.m_strDeviceID, req.m_uiEventType, req.m_uiReadState, deviceEventList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all device event failed, src id is " << strSrcID);
+        return false;
     }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
 
     blResult = true;
 
@@ -3530,6 +3556,8 @@ bool AccessManager::DeleteDeviceEventReqUser(const std::string &strMsg, const st
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceEventToDB, this, req.m_strEventID));
+
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
 
     blResult = true;
 
@@ -6742,6 +6770,14 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
         blModified = true;
     }
 
+    if (!doorbellParameter.m_strSubCategory.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", sub_category = '%s'", doorbellParameter.m_strSubCategory.c_str());
+
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("UpdateDoorbellParameterToDB completed, there is no change");
@@ -6779,7 +6815,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level,"
-        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi"
+        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi, sub_category"
         " from t_device_parameter_doorbell where deviceid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -6831,6 +6867,9 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
             break;
         case 14:
             doorbellParameter.m_strCurrentWifi = strColumn;
+            break;
+        case 15:
+            doorbellParameter.m_strSubCategory = strColumn;
             Result = doorbellParameter;
             break;
 
@@ -6869,6 +6908,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
     doorbellParameter.m_strPIRAlarmLevel = result.m_strPIRAlarmLevel;
     doorbellParameter.m_strPIRIneffectiveTime = result.m_strPIRIneffectiveTime;
     doorbellParameter.m_strCurrentWifi = result.m_strCurrentWifi;
+    doorbellParameter.m_strSubCategory = result.m_strSubCategory;
 
     return true;
 }
@@ -7196,5 +7236,56 @@ bool AccessManager::QuerySharedDeviceNameToDB(const std::string &strUserID, cons
     }
 
     strDeviceName = boost::any_cast<std::string>(ResultList.front());
+    return true;
+}
+
+void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID)
+{
+    int iExpireTime;
+    if (!QueryDeviceEventExpireTimeToDB(iExpireTime))
+    {
+        LOG_ERROR_RLD("RemoveExpiredDeviceEventToDB failed, query device event expire time error, device id is " << strDeviceID);
+        return;
+    }
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and createdate < date_sub(now(), interval %d day)";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), iExpireTime);
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("RemoveExpiredDeviceEventToDB exec sql error, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryDeviceEventExpireTimeToDB(int &iExpireTime)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select description from t_configuration_info where category = '%s' and subcategory = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, "Platform_Feature", "Event_Expire_Time");
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = boost::lexical_cast<int>(strColumn);
+
+        LOG_INFO_RLD("QueryDeviceEventExpireTimeToDB sql result event expire time is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryDeviceEventExpireTimeToDB exec sql error, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryDeviceEventExpireTimeToDB sql result is empty, sql is " << sql);
+
+        iExpireTime = 7;  //如果没有配置则事件过期时间设置为7天
+        return true;
+    }
+
+    iExpireTime = boost::any_cast<int>(ResultList.front());
     return true;
 }
