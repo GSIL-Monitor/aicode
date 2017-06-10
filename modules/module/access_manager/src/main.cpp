@@ -293,7 +293,18 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strMemcachedAddressGlobal = GetConfig("MemCached.MemAddressGlobal");
+    if (strMemcachedAddressGlobal.empty())
+    {
+        LOG_INFO_RLD("Memcached of global address config item not found.");
+    }
 
+    const std::string &strMemcachedPortGlobal = GetConfig("MemCached.MemPortGlobal");
+    if (strMemcachedPortGlobal.empty())
+    {
+        LOG_INFO_RLD("Memcached of global port config item not found.");
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
 
     AccessManager::ParamInfo UmgParam;
@@ -310,7 +321,8 @@ int main(int argc, char* argv[])
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
     UmgParam.m_strUploadURL = strUploadURL;
     UmgParam.m_strGetIpInfoSite = strGetIpInfoSite;
-
+    UmgParam.m_strMemAddressGlobal = strMemcachedAddressGlobal;
+    UmgParam.m_strMemPortGlobal = strMemcachedPortGlobal;
 
     AccessManager Umg(UmgParam);
     if (!Umg.Init())
@@ -383,6 +395,12 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeviceEventReportReq_DEV_T, boost::bind(&AccessManager::DeviceEventReportReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllDeviceEventReq_USR_T, boost::bind(&AccessManager::QueryAllDeviceEventReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteDeviceEventReq_USR_T, boost::bind(&AccessManager::DeleteDeviceEventReqUser, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddStorageDetailReq_USR_T, boost::bind(&AccessManager::AddStorageDetailReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteStorageDetailReq_USR_T, boost::bind(&AccessManager::DeleteStorageDetailReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyStorageDetailReq_USR_T, boost::bind(&AccessManager::ModifyStorageDetailReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryStorageDetailReq_USR_T, boost::bind(&AccessManager::QueryStorageDetailReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryRegionStorageInfoReq_USR_T, boost::bind(&AccessManager::QueryRegionStorageInfoReqUser, &Umg, _1, _2, _3));
 
 
     ccenter.Run(true);

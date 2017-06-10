@@ -27,6 +27,8 @@ public:
     static const int DEVICE_NOT_BELONG_TO_USER;          //设备不归属于用户
     static const int DEVICE_NOT_RECORDED_USER;           //设备未记录
     static const int DEVICE_P2PID_NOT_RECORDED_USER;     //设备P2PID未记录
+    static const int DEVICE_ADDED_BY_CURRENT_USER;       //当前用户已添加此设备
+    static const int CLOUD_STORAGE_NOT_PAID_USER;        //用户未开通付费云存储服务
 
     //设备相关的错误代码
     static const int DEVICEID_NOT_EXISTED_DEV;           //设备ID不存在

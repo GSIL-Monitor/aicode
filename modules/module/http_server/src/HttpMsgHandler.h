@@ -74,6 +74,11 @@ public:
     static const std::string QUERY_DEVICE_EVENT_ACTION;
     static const std::string DELETE_DEVICE_EVENT_ACTION;
 
+    static const std::string ADD_USER_SPACE_ACTION;
+    static const std::string DELETE_USER_SPACE_ACTION;
+    static const std::string MODIFY_USER_SPACE_ACTION;
+    static const std::string QUERY_USER_SPACE_ACTION;
+    static const std::string QUERY_STORAGE_SPACE_ACTION;
     
     typedef struct _ParamInfo
     {
@@ -186,6 +191,15 @@ public:
 
     bool DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool AddUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeleteUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryStorageSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -277,7 +291,29 @@ private:
         std::string m_strFileID;
         std::string m_strEventID;
         std::string m_strFileURL;
+        std::string m_strEventTime;
     } Event;
+
+    typedef struct
+    {
+        unsigned int m_uiDomainID;
+        std::string m_strStorageName;
+        unsigned int m_uiOverlapType;
+        unsigned int m_uiStorageTimeUpLimit;
+        unsigned int m_uiStorageTimeDownLimit;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        std::string m_strExtend;
+
+    } SpaceInfo;
+
+    typedef struct
+    {
+        unsigned int m_uiDomainID;
+        unsigned int m_uiSpaceSize;
+        unsigned int m_uiSpaceSizeUsed;
+
+    } StorageInfo;
 
     bool PreCommonHandler(const std::string &strMsgReceived);
 
@@ -398,9 +434,22 @@ private:
     bool DeviceEventReport(const std::string &strSid, Event &ev);
 
     bool QueryDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiDevShared, const unsigned int uiEventType,
-        const unsigned int uiView, const unsigned int uiBeginIndex, std::list<Event> &evlist);
+        const unsigned int uiView, const unsigned int uiBeginIndex, const std::string &strBeginDate, const std::string &strEndDate, std::list<Event> &evlist);
 
     bool DeleteDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strEventID);
+
+    bool AddUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif);
+
+    bool DeleteUserSpace(const std::string &strSid, const std::string &strUserID, const unsigned int &uiDomainID);
+
+    bool ModifyUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif);
+
+    bool QueryUserSpace(const std::string &strSid, const std::string &strUserID, const unsigned int &uiDomainID, SpaceInfo &stif);
+
+    bool QueryStorageSpace(const std::string &strSid, const std::string &strUserID, StorageInfo &stif);
+
+private:
+    bool ValidDatetime(const std::string &strDatetime);
 
 private:
     ParamInfo m_ParamInfo;

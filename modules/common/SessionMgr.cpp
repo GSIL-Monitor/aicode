@@ -5,7 +5,7 @@
 #include "time.h"
 #include "json/json.h"
 
-SessionMgr::SessionMgr() : m_pMemCl(NULL)
+SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL)
 {
 
 }
@@ -27,6 +27,12 @@ void SessionMgr::SetMemCacheAddRess(const std::string &strMemAddress, const std:
     m_strMemPort = strMemPort;
 }
 
+void SessionMgr::SetGlobalMemCacheAddRess(const std::string &strMemAddress, const std::string &strMemPort)
+{
+    m_strMemAddressGlobal = strMemAddress;
+    m_strMemPortGlobal = strMemPort;
+}
+
 bool SessionMgr::Init()
 {
     bool blRet = false;
@@ -46,6 +52,25 @@ bool SessionMgr::Init()
         LOG_INFO_RLD("memcached client init succeed, remote ip: " << m_strMemAddress << ", remote port:" << m_strMemPort);
     }
 
+    if (!m_strMemAddressGlobal.empty() && !m_strMemPortGlobal.empty())
+    {
+        blRet = false;
+        m_pMemClGlobal = MemcacheClient::create();
+        if (MemcacheClient::CACHE_SUCCESS != m_pMemClGlobal->addServer(m_strMemAddressGlobal.c_str(), boost::lexical_cast<int>(m_strMemPortGlobal)))
+        {
+            MemcacheClient::destoy(m_pMemClGlobal);
+            m_pMemClGlobal = NULL;
+
+            LOG_ERROR_RLD("memcached client init failed, remote ip: " << m_strMemAddressGlobal << ", remote port:" << m_strMemPortGlobal);
+
+        }
+        else
+        {
+            blRet = true;
+            LOG_INFO_RLD("memcached client init succeed, remote ip: " << m_strMemAddressGlobal << ", remote port:" << m_strMemPortGlobal);
+        }
+    }
+
     return blRet;
 }
 
@@ -60,6 +85,12 @@ void SessionMgr::Stop()
     
     MemcacheClient::destoy(m_pMemCl);
     m_pMemCl = NULL;
+
+    if (m_pMemClGlobal)
+    {
+        MemcacheClient::destoy(m_pMemClGlobal);
+        m_pMemClGlobal = NULL;
+    }
 
     m_TimeOutObj.Stop();
 }
@@ -283,6 +314,18 @@ bool SessionMgr::MemCacheRemove(const std::string &strKey)
         return false;
     }
 
+    if (!m_strMemAddressGlobal.empty() && !m_strMemPortGlobal.empty())
+    {
+        if (MemcacheClient::CACHE_SUCCESS == (iRet = m_pMemClGlobal->exist(strKey.c_str())))
+        {
+            if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemClGlobal->remove(strKey.c_str())))
+            {
+                LOG_ERROR_RLD("Memcache of global remove failed, key is " << strKey << " and result code is " << iRet);
+                //return false;  //考虑到全局缓存可能是远程的，并且缓存目前都自带有超时配置，所以为了不影响本地cached业务，所以这里不返回失败
+            }
+        }       
+    }
+    
     LOG_INFO_RLD("Memcached remove success and key is " << strKey);
     return true;
 }
@@ -293,7 +336,16 @@ bool SessionMgr::MemCacheExist(const std::string &strKey)
     int iRet = 0;
     if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->exist(strKey.c_str())))
     {
-        LOG_ERROR_RLD("Memcache not exist when being removed, key is " << strKey << " and result code is " << iRet);
+        if (!m_strMemAddressGlobal.empty() && !m_strMemPortGlobal.empty())
+        {
+            if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemClGlobal->exist(strKey.c_str())))
+            {
+                LOG_ERROR_RLD("Memcache of global and local not exist and key is " << strKey << " and result code is " << iRet);
+                return false;
+            }
+        }
+
+        LOG_ERROR_RLD("Memcache not exist and key is " << strKey << " and result code is " << iRet);
         return false;
     }
 
@@ -312,6 +364,12 @@ bool SessionMgr::MemCacheCreate(const std::string &strKey, const std::string &st
     if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemCl->set(strKey.c_str(), strValue.c_str(), strValue.size(), CurrentTimeValue)))
     {
         LOG_ERROR_RLD("Memcache set failed, return code is " << iRet << " and key id is " << strKey);
+        return false;
+    }
+
+    if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemClGlobal->set(strKey.c_str(), strValue.c_str(), strValue.size(), CurrentTimeValue)))
+    {
+        LOG_ERROR_RLD("Memcache of global set failed, return code is " << iRet << " and key id is " << strKey);
         return false;
     }
 

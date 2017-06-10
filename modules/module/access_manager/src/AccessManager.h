@@ -70,6 +70,8 @@ public:
     static const int DEVICE_BELONGTO_USER = 0;
     static const int DEVICE_SHAREDWITH_USER = 1;
 
+    static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -107,6 +109,8 @@ public:
         std::string m_strLTUserSiteRC4Key;
         std::string m_strUploadURL;
         std::string m_strGetIpInfoSite;
+        std::string m_strMemAddressGlobal;
+        std::string m_strMemPortGlobal;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo
@@ -227,6 +231,16 @@ public:
 
     bool DeleteDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryRegionStorageInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -326,7 +340,7 @@ private:
     bool QueryAppUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
         InteractiveProtoHandler::AppUpgrade &appUpgrade);
     
-    bool QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
+    bool QueryFirmwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
         InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade);
 
     void ConfigurationInfoSqlCB(const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn,
@@ -380,11 +394,14 @@ private:
 
     bool QueryPlatformPushStatusToDB(std::string &strStatus);
 
-    void InsertDeviceEventReportToDB(const std::string &strEventID, const std::string &strDeviceID, const unsigned int uiDeviceType,
-        const unsigned int uiEventType, const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID);
+    void InsertDeviceEventReportToDB(const std::string &strEventID, const std::string &strDeviceID, const unsigned int uiDeviceType, const unsigned int uiEventType,
+        const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID, const std::string &strEventTime);
 
     bool QueryAllDeviceEventToDB(const std::string &strDeviceID, const unsigned int uiEventType, const unsigned int uiReadState,
-        std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+        std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const std::string &strBeginDate, const std::string &strEndDate,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void UpdateEventReadStatusToDB(std::list<std::string> strEventIDList, const unsigned int uiReadStatus);
 
     void DeleteDeviceEventToDB(const std::string &strEventID);
 
@@ -393,6 +410,16 @@ private:
     void RemoveExpiredDeviceEventToDB(const std::string &strDeviceID);
 
     bool QueryDeviceEventExpireTimeToDB(int &iExpireTime);
+
+    void InsertStorageDetailToDB(const InteractiveProtoHandler::StorageDetail &storageDetail);
+
+    void DeleteStorageDetailToDB(const std::string &strObjectID);
+
+    void UpdateStorageDetailToDB(const InteractiveProtoHandler::StorageDetail &storageDetail);
+
+    bool QueryStorageDetailToDB(const std::string &strObjectID, InteractiveProtoHandler::StorageDetail &storageDetail, int &iErrorCode);
+
+    bool QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigned int &uiTotalSize);
 
 private:
     ParamInfo m_ParamInfo;

@@ -324,15 +324,11 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceEventHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::DeleteDeviceEventHandler, &filehdr, _1, _2));
 
-
-
-    ////
-    //auto ft = [&]()
-    //{
-    //    boost::this_thread::sleep(boost::posix_time::seconds(300));
-    //    _exit(1);
-    //};
-    //new boost::thread(ft);
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::AddUserSpaceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::DeleteUserSpaceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::MODIFY_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::ModifyUserSpaceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::QueryUserSpaceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_STORAGE_SPACE_ACTION, boost::bind(&HttpMsgHandler::QueryStorageSpaceHandler, &filehdr, _1, _2));
 
     fcgimgr.Run(true);
     return 0;

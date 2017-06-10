@@ -13,6 +13,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "boost/regex.hpp"
 #include "ReturnCode.h"
+#include "boost/date_time/gregorian/gregorian.hpp"
 
 
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
@@ -111,6 +112,16 @@ const std::string HttpMsgHandler::DEVICE_EVENT_REPORT_ACTION("device_event_repor
 const std::string HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION("device_event_query");
 
 const std::string HttpMsgHandler::DELETE_DEVICE_EVENT_ACTION("device_event_delete");
+
+const std::string HttpMsgHandler::ADD_USER_SPACE_ACTION("add_user_space");
+
+const std::string HttpMsgHandler::DELETE_USER_SPACE_ACTION("delete_user_space");
+
+const std::string HttpMsgHandler::MODIFY_USER_SPACE_ACTION("modify_user_space");
+
+const std::string HttpMsgHandler::QUERY_USER_SPACE_ACTION("query_user_space");
+
+const std::string HttpMsgHandler::QUERY_STORAGE_SPACE_ACTION("query_storage_info");
 
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -3026,14 +3037,7 @@ bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     {
         strBeginDate = itFind->second;
 
-        boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
-        boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
-        boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
-        boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
-        boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
-
-        if (!boost::regex_match(strBeginDate, reg0) && !boost::regex_match(strBeginDate, reg1) && !boost::regex_match(strBeginDate, reg2) &&
-            !boost::regex_match(strBeginDate, reg3) && !boost::regex_match(strBeginDate, reg4))
+        if (!ValidDatetime(strBeginDate))
         {
             LOG_ERROR_RLD("File begin date is invalid and input date is " << strBeginDate);
             return blResult;
@@ -3046,14 +3050,7 @@ bool HttpMsgHandler::QueryUserFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     {
         strEndDate = itFind->second;
 
-        boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
-        boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
-        boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
-        boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
-        boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
-
-        if (!boost::regex_match(strEndDate, reg0) && !boost::regex_match(strEndDate, reg1) && !boost::regex_match(strEndDate, reg2) &&
-            !boost::regex_match(strEndDate, reg3) && !boost::regex_match(strEndDate, reg4))
+        if (!ValidDatetime(strEndDate))
         {
             LOG_ERROR_RLD("File end date is invalid and input date is " << strEndDate);
             return blResult;
@@ -4724,9 +4721,23 @@ bool HttpMsgHandler::DeviceEventReportHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strFileid = itFind->second;
     }
     
+    itFind = pMsgInfoMap->find("event_time");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event time not found.");
+        return blResult;
+    }
+    const std::string strEventTime = itFind->second;
+
+    if (!ValidDatetime(strEventTime))
+    {
+        LOG_ERROR_RLD("File begin date is invalid and input date is " << strEventTime);
+        return blResult;
+    }
+    
     LOG_INFO_RLD("Device event report info received and device id is " << strDevID << " and device type is " << uiDevType
         << " and event type is " << uiEventType << " and event status is " << uiEventStatus << " and file id is " << strFileid 
-        << " and sid is " << strSid);
+        << " and sid is " << strSid << " and event time is " << strEventTime);
 
     Event ev;
     ev.m_strDevID = strDevID;
@@ -4734,6 +4745,7 @@ bool HttpMsgHandler::DeviceEventReportHandler(boost::shared_ptr<MsgInfoMap> pMsg
     ev.m_uiEventStatus = uiEventStatus;
     ev.m_uiEventType = uiEventType;
     ev.m_strFileID = strFileid;
+    ev.m_strEventTime = strEventTime;
     if (!DeviceEventReport(strSid, ev))
     {
         LOG_ERROR_RLD("Device event report handle failed and device id is " << strDevID);
@@ -4886,14 +4898,41 @@ bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgI
             LOG_ERROR_RLD("Device event query info of begin index is invalid and input is " << itFind->second);
             return blResult;
         }
-    }    
+    }
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+
+        if (!ValidDatetime(strBeginDate))
+        {
+            LOG_ERROR_RLD("Begin date is invalid and input date is " << strBeginDate);
+            return blResult;
+        }
+    }
+
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+
+        if (!ValidDatetime(strEndDate))
+        {
+            LOG_ERROR_RLD("End date is invalid and input date is " << strEndDate);
+            return blResult;
+        }
+    }
 
     LOG_INFO_RLD("Query device event info received and  user id is " << strUserID <<
         " and device id is " << strDevID << " and device shared is " << uiDevShared << " and event type is " << uiEventType <<
-        " and view is " << uiView << " and begin index is " << uiBeginIndex);
+        " and view is " << uiView << " and begin index is " << uiBeginIndex << " and begin date is " << strBeginDate <<
+        " and end date is " << strEndDate);
 
     std::list<Event> evlist;
-    if (!QueryDeviceEvent(strSid, strUserID, strDevID, uiDevShared, uiEventType, uiView, uiBeginIndex, evlist))
+    if (!QueryDeviceEvent(strSid, strUserID, strDevID, uiDevShared, uiEventType, uiView, uiBeginIndex, strBeginDate, strEndDate, evlist))
     {
         LOG_ERROR_RLD("Query device event handle failed");
         return blResult;
@@ -4910,6 +4949,7 @@ bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgI
         jsEvent["devtype"] = itBegin->m_uiDevType;
         jsEvent["event_status"] = itBegin->m_uiEventStatus;
         jsEvent["event_type"] = itBegin->m_uiEventType;
+        jsEvent["event_time"] = itBegin->m_strEventTime;
 
         jsEventList.append(jsEvent);
 
@@ -4985,6 +5025,640 @@ bool HttpMsgHandler::DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
         return blResult;
     }
 
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::AddUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    unsigned int uiDomainID = 0;
+    itFind = pMsgInfoMap->find("domain_id");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDomainID = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::string strStName;
+    itFind = pMsgInfoMap->find("storage_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStName = itFind->second;
+    }
+    
+    itFind = pMsgInfoMap->find("overlap_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+
+    unsigned int uiOverlapType = 0;
+    try
+    {
+        uiOverlapType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Overlap type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Overlap type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    if (0 != uiOverlapType && 1 != uiOverlapType)
+    {
+        LOG_ERROR_RLD("Overlap type is invalid and value is " << uiOverlapType);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("storagetime_up_limit");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Storage uplimit not found.");
+        return blResult;
+    }
+
+    unsigned int uiStUpLimit = 0;
+    try
+    {
+        uiStUpLimit = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Storage uplimit is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Storage uplimit is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    unsigned int uiStDownLimit = 0;
+    itFind = pMsgInfoMap->find("storagetime_down_limit");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiStDownLimit = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Storage downlimit is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Storage downlimit is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    if (uiStDownLimit >= uiStUpLimit)
+    {
+        LOG_ERROR_RLD("Storage downlimit is larger than uplimit and uplimit is " << uiStUpLimit << " and downlimit is " << uiStDownLimit);
+        return blResult;
+    }
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidDatetime(itFind->second))
+        {
+            LOG_ERROR_RLD("Begin date is invalid and value is " << itFind->second);
+            return blResult;
+        }
+
+        strBeginDate = itFind->second;
+    }
+    else
+    {
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        strBeginDate = strCurrentTime;
+    }
+    
+    std::string strEndDate("2199-01-01");
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidDatetime(itFind->second))
+        {
+            LOG_ERROR_RLD("End date is invalid and value is " << itFind->second);
+            return blResult;
+        }
+
+        strEndDate = itFind->second;
+    }
+   
+    boost::gregorian::date begindate = boost::gregorian::from_string(strBeginDate);
+    boost::gregorian::date enddate = boost::gregorian::from_string(strEndDate);
+
+    if (begindate >= enddate)
+    {
+        LOG_ERROR_RLD("Begin date is larger than end date and begin date is " << strBeginDate << " and end date is " << strEndDate);
+        return blResult;
+    }
+    
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+    
+    LOG_INFO_RLD("Add storage space info received and sid is " << strSid << " and user id is " << strUserID << " and domain id is " << uiDomainID
+        << " and storage name is " << strStName << " and overlap type is " << uiOverlapType << " and storage uplimit is " << uiStUpLimit
+        << " and storage downlimit is " << uiStDownLimit << " and begin date is " << strBeginDate << " and end date is " << strEndDate
+        << " and extend is " << strExtend);
+
+    SpaceInfo stif;
+    stif.m_strBeginDate = strBeginDate;
+    stif.m_strEndDate = strEndDate;
+    stif.m_strExtend = strExtend;
+    stif.m_strStorageName = strStName;
+    stif.m_uiDomainID = uiDomainID;
+    stif.m_uiOverlapType = uiOverlapType;
+    stif.m_uiStorageTimeDownLimit = uiStDownLimit;
+    stif.m_uiStorageTimeUpLimit = uiStUpLimit;
+
+    if (!AddUserSpace(strSid, strUserID, stif))
+    {
+        LOG_ERROR_RLD("Add storage space handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::DeleteUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    unsigned int uiDomainID = 0;
+    itFind = pMsgInfoMap->find("domain_id");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDomainID = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    LOG_INFO_RLD("Delete user space info received and sid is " << strSid << " and user id is " << strUserID << " and domain id is " << uiDomainID);
+
+    if (!DeleteUserSpace(strSid, strUserID, uiDomainID))
+    {
+        LOG_ERROR_RLD("Delete user space handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::ModifyUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    std::string strStName;
+    itFind = pMsgInfoMap->find("storage_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStName = itFind->second;
+    }
+
+    unsigned int uiOverlapType = 0;
+    itFind = pMsgInfoMap->find("overlap_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiOverlapType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Overlap type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Overlap type is invalid and input is " << itFind->second);
+            return blResult;
+        }
+
+        if (0 != uiOverlapType && 1 == uiOverlapType)
+        {
+            LOG_ERROR_RLD("Overlap type is invalid and value is " << uiOverlapType);
+            return blResult;
+        }
+    }
+
+    unsigned int uiStUpLimit = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("storagetime_up_limit");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiStUpLimit = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Storage uplimit is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Storage uplimit is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    unsigned int uiStDownLimit = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("storagetime_down_limit");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiStDownLimit = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Storage downlimit is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Storage downlimit is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+        
+    if (0xFFFFFFFF != uiStUpLimit && 0xFFFFFFFF != uiStDownLimit && uiStDownLimit >= uiStUpLimit)
+    {
+        LOG_ERROR_RLD("Storage downlimit is larger than uplimit and uplimit is " << uiStUpLimit << " and downlimit is " << uiStDownLimit);
+        return blResult;
+    }
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidDatetime(itFind->second))
+        {
+            LOG_ERROR_RLD("Begin date is invalid and value is " << itFind->second);
+            return blResult;
+        }
+
+        strBeginDate = itFind->second;
+    }
+    else
+    {
+        std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+        std::string::size_type pos = strCurrentTime.find('T');
+        strCurrentTime.replace(pos, 1, std::string(" "));
+
+        strBeginDate = strCurrentTime;
+    }
+
+    std::string strEndDate("2199-01-01");
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidDatetime(itFind->second))
+        {
+            LOG_ERROR_RLD("End date is invalid and value is " << itFind->second);
+            return blResult;
+        }
+
+        strEndDate = itFind->second;
+    }
+
+    boost::gregorian::date begindate = boost::gregorian::from_string(strBeginDate);
+    boost::gregorian::date enddate = boost::gregorian::from_string(strEndDate);
+
+    if (begindate >= enddate)
+    {
+        LOG_ERROR_RLD("Begin date is larger than end date and begin date is " << strBeginDate << " and end date is " << strEndDate);
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    LOG_INFO_RLD("Modify storage space info received and sid is " << strSid << " and user id is " << strUserID
+        << " and storage name is " << strStName << " and overlap type is " << uiOverlapType << " and storage uplimit is " << uiStUpLimit
+        << " and storage downlimit is " << uiStDownLimit << " and begin date is " << strBeginDate << " and end date is " << strEndDate
+        << " and extend is " << strExtend);
+
+    SpaceInfo stif;
+    stif.m_strBeginDate = strBeginDate;
+    stif.m_strEndDate = strEndDate;
+    stif.m_strExtend = strExtend;
+    stif.m_strStorageName = strStName;
+    stif.m_uiDomainID = 0;
+    stif.m_uiOverlapType = uiOverlapType;
+    stif.m_uiStorageTimeDownLimit = uiStDownLimit;
+    stif.m_uiStorageTimeUpLimit = uiStUpLimit;
+
+    if (!ModifyUserSpace(strSid, strUserID, stif))
+    {
+        LOG_ERROR_RLD("Modify storage space handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::QueryUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    unsigned int uiDomainID = 0;
+    itFind = pMsgInfoMap->find("domain_id");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDomainID = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Domain id is invalid and input is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query user space info received and sid is " << strSid << " and user id is " << strUserID << " and domain id is " << uiDomainID);
+
+    SpaceInfo stif;
+    if (!QueryUserSpace(strSid, strUserID, uiDomainID, stif))
+    {
+        LOG_ERROR_RLD("Query user space handle failed");
+        return blResult;
+    }
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domain_id", boost::lexical_cast<std::string>(stif.m_uiDomainID)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storage_name", stif.m_strStorageName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("overlap_type", boost::lexical_cast<std::string>(stif.m_uiOverlapType)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storagetime_up_limit", boost::lexical_cast<std::string>(stif.m_uiStorageTimeUpLimit)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storagetime_down_limit", boost::lexical_cast<std::string>(stif.m_uiStorageTimeDownLimit)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("begindate", stif.m_strBeginDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("enddate", stif.m_strEndDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", stif.m_strExtend));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryStorageSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+        
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query storage space info received and sid is " << strSid << " and user id is " << strUserID);
+
+    StorageInfo stif;
+    if (!QueryStorageSpace(strSid, strUserID, stif))
+    {
+        LOG_ERROR_RLD("Query storage space handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domain_id", boost::lexical_cast<std::string>(stif.m_uiDomainID)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sizeof_space", boost::lexical_cast<std::string>(stif.m_uiSpaceSize)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sizeof_spaceused", boost::lexical_cast<std::string>(stif.m_uiSpaceSizeUsed)));
+    
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -7943,6 +8617,7 @@ bool HttpMsgHandler::DeviceEventReport(const std::string &strSid, Event &ev)
         DevEventReportReq.m_uiDeviceType = ev.m_uiDevType;
         DevEventReportReq.m_uiEventState = ev.m_uiEventStatus;
         DevEventReportReq.m_uiEventType = ev.m_uiEventType;
+        DevEventReportReq.m_strEventTime = ev.m_strEventTime;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(DevEventReportReq, strSerializeOutPut))
@@ -7991,7 +8666,8 @@ bool HttpMsgHandler::DeviceEventReport(const std::string &strSid, Event &ev)
 }
 
 bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const unsigned int uiDevShared, 
-    const unsigned int uiEventType, const unsigned int uiView, const unsigned int uiBeginIndex, std::list<Event> &evlist)
+    const unsigned int uiEventType, const unsigned int uiView, const unsigned int uiBeginIndex, const std::string &strBeginDate, const std::string &strEndDate, 
+    std::list<Event> &evlist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -8005,6 +8681,8 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
         QueryDevEventReportReq.m_uiDeviceShared = uiDevShared;
         QueryDevEventReportReq.m_uiEventType = uiEventType;
         QueryDevEventReportReq.m_uiReadState = uiView;
+        QueryDevEventReportReq.m_strBeginDate = strBeginDate;
+        QueryDevEventReportReq.m_strEndDate = strEndDate;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevEventReportReq, strSerializeOutPut))
@@ -8043,6 +8721,7 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
             ev.m_uiDevType = it.m_uiDeviceType;
             ev.m_uiEventStatus = it.m_uiEventState;
             ev.m_uiEventType = it.m_uiEventType;
+            ev.m_strEventTime = it.m_strEventTime;
             evlist.push_back(std::move(ev));
         }
 
@@ -8050,7 +8729,8 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
 
         LOG_INFO_RLD("Query device event report info and sid id is " << strSid << " and user id is " << strUserID <<
             " and device id is " << strDevID << " and device shared is " << uiDevShared << " event type is " << uiEventType <<
-            " and view is " << uiView << " and begin index is " << uiBeginIndex <<
+            " and view is " << uiView << " and begin index is " << uiBeginIndex << " and begin date is " << strBeginDate <<
+            " and end date is " << strEndDate <<
             " and return code is " << QueryDevEventReportRsp.m_iRetcode <<
             " and return msg is " << QueryDevEventReportRsp.m_strRetMsg);
 
@@ -8121,5 +8801,341 @@ bool HttpMsgHandler::DeleteDeviceEvent(const std::string &strSid, const std::str
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::AddUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::AddStorageDetailReq_USR AddSTSpaceReq;
+        AddSTSpaceReq.m_MsgType = InteractiveProtoHandler::MsgType::AddStorageDetailReq_USR_T;
+        AddSTSpaceReq.m_uiMsgSeq = 1;
+        AddSTSpaceReq.m_strSID = strSid;
+        AddSTSpaceReq.m_storageDetail.m_strBeginDate = stif.m_strBeginDate;
+        AddSTSpaceReq.m_storageDetail.m_strEndDate = stif.m_strEndDate;
+        AddSTSpaceReq.m_storageDetail.m_strExtend = stif.m_strExtend;
+        AddSTSpaceReq.m_storageDetail.m_strObjectID = strUserID;
+        AddSTSpaceReq.m_storageDetail.m_uiObjectType = 0;
+        AddSTSpaceReq.m_storageDetail.m_strStorageName = stif.m_strStorageName;
+        AddSTSpaceReq.m_storageDetail.m_uiDomainID = stif.m_uiDomainID;
+        AddSTSpaceReq.m_storageDetail.m_uiOverlapType = stif.m_uiOverlapType;
+        AddSTSpaceReq.m_storageDetail.m_uiSizeOfSpaceUsed = 0;
+        AddSTSpaceReq.m_storageDetail.m_uiStorageTimeDownLimit = stif.m_uiStorageTimeDownLimit;
+        AddSTSpaceReq.m_storageDetail.m_uiStorageTimeUpLimit = stif.m_uiStorageTimeUpLimit;
+        AddSTSpaceReq.m_storageDetail.m_uiStorageType = 0;
+        AddSTSpaceReq.m_storageDetail.m_uiStorageUnitType = 0;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddSTSpaceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add user space req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::AddStorageDetailRsp_USR AddStSpaceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddStSpaceRsp))
+        {
+            LOG_ERROR_RLD("Add user space rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddStSpaceRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add user space info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << AddStSpaceRsp.m_iRetcode <<
+            " and return msg is " << AddStSpaceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::DeleteUserSpace(const std::string &strSid, const std::string &strUserID, const unsigned int &uiDomainID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::DeleteStorageDetailReq_USR DelSTSpaceReq;
+        DelSTSpaceReq.m_MsgType = InteractiveProtoHandler::MsgType::DeleteStorageDetailReq_USR_T;
+        DelSTSpaceReq.m_uiMsgSeq = 1;
+        DelSTSpaceReq.m_strSID = strSid;
+        DelSTSpaceReq.m_strObjectID = strUserID;
+        DelSTSpaceReq.m_uiDomainID = uiDomainID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelSTSpaceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete user space req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::DeleteStorageDetailRsp_USR DelStSpaceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelStSpaceRsp))
+        {
+            LOG_ERROR_RLD("Delete user space rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelStSpaceRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete user space info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelStSpaceRsp.m_iRetcode <<
+            " and return msg is " << DelStSpaceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::ModifyUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::ModifyStorageDetailReq_USR ModSTSpaceReq;
+        ModSTSpaceReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyStorageDetailReq_USR_T;
+        ModSTSpaceReq.m_uiMsgSeq = 1;
+        ModSTSpaceReq.m_strSID = strSid;
+        ModSTSpaceReq.m_storageDetail.m_strBeginDate = stif.m_strBeginDate;
+        ModSTSpaceReq.m_storageDetail.m_strEndDate = stif.m_strEndDate;
+        ModSTSpaceReq.m_storageDetail.m_strExtend = stif.m_strExtend;
+        ModSTSpaceReq.m_storageDetail.m_strObjectID = strUserID;
+        ModSTSpaceReq.m_storageDetail.m_uiObjectType = 0;
+        ModSTSpaceReq.m_storageDetail.m_strStorageName = stif.m_strStorageName;
+        ModSTSpaceReq.m_storageDetail.m_uiDomainID = stif.m_uiDomainID;
+        ModSTSpaceReq.m_storageDetail.m_uiOverlapType = stif.m_uiOverlapType;
+        ModSTSpaceReq.m_storageDetail.m_uiSizeOfSpaceUsed = 0;
+        ModSTSpaceReq.m_storageDetail.m_uiStorageTimeDownLimit = stif.m_uiStorageTimeDownLimit;
+        ModSTSpaceReq.m_storageDetail.m_uiStorageTimeUpLimit = stif.m_uiStorageTimeUpLimit;
+        ModSTSpaceReq.m_storageDetail.m_uiStorageType = 0;
+        ModSTSpaceReq.m_storageDetail.m_uiStorageUnitType = 0;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModSTSpaceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify user space req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::ModifyStorageDetailRsp_USR ModStSpaceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModStSpaceRsp))
+        {
+            LOG_ERROR_RLD("Modify user space rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModStSpaceRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify user space info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << ModStSpaceRsp.m_iRetcode <<
+            " and return msg is " << ModStSpaceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryUserSpace(const std::string &strSid, const std::string &strUserID, const unsigned int &uiDomainID, SpaceInfo &stif)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryStorageDetailReq_USR QuerySTSpaceReq;
+        QuerySTSpaceReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryStorageDetailReq_USR_T;
+        QuerySTSpaceReq.m_uiMsgSeq = 1;
+        QuerySTSpaceReq.m_strSID = strSid;
+        QuerySTSpaceReq.m_strObjectID = strUserID;
+        QuerySTSpaceReq.m_uiDomainID = uiDomainID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySTSpaceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user space req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryStorageDetailRsp_USR QueryStSpaceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryStSpaceRsp))
+        {
+            LOG_ERROR_RLD("Query user space rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        stif.m_strBeginDate = QueryStSpaceRsp.m_storageDetail.m_strBeginDate;
+        stif.m_strEndDate = QueryStSpaceRsp.m_storageDetail.m_strEndDate;
+        stif.m_strExtend = QueryStSpaceRsp.m_storageDetail.m_strExtend;
+        stif.m_strStorageName = QueryStSpaceRsp.m_storageDetail.m_strStorageName;
+        stif.m_uiDomainID = QueryStSpaceRsp.m_storageDetail.m_uiDomainID;
+        stif.m_uiOverlapType = QueryStSpaceRsp.m_storageDetail.m_uiOverlapType;
+        stif.m_uiStorageTimeDownLimit = QueryStSpaceRsp.m_storageDetail.m_uiStorageTimeDownLimit;
+        stif.m_uiStorageTimeUpLimit = QueryStSpaceRsp.m_storageDetail.m_uiStorageTimeUpLimit;
+
+        iRet = QueryStSpaceRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
+
+        LOG_INFO_RLD("Query user space info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryStSpaceRsp.m_iRetcode <<
+            " and return msg is " << QueryStSpaceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryStorageSpace(const std::string &strSid, const std::string &strUserID, StorageInfo &stif)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryRegionStorageInfoReq_USR QuerySTSpaceReq;
+        QuerySTSpaceReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryRegionStorageInfoReq_USR_T;
+        QuerySTSpaceReq.m_uiMsgSeq = 1;
+        QuerySTSpaceReq.m_strSID = strSid;
+        QuerySTSpaceReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySTSpaceReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query storage space req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        if (!PreCommonHandler(strMsgReceived))
+        {
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR QueryStSpaceRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryStSpaceRsp))
+        {
+            LOG_ERROR_RLD("Query storage space rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        stif.m_uiDomainID = QueryStSpaceRsp.m_uiDomainID;
+        stif.m_uiSpaceSize = QueryStSpaceRsp.m_uiSizeOfSpace;
+        stif.m_uiSpaceSizeUsed = QueryStSpaceRsp.m_uiSizeOfSpaceUsed;
+        
+        iRet = QueryStSpaceRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
+
+        LOG_INFO_RLD("Query storage space info and sid id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryStSpaceRsp.m_iRetcode <<
+            " and return msg is " << QueryStSpaceRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::ValidDatetime(const std::string &strDatetime)
+{
+    if (strDatetime.empty())
+    {
+        return false;
+    }
+
+    boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
+    boost::regex reg1("([0-9]{4}[0-9]{2}[0-9]{2})"); //yyyyMMdd
+    boost::regex reg2("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"); //yyyy-MM-dd HH:mm:ss
+    boost::regex reg3("([0-9]{4}-[0-9]{2}-[0-9]{2})"); ////yyyy-MM-dd
+    boost::regex reg4("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2})"); //yyyy-MM-dd  HH:mm
+
+    if (!boost::regex_match(strDatetime, reg0) && !boost::regex_match(strDatetime, reg1) && !boost::regex_match(strDatetime, reg2) &&
+        !boost::regex_match(strDatetime, reg3) && !boost::regex_match(strDatetime, reg4))
+    {
+        LOG_ERROR_RLD("Date time is invalid and input date is " << strDatetime);
+        return false;
+    }
+
+    return true;
 }
 

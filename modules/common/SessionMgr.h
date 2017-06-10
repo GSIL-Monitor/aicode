@@ -30,6 +30,8 @@ public:
 
     void SetMemCacheAddRess(const std::string &strMemAddress, const std::string &strMemPort);
 
+    void SetGlobalMemCacheAddRess(const std::string &strMemAddress, const std::string &strMemPort);
+
     bool Init();
 
     void Run();
@@ -96,6 +98,10 @@ private:
     MemcacheClient *m_pMemCl;
 
     TimeOutHandlerEx m_TimeOutObj;
+
+    MemcacheClient *m_pMemClGlobal;
+    std::string m_strMemAddressGlobal;
+    std::string m_strMemPortGlobal;
 
 };
 

@@ -438,6 +438,7 @@ void UnSerializeDeviceEventList(std::list<InteractiveProtoHandler::DeviceEvent> 
         deviceEvent.m_uiEventType = srcDeviceEvent.uieventtype();
         deviceEvent.m_uiEventState = srcDeviceEvent.uieventstate();
         deviceEvent.m_strFileUrl = srcDeviceEvent.strfileurl();
+        deviceEvent.m_strEventTime = srcDeviceEvent.streventtime();
 
         deviceEventList.push_back(std::move(deviceEvent));
     }
@@ -464,6 +465,7 @@ void SerializeDeviceEventList(const std::list<InteractiveProtoHandler::DeviceEve
         pDstDeviceEvent->set_uieventtype(itBegin->m_uiEventType);
         pDstDeviceEvent->set_uieventstate(itBegin->m_uiEventState);
         pDstDeviceEvent->set_strfileurl(itBegin->m_strFileUrl);
+        pDstDeviceEvent->set_streventtime(itBegin->m_strEventTime);
 
         ++i;
         ++itBegin;
@@ -1177,6 +1179,76 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteDeviceEventRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteDeviceEventRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddStorageDetailReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddStorageDetailReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddStorageDetailReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddStorageDetailRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddStorageDetailRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddStorageDetailRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteStorageDetailReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteStorageDetailReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteStorageDetailReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::DeleteStorageDetailRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::DeleteStorageDetailRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::DeleteStorageDetailRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyStorageDetailReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyStorageDetailReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyStorageDetailReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyStorageDetailRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyStorageDetailRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyStorageDetailRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryStorageDetailReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryStorageDetailReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryStorageDetailReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryStorageDetailRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryStorageDetailRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryStorageDetailRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryRegionStorageInfoReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryRegionStorageInfoReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryRegionStorageInfoReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryRegionStorageInfoRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2317,6 +2389,106 @@ bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_Serializer(const Req &rsp
 bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<DeleteDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::AddStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<AddStorageDetailReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::AddStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<AddStorageDetailReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::AddStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<AddStorageDetailRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<AddStorageDetailRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::DeleteStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<DeleteStorageDetailReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<DeleteStorageDetailReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::DeleteStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteStorageDetailRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::DeleteStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<DeleteStorageDetailRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::ModifyStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ModifyStorageDetailReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ModifyStorageDetailReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ModifyStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyStorageDetailRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ModifyStorageDetailRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryStorageDetailReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryStorageDetailReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryStorageDetailRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryStorageDetailRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryRegionStorageInfoReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryRegionStorageInfoReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryRegionStorageInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryRegionStorageInfoReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryRegionStorageInfoRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryRegionStorageInfoRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 
@@ -4704,6 +4876,7 @@ void InteractiveProtoHandler::DeviceEventReportReq_DEV::UnSerializer(const Inter
     m_uiEventType = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().uieventtype();
     m_uiEventState = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().uieventstate();
     m_strFileID = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().strfileid();
+    m_strEventTime = InteractiveMsg.reqvalue().deviceeventreportreq_dev_value().streventtime();
 }
 
 void InteractiveProtoHandler::DeviceEventReportReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4715,6 +4888,7 @@ void InteractiveProtoHandler::DeviceEventReportReq_DEV::Serializer(InteractiveMe
     InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_uieventtype(m_uiEventType);
     InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_uieventstate(m_uiEventState);
     InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_strfileid(m_strFileID);
+    InteractiveMsg.mutable_reqvalue()->mutable_deviceeventreportreq_dev_value()->set_streventtime(m_strEventTime);
 }
 
 void InteractiveProtoHandler::DeviceEventReportRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4739,6 +4913,8 @@ void InteractiveProtoHandler::QueryAllDeviceEventReq_USR::UnSerializer(const Int
     m_uiEventType = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uieventtype();
     m_uiReadState = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uireadstate();
     m_uiBeginIndex = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().uibeginindex();
+    m_strBeginDate = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().strbegindate();
+    m_strEndDate = InteractiveMsg.reqvalue().queryalldeviceeventreq_usr_value().strenddate();
 }
 
 void InteractiveProtoHandler::QueryAllDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4751,6 +4927,8 @@ void InteractiveProtoHandler::QueryAllDeviceEventReq_USR::Serializer(Interactive
     InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uieventtype(m_uiEventType);
     InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uireadstate(m_uiReadState);
     InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_strbegindate(m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldeviceeventreq_usr_value()->set_strenddate(m_strEndDate);
 }
 
 void InteractiveProtoHandler::QueryAllDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -4797,5 +4975,221 @@ void InteractiveProtoHandler::DeleteDeviceEventRsp_USR::Serializer(InteractiveMe
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteDeviceEventRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_deletedeviceeventrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::AddStorageDetailReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_storageDetail.m_uiDomainID = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uidomainid();
+    m_storageDetail.m_strObjectID = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().strobjectid();
+    m_storageDetail.m_uiObjectType = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uiobjecttype();
+    m_storageDetail.m_strStorageName = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().strstoragename();
+    m_storageDetail.m_uiStorageType = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uistoragetype();
+    m_storageDetail.m_uiOverlapType = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uioverlaptype();
+    m_storageDetail.m_uiStorageTimeUpLimit = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uistoragetimeuplimit();
+    m_storageDetail.m_uiStorageTimeDownLimit = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uistoragetimedownlimit();
+    m_storageDetail.m_uiSizeOfSpaceUsed = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uisizeofspaceused();
+    m_storageDetail.m_uiStorageUnitType = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uistorageunittype();
+    m_storageDetail.m_strBeginDate = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().strbegindate();
+    m_storageDetail.m_strEndDate = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().strenddate();
+    m_storageDetail.m_uiStatus = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().uistatus();
+    m_storageDetail.m_strExtend = InteractiveMsg.reqvalue().addstoragedetailreq_usr_value().storagedetail().strextend();
+}
+
+void InteractiveProtoHandler::AddStorageDetailReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddStorageDetailReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uidomainid(m_storageDetail.m_uiDomainID);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_strobjectid(m_storageDetail.m_strObjectID);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uiobjecttype(m_storageDetail.m_uiObjectType);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_strstoragename(m_storageDetail.m_strStorageName);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetype(m_storageDetail.m_uiStorageType);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uioverlaptype(m_storageDetail.m_uiOverlapType);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetimeuplimit(m_storageDetail.m_uiStorageTimeUpLimit);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetimedownlimit(m_storageDetail.m_uiStorageTimeDownLimit);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uisizeofspaceused(m_storageDetail.m_uiSizeOfSpaceUsed);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uistorageunittype(m_storageDetail.m_uiStorageUnitType);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_strbegindate(m_storageDetail.m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_strenddate(m_storageDetail.m_strEndDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_uistatus(m_storageDetail.m_uiStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_addstoragedetailreq_usr_value()->mutable_storagedetail()->set_strextend(m_storageDetail.m_strExtend);
+}
+
+void InteractiveProtoHandler::AddStorageDetailRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().addstoragedetailrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::AddStorageDetailRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddStorageDetailRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_addstoragedetailrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::DeleteStorageDetailReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strObjectID = InteractiveMsg.reqvalue().deletestoragedetailreq_usr_value().strobjectid();
+    m_uiDomainID = InteractiveMsg.reqvalue().deletestoragedetailreq_usr_value().uidomainid();
+}
+
+void InteractiveProtoHandler::DeleteStorageDetailReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteStorageDetailReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletestoragedetailreq_usr_value()->set_uidomainid(m_uiDomainID);
+    InteractiveMsg.mutable_reqvalue()->mutable_deletestoragedetailreq_usr_value()->set_strobjectid(m_strObjectID);
+}
+
+void InteractiveProtoHandler::DeleteStorageDetailRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().deletestoragedetailrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::DeleteStorageDetailRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteStorageDetailRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_deletestoragedetailrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::ModifyStorageDetailReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_storageDetail.m_uiDomainID = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uidomainid();
+    m_storageDetail.m_strObjectID = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().strobjectid();
+    m_storageDetail.m_uiObjectType = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uiobjecttype();
+    m_storageDetail.m_strStorageName = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().strstoragename();
+    m_storageDetail.m_uiStorageType = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uistoragetype();
+    m_storageDetail.m_uiOverlapType = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uioverlaptype();
+    m_storageDetail.m_uiStorageTimeUpLimit = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uistoragetimeuplimit();
+    m_storageDetail.m_uiStorageTimeDownLimit = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uistoragetimedownlimit();
+    m_storageDetail.m_uiSizeOfSpaceUsed = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uisizeofspaceused();
+    m_storageDetail.m_uiStorageUnitType = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uistorageunittype();
+    m_storageDetail.m_strBeginDate = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().strbegindate();
+    m_storageDetail.m_strEndDate = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().strenddate();
+    m_storageDetail.m_uiStatus = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().uistatus();
+    m_storageDetail.m_strExtend = InteractiveMsg.reqvalue().modifystoragedetailreq_usr_value().storagedetail().strextend();
+}
+
+void InteractiveProtoHandler::ModifyStorageDetailReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyStorageDetailReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uidomainid(m_storageDetail.m_uiDomainID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_strobjectid(m_storageDetail.m_strObjectID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uiobjecttype(m_storageDetail.m_uiObjectType);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_strstoragename(m_storageDetail.m_strStorageName);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetype(m_storageDetail.m_uiStorageType);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uioverlaptype(m_storageDetail.m_uiOverlapType);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetimeuplimit(m_storageDetail.m_uiStorageTimeUpLimit);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uistoragetimedownlimit(m_storageDetail.m_uiStorageTimeDownLimit);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uisizeofspaceused(m_storageDetail.m_uiSizeOfSpaceUsed);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uistorageunittype(m_storageDetail.m_uiStorageUnitType);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_strbegindate(m_storageDetail.m_strBeginDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_strenddate(m_storageDetail.m_strEndDate);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_uistatus(m_storageDetail.m_uiStatus);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifystoragedetailreq_usr_value()->mutable_storagedetail()->set_strextend(m_storageDetail.m_strExtend);
+}
+
+void InteractiveProtoHandler::ModifyStorageDetailRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().modifystoragedetailrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::ModifyStorageDetailRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyStorageDetailRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_modifystoragedetailrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryStorageDetailReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strObjectID = InteractiveMsg.reqvalue().querystoragedetailreq_usr_value().strobjectid();
+    m_uiDomainID = InteractiveMsg.reqvalue().querystoragedetailreq_usr_value().uidomainid();
+}
+
+void InteractiveProtoHandler::QueryStorageDetailReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryStorageDetailReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_querystoragedetailreq_usr_value()->set_uidomainid(m_uiDomainID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querystoragedetailreq_usr_value()->set_strobjectid(m_strObjectID);
+}
+
+void InteractiveProtoHandler::QueryStorageDetailRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_storageDetail.m_uiDomainID = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uidomainid();
+    m_storageDetail.m_strObjectID = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().strobjectid();
+    m_storageDetail.m_uiObjectType = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uiobjecttype();
+    m_storageDetail.m_strStorageName = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().strstoragename();
+    m_storageDetail.m_uiStorageType = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uistoragetype();
+    m_storageDetail.m_uiOverlapType = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uioverlaptype();
+    m_storageDetail.m_uiStorageTimeUpLimit = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uistoragetimeuplimit();
+    m_storageDetail.m_uiStorageTimeDownLimit = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uistoragetimedownlimit();
+    m_storageDetail.m_uiSizeOfSpaceUsed = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uisizeofspaceused();
+    m_storageDetail.m_uiStorageUnitType = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uistorageunittype();
+    m_storageDetail.m_strBeginDate = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().strbegindate();
+    m_storageDetail.m_strEndDate = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().strenddate();
+    m_storageDetail.m_uiStatus = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().uistatus();
+    m_storageDetail.m_strExtend = InteractiveMsg.rspvalue().querystoragedetailrsp_usr_value().storagedetail().strextend();
+}
+
+void InteractiveProtoHandler::QueryStorageDetailRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryStorageDetailRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uidomainid(m_storageDetail.m_uiDomainID);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_strobjectid(m_storageDetail.m_strObjectID);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uiobjecttype(m_storageDetail.m_uiObjectType);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_strstoragename(m_storageDetail.m_strStorageName);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uistoragetype(m_storageDetail.m_uiStorageType);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uioverlaptype(m_storageDetail.m_uiOverlapType);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uistoragetimeuplimit(m_storageDetail.m_uiStorageTimeUpLimit);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uistoragetimedownlimit(m_storageDetail.m_uiStorageTimeDownLimit);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uisizeofspaceused(m_storageDetail.m_uiSizeOfSpaceUsed);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uistorageunittype(m_storageDetail.m_uiStorageUnitType);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_strbegindate(m_storageDetail.m_strBeginDate);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_strenddate(m_storageDetail.m_strEndDate);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_uistatus(m_storageDetail.m_uiStatus);
+    InteractiveMsg.mutable_rspvalue()->mutable_querystoragedetailrsp_usr_value()->mutable_storagedetail()->set_strextend(m_storageDetail.m_strExtend);
+}
+
+void InteractiveProtoHandler::QueryRegionStorageInfoReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryregionstorageinforeq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::QueryRegionStorageInfoReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryRegionStorageInfoReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryregionstorageinforeq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_uiDomainID = InteractiveMsg.rspvalue().queryregionstorageinforsp_usr_value().uidomainid();
+    m_uiSizeOfSpace = InteractiveMsg.rspvalue().queryregionstorageinforsp_usr_value().uisizeofspace();
+    m_uiSizeOfSpaceUsed = InteractiveMsg.rspvalue().queryregionstorageinforsp_usr_value().uisizeofspaceused();
+}
+
+void InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryRegionStorageInfoRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uidomainid(m_uiDomainID);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uisizeofspace(m_uiSizeOfSpace);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uisizeofspaceused(m_uiSizeOfSpaceUsed);
 }
 

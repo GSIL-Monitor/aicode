@@ -146,6 +146,17 @@ public:
         DeleteDeviceEventReq_USR_T = 20720,        //删除设备事件请求
         DeleteDeviceEventRsp_USR_T = 20730,
 
+        AddStorageDetailReq_USR_T = 20800,         //用户新增存储详情
+        AddStorageDetailRsp_USR_T = 20810,
+        DeleteStorageDetailReq_USR_T = 20820,      //用户删除存储详情
+        DeleteStorageDetailRsp_USR_T = 20830,
+        ModifyStorageDetailReq_USR_T = 20840,      //用户修改存储详情
+        ModifyStorageDetailRsp_USR_T = 20850,
+        QueryStorageDetailReq_USR_T = 20860,       //用户查询存储详情
+        QueryStorageDetailRsp_USR_T = 20870,
+        QueryRegionStorageInfoReq_USR_T = 20880,
+        QueryRegionStorageInfoRsp_USR_T = 20890,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -335,6 +346,25 @@ public:
         unsigned int m_uiEventType;
         unsigned int m_uiEventState;
         std::string m_strFileUrl;
+        std::string m_strEventTime;
+    };
+
+    struct StorageDetail
+    {
+        unsigned int m_uiDomainID;
+        std::string m_strObjectID;
+        unsigned int m_uiObjectType;
+        std::string m_strStorageName;
+        unsigned int m_uiStorageType;
+        unsigned int m_uiOverlapType;
+        unsigned int m_uiStorageTimeUpLimit;
+        unsigned int m_uiStorageTimeDownLimit;
+        unsigned int m_uiSizeOfSpaceUsed;
+        unsigned int m_uiStorageUnitType;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiStatus;
+        std::string m_strExtend;
     };
 
 
@@ -939,6 +969,8 @@ public:
         unsigned int m_uiEventType;
         unsigned int m_uiReadState;
         unsigned int m_uiBeginIndex;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -968,6 +1000,100 @@ public:
     struct DeleteDeviceEventRsp_USR : Rsp
     {
         std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct AddStorageDetailReq_USR : Req
+    {
+        StorageDetail m_storageDetail;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct AddStorageDetailRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteStorageDetailReq_USR : Req
+    {
+        std::string m_strObjectID;
+        unsigned int m_uiDomainID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct DeleteStorageDetailRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyStorageDetailReq_USR : Req
+    {
+        StorageDetail m_storageDetail;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyStorageDetailRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryStorageDetailReq_USR : Req
+    {
+        std::string m_strObjectID;
+        unsigned int m_uiDomainID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryStorageDetailRsp_USR : Rsp
+    {
+        StorageDetail m_storageDetail;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryRegionStorageInfoReq_USR : Req
+    {
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryRegionStorageInfoRsp_USR : Rsp
+    {
+        unsigned int m_uiDomainID;
+        unsigned int m_uiSizeOfSpace;
+        unsigned int m_uiSizeOfSpaceUsed;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1382,6 +1508,7 @@ public:
         unsigned int m_uiEventType;
         unsigned int m_uiEventState;
         std::string m_strFileID;
+        std::string m_strEventTime;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1809,6 +1936,31 @@ private:
     bool DeleteDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool DeleteDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool AddStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool AddStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool AddStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool AddStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool DeleteStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool DeleteStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool DeleteStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool DeleteStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ModifyStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool ModifyStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ModifyStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool ModifyStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryStorageDetailRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryStorageDetailRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryRegionStorageInfoReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryRegionStorageInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryRegionStorageInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryRegionStorageInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

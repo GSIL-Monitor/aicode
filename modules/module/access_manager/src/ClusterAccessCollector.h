@@ -23,6 +23,7 @@ public:
     static const unsigned int DEVICE_SESSION = 0;
     static const unsigned int USER_SESSION = 1;
 
+    static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
 
     ClusterAccessCollector(SessionMgr *pSessionMgr, MysqlImpl *pMysqlImpl, DBInfoCacheManager *pDBInfo);
     ~ClusterAccessCollector();

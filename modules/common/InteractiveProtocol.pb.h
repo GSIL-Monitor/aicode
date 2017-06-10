@@ -56,6 +56,12 @@ extern AddFriendsReq_USRDefaultTypeInternal _AddFriendsReq_USR_default_instance_
 class AddFriendsRsp_USR;
 class AddFriendsRsp_USRDefaultTypeInternal;
 extern AddFriendsRsp_USRDefaultTypeInternal _AddFriendsRsp_USR_default_instance_;
+class AddStorageDetailReq_USR;
+class AddStorageDetailReq_USRDefaultTypeInternal;
+extern AddStorageDetailReq_USRDefaultTypeInternal _AddStorageDetailReq_USR_default_instance_;
+class AddStorageDetailRsp_USR;
+class AddStorageDetailRsp_USRDefaultTypeInternal;
+extern AddStorageDetailRsp_USRDefaultTypeInternal _AddStorageDetailRsp_USR_default_instance_;
 class BroadcastOnlineDevInfo_INNER;
 class BroadcastOnlineDevInfo_INNERDefaultTypeInternal;
 extern BroadcastOnlineDevInfo_INNERDefaultTypeInternal _BroadcastOnlineDevInfo_INNER_default_instance_;
@@ -113,6 +119,12 @@ extern DeleteFileReq_USRDefaultTypeInternal _DeleteFileReq_USR_default_instance_
 class DeleteFileRsp_USR;
 class DeleteFileRsp_USRDefaultTypeInternal;
 extern DeleteFileRsp_USRDefaultTypeInternal _DeleteFileRsp_USR_default_instance_;
+class DeleteStorageDetailReq_USR;
+class DeleteStorageDetailReq_USRDefaultTypeInternal;
+extern DeleteStorageDetailReq_USRDefaultTypeInternal _DeleteStorageDetailReq_USR_default_instance_;
+class DeleteStorageDetailRsp_USR;
+class DeleteStorageDetailRsp_USRDefaultTypeInternal;
+extern DeleteStorageDetailRsp_USRDefaultTypeInternal _DeleteStorageDetailRsp_USR_default_instance_;
 class Device;
 class DeviceDefaultTypeInternal;
 extern DeviceDefaultTypeInternal _Device_default_instance_;
@@ -224,6 +236,12 @@ extern ModifyDevicePropertyReq_DEVDefaultTypeInternal _ModifyDevicePropertyReq_D
 class ModifyDevicePropertyRsp_DEV;
 class ModifyDevicePropertyRsp_DEVDefaultTypeInternal;
 extern ModifyDevicePropertyRsp_DEVDefaultTypeInternal _ModifyDevicePropertyRsp_DEV_default_instance_;
+class ModifyStorageDetailReq_USR;
+class ModifyStorageDetailReq_USRDefaultTypeInternal;
+extern ModifyStorageDetailReq_USRDefaultTypeInternal _ModifyStorageDetailReq_USR_default_instance_;
+class ModifyStorageDetailRsp_USR;
+class ModifyStorageDetailRsp_USRDefaultTypeInternal;
+extern ModifyStorageDetailRsp_USRDefaultTypeInternal _ModifyStorageDetailRsp_USR_default_instance_;
 class ModifyUserInfoReq_USR;
 class ModifyUserInfoReq_USRDefaultTypeInternal;
 extern ModifyUserInfoReq_USRDefaultTypeInternal _ModifyUserInfoReq_USR_default_instance_;
@@ -329,6 +347,18 @@ extern QueryPlatformPushStatusReq_DEVDefaultTypeInternal _QueryPlatformPushStatu
 class QueryPlatformPushStatusRsp_DEV;
 class QueryPlatformPushStatusRsp_DEVDefaultTypeInternal;
 extern QueryPlatformPushStatusRsp_DEVDefaultTypeInternal _QueryPlatformPushStatusRsp_DEV_default_instance_;
+class QueryRegionStorageInfoReq_USR;
+class QueryRegionStorageInfoReq_USRDefaultTypeInternal;
+extern QueryRegionStorageInfoReq_USRDefaultTypeInternal _QueryRegionStorageInfoReq_USR_default_instance_;
+class QueryRegionStorageInfoRsp_USR;
+class QueryRegionStorageInfoRsp_USRDefaultTypeInternal;
+extern QueryRegionStorageInfoRsp_USRDefaultTypeInternal _QueryRegionStorageInfoRsp_USR_default_instance_;
+class QueryStorageDetailReq_USR;
+class QueryStorageDetailReq_USRDefaultTypeInternal;
+extern QueryStorageDetailReq_USRDefaultTypeInternal _QueryStorageDetailReq_USR_default_instance_;
+class QueryStorageDetailRsp_USR;
+class QueryStorageDetailRsp_USRDefaultTypeInternal;
+extern QueryStorageDetailRsp_USRDefaultTypeInternal _QueryStorageDetailRsp_USR_default_instance_;
 class QueryTimeZoneReq_DEV;
 class QueryTimeZoneReq_DEVDefaultTypeInternal;
 extern QueryTimeZoneReq_DEVDefaultTypeInternal _QueryTimeZoneReq_DEV_default_instance_;
@@ -410,6 +440,9 @@ extern StorageAddressRsp_DEVDefaultTypeInternal _StorageAddressRsp_DEV_default_i
 class StorageAddressRsp_USR;
 class StorageAddressRsp_USRDefaultTypeInternal;
 extern StorageAddressRsp_USRDefaultTypeInternal _StorageAddressRsp_USR_default_instance_;
+class StorageDetail;
+class StorageDetailDefaultTypeInternal;
+extern StorageDetailDefaultTypeInternal _StorageDetail_default_instance_;
 class UnRegisterUserReq_USR;
 class UnRegisterUserReq_USRDefaultTypeInternal;
 extern UnRegisterUserReq_USRDefaultTypeInternal _UnRegisterUserReq_USR_default_instance_;
@@ -539,6 +572,16 @@ enum MsgType {
   QueryAllDeviceEventRsp_USR_T = 20710,
   DeleteDeviceEventReq_USR_T = 20720,
   DeleteDeviceEventRsp_USR_T = 20730,
+  AddStorageDetailReq_USR_T = 20800,
+  AddStorageDetailRsp_USR_T = 20810,
+  DeleteStorageDetailReq_USR_T = 20820,
+  DeleteStorageDetailRsp_USR_T = 20830,
+  ModifyStorageDetailReq_USR_T = 20840,
+  ModifyStorageDetailRsp_USR_T = 20850,
+  QueryStorageDetailReq_USR_T = 20860,
+  QueryStorageDetailRsp_USR_T = 20870,
+  QueryRegionStorageInfoReq_USR_T = 20880,
+  QueryRegionStorageInfoRsp_USR_T = 20890,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -2691,6 +2734,20 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_strfileurl();
   void set_allocated_strfileurl(::std::string* strfileurl);
 
+  // string strEventTime = 7;
+  void clear_streventtime();
+  static const int kStrEventTimeFieldNumber = 7;
+  const ::std::string& streventtime() const;
+  void set_streventtime(const ::std::string& value);
+  #if LANG_CXX11
+  void set_streventtime(::std::string&& value);
+  #endif
+  void set_streventtime(const char* value);
+  void set_streventtime(const char* value, size_t size);
+  ::std::string* mutable_streventtime();
+  ::std::string* release_streventtime();
+  void set_allocated_streventtime(::std::string* streventtime);
+
   // uint32 uiDeviceType = 2;
   void clear_uidevicetype();
   static const int kUiDeviceTypeFieldNumber = 2;
@@ -2716,9 +2773,224 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr streventid_;
   ::google::protobuf::internal::ArenaStringPtr strfileurl_;
+  ::google::protobuf::internal::ArenaStringPtr streventtime_;
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class StorageDetail : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.StorageDetail) */ {
+ public:
+  StorageDetail();
+  virtual ~StorageDetail();
+
+  StorageDetail(const StorageDetail& from);
+
+  inline StorageDetail& operator=(const StorageDetail& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StorageDetail& default_instance();
+
+  static inline const StorageDetail* internal_default_instance() {
+    return reinterpret_cast<const StorageDetail*>(
+               &_StorageDetail_default_instance_);
+  }
+
+  void Swap(StorageDetail* other);
+
+  // implements Message ----------------------------------------------
+
+  inline StorageDetail* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  StorageDetail* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const StorageDetail& from);
+  void MergeFrom(const StorageDetail& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(StorageDetail* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strObjectID = 2;
+  void clear_strobjectid();
+  static const int kStrObjectIDFieldNumber = 2;
+  const ::std::string& strobjectid() const;
+  void set_strobjectid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strobjectid(::std::string&& value);
+  #endif
+  void set_strobjectid(const char* value);
+  void set_strobjectid(const char* value, size_t size);
+  ::std::string* mutable_strobjectid();
+  ::std::string* release_strobjectid();
+  void set_allocated_strobjectid(::std::string* strobjectid);
+
+  // string strStorageName = 4;
+  void clear_strstoragename();
+  static const int kStrStorageNameFieldNumber = 4;
+  const ::std::string& strstoragename() const;
+  void set_strstoragename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoragename(::std::string&& value);
+  #endif
+  void set_strstoragename(const char* value);
+  void set_strstoragename(const char* value, size_t size);
+  ::std::string* mutable_strstoragename();
+  ::std::string* release_strstoragename();
+  void set_allocated_strstoragename(::std::string* strstoragename);
+
+  // string strBeginDate = 11;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 11;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbegindate(::std::string&& value);
+  #endif
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // string strEndDate = 12;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 12;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strenddate(::std::string&& value);
+  #endif
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
+  // string strExtend = 13;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 13;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiDomainID = 1;
+  void clear_uidomainid();
+  static const int kUiDomainIDFieldNumber = 1;
+  ::google::protobuf::uint32 uidomainid() const;
+  void set_uidomainid(::google::protobuf::uint32 value);
+
+  // uint32 uiObjectType = 3;
+  void clear_uiobjecttype();
+  static const int kUiObjectTypeFieldNumber = 3;
+  ::google::protobuf::uint32 uiobjecttype() const;
+  void set_uiobjecttype(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageType = 5;
+  void clear_uistoragetype();
+  static const int kUiStorageTypeFieldNumber = 5;
+  ::google::protobuf::uint32 uistoragetype() const;
+  void set_uistoragetype(::google::protobuf::uint32 value);
+
+  // uint32 uiOverlapType = 6;
+  void clear_uioverlaptype();
+  static const int kUiOverlapTypeFieldNumber = 6;
+  ::google::protobuf::uint32 uioverlaptype() const;
+  void set_uioverlaptype(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageTimeUpLimit = 7;
+  void clear_uistoragetimeuplimit();
+  static const int kUiStorageTimeUpLimitFieldNumber = 7;
+  ::google::protobuf::uint32 uistoragetimeuplimit() const;
+  void set_uistoragetimeuplimit(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageTimeDownLimit = 8;
+  void clear_uistoragetimedownlimit();
+  static const int kUiStorageTimeDownLimitFieldNumber = 8;
+  ::google::protobuf::uint32 uistoragetimedownlimit() const;
+  void set_uistoragetimedownlimit(::google::protobuf::uint32 value);
+
+  // uint32 uiSizeOfSpaceUsed = 9;
+  void clear_uisizeofspaceused();
+  static const int kUiSizeOfSpaceUsedFieldNumber = 9;
+  ::google::protobuf::uint32 uisizeofspaceused() const;
+  void set_uisizeofspaceused(::google::protobuf::uint32 value);
+
+  // uint32 uiStorageUnitType = 10;
+  void clear_uistorageunittype();
+  static const int kUiStorageUnitTypeFieldNumber = 10;
+  ::google::protobuf::uint32 uistorageunittype() const;
+  void set_uistorageunittype(::google::protobuf::uint32 value);
+
+  // uint32 uiStatus = 14;
+  void clear_uistatus();
+  static const int kUiStatusFieldNumber = 14;
+  ::google::protobuf::uint32 uistatus() const;
+  void set_uistatus(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.StorageDetail)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strobjectid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoragename_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uidomainid_;
+  ::google::protobuf::uint32 uiobjecttype_;
+  ::google::protobuf::uint32 uistoragetype_;
+  ::google::protobuf::uint32 uioverlaptype_;
+  ::google::protobuf::uint32 uistoragetimeuplimit_;
+  ::google::protobuf::uint32 uistoragetimedownlimit_;
+  ::google::protobuf::uint32 uisizeofspaceused_;
+  ::google::protobuf::uint32 uistorageunittype_;
+  ::google::protobuf::uint32 uistatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -6544,6 +6816,20 @@ class DeviceEventReportReq_DEV : public ::google::protobuf::Message /* @@protoc_
   ::std::string* release_strfileid();
   void set_allocated_strfileid(::std::string* strfileid);
 
+  // string strEventTime = 6;
+  void clear_streventtime();
+  static const int kStrEventTimeFieldNumber = 6;
+  const ::std::string& streventtime() const;
+  void set_streventtime(const ::std::string& value);
+  #if LANG_CXX11
+  void set_streventtime(::std::string&& value);
+  #endif
+  void set_streventtime(const char* value);
+  void set_streventtime(const char* value, size_t size);
+  ::std::string* mutable_streventtime();
+  ::std::string* release_streventtime();
+  void set_allocated_streventtime(::std::string* streventtime);
+
   // uint32 uiDeviceType = 2;
   void clear_uidevicetype();
   static const int kUiDeviceTypeFieldNumber = 2;
@@ -6568,6 +6854,7 @@ class DeviceEventReportReq_DEV : public ::google::protobuf::Message /* @@protoc_
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr streventtime_;
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
@@ -13252,6 +13539,34 @@ class QueryAllDeviceEventReq_USR : public ::google::protobuf::Message /* @@proto
   ::std::string* release_strdeviceid();
   void set_allocated_strdeviceid(::std::string* strdeviceid);
 
+  // string strBeginDate = 7;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 7;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbegindate(::std::string&& value);
+  #endif
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // string strEndDate = 8;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 8;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strenddate(::std::string&& value);
+  #endif
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
   // uint32 uiDeviceShared = 3;
   void clear_uideviceshared();
   static const int kUiDeviceSharedFieldNumber = 3;
@@ -13282,6 +13597,8 @@ class QueryAllDeviceEventReq_USR : public ::google::protobuf::Message /* @@proto
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
   ::google::protobuf::uint32 uideviceshared_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uireadstate_;
@@ -13587,6 +13904,921 @@ class DeleteDeviceEventRsp_USR : public ::google::protobuf::Message /* @@protoc_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddStorageDetailReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddStorageDetailReq_USR) */ {
+ public:
+  AddStorageDetailReq_USR();
+  virtual ~AddStorageDetailReq_USR();
+
+  AddStorageDetailReq_USR(const AddStorageDetailReq_USR& from);
+
+  inline AddStorageDetailReq_USR& operator=(const AddStorageDetailReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddStorageDetailReq_USR& default_instance();
+
+  static inline const AddStorageDetailReq_USR* internal_default_instance() {
+    return reinterpret_cast<const AddStorageDetailReq_USR*>(
+               &_AddStorageDetailReq_USR_default_instance_);
+  }
+
+  void Swap(AddStorageDetailReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddStorageDetailReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddStorageDetailReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddStorageDetailReq_USR& from);
+  void MergeFrom(const AddStorageDetailReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddStorageDetailReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.StorageDetail storageDetail = 1;
+  bool has_storagedetail() const;
+  void clear_storagedetail();
+  static const int kStorageDetailFieldNumber = 1;
+  const ::Interactive::Message::StorageDetail& storagedetail() const;
+  ::Interactive::Message::StorageDetail* mutable_storagedetail();
+  ::Interactive::Message::StorageDetail* release_storagedetail();
+  void set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddStorageDetailReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::StorageDetail* storagedetail_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddStorageDetailRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddStorageDetailRsp_USR) */ {
+ public:
+  AddStorageDetailRsp_USR();
+  virtual ~AddStorageDetailRsp_USR();
+
+  AddStorageDetailRsp_USR(const AddStorageDetailRsp_USR& from);
+
+  inline AddStorageDetailRsp_USR& operator=(const AddStorageDetailRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddStorageDetailRsp_USR& default_instance();
+
+  static inline const AddStorageDetailRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const AddStorageDetailRsp_USR*>(
+               &_AddStorageDetailRsp_USR_default_instance_);
+  }
+
+  void Swap(AddStorageDetailRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddStorageDetailRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddStorageDetailRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddStorageDetailRsp_USR& from);
+  void MergeFrom(const AddStorageDetailRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddStorageDetailRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddStorageDetailRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteStorageDetailReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteStorageDetailReq_USR) */ {
+ public:
+  DeleteStorageDetailReq_USR();
+  virtual ~DeleteStorageDetailReq_USR();
+
+  DeleteStorageDetailReq_USR(const DeleteStorageDetailReq_USR& from);
+
+  inline DeleteStorageDetailReq_USR& operator=(const DeleteStorageDetailReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteStorageDetailReq_USR& default_instance();
+
+  static inline const DeleteStorageDetailReq_USR* internal_default_instance() {
+    return reinterpret_cast<const DeleteStorageDetailReq_USR*>(
+               &_DeleteStorageDetailReq_USR_default_instance_);
+  }
+
+  void Swap(DeleteStorageDetailReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteStorageDetailReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteStorageDetailReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteStorageDetailReq_USR& from);
+  void MergeFrom(const DeleteStorageDetailReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteStorageDetailReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strObjectID = 1;
+  void clear_strobjectid();
+  static const int kStrObjectIDFieldNumber = 1;
+  const ::std::string& strobjectid() const;
+  void set_strobjectid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strobjectid(::std::string&& value);
+  #endif
+  void set_strobjectid(const char* value);
+  void set_strobjectid(const char* value, size_t size);
+  ::std::string* mutable_strobjectid();
+  ::std::string* release_strobjectid();
+  void set_allocated_strobjectid(::std::string* strobjectid);
+
+  // uint32 uiDomainID = 2;
+  void clear_uidomainid();
+  static const int kUiDomainIDFieldNumber = 2;
+  ::google::protobuf::uint32 uidomainid() const;
+  void set_uidomainid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteStorageDetailReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strobjectid_;
+  ::google::protobuf::uint32 uidomainid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteStorageDetailRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeleteStorageDetailRsp_USR) */ {
+ public:
+  DeleteStorageDetailRsp_USR();
+  virtual ~DeleteStorageDetailRsp_USR();
+
+  DeleteStorageDetailRsp_USR(const DeleteStorageDetailRsp_USR& from);
+
+  inline DeleteStorageDetailRsp_USR& operator=(const DeleteStorageDetailRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteStorageDetailRsp_USR& default_instance();
+
+  static inline const DeleteStorageDetailRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const DeleteStorageDetailRsp_USR*>(
+               &_DeleteStorageDetailRsp_USR_default_instance_);
+  }
+
+  void Swap(DeleteStorageDetailRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteStorageDetailRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteStorageDetailRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteStorageDetailRsp_USR& from);
+  void MergeFrom(const DeleteStorageDetailRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteStorageDetailRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeleteStorageDetailRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyStorageDetailReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyStorageDetailReq_USR) */ {
+ public:
+  ModifyStorageDetailReq_USR();
+  virtual ~ModifyStorageDetailReq_USR();
+
+  ModifyStorageDetailReq_USR(const ModifyStorageDetailReq_USR& from);
+
+  inline ModifyStorageDetailReq_USR& operator=(const ModifyStorageDetailReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyStorageDetailReq_USR& default_instance();
+
+  static inline const ModifyStorageDetailReq_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyStorageDetailReq_USR*>(
+               &_ModifyStorageDetailReq_USR_default_instance_);
+  }
+
+  void Swap(ModifyStorageDetailReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyStorageDetailReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyStorageDetailReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyStorageDetailReq_USR& from);
+  void MergeFrom(const ModifyStorageDetailReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyStorageDetailReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.StorageDetail storageDetail = 1;
+  bool has_storagedetail() const;
+  void clear_storagedetail();
+  static const int kStorageDetailFieldNumber = 1;
+  const ::Interactive::Message::StorageDetail& storagedetail() const;
+  ::Interactive::Message::StorageDetail* mutable_storagedetail();
+  ::Interactive::Message::StorageDetail* release_storagedetail();
+  void set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyStorageDetailReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::StorageDetail* storagedetail_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyStorageDetailRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyStorageDetailRsp_USR) */ {
+ public:
+  ModifyStorageDetailRsp_USR();
+  virtual ~ModifyStorageDetailRsp_USR();
+
+  ModifyStorageDetailRsp_USR(const ModifyStorageDetailRsp_USR& from);
+
+  inline ModifyStorageDetailRsp_USR& operator=(const ModifyStorageDetailRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyStorageDetailRsp_USR& default_instance();
+
+  static inline const ModifyStorageDetailRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyStorageDetailRsp_USR*>(
+               &_ModifyStorageDetailRsp_USR_default_instance_);
+  }
+
+  void Swap(ModifyStorageDetailRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyStorageDetailRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyStorageDetailRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyStorageDetailRsp_USR& from);
+  void MergeFrom(const ModifyStorageDetailRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyStorageDetailRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyStorageDetailRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryStorageDetailReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryStorageDetailReq_USR) */ {
+ public:
+  QueryStorageDetailReq_USR();
+  virtual ~QueryStorageDetailReq_USR();
+
+  QueryStorageDetailReq_USR(const QueryStorageDetailReq_USR& from);
+
+  inline QueryStorageDetailReq_USR& operator=(const QueryStorageDetailReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryStorageDetailReq_USR& default_instance();
+
+  static inline const QueryStorageDetailReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryStorageDetailReq_USR*>(
+               &_QueryStorageDetailReq_USR_default_instance_);
+  }
+
+  void Swap(QueryStorageDetailReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryStorageDetailReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryStorageDetailReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryStorageDetailReq_USR& from);
+  void MergeFrom(const QueryStorageDetailReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryStorageDetailReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strObjectID = 1;
+  void clear_strobjectid();
+  static const int kStrObjectIDFieldNumber = 1;
+  const ::std::string& strobjectid() const;
+  void set_strobjectid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strobjectid(::std::string&& value);
+  #endif
+  void set_strobjectid(const char* value);
+  void set_strobjectid(const char* value, size_t size);
+  ::std::string* mutable_strobjectid();
+  ::std::string* release_strobjectid();
+  void set_allocated_strobjectid(::std::string* strobjectid);
+
+  // uint32 uiDomainID = 2;
+  void clear_uidomainid();
+  static const int kUiDomainIDFieldNumber = 2;
+  ::google::protobuf::uint32 uidomainid() const;
+  void set_uidomainid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryStorageDetailReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strobjectid_;
+  ::google::protobuf::uint32 uidomainid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryStorageDetailRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryStorageDetailRsp_USR) */ {
+ public:
+  QueryStorageDetailRsp_USR();
+  virtual ~QueryStorageDetailRsp_USR();
+
+  QueryStorageDetailRsp_USR(const QueryStorageDetailRsp_USR& from);
+
+  inline QueryStorageDetailRsp_USR& operator=(const QueryStorageDetailRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryStorageDetailRsp_USR& default_instance();
+
+  static inline const QueryStorageDetailRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryStorageDetailRsp_USR*>(
+               &_QueryStorageDetailRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryStorageDetailRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryStorageDetailRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryStorageDetailRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryStorageDetailRsp_USR& from);
+  void MergeFrom(const QueryStorageDetailRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryStorageDetailRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.StorageDetail storageDetail = 1;
+  bool has_storagedetail() const;
+  void clear_storagedetail();
+  static const int kStorageDetailFieldNumber = 1;
+  const ::Interactive::Message::StorageDetail& storagedetail() const;
+  ::Interactive::Message::StorageDetail* mutable_storagedetail();
+  ::Interactive::Message::StorageDetail* release_storagedetail();
+  void set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryStorageDetailRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::StorageDetail* storagedetail_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRegionStorageInfoReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryRegionStorageInfoReq_USR) */ {
+ public:
+  QueryRegionStorageInfoReq_USR();
+  virtual ~QueryRegionStorageInfoReq_USR();
+
+  QueryRegionStorageInfoReq_USR(const QueryRegionStorageInfoReq_USR& from);
+
+  inline QueryRegionStorageInfoReq_USR& operator=(const QueryRegionStorageInfoReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRegionStorageInfoReq_USR& default_instance();
+
+  static inline const QueryRegionStorageInfoReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryRegionStorageInfoReq_USR*>(
+               &_QueryRegionStorageInfoReq_USR_default_instance_);
+  }
+
+  void Swap(QueryRegionStorageInfoReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRegionStorageInfoReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRegionStorageInfoReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRegionStorageInfoReq_USR& from);
+  void MergeFrom(const QueryRegionStorageInfoReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRegionStorageInfoReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryRegionStorageInfoReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRegionStorageInfoRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryRegionStorageInfoRsp_USR) */ {
+ public:
+  QueryRegionStorageInfoRsp_USR();
+  virtual ~QueryRegionStorageInfoRsp_USR();
+
+  QueryRegionStorageInfoRsp_USR(const QueryRegionStorageInfoRsp_USR& from);
+
+  inline QueryRegionStorageInfoRsp_USR& operator=(const QueryRegionStorageInfoRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRegionStorageInfoRsp_USR& default_instance();
+
+  static inline const QueryRegionStorageInfoRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryRegionStorageInfoRsp_USR*>(
+               &_QueryRegionStorageInfoRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryRegionStorageInfoRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRegionStorageInfoRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRegionStorageInfoRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRegionStorageInfoRsp_USR& from);
+  void MergeFrom(const QueryRegionStorageInfoRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRegionStorageInfoRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // uint32 uiDomainID = 1;
+  void clear_uidomainid();
+  static const int kUiDomainIDFieldNumber = 1;
+  ::google::protobuf::uint32 uidomainid() const;
+  void set_uidomainid(::google::protobuf::uint32 value);
+
+  // uint32 uiSizeOfSpace = 2;
+  void clear_uisizeofspace();
+  static const int kUiSizeOfSpaceFieldNumber = 2;
+  ::google::protobuf::uint32 uisizeofspace() const;
+  void set_uisizeofspace(::google::protobuf::uint32 value);
+
+  // uint32 uiSizeOfSpaceUsed = 3;
+  void clear_uisizeofspaceused();
+  static const int kUiSizeOfSpaceUsedFieldNumber = 3;
+  ::google::protobuf::uint32 uisizeofspaceused() const;
+  void set_uisizeofspaceused(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryRegionStorageInfoRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::uint32 uidomainid_;
+  ::google::protobuf::uint32 uisizeofspace_;
+  ::google::protobuf::uint32 uisizeofspaceused_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -15952,6 +17184,51 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteDeviceEventReq_USR* release_deletedeviceeventreq_usr_value();
   void set_allocated_deletedeviceeventreq_usr_value(::Interactive::Message::DeleteDeviceEventReq_USR* deletedeviceeventreq_usr_value);
 
+  // .Interactive.Message.AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;
+  bool has_addstoragedetailreq_usr_value() const;
+  void clear_addstoragedetailreq_usr_value();
+  static const int kAddStorageDetailReqUSRValueFieldNumber = 700;
+  const ::Interactive::Message::AddStorageDetailReq_USR& addstoragedetailreq_usr_value() const;
+  ::Interactive::Message::AddStorageDetailReq_USR* mutable_addstoragedetailreq_usr_value();
+  ::Interactive::Message::AddStorageDetailReq_USR* release_addstoragedetailreq_usr_value();
+  void set_allocated_addstoragedetailreq_usr_value(::Interactive::Message::AddStorageDetailReq_USR* addstoragedetailreq_usr_value);
+
+  // .Interactive.Message.DeleteStorageDetailReq_USR DeleteStorageDetailReq_USR_Value = 710;
+  bool has_deletestoragedetailreq_usr_value() const;
+  void clear_deletestoragedetailreq_usr_value();
+  static const int kDeleteStorageDetailReqUSRValueFieldNumber = 710;
+  const ::Interactive::Message::DeleteStorageDetailReq_USR& deletestoragedetailreq_usr_value() const;
+  ::Interactive::Message::DeleteStorageDetailReq_USR* mutable_deletestoragedetailreq_usr_value();
+  ::Interactive::Message::DeleteStorageDetailReq_USR* release_deletestoragedetailreq_usr_value();
+  void set_allocated_deletestoragedetailreq_usr_value(::Interactive::Message::DeleteStorageDetailReq_USR* deletestoragedetailreq_usr_value);
+
+  // .Interactive.Message.ModifyStorageDetailReq_USR ModifyStorageDetailReq_USR_Value = 720;
+  bool has_modifystoragedetailreq_usr_value() const;
+  void clear_modifystoragedetailreq_usr_value();
+  static const int kModifyStorageDetailReqUSRValueFieldNumber = 720;
+  const ::Interactive::Message::ModifyStorageDetailReq_USR& modifystoragedetailreq_usr_value() const;
+  ::Interactive::Message::ModifyStorageDetailReq_USR* mutable_modifystoragedetailreq_usr_value();
+  ::Interactive::Message::ModifyStorageDetailReq_USR* release_modifystoragedetailreq_usr_value();
+  void set_allocated_modifystoragedetailreq_usr_value(::Interactive::Message::ModifyStorageDetailReq_USR* modifystoragedetailreq_usr_value);
+
+  // .Interactive.Message.QueryStorageDetailReq_USR QueryStorageDetailReq_USR_Value = 730;
+  bool has_querystoragedetailreq_usr_value() const;
+  void clear_querystoragedetailreq_usr_value();
+  static const int kQueryStorageDetailReqUSRValueFieldNumber = 730;
+  const ::Interactive::Message::QueryStorageDetailReq_USR& querystoragedetailreq_usr_value() const;
+  ::Interactive::Message::QueryStorageDetailReq_USR* mutable_querystoragedetailreq_usr_value();
+  ::Interactive::Message::QueryStorageDetailReq_USR* release_querystoragedetailreq_usr_value();
+  void set_allocated_querystoragedetailreq_usr_value(::Interactive::Message::QueryStorageDetailReq_USR* querystoragedetailreq_usr_value);
+
+  // .Interactive.Message.QueryRegionStorageInfoReq_USR QueryRegionStorageInfoReq_USR_Value = 740;
+  bool has_queryregionstorageinforeq_usr_value() const;
+  void clear_queryregionstorageinforeq_usr_value();
+  static const int kQueryRegionStorageInfoReqUSRValueFieldNumber = 740;
+  const ::Interactive::Message::QueryRegionStorageInfoReq_USR& queryregionstorageinforeq_usr_value() const;
+  ::Interactive::Message::QueryRegionStorageInfoReq_USR* mutable_queryregionstorageinforeq_usr_value();
+  ::Interactive::Message::QueryRegionStorageInfoReq_USR* release_queryregionstorageinforeq_usr_value();
+  void set_allocated_queryregionstorageinforeq_usr_value(::Interactive::Message::QueryRegionStorageInfoReq_USR* queryregionstorageinforeq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -16103,6 +17380,11 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryIfP2pIDValidReq_USR* queryifp2pidvalidreq_usr_value_;
   ::Interactive::Message::QueryAllDeviceEventReq_USR* queryalldeviceeventreq_usr_value_;
   ::Interactive::Message::DeleteDeviceEventReq_USR* deletedeviceeventreq_usr_value_;
+  ::Interactive::Message::AddStorageDetailReq_USR* addstoragedetailreq_usr_value_;
+  ::Interactive::Message::DeleteStorageDetailReq_USR* deletestoragedetailreq_usr_value_;
+  ::Interactive::Message::ModifyStorageDetailReq_USR* modifystoragedetailreq_usr_value_;
+  ::Interactive::Message::QueryStorageDetailReq_USR* querystoragedetailreq_usr_value_;
+  ::Interactive::Message::QueryRegionStorageInfoReq_USR* queryregionstorageinforeq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -16632,6 +17914,51 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteDeviceEventRsp_USR* release_deletedeviceeventrsp_usr_value();
   void set_allocated_deletedeviceeventrsp_usr_value(::Interactive::Message::DeleteDeviceEventRsp_USR* deletedeviceeventrsp_usr_value);
 
+  // .Interactive.Message.AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;
+  bool has_addstoragedetailrsp_usr_value() const;
+  void clear_addstoragedetailrsp_usr_value();
+  static const int kAddStorageDetailRspUSRValueFieldNumber = 700;
+  const ::Interactive::Message::AddStorageDetailRsp_USR& addstoragedetailrsp_usr_value() const;
+  ::Interactive::Message::AddStorageDetailRsp_USR* mutable_addstoragedetailrsp_usr_value();
+  ::Interactive::Message::AddStorageDetailRsp_USR* release_addstoragedetailrsp_usr_value();
+  void set_allocated_addstoragedetailrsp_usr_value(::Interactive::Message::AddStorageDetailRsp_USR* addstoragedetailrsp_usr_value);
+
+  // .Interactive.Message.DeleteStorageDetailRsp_USR DeleteStorageDetailRsp_USR_Value = 710;
+  bool has_deletestoragedetailrsp_usr_value() const;
+  void clear_deletestoragedetailrsp_usr_value();
+  static const int kDeleteStorageDetailRspUSRValueFieldNumber = 710;
+  const ::Interactive::Message::DeleteStorageDetailRsp_USR& deletestoragedetailrsp_usr_value() const;
+  ::Interactive::Message::DeleteStorageDetailRsp_USR* mutable_deletestoragedetailrsp_usr_value();
+  ::Interactive::Message::DeleteStorageDetailRsp_USR* release_deletestoragedetailrsp_usr_value();
+  void set_allocated_deletestoragedetailrsp_usr_value(::Interactive::Message::DeleteStorageDetailRsp_USR* deletestoragedetailrsp_usr_value);
+
+  // .Interactive.Message.ModifyStorageDetailRsp_USR ModifyStorageDetailRsp_USR_Value = 720;
+  bool has_modifystoragedetailrsp_usr_value() const;
+  void clear_modifystoragedetailrsp_usr_value();
+  static const int kModifyStorageDetailRspUSRValueFieldNumber = 720;
+  const ::Interactive::Message::ModifyStorageDetailRsp_USR& modifystoragedetailrsp_usr_value() const;
+  ::Interactive::Message::ModifyStorageDetailRsp_USR* mutable_modifystoragedetailrsp_usr_value();
+  ::Interactive::Message::ModifyStorageDetailRsp_USR* release_modifystoragedetailrsp_usr_value();
+  void set_allocated_modifystoragedetailrsp_usr_value(::Interactive::Message::ModifyStorageDetailRsp_USR* modifystoragedetailrsp_usr_value);
+
+  // .Interactive.Message.QueryStorageDetailRsp_USR QueryStorageDetailRsp_USR_Value = 730;
+  bool has_querystoragedetailrsp_usr_value() const;
+  void clear_querystoragedetailrsp_usr_value();
+  static const int kQueryStorageDetailRspUSRValueFieldNumber = 730;
+  const ::Interactive::Message::QueryStorageDetailRsp_USR& querystoragedetailrsp_usr_value() const;
+  ::Interactive::Message::QueryStorageDetailRsp_USR* mutable_querystoragedetailrsp_usr_value();
+  ::Interactive::Message::QueryStorageDetailRsp_USR* release_querystoragedetailrsp_usr_value();
+  void set_allocated_querystoragedetailrsp_usr_value(::Interactive::Message::QueryStorageDetailRsp_USR* querystoragedetailrsp_usr_value);
+
+  // .Interactive.Message.QueryRegionStorageInfoRsp_USR QueryRegionStorageInfoRsp_USR_Value = 740;
+  bool has_queryregionstorageinforsp_usr_value() const;
+  void clear_queryregionstorageinforsp_usr_value();
+  static const int kQueryRegionStorageInfoRspUSRValueFieldNumber = 740;
+  const ::Interactive::Message::QueryRegionStorageInfoRsp_USR& queryregionstorageinforsp_usr_value() const;
+  ::Interactive::Message::QueryRegionStorageInfoRsp_USR* mutable_queryregionstorageinforsp_usr_value();
+  ::Interactive::Message::QueryRegionStorageInfoRsp_USR* release_queryregionstorageinforsp_usr_value();
+  void set_allocated_queryregionstorageinforsp_usr_value(::Interactive::Message::QueryRegionStorageInfoRsp_USR* queryregionstorageinforsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -16772,6 +18099,11 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryIfP2pIDValidRsp_USR* queryifp2pidvalidrsp_usr_value_;
   ::Interactive::Message::QueryAllDeviceEventRsp_USR* queryalldeviceeventrsp_usr_value_;
   ::Interactive::Message::DeleteDeviceEventRsp_USR* deletedeviceeventrsp_usr_value_;
+  ::Interactive::Message::AddStorageDetailRsp_USR* addstoragedetailrsp_usr_value_;
+  ::Interactive::Message::DeleteStorageDetailRsp_USR* deletestoragedetailrsp_usr_value_;
+  ::Interactive::Message::ModifyStorageDetailRsp_USR* modifystoragedetailrsp_usr_value_;
+  ::Interactive::Message::QueryStorageDetailRsp_USR* querystoragedetailrsp_usr_value_;
+  ::Interactive::Message::QueryRegionStorageInfoRsp_USR* queryregionstorageinforsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
@@ -21268,6 +22600,448 @@ inline void DeviceEvent::set_allocated_strfileurl(::std::string* strfileurl) {
   }
   strfileurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileurl);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEvent.strFileUrl)
+}
+
+// string strEventTime = 7;
+inline void DeviceEvent::clear_streventtime() {
+  streventtime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeviceEvent::streventtime() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceEvent.strEventTime)
+  return streventtime_.GetNoArena();
+}
+inline void DeviceEvent::set_streventtime(const ::std::string& value) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceEvent.strEventTime)
+}
+#if LANG_CXX11
+inline void DeviceEvent::set_streventtime(::std::string&& value) {
+  
+  streventtime_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeviceEvent.strEventTime)
+}
+#endif
+inline void DeviceEvent::set_streventtime(const char* value) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeviceEvent.strEventTime)
+}
+inline void DeviceEvent::set_streventtime(const char* value, size_t size) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeviceEvent.strEventTime)
+}
+inline ::std::string* DeviceEvent::mutable_streventtime() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeviceEvent.strEventTime)
+  return streventtime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceEvent::release_streventtime() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeviceEvent.strEventTime)
+  
+  return streventtime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceEvent::set_allocated_streventtime(::std::string* streventtime) {
+  if (streventtime != NULL) {
+    
+  } else {
+    
+  }
+  streventtime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), streventtime);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEvent.strEventTime)
+}
+
+// -------------------------------------------------------------------
+
+// StorageDetail
+
+// uint32 uiDomainID = 1;
+inline void StorageDetail::clear_uidomainid() {
+  uidomainid_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uidomainid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiDomainID)
+  return uidomainid_;
+}
+inline void StorageDetail::set_uidomainid(::google::protobuf::uint32 value) {
+  
+  uidomainid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiDomainID)
+}
+
+// string strObjectID = 2;
+inline void StorageDetail::clear_strobjectid() {
+  strobjectid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageDetail::strobjectid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.strObjectID)
+  return strobjectid_.GetNoArena();
+}
+inline void StorageDetail::set_strobjectid(const ::std::string& value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.strObjectID)
+}
+#if LANG_CXX11
+inline void StorageDetail::set_strobjectid(::std::string&& value) {
+  
+  strobjectid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageDetail.strObjectID)
+}
+#endif
+inline void StorageDetail::set_strobjectid(const char* value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageDetail.strObjectID)
+}
+inline void StorageDetail::set_strobjectid(const char* value, size_t size) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageDetail.strObjectID)
+}
+inline ::std::string* StorageDetail::mutable_strobjectid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageDetail.strObjectID)
+  return strobjectid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageDetail::release_strobjectid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageDetail.strObjectID)
+  
+  return strobjectid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageDetail::set_allocated_strobjectid(::std::string* strobjectid) {
+  if (strobjectid != NULL) {
+    
+  } else {
+    
+  }
+  strobjectid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strobjectid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageDetail.strObjectID)
+}
+
+// uint32 uiObjectType = 3;
+inline void StorageDetail::clear_uiobjecttype() {
+  uiobjecttype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uiobjecttype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiObjectType)
+  return uiobjecttype_;
+}
+inline void StorageDetail::set_uiobjecttype(::google::protobuf::uint32 value) {
+  
+  uiobjecttype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiObjectType)
+}
+
+// string strStorageName = 4;
+inline void StorageDetail::clear_strstoragename() {
+  strstoragename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageDetail::strstoragename() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.strStorageName)
+  return strstoragename_.GetNoArena();
+}
+inline void StorageDetail::set_strstoragename(const ::std::string& value) {
+  
+  strstoragename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.strStorageName)
+}
+#if LANG_CXX11
+inline void StorageDetail::set_strstoragename(::std::string&& value) {
+  
+  strstoragename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageDetail.strStorageName)
+}
+#endif
+inline void StorageDetail::set_strstoragename(const char* value) {
+  
+  strstoragename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageDetail.strStorageName)
+}
+inline void StorageDetail::set_strstoragename(const char* value, size_t size) {
+  
+  strstoragename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageDetail.strStorageName)
+}
+inline ::std::string* StorageDetail::mutable_strstoragename() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageDetail.strStorageName)
+  return strstoragename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageDetail::release_strstoragename() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageDetail.strStorageName)
+  
+  return strstoragename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageDetail::set_allocated_strstoragename(::std::string* strstoragename) {
+  if (strstoragename != NULL) {
+    
+  } else {
+    
+  }
+  strstoragename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoragename);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageDetail.strStorageName)
+}
+
+// uint32 uiStorageType = 5;
+inline void StorageDetail::clear_uistoragetype() {
+  uistoragetype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uistoragetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiStorageType)
+  return uistoragetype_;
+}
+inline void StorageDetail::set_uistoragetype(::google::protobuf::uint32 value) {
+  
+  uistoragetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStorageType)
+}
+
+// uint32 uiOverlapType = 6;
+inline void StorageDetail::clear_uioverlaptype() {
+  uioverlaptype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uioverlaptype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiOverlapType)
+  return uioverlaptype_;
+}
+inline void StorageDetail::set_uioverlaptype(::google::protobuf::uint32 value) {
+  
+  uioverlaptype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiOverlapType)
+}
+
+// uint32 uiStorageTimeUpLimit = 7;
+inline void StorageDetail::clear_uistoragetimeuplimit() {
+  uistoragetimeuplimit_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uistoragetimeuplimit() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiStorageTimeUpLimit)
+  return uistoragetimeuplimit_;
+}
+inline void StorageDetail::set_uistoragetimeuplimit(::google::protobuf::uint32 value) {
+  
+  uistoragetimeuplimit_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStorageTimeUpLimit)
+}
+
+// uint32 uiStorageTimeDownLimit = 8;
+inline void StorageDetail::clear_uistoragetimedownlimit() {
+  uistoragetimedownlimit_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uistoragetimedownlimit() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiStorageTimeDownLimit)
+  return uistoragetimedownlimit_;
+}
+inline void StorageDetail::set_uistoragetimedownlimit(::google::protobuf::uint32 value) {
+  
+  uistoragetimedownlimit_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStorageTimeDownLimit)
+}
+
+// uint32 uiSizeOfSpaceUsed = 9;
+inline void StorageDetail::clear_uisizeofspaceused() {
+  uisizeofspaceused_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uisizeofspaceused() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiSizeOfSpaceUsed)
+  return uisizeofspaceused_;
+}
+inline void StorageDetail::set_uisizeofspaceused(::google::protobuf::uint32 value) {
+  
+  uisizeofspaceused_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiSizeOfSpaceUsed)
+}
+
+// uint32 uiStorageUnitType = 10;
+inline void StorageDetail::clear_uistorageunittype() {
+  uistorageunittype_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uistorageunittype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiStorageUnitType)
+  return uistorageunittype_;
+}
+inline void StorageDetail::set_uistorageunittype(::google::protobuf::uint32 value) {
+  
+  uistorageunittype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStorageUnitType)
+}
+
+// string strBeginDate = 11;
+inline void StorageDetail::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageDetail::strbegindate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+inline void StorageDetail::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.strBeginDate)
+}
+#if LANG_CXX11
+inline void StorageDetail::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageDetail.strBeginDate)
+}
+#endif
+inline void StorageDetail::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageDetail.strBeginDate)
+}
+inline void StorageDetail::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageDetail.strBeginDate)
+}
+inline ::std::string* StorageDetail::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageDetail.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageDetail::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageDetail.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageDetail::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageDetail.strBeginDate)
+}
+
+// string strEndDate = 12;
+inline void StorageDetail::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageDetail::strenddate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.strEndDate)
+  return strenddate_.GetNoArena();
+}
+inline void StorageDetail::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.strEndDate)
+}
+#if LANG_CXX11
+inline void StorageDetail::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageDetail.strEndDate)
+}
+#endif
+inline void StorageDetail::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageDetail.strEndDate)
+}
+inline void StorageDetail::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageDetail.strEndDate)
+}
+inline ::std::string* StorageDetail::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageDetail.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageDetail::release_strenddate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageDetail.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageDetail::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageDetail.strEndDate)
+}
+
+// string strExtend = 13;
+inline void StorageDetail::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageDetail::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void StorageDetail::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.strExtend)
+}
+#if LANG_CXX11
+inline void StorageDetail::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.StorageDetail.strExtend)
+}
+#endif
+inline void StorageDetail::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.StorageDetail.strExtend)
+}
+inline void StorageDetail::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.StorageDetail.strExtend)
+}
+inline ::std::string* StorageDetail::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.StorageDetail.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageDetail::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.StorageDetail.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageDetail::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.StorageDetail.strExtend)
+}
+
+// uint32 uiStatus = 14;
+inline void StorageDetail::clear_uistatus() {
+  uistatus_ = 0u;
+}
+inline ::google::protobuf::uint32 StorageDetail::uistatus() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.StorageDetail.uiStatus)
+  return uistatus_;
+}
+inline void StorageDetail::set_uistatus(::google::protobuf::uint32 value) {
+  
+  uistatus_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStatus)
 }
 
 // -------------------------------------------------------------------
@@ -26383,6 +28157,58 @@ inline void DeviceEventReportReq_DEV::set_allocated_strfileid(::std::string* str
   }
   strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEventReportReq_DEV.strFileID)
+}
+
+// string strEventTime = 6;
+inline void DeviceEventReportReq_DEV::clear_streventtime() {
+  streventtime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeviceEventReportReq_DEV::streventtime() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+  return streventtime_.GetNoArena();
+}
+inline void DeviceEventReportReq_DEV::set_streventtime(const ::std::string& value) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+}
+#if LANG_CXX11
+inline void DeviceEventReportReq_DEV::set_streventtime(::std::string&& value) {
+  
+  streventtime_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+}
+#endif
+inline void DeviceEventReportReq_DEV::set_streventtime(const char* value) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+}
+inline void DeviceEventReportReq_DEV::set_streventtime(const char* value, size_t size) {
+  
+  streventtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+}
+inline ::std::string* DeviceEventReportReq_DEV::mutable_streventtime() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+  return streventtime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceEventReportReq_DEV::release_streventtime() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
+  
+  return streventtime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceEventReportReq_DEV::set_allocated_streventtime(::std::string* streventtime) {
+  if (streventtime != NULL) {
+    
+  } else {
+    
+  }
+  streventtime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), streventtime);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEventReportReq_DEV.strEventTime)
 }
 
 // -------------------------------------------------------------------
@@ -33276,6 +35102,110 @@ inline void QueryAllDeviceEventReq_USR::set_uibeginindex(::google::protobuf::uin
   // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllDeviceEventReq_USR.uiBeginIndex)
 }
 
+// string strBeginDate = 7;
+inline void QueryAllDeviceEventReq_USR::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllDeviceEventReq_USR::strbegindate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+inline void QueryAllDeviceEventReq_USR::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+}
+#if LANG_CXX11
+inline void QueryAllDeviceEventReq_USR::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+}
+#endif
+inline void QueryAllDeviceEventReq_USR::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+}
+inline void QueryAllDeviceEventReq_USR::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+}
+inline ::std::string* QueryAllDeviceEventReq_USR::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllDeviceEventReq_USR::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllDeviceEventReq_USR::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAllDeviceEventReq_USR.strBeginDate)
+}
+
+// string strEndDate = 8;
+inline void QueryAllDeviceEventReq_USR::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllDeviceEventReq_USR::strenddate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+  return strenddate_.GetNoArena();
+}
+inline void QueryAllDeviceEventReq_USR::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+}
+#if LANG_CXX11
+inline void QueryAllDeviceEventReq_USR::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+}
+#endif
+inline void QueryAllDeviceEventReq_USR::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+}
+inline void QueryAllDeviceEventReq_USR::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+}
+inline ::std::string* QueryAllDeviceEventReq_USR::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllDeviceEventReq_USR::release_strenddate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllDeviceEventReq_USR::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAllDeviceEventReq_USR.strEndDate)
+}
+
 // -------------------------------------------------------------------
 
 // QueryAllDeviceEventRsp_USR
@@ -33524,6 +35454,545 @@ inline void DeleteDeviceEventRsp_USR::set_allocated_strvalue(::std::string* strv
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteDeviceEventRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// AddStorageDetailReq_USR
+
+// .Interactive.Message.StorageDetail storageDetail = 1;
+inline bool AddStorageDetailReq_USR::has_storagedetail() const {
+  return this != internal_default_instance() && storagedetail_ != NULL;
+}
+inline void AddStorageDetailReq_USR::clear_storagedetail() {
+  if (GetArenaNoVirtual() == NULL && storagedetail_ != NULL) delete storagedetail_;
+  storagedetail_ = NULL;
+}
+inline const ::Interactive::Message::StorageDetail& AddStorageDetailReq_USR::storagedetail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddStorageDetailReq_USR.storageDetail)
+  return storagedetail_ != NULL ? *storagedetail_
+                         : *::Interactive::Message::StorageDetail::internal_default_instance();
+}
+inline ::Interactive::Message::StorageDetail* AddStorageDetailReq_USR::mutable_storagedetail() {
+  
+  if (storagedetail_ == NULL) {
+    storagedetail_ = new ::Interactive::Message::StorageDetail;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddStorageDetailReq_USR.storageDetail)
+  return storagedetail_;
+}
+inline ::Interactive::Message::StorageDetail* AddStorageDetailReq_USR::release_storagedetail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddStorageDetailReq_USR.storageDetail)
+  
+  ::Interactive::Message::StorageDetail* temp = storagedetail_;
+  storagedetail_ = NULL;
+  return temp;
+}
+inline void AddStorageDetailReq_USR::set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail) {
+  delete storagedetail_;
+  storagedetail_ = storagedetail;
+  if (storagedetail) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddStorageDetailReq_USR.storageDetail)
+}
+
+// -------------------------------------------------------------------
+
+// AddStorageDetailRsp_USR
+
+// string strValue = 1;
+inline void AddStorageDetailRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddStorageDetailRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddStorageDetailRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void AddStorageDetailRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+}
+#endif
+inline void AddStorageDetailRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+}
+inline void AddStorageDetailRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+}
+inline ::std::string* AddStorageDetailRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddStorageDetailRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddStorageDetailRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddStorageDetailRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteStorageDetailReq_USR
+
+// string strObjectID = 1;
+inline void DeleteStorageDetailReq_USR::clear_strobjectid() {
+  strobjectid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStorageDetailReq_USR::strobjectid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+  return strobjectid_.GetNoArena();
+}
+inline void DeleteStorageDetailReq_USR::set_strobjectid(const ::std::string& value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+}
+#if LANG_CXX11
+inline void DeleteStorageDetailReq_USR::set_strobjectid(::std::string&& value) {
+  
+  strobjectid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+}
+#endif
+inline void DeleteStorageDetailReq_USR::set_strobjectid(const char* value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+}
+inline void DeleteStorageDetailReq_USR::set_strobjectid(const char* value, size_t size) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+}
+inline ::std::string* DeleteStorageDetailReq_USR::mutable_strobjectid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+  return strobjectid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStorageDetailReq_USR::release_strobjectid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+  
+  return strobjectid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStorageDetailReq_USR::set_allocated_strobjectid(::std::string* strobjectid) {
+  if (strobjectid != NULL) {
+    
+  } else {
+    
+  }
+  strobjectid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strobjectid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteStorageDetailReq_USR.strObjectID)
+}
+
+// uint32 uiDomainID = 2;
+inline void DeleteStorageDetailReq_USR::clear_uidomainid() {
+  uidomainid_ = 0u;
+}
+inline ::google::protobuf::uint32 DeleteStorageDetailReq_USR::uidomainid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteStorageDetailReq_USR.uiDomainID)
+  return uidomainid_;
+}
+inline void DeleteStorageDetailReq_USR::set_uidomainid(::google::protobuf::uint32 value) {
+  
+  uidomainid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteStorageDetailReq_USR.uiDomainID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteStorageDetailRsp_USR
+
+// string strValue = 1;
+inline void DeleteStorageDetailRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStorageDetailRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteStorageDetailRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void DeleteStorageDetailRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+}
+#endif
+inline void DeleteStorageDetailRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+}
+inline void DeleteStorageDetailRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+}
+inline ::std::string* DeleteStorageDetailRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStorageDetailRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStorageDetailRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeleteStorageDetailRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyStorageDetailReq_USR
+
+// .Interactive.Message.StorageDetail storageDetail = 1;
+inline bool ModifyStorageDetailReq_USR::has_storagedetail() const {
+  return this != internal_default_instance() && storagedetail_ != NULL;
+}
+inline void ModifyStorageDetailReq_USR::clear_storagedetail() {
+  if (GetArenaNoVirtual() == NULL && storagedetail_ != NULL) delete storagedetail_;
+  storagedetail_ = NULL;
+}
+inline const ::Interactive::Message::StorageDetail& ModifyStorageDetailReq_USR::storagedetail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyStorageDetailReq_USR.storageDetail)
+  return storagedetail_ != NULL ? *storagedetail_
+                         : *::Interactive::Message::StorageDetail::internal_default_instance();
+}
+inline ::Interactive::Message::StorageDetail* ModifyStorageDetailReq_USR::mutable_storagedetail() {
+  
+  if (storagedetail_ == NULL) {
+    storagedetail_ = new ::Interactive::Message::StorageDetail;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyStorageDetailReq_USR.storageDetail)
+  return storagedetail_;
+}
+inline ::Interactive::Message::StorageDetail* ModifyStorageDetailReq_USR::release_storagedetail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyStorageDetailReq_USR.storageDetail)
+  
+  ::Interactive::Message::StorageDetail* temp = storagedetail_;
+  storagedetail_ = NULL;
+  return temp;
+}
+inline void ModifyStorageDetailReq_USR::set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail) {
+  delete storagedetail_;
+  storagedetail_ = storagedetail;
+  if (storagedetail) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyStorageDetailReq_USR.storageDetail)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyStorageDetailRsp_USR
+
+// string strValue = 1;
+inline void ModifyStorageDetailRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyStorageDetailRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyStorageDetailRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void ModifyStorageDetailRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+}
+#endif
+inline void ModifyStorageDetailRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+}
+inline void ModifyStorageDetailRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+}
+inline ::std::string* ModifyStorageDetailRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyStorageDetailRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyStorageDetailRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyStorageDetailRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryStorageDetailReq_USR
+
+// string strObjectID = 1;
+inline void QueryStorageDetailReq_USR::clear_strobjectid() {
+  strobjectid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryStorageDetailReq_USR::strobjectid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+  return strobjectid_.GetNoArena();
+}
+inline void QueryStorageDetailReq_USR::set_strobjectid(const ::std::string& value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+}
+#if LANG_CXX11
+inline void QueryStorageDetailReq_USR::set_strobjectid(::std::string&& value) {
+  
+  strobjectid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+}
+#endif
+inline void QueryStorageDetailReq_USR::set_strobjectid(const char* value) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+}
+inline void QueryStorageDetailReq_USR::set_strobjectid(const char* value, size_t size) {
+  
+  strobjectid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+}
+inline ::std::string* QueryStorageDetailReq_USR::mutable_strobjectid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+  return strobjectid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryStorageDetailReq_USR::release_strobjectid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+  
+  return strobjectid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryStorageDetailReq_USR::set_allocated_strobjectid(::std::string* strobjectid) {
+  if (strobjectid != NULL) {
+    
+  } else {
+    
+  }
+  strobjectid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strobjectid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryStorageDetailReq_USR.strObjectID)
+}
+
+// uint32 uiDomainID = 2;
+inline void QueryStorageDetailReq_USR::clear_uidomainid() {
+  uidomainid_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryStorageDetailReq_USR::uidomainid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryStorageDetailReq_USR.uiDomainID)
+  return uidomainid_;
+}
+inline void QueryStorageDetailReq_USR::set_uidomainid(::google::protobuf::uint32 value) {
+  
+  uidomainid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryStorageDetailReq_USR.uiDomainID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryStorageDetailRsp_USR
+
+// .Interactive.Message.StorageDetail storageDetail = 1;
+inline bool QueryStorageDetailRsp_USR::has_storagedetail() const {
+  return this != internal_default_instance() && storagedetail_ != NULL;
+}
+inline void QueryStorageDetailRsp_USR::clear_storagedetail() {
+  if (GetArenaNoVirtual() == NULL && storagedetail_ != NULL) delete storagedetail_;
+  storagedetail_ = NULL;
+}
+inline const ::Interactive::Message::StorageDetail& QueryStorageDetailRsp_USR::storagedetail() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryStorageDetailRsp_USR.storageDetail)
+  return storagedetail_ != NULL ? *storagedetail_
+                         : *::Interactive::Message::StorageDetail::internal_default_instance();
+}
+inline ::Interactive::Message::StorageDetail* QueryStorageDetailRsp_USR::mutable_storagedetail() {
+  
+  if (storagedetail_ == NULL) {
+    storagedetail_ = new ::Interactive::Message::StorageDetail;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryStorageDetailRsp_USR.storageDetail)
+  return storagedetail_;
+}
+inline ::Interactive::Message::StorageDetail* QueryStorageDetailRsp_USR::release_storagedetail() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryStorageDetailRsp_USR.storageDetail)
+  
+  ::Interactive::Message::StorageDetail* temp = storagedetail_;
+  storagedetail_ = NULL;
+  return temp;
+}
+inline void QueryStorageDetailRsp_USR::set_allocated_storagedetail(::Interactive::Message::StorageDetail* storagedetail) {
+  delete storagedetail_;
+  storagedetail_ = storagedetail;
+  if (storagedetail) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryStorageDetailRsp_USR.storageDetail)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRegionStorageInfoReq_USR
+
+// string strUserID = 1;
+inline void QueryRegionStorageInfoReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryRegionStorageInfoReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryRegionStorageInfoReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryRegionStorageInfoReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+}
+#endif
+inline void QueryRegionStorageInfoReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+}
+inline void QueryRegionStorageInfoReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+}
+inline ::std::string* QueryRegionStorageInfoReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryRegionStorageInfoReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryRegionStorageInfoReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryRegionStorageInfoReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRegionStorageInfoRsp_USR
+
+// uint32 uiDomainID = 1;
+inline void QueryRegionStorageInfoRsp_USR::clear_uidomainid() {
+  uidomainid_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryRegionStorageInfoRsp_USR::uidomainid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiDomainID)
+  return uidomainid_;
+}
+inline void QueryRegionStorageInfoRsp_USR::set_uidomainid(::google::protobuf::uint32 value) {
+  
+  uidomainid_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiDomainID)
+}
+
+// uint32 uiSizeOfSpace = 2;
+inline void QueryRegionStorageInfoRsp_USR::clear_uisizeofspace() {
+  uisizeofspace_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryRegionStorageInfoRsp_USR::uisizeofspace() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiSizeOfSpace)
+  return uisizeofspace_;
+}
+inline void QueryRegionStorageInfoRsp_USR::set_uisizeofspace(::google::protobuf::uint32 value) {
+  
+  uisizeofspace_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiSizeOfSpace)
+}
+
+// uint32 uiSizeOfSpaceUsed = 3;
+inline void QueryRegionStorageInfoRsp_USR::clear_uisizeofspaceused() {
+  uisizeofspaceused_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryRegionStorageInfoRsp_USR::uisizeofspaceused() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiSizeOfSpaceUsed)
+  return uisizeofspaceused_;
+}
+inline void QueryRegionStorageInfoRsp_USR::set_uisizeofspaceused(::google::protobuf::uint32 value) {
+  
+  uisizeofspaceused_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryRegionStorageInfoRsp_USR.uiSizeOfSpaceUsed)
 }
 
 // -------------------------------------------------------------------
@@ -36516,6 +38985,201 @@ inline void Req::set_allocated_deletedeviceeventreq_usr_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeleteDeviceEventReq_USR_Value)
 }
 
+// .Interactive.Message.AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;
+inline bool Req::has_addstoragedetailreq_usr_value() const {
+  return this != internal_default_instance() && addstoragedetailreq_usr_value_ != NULL;
+}
+inline void Req::clear_addstoragedetailreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && addstoragedetailreq_usr_value_ != NULL) delete addstoragedetailreq_usr_value_;
+  addstoragedetailreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddStorageDetailReq_USR& Req::addstoragedetailreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.AddStorageDetailReq_USR_Value)
+  return addstoragedetailreq_usr_value_ != NULL ? *addstoragedetailreq_usr_value_
+                         : *::Interactive::Message::AddStorageDetailReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::AddStorageDetailReq_USR* Req::mutable_addstoragedetailreq_usr_value() {
+  
+  if (addstoragedetailreq_usr_value_ == NULL) {
+    addstoragedetailreq_usr_value_ = new ::Interactive::Message::AddStorageDetailReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.AddStorageDetailReq_USR_Value)
+  return addstoragedetailreq_usr_value_;
+}
+inline ::Interactive::Message::AddStorageDetailReq_USR* Req::release_addstoragedetailreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.AddStorageDetailReq_USR_Value)
+  
+  ::Interactive::Message::AddStorageDetailReq_USR* temp = addstoragedetailreq_usr_value_;
+  addstoragedetailreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_addstoragedetailreq_usr_value(::Interactive::Message::AddStorageDetailReq_USR* addstoragedetailreq_usr_value) {
+  delete addstoragedetailreq_usr_value_;
+  addstoragedetailreq_usr_value_ = addstoragedetailreq_usr_value;
+  if (addstoragedetailreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddStorageDetailReq_USR_Value)
+}
+
+// .Interactive.Message.DeleteStorageDetailReq_USR DeleteStorageDetailReq_USR_Value = 710;
+inline bool Req::has_deletestoragedetailreq_usr_value() const {
+  return this != internal_default_instance() && deletestoragedetailreq_usr_value_ != NULL;
+}
+inline void Req::clear_deletestoragedetailreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && deletestoragedetailreq_usr_value_ != NULL) delete deletestoragedetailreq_usr_value_;
+  deletestoragedetailreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteStorageDetailReq_USR& Req::deletestoragedetailreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.DeleteStorageDetailReq_USR_Value)
+  return deletestoragedetailreq_usr_value_ != NULL ? *deletestoragedetailreq_usr_value_
+                         : *::Interactive::Message::DeleteStorageDetailReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteStorageDetailReq_USR* Req::mutable_deletestoragedetailreq_usr_value() {
+  
+  if (deletestoragedetailreq_usr_value_ == NULL) {
+    deletestoragedetailreq_usr_value_ = new ::Interactive::Message::DeleteStorageDetailReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.DeleteStorageDetailReq_USR_Value)
+  return deletestoragedetailreq_usr_value_;
+}
+inline ::Interactive::Message::DeleteStorageDetailReq_USR* Req::release_deletestoragedetailreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.DeleteStorageDetailReq_USR_Value)
+  
+  ::Interactive::Message::DeleteStorageDetailReq_USR* temp = deletestoragedetailreq_usr_value_;
+  deletestoragedetailreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_deletestoragedetailreq_usr_value(::Interactive::Message::DeleteStorageDetailReq_USR* deletestoragedetailreq_usr_value) {
+  delete deletestoragedetailreq_usr_value_;
+  deletestoragedetailreq_usr_value_ = deletestoragedetailreq_usr_value;
+  if (deletestoragedetailreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeleteStorageDetailReq_USR_Value)
+}
+
+// .Interactive.Message.ModifyStorageDetailReq_USR ModifyStorageDetailReq_USR_Value = 720;
+inline bool Req::has_modifystoragedetailreq_usr_value() const {
+  return this != internal_default_instance() && modifystoragedetailreq_usr_value_ != NULL;
+}
+inline void Req::clear_modifystoragedetailreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifystoragedetailreq_usr_value_ != NULL) delete modifystoragedetailreq_usr_value_;
+  modifystoragedetailreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyStorageDetailReq_USR& Req::modifystoragedetailreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.ModifyStorageDetailReq_USR_Value)
+  return modifystoragedetailreq_usr_value_ != NULL ? *modifystoragedetailreq_usr_value_
+                         : *::Interactive::Message::ModifyStorageDetailReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyStorageDetailReq_USR* Req::mutable_modifystoragedetailreq_usr_value() {
+  
+  if (modifystoragedetailreq_usr_value_ == NULL) {
+    modifystoragedetailreq_usr_value_ = new ::Interactive::Message::ModifyStorageDetailReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.ModifyStorageDetailReq_USR_Value)
+  return modifystoragedetailreq_usr_value_;
+}
+inline ::Interactive::Message::ModifyStorageDetailReq_USR* Req::release_modifystoragedetailreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.ModifyStorageDetailReq_USR_Value)
+  
+  ::Interactive::Message::ModifyStorageDetailReq_USR* temp = modifystoragedetailreq_usr_value_;
+  modifystoragedetailreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_modifystoragedetailreq_usr_value(::Interactive::Message::ModifyStorageDetailReq_USR* modifystoragedetailreq_usr_value) {
+  delete modifystoragedetailreq_usr_value_;
+  modifystoragedetailreq_usr_value_ = modifystoragedetailreq_usr_value;
+  if (modifystoragedetailreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyStorageDetailReq_USR_Value)
+}
+
+// .Interactive.Message.QueryStorageDetailReq_USR QueryStorageDetailReq_USR_Value = 730;
+inline bool Req::has_querystoragedetailreq_usr_value() const {
+  return this != internal_default_instance() && querystoragedetailreq_usr_value_ != NULL;
+}
+inline void Req::clear_querystoragedetailreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querystoragedetailreq_usr_value_ != NULL) delete querystoragedetailreq_usr_value_;
+  querystoragedetailreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryStorageDetailReq_USR& Req::querystoragedetailreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryStorageDetailReq_USR_Value)
+  return querystoragedetailreq_usr_value_ != NULL ? *querystoragedetailreq_usr_value_
+                         : *::Interactive::Message::QueryStorageDetailReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryStorageDetailReq_USR* Req::mutable_querystoragedetailreq_usr_value() {
+  
+  if (querystoragedetailreq_usr_value_ == NULL) {
+    querystoragedetailreq_usr_value_ = new ::Interactive::Message::QueryStorageDetailReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryStorageDetailReq_USR_Value)
+  return querystoragedetailreq_usr_value_;
+}
+inline ::Interactive::Message::QueryStorageDetailReq_USR* Req::release_querystoragedetailreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryStorageDetailReq_USR_Value)
+  
+  ::Interactive::Message::QueryStorageDetailReq_USR* temp = querystoragedetailreq_usr_value_;
+  querystoragedetailreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_querystoragedetailreq_usr_value(::Interactive::Message::QueryStorageDetailReq_USR* querystoragedetailreq_usr_value) {
+  delete querystoragedetailreq_usr_value_;
+  querystoragedetailreq_usr_value_ = querystoragedetailreq_usr_value;
+  if (querystoragedetailreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryStorageDetailReq_USR_Value)
+}
+
+// .Interactive.Message.QueryRegionStorageInfoReq_USR QueryRegionStorageInfoReq_USR_Value = 740;
+inline bool Req::has_queryregionstorageinforeq_usr_value() const {
+  return this != internal_default_instance() && queryregionstorageinforeq_usr_value_ != NULL;
+}
+inline void Req::clear_queryregionstorageinforeq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryregionstorageinforeq_usr_value_ != NULL) delete queryregionstorageinforeq_usr_value_;
+  queryregionstorageinforeq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryRegionStorageInfoReq_USR& Req::queryregionstorageinforeq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryRegionStorageInfoReq_USR_Value)
+  return queryregionstorageinforeq_usr_value_ != NULL ? *queryregionstorageinforeq_usr_value_
+                         : *::Interactive::Message::QueryRegionStorageInfoReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryRegionStorageInfoReq_USR* Req::mutable_queryregionstorageinforeq_usr_value() {
+  
+  if (queryregionstorageinforeq_usr_value_ == NULL) {
+    queryregionstorageinforeq_usr_value_ = new ::Interactive::Message::QueryRegionStorageInfoReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryRegionStorageInfoReq_USR_Value)
+  return queryregionstorageinforeq_usr_value_;
+}
+inline ::Interactive::Message::QueryRegionStorageInfoReq_USR* Req::release_queryregionstorageinforeq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryRegionStorageInfoReq_USR_Value)
+  
+  ::Interactive::Message::QueryRegionStorageInfoReq_USR* temp = queryregionstorageinforeq_usr_value_;
+  queryregionstorageinforeq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryregionstorageinforeq_usr_value(::Interactive::Message::QueryRegionStorageInfoReq_USR* queryregionstorageinforeq_usr_value) {
+  delete queryregionstorageinforeq_usr_value_;
+  queryregionstorageinforeq_usr_value_ = queryregionstorageinforeq_usr_value;
+  if (queryregionstorageinforeq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryRegionStorageInfoReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -38887,6 +41551,201 @@ inline void Rsp::set_allocated_deletedeviceeventrsp_usr_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeleteDeviceEventRsp_USR_Value)
 }
 
+// .Interactive.Message.AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;
+inline bool Rsp::has_addstoragedetailrsp_usr_value() const {
+  return this != internal_default_instance() && addstoragedetailrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_addstoragedetailrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && addstoragedetailrsp_usr_value_ != NULL) delete addstoragedetailrsp_usr_value_;
+  addstoragedetailrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddStorageDetailRsp_USR& Rsp::addstoragedetailrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.AddStorageDetailRsp_USR_Value)
+  return addstoragedetailrsp_usr_value_ != NULL ? *addstoragedetailrsp_usr_value_
+                         : *::Interactive::Message::AddStorageDetailRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::AddStorageDetailRsp_USR* Rsp::mutable_addstoragedetailrsp_usr_value() {
+  
+  if (addstoragedetailrsp_usr_value_ == NULL) {
+    addstoragedetailrsp_usr_value_ = new ::Interactive::Message::AddStorageDetailRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.AddStorageDetailRsp_USR_Value)
+  return addstoragedetailrsp_usr_value_;
+}
+inline ::Interactive::Message::AddStorageDetailRsp_USR* Rsp::release_addstoragedetailrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.AddStorageDetailRsp_USR_Value)
+  
+  ::Interactive::Message::AddStorageDetailRsp_USR* temp = addstoragedetailrsp_usr_value_;
+  addstoragedetailrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_addstoragedetailrsp_usr_value(::Interactive::Message::AddStorageDetailRsp_USR* addstoragedetailrsp_usr_value) {
+  delete addstoragedetailrsp_usr_value_;
+  addstoragedetailrsp_usr_value_ = addstoragedetailrsp_usr_value;
+  if (addstoragedetailrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddStorageDetailRsp_USR_Value)
+}
+
+// .Interactive.Message.DeleteStorageDetailRsp_USR DeleteStorageDetailRsp_USR_Value = 710;
+inline bool Rsp::has_deletestoragedetailrsp_usr_value() const {
+  return this != internal_default_instance() && deletestoragedetailrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_deletestoragedetailrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && deletestoragedetailrsp_usr_value_ != NULL) delete deletestoragedetailrsp_usr_value_;
+  deletestoragedetailrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::DeleteStorageDetailRsp_USR& Rsp::deletestoragedetailrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.DeleteStorageDetailRsp_USR_Value)
+  return deletestoragedetailrsp_usr_value_ != NULL ? *deletestoragedetailrsp_usr_value_
+                         : *::Interactive::Message::DeleteStorageDetailRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::DeleteStorageDetailRsp_USR* Rsp::mutable_deletestoragedetailrsp_usr_value() {
+  
+  if (deletestoragedetailrsp_usr_value_ == NULL) {
+    deletestoragedetailrsp_usr_value_ = new ::Interactive::Message::DeleteStorageDetailRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.DeleteStorageDetailRsp_USR_Value)
+  return deletestoragedetailrsp_usr_value_;
+}
+inline ::Interactive::Message::DeleteStorageDetailRsp_USR* Rsp::release_deletestoragedetailrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.DeleteStorageDetailRsp_USR_Value)
+  
+  ::Interactive::Message::DeleteStorageDetailRsp_USR* temp = deletestoragedetailrsp_usr_value_;
+  deletestoragedetailrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_deletestoragedetailrsp_usr_value(::Interactive::Message::DeleteStorageDetailRsp_USR* deletestoragedetailrsp_usr_value) {
+  delete deletestoragedetailrsp_usr_value_;
+  deletestoragedetailrsp_usr_value_ = deletestoragedetailrsp_usr_value;
+  if (deletestoragedetailrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeleteStorageDetailRsp_USR_Value)
+}
+
+// .Interactive.Message.ModifyStorageDetailRsp_USR ModifyStorageDetailRsp_USR_Value = 720;
+inline bool Rsp::has_modifystoragedetailrsp_usr_value() const {
+  return this != internal_default_instance() && modifystoragedetailrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_modifystoragedetailrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifystoragedetailrsp_usr_value_ != NULL) delete modifystoragedetailrsp_usr_value_;
+  modifystoragedetailrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyStorageDetailRsp_USR& Rsp::modifystoragedetailrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.ModifyStorageDetailRsp_USR_Value)
+  return modifystoragedetailrsp_usr_value_ != NULL ? *modifystoragedetailrsp_usr_value_
+                         : *::Interactive::Message::ModifyStorageDetailRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyStorageDetailRsp_USR* Rsp::mutable_modifystoragedetailrsp_usr_value() {
+  
+  if (modifystoragedetailrsp_usr_value_ == NULL) {
+    modifystoragedetailrsp_usr_value_ = new ::Interactive::Message::ModifyStorageDetailRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.ModifyStorageDetailRsp_USR_Value)
+  return modifystoragedetailrsp_usr_value_;
+}
+inline ::Interactive::Message::ModifyStorageDetailRsp_USR* Rsp::release_modifystoragedetailrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.ModifyStorageDetailRsp_USR_Value)
+  
+  ::Interactive::Message::ModifyStorageDetailRsp_USR* temp = modifystoragedetailrsp_usr_value_;
+  modifystoragedetailrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_modifystoragedetailrsp_usr_value(::Interactive::Message::ModifyStorageDetailRsp_USR* modifystoragedetailrsp_usr_value) {
+  delete modifystoragedetailrsp_usr_value_;
+  modifystoragedetailrsp_usr_value_ = modifystoragedetailrsp_usr_value;
+  if (modifystoragedetailrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyStorageDetailRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryStorageDetailRsp_USR QueryStorageDetailRsp_USR_Value = 730;
+inline bool Rsp::has_querystoragedetailrsp_usr_value() const {
+  return this != internal_default_instance() && querystoragedetailrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_querystoragedetailrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querystoragedetailrsp_usr_value_ != NULL) delete querystoragedetailrsp_usr_value_;
+  querystoragedetailrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryStorageDetailRsp_USR& Rsp::querystoragedetailrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryStorageDetailRsp_USR_Value)
+  return querystoragedetailrsp_usr_value_ != NULL ? *querystoragedetailrsp_usr_value_
+                         : *::Interactive::Message::QueryStorageDetailRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryStorageDetailRsp_USR* Rsp::mutable_querystoragedetailrsp_usr_value() {
+  
+  if (querystoragedetailrsp_usr_value_ == NULL) {
+    querystoragedetailrsp_usr_value_ = new ::Interactive::Message::QueryStorageDetailRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryStorageDetailRsp_USR_Value)
+  return querystoragedetailrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryStorageDetailRsp_USR* Rsp::release_querystoragedetailrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryStorageDetailRsp_USR_Value)
+  
+  ::Interactive::Message::QueryStorageDetailRsp_USR* temp = querystoragedetailrsp_usr_value_;
+  querystoragedetailrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_querystoragedetailrsp_usr_value(::Interactive::Message::QueryStorageDetailRsp_USR* querystoragedetailrsp_usr_value) {
+  delete querystoragedetailrsp_usr_value_;
+  querystoragedetailrsp_usr_value_ = querystoragedetailrsp_usr_value;
+  if (querystoragedetailrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryStorageDetailRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryRegionStorageInfoRsp_USR QueryRegionStorageInfoRsp_USR_Value = 740;
+inline bool Rsp::has_queryregionstorageinforsp_usr_value() const {
+  return this != internal_default_instance() && queryregionstorageinforsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryregionstorageinforsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryregionstorageinforsp_usr_value_ != NULL) delete queryregionstorageinforsp_usr_value_;
+  queryregionstorageinforsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryRegionStorageInfoRsp_USR& Rsp::queryregionstorageinforsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryRegionStorageInfoRsp_USR_Value)
+  return queryregionstorageinforsp_usr_value_ != NULL ? *queryregionstorageinforsp_usr_value_
+                         : *::Interactive::Message::QueryRegionStorageInfoRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryRegionStorageInfoRsp_USR* Rsp::mutable_queryregionstorageinforsp_usr_value() {
+  
+  if (queryregionstorageinforsp_usr_value_ == NULL) {
+    queryregionstorageinforsp_usr_value_ = new ::Interactive::Message::QueryRegionStorageInfoRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryRegionStorageInfoRsp_USR_Value)
+  return queryregionstorageinforsp_usr_value_;
+}
+inline ::Interactive::Message::QueryRegionStorageInfoRsp_USR* Rsp::release_queryregionstorageinforsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryRegionStorageInfoRsp_USR_Value)
+  
+  ::Interactive::Message::QueryRegionStorageInfoRsp_USR* temp = queryregionstorageinforsp_usr_value_;
+  queryregionstorageinforsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryregionstorageinforsp_usr_value(::Interactive::Message::QueryRegionStorageInfoRsp_USR* queryregionstorageinforsp_usr_value) {
+  delete queryregionstorageinforsp_usr_value_;
+  queryregionstorageinforsp_usr_value_ = queryregionstorageinforsp_usr_value;
+  if (queryregionstorageinforsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryRegionStorageInfoRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -39401,6 +42260,28 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

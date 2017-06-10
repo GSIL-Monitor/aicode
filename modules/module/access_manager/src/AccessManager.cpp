@@ -50,6 +50,7 @@ bool AccessManager::Init()
     }
 
     m_SessionMgr.SetMemCacheAddRess(m_ParamInfo.m_strMemAddress, m_ParamInfo.m_strMemPort);
+    m_SessionMgr.SetGlobalMemCacheAddRess(m_ParamInfo.m_strMemAddressGlobal, m_ParamInfo.m_strMemPortGlobal);
     m_SessionMgr.SetSessionTimeoutCB(boost::bind(&ClusterAccessCollector::AddAccessTimeoutRecord, m_pClusterAccessCollector, _1, _2));
 
     if (!m_SessionMgr.Init())
@@ -684,7 +685,7 @@ bool AccessManager::LogoutReq(const std::string &strMsg, const std::string &strS
             strCurrentTime.replace(pos, 1, std::string(" "));
 
             this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddUserAccessRecord, this_->m_pClusterAccessCollector,
-                LogoutReqUsr.m_strSID, "", 0xFFFFFFFF, "", strCurrentTime));
+                LogoutReqUsr.m_strSID, "", UNUSED_INPUT_UINT, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;
@@ -829,7 +830,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
-    if (DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
+    if (req.m_devInfo.m_strP2pID.empty() || DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
     {
         strDeviceID = req.m_devInfo.m_strDevID;
     }
@@ -887,8 +888,8 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     }
     else if (strUserID == req.m_strUserID)
     {
-        LOG_INFO_RLD("Add devcice successful, the device has been added by current user, user id is" << strUserID);
-        blResult = true;
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER);
+        LOG_ERROR_RLD("Add device failed, the device has been added by current user, user id is" << strUserID);
     } 
     else
     {
@@ -1862,7 +1863,7 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     //烧录了P2P信息的设备登录时，同时上报P2P信息，平台记入数据库
     if (P2P_DEVICE_BUILDIN == LoginReqDev.m_uiP2pBuildin)
     {
-        if (0XFFFFFFFF == LoginReqDev.m_uiP2pSupplier)
+        if (UNUSED_INPUT_UINT == LoginReqDev.m_uiP2pSupplier)
         {
             LOG_ERROR_RLD("Login req of device failed, field p2p type is empty");
             return false;
@@ -1963,7 +1964,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
 
             if (strP2pID.empty())
             {
-                if (0xFFFFFFFF == req.m_uiP2pSupplier)
+                if (UNUSED_INPUT_UINT == req.m_uiP2pSupplier)
                 {
                     LOG_ERROR_RLD("P2p info of device failed, the divice not assign P2PID, src id is " << strSrcID <<
                         " and domainname is " << req.m_strDomainName);
@@ -1978,7 +1979,6 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
                 blResult = true;
                 return blResult;
             }
-
         }
     }
     else
@@ -2111,7 +2111,7 @@ bool AccessManager::LogoutReqDevice(const std::string &strMsg, const std::string
             strCurrentTime.replace(pos, 1, std::string(" "));
 
             this_->m_DBRuner.Post(boost::bind(&ClusterAccessCollector::AddDeviceAccessRecord, this_->m_pClusterAccessCollector,
-                LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, 0xFFFFFFFF, "", strCurrentTime));
+                LogoutReqDev.m_strSID, LogoutReqDev.m_strDevID, UNUSED_INPUT_UINT, "", strCurrentTime));
         }
 
         std::string strSerializeOutPut;
@@ -2846,7 +2846,7 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
             return false;
         }
 
-        if (!QueryFirwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
         {
             LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
                 " and sub category is " << doorbellParameter.m_strSubCategory <<
@@ -2856,7 +2856,7 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
     }
     else
     {
-        if (!QueryFirwareUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, firmwareUpgrade))
+        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, req.m_strSubCategory, req.m_strCurrentVersion, firmwareUpgrade))
         {
             LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
                 " and sub category is " << req.m_strSubCategory << " and current version is " << req.m_strCurrentVersion);
@@ -3441,7 +3441,7 @@ bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const 
     strEventID = CreateUUID();
 
     m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceEventReportToDB, this, strEventID, req.m_strDeviceID,
-        req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, req.m_strFileID));
+        req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, req.m_strFileID, req.m_strEventTime));
 
     blResult = true;
 
@@ -3493,7 +3493,8 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
                     " and event id is " << deviceEvent.m_strEventID <<
                     " and event type is " << deviceEvent.m_uiEventType <<
                     " and event state is " << deviceEvent.m_uiEventState <<
-                    " and file url is " << deviceEvent.m_strFileUrl);
+                    " and file url is " << deviceEvent.m_strFileUrl <<
+                    " and event time is " << deviceEvent.m_strEventTime);
 
                 ++i;
             }
@@ -3507,10 +3508,22 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
         return false;
     }
 
-    if (!QueryAllDeviceEventToDB(req.m_strDeviceID, req.m_uiEventType, req.m_uiReadState, deviceEventList, req.m_uiBeginIndex))
+    if (!QueryAllDeviceEventToDB(req.m_strDeviceID, req.m_uiEventType, req.m_uiReadState, deviceEventList,
+        req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all device event failed, src id is " << strSrcID);
         return false;
+    }
+
+    if (EVENT_MESSAGE_READ != req.m_uiReadState && !deviceEventList.empty())
+    {
+        std::list<std::string> strEventIDList;
+        for (InteractiveProtoHandler::DeviceEvent &deviceEvent : deviceEventList)
+        {
+            strEventIDList.push_back(deviceEvent.m_strEventID);
+        }
+
+        m_DBRuner.Post(boost::bind(&AccessManager::UpdateEventReadStatusToDB, this, strEventIDList, EVENT_MESSAGE_READ));
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
@@ -3558,6 +3571,288 @@ bool AccessManager::DeleteDeviceEventReqUser(const std::string &strMsg, const st
     m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceEventToDB, this, req.m_strEventID));
 
     m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::AddStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::AddStorageDetailReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::AddStorageDetailRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddStorageDetailRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add storage detail rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add storage detail already send, dst id is " << strSrcID <<
+            " and domain id is " << req.m_storageDetail.m_uiDomainID <<
+            " and storage name is " << req.m_storageDetail.m_strStorageName <<
+            " and overlap type is " << req.m_storageDetail.m_uiOverlapType <<
+            " and storage time up limit is " << req.m_storageDetail.m_uiStorageTimeUpLimit <<
+            " and storage time down limit is " << req.m_storageDetail.m_uiStorageTimeDownLimit <<
+            " and begin date is " << req.m_storageDetail.m_strBeginDate <<
+            " and end date is " << req.m_storageDetail.m_strEndDate);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add storage detail req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pos = strCurrentTime.find('T');
+    strCurrentTime.replace(pos, 1, std::string(" "));
+
+    InteractiveProtoHandler::StorageDetail storageDetail;
+    storageDetail.m_uiDomainID = req.m_storageDetail.m_uiDomainID;
+    storageDetail.m_strObjectID = req.m_storageDetail.m_strObjectID;
+    storageDetail.m_uiObjectType = req.m_storageDetail.m_uiObjectType;
+    storageDetail.m_strStorageName = req.m_storageDetail.m_strStorageName;
+    storageDetail.m_uiStorageType = req.m_storageDetail.m_uiStorageType;
+    storageDetail.m_uiOverlapType = req.m_storageDetail.m_uiOverlapType;
+    storageDetail.m_uiStorageTimeUpLimit = req.m_storageDetail.m_uiStorageTimeUpLimit;
+    storageDetail.m_uiStorageTimeDownLimit = req.m_storageDetail.m_uiStorageTimeDownLimit;
+    storageDetail.m_uiSizeOfSpaceUsed = req.m_storageDetail.m_uiSizeOfSpaceUsed;
+    storageDetail.m_uiStorageUnitType = req.m_storageDetail.m_uiStorageUnitType;
+    storageDetail.m_strBeginDate = req.m_storageDetail.m_strBeginDate;
+    storageDetail.m_strEndDate = req.m_storageDetail.m_strEndDate;
+    storageDetail.m_uiStatus = NORMAL_STATUS;
+    storageDetail.m_strExtend = req.m_storageDetail.m_strExtend;
+
+    m_DBRuner.Post(boost::bind(&AccessManager::InsertStorageDetailToDB, this, storageDetail));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::DeleteStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::DeleteStorageDetailReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::DeleteStorageDetailRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeleteStorageDetailRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete storage detail rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete storage detail rsp already send, dst id is " << strSrcID <<
+            " and object id is " << req.m_strObjectID);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Delete storage detail req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::DeleteStorageDetailToDB, this, req.m_strObjectID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::ModifyStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ModifyStorageDetailReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::ModifyStorageDetailRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyStorageDetailRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify storage detail rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify storage detail rsp already send, dst id is " << strSrcID <<
+            " and object id is " << req.m_storageDetail.m_strObjectID <<
+            " and storage name is " << req.m_storageDetail.m_strStorageName <<
+            " and overlap type is " << req.m_storageDetail.m_uiOverlapType <<
+            " and storage time up limit is " << req.m_storageDetail.m_uiStorageTimeUpLimit <<
+            " and storage time down limit is " << req.m_storageDetail.m_uiStorageTimeDownLimit <<
+            " and begin date is " << req.m_storageDetail.m_strBeginDate <<
+            " and end date is " << req.m_storageDetail.m_strEndDate);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify storage detail req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::UpdateStorageDetailToDB, this, req.m_storageDetail));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryStorageDetailReq_USR req;
+    InteractiveProtoHandler::StorageDetail storageDetail;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &storageDetail, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::QueryStorageDetailRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryStorageDetailRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        rsp.m_storageDetail.m_uiDomainID = storageDetail.m_uiDomainID;
+        rsp.m_storageDetail.m_strObjectID = storageDetail.m_strObjectID;
+        rsp.m_storageDetail.m_uiObjectType = storageDetail.m_uiObjectType;
+        rsp.m_storageDetail.m_strStorageName = storageDetail.m_strStorageName;
+        rsp.m_storageDetail.m_uiStorageType = storageDetail.m_uiStorageType;
+        rsp.m_storageDetail.m_uiOverlapType = storageDetail.m_uiOverlapType;
+        rsp.m_storageDetail.m_uiStorageTimeUpLimit = storageDetail.m_uiStorageTimeUpLimit;
+        rsp.m_storageDetail.m_uiStorageTimeDownLimit = storageDetail.m_uiStorageTimeDownLimit;
+        rsp.m_storageDetail.m_uiSizeOfSpaceUsed = storageDetail.m_uiSizeOfSpaceUsed;
+        rsp.m_storageDetail.m_uiStorageUnitType = storageDetail.m_uiStorageUnitType;
+        rsp.m_storageDetail.m_strBeginDate = storageDetail.m_strBeginDate;
+        rsp.m_storageDetail.m_strEndDate = storageDetail.m_strEndDate;
+        rsp.m_storageDetail.m_uiStatus = storageDetail.m_uiStatus;
+        rsp.m_storageDetail.m_strExtend = storageDetail.m_strExtend;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query storage detail rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query storage detail rsp already send, dst id is " << strSrcID <<
+            " and domain id is " << rsp.m_storageDetail.m_uiDomainID <<
+            " and storage name is " << rsp.m_storageDetail.m_strStorageName <<
+            " and overlap type is " << rsp.m_storageDetail.m_uiOverlapType <<
+            " and storage time up limit is " << rsp.m_storageDetail.m_uiStorageTimeUpLimit <<
+            " and storage time down limit is " << rsp.m_storageDetail.m_uiStorageTimeDownLimit <<
+            " and begin date is " << rsp.m_storageDetail.m_strBeginDate <<
+            " and end date is " << rsp.m_storageDetail.m_strEndDate <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query storage detail req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    int iErrorCode = 0;
+    if (!QueryStorageDetailToDB(req.m_strObjectID, storageDetail, iErrorCode))
+    {
+        LOG_ERROR_RLD("Query storage detail from db failed, src id is " << strSrcID <<
+            " and object id is " << req.m_strObjectID);
+
+        ReturnInfo::RetCode(iErrorCode);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::QueryRegionStorageInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryRegionStorageInfoReq_USR req;
+    unsigned int uiUsedSize = 0;
+    unsigned int uiTotalSize = 0;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &uiUsedSize, &uiTotalSize)
+    {
+        InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryRegionStorageInfoRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_uiSizeOfSpaceUsed = uiUsedSize;
+        rsp.m_uiSizeOfSpace = uiTotalSize;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query region storage info rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query region storage info rsp already send, dst id is " << strSrcID <<
+            " and size of space used is " << rsp.m_uiSizeOfSpaceUsed <<
+            " and size of space is " << rsp.m_uiSizeOfSpace <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query region storage info req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryRegionStorageInfoToDB(uiUsedSize, uiTotalSize))
+    {
+        LOG_ERROR_RLD("Query region storage info from db failed, src id is " << strSrcID);
+        return false;
+    }
 
     blResult = true;
 
@@ -3750,7 +4045,7 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
         snprintf(sql + len, size - len, " and deviceid = '%s'", strDevID.c_str());
     }
 
-    if (0xFFFFFFFF != uiBusinessType)
+    if (UNUSED_INPUT_UINT != uiBusinessType)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, " and businesstype = %d", uiBusinessType);
@@ -4298,7 +4593,7 @@ bool AccessManager::QueryAppUpgradeToDB(const std::string &strCategory, const st
     return true;
 }
 
-bool AccessManager::QueryFirwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
+bool AccessManager::QueryFirmwareUpgradeToDB(const std::string &strCategory, const std::string &strSubCategory, const std::string &strCurrentVersion,
     InteractiveProtoHandler::FirmwareUpgrade &firmwareUpgrade)
 {
     char sql[1024] = { 0 };
@@ -4630,7 +4925,7 @@ void AccessManager::ModifyConfigurationToDB(const InteractiveProtoHandler::Confi
     //    blModified = true;
     //}
 
-    if (0xFFFFFFFF != configuration.m_uiLeaseDuration)
+    if (UNUSED_INPUT_UINT != configuration.m_uiLeaseDuration)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", leaseduration = %d", configuration.m_uiLeaseDuration);
@@ -4746,7 +5041,7 @@ void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrI
         strItemList.push_back(sql);
     }
 
-    if (0xFFFFFFFF != UsrInfo.m_uiTypeInfo)
+    if (UNUSED_INPUT_UINT != UsrInfo.m_uiTypeInfo)
     {
         char sql[1024] = { 0 };
         const char *sqlfmt = "typeinfo = %d";
@@ -5506,7 +5801,7 @@ void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
         strSql += cTmp;
     }
 
-    if (DevInfo.m_uiTypeInfo != 0xFFFFFFFF)
+    if (DevInfo.m_uiTypeInfo != UNUSED_INPUT_UINT)
     {
         char cTmp[256] = { 0 };
         snprintf(cTmp, sizeof(cTmp), ", typeinfo = '%u' ", DevInfo.m_uiTypeInfo);
@@ -5534,7 +5829,7 @@ void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo
         strSql += cTmp;
     }
 
-    if (DevInfo.m_uiStatus != 0xFFFFFFFF)
+    if (DevInfo.m_uiStatus != UNUSED_INPUT_UINT)
     {
         char cTmp[256] = { 0 };
         snprintf(cTmp, sizeof(cTmp), ", status = '%u' ", DevInfo.m_uiStatus);
@@ -6212,7 +6507,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
         snprintf(sql + len, size - len, ", devicedomain = '%s'", loginDevReq.m_strDomainName.c_str());
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiDeviceType)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiDeviceType)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", typeinfo = %d", loginDevReq.m_uiDeviceType);
@@ -6242,13 +6537,13 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
         snprintf(sql + len, size - len, ", p2pserver = '%s'", loginDevReq.m_strP2pServr.c_str());
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiP2pSupplier)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiP2pSupplier)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", p2psupplier = %d", loginDevReq.m_uiP2pSupplier);
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiP2pBuildin)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiP2pBuildin)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", p2pbuildin = %d", loginDevReq.m_uiP2pBuildin);
@@ -6569,7 +6864,7 @@ void AccessManager::InsertDoorbellParameterToDB(const InteractiveProtoHandler::L
         snprintf(sql + len, size - len, ", devicedomain = '%s'", loginDevReq.m_strDomainName.c_str());
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiDeviceType)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiDeviceType)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", typeinfo = %d", loginDevReq.m_uiDeviceType);
@@ -6599,13 +6894,13 @@ void AccessManager::InsertDoorbellParameterToDB(const InteractiveProtoHandler::L
         snprintf(sql + len, size - len, ", p2pserver = '%s'", loginDevReq.m_strP2pServr.c_str());
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiP2pSupplier)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiP2pSupplier)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", p2psupplier = %d", loginDevReq.m_uiP2pSupplier);
     }
 
-    if (0xFFFFFFFF != loginDevReq.m_uiP2pBuildin)
+    if (UNUSED_INPUT_UINT != loginDevReq.m_uiP2pBuildin)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", p2pbuildin = %d", loginDevReq.m_uiP2pBuildin);
@@ -7104,17 +7399,13 @@ bool AccessManager::QueryPlatformPushStatusToDB(std::string &strStatus)
 }
 
 void AccessManager::InsertDeviceEventReportToDB(const std::string &strEventID, const std::string &strDeviceID, const unsigned int uiDeviceType,
-    const unsigned int uiEventType, const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID)
+    const unsigned int uiEventType, const unsigned int uiEventState, const unsigned int uiMessageStatus, const std::string &strFileID, const std::string &strEventTime)
 {
-    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
-    std::string::size_type pos = strCurrentTime.find('T');
-    strCurrentTime.replace(pos, 1, std::string(" "));
-
     char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_device_event_info (id, eventid, deviceid, devicetype, eventtype, eventstate, readstate, fileid, createdate, status)"
         " values(uuid(), '%s', '%s', %d,  %d,  %d,  %d, '%s', '%s', %d)";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strDeviceID.c_str(), uiDeviceType, uiEventType, uiEventState, uiMessageStatus,
-        strFileID.c_str(), strCurrentTime.c_str(), NORMAL_STATUS);
+        strFileID.c_str(), strEventTime.c_str(), NORMAL_STATUS);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -7123,23 +7414,42 @@ void AccessManager::InsertDeviceEventReportToDB(const std::string &strEventID, c
 }
 
 bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, const unsigned int uiEventType, const unsigned int uiReadState,
-    std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
+    std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const std::string &strBeginDate, const std::string &strEndDate,
+    const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid from t_device_event_info"
-        " where deviceid = '%s' and eventtype = %d and status = 0";
-    snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiEventType, uiReadState, uiBeginIndex, uiPageSize);
+    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, createdate from t_device_event_info"
+        " where deviceid = '%s' and status = 0";
+    snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiBeginIndex, uiPageSize);
+
+    if (0 != uiEventType)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and eventtype = %d", uiEventType);
+    }
+
+    if (!strBeginDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and createdate >= '%s'", strBeginDate.c_str());
+    }
+
+    if (!strEndDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, " and createdate <= '%s'", strEndDate.c_str());
+    }
 
     len = strlen(sql);
     if (EVENT_MESSAGE_ALL == uiReadState)
     {
-        snprintf(sql + len, size - len, " limit %d, %d", uiBeginIndex, uiPageSize);
+        snprintf(sql + len, size - len, " order by createdate desc limit %d, %d", uiBeginIndex, uiPageSize);
     }
     else
     {
-        snprintf(sql + len, size - len, " and readstate = %d limit %d, %d", uiReadState, uiBeginIndex, uiPageSize);
+        snprintf(sql + len, size - len, " and readstate = %d order by createdate desc limit %d, %d", uiReadState, uiBeginIndex, uiPageSize);
     }
 
     InteractiveProtoHandler::DeviceEvent deviceEvent;
@@ -7165,6 +7475,9 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
         case 5:
             deviceEvent.m_strFileUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) +
                 "download_file&fileid=" + strColumn;
+            break;
+        case 6:
+            deviceEvent.m_strEventTime = strColumn;
             Result = deviceEvent;
             break;
 
@@ -7193,6 +7506,32 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     }
 
     return true;
+}
+
+void AccessManager::UpdateEventReadStatusToDB(std::list<std::string> strEventIDList, const unsigned int uiReadStatus)
+{
+    if (strEventIDList.empty())
+    {
+        LOG_INFO_RLD("UpdateEventReadStatusToDB completed, event id list is empty");
+        return;
+    }
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_device_event_info set readstate = %d where readstate = %d and status = 0 and eventid in(";
+    snprintf(sql , sizeof(sql), sqlfmt, uiReadStatus, EVENT_MESSAGE_UNREAD);
+    std::string strSql(sql);
+
+    for (std::string &strEventID : strEventIDList)
+    {
+        strSql += "'" + strEventID + "',";
+    }
+
+    strSql.replace(strSql.length() - 1, 1, std::string(")"));
+
+    if (!m_pMysql->QueryExec(strSql))
+    {
+        LOG_ERROR_RLD("UpdateEventReadStatusToDB exec sql error, sql is " << strSql);
+    }
 }
 
 void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
@@ -7287,5 +7626,229 @@ bool AccessManager::QueryDeviceEventExpireTimeToDB(int &iExpireTime)
     }
 
     iExpireTime = boost::any_cast<int>(ResultList.front());
+    return true;
+}
+
+void AccessManager::InsertStorageDetailToDB(const InteractiveProtoHandler::StorageDetail &storageDetail)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_storage_detail_info (id, domainid, objid, objtype, storagename, storagetype, overlaptype,"
+        " storagetimeuplimit, storagetimedownlimit, sizeofspaceused, storageunittype, begindate, enddate, status, extend)"
+        " values(uuid(), %d, '%s', %d, '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, storageDetail.m_uiDomainID, storageDetail.m_strObjectID.c_str(), storageDetail.m_uiObjectType,
+        storageDetail.m_strStorageName.c_str(), storageDetail.m_uiStorageType, storageDetail.m_uiOverlapType, storageDetail.m_uiStorageTimeUpLimit,
+        storageDetail.m_uiStorageTimeDownLimit, storageDetail.m_uiSizeOfSpaceUsed, storageDetail.m_uiStorageUnitType, storageDetail.m_strBeginDate.c_str(),
+        storageDetail.m_strEndDate.c_str(), storageDetail.m_uiStatus, storageDetail.m_strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("InsertStorageDetailToDB exec sql error, sql is " << sql);
+    }
+}
+
+void AccessManager::DeleteStorageDetailToDB(const std::string &strObjectID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_storage_detail_info set status = %d where objid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, strObjectID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteStorageDetailToDB exec sql error, sql is " << sql);
+    }
+}
+
+void AccessManager::UpdateStorageDetailToDB(const InteractiveProtoHandler::StorageDetail &storageDetail)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len;
+    snprintf(sql, size, "update t_storage_detail_info set objid = objid");
+
+    bool blModified = false;
+
+    if (!storageDetail.m_strStorageName.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", storagename = '%s'", storageDetail.m_strStorageName.c_str());
+
+        blModified = true;
+    }
+
+    if (UNUSED_INPUT_UINT != storageDetail.m_uiOverlapType)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", overlaptype = %d", storageDetail.m_uiOverlapType);
+
+        blModified = true;
+    }
+
+    if (UNUSED_INPUT_UINT != storageDetail.m_uiStorageTimeUpLimit)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", storagetimeuplimit = %d", storageDetail.m_uiStorageTimeUpLimit);
+
+        blModified = true;
+    }
+
+    if (UNUSED_INPUT_UINT != storageDetail.m_uiStorageTimeDownLimit)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", storagetimedownlimit = %d", storageDetail.m_uiStorageTimeDownLimit);
+
+        blModified = true;
+    }
+
+    if (!storageDetail.m_strBeginDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", begindate = '%s'", storageDetail.m_strBeginDate.c_str());
+
+        blModified = true;
+    }
+
+    if (!storageDetail.m_strEndDate.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", enddate = '%s'", storageDetail.m_strEndDate.c_str());
+
+        blModified = true;
+    }
+
+    if (!storageDetail.m_strExtend.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", extend = '%s'", storageDetail.m_strExtend.c_str());
+
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("UpdateStorageDetailToDB completed, there is no change");
+        return;
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " where objid = '%s' and status = 0", storageDetail.m_strObjectID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UpdateStorageDetailToDB exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryStorageDetailToDB(const std::string &strObjectID, InteractiveProtoHandler::StorageDetail &storageDetail, int &iErrorCode)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select domainid, storagename, overlaptype, storagetimeuplimit, storagetimedownlimit, begindate, enddate, extend"
+        " from t_storage_detail_info where objid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strObjectID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            storageDetail.m_uiDomainID = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 1:
+            storageDetail.m_strStorageName = strColumn;
+            break;
+        case 2:
+            storageDetail.m_uiOverlapType = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 3:
+            storageDetail.m_uiStorageTimeUpLimit = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 4:
+            storageDetail.m_uiStorageTimeDownLimit = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 5:
+            storageDetail.m_strBeginDate = strColumn;
+            break;
+        case 6:
+            storageDetail.m_strEndDate = strColumn;
+            break;
+        case 7:
+            storageDetail.m_strExtend = strColumn;
+            Result = storageDetail;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryStorageDetailToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryStorageDetailToDB exec sql failed, sql is " << sql);
+
+        iErrorCode = ReturnInfo::FAILED_CODE;
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryStorageDetailToDB sql result is empty, sql is " << sql);
+
+        iErrorCode = ReturnInfo::CLOUD_STORAGE_NOT_PAID_USER;
+        return false;
+    }
+
+    iErrorCode = ReturnInfo::SUCCESS_CODE;
+    storageDetail = boost::any_cast<InteractiveProtoHandler::StorageDetail>(ResultList.front());
+    return true;
+}
+
+bool AccessManager::QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigned int &uiTotalSize)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select sizeofspace, sizeofspaceused from t_storage_info";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    struct StorageInfo
+    {
+        unsigned int usedSize;
+        unsigned int totalSize;
+    } storageInfo;
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            storageInfo.totalSize = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 1:
+            storageInfo.usedSize = boost::lexical_cast<unsigned int>(strColumn);
+            Result = storageInfo;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRegionStorageInfoToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryRegionStorageInfoToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryRegionStorageInfoToDB sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto result = boost::any_cast<StorageInfo>(ResultList.front());
+    uiUsedSize = result.usedSize;
+    uiTotalSize = result.totalSize;
+
     return true;
 }

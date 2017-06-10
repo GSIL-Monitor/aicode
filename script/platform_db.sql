@@ -93,6 +93,36 @@ CREATE TABLE `t_user_operation_log` (
   INDEX index_ref5(createdate)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+
+DROP TABLE IF EXISTS `t_storage_info`;
+CREATE TABLE `t_storage_info` (
+  `id` varchar(36) NOT NULL,
+  `domainid` int(11) NOT NULL DEFAULT '0', #存储域，默认为0
+  `sizeofspace` bigint(24) NOT NULL, #存储空间大小，统一以MB为单位
+  `sizeofspaceused` bigint(24) NOT NULL #存储空间已经使用大小
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `t_storage_detail_info`;
+CREATE TABLE `t_storage_detail_info` (
+  `id` varchar(36) NOT NULL,
+  `domainid` int(11) NOT NULL DEFAULT '0', #存储域，默认为0
+  `objid` varchar(100) NOT NULL, #对象id，可以是用户或者是设备
+  `objtype` int(11) NOT NULL, #对象类型，0：用户，1：设备
+  `storagename` varchar(100) NOT NULL DEFAULT '', #存储空间命名
+  `storagetype` int(11) NOT NULL DEFAULT '0', #存储类型，默认为0，目前表示文件
+  `overlaptype` int(11) NOT NULL DEFAULT '0', #覆写类型，0：不覆写，1：FIFO覆写
+  `storagetimeuplimit` int(11) NOT NULL DEFAULT '0', #存储时间上限
+  `storagetimedownlimit` int(11) NOT NULL DEFAULT '0', #存储时间下限
+  `sizeofspaceused` int(11) NOT NULL DEFAULT '0', #存储空间已经使用大小
+  `storageunittype` int(11) NOT NULL DEFAULT '0', #存储空间单元类型，0表示以MB为单位
+  `begindate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, #生效起始时间
+  `enddate` datetime NOT NULL, #若是不限制结束时间的场景，则该值填写为2199-01-01
+  `status` int(11) NOT NULL DEFAULT '0',
+  `extend` varchar(4000) DEFAULT ''
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS `t_file_info`;
 CREATE TABLE `t_file_info` (
   `id` varchar(36) NOT NULL,
@@ -218,8 +248,9 @@ CREATE TABLE `t_device_parameter_doorbell` (
   `pir_alarm_swtich` varchar(50) DEFAULT '',      #PIR报警开关
   `doorbell_switch` varchar(50) DEFAULT '',       #门铃开关
   `pir_alarm_level` varchar(50) DEFAULT '',       #PIR报警等级
-  `pir_ineffective_time` varchar(50) DEFAULT '',  #PIR不生效时间配置项
+  `pir_ineffective_time` varchar(200) DEFAULT '', #PIR不生效时间配置项
   `current_wifi` varchar(50) DEFAULT '',          #当前WIFI
+  `sub_category` varchar(50) DEFAULT '',          #门铃类别
   `otherproperty` varchar(1000) DEFAULT '',       #其他属性
   `createdate` datetime NOT NULL,
   `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,

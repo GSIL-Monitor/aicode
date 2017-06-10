@@ -241,11 +241,11 @@ void ClusterAccessCollector::AddAccessTimeoutRecord(const std::string &strAccess
 
     if (DEVICE_SESSION == uiAccesser)
     {
-        AddDeviceAccessRecord(strAccessID, "", 0xFFFFFFFF, "", strCurrentTime);
+        AddDeviceAccessRecord(strAccessID, "", UNUSED_INPUT_UINT, "", strCurrentTime);
     }
     else if (USER_SESSION == uiAccesser)
     {
-        AddUserAccessRecord(strAccessID, "", 0xFFFFFFFF, "", strCurrentTime);
+        AddUserAccessRecord(strAccessID, "", UNUSED_INPUT_UINT, "", strCurrentTime);
     }
     else
     {

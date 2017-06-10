@@ -39,26 +39,22 @@ bool P2PServerManager_LT::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparam
         return true;
     }
 
-    if ("" == sUserID)
-    {
-        boost::unique_lock<boost::mutex> lock(m_p2pMutex);
-        if (AllocateP2pID(sDeviceID, p2pparams))
-        {
-            return UpdateP2PID(sDeviceID, p2pparams.sP2Pid);
-        }
-        else
-        {
-            LOG_ERROR_RLD("DeviceRequestP2PConnectParam failed, allocate p2p id error, userid is " << sUserID <<
-                " and device id is " << sDeviceID);
-            return false;
-        }
-    }
-    else
+    if (!sUserID.empty())
     {
         LOG_ERROR_RLD("DeviceRequestP2PConnectParam failed, get p2p id error, userid is " << sUserID <<
             " and device id is " << sDeviceID);
         return false;
     }
+
+    boost::unique_lock<boost::mutex> lock(m_p2pMutex);
+    if (!AllocateP2pID(sDeviceID, p2pparams))
+    {
+        LOG_ERROR_RLD("DeviceRequestP2PConnectParam failed, allocate p2p id error, userid is " << sUserID <<
+            " and device id is " << sDeviceID);
+        return false;
+    }
+
+    return true;
 }
 
 bool P2PServerManager_LT::GetP2pID(const string &strDeviceID, P2PConnectParam &p2pparams)
@@ -113,55 +109,22 @@ bool P2PServerManager_LT::GetP2pID(const string &strDeviceID, P2PConnectParam &p
 
 bool P2PServerManager_LT::AllocateP2pID(const string &strDeviceID, P2PConnectParam &p2pparams)
 {
+    if (!UpdateP2PID(strDeviceID))
+    {
+        LOG_ERROR_RLD("AllocateP2pID failed, update p2p id error, device id is " << strDeviceID.c_str());
+        return false;
+    }
+
     if (NULL == m_pDBCache)
     {
         LOG_ERROR_RLD("DBCache is null.");
         return false;
     }
 
-    char sql[1024] = { 0 };
-    const char* sqlfmt = "select p2pid, validity_period from %s where status=0 and deviceid is null and supplier='%s' limit 1";
-    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), m_sFlag.c_str());
-
-    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
-    {
-        switch (uiColumnNum)
-        {
-        case 0:
-            p2pparams.sP2Pid = strColumn;
-            break;
-        case 1:
-            p2pparams.nTime = boost::lexical_cast<int>(strColumn);
-            Result = p2pparams;
-            break;
-
-        default:
-            LOG_ERROR_RLD("AllocateP2pID sql cb error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
-            break;
-        }
-    };
-
-    std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc, true))
-    {
-        LOG_ERROR_RLD("AllocateP2pID sql failed, sql is " << sql);
-        return false;
-    }
-
-    if (ResultList.empty())
-    {
-        LOG_ERROR_RLD("AllocateP2pID exec sql result is empty, sql is " << sql);
-        return false;
-    }
-
-    auto ResultInfo = boost::any_cast<P2PConnectParam>(ResultList.front());
-    p2pparams.sP2Pid = ResultInfo.sP2Pid;
-    p2pparams.nTime = ResultInfo.nTime;
-
-    return true;
+    return GetP2pID(strDeviceID, p2pparams);
 }
 
-bool P2PServerManager_LT::UpdateP2PID(const string &strDeviceID, const string &strP2pID)
+bool P2PServerManager_LT::UpdateP2PID(const string &strDeviceID)
 {
     if (NULL == m_pMysql)
     {
@@ -170,8 +133,8 @@ bool P2PServerManager_LT::UpdateP2PID(const string &strDeviceID, const string &s
     }
 
     char sql[1024] = { 0 };
-    const char* sqlfmt = "update %s set deviceid = '%s' where p2pid = '%s' and supplier = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), strP2pID.c_str(), m_sFlag.c_str());
+    const char* sqlfmt = "update %s set deviceid = '%s' where deviceid is null and supplier = '%s' limit 1";
+    snprintf(sql, sizeof(sql), sqlfmt, m_table_name.c_str(), strDeviceID.c_str(), m_sFlag.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {

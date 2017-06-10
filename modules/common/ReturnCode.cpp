@@ -18,6 +18,8 @@ const int ReturnInfo::DEVICE_IS_ADDED_USER = 1006;                 //…Ë±∏“—æ≠±ªÃ
 const int ReturnInfo::DEVICE_NOT_BELONG_TO_USER = 1007;            //…Ë±∏≤ªπÈ Ù”⁄”√ªß
 const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //…Ë±∏Œ¥º«¬º
 const int ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER = 1009;       //…Ë±∏P2PIDŒ¥º«¬º
+const int ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER = 1010;         //µ±«∞”√ªß“—ÃÌº”¥À…Ë±∏
+const int ReturnInfo::CLOUD_STORAGE_NOT_PAID_USER = 1011;          //”√ªßŒ¥ø™Õ®∏∂∑—‘∆¥Ê¥¢∑˛ŒÒ
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //…Ë±∏∂˛º∂”Ú√˚“—±ª π”√
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //…Ë±∏P2PID“—±ª π”√

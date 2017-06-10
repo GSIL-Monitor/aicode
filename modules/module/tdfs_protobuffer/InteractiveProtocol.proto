@@ -163,10 +163,22 @@ enum MsgType
   QueryIfP2pIDValidReq_USR_T = 20640;           //用户查询P2PID是否有效
   QueryIfP2pIDValidRsp_USR_T = 20650;
 
-  QueryAllDeviceEventReq_USR_T = 20700;         //查看设备事件请求
+  QueryAllDeviceEventReq_USR_T = 20700;         //查看设备事件
   QueryAllDeviceEventRsp_USR_T = 20710;
-  DeleteDeviceEventReq_USR_T = 20720;           //删除设备事件请求
+  DeleteDeviceEventReq_USR_T = 20720;           //删除设备事件
   DeleteDeviceEventRsp_USR_T = 20730;
+
+  AddStorageDetailReq_USR_T = 20800;            //用户新增存储详情
+  AddStorageDetailRsp_USR_T = 20810;
+  DeleteStorageDetailReq_USR_T = 20820;         //用户删除存储详情
+  DeleteStorageDetailRsp_USR_T = 20830;
+  ModifyStorageDetailReq_USR_T = 20840;         //用户修改存储详情
+  ModifyStorageDetailRsp_USR_T = 20850;
+  QueryStorageDetailReq_USR_T = 20860;          //用户查询存储详情
+  QueryStorageDetailRsp_USR_T = 20870;
+
+  QueryRegionStorageInfoReq_USR_T = 20880;      //查询区域存储情况
+  QueryRegionStorageInfoRsp_USR_T = 20890;
 
   ///////////////////////////////////////////////////////
   
@@ -339,6 +351,25 @@ message DeviceEvent                             //设备事件
   uint32 uiEventType = 4;
   uint32 uiEventState = 5;
   string strFileUrl = 6;
+  string strEventTime = 7;
+}
+
+message StorageDetail                           //存储详情
+{
+  uint32 uiDomainID = 1;
+  string strObjectID = 2;
+  uint32 uiObjectType = 3;
+  string strStorageName = 4;
+  uint32 uiStorageType = 5;
+  uint32 uiOverlapType = 6;
+  uint32 uiStorageTimeUpLimit = 7;
+  uint32 uiStorageTimeDownLimit = 8;
+  uint32 uiSizeOfSpaceUsed = 9;
+  uint32 uiStorageUnitType = 10;
+  string strBeginDate = 11;
+  string strEndDate = 12;
+  string strExtend = 13;
+  uint32 uiStatus = 14;
 }
 
 
@@ -576,6 +607,7 @@ message DeviceEventReportReq_DEV                //设备事件上报请求
   uint32 uiEventType = 3;                       //事件类型：0，ALL；1，Motion； 2，Ring；3，Low voltage
   uint32 uiEventState = 4;                      //事件状态：当事件类型为Motion时，状态为0（Motion），1（Answered Motion）；当事件类型为Ring时，状态为0（Accepted Ring），1（Missed Ring），2（Message Ring）；当事件类型为LowVoltage时，状态为0；
   string strFileID = 5;
+  string strEventTime = 6;
 }
 
 message DeviceEventReportRsp_DEV                //设备事件上报响应
@@ -978,6 +1010,8 @@ message QueryAllDeviceEventReq_USR              //查看设备事件请求
   uint32 uiEventType = 4;                       //事件类型：0，ALL；1，Motion； 2，Ring；3，Low voltage
   uint32 uiReadState = 5;                       //查看：0，全部；1，未查看；2，已查看
   uint32 uiBeginIndex = 6;
+  string strBeginDate = 7;
+  string strEndDate = 8;
 }
 
 message QueryAllDeviceEventRsp_USR              //查看设备事件响应
@@ -995,6 +1029,60 @@ message DeleteDeviceEventReq_USR                //删除设备事件请求
 message DeleteDeviceEventRsp_USR                //删除设备事件响应
 {
   string strValue = 1;
+}
+
+message AddStorageDetailReq_USR                 //用户新增存储详情请求
+{
+  StorageDetail storageDetail = 1;
+}
+
+message AddStorageDetailRsp_USR                 //用户新增存储详情响应
+{
+  string strValue = 1;
+}
+
+message DeleteStorageDetailReq_USR              //用户删除存储详情请求
+{
+  string strObjectID = 1;
+  uint32 uiDomainID = 2;
+}
+
+message DeleteStorageDetailRsp_USR              //用户删除存储详情响应
+{
+  string strValue = 1;
+}
+
+message ModifyStorageDetailReq_USR              //用户修改存储详情请求
+{
+  StorageDetail storageDetail = 1;
+}
+
+message ModifyStorageDetailRsp_USR              //用户修改存储详情响应
+{
+  string strValue = 1;
+}
+
+message QueryStorageDetailReq_USR               //用户查询存储详情请求
+{
+  string strObjectID = 1;
+  uint32 uiDomainID = 2;
+}
+
+message QueryStorageDetailRsp_USR               //用户查询存储详情响应
+{
+  StorageDetail storageDetail = 1;
+}
+
+message QueryRegionStorageInfoReq_USR           //查询区域存储情况请求
+{
+  string strUserID = 1;
+}
+
+message QueryRegionStorageInfoRsp_USR           //查询区域存储情况响应
+{
+  uint32 uiDomainID = 1;
+  uint32 uiSizeOfSpace = 2;
+  uint32 uiSizeOfSpaceUsed = 3;
 }
 
 
@@ -1050,7 +1138,6 @@ message QueryAllConfigurationRsp_MGR            //查询所有配置项响应
 {
   repeated Configuration configurationInfo = 1;
 }
-
 
 
 ////////////////////////////////////////////////下面这些都是一些通知、广播类的消息///////////////////
@@ -1184,6 +1271,13 @@ message Req
   QueryAllDeviceEventReq_USR QueryAllDeviceEventReq_USR_Value = 400; //查看设备事件
   DeleteDeviceEventReq_USR DeleteDeviceEventReq_USR_Value = 410;     //删除设备事件
 
+  AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;       //用户新增存储详情
+  DeleteStorageDetailReq_USR DeleteStorageDetailReq_USR_Value = 710; //用户删除存储详情
+  ModifyStorageDetailReq_USR ModifyStorageDetailReq_USR_Value = 720; //用户修改存储详情
+  QueryStorageDetailReq_USR QueryStorageDetailReq_USR_Value = 730;   //用户查询存储详情
+
+  QueryRegionStorageInfoReq_USR QueryRegionStorageInfoReq_USR_Value = 740;    //查询区域存储情况
+
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;            //获取在线设备信息
@@ -1274,6 +1368,13 @@ message Rsp
 
   QueryAllDeviceEventRsp_USR QueryAllDeviceEventRsp_USR_Value = 500; //查看设备事件
   DeleteDeviceEventRsp_USR DeleteDeviceEventRsp_USR_Value = 510;     //删除设备事件
+
+  AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;       //用户新增存储详情
+  DeleteStorageDetailRsp_USR DeleteStorageDetailRsp_USR_Value = 710; //用户删除存储详情
+  ModifyStorageDetailRsp_USR ModifyStorageDetailRsp_USR_Value = 720; //用户修改存储详情
+  QueryStorageDetailRsp_USR QueryStorageDetailRsp_USR_Value = 730;   //用户查询存储详情
+
+  QueryRegionStorageInfoRsp_USR QueryRegionStorageInfoRsp_USR_Value = 740;  //查询区域存储情况
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
