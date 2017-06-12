@@ -13,6 +13,7 @@
  *调用接口实现用户注册的业务动作。*/
 /************************************************************************/
 
+class FileMgrGroupEx;
 class FileManager;
 class InteractiveProtoHandler;
 
@@ -37,7 +38,9 @@ public:
     HttpMsgHandler(const ParamInfo &parminfo);
     ~HttpMsgHandler();
 
-    void SetFileMgr(boost::shared_ptr<FileManager> pFileMgr);
+    void SetFileMgrGroupEx(FileMgrGroupEx *pFileMgrGex);
+
+    bool ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -58,7 +61,7 @@ private:
     ParamInfo m_ParamInfo;
     boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
 
-    boost::shared_ptr<FileManager> m_pFileMgr;
+    FileMgrGroupEx *m_pFileMgrGex;
 
 private:
     static const std::string SUCCESS_CODE;

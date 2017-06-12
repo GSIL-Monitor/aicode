@@ -22,7 +22,7 @@ const std::string AccessManager::OFFLINE = "offline";
 
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache)),
-m_DBTimer(NULL, 600)
+m_DBTimer(NULL, 600), m_ulTimerTimes(0)
 {
     
 }
@@ -76,7 +76,12 @@ bool AccessManager::Init()
         }
         else
         {
-            LOG_INFO_RLD("Refresh access domain name success");
+            LOG_INFO_RLD("Refresh access domain name successful");
+        }
+
+        if (m_ulTimerTimes > 0 && m_ulTimerTimes++ % 6 == 0)  //每隔一小时执行一次
+        {
+            UpdateDeviceEventStoredTime();
         }
     };
 
@@ -291,7 +296,7 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
         UnRegRspUsr.m_MsgType = InteractiveProtoHandler::MsgType::UnRegisterUserRsp_USR_T;
         UnRegRspUsr.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         UnRegRspUsr.m_strSID = UnRegUsrReq.m_strSID;
-        UnRegRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        UnRegRspUsr.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         UnRegRspUsr.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         UnRegRspUsr.m_strValue = "value";
         UnRegRspUsr.m_strUserID = UnRegUsrReq.m_userInfo.m_strUserID;
@@ -321,6 +326,25 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
     {
         LOG_ERROR_RLD("Unregister user id is empty, src id is " << strSrcID);
         return false;
+    }
+
+    std::list<InteractiveProtoHandler::Relation> relationList;
+    std::list<std::string> strDevNameList;
+    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList))
+    {
+        LOG_ERROR_RLD("Unregister user failed, query usr device realtion error, user id is " << UnRegUsrReq.m_userInfo.m_strUserID);
+        return false;
+    }
+
+    for (auto &relation : relationList)
+    {
+        if (RELATION_OF_OWNER == relation.m_uiRelation)
+        {
+            LOG_ERROR_RLD("Unregister user failed, user has undeleted device, user id is << " << UnRegUsrReq.m_userInfo.m_strUserID);
+
+            ReturnInfo::RetCode(ReturnInfo::UNDELETED_DEVICE_EXISTED_USER);
+            return false;
+        }
     }
 
     m_SessionMgr.Remove(UnRegUsrReq.m_strSID);
@@ -956,6 +980,8 @@ bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &s
         }
     }
     
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDevIDList.front(), true));
+
     m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
 
     blResult = true;
@@ -3438,10 +3464,20 @@ bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const 
         return false;
     }
 
+    std::string strUserID;
+    if (!QueryOwnerUserIDByDeviceID(req.m_strDeviceID, strUserID) || strUserID.empty())
+    {
+        LOG_ERROR_RLD("Device event report failed, device is not added, src id is " << strSrcID <<
+            " and device id is " << req.m_strDeviceID);
+        return false;
+    }
+
     strEventID = CreateUUID();
 
     m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceEventReportToDB, this, strEventID, req.m_strDeviceID,
         req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, req.m_strFileID, req.m_strEventTime));
+
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID, false));
 
     blResult = true;
 
@@ -3526,7 +3562,7 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
         m_DBRuner.Post(boost::bind(&AccessManager::UpdateEventReadStatusToDB, this, strEventIDList, EVENT_MESSAGE_READ));
     }
 
-    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID, false));
 
     blResult = true;
 
@@ -3569,8 +3605,6 @@ bool AccessManager::DeleteDeviceEventReqUser(const std::string &strMsg, const st
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceEventToDB, this, req.m_strEventID));
-
-    m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID));
 
     blResult = true;
 
@@ -6945,10 +6979,11 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
 
     bool blModified = false;
 
+    //输入字段为*时，表示把该字段清空
     if (!doorbellParameter.m_strDoorbellName.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", doorbell_name = '%s'", doorbellParameter.m_strDoorbellName.c_str());
+        snprintf(sql + len, size - len, ", doorbell_name = '%s'", "*" == doorbellParameter.m_strDoorbellName ? "" : doorbellParameter.m_strDoorbellName.c_str());
 
         blModified = true;
     }
@@ -6956,7 +6991,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strSerialNumber.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", serial_number = '%s'", doorbellParameter.m_strSerialNumber.c_str());
+        snprintf(sql + len, size - len, ", serial_number = '%s'", "*" == doorbellParameter.m_strSerialNumber ? "" : doorbellParameter.m_strSerialNumber.c_str());
 
         blModified = true;
     }
@@ -6964,7 +6999,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strDoorbellP2Pid.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", doorbell_p2pid = '%s'", doorbellParameter.m_strDoorbellP2Pid.c_str());
+        snprintf(sql + len, size - len, ", doorbell_p2pid = '%s'", "*" == doorbellParameter.m_strDoorbellP2Pid ? "" : doorbellParameter.m_strDoorbellP2Pid.c_str());
 
         blModified = true;
     }
@@ -6972,7 +7007,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strBatteryCapacity.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", battery_capacity = '%s'", doorbellParameter.m_strBatteryCapacity.c_str());
+        snprintf(sql + len, size - len, ", battery_capacity = '%s'", "*" == doorbellParameter.m_strBatteryCapacity ? "" : doorbellParameter.m_strBatteryCapacity.c_str());
 
         blModified = true;
     }
@@ -6980,7 +7015,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strChargingState.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", charging_state = '%s'", doorbellParameter.m_strChargingState.c_str());
+        snprintf(sql + len, size - len, ", charging_state = '%s'", "*" == doorbellParameter.m_strChargingState ? "" : doorbellParameter.m_strChargingState.c_str());
 
         blModified = true;
     }
@@ -6988,7 +7023,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strWifiSignal.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", wifi_signal = '%s'", doorbellParameter.m_strWifiSignal.c_str());
+        snprintf(sql + len, size - len, ", wifi_signal = '%s'", "*" == doorbellParameter.m_strWifiSignal ? "" : doorbellParameter.m_strWifiSignal.c_str());
 
         blModified = true;
     }
@@ -6996,7 +7031,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strVolumeLevel.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", volume_level = '%s'", doorbellParameter.m_strVolumeLevel.c_str());
+        snprintf(sql + len, size - len, ", volume_level = '%s'", "*" == doorbellParameter.m_strVolumeLevel ? "" : doorbellParameter.m_strVolumeLevel.c_str());
 
         blModified = true;
     }
@@ -7004,7 +7039,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strVersionNumber.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", version_number = '%s'", doorbellParameter.m_strVersionNumber.c_str());
+        snprintf(sql + len, size - len, ", version_number = '%s'", "*" == doorbellParameter.m_strVersionNumber ? "" : doorbellParameter.m_strVersionNumber.c_str());
 
         blModified = true;
     }
@@ -7012,7 +7047,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strChannelNumber.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", channel_number = '%s'", doorbellParameter.m_strChannelNumber.c_str());
+        snprintf(sql + len, size - len, ", channel_number = '%s'", "*" == doorbellParameter.m_strChannelNumber ? "" : doorbellParameter.m_strChannelNumber.c_str());
 
         blModified = true;
     }
@@ -7020,7 +7055,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strCodingType.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", coding_type = '%s'", doorbellParameter.m_strCodingType.c_str());
+        snprintf(sql + len, size - len, ", coding_type = '%s'", "*" == doorbellParameter.m_strCodingType ? "" : doorbellParameter.m_strCodingType.c_str());
 
         blModified = true;
     }
@@ -7028,7 +7063,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strPIRAlarmSwtich.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", pir_alarm_swtich = '%s'", doorbellParameter.m_strPIRAlarmSwtich.c_str());
+        snprintf(sql + len, size - len, ", pir_alarm_swtich = '%s'", "*" == doorbellParameter.m_strPIRAlarmSwtich ? "" : doorbellParameter.m_strPIRAlarmSwtich.c_str());
 
         blModified = true;
     }
@@ -7036,7 +7071,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strDoorbellSwitch.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", doorbell_switch = '%s'", doorbellParameter.m_strDoorbellSwitch.c_str());
+        snprintf(sql + len, size - len, ", doorbell_switch = '%s'", "*" == doorbellParameter.m_strDoorbellSwitch ? "" : doorbellParameter.m_strDoorbellSwitch.c_str());
 
         blModified = true;
     }
@@ -7044,7 +7079,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strPIRAlarmLevel.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", pir_alarm_level = '%s'", doorbellParameter.m_strPIRAlarmLevel.c_str());
+        snprintf(sql + len, size - len, ", pir_alarm_level = '%s'", "*" == doorbellParameter.m_strPIRAlarmLevel ? "" : doorbellParameter.m_strPIRAlarmLevel.c_str());
 
         blModified = true;
     }
@@ -7052,7 +7087,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strPIRIneffectiveTime.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", pir_ineffective_time = '%s'", doorbellParameter.m_strPIRIneffectiveTime.c_str());
+        snprintf(sql + len, size - len, ", pir_ineffective_time = '%s'", "*" == doorbellParameter.m_strPIRIneffectiveTime ? "" : doorbellParameter.m_strPIRIneffectiveTime.c_str());
 
         blModified = true;
     }
@@ -7060,7 +7095,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strCurrentWifi.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", current_wifi = '%s'", doorbellParameter.m_strCurrentWifi.c_str());
+        snprintf(sql + len, size - len, ", current_wifi = '%s'", "*" == doorbellParameter.m_strCurrentWifi ? "" : doorbellParameter.m_strCurrentWifi.c_str());
 
         blModified = true;
     }
@@ -7068,7 +7103,7 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
     if (!doorbellParameter.m_strSubCategory.empty())
     {
         len = strlen(sql);
-        snprintf(sql + len, size - len, ", sub_category = '%s'", doorbellParameter.m_strSubCategory.c_str());
+        snprintf(sql + len, size - len, ", sub_category = '%s'", "*" == doorbellParameter.m_strSubCategory ? "" : doorbellParameter.m_strSubCategory.c_str());
 
         blModified = true;
     }
@@ -7417,12 +7452,19 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     std::list<InteractiveProtoHandler::DeviceEvent> &deviceEventList, const std::string &strBeginDate, const std::string &strEndDate,
     const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
+    unsigned int uiExpireTime;
+    if (!QueryDeviceEventExpireTimeToDB(uiExpireTime))
+    {
+        LOG_ERROR_RLD("QueryAllDeviceEventToDB failed, query event expire time error, device id is " << strDeviceID);
+        return false;
+    }
+
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
     const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, createdate from t_device_event_info"
-        " where deviceid = '%s' and status = 0";
-    snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiBeginIndex, uiPageSize);
+        " where deviceid = '%s' and storedtime < %d and status = 0";
+    snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (0 != uiEventType)
     {
@@ -7578,18 +7620,20 @@ bool AccessManager::QuerySharedDeviceNameToDB(const std::string &strUserID, cons
     return true;
 }
 
-void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID)
+void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID, const bool blRemoveAll)
 {
-    int iExpireTime;
-    if (!QueryDeviceEventExpireTimeToDB(iExpireTime))
+    unsigned int uiExpireTime = 0;
+    if(!blRemoveAll && !QueryDeviceEventExpireTimeToDB(uiExpireTime))
     {
         LOG_ERROR_RLD("RemoveExpiredDeviceEventToDB failed, query device event expire time error, device id is " << strDeviceID);
         return;
     }
 
+    RemoveExpiredDeviceEventFile(strDeviceID, uiExpireTime);
+
     char sql[1024] = { 0 };
-    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and createdate < date_sub(now(), interval %d day)";
-    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), iExpireTime);
+    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and storedtime >= %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -7597,7 +7641,67 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID)
     }
 }
 
-bool AccessManager::QueryDeviceEventExpireTimeToDB(int &iExpireTime)
+void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID, const unsigned int uiExpiredTime)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select fileid from t_device_event_info where deviceid = '%s' and storedtime >= %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpiredTime);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("RemoveExpiredDeviceEventFile sql result fileid is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("RemoveExpiredDeviceEventFile exec sql error, sql is " << sql);
+        return;
+    }
+
+    for(auto &result : ResultList)
+    {
+        RemoveRemoteFile(boost::any_cast<std::string>(result));
+    }
+}
+
+bool AccessManager::RemoveRemoteFile(const std::string &strFileID)
+{
+    std::map<std::string, std::string> reqFormMap;
+    reqFormMap.insert(std::make_pair("fileid", strFileID));
+
+    std::string strRsp;
+    std::string strUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) + "delete_file";
+    HttpClient httpClient;
+    if (CURLE_OK != httpClient.PostForm(strUrl, reqFormMap, strRsp))
+    {
+        LOG_ERROR_RLD("RemoveRemoteFile send http post failed, url is " << strUrl << " and file id is " << strFileID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strRsp, root))
+    {
+        LOG_ERROR_RLD("RemoveRemoteFile failed, parse http post response data error, raw data is: " << strRsp);
+        return false;
+    }
+
+    auto retcode = root["retcode"];
+    if (retcode.isNull() || !retcode.isString() || "0" != retcode.asString())
+    {
+        LOG_ERROR_RLD("RemoveRemoteFile failed, http post return error, raw data is: " << strRsp);
+        return false;
+    }
+
+    LOG_INFO_RLD("RemoveRemoteFile successful, post url is " << strUrl << " and file id is " << strFileID);
+    return true;
+}
+
+bool AccessManager::QueryDeviceEventExpireTimeToDB(unsigned int &uiExpireTime)
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "select description from t_configuration_info where category = '%s' and subcategory = '%s' and status = 0";
@@ -7605,7 +7709,7 @@ bool AccessManager::QueryDeviceEventExpireTimeToDB(int &iExpireTime)
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
-        Result = boost::lexical_cast<int>(strColumn);
+        Result = boost::lexical_cast<unsigned int>(strColumn);
 
         LOG_INFO_RLD("QueryDeviceEventExpireTimeToDB sql result event expire time is " << strColumn);
     };
@@ -7621,11 +7725,11 @@ bool AccessManager::QueryDeviceEventExpireTimeToDB(int &iExpireTime)
     {
         LOG_ERROR_RLD("QueryDeviceEventExpireTimeToDB sql result is empty, sql is " << sql);
 
-        iExpireTime = 7;  //如果没有配置则事件过期时间设置为7天
+        uiExpireTime = 7;  //如果没有配置则事件过期时间设置为7天
         return true;
     }
 
-    iExpireTime = boost::any_cast<int>(ResultList.front());
+    uiExpireTime = boost::any_cast<unsigned int>(ResultList.front());
     return true;
 }
 
@@ -7851,4 +7955,14 @@ bool AccessManager::QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigne
     uiTotalSize = result.totalSize;
 
     return true;
+}
+
+void AccessManager::UpdateDeviceEventStoredTime()
+{
+    const char *sql = "update t_device_event_info set storedtime = storedtime + 1 where status = 0";
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UpdateDeviceEventStoredTime exec sql error, sql is " << sql);
+    }
 }

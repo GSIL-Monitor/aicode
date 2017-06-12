@@ -41,9 +41,52 @@ HttpMsgHandler::~HttpMsgHandler()
 
 }
 
-void HttpMsgHandler::SetFileMgr(boost::shared_ptr<FileManager> pFileMgr)
+void HttpMsgHandler::SetFileMgrGroupEx(FileMgrGroupEx *pFileMgrGex)
 {
-    m_pFileMgr = pFileMgr;
+    m_pFileMgrGex = pFileMgrGex;
+}
+
+bool HttpMsgHandler::ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter wr)
+{
+    auto itFind = pMsgInfoMap->find("compact_msg");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        const std::string &strValue = itFind->second;
+
+        LOG_INFO_RLD("Compact msg is " << strValue);
+
+        Json::Reader reader;
+        Json::Value root;
+        if (!reader.parse(strValue, root, false))
+        {
+            LOG_ERROR_RLD("Compact msg parse failed beacuse value parsed failed and value is " << strValue);
+            return false;
+        }
+
+        if (!root.isObject())
+        {
+            LOG_ERROR_RLD("Compact msg parse failed beacuse json root parsed failed and value is " << strValue);
+            return false;
+        }
+
+        Json::Value::Members members = root.getMemberNames();
+        auto itBegin = members.begin();
+        auto itEnd = members.end();
+        while (itBegin != itEnd)
+        {
+            if (root[*itBegin].type() == Json::stringValue) //目前只支持string类型json字段
+            {
+                pMsgInfoMap->insert(MsgInfoMap::value_type(*itBegin, root[*itBegin].asString()));
+            }
+
+            ++itBegin;
+        }
+
+        pMsgInfoMap->erase(itFind);
+
+    }
+
+    return true;
 }
 
 bool HttpMsgHandler::UploadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
@@ -184,7 +227,21 @@ bool HttpMsgHandler::DeleteFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
 
     LOG_INFO_RLD("Delete file info received and file id is " << strFileID);
 
-    if (!m_pFileMgr->DeleteFile(strFileID))
+    auto pFileMgr = m_pFileMgrGex->GetFileMgr(strFileID);
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("Get file mgr failed and file id is " << strFileID);
+        return blResult;
+    }
+    
+    std::string strFileIDInner;
+    if (!m_pFileMgrGex->GroupFileID2FileID(strFileID, strFileIDInner))
+    {
+        LOG_ERROR_RLD("Get file id by group file id failed and group file id is " << strFileID);
+        return blResult;
+    }
+
+    if (!pFileMgr->DeleteFile(strFileIDInner))
     {
         LOG_ERROR_RLD("Delete file failed and file id is " << strFileID);
         return blResult;
@@ -233,8 +290,22 @@ bool HttpMsgHandler::QueryFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
     LOG_INFO_RLD("Query file info received and file id is " << strFileID);
 
+    auto pFileMgr = m_pFileMgrGex->GetFileMgr(strFileID);
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("Get file mgr failed and file id is " << strFileID);
+        return blResult;
+    }
+
+    std::string strFileIDInner;
+    if (!m_pFileMgrGex->GroupFileID2FileID(strFileID, strFileIDInner))
+    {
+        LOG_ERROR_RLD("Get file id by group file id failed and group file id is " << strFileID);
+        return blResult;
+    }
+
     FileManager::FileSTInfo fileinfo;
-    if (!m_pFileMgr->QueryFile(strFileID, fileinfo))
+    if (!pFileMgr->QueryFile(strFileIDInner, fileinfo))
     {
         LOG_ERROR_RLD("Query file failed and file id is " << strFileID);
         return blResult;
@@ -253,12 +324,6 @@ bool HttpMsgHandler::QueryFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
 bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer)
 {
-    if (NULL == m_pFileMgr.get())
-    {
-        LOG_ERROR_RLD("File manager handler is null");
-        return false;
-    }
-
     std::string strExt;
     std::string::size_type pos = strFileID.find_last_of('.');
     if (string::npos != pos)
@@ -288,7 +353,21 @@ bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer
         return true;
     };
     
-    if (!m_pFileMgr->ReadFile(strFileID, FuncTmp))
+    auto pFileMgr = m_pFileMgrGex->GetFileMgr(strFileID);
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("Get file mgr failed and file id is " << strFileID);
+        return false;
+    }
+
+    std::string strFileIDInner;
+    if (!m_pFileMgrGex->GroupFileID2FileID(strFileID, strFileIDInner))
+    {
+        LOG_ERROR_RLD("Get file id by group file id failed and group file id is " << strFileID);
+        return false;
+    }
+
+    if (!pFileMgr->ReadFile(strFileIDInner, FuncTmp))
     {
         LOG_ERROR_RLD("Read file failed and file id is " << strFileID);
         return false;

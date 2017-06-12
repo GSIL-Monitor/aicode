@@ -20,6 +20,7 @@ const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //设备未记录
 const int ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER = 1009;       //设备P2PID未记录
 const int ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER = 1010;         //当前用户已添加此设备
 const int ReturnInfo::CLOUD_STORAGE_NOT_PAID_USER = 1011;          //用户未开通付费云存储服务
+const int ReturnInfo::UNDELETED_DEVICE_EXISTED_USER = 1012;        //用户仍有未删除的设备
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //设备二级域名已被使用
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //设备P2PID已被使用

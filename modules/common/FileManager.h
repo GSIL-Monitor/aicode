@@ -40,6 +40,16 @@ public:
 
     bool QueryFile(const std::string &strFileID, FileSTInfo &fileinfo);
 
+    inline void SetID(const std::string &strID)
+    {
+        m_strID = strID;
+    }
+
+    inline const std::string &GetID()
+    {
+        return m_strID;
+    };
+
 private:
 
     bool GetStoragePath(std::string &strOutputPath, std::string &strFileID);
@@ -67,6 +77,31 @@ private:
 
     boost::atomic_uint64_t m_uiMsgSeq;
     
+    std::string m_strID; //这里ID只会在初始化的时候设置一次，后面都是读取，所以这里不在加锁保护。
+    
 };
+
+class FileMgrGroupEx
+{
+public:
+    FileMgrGroupEx();
+    ~FileMgrGroupEx();
+
+    void AddFileMgr(const std::string &strGID, boost::shared_ptr<FileManager> pFileMgr);
+
+    boost::shared_ptr<FileManager> GetFileMgr(const std::string &strGroupFileID); //根据定义好的文件id找到对应的对象。
+
+    boost::shared_ptr<FileManager> GetFileMgr(); //根据内部选择规则来提供对应的对象。
+
+    bool GroupFileID2FileID(const std::string &strGroupFileID, std::string &strFileID);
+
+    bool FileID2GroupFileID(const std::string &strFileID, const std::string &strGID, std::string &strGroupFileID);
+
+
+private:
+    std::map<std::string, boost::shared_ptr<FileManager> > m_FileMgrMap;
+
+};
+
 
 #endif

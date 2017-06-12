@@ -407,9 +407,13 @@ private:
 
     bool QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, std::string &strDeviceName);
 
-    void RemoveExpiredDeviceEventToDB(const std::string &strDeviceID);
+    void RemoveExpiredDeviceEventToDB(const std::string &strDeviceID, const bool blRemoveAll = false);
 
-    bool QueryDeviceEventExpireTimeToDB(int &iExpireTime);
+    void RemoveExpiredDeviceEventFile(const std::string &strDeviceID, const unsigned int uiExpiredTime);
+
+    bool RemoveRemoteFile(const std::string &strFileID);
+
+    bool QueryDeviceEventExpireTimeToDB(unsigned int &iExpireTime);
 
     void InsertStorageDetailToDB(const InteractiveProtoHandler::StorageDetail &storageDetail);
 
@@ -420,6 +424,8 @@ private:
     bool QueryStorageDetailToDB(const std::string &strObjectID, InteractiveProtoHandler::StorageDetail &storageDetail, int &iErrorCode);
 
     bool QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigned int &uiTotalSize);
+
+    void UpdateDeviceEventStoredTime();
 
 private:
     ParamInfo m_ParamInfo;
@@ -447,6 +453,7 @@ private:
 
     TimeOutHandler m_DBTimer;
 
+    unsigned long long m_ulTimerTimes;
 };
 
 

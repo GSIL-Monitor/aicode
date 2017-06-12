@@ -9,6 +9,7 @@
 #include "LogRLD.h"
 #include "boost/lexical_cast.hpp"
 #include "CommMsgHandler.h"
+#include "FileManager.h"
 
 #define CONFIG_FILE_NAME "file_http_server.ini"
 #define PROCESS_NAME     "filemgr_cgi"
@@ -214,14 +215,38 @@ int main(int argc, char *argv[])
         LOG_ERROR_RLD("Memcached port config item not found.");
         return 0;
     }
+    
+    std::map<std::string, std::string> strUploadTmpPathMap;
+    std::string strKey("General.UploadTmpPath");
+    for (int i = 0; i < 10; ++i)
+    {
+        const std::string &strItemKey = strKey + boost::lexical_cast<std::string>(i);
+        const std::string &UploadTmpPath = cfg.GetItem(strItemKey);
+        if (!UploadTmpPath.empty())
+        {
+            strUploadTmpPathMap.insert(make_pair(boost::lexical_cast<std::string>(i), UploadTmpPath));
+        }
+    }
 
-    const std::string &UploadTmpPath = cfg.GetItem("General.UploadTmpPath");
-    if (UploadTmpPath.empty())
+    if (strUploadTmpPathMap.empty())
     {
         LOG_ERROR_RLD("UploadTmpPath config item not found.");
         return 0;
     }
 
+    FileMgrGroupEx filemgrgex;    
+    auto itBegin = strUploadTmpPathMap.begin();
+    auto itEnd = strUploadTmpPathMap.end();
+    while (itBegin != itEnd)
+    {
+        auto pfmgr = boost::shared_ptr<FileManager>(new FileManager(itBegin->second, 16, false));
+        pfmgr->SetBlockSize(FCGIManager::CGI_READ_BUFFER_SIZE);
+        pfmgr->SetID(itBegin->first);
+
+        filemgrgex.AddFileMgr(itBegin->first, pfmgr);
+
+        ++itBegin;
+    }
 
     ///////////////////////////////////////////////////
     HttpMsgHandler::ParamInfo pm;
@@ -236,18 +261,11 @@ int main(int argc, char *argv[])
     CommMsgHandler::SetTimeoutRunningThreads(pm.m_uiThreadOfWorking);
 
     HttpMsgHandler filehdr(pm);
+    filehdr.SetFileMgrGroupEx(&filemgrgex);
         
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
-    fcgimgr.SetUploadTmpPath(UploadTmpPath);
-
-    auto pFileMgr = fcgimgr.GetFileMgr();
-    if (NULL == pFileMgr.get())
-    {
-        LOG_ERROR_RLD("File manager failed.");
-        return 1;
-    }
-
-    filehdr.SetFileMgr(pFileMgr);
+    fcgimgr.SetFileMgrGroupEx(&filemgrgex);
+    fcgimgr.SetMsgPreHandler(boost::bind(&HttpMsgHandler::ParseMsgOfCompact, &filehdr, _1, _2));
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::UPLOAD_FILE_ACTION, boost::bind(&HttpMsgHandler::UploadFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DOWNLOAD_FILE_ACTION, boost::bind(&HttpMsgHandler::DownloadFileHandler, &filehdr, _1, _2));

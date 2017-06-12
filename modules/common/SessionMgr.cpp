@@ -109,6 +109,12 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     jsBody["threshold"] = uiThreshold;
     jsBody["value"] = strValue;
     jsBody["type"] = uiType;
+
+    if (!strID.empty())
+    {
+        jsBody["id"] = strID;
+    }
+
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
@@ -228,6 +234,17 @@ bool SessionMgr::Reset(const std::string &strSessionID)
     {
         LOG_ERROR_RLD("Rest session failed becasue memecache failed, sessid is " << strSessionID);
         return false;
+    }
+
+    {
+        Json::Value jID = root["id"];
+
+        if (!jID.isNull())
+        {
+            LOG_INFO_RLD("Get id info from session and sid is " << strSessionID << " and id is " << jID.asString());
+            ResetID(jID.asString());
+        }
+
     }
     
     LOG_INFO_RLD("Session was reseted and session id is " << strSessionID << " and threshold is " << jThreshold.asUInt());

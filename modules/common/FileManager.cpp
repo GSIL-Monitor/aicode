@@ -457,3 +457,107 @@ bool FileManager::GetFileSize(const std::string &strStoragePath, unsigned int &u
     return true;
 }
 
+FileMgrGroupEx::FileMgrGroupEx()
+{
+
+}
+
+FileMgrGroupEx::~FileMgrGroupEx()
+{
+
+}
+
+void FileMgrGroupEx::AddFileMgr(const std::string &strGID, boost::shared_ptr<FileManager> pFileMgr)
+{
+    m_FileMgrMap.insert(make_pair(strGID, pFileMgr));
+}
+
+boost::shared_ptr<FileManager> FileMgrGroupEx::GetFileMgr(const std::string &strGroupFileID)
+{
+    boost::shared_ptr<FileManager> pFileMgr;
+    std::string::size_type pos1;
+    if (std::string::npos == (pos1 = strGroupFileID.find("/")))
+    {
+        LOG_ERROR_RLD("Get filemgr failed because file id is invalid: " << strGroupFileID);
+        return pFileMgr;
+    }
+
+    /*
+    std::string::size_type pos2;
+    if (std::string::npos == (pos2 = strGroupFileID.rfind("/")))
+    {
+        LOG_ERROR_RLD("Get filemgr failed because file id is invalid: " << strGroupFileID);
+        return pFileMgr;
+    }
+
+    if (pos1 == pos2 || (1 == (pos2 - pos1)))
+    {
+        LOG_ERROR_RLD("Get filemgr failed because file id is invalid: " << strGroupFileID << " and pos1 is " << pos1 << " and pos2 is " << pos2);
+        return pFileMgr;
+    }
+    */
+
+    const std::string &strGID = strGroupFileID.substr(0, pos1); //strGroupFileID.substr(pos1 + 1, (pos2 - pos1 - 1));
+    
+    LOG_INFO_RLD("Get filemgr by goup file id " << strGroupFileID << " and gid is " << strGID);
+
+    auto itFind = m_FileMgrMap.find(strGID);
+
+    if (m_FileMgrMap.end() == itFind)
+    {
+        LOG_ERROR_RLD("Get filemgr failed because filemgr not found and file id " << strGroupFileID);
+        return pFileMgr;
+    }
+
+    return itFind->second;
+}
+
+boost::shared_ptr<FileManager> FileMgrGroupEx::GetFileMgr()
+{
+    unsigned int uiFileMgrNum = m_FileMgrMap.size();
+
+    if (1 == uiFileMgrNum)
+    {
+        return m_FileMgrMap.begin()->second;
+    }
+    
+    srand((unsigned)time(NULL));
+    int iSub = rand() % uiFileMgrNum;
+
+    auto itBegin = m_FileMgrMap.begin();
+    auto itEnd = m_FileMgrMap.end();
+
+    int iLoop = 0;
+    while (itBegin != itEnd)
+    {
+        if (iSub == iLoop++)
+        {
+            break;
+        }
+
+        ++itBegin;
+    }
+
+    return itBegin->second;
+}
+
+bool FileMgrGroupEx::GroupFileID2FileID(const std::string &strGroupFileID, std::string &strFileID)
+{
+    std::string::size_type pos1;
+    if (std::string::npos == (pos1 = strGroupFileID.find("/")))
+    {
+        LOG_ERROR_RLD("GroupFileID2FileID failed because file id is invalid: " << strGroupFileID);
+        return false;
+    }
+
+    strFileID = strGroupFileID.substr(pos1 + 1);
+
+    return true;
+}
+
+bool FileMgrGroupEx::FileID2GroupFileID(const std::string &strFileID, const std::string &strGID, std::string &strGroupFileID)
+{
+    strGroupFileID = strGID + "/" + strFileID;
+    return true;
+}
+
