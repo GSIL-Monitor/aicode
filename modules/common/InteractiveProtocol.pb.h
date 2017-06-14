@@ -8271,12 +8271,19 @@ class RetrievePwdReq_USR : public ::google::protobuf::Message /* @@protoc_insert
   ::std::string* release_stremail();
   void set_allocated_stremail(::std::string* stremail);
 
+  // uint32 uiType = 3;
+  void clear_uitype();
+  static const int kUiTypeFieldNumber = 3;
+  ::google::protobuf::uint32 uitype() const;
+  void set_uitype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.RetrievePwdReq_USR)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strusername_;
   ::google::protobuf::internal::ArenaStringPtr stremail_;
+  ::google::protobuf::uint32 uitype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -8469,6 +8476,12 @@ class LoginReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::uint32 uiterminaltype() const;
   void set_uiterminaltype(::google::protobuf::uint32 value);
 
+  // uint32 uiType = 4;
+  void clear_uitype();
+  static const int kUiTypeFieldNumber = 4;
+  ::google::protobuf::uint32 uitype() const;
+  void set_uitype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.LoginReq_USR)
  private:
 
@@ -8476,6 +8489,7 @@ class LoginReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::Interactive::Message::User* userinfo_;
   ::google::protobuf::uint32 uiterminaltype_;
+  ::google::protobuf::uint32 uitype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -29515,6 +29529,20 @@ inline void RetrievePwdReq_USR::set_allocated_stremail(::std::string* stremail) 
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RetrievePwdReq_USR.strEmail)
 }
 
+// uint32 uiType = 3;
+inline void RetrievePwdReq_USR::clear_uitype() {
+  uitype_ = 0u;
+}
+inline ::google::protobuf::uint32 RetrievePwdReq_USR::uitype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RetrievePwdReq_USR.uiType)
+  return uitype_;
+}
+inline void RetrievePwdReq_USR::set_uitype(::google::protobuf::uint32 value) {
+  
+  uitype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.RetrievePwdReq_USR.uiType)
+}
+
 // -------------------------------------------------------------------
 
 // RetrievePwdRsp_USR
@@ -29678,6 +29706,20 @@ inline void LoginReq_USR::set_allocated_strvalue(::std::string* strvalue) {
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.LoginReq_USR.strValue)
+}
+
+// uint32 uiType = 4;
+inline void LoginReq_USR::clear_uitype() {
+  uitype_ = 0u;
+}
+inline ::google::protobuf::uint32 LoginReq_USR::uitype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.LoginReq_USR.uiType)
+  return uitype_;
+}
+inline void LoginReq_USR::set_uitype(::google::protobuf::uint32 value) {
+  
+  uitype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.LoginReq_USR.uiType)
 }
 
 // -------------------------------------------------------------------

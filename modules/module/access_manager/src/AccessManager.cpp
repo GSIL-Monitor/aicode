@@ -245,7 +245,7 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     
     //User info already exists
     bool blUserExist;
-    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName, blUserExist,
+    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName, RegUsrReq.m_userInfo.m_uiTypeInfo, blUserExist,
         "", RegUsrReq.m_userInfo.m_uiTypeInfo, true))
     {
         LOG_ERROR_RLD("Register user failed because user already exist and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
@@ -465,16 +465,16 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
         return false;
     }
 
-    bool blUserExist;
-    if (!ValidUser(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_userInfo.m_strUserName, blUserExist,
-        "", ModifyUsrReq.m_userInfo.m_uiTypeInfo))
-    {
-        LOG_ERROR_RLD("Modify user failed because user is invalid and user name is " << ModifyUsrReq.m_userInfo.m_strUserName <<
-            " and user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword);
+    //bool blUserExist;
+    //if (!ValidUser(ModifyUsrReq.m_userInfo.m_strUserID, ModifyUsrReq.m_userInfo.m_strUserName, ?, blUserExist,
+    //    "", ModifyUsrReq.m_userInfo.m_uiTypeInfo))
+    //{
+    //    LOG_ERROR_RLD("Modify user failed because user is invalid and user name is " << ModifyUsrReq.m_userInfo.m_strUserName <<
+    //        " and user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword);
 
-        ReturnInfo::RetCode(ReturnInfo::USERID_NOT_EXISTED_USER);
-        return false;
-    }
+    //    ReturnInfo::RetCode(ReturnInfo::USERID_NOT_EXISTED_USER);
+    //    return false;
+    //}
     
     LOG_INFO_RLD("Modify user id is " << ModifyUsrReq.m_userInfo.m_strUserID << " session id is " << ModifyUsrReq.m_strSID 
         << " and user name is " << ModifyUsrReq.m_userInfo.m_strUserName << " and user pwd is " << ModifyUsrReq.m_userInfo.m_strUserPassword
@@ -586,7 +586,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     //}
     
     bool blUserExist = false;
-    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, blUserExist,
+    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_uiType, blUserExist,
         LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
     {
         if (blUserExist)
@@ -2316,7 +2316,7 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
 
     std::string strRandPwd = CreateUUID().erase(8);
 
-    m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd));
+    m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_uiAppType));
 
     m_DBRuner.Post(boost::bind(&AccessManager::SendUserResetPasswordEmail, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_strEmail));
 
@@ -4352,11 +4352,11 @@ bool AccessManager::CheckEmailByUserName(const std::string &strUserName, const s
     }
 }
 
-void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword)
+void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword, const unsigned int uiAppType)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str());
+    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and typeinfo = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str(), uiAppType);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -5423,14 +5423,15 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     return true;
 }
 
-bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, bool &blUserExist, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
+bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, const unsigned int uiAppType,
+    bool &blUserExist, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
 {
     //Valid user id
     char sql[1024] = { 0 };
     const char* sqlfmt = !strUserID.empty() ? "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s' and status = 0"
-        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s' and status = 0";
+        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s' and typeinfo = %d and status = 0";
 
-    snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str(), uiAppType);
 
     std::list<boost::any> ResultList;
     if (IsForceFromDB)

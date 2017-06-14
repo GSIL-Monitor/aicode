@@ -508,6 +508,7 @@ public:
     {
         std::string m_strUserName;
         std::string m_strEmail;
+        unsigned int m_uiAppType;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -528,10 +529,10 @@ public:
 
     struct LoginReq_USR : Req
     {
-
         User m_userInfo;
         std::string m_strValue;
         unsigned int m_uiTerminalType;
+        unsigned int m_uiType;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

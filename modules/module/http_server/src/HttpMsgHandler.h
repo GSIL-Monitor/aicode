@@ -323,7 +323,8 @@ private:
     bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
     
     template<typename T>
-    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiTerminalType, std::list<T> &RelationList,
+    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, 
+        const unsigned int uiTerminalType, std::list<T> &RelationList,
         std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList);
 
     template<typename T>

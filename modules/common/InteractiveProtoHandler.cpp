@@ -2773,6 +2773,7 @@ void InteractiveProtoHandler::LoginReq_USR::UnSerializer(const InteractiveMessag
     m_userInfo.m_strEmail = InteractiveMsg.reqvalue().loginreq_usr_value().userinfo().stremail();
 
     m_uiTerminalType = InteractiveMsg.reqvalue().loginreq_usr_value().uiterminaltype();
+    m_uiType = InteractiveMsg.reqvalue().loginreq_usr_value().uitype();
     m_strValue = InteractiveMsg.reqvalue().loginreq_usr_value().strvalue();
 }
 
@@ -2783,6 +2784,7 @@ void InteractiveProtoHandler::LoginReq_USR::Serializer(InteractiveMessage &Inter
 
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->set_strvalue(m_strValue);
     InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->set_uiterminaltype(m_uiTerminalType);
+    InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->set_uitype(m_uiType);
     auto uinfo = InteractiveMsg.mutable_reqvalue()->mutable_loginreq_usr_value()->mutable_userinfo();
 
     uinfo->set_struserid(m_userInfo.m_strUserID);
@@ -4227,6 +4229,7 @@ void InteractiveProtoHandler::RetrievePwdReq_USR::UnSerializer(const Interactive
     Req::UnSerializer(InteractiveMsg);
     m_strUserName = InteractiveMsg.reqvalue().retrievepwdreq_usr_value().strusername();
     m_strEmail = InteractiveMsg.reqvalue().retrievepwdreq_usr_value().stremail();
+    m_uiAppType = InteractiveMsg.reqvalue().retrievepwdreq_usr_value().uitype();
 }
 
 void InteractiveProtoHandler::RetrievePwdReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4235,6 +4238,7 @@ void InteractiveProtoHandler::RetrievePwdReq_USR::Serializer(InteractiveMessage 
     InteractiveMsg.set_type(Interactive::Message::MsgType::RetrievePwdReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_retrievepwdreq_usr_value()->set_strusername(m_strUserName);
     InteractiveMsg.mutable_reqvalue()->mutable_retrievepwdreq_usr_value()->set_stremail(m_strEmail);
+    InteractiveMsg.mutable_reqvalue()->mutable_retrievepwdreq_usr_value()->set_uitype(m_uiAppType);
 }
 
 void InteractiveProtoHandler::RetrievePwdRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

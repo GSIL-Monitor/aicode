@@ -622,6 +622,32 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strValue = itFind->second;
     }
 
+    //////////////
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type not found.");
+        return blResult;
+    }
+    const std::string strType = itFind->second;
+
+    unsigned int uiType = 0;
+    try
+    {
+        uiType = boost::lexical_cast<unsigned int>(strType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+    /////////////
+
     itFind = pMsgInfoMap->find("terminaltype");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -637,12 +663,12 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     }
     catch (boost::bad_lexical_cast & e)
     {
-        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        LOG_ERROR_RLD("Terminal Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
         return blResult;
     }
     catch (...)
     {
-        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        LOG_ERROR_RLD("Terminal Type info is invalid and input index is " << itFind->second);
         return blResult;
     }
     
@@ -658,7 +684,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     std::string strSid;
     std::list<InteractiveProtoHandler::Relation> relist;
     std::list<std::string> strDevNameList;
-    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiTerminalType, relist, strUserID, strSid, strDevNameList))
+    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiType, uiTerminalType, relist, strUserID, strSid, strDevNameList))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
         return blResult;
@@ -5899,7 +5925,8 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
 }
 
 template<typename T>
-bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiTerminalType, std::list<T> &RelationList,
+bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, 
+    const unsigned int uiTerminalType, std::list<T> &RelationList,
     std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -5924,6 +5951,7 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         UsrLoginReq.m_userInfo.m_strAliasName = "";
         UsrLoginReq.m_userInfo.m_strEmail = "";
         UsrLoginReq.m_uiTerminalType = uiTerminalType;
+        UsrLoginReq.m_uiType = uiType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UsrLoginReq, strSerializeOutPut))
