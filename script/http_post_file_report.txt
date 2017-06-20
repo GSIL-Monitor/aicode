@@ -1,0 +1,91 @@
+POST http://172.20.122.250:7000/filemgr.cgi?action=upload_file HTTP/1.1
+User-Agent: curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.21 Basic ECC zlib/1.2.3 libidn/1.18 libssh2/1.4.2
+Host: 172.20.122.250:7000
+Accept: */*
+Connection: Keep-Alive
+Content-Length: 1500
+Expect: 100-continue
+Content-Type: multipart/form-data; boundary=----------------------------c78a7becb046
+
+------------------------------c78a7becb046
+Content-Disposition: form-data; name="username"
+
+yinbin
+------------------------------c78a7becb046
+Content-Disposition: form-data; name="id"
+
+111
+------------------------------c78a7becb046
+Content-Disposition: form-data; name="type"
+
+0
+------------------------------c78a7becb046
+Content-Disposition: form-data; name="upfile"; filename="update.sh"
+Content-Type: application/octet-stream
+
+#!/bin/bash
+
+
+http_update()
+{
+    cp update_templete.py update_http.py
+    sed -i "s/_local_path/\/usr\/local\/src\/modules\/module\/http_server\/bin/g" update_http.py
+    sed -i "s/_local_file/access.cgi/g" update_http.py
+    sed -i "s/_remote_path/\/data\/platform\/http\/bin/g" update_http.py
+    sed -i "s/_remote_run/runhttp.sh/g" update_http.py
+    fab -f update_http.py start
+    rm -fr update_http.py*
+}
+
+acc_update()
+{
+    cp update_templete.py update_acc.py
+    sed -i "s/_local_path/\/usr\/local\/src\/modules\/module\/access_manager\/bin/g" update_acc.py
+    sed -i "s/_local_file/access_manager/g" update_acc.py
+    sed -i "s/_remote_path/\/data\/platform\/access\/bin/g" update_acc.py
+    sed -i "s/_remote_run/run.sh/g" update_acc.py
+    fab -f update_acc.py start
+    rm -fr update_acc.py*
+}
+
+if [[ "http" = $1 ]]; then 
+    http_update
+    
+elif [[ "acc" = $1 ]]; then 
+    acc_update
+    
+elif [[ "all" = $1 ]]; then 
+    http_update
+    acc_update
+else
+    echo 'Error param.'
+    
+fi
+
+
+
+------------------------------c78a7becb046--
+
+
+
+
+
+
+
+
+
+
+HTTP/1.1 200 OK
+Server: nginx/1.10.2
+Date: Tue, 20 Jun 2017 08:30:38 GMT
+Content-Type: text/html
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Content-Length: 110
+
+{
+   "fileid" : "1/13/CB307135747A6746B0615ACE66468C21_update.sh",
+   "retcode" : "0",
+   "retmsg" : "Ok"
+}
+
