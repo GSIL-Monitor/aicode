@@ -118,6 +118,8 @@ bool AccessManager::GetMsgType(const std::string &strMsg, int &iMsgType)
 
 bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::Req req;
@@ -227,6 +229,8 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
 
 bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     std::string strUserID;
@@ -307,6 +311,8 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
 
 bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     //注销用户之前，用户必须已经登录系统
     //注销用户之后，系统默认将该用户登出系统
     bool blResult = false;
@@ -448,6 +454,8 @@ bool AccessManager::QueryUsrInfoReq(const std::string &strMsg, const std::string
 
 bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::ModifyUserInfoReq_USR ModifyUsrReq;
@@ -521,6 +529,8 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
 
 bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::LoginReq_USR LoginReqUsr;
@@ -831,6 +841,8 @@ bool AccessManager::ShakehandReq(const std::string &strMsg, const std::string &s
 
 bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
     InteractiveProtoHandler::AddDevReq_USR req;
     std::string strDeviceID;
@@ -949,6 +961,8 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
 bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
     InteractiveProtoHandler::DelDevReq_USR req;
 
@@ -1803,6 +1817,8 @@ bool AccessManager::QueryFileReq(const std::string &strMsg, const std::string &s
 
 bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
     
     std::string strValue;
@@ -1942,6 +1958,8 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
 
 bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::P2pInfoReq_DEV req;
@@ -2293,6 +2311,8 @@ bool AccessManager::P2pInfoReqUser(const std::string &strMsg, const std::string 
 
 bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::RetrievePwdReq_USR RetrievePwdReqUsr;
@@ -3205,6 +3225,8 @@ bool AccessManager::QueryAllConfigurationReqMgr(const std::string &strMsg, const
 
 bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::ModifyDevicePropertyReq_DEV req;
@@ -3455,6 +3477,8 @@ bool AccessManager::QueryPlatformPushStatusReqDevice(const std::string &strMsg, 
 
 bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::DeviceEventReportReq_DEV req;
@@ -3799,6 +3823,8 @@ bool AccessManager::ModifyStorageDetailReqUser(const std::string &strMsg, const 
 
 bool AccessManager::QueryStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
 
     InteractiveProtoHandler::QueryStorageDetailReq_USR req;
