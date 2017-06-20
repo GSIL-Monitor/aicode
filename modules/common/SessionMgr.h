@@ -24,6 +24,13 @@ public:
     SessionMgr();
     ~SessionMgr();
 
+    void SetUserLoginMutex(const bool blEnableMutex, const bool blAllowDiffTerminal = false); //第二个参数表示是否允许不同终端同时登录
+    
+    static const unsigned int KICKOUT_BEFORE = 0;
+    static const unsigned int KICKOUT_SELF = 1;
+
+    void SetUerLoginKickout(const unsigned int uiKickoutType = KICKOUT_BEFORE); //默认将之前登录用户踢掉
+
     typedef boost::function<void(const std::string &strSessionID, const unsigned int uiType)> SessionTimeoutCB;
 
     void SetSessionTimeoutCB(SessionTimeoutCB scb);
@@ -40,8 +47,19 @@ public:
 
     typedef boost::function<void(const std::string &)> TMOUT_CB;
 
-    bool Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0,
-        const std::string &strID = "");
+    static const unsigned int TERMINAL_APP_TYPE = 0;
+    static const unsigned int TERMINAL_PAD_TYPE = 1;
+    static const unsigned int TERMINAL_DEV_TYPE = 2; //设备登录时的终端类型
+
+    static const int PARAM_ERROR = -1;
+    static const int CACHE_ERROR = -2;
+    static const int LOGIN_MUTEX_ERROR = -3;
+    static const int CREATE_OK = 0;
+
+    int Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0,
+        const std::string &strID = "", const unsigned int uiTerminalType = TERMINAL_APP_TYPE);
+
+    bool GetSessionStatus(const std::string &strSessionID, int &iStatus);
 
     bool Exist(const std::string &strSessionID);
     
@@ -69,6 +87,10 @@ private:
     bool MemCacheGet(const std::string &strKey, std::string &strValue);
 
     void RemoveSTMap(const std::string &strSessionID);
+
+    bool SetSessionStatus(const std::string &strID, const int iStatus);
+
+    bool GetTerminalType(const std::string &strID, unsigned int &uiTerminalType);
 
 private:
 
@@ -102,6 +124,10 @@ private:
     MemcacheClient *m_pMemClGlobal;
     std::string m_strMemAddressGlobal;
     std::string m_strMemPortGlobal;
+
+    bool m_blUserLoginMutex;
+    bool m_blAllowDiffTerminal;
+    unsigned int m_uiKickoutType;
 
 };
 

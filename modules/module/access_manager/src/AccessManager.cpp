@@ -59,6 +59,9 @@ bool AccessManager::Init()
         return false;
     }
 
+    m_SessionMgr.SetUserLoginMutex(boost::lexical_cast<bool>(m_ParamInfo.m_strUserLoginMutex));
+    m_SessionMgr.SetUerLoginKickout(boost::lexical_cast<bool>(m_ParamInfo.m_strUserKickoutType));
+
     auto TmFunc = [&](const boost::system::error_code &ec) ->void
     {
         if (!m_pMysql->QueryExec(std::string("SET NAMES utf8")))
@@ -131,7 +134,7 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::MsgPreHandlerRsp_USR_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = ReturnInfo::RetCode();
         rsp.m_strRetMsg = ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
         
@@ -189,6 +192,26 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
             << " and session id is " << req.m_strSID);
         blResult = false;
         return blResult;
+    }
+    else
+    {
+        int iErrorCode = SessionMgr::CREATE_OK;
+        if (!m_SessionMgr.GetSessionStatus(req.m_strSID, iErrorCode))
+        {
+            LOG_ERROR_RLD("PreCommonHandler failed, get session status error, msg type is " << req.m_MsgType <<
+                " and seesion id is " << req.m_strSID);
+            blResult = false;
+            return blResult;
+        }
+
+        if (SessionMgr::LOGIN_MUTEX_ERROR == iErrorCode)
+        {
+            LOG_ERROR_RLD("PreCommonHandler failed, the account is logged in at other terminal, msg type is " << req.m_MsgType <<
+                " and seesion id is " << req.m_strSID);
+            ReturnInfo::RetCode(ReturnInfo::ACCOUNT_LOGIN_AT_OTHER_TERMINAL);
+            blResult = false;
+            return blResult;
+        }
     }
 
     //普通命令（非握手命令）重置Session
@@ -3001,8 +3024,10 @@ bool AccessManager::AddConfigurationReqMgr(const std::string &strMsg, const std:
     configuration.m_strForceVersion = req.m_configuration.m_strForceVersion;
     configuration.m_strFileName = req.m_configuration.m_strFileName;
     configuration.m_strFileID = req.m_configuration.m_strFileID;
+    boost::replace_all(configuration.m_strFileID, "\\", "\\\\");  //保留string中的'\'字符
     configuration.m_uiFileSize = req.m_configuration.m_uiFileSize;
-    configuration.m_strFilePath = "http://" + req.m_configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid=" + req.m_configuration.m_strFileID;
+    configuration.m_strFilePath = "http://" + req.m_configuration.m_strServerAddress + "/filemgr.cgi?action=download_file&fileid="
+        + configuration.m_strFileID;
     configuration.m_uiLeaseDuration = req.m_configuration.m_uiLeaseDuration;
     //configuration.m_strUpdateDate = req.m_configuration.m_strUpdateDate;
     configuration.m_strUpdateDate = strCurrentTime;
@@ -3441,7 +3466,7 @@ bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const 
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::DeviceEventReportRsp_DEV_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strEventID = blResult ? strEventID : "";
 
@@ -3469,13 +3494,17 @@ bool AccessManager::DeviceEventReportReqDevice(const std::string &strMsg, const 
     {
         LOG_ERROR_RLD("Device event report failed, device is not added, src id is " << strSrcID <<
             " and device id is " << req.m_strDeviceID);
+
+        ReturnInfo::RetCode(ReturnInfo::DEVICE_NOT_ADDED_BY_USER);
         return false;
     }
 
     strEventID = CreateUUID();
 
+    std::string strFileID = req.m_strFileID;
+    boost::replace_all(strFileID, "\\", "\\\\");  //保留string中的'\'字符
     m_DBRuner.Post(boost::bind(&AccessManager::InsertDeviceEventReportToDB, this, strEventID, req.m_strDeviceID,
-        req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, req.m_strFileID, req.m_strEventTime));
+        req.m_uiDeviceType, req.m_uiEventType, req.m_uiEventState, EVENT_MESSAGE_UNREAD, strFileID, req.m_strEventTime));
 
     m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID, false));
 
@@ -7516,9 +7545,13 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
             deviceEvent.m_uiEventState = boost::lexical_cast<unsigned int>(strColumn);
             break;
         case 5:
+        {
+            std::string strFullFileID = strColumn;
+            boost::replace_all(strFullFileID, "\\", "\\\\");
             deviceEvent.m_strFileUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) +
-                "download_file&fileid=" + strColumn;
+                "download_file&fileid=" + strFullFileID;
             break;
+        }
         case 6:
             deviceEvent.m_strEventTime = strColumn;
             Result = deviceEvent;
@@ -7531,7 +7564,7 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryAllDeviceEventToDB exec sql failed, sql is " << sql);
         return false;
@@ -7726,7 +7759,7 @@ bool AccessManager::QueryDeviceEventExpireTimeToDB(unsigned int &uiExpireTime)
     {
         LOG_ERROR_RLD("QueryDeviceEventExpireTimeToDB sql result is empty, sql is " << sql);
 
-        uiExpireTime = 7;  //如果没有配置则事件过期时间设置为7天
+        uiExpireTime = 3 * 24;  //如果没有配置则事件过期时间则设置为3天
         return true;
     }
 

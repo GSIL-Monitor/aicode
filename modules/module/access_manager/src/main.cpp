@@ -305,6 +305,27 @@ int main(int argc, char* argv[])
         LOG_INFO_RLD("Memcached of global port config item not found.");
     }
     
+    const std::string &strUserLoginMutex = GetConfig("General.UserLoginMutex");
+    if (strUserLoginMutex.empty())
+    {
+        LOG_ERROR_RLD("UserLoginMutex config item not found.");
+        return 0;
+    }
+
+    const std::string &strUserAllowDiffTerminal = GetConfig("General.UserAllowDiffTerminal");
+    if (strUserAllowDiffTerminal.empty())
+    {
+        LOG_ERROR_RLD("UserAllowDiffTerminal config item not found.");
+        return 0;
+    }
+
+    const std::string &strUserKickoutType = GetConfig("General.UserKickoutType");
+    if (strUserKickoutType.empty())
+    {
+        LOG_ERROR_RLD("UserKickoutType config item not found.");
+        return 0;
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 
     AccessManager::ParamInfo UmgParam;
@@ -323,6 +344,9 @@ int main(int argc, char* argv[])
     UmgParam.m_strGetIpInfoSite = strGetIpInfoSite;
     UmgParam.m_strMemAddressGlobal = strMemcachedAddressGlobal;
     UmgParam.m_strMemPortGlobal = strMemcachedPortGlobal;
+    UmgParam.m_strUserLoginMutex = strUserLoginMutex;
+    UmgParam.m_strUserAllowDiffTerminal = strUserAllowDiffTerminal;
+    UmgParam.m_strUserKickoutType = strUserKickoutType;
 
     AccessManager Umg(UmgParam);
     if (!Umg.Init())

@@ -121,7 +121,13 @@ bool P2PServerManager_LT::AllocateP2pID(const string &strDeviceID, P2PConnectPar
         return false;
     }
 
-    return GetP2pID(strDeviceID, p2pparams);
+    if (!GetP2pID(strDeviceID, p2pparams) || p2pparams.sP2Pid.empty())
+    {
+        LOG_ERROR_RLD("AllocateP2pID failed, get p2p id error, there is no p2pid available, device id is " << strDeviceID.c_str());
+        return false;
+    }
+
+    return true;
 }
 
 bool P2PServerManager_LT::UpdateP2PID(const string &strDeviceID)

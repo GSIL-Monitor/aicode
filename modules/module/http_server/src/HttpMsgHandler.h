@@ -6,12 +6,15 @@
 #include <boost/noncopyable.hpp>
 #include <boost/thread.hpp>
 #include "FCGIManager.h"
+#include "CommMsgHandler.h"
 
 /************************************************************************/
 /*负责实现消息处理具体细节，向FCGIManager注册处理函数，
  *其中包括实际的业务消息处理，例如：将用户注册的信息汇总，
  *调用接口实现用户注册的业务动作。*/
 /************************************************************************/
+
+typedef boost::function<int(CommMsgHandler::Packet &pt)> RspFuncCommon;
 
 class InteractiveProtoHandler;
 
@@ -315,7 +318,9 @@ private:
 
     } StorageInfo;
 
-    bool PreCommonHandler(const std::string &strMsgReceived);
+    int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
+
+    bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
 
     bool RegisterUser(const std::string &strUserName, const std::string &strUserPwd, 
         const std::string &strType, const std::string &strExtend, const std::string &strAliasName, const std::string &strEmail, std::string &strUserID);
@@ -391,7 +396,7 @@ private:
     bool AddDeviceFile(const std::string &strDevID, const std::string &strRemoteFileID, const std::string &strDownloadUrl, const std::string &strFileName,
         const std::string &strSuffixName, const unsigned long int uiFileSize, const std::string &strFileCreatedate, const std::string &strExtend, const unsigned int uiBussinessType);
 
-    bool RetrievePwd(const std::string &strUserName, const std::string &strEmail);
+    bool RetrievePwd(const std::string &strUserName, const std::string &strEmail, const unsigned int uiType);
 
     bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode,
         std::string &strCountryNameEn, std::string &strCountryNameZh, std::string &strTimeZone);

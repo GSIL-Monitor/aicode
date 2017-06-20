@@ -226,33 +226,33 @@ CREATE TABLE `t_device_parameter_doorbell` (
   `id` varchar(36) NOT NULL,
   `deviceid` varchar(100) NOT NULL,
   `devicepassword` varchar(100) DEFAULT '',
-  `devicedomain` varchar(50) DEFAULT '',          #设备二级域名，与设备ID一一对应
+  `devicedomain` varchar(50) DEFAULT '',            #设备二级域名，与设备ID一一对应
   `typeinfo` int(11) NOT NULL,
-  `username` varchar(100) DEFAULT '',             #用户名称
-  `userpassword` varchar(50) DEFAULT '',          #用户密码
-  `p2pserver` varchar(100) DEFAULT '',            #P2P服务器
-  `p2psupplier` int(11) DEFAULT '0',              #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
-  `p2pbuildin` int(11) DEFAULT '-1',              #P2P分配方式，0-动态分配，1-设备烧录
-  `licensekey` varchar(50) DEFAULT '',            #尚云P2P使用
-  `pushid` varchar(50) DEFAULT '',                #尚云P2P2使用
-  `distributor` varchar(100) DEFAULT '',          #经销商
-  `doorbell_name` varchar(50) DEFAULT '',         #设备名称
-  `serial_number` varchar(50) DEFAULT '',         #序列号
-  `doorbell_p2pid` varchar(50) DEFAULT '',        #P2P ID
-  `battery_capacity` varchar(50) DEFAULT '',      #电池容量
-  `charging_state` varchar(50) DEFAULT '',        #充电状态
-  `wifi_signal` varchar(50) DEFAULT '',           #WIFI信号
-  `volume_level` varchar(50) DEFAULT '',          #音量大小
-  `version_number` varchar(50) DEFAULT '',        #版本号信息
-  `channel_number` varchar(50) DEFAULT '',        #通道号
-  `coding_type` varchar(50) DEFAULT '',           #编码类型
-  `pir_alarm_swtich` varchar(50) DEFAULT '',      #PIR报警开关
-  `doorbell_switch` varchar(50) DEFAULT '',       #门铃开关
-  `pir_alarm_level` varchar(50) DEFAULT '',       #PIR报警等级
-  `pir_ineffective_time` varchar(200) DEFAULT '', #PIR不生效时间配置项
-  `current_wifi` varchar(50) DEFAULT '',          #当前WIFI
-  `sub_category` varchar(50) DEFAULT '',          #门铃类别
-  `otherproperty` varchar(1000) DEFAULT '',       #其他属性
+  `username` varchar(100) DEFAULT '',               #用户名称
+  `userpassword` varchar(50) DEFAULT '',            #用户密码
+  `p2pserver` varchar(100) DEFAULT '',              #P2P服务器
+  `p2psupplier` int(11) DEFAULT '0',                #P2P供应商，1-浪涛，2-尚云，3-TUTK，4-全景VR
+  `p2pbuildin` int(11) DEFAULT '-1',                #P2P分配方式，0-动态分配，1-设备烧录
+  `licensekey` varchar(50) DEFAULT '',              #尚云P2P使用
+  `pushid` varchar(50) DEFAULT '',                  #尚云P2P2使用
+  `distributor` varchar(100) DEFAULT '',            #经销商
+  `doorbell_name` varchar(50) DEFAULT '',           #设备名称
+  `serial_number` varchar(50) DEFAULT '',           #序列号
+  `doorbell_p2pid` varchar(50) DEFAULT '',          #P2P ID
+  `battery_capacity` varchar(50) DEFAULT '',        #电池容量
+  `charging_state` varchar(50) DEFAULT '',          #充电状态
+  `wifi_signal` varchar(50) DEFAULT '',             #WIFI信号
+  `volume_level` varchar(50) DEFAULT '',            #音量大小
+  `version_number` varchar(50) DEFAULT '',          #版本号信息
+  `channel_number` varchar(50) DEFAULT '',          #通道号
+  `coding_type` varchar(50) DEFAULT '',             #编码类型
+  `pir_alarm_swtich` varchar(50) DEFAULT '',        #PIR报警开关
+  `doorbell_switch` varchar(50) DEFAULT '',         #门铃开关
+  `pir_alarm_level` varchar(50) DEFAULT '',         #PIR报警等级
+  `pir_ineffective_time` varchar(2000) DEFAULT '',  #PIR不生效时间配置项
+  `current_wifi` varchar(50) DEFAULT '',            #当前WIFI
+  `sub_category` varchar(50) DEFAULT '',            #门铃类别
+  `otherproperty` varchar(1000) DEFAULT '',         #其他属性
   `createdate` datetime NOT NULL,
   `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,
   `status` int(11) DEFAULT '0',

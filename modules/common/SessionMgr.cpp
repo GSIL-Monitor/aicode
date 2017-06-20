@@ -5,7 +5,7 @@
 #include "time.h"
 #include "json/json.h"
 
-SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL)
+SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL), m_blUserLoginMutex(false), m_blAllowDiffTerminal(false), m_uiKickoutType(KICKOUT_BEFORE)
 {
 
 }
@@ -14,6 +14,17 @@ SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL)
 SessionMgr::~SessionMgr()
 {
 
+}
+
+void SessionMgr::SetUserLoginMutex(const bool blEnableMutex, const bool blAllowDiffTerminal /*= false*/)
+{
+    m_blUserLoginMutex = blEnableMutex;
+    m_blAllowDiffTerminal = blAllowDiffTerminal;
+}
+
+void SessionMgr::SetUerLoginKickout(const unsigned int uiKickoutType /*= KICKOUT_BEFORE*/)
+{
+    m_uiKickoutType = uiKickoutType;
 }
 
 void SessionMgr::SetSessionTimeoutCB(SessionTimeoutCB scb)
@@ -95,13 +106,79 @@ void SessionMgr::Stop()
     m_TimeOutObj.Stop();
 }
 
-bool SessionMgr::Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType,
-    const std::string &strID)
+int SessionMgr::Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType,
+    const std::string &strID, const unsigned int uiTerminalType)
 {
     if (0 == uiThreshold)
     {
         LOG_ERROR_RLD("Create session failed becasue threshold value is zero, sessid is " << strSessionID);
-        return false;
+        return PARAM_ERROR;
+    }
+
+    if (!strID.empty())
+    {
+        if (!MemCacheExist(strID))
+        {
+            Json::Value jsBody;
+            jsBody["id"] = strID;
+            jsBody["threshold"] = uiThreshold;
+            jsBody["terminaltype"] = uiTerminalType;
+            jsBody["sid"] = strSessionID;
+
+            Json::FastWriter fastwriter;
+            const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+            if (!MemCacheCreate(strID, strBody, uiThreshold))
+            {
+                LOG_ERROR_RLD("Create id failed because memcache error.");
+                return CACHE_ERROR;
+            }
+        }
+        else
+        {
+            //该id已经有会话登录
+            if (m_blUserLoginMutex) //启用会话互斥
+            {
+                bool blNeedVaild = true;
+                if (m_blAllowDiffTerminal) //启用多终端共存
+                {
+                    unsigned int uiTerminalTypeAlreadyLogin;
+                    if (!GetTerminalType(strID, uiTerminalTypeAlreadyLogin))
+                    {
+                        LOG_ERROR_RLD("Get terminal type failed because memcache error.");
+                        return CACHE_ERROR;
+                    }
+
+                    blNeedVaild = uiTerminalType == uiTerminalTypeAlreadyLogin; //终端类型相同，说明不满足多终端共存条件，需要进行后续的会话校验
+                }
+
+                //最终决定是否需要校验会话
+                if (blNeedVaild)
+                {
+                    int iRet = 0;
+                    if (KICKOUT_BEFORE == m_uiKickoutType) //踢掉之前登录的用户会话，自身继续走下去创建会话
+                    {
+                        //Remove(strSessionID);
+                        if (!SetSessionStatus(strID, LOGIN_MUTEX_ERROR))
+                        {
+                            LOG_ERROR_RLD("Set session status failed and id is " << strID);
+                            return CACHE_ERROR;
+                        }
+                    }
+                    else //踢掉自身，不在创建自身会话
+                    {
+                        iRet = LOGIN_MUTEX_ERROR;
+                    }
+
+                    LOG_ERROR_RLD("Multi session login was found and kickout type is " << m_uiKickoutType << " and result is " << iRet);
+
+                    if (LOGIN_MUTEX_ERROR == iRet)
+                    {
+                        return iRet;
+                    }
+                }
+            }
+        }
     }
 
     Json::Value jsBody;
@@ -109,7 +186,9 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     jsBody["threshold"] = uiThreshold;
     jsBody["value"] = strValue;
     jsBody["type"] = uiType;
-
+    jsBody["terminaltype"] = uiTerminalType;
+    jsBody["status"] = CREATE_OK;
+    
     if (!strID.empty())
     {
         jsBody["id"] = strID;
@@ -121,25 +200,7 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     if (!MemCacheCreate(strSessionID, strBody, uiThreshold))
     {
         LOG_ERROR_RLD("Create session failed because memcache error.");
-        return false;
-    }
-
-    if (!strID.empty())
-    {
-        if (!MemCacheExist(strID))
-        {
-            Json::Value jsBody;
-            jsBody["id"] = strID;
-            jsBody["threshold"] = uiThreshold;
-            Json::FastWriter fastwriter;
-            const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
-
-            if (!MemCacheCreate(strID, strBody, uiThreshold))
-            {
-                LOG_ERROR_RLD("Create id failed because memcache error.");
-                return false;
-            }
-        }        
+        return CACHE_ERROR;
     }
 
     boost::shared_ptr<SessionTimer> pSessionTimer(new SessionTimer);
@@ -160,10 +221,46 @@ bool SessionMgr::Create(const std::string &strSessionID, const std::string &strV
     pSessionTimer->m_pTimer->Begin();
             
     LOG_INFO_RLD("Session was created and session id is " << strSessionID << " and vaule is " << strValue << " and timeout is " << uiTime
-        << " and threshold is " << uiThreshold << " and type is " << uiType);
+        << " and threshold is " << uiThreshold << " and type is " << uiType << " and id is " << strID << " and terminal type is " << uiTerminalType);
+
+    return CREATE_OK;
+
+}
+
+bool SessionMgr::GetSessionStatus(const std::string &strSessionID, int &iStatus)
+{
+    std::string strValue;
+    if (!MemCacheGet(strSessionID, strValue))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse key not found from memcached and key is " << strSessionID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse value parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json root parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jTerm = root["status"];
+
+    if (jTerm.isNull())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json threshold  json value is null and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    iStatus = jTerm.asInt();
 
     return true;
-
 }
 
 bool SessionMgr::Exist(const std::string &strSessionID)
@@ -427,6 +524,119 @@ void SessionMgr::RemoveSTMap(const std::string &strSessionID)
 
         LOG_INFO_RLD("Session was removed from timer map and session is " << strSessionID);
     }
+}
+
+bool SessionMgr::SetSessionStatus(const std::string &strID, const int iStatus)
+{
+    std::string strValue;
+    if (!MemCacheGet(strID, strValue))
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse key not found from memcached and key is " << strID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse value parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse json root parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value JSid = root["sid"];
+    if (JSid.isNull())
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    //获取得到设备/用户ID对应的SessionID值
+    const std::string &strSid = JSid.asString();
+    
+    std::string strValueSid;
+    if (!MemCacheGet(strSid, strValueSid))
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse key not found from memcached and key is " << strSid);
+        return false;
+    }
+
+    Json::Reader readersid;
+    Json::Value rootsid;
+    if (!readersid.parse(strValueSid, rootsid, false))
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse value parsed failed and key is " << strSid << " and value is " << strValueSid);
+        return false;
+    }
+
+    if (!rootsid.isObject())
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse json root parsed failed and key is " << strSid << " and value is " << strValueSid);
+        return false;
+    }
+    
+    Json::Value jThreshold = rootsid["threshold"];
+    
+    if (jThreshold.isNull())
+    {
+        LOG_ERROR_RLD("Set session status failed beacuse json threshold  json value is null and key is " << strSid << " and value is " << strValueSid);
+        return false;
+    }
+
+    rootsid["status"] = iStatus;
+
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(rootsid); //jsBody.toStyledString();
+
+    if (!MemCacheReset(strSid, strBody, jThreshold.asUInt()))
+    {
+        LOG_ERROR_RLD("Set session status failed becasue memecache failed, id is " << strSid);
+        return false;
+    }
+
+    LOG_INFO_RLD("Set session status and id is " << strSid << " and value is " << strBody);
+    return true;
+}
+
+bool SessionMgr::GetTerminalType(const std::string &strID, unsigned int &uiTerminalType)
+{
+    std::string strValue;
+    if (!MemCacheGet(strID, strValue))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse key not found from memcached and key is " << strID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse value parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json root parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jTerm = root["terminaltype"];
+
+    if (jTerm.isNull())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    uiTerminalType = jTerm.asUInt();
+
+    return true;
 }
 
 SessionMgr::SessionTimer::SessionTimer()

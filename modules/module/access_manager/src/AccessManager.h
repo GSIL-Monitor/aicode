@@ -111,6 +111,9 @@ public:
         std::string m_strGetIpInfoSite;
         std::string m_strMemAddressGlobal;
         std::string m_strMemPortGlobal;
+        std::string m_strUserLoginMutex;
+        std::string m_strUserAllowDiffTerminal;
+        std::string m_strUserKickoutType;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo
