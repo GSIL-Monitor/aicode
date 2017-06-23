@@ -49,7 +49,7 @@ public:
 
     static const unsigned int TERMINAL_APP_TYPE = 0;
     static const unsigned int TERMINAL_PAD_TYPE = 1;
-    static const unsigned int TERMINAL_DEV_TYPE = 2; //设备登录时的终端类型
+    static const unsigned int TERMINAL_DEV_TYPE = 0xFFFFFFFF; //设备登录时的终端类型
 
     static const int PARAM_ERROR = -1;
     static const int CACHE_ERROR = -2;
@@ -57,9 +57,11 @@ public:
     static const int CREATE_OK = 0;
 
     int Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0,
-        const std::string &strID = "", const unsigned int uiTerminalType = TERMINAL_APP_TYPE);
+        const std::string &strID = "", const unsigned int uiTerminalType = TERMINAL_APP_TYPE, const unsigned int uiLoginType = 0);
 
     bool GetSessionStatus(const std::string &strSessionID, int &iStatus);
+
+    bool GetSessionLoginType(const std::string &strSessionID, unsigned int &uiLoginType);
 
     bool Exist(const std::string &strSessionID);
     

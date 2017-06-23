@@ -254,13 +254,12 @@ private:
     bool QueryRelationExist(const std::string &strUserID, const std::string &strDevID, const int iRelation, bool &blExist, const bool IsNeedCache = true);
 
     bool QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList, std::list<std::string> &strDevNameList,
-        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+        const unsigned int uiAppType, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList, std::list<std::string> &strUserNameList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool ValidUser(std::string &strUserID, std::string &strUserName, const unsigned int uiAppType, bool &blUserExist, const std::string &strUserPwd,
-        const int iTypeInfo = 0, const bool IsForceFromDB = false);
+    bool ValidUser(std::string &strUserID, std::string &strUserName, bool &blUserExist, const std::string &strUserPwd, const bool IsForceFromDB = false);
 
     bool GetMySqlUUID(std::string &strUuid);
 
@@ -328,7 +327,7 @@ private:
 
     bool CheckEmailByUserName(const std::string &strUserName, const std::string &strEmail);
 
-    void ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword, const unsigned int uiAppType);
+    void ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword);
 
     void SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail);
 

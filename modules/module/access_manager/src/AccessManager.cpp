@@ -272,8 +272,7 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     
     //User info already exists
     bool blUserExist;
-    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName, RegUsrReq.m_userInfo.m_uiTypeInfo, blUserExist,
-        "", RegUsrReq.m_userInfo.m_uiTypeInfo, true))
+    if (ValidUser(RegUsrReq.m_userInfo.m_strUserID, RegUsrReq.m_userInfo.m_strUserName, blUserExist, "", true))
     {
         LOG_ERROR_RLD("Register user failed because user already exist and user name is " << RegUsrReq.m_userInfo.m_strUserName << 
             " and user id is " << RegUsrReq.m_userInfo.m_strUserID << " and user pwd is " << RegUsrReq.m_userInfo.m_strUserPassword);
@@ -359,7 +358,9 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
 
     std::list<InteractiveProtoHandler::Relation> relationList;
     std::list<std::string> strDevNameList;
-    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList))
+	unsigned int uiAppType;
+	m_SessionMgr.GetSessionLoginType(UnRegUsrReq.m_strSID, uiAppType);
+    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList, uiAppType))
     {
         LOG_ERROR_RLD("Unregister user failed, query usr device realtion error, user id is " << UnRegUsrReq.m_userInfo.m_strUserID);
         return false;
@@ -619,8 +620,8 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     //}
     
     bool blUserExist = false;
-    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, LoginReqUsr.m_uiType, blUserExist,
-        LoginReqUsr.m_userInfo.m_strUserPassword, LoginReqUsr.m_userInfo.m_uiTypeInfo))
+    if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, blUserExist,
+        LoginReqUsr.m_userInfo.m_strUserPassword, false))
     {
         if (blUserExist)
         {
@@ -666,9 +667,10 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
      
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strSessionTimeoutCountThreshold), 
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION, LoginReqUsr.m_userInfo.m_strUserID);
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION, LoginReqUsr.m_userInfo.m_strUserID,
+        LoginReqUsr.m_uiTerminalType, LoginReqUsr.m_uiType);
         
-    if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList))
+    if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList, LoginReqUsr.m_uiType))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
         return false;
@@ -1222,7 +1224,9 @@ bool AccessManager::QueryDeviceReq(const std::string &strMsg, const std::string 
         return false;
     }
 
-    if (!QueryRelationByUserID(req.m_strUserID, RelationList, strDevNameList, req.m_uiBeginIndex))
+	unsigned int uiAppType;
+	m_SessionMgr.GetSessionLoginType(req.m_strSID, uiAppType);
+	if (!QueryRelationByUserID(req.m_strUserID, RelationList, strDevNameList, uiAppType, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << req.m_strUserID);
         return false;
@@ -1949,7 +1953,8 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     }
 
     m_SessionMgr.Create(strSessionID, strBody, boost::lexical_cast<unsigned int>(m_ParamInfo.m_strDevSessionTimeoutCountThreshold),
-        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION, LoginReqDev.m_strDevID);
+        boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::DEVICE_SESSION, LoginReqDev.m_strDevID, 
+        SessionMgr::TERMINAL_DEV_TYPE, SessionMgr::TERMINAL_DEV_TYPE);
 
     blResult = true;
 
@@ -2359,7 +2364,7 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
 
     std::string strRandPwd = CreateUUID().erase(8);
 
-    m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_uiAppType));
+    m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd));
 
     m_DBRuner.Post(boost::bind(&AccessManager::SendUserResetPasswordEmail, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_strEmail));
 
@@ -4407,11 +4412,11 @@ bool AccessManager::CheckEmailByUserName(const std::string &strUserName, const s
     }
 }
 
-void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword, const unsigned int uiAppType)
+void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and typeinfo = %d and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str(), uiAppType);
+    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -5260,15 +5265,21 @@ bool AccessManager::QueryRelationExist(const std::string &strUserID, const std::
 }
 
 bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList,
-    std::list<std::string> &strDevNameList, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
+    std::list<std::string> &strDevNameList, const unsigned int uiAppType, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, dev.devicename, rel.devicename"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
         " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiAppType);
 
-    std::string strSql;
+	if (uiAppType != 9)
+	{
+		int len = strlen(sql);
+		snprintf(sql + len, sizeof(sql) - len, " and dev.typeinfo = %d", uiAppType);
+	}
+
+	std::string strSql;
     char cTmp[128] = { 0 };
     snprintf(cTmp, sizeof(cTmp), " limit %u, %u", uiBeginIndex, uiPageSize);
     strSql = std::string(sql) + std::string(cTmp);
@@ -5478,15 +5489,14 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     return true;
 }
 
-bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, const unsigned int uiAppType,
-    bool &blUserExist, const std::string &strUserPwd, const int iTypeInfo, const bool IsForceFromDB)
+bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, bool &blUserExist, const std::string &strUserPwd, const bool IsForceFromDB)
 {
     //Valid user id
     char sql[1024] = { 0 };
     const char* sqlfmt = !strUserID.empty() ? "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where userid = '%s' and status = 0"
-        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s' and typeinfo = %d and status = 0";
+        : "select userid,username, userpassword, typeinfo, createdate, status, extend from t_user_info where username = '%s' and status = 0";
 
-    snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str(), uiAppType);
+    snprintf(sql, sizeof(sql), sqlfmt, !strUserID.empty() ? strUserID.c_str() : strUserName.c_str());
 
     std::list<boost::any> ResultList;
     if (IsForceFromDB)

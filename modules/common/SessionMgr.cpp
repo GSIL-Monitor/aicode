@@ -107,7 +107,7 @@ void SessionMgr::Stop()
 }
 
 int SessionMgr::Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType,
-    const std::string &strID, const unsigned int uiTerminalType)
+    const std::string &strID, const unsigned int uiTerminalType, const unsigned int uiLoginType)
 {
     if (0 == uiThreshold)
     {
@@ -188,6 +188,7 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
     jsBody["type"] = uiType;
     jsBody["terminaltype"] = uiTerminalType;
     jsBody["status"] = CREATE_OK;
+    jsBody["logintype"] = uiLoginType;
     
     if (!strID.empty())
     {
@@ -261,6 +262,43 @@ bool SessionMgr::GetSessionStatus(const std::string &strSessionID, int &iStatus)
     iStatus = jTerm.asInt();
 
     return true;
+}
+
+bool SessionMgr::GetSessionLoginType(const std::string &strSessionID, unsigned int &uiLoginType)
+{
+    std::string strValue;
+    if (!MemCacheGet(strSessionID, strValue))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse key not found from memcached and key is " << strSessionID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse value parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json root parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jLoginType = root["logintype"];
+
+    if (jLoginType.isNull())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json threshold  json value is null and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    uiLoginType = jLoginType.asUInt();
+
+    return true;
+
 }
 
 bool SessionMgr::Exist(const std::string &strSessionID)
