@@ -62,12 +62,9 @@ void FCGIManager::Run(bool isWaitRunFinished /*= false*/)
 
 }
 
-void FCGIManager::SetUploadTmpPath(const std::string &strPath)
+void FCGIManager::SetFileMgrGroupEx(FileMgrGroupEx *pFileMgrGex)
 {
-    m_strUploadTmpPath = strPath;
-    m_pFileMgr.reset(new FileManager(strPath, 16, false));
-    m_pFileMgr->SetBlockSize(CGI_READ_BUFFER_SIZE);
-
+    m_pFileMgrGex = pFileMgrGex;
 }
 
 void FCGIManager::SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn)
@@ -83,11 +80,6 @@ void FCGIManager::SetMsgHandler(const std::string &strKey, MsgHandler msghdr)
 void FCGIManager::SetMsgPreHandler(MsgHandler msghdr)
 {
     m_MsgPreHandlerList.push_back(msghdr);
-}
-
-boost::shared_ptr<FileManager> FCGIManager::GetFileMgr()
-{
-    return m_pFileMgr;
 }
 
 void FCGIManager::FCGILoopHandler()
@@ -305,6 +297,14 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
     std::string strKey;
     std::string strValue;
     char cReadBuffer[CGI_READ_BUFFER_SIZE] = { 0 };
+
+    auto pFileMgr = m_pFileMgrGex->GetFileMgr();
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("Failed to get file mgr.");
+        return;
+    }
+
     while (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
     {
         strReadBuffer = cReadBuffer;
@@ -369,17 +369,20 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
                         //上传文件开始处
                         std::string strFileID;
                          
-                        if (!m_pFileMgr->OpenFile(strFileName, strFileID))
+                        if (!pFileMgr->OpenFile(strFileName, strFileID))
                         {
                             LOG_ERROR_RLD("Open file failed and file name is " << strFileName);
                             continue;
                         }
 
-                        pMsgInfoMap->insert(MsgInfoMap::value_type("fileid", strFileID));
+                        FileStreamFilter(strFileID, "\r\n" + strBoundary, pRequest, pFileMgr);
                         
-                        FileStreamFilter(strFileID, "\r\n" + strBoundary, pRequest);
-                        
-                        m_pFileMgr->CloseFile(strFileID);                        
+                        pFileMgr->CloseFile(strFileID);
+
+                        std::string strGroupFileID;
+                        m_pFileMgrGex->FileID2GroupFileID(strFileID, pFileMgr->GetID(), strGroupFileID);
+
+                        pMsgInfoMap->insert(MsgInfoMap::value_type("fileid", strGroupFileID));
                     }
                 }
                 ////
@@ -463,7 +466,7 @@ void FCGIManager::ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_
     }
 }
 
-void FCGIManager::FileStreamFilter(const std::string &strFileID, const std::string &strFileterString, FCGX_Request *pRequest)
+void FCGIManager::FileStreamFilter(const std::string &strFileID, const std::string &strFileterString, FCGX_Request *pRequest, boost::shared_ptr<FileManager> pFileMgr)
 {
     unsigned int uiBlkID = 0;
     bool blFlagFinded = false;
@@ -506,7 +509,7 @@ void FCGIManager::FileStreamFilter(const std::string &strFileID, const std::stri
 
             if (strNornalBuffer.size() == CGI_READ_BUFFER_SIZE)
             {
-                m_pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
+                pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
                 strNornalBuffer.clear();
 
                 ++uiBlkID;
@@ -531,7 +534,7 @@ void FCGIManager::FileStreamFilter(const std::string &strFileID, const std::stri
 
     if (!strNornalBuffer.empty())
     {
-        m_pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
+        pFileMgr->WriteBuffer(strFileID, strNornalBuffer.c_str(), strNornalBuffer.length(), uiBlkID);
         strNornalBuffer.clear();
     }
 

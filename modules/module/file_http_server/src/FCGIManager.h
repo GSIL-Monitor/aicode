@@ -12,6 +12,7 @@
  * 提供HTTP通道，供给业务进行写入HTTP消息（业务处理结果信息或者文件流信息）*/
 /************************************************************************/
 
+class FileMgrGroupEx;
 class FileManager;
 
 typedef boost::function<void(const char *, const unsigned int, const unsigned int)> MsgWriter;
@@ -34,15 +35,13 @@ public:
 
     void Run(bool isWaitRunFinished = false);
 
-    void SetUploadTmpPath(const std::string &strPath);
+    void SetFileMgrGroupEx(FileMgrGroupEx *pFileMgrGex);
 
     void SetParseMsgFunc(const std::string &strKey, ParseMsgFunc fn); //消息解析处理
 
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
 
     void SetMsgPreHandler(MsgHandler msghdr); //消息预处理
-
-    boost::shared_ptr<FileManager> GetFileMgr();
     
 private:
     void FCGILoopHandler();
@@ -55,7 +54,7 @@ private:
 
     void ParseMsgOfGet(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX_Request *pRequest);
 
-    void FileStreamFilter(const std::string &strFileID,  const std::string &strFileterString, FCGX_Request *pRequest);
+    void FileStreamFilter(const std::string &strFileID, const std::string &strFileterString, FCGX_Request *pRequest, boost::shared_ptr<FileManager> pFileMgr);
 
 private:
     
@@ -71,7 +70,7 @@ private:
 
     std::string m_strUploadTmpPath;
 
-    boost::shared_ptr<FileManager> m_pFileMgr;
+    FileMgrGroupEx *m_pFileMgrGex;
 
 public:
     static const std::string QUERY_STRING;
