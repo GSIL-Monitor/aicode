@@ -20,6 +20,7 @@ public:
         std::string m_strName;
         std::string m_strMd5;
         unsigned int m_uiSize;
+        std::string m_strLocalPath;
     };
 
     void SetBlockSize(const unsigned int uiBlockSize);

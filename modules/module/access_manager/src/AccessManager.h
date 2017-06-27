@@ -15,6 +15,7 @@
 #include "ClusterAccessCollector.h"
 
 class MysqlImpl;
+class InterProcessHandler;
 
 /************************************************************************/
 /* 用户管理类，提供了管理用户所有相关的方法接口和实现。
@@ -430,6 +431,8 @@ private:
 
     void UpdateDeviceEventStoredTime();
 
+    void FileProcessHandler(const std::string &strEventID, const std::string &strFileID);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -457,6 +460,12 @@ private:
     TimeOutHandler m_DBTimer;
 
     unsigned long long m_ulTimerTimes;
+
+    Runner m_EventFileProcessRunner;
+
+    boost::shared_ptr<InterProcessHandler> m_MsgSender;
+    boost::shared_ptr<InterProcessHandler> m_MsgReceiver;
+
 };
 
 

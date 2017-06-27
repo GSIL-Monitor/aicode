@@ -316,6 +316,7 @@ bool HttpMsgHandler::QueryFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("name", fileinfo.m_strName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("size", boost::lexical_cast<std::string>(fileinfo.m_uiSize)));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("md5", fileinfo.m_strMd5));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("localpath", fileinfo.m_strLocalPath));
     
     blResult = true;
 

@@ -336,8 +336,10 @@ bool FileManager::QueryFile(const std::string &strFileID, FileSTInfo &fileinfo)
     fileinfo.m_strName = strFileID.substr(pos + 1);
     fileinfo.m_uiSize = uiFileSize;
     fileinfo.m_strMd5 = strMd5;
+    fileinfo.m_strLocalPath = strStoragePath;
 
-    LOG_INFO_RLD("Query file info success and file name is " << fileinfo.m_strName << " and file size is " << fileinfo.m_uiSize << " and file md5 is " << fileinfo.m_strMd5);
+    LOG_INFO_RLD("Query file info success and file name is " << fileinfo.m_strName << " and file size is " << fileinfo.m_uiSize << " and file md5 is " << fileinfo.m_strMd5
+        << " and local storage path is " << strStoragePath);
     return true;
 }
 

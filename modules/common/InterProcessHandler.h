@@ -24,7 +24,7 @@ public:
 
     void SetMsgOfReceivedHandler(InterPsMsgHandler ipmsghdr);
 
-    void RunReceivedMsg();
+    void RunReceivedMsg(const bool isWaitRunFinished = false);
 
 private:
     void MsgHandler(const std::string &strMsg);

@@ -18,9 +18,12 @@ private:
     void Mp4MsgHandler(const std::string &strMsg);
 
 private:
+    boost::shared_ptr<InterProcessHandler> m_MsgReceiver;
     boost::shared_ptr<InterProcessHandler> m_MsgSender;
 
     MP4Encoder m_Mp4Encoder;
+
+    Runner m_Mp4RspRunner;
 };
 
 #endif

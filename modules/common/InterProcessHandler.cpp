@@ -85,14 +85,14 @@ void InterProcessHandler::SetMsgOfReceivedHandler(InterPsMsgHandler ipmsghdr)
     m_IpMsgHdr = ipmsghdr;
 }
 
-void InterProcessHandler::RunReceivedMsg()
+void InterProcessHandler::RunReceivedMsg(const bool isWaitRunFinished)
 {
     if (RECEIVE_MODE == m_uiMode)
     {
         m_MsgHandleRunner.Run(false);
         
         m_ReceiveMsgRunner.Post(boost::bind(&InterProcessHandler::ReceiveMsg, this));
-        m_ReceiveMsgRunner.Run(true);
+        m_ReceiveMsgRunner.Run(isWaitRunFinished);
     }
 }
 

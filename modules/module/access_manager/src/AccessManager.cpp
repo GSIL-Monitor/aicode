@@ -1,3 +1,4 @@
+#include "InterProcessHandler.h"
 #include <map>
 #include "AccessManager.h"
 #include <boost/scope_exit.hpp>
@@ -11,6 +12,7 @@
 #include "P2PServerManager_LT.h"
 #include "HttpClient.h"
 
+
 const std::string AccessManager::MAX_DATE = "2199-01-01 00:00:00";
 
 const std::string AccessManager::ANDROID_APP = "Android_App";
@@ -22,9 +24,60 @@ const std::string AccessManager::OFFLINE = "offline";
 
 AccessManager::AccessManager(const ParamInfo &pinfo) : m_ParamInfo(pinfo), m_DBRuner(1), m_pProtoHandler(new InteractiveProtoHandler),
 m_pMysql(new MysqlImpl), m_DBCache(m_pMysql), m_uiMsgSeq(0), m_pClusterAccessCollector(new ClusterAccessCollector(&m_SessionMgr, m_pMysql, &m_DBCache)),
-m_DBTimer(NULL, 600), m_ulTimerTimes(0)
+m_DBTimer(NULL, 600), m_ulTimerTimes(0), m_EventFileProcessRunner(1),
+m_MsgSender(new InterProcessHandler(InterProcessHandler::SEND_MODE, "mp4_req")),
+m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_rsp"))
 {
-    
+    auto ReceivedHandler = [&](const std::string &strMsg) ->void
+    {
+        Json::Reader reader;
+        Json::Value root;
+
+        if (!reader.parse(strMsg, root))
+        {
+            LOG_ERROR_RLD("Receive file info failed, parse http post response data error, raw data is : " << strMsg);
+            return;
+        }
+
+        if (!root.isObject())
+        {
+            LOG_ERROR_RLD("Receive file info failed, parse http post response data error, raw data is : " << strMsg);
+            return;
+        }
+
+        auto jsFileid = root["fileid"];
+        if (jsFileid.isNull() || !jsFileid.isString() ||  jsFileid.asString().empty())
+        {
+            LOG_ERROR_RLD("Receive file info failed, http post return error, raw data is: " << strMsg);
+            return;
+        }
+
+        auto jsEventid = root["eventid"];
+        if (jsEventid.isNull() || !jsEventid.isString() || jsEventid.asString().empty())
+        {
+            LOG_ERROR_RLD("Receive file info failed, http post return error, raw data is: " << strMsg);
+            return;
+        }
+
+        //更新事件记录中的文件ID字段
+        const std::string &strFileIDOfMp4 = jsFileid.asString() + ".mp4";
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "update t_device_event_info set  fileid = '%s' where eventid = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), jsEventid.asString().c_str());
+
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("Update device event error, sql is " << sql);
+            return;
+        }
+
+        //删除无用的原始文件
+        bool blRet = RemoveRemoteFile(jsFileid.asString());
+
+        LOG_INFO_RLD("Receive msg of file processed and remove original file " << jsFileid.asString() << " and result is " << blRet);
+    };
+
+    m_MsgReceiver->SetMsgOfReceivedHandler(ReceivedHandler);
 }
 
 AccessManager::~AccessManager()
@@ -35,6 +88,8 @@ AccessManager::~AccessManager()
 
     m_DBRuner.Stop();
 
+    m_EventFileProcessRunner.Stop();
+        
     delete m_pMysql;
     m_pMysql = NULL;
 
@@ -97,6 +152,10 @@ bool AccessManager::Init()
     m_DBRuner.Run();
 
     m_SessionMgr.Run();
+
+    m_EventFileProcessRunner.Run();
+
+    m_MsgReceiver->RunReceivedMsg();
 
     LOG_INFO_RLD("UserManager init success");
 
@@ -358,9 +417,7 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
 
     std::list<InteractiveProtoHandler::Relation> relationList;
     std::list<std::string> strDevNameList;
-	unsigned int uiAppType;
-	m_SessionMgr.GetSessionLoginType(UnRegUsrReq.m_strSID, uiAppType);
-    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList, uiAppType))
+    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList, 9))
     {
         LOG_ERROR_RLD("Unregister user failed, query usr device realtion error, user id is " << UnRegUsrReq.m_userInfo.m_strUserID);
         return false;
@@ -5271,7 +5328,7 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
     const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, dev.devicename, rel.devicename"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
         " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiAppType);
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
 	if (uiAppType != 9)
 	{
@@ -7511,6 +7568,13 @@ void AccessManager::InsertDeviceEventReportToDB(const std::string &strEventID, c
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("InsertDeviceEventReportToDB exec sql error, sql is " << sql);
+        return;
+    }
+
+    //当文件ID不为空的时候，需要将对应的文件转换为mp4文件，目前暂不区分其它处理方式
+    if (!strFileID.empty())
+    {
+        m_EventFileProcessRunner.Post(boost::bind(&AccessManager::FileProcessHandler, this, strEventID, strFileID));
     }
 }
 
@@ -8035,4 +8099,77 @@ void AccessManager::UpdateDeviceEventStoredTime()
     {
         LOG_ERROR_RLD("UpdateDeviceEventStoredTime exec sql error, sql is " << sql);
     }
+}
+
+void AccessManager::FileProcessHandler(const std::string &strEventID, const std::string &strFileID)
+{
+    //查询文件id对应的本地路径
+    std::map<std::string, std::string> reqFormMap;
+    reqFormMap.insert(std::make_pair("fileid", strFileID));
+
+    std::string strRsp;
+    std::string strUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) + "query_file";
+    HttpClient httpClient;
+    if (CURLE_OK != httpClient.PostForm(strUrl, reqFormMap, strRsp))
+    {
+        LOG_ERROR_RLD("Query file info send http post failed, url is " << strUrl << " and file id is " << strFileID);
+        return;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strRsp, root))
+    {
+        LOG_ERROR_RLD("Query file info failed, parse http post response data error, raw data is : " << strRsp);
+        return;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Query file info failed, parse http post response data error, raw data is : " << strRsp);
+        return;
+    }
+
+    auto retcode = root["retcode"];
+    if (retcode.isNull() || !retcode.isString() || "0" != retcode.asString())
+    {
+        LOG_ERROR_RLD("Query file info failed, http post return error, raw data is: " << strRsp);
+        return;
+    }
+
+    auto jsLocalPath = root["localpath"];
+    if (jsLocalPath.isNull() || !jsLocalPath.isString() || jsLocalPath.asString().empty())
+    {
+        LOG_ERROR_RLD("Query file info failed, http post return error, raw data is: " << strRsp);
+        return;
+    }
+
+    Json::Value jsBody;
+    jsBody["localpath"] = jsLocalPath.asString();
+    jsBody["fileid"] = strFileID;
+    jsBody["eventid"] = strEventID;
+    
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+    LOG_INFO_RLD("File id of event is " << strFileID << " and event id is " << strEventID << " and file local path is " << jsLocalPath.asString()
+        << " and send file handler process msg is " << strBody);
+
+    m_MsgSender->SendMsg(strBody);
+
+    ////更新事件记录中的文件ID字段
+    //std::string strFileIDOfMp4 = strFileID + ".mp4";
+    //char sql[1024] = { 0 };
+    //const char *sqlfmt = "update t_device_event_info set  fileid = '%s' where eventid = '%s'";
+    //snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), strEventID.c_str());
+
+    //if (!m_pMysql->QueryExec(std::string(sql)))
+    //{
+    //    LOG_ERROR_RLD("Update device event error, sql is " << sql);
+    //    return;
+    //}
+    //
+    ////删除无用的原始文件
+    //RemoveRemoteFile(strFileID);
 }
