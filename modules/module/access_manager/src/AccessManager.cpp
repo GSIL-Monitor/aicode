@@ -7816,6 +7816,12 @@ void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID,
 
 bool AccessManager::RemoveRemoteFile(const std::string &strFileID)
 {
+    if (strFileID.empty())
+    {
+        LOG_INFO_RLD("RemoveRemoteFile completed, file id is empty");
+        return true;
+    }
+
     std::map<std::string, std::string> reqFormMap;
     reqFormMap.insert(std::make_pair("fileid", strFileID));
 
