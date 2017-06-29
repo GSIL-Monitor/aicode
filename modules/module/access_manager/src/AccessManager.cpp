@@ -45,6 +45,19 @@ m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_rs
             return;
         }
 
+        auto jsRet = root["retcode"];
+        if (jsRet.isNull() || !jsRet.isString() || jsRet.asString().empty())
+        {
+            LOG_ERROR_RLD("Receive file info failed, http post return error, raw data is: " << strMsg);
+            return;
+        }
+
+        if (jsRet.asString() != "0")
+        {
+            LOG_ERROR_RLD("Receive file process result failed and return code is " << jsRet.asString());
+            return;
+        }
+
         auto jsFileid = root["fileid"];
         if (jsFileid.isNull() || !jsFileid.isString() ||  jsFileid.asString().empty())
         {
@@ -60,7 +73,7 @@ m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_rs
         }
 
         //更新事件记录中的文件ID字段
-        const std::string &strFileIDOfMp4 = jsFileid.asString() + ".mp4";
+        const std::string &strFileIDOfMp4 = jsFileid.asString(); //jsFileid.asString() + ".mp4";
         char sql[1024] = { 0 };
         const char *sqlfmt = "update t_device_event_info set  fileid = '%s' where eventid = '%s'";
         snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), jsEventid.asString().c_str());
