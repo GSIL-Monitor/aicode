@@ -16,10 +16,8 @@ public:
 
     static const int MAX_BUFFER_SIZE = 500 * 1024;
 
-    Mp4FileHandler(const unsigned int uiRunTdNum);
+    Mp4FileHandler();
     ~Mp4FileHandler();
-
-    void Run();
 
     struct VideoInfo
     {
@@ -42,9 +40,10 @@ public:
         unsigned int uiPacketSize;
         //char reserved[4];
     };
+    
+    void Mp4MsgHandler(const std::string &strMsg, std::string &strResult);
 
 private:
-    void Mp4MsgHandler(const std::string &strMsg);
 
     bool SeparateVideoAndAudioFile(const std::string &strFilePath, std::string &strVideoPath, std::string &strAudioPath);
 
@@ -59,7 +58,27 @@ private:
 
     MP4Encoder m_mp4Encoder;
     MP4Converter m_mp4Converter;
-    Runner m_Mp4RspRunner;
+};
+
+class FileHdrEx
+{
+public:
+    FileHdrEx(const unsigned int uiRunTdNum);
+    ~FileHdrEx();
+
+    typedef boost::function<void(const std::string &)> MsgHdr;
+
+    void Run();
+
+    void SetMsgOfReceivedHandler(MsgHdr msghdr);
+
+private:
+
+    void MsgHandler(const std::string &strMsg);
+
+    boost::shared_ptr<InterProcessHandler> m_MsgReceiver;
+    boost::shared_ptr<InterProcessHandler> m_MsgSender;
+
 };
 
 #endif

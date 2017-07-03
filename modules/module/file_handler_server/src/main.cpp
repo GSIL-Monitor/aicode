@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
     
     ////////////////////////////////////////////////////////////////////////////
 
-    Mp4FileHandler mp4hdr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
+    FileHdrEx mp4hdr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     mp4hdr.Run();
 
 

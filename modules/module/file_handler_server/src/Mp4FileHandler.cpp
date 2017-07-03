@@ -5,21 +5,14 @@
 #include "json/json.h"
 #include <arpa/inet.h>
 
-Mp4FileHandler::Mp4FileHandler(const unsigned int uiRunTdNum) :
-    m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_req", uiRunTdNum)),
-    m_MsgSender(new InterProcessHandler(InterProcessHandler::SEND_MODE, "mp4_rsp")),
-    m_Mp4RspRunner(1)
+Mp4FileHandler::Mp4FileHandler() 
 {
-    m_MsgReceiver->SetMsgOfReceivedHandler(boost::bind(&Mp4FileHandler::Mp4MsgHandler, this, _1));
-
     m_cBuffer = new unsigned char[MAX_BUFFER_SIZE];
     memset(m_cBuffer, 0, MAX_BUFFER_SIZE);
 }
 
 Mp4FileHandler::~Mp4FileHandler()
 {
-    m_Mp4RspRunner.Stop();
-
     if (m_cBuffer != NULL)
     {
         delete m_cBuffer;
@@ -27,13 +20,7 @@ Mp4FileHandler::~Mp4FileHandler()
     }
 }
 
-void Mp4FileHandler::Run()
-{
-    m_Mp4RspRunner.Run();
-    m_MsgReceiver->RunReceivedMsg(true);
-}
-
-void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg)
+void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strResult)
 {
     LOG_INFO_RLD("Mp4 file msg is " << strMsg);
 
@@ -48,7 +35,7 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg)
     Json::Value eventid;
     Json::Value path;
 
-    BOOST_SCOPE_EXIT(&blResult, &m_MsgSender, &fileid, &eventid, &strVideoPath, &strAudioPath)
+    BOOST_SCOPE_EXIT(&blResult, &fileid, &eventid, &strVideoPath, &strAudioPath, &strResult)
     {
         std::string strRsp;
         Json::Value jsBody;
@@ -69,8 +56,7 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg)
         remove(strVideoPath.c_str());
         remove(strAudioPath.c_str());
 
-        m_MsgSender->SendMsg(strRsp);
-        //m_Mp4RspRunner.Post(boost::bind(&InterProcessHandler::SendMsg, m_MsgSender, strBody));
+        strResult = strRsp;
     }
     BOOST_SCOPE_EXIT_END
 
@@ -233,4 +219,38 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
     }
 
     return true;
+}
+
+FileHdrEx::FileHdrEx(const unsigned int uiRunTdNum) :
+m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_req", uiRunTdNum)),
+m_MsgSender(new InterProcessHandler(InterProcessHandler::SEND_MODE, "mp4_rsp"))
+{
+    m_MsgReceiver->SetMsgOfReceivedHandler(boost::bind(&FileHdrEx::MsgHandler, this, _1));
+
+}
+
+FileHdrEx::~FileHdrEx()
+{
+
+}
+
+void FileHdrEx::Run()
+{
+    m_MsgReceiver->RunReceivedMsg(true);
+}
+
+void FileHdrEx::MsgHandler(const std::string &strMsg)
+{
+    Mp4FileHandler mp4hdr;
+    std::string strResult;
+    mp4hdr.Mp4MsgHandler(strMsg, strResult);
+
+    if (strResult.empty())
+    {
+        LOG_ERROR_RLD("Mp4 file handler failed and source msg is " << strMsg);
+        return;
+    }
+
+    m_MsgSender->SendMsg(strResult);
+
 }
