@@ -110,6 +110,16 @@ AccessManager::~AccessManager()
 
 bool AccessManager::Init()
 {
+    bool blMsgSenderInit = m_MsgSender->Init();
+    bool blMsgReceiverInit = m_MsgReceiver->Init();
+
+    LOG_INFO_RLD("Msg sender init is " << blMsgSenderInit << " receiver init is " << blMsgReceiverInit);
+
+    if (!blMsgReceiverInit || !blMsgSenderInit)
+    {
+        return false;
+    }
+
     if (!m_pMysql->Init(m_ParamInfo.m_strDBHost.c_str(), m_ParamInfo.m_strDBUser.c_str(), m_ParamInfo.m_strDBPassword.c_str(), m_ParamInfo.m_strDBName.c_str()))
     {
         LOG_ERROR_RLD("Init db failed, db host is " << m_ParamInfo.m_strDBHost << " db user is " << m_ParamInfo.m_strDBUser << " db pwd is " <<

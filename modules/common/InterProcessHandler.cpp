@@ -11,10 +11,6 @@ InterProcessHandler::InterProcessHandler(const unsigned int uiMode, const std::s
 m_strID(strID), m_strMutexID(strID + "_mutex"), m_strCondID(strID + "_cond"), m_uiMemSize(uiMemSize), m_uiRunTdNum(uiRunTdNum),
 m_MsgHandleRunner(uiRunTdNum), m_ReceiveMsgRunner(1), m_uiMode(uiMode), m_uiReceiveMsgFlag(1)
 {
-    m_pMsgMem.reset(new boost::interprocess::managed_shared_memory(boost::interprocess::open_or_create, m_strID.c_str(), uiMemSize));
-    m_pMsgMemMutex.reset(new boost::interprocess::named_mutex(boost::interprocess::open_or_create, m_strMutexID.c_str()));
-    m_pMsgMemCond.reset(new boost::interprocess::named_condition(boost::interprocess::open_or_create, m_strCondID.c_str()));
-
 }
 
 InterProcessHandler::~InterProcessHandler()
@@ -35,8 +31,34 @@ InterProcessHandler::~InterProcessHandler()
     
 }
 
+bool InterProcessHandler::Init()
+{
+    try
+    {
+        m_pMsgMem.reset(new boost::interprocess::shared_memory_object(boost::interprocess::open_or_create, m_strID.c_str(), boost::interprocess::read_write));
+        m_pMsgMem->truncate(m_uiMemSize);
+        m_pMsgMemRegion.reset(new boost::interprocess::mapped_region(*m_pMsgMem, boost::interprocess::read_write));
+
+        m_pMsgMemMutex.reset(new boost::interprocess::named_mutex(boost::interprocess::open_or_create, m_strMutexID.c_str()));
+        m_pMsgMemCond.reset(new boost::interprocess::named_condition(boost::interprocess::open_or_create, m_strCondID.c_str()));
+    }
+    catch (boost::interprocess::interprocess_exception &e)
+    {
+        LOG_ERROR_RLD("InterProcessHandler init failed and exception is " << e.what());
+        return false;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("InterProcessHandler init failed and unknown error occur");
+        return false;
+    }
+    return true;
+}
+
 bool InterProcessHandler::SendMsg(const std::string &strMsg)
 {
+    boost::unique_lock<boost::mutex> Sendlock(m_SendMutex);
+
     if (SEND_MODE != m_uiMode)
     {
         LOG_ERROR_RLD("Current mode is not send mode and mode is " << m_uiMode);
@@ -45,32 +67,21 @@ bool InterProcessHandler::SendMsg(const std::string &strMsg)
 
     boost::interprocess::scoped_lock<boost::interprocess::named_mutex> lock(*m_pMsgMemMutex);
 
-    StdString *pStrMsg = NULL;
-    try
+    if (strMsg.size() > m_uiMemSize)
     {
-        pStrMsg = m_pMsgMem->find_or_construct<StdString>("String")(strMsg.c_str(), m_pMsgMem->get_segment_manager());
-    }
-    catch (boost::interprocess::bad_alloc &ex)
-    {
-        LOG_ERROR_RLD("Send interprocess msg failed and error is " << ex.what() << " and msg is " << strMsg);
-        return false;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Send interprocess msg failed and msg is " << strMsg);
+        LOG_ERROR_RLD("Msg size of send is too large and msg size is " << strMsg.size() << " and mem size is " << m_uiMemSize);
         return false;
     }
 
-    if (NULL == pStrMsg)
-    {
-        LOG_ERROR_RLD("Get string from shared mem failed");
-        return false;
-    }
+    unsigned int *pMsgLen = static_cast<unsigned int*>(m_pMsgMemRegion->get_address());
+    *pMsgLen = strMsg.size();
 
-    pStrMsg->clear();
-    pStrMsg->assign(strMsg.data(), strMsg.size());
+    char *pMsgContent = static_cast<char *>(m_pMsgMemRegion->get_address());
+    pMsgContent += sizeof(unsigned int);
 
-    LOG_INFO_RLD("Send interprocess msg is " << *pStrMsg);
+    memcpy(pMsgContent, strMsg.data(), strMsg.size());
+        
+    LOG_INFO_RLD("Send interprocess msg is " << strMsg);
 
     m_pMsgMemCond->notify_all();
     m_pMsgMemCond->wait(lock);
@@ -110,42 +121,28 @@ void InterProcessHandler::MsgHandler(const std::string &strMsg)
 
 void InterProcessHandler::ReceiveMsg()
 {
+    bool blFirst = true;
     while (m_uiReceiveMsgFlag)
     {
         boost::interprocess::scoped_lock<boost::interprocess::named_mutex> lock(*m_pMsgMemMutex);
 
-        StdString *pStrMsg = NULL;
-        try
+        if (blFirst)
         {
-            pStrMsg = m_pMsgMem->find_or_construct<StdString>("String")("empty", m_pMsgMem->get_segment_manager());
-        }
-        catch (boost::interprocess::bad_alloc &ex)
-        {
-            LOG_ERROR_RLD("Send interprocess msg failed and error is " << ex.what());
-            return;
-        }
-        catch (...)
-        {
-            LOG_ERROR_RLD("Send interprocess msg failed");
-            return;
-        }
+            blFirst = false;
 
-        if (NULL == pStrMsg)
-        {
-            LOG_ERROR_RLD("Get string from shared mem failed");
-            return;
-        }
-
-        if (*pStrMsg == "empty")
-        {
-            LOG_INFO_RLD("Receive interprocess msg is empty");
+            LOG_INFO_RLD("Receive interprocess msg is begin");
 
             m_pMsgMemCond->notify_all();
             m_pMsgMemCond->wait(lock);
             continue;
         }
 
-        std::string strMsgReceived(pStrMsg->c_str(), pStrMsg->size());
+        unsigned int *pMsgLen = static_cast<unsigned int*>(m_pMsgMemRegion->get_address());
+        
+        char *pMsgContentSrc = static_cast<char *>(m_pMsgMemRegion->get_address());
+        pMsgContentSrc += sizeof(unsigned int);
+
+        std::string strMsgReceived(pMsgContentSrc, *pMsgLen);
         
         LOG_INFO_RLD("Receive interprocess msg is " << strMsgReceived);
 

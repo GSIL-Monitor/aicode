@@ -182,6 +182,13 @@ int main(int argc, char* argv[])
     ////////////////////////////////////////////////////////////////////////////
 
     FileHdrEx mp4hdr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
+
+    if (!mp4hdr.Init())
+    {
+        LOG_ERROR_RLD("File hander init failed.");
+        return 0;
+    }
+
     mp4hdr.Run();
 
 

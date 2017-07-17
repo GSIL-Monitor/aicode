@@ -68,6 +68,8 @@ public:
 
     typedef boost::function<void(const std::string &)> MsgHdr;
 
+    bool Init();
+
     void Run();
 
     void SetMsgOfReceivedHandler(MsgHdr msghdr);

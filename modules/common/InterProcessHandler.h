@@ -1,6 +1,8 @@
 #ifndef __INTER_PROCESS_HANDLER__
 #define __INTER_PROCESS_HANDLER__
 #include <string>
+#include <boost/interprocess/shared_memory_object.hpp>
+#include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp> 
 #include <boost/interprocess/sync/named_mutex.hpp> 
 #include <boost/interprocess/sync/named_condition.hpp> 
@@ -19,6 +21,8 @@ public:
 
     InterProcessHandler(const unsigned int uiMode, const std::string &strID, const unsigned int uiRunTdNum = 2, const unsigned int uiMemSize = 4096);
     ~InterProcessHandler();
+
+    bool Init();
     
     bool SendMsg(const std::string &strMsg);
 
@@ -39,7 +43,8 @@ private:
 
     InterPsMsgHandler m_IpMsgHdr;
     
-    boost::shared_ptr<boost::interprocess::managed_shared_memory> m_pMsgMem;
+    boost::shared_ptr<boost::interprocess::shared_memory_object> m_pMsgMem;
+    boost::shared_ptr<boost::interprocess::mapped_region> m_pMsgMemRegion;
     boost::shared_ptr<boost::interprocess::named_mutex> m_pMsgMemMutex;
     boost::shared_ptr<boost::interprocess::named_condition> m_pMsgMemCond;
 
@@ -50,6 +55,9 @@ private:
     unsigned int m_uiMode;
 
     boost::atomic_uint32_t m_uiReceiveMsgFlag;
+
+    boost::mutex m_SendMutex;
+
 };
 
 #endif

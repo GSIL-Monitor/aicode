@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include <arpa/inet.h>
 
-Mp4FileHandler::Mp4FileHandler() 
+Mp4FileHandler::Mp4FileHandler()
 {
     m_cBuffer = new unsigned char[MAX_BUFFER_SIZE];
     memset(m_cBuffer, 0, MAX_BUFFER_SIZE);
@@ -60,11 +60,11 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strRe
     }
     BOOST_SCOPE_EXIT_END
 
-        if (!reader.parse(strMsg, root))
-        {
-            LOG_ERROR_RLD("Mp4MsgHandler failed, parse receive message error, raw message is : " << strMsg);
-            return;
-        }
+    if (!reader.parse(strMsg, root))
+    {
+        LOG_ERROR_RLD("Mp4MsgHandler failed, parse receive message error, raw message is : " << strMsg);
+        return;
+    }
 
     fileid = root["fileid"];
     if (fileid.isNull() || !fileid.isString() || fileid.asString().empty())
@@ -137,11 +137,11 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
     }
     BOOST_SCOPE_EXIT_END
 
-        if ((mixedFd = fopen(strFilePath.c_str(), "rb")) == NULL)
-        {
-            LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, can not open input mixed file, path is " << strFilePath);
-            return false;
-        }
+    if ((mixedFd = fopen(strFilePath.c_str(), "rb")) == NULL)
+    {
+        LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, can not open input mixed file, path is " << strFilePath);
+        return false;
+    }
 
     std::string strTmp(strFilePath);
     std::string::size_type pos = strTmp.find_last_of("/");
@@ -149,14 +149,14 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
     std::string strPath = strTmp.erase(pos + 1);
 
     strVideoPath = strPath + "video_" + strFile;
-    if ((videoFd = fopen(strTmp.c_str(), "wb")) == NULL)
+    if ((videoFd = fopen(strVideoPath.c_str(), "wb")) == NULL)
     {
         LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, can not open video file, path is " << strVideoPath);
         return false;
     }
 
     strAudioPath = strPath + "audio_" + strFile;
-    if ((audioFd = fopen(strTmp.c_str(), "wb")) == NULL)
+    if ((audioFd = fopen(strAudioPath.c_str(), "wb")) == NULL)
     {
         LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, can not open audio file, path is " << strAudioPath);
         return false;
@@ -165,6 +165,7 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
     unsigned char frameType;
     while (fread(&frameType, sizeof(frameType), 1, mixedFd) == 1)
     {
+        LOG_INFO_RLD("---debug, frame type: " << frameType);
         if (frameType == VIDEO_IFRAME || frameType == VIDEO_PFRAME)
         {
             memset(&m_videoInfo, 0, sizeof(VideoInfo));
@@ -174,10 +175,18 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
                 LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, read frame info error");
                 return false;
             }
+            LOG_INFO_RLD("---debug, video info, frame rate: " << m_videoInfo.ucFrameRate <<
+                ", video code: " << m_videoInfo.ucVideoCode <<
+                ", packet size: " << m_videoInfo.uiPacketSize <<
+                ", video height: " << m_videoInfo.usVideoHeight <<
+                ", video width: " << m_videoInfo.usVideoWidth);
 
             unsigned int len = ntohl(m_videoInfo.uiPacketSize);
-            if (fread(m_cBuffer, sizeof(char), len, mixedFd) != len)
+            LOG_INFO_RLD("---debug, len: " << len);
+            size_t readlen = 0;
+            if ((readlen = fread(m_cBuffer, sizeof(char), len, mixedFd)) != len)
             {
+                LOG_INFO_RLD("---debug, read len: " << readlen);
                 LOG_ERROR_RLD("SeparateVideoAndAudioFile failed, read frame data error");
                 return false;
             }
@@ -197,10 +206,17 @@ bool Mp4FileHandler::SeparateVideoAndAudioFile(const std::string &strFilePath, s
                 LOG_ERROR_RLD("SeparateAudioAndAudioFile failed, read frame info error");
                 return false;
             }
+            LOG_INFO_RLD("---debug, video info, audio code: " << m_audioInfo.ucAudioCode <<
+                ", bit rate: " << m_audioInfo.ucBitRate <<
+                ", sample rate: " << m_audioInfo.ucSampleRate <<
+                ", packet size: " << m_audioInfo.uiPacketSize);
 
             unsigned int len = ntohl(m_audioInfo.uiPacketSize);
-            if (fread(m_cBuffer, sizeof(char), len, mixedFd) != len)
+            LOG_INFO_RLD("---debug, len: " << len);
+            size_t readlen = 0;
+            if ((readlen = fread(m_cBuffer, sizeof(char), len, mixedFd)) != len)
             {
+                LOG_INFO_RLD("---debug, read len: " << readlen);
                 LOG_ERROR_RLD("SeparateAudioAndAudioFile failed, read frame data error");
                 return false;
             }
@@ -232,6 +248,21 @@ m_MsgSender(new InterProcessHandler(InterProcessHandler::SEND_MODE, "mp4_rsp"))
 FileHdrEx::~FileHdrEx()
 {
 
+}
+
+bool FileHdrEx::Init()
+{
+    bool blMsgSenderInit = m_MsgSender->Init();
+    bool blMsgReceiverInit = m_MsgReceiver->Init();
+
+    LOG_INFO_RLD("Msg sender init is " << blMsgSenderInit << " receiver init is " << blMsgReceiverInit);
+
+    if (!blMsgReceiverInit || !blMsgSenderInit)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void FileHdrEx::Run()
