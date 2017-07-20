@@ -85,9 +85,9 @@ m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_rs
         }
 
         //删除无用的原始文件
-        bool blRet = RemoveRemoteFile(jsFileid.asString());
+        //bool blRet = RemoveRemoteFile(jsFileid.asString());
 
-        LOG_INFO_RLD("Receive msg of file processed and remove original file " << jsFileid.asString() << " and result is " << blRet);
+        //LOG_INFO_RLD("Receive msg of file processed and remove original file " << jsFileid.asString() << " and result is " << blRet);
     };
 
     m_MsgReceiver->SetMsgOfReceivedHandler(ReceivedHandler);
@@ -160,10 +160,11 @@ bool AccessManager::Init()
             LOG_INFO_RLD("Refresh access domain name successful");
         }
 
-        if (m_ulTimerTimes > 0 && m_ulTimerTimes++ % 6 == 0)  //每隔一小时执行一次
+        if (m_ulTimerTimes > 0 && m_ulTimerTimes % 6 == 0)  //每隔一小时执行一次
         {
             UpdateDeviceEventStoredTime();
         }
+        ++m_ulTimerTimes;
     };
 
     m_DBTimer.SetTimeOutCallBack(TmFunc);
@@ -5013,7 +5014,7 @@ bool AccessManager::DeleteUpgradeFile(const std::string &strCategory, const std:
     std::map<std::string, std::string> reqFormMap;
     reqFormMap.insert(std::make_pair("fileid", strFileID));
 
-    std::string strUrl = strFilePath.substr(0, strFilePath.find_first_of("?") + 1) + "action=delete_file";
+    std::string strUrl = strFilePath.substr(0, strFilePath.find_first_of('?') + 1) + "action=delete_file";
 
     std::string strRsp;
     HttpClient httpClient;

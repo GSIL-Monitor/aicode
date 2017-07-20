@@ -2,8 +2,6 @@
 #define __MP4_FILE_HANDLER__
 
 #include "NetComm.h"
-#include "MP4Encoder.h"
-#include "MP4Converter.h"
 
 class InterProcessHandler;
 
@@ -21,33 +19,33 @@ public:
 
     struct VideoInfo
     {
-        //unsigned char ucFrameType;
+        unsigned char ucFrameType;
         unsigned char ucVideoCode;
         unsigned char ucFrameRate;
-        //char reserved1;
+        char reserved;
         unsigned short usVideoWidth;
         unsigned short usVideoHeight;
+        unsigned int uiTimestamp;
         unsigned int uiPacketSize;
-        //char reserved2[4];
+        char reserved2[4];
     };
 
     struct AudioInfo
     {
-        //unsigned char ucFrameType;
+        unsigned char ucFrameType;
         unsigned char ucAudioCode;
         unsigned char ucSampleRate;
         unsigned char ucBitRate;
+        unsigned int uiTimestamp;
         unsigned int uiPacketSize;
-        //char reserved[4];
+        char reserved[4];
     };
-    
+
     void Mp4MsgHandler(const std::string &strMsg, std::string &strResult);
 
 private:
-
     bool SeparateVideoAndAudioFile(const std::string &strFilePath, std::string &strVideoPath, std::string &strAudioPath);
 
-private:
     boost::shared_ptr<InterProcessHandler> m_MsgReceiver;
     boost::shared_ptr<InterProcessHandler> m_MsgSender;
 
@@ -55,9 +53,6 @@ private:
 
     VideoInfo m_videoInfo;
     AudioInfo m_audioInfo;
-
-    MP4Encoder m_mp4Encoder;
-    MP4Converter m_mp4Converter;
 };
 
 class FileHdrEx
