@@ -76,6 +76,7 @@ public:
     static const std::string DEVICE_EVENT_REPORT_ACTION;
     static const std::string QUERY_DEVICE_EVENT_ACTION;
     static const std::string DELETE_DEVICE_EVENT_ACTION;
+    static const std::string MODIFY_DEVICE_EVENT_ACTION;
 
     static const std::string ADD_USER_SPACE_ACTION;
     static const std::string DELETE_USER_SPACE_ACTION;
@@ -193,6 +194,8 @@ public:
     bool QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool AddUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -443,6 +446,8 @@ private:
         const unsigned int uiView, const unsigned int uiBeginIndex, const std::string &strBeginDate, const std::string &strEndDate, std::list<Event> &evlist);
 
     bool DeleteDeviceEvent(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strEventID);
+
+    bool ModifyDeviceEvent(const std::string &strSid, const Event &ev);
 
     bool AddUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif);
 

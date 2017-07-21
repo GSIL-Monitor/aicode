@@ -279,10 +279,10 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    const std::string &strUploadURL = GetConfig("General.UploadURL");
-    if (strUploadURL.empty())
+    const std::string &strFileServerURL = GetConfig("General.FileServerURL");
+    if (strFileServerURL.empty())
     {
-        LOG_ERROR_RLD("UploadURL config item not found.");
+        LOG_ERROR_RLD("FileServerURL config item not found.");
         return 0;
     }
 
@@ -340,7 +340,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strDevSessionTimeoutCountThreshold = strDevSessionTimeoutCountThreshold;
     UmgParam.m_strLTUserSite = strLTUserSite;
     UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
-    UmgParam.m_strUploadURL = strUploadURL;
+    UmgParam.m_strFileServerURL = strFileServerURL;
     UmgParam.m_strGetIpInfoSite = strGetIpInfoSite;
     UmgParam.m_strMemAddressGlobal = strMemcachedAddressGlobal;
     UmgParam.m_strMemPortGlobal = strMemcachedPortGlobal;
@@ -419,6 +419,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeviceEventReportReq_DEV_T, boost::bind(&AccessManager::DeviceEventReportReqDevice, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllDeviceEventReq_USR_T, boost::bind(&AccessManager::QueryAllDeviceEventReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteDeviceEventReq_USR_T, boost::bind(&AccessManager::DeleteDeviceEventReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyDeviceEventReq_USR_T, boost::bind(&AccessManager::ModifyDeviceEventReqUser, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddStorageDetailReq_USR_T, boost::bind(&AccessManager::AddStorageDetailReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::DeleteStorageDetailReq_USR_T, boost::bind(&AccessManager::DeleteStorageDetailReqUser, &Umg, _1, _2, _3));

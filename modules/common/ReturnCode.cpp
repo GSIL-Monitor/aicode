@@ -22,6 +22,7 @@ const int ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER = 1010;         //╣╠г╟сц╩╖рял
 const int ReturnInfo::CLOUD_STORAGE_NOT_PAID_USER = 1011;          //сц╩╖н╢©╙м╗╦╤╥ятф╢Ф╢╒╥ЧнЯ
 const int ReturnInfo::UNDELETED_DEVICE_EXISTED_USER = 1012;        //сц╩╖хтспн╢и╬ЁЩ╣диХ╠╦
 const int ReturnInfo::ACCOUNT_LOGIN_AT_OTHER_TERMINAL = 1013;      //ук╩╖тзфДкШжу╤к╣гб╪
+const int ReturnInfo::SHARED_DEVICE_NOT_ADDED_BY_USER = 1014;      //иХ╠╦ипн╢╠╩сц╩╖лМ╪с
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //иХ╠╦╤Ч╪╤сРцШря╠╩й╧сц
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //иХ╠╦P2PIDря╠╩й╧сц

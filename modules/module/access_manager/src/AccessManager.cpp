@@ -1398,6 +1398,8 @@ bool AccessManager::QueryUserReq(const std::string &strMsg, const std::string &s
 
 bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
     bool blResult = false;
     InteractiveProtoHandler::SharingDevReq_USR req;
 
@@ -1408,7 +1410,7 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::SharingDevRsp_USR_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
 
@@ -1429,6 +1431,21 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
     if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
     {
         LOG_ERROR_RLD("Sharing device req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    std::string strUserID;
+    if (!QueryOwnerUserIDByDeviceID(req.m_relationInfo.m_strDevID, strUserID))
+    {
+        LOG_ERROR_RLD("Sharing device failed, query device owner error, src id is " << strSrcID);
+        return false;
+    }
+
+    if (strUserID.empty())
+    {
+        ReturnInfo::RetCode(ReturnInfo::SHARED_DEVICE_NOT_ADDED_BY_USER);
+
+        LOG_ERROR_RLD("Sharing device failed, the device is not added, src id is " << strSrcID);
         return false;
     }
 
@@ -3038,7 +3055,7 @@ bool AccessManager::QueryUploadURLReqMgr(const std::string &strMsg, const std::s
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-        rsp.m_strUploadURL = blResult ? m_ParamInfo.m_strUploadURL : "";
+        rsp.m_strUploadURL = blResult ? m_ParamInfo.m_strFileServerURL + "upload_file" : "";
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -3744,6 +3761,50 @@ bool AccessManager::DeleteDeviceEventReqUser(const std::string &strMsg, const st
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceEventToDB, this, req.m_strEventID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool AccessManager::ModifyDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::ModifyDeviceEventReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        InteractiveProtoHandler::ModifyDeviceEventRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDeviceEventRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify device event rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify device event rsp already send, dst id is " << strSrcID <<
+            " and event id is " << req.m_strEventID <<
+            " and event state is " << req.m_uiEventState);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify device event req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::ModifyDeviceEventToDB, this, req.m_strEventID,
+        req.m_uiEventState, req.m_strUpdateTime));
 
     blResult = true;
 
@@ -6112,6 +6173,12 @@ void AccessManager::SharingRelationToDB(const RelationOfUsrAndDev &relation)
         return;
     }
 
+    if (strUuid.empty())
+    {
+        LOG_ERROR_RLD("Query device key id failed, sql result is empty, device id is " << relation.m_strDevID);
+        return;
+    }
+
     InsertRelationToDB(strUuid, relation, strDeviceName);
 }
 
@@ -7669,13 +7736,8 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
             deviceEvent.m_uiEventState = boost::lexical_cast<unsigned int>(strColumn);
             break;
         case 5:
-        {
-            std::string strFullFileID = strColumn;
-            boost::replace_all(strFullFileID, "\\", "\\\\");
-            deviceEvent.m_strFileUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) +
-                "download_file&fileid=" + strFullFileID;
+            deviceEvent.m_strFileUrl = m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + strColumn;
             break;
-        }
         case 6:
             deviceEvent.m_strEventTime = strColumn;
             Result = deviceEvent;
@@ -7743,6 +7805,20 @@ void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("DeleteDeviceEventToDB exec sql failed, sql is " << sql);
+    }
+}
+
+void AccessManager::ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState,
+    const std::string &strUpdateTime)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "update t_device_event_info set eventstate = %d, createdate = '%s'"
+        " where eventid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, uiEventState, strUpdateTime.c_str(), strEventID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyDeviceEventToDB exec sql failed, sql is " << sql);
     }
 }
 
@@ -7837,7 +7913,7 @@ bool AccessManager::RemoveRemoteFile(const std::string &strFileID)
     reqFormMap.insert(std::make_pair("fileid", strFileID));
 
     std::string strRsp;
-    std::string strUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) + "delete_file";
+    std::string strUrl = m_ParamInfo.m_strFileServerURL + "delete_file";
     HttpClient httpClient;
     if (CURLE_OK != httpClient.PostForm(strUrl, reqFormMap, strRsp))
     {
@@ -8138,7 +8214,7 @@ void AccessManager::FileProcessHandler(const std::string &strEventID, const std:
     reqFormMap.insert(std::make_pair("fileid", strFileID));
 
     std::string strRsp;
-    std::string strUrl = m_ParamInfo.m_strUploadURL.substr(0, m_ParamInfo.m_strUploadURL.find("upload_file")) + "query_file";
+    std::string strUrl = m_ParamInfo.m_strFileServerURL + "query_file";
     HttpClient httpClient;
     if (CURLE_OK != httpClient.PostForm(strUrl, reqFormMap, strRsp))
     {

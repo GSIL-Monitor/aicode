@@ -111,6 +111,8 @@ const std::string HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION("device_event_query"
 
 const std::string HttpMsgHandler::DELETE_DEVICE_EVENT_ACTION("device_event_delete");
 
+const std::string HttpMsgHandler::MODIFY_DEVICE_EVENT_ACTION("modify_device_event");
+
 const std::string HttpMsgHandler::ADD_USER_SPACE_ACTION("add_user_space");
 
 const std::string HttpMsgHandler::DELETE_USER_SPACE_ACTION("delete_user_space");
@@ -5257,6 +5259,146 @@ bool HttpMsgHandler::DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
     return blResult;
 }
 
+bool HttpMsgHandler::ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    std::string strUserID;
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserID = itFind->second;
+    }
+    
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("event_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event id not found.");
+        return blResult;
+    }
+    const std::string strEventID = itFind->second;
+    
+    itFind = pMsgInfoMap->find("event_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event type not found.");
+        return blResult;
+    }
+
+    unsigned int uiEventType = 0;
+    try
+    {
+        uiEventType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device event report info of event type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device event report info of event type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("event_status");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event status not found.");
+        return blResult;
+    }
+
+    unsigned int uiEventStatus = 0;
+    try
+    {
+        uiEventStatus = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device event report info of event status is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device event report info of event status is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("event_time");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Event time not found.");
+        return blResult;
+    }
+    const std::string strEventTime = itFind->second;
+
+    if (!ValidDatetime(strEventTime))
+    {
+        LOG_ERROR_RLD("File begin date is invalid and input date is " << strEventTime);
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify device event info received and sid is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
+        << " and event id is " << strEventID << " and event type is " << uiEventType << " and event status is " << uiEventStatus << " and event time is " << strEventTime);
+
+    Event ev;
+    ev.m_strDevID = strDevID;
+    ev.m_strEventID = strEventID;
+    //ev.m_uiDevType = uiDevType;
+    ev.m_uiEventStatus = uiEventStatus;
+    ev.m_uiEventType = uiEventType;
+    //ev.m_strFileID = strFileid;
+    ev.m_strEventTime = strEventTime;
+    if (!ModifyDeviceEvent(strSid, ev))
+    {
+        LOG_ERROR_RLD("Modify device event report handle failed and device id is " << strDevID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool HttpMsgHandler::AddUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
@@ -8975,6 +9117,60 @@ bool HttpMsgHandler::DeleteDeviceEvent(const std::string &strSid, const std::str
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::ModifyDeviceEvent(const std::string &strSid, const Event &ev)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::ModifyDeviceEventReq_USR ModDevEventReportReq;
+        ModDevEventReportReq.m_MsgType = InteractiveProtoHandler::MsgType::ModifyDeviceEventReq_USR_T;
+        ModDevEventReportReq.m_uiMsgSeq = 1;
+        ModDevEventReportReq.m_strSID = strSid;
+        ModDevEventReportReq.m_strDeviceID = ev.m_strDevID;
+        ModDevEventReportReq.m_strEventID = ev.m_strEventID;
+        ModDevEventReportReq.m_uiEventState = ev.m_uiEventStatus;
+        ModDevEventReportReq.m_uiEventType = ev.m_uiEventType;
+        ModDevEventReportReq.m_strUpdateTime = ev.m_strEventTime;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModDevEventReportReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify device event report req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::ModifyDeviceEventRsp_USR ModDevEventReportRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModDevEventReportRsp))
+        {
+            LOG_ERROR_RLD("Modify device event report rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModDevEventReportRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify device event report info and device id is " << ev.m_strDevID << " and event id is " << ev.m_strDevID <<
+            " and return code is " << ModDevEventReportRsp.m_iRetcode <<
+            " and return msg is " << ModDevEventReportRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
 }
 
 bool HttpMsgHandler::AddUserSpace(const std::string &strSid, const std::string &strUserID, const SpaceInfo &stif)

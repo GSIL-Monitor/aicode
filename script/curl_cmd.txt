@@ -82,6 +82,9 @@ curl -F sid=C8F9B9EACF9B1F42922AAB33E687BCE8 -F userid=7588DCA8D6EC5D45AAE7CA3C3
 删除设备事件
 curl -F sid=C8F9B9EACF9B1F42922AAB33E687BCE8 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_device_001 -F event_id=3B5BF9E2AB59804AB332135545DF774C http://172.20.122.252/access.cgi?action=device_event_delete
 
+修改设备事件
+curl -F sid=C8F9B9EACF9B1F42922AAB33E687BCE8 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F devid=czy_device_001 -F event_id=E31FDD1987177446AB411E33CBF8D78E -F event_type=1 -F event_status=8 -F event_time="2017-07-21 14:35:30" http://172.20.122.252/access.cgi?action=modify_device_event
+
 增加用户空间
 curl -F sid=C8F9B9EACF9B1F42922AAB33E687BCE8 -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB -F storage_name=czy_space_01 -F overlap_type=1 -F storagetime_up_limit=30 -F begindate='2017-06-10 09:30:55' -F enddate='2017-08-10 18:50:35' http://172.20.122.252//access.cgi?action=add_user_space
 

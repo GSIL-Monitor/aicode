@@ -167,6 +167,8 @@ enum MsgType
   QueryAllDeviceEventRsp_USR_T = 20710;
   DeleteDeviceEventReq_USR_T = 20720;           //删除设备事件
   DeleteDeviceEventRsp_USR_T = 20730;
+  ModifyDeviceEventReq_USR_T = 20740;           //修改设备事件
+  ModifyDeviceEventRsp_USR_T = 20750;
 
   AddStorageDetailReq_USR_T = 20800;            //用户新增存储详情
   AddStorageDetailRsp_USR_T = 20810;
@@ -1033,6 +1035,21 @@ message DeleteDeviceEventRsp_USR                //删除设备事件响应
   string strValue = 1;
 }
 
+message ModifyDeviceEventReq_USR                //修改设备事件请求
+{
+  string strUserID = 1;
+  string strDeviceID = 2;
+  string strEventID = 3;
+  uint32 uiEventType = 4;
+  uint32 uiEventState = 5;
+  string strUpdateTime = 6;
+}
+
+message ModifyDeviceEventRsp_USR                //修改设备事件响应
+{
+  string strValue = 1;
+}
+
 message AddStorageDetailReq_USR                 //用户新增存储详情请求
 {
   StorageDetail storageDetail = 1;
@@ -1272,6 +1289,7 @@ message Req
 
   QueryAllDeviceEventReq_USR QueryAllDeviceEventReq_USR_Value = 400; //查看设备事件
   DeleteDeviceEventReq_USR DeleteDeviceEventReq_USR_Value = 410;     //删除设备事件
+  ModifyDeviceEventReq_USR ModifyDeviceEventReq_USR_Value = 420;     //删除设备事件
 
   AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;       //用户新增存储详情
   DeleteStorageDetailReq_USR DeleteStorageDetailReq_USR_Value = 710; //用户删除存储详情
@@ -1370,6 +1388,7 @@ message Rsp
 
   QueryAllDeviceEventRsp_USR QueryAllDeviceEventRsp_USR_Value = 500; //查看设备事件
   DeleteDeviceEventRsp_USR DeleteDeviceEventRsp_USR_Value = 510;     //删除设备事件
+  ModifyDeviceEventRsp_USR ModifyDeviceEventRsp_USR_Value = 520;     //修改设备事件
 
   AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;       //用户新增存储详情
   DeleteStorageDetailRsp_USR DeleteStorageDetailRsp_USR_Value = 710; //用户删除存储详情

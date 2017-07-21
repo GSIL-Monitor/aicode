@@ -1182,6 +1182,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     //////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyDeviceEventReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyDeviceEventReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyDeviceEventReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ModifyDeviceEventRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ModifyDeviceEventRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ModifyDeviceEventRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&InteractiveProtoHandler::AddStorageDetailReq_USR_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddStorageDetailReq_USR_UnSerializer, this, _1, _2);
 
@@ -2389,6 +2403,26 @@ bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_Serializer(const Req &rsp
 bool InteractiveProtoHandler::DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<DeleteDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::ModifyDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ModifyDeviceEventReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ModifyDeviceEventReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ModifyDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyDeviceEventRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ModifyDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ModifyDeviceEventRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 bool InteractiveProtoHandler::AddStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput)
@@ -4979,6 +5013,42 @@ void InteractiveProtoHandler::DeleteDeviceEventRsp_USR::Serializer(InteractiveMe
     Rsp::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::DeleteDeviceEventRsp_USR_T);
     InteractiveMsg.mutable_rspvalue()->mutable_deletedeviceeventrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::ModifyDeviceEventReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().struserid();
+    m_strDeviceID = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strdeviceid();
+    m_strEventID = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().streventid();
+    m_uiEventType = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uieventtype();
+    m_uiEventState = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uieventstate();
+    m_strUpdateTime = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strupdatetime();
+}
+
+void InteractiveProtoHandler::ModifyDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDeviceEventReq_USR_T);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_streventid(m_strEventID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uieventtype(m_uiEventType);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uieventstate(m_uiEventState);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strupdatetime(m_strUpdateTime);
+}
+
+void InteractiveProtoHandler::ModifyDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().modifydeviceeventrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::ModifyDeviceEventRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ModifyDeviceEventRsp_USR_T);
+    InteractiveMsg.mutable_rspvalue()->mutable_modifydeviceeventrsp_usr_value()->set_strvalue(m_strValue);
 }
 
 void InteractiveProtoHandler::AddStorageDetailReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

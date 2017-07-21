@@ -323,6 +323,8 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::DEVICE_EVENT_REPORT_ACTION, boost::bind(&HttpMsgHandler::DeviceEventReportHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceEventHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::DeleteDeviceEventHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::MODIFY_DEVICE_EVENT_ACTION, boost::bind(&HttpMsgHandler::ModifyDeviceEventHandler, &filehdr, _1, _2));
+
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::AddUserSpaceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::DeleteUserSpaceHandler, &filehdr, _1, _2));

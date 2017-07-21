@@ -230,6 +230,12 @@ extern ModifyDevReq_USRDefaultTypeInternal _ModifyDevReq_USR_default_instance_;
 class ModifyDevRsp_USR;
 class ModifyDevRsp_USRDefaultTypeInternal;
 extern ModifyDevRsp_USRDefaultTypeInternal _ModifyDevRsp_USR_default_instance_;
+class ModifyDeviceEventReq_USR;
+class ModifyDeviceEventReq_USRDefaultTypeInternal;
+extern ModifyDeviceEventReq_USRDefaultTypeInternal _ModifyDeviceEventReq_USR_default_instance_;
+class ModifyDeviceEventRsp_USR;
+class ModifyDeviceEventRsp_USRDefaultTypeInternal;
+extern ModifyDeviceEventRsp_USRDefaultTypeInternal _ModifyDeviceEventRsp_USR_default_instance_;
 class ModifyDevicePropertyReq_DEV;
 class ModifyDevicePropertyReq_DEVDefaultTypeInternal;
 extern ModifyDevicePropertyReq_DEVDefaultTypeInternal _ModifyDevicePropertyReq_DEV_default_instance_;
@@ -572,6 +578,8 @@ enum MsgType {
   QueryAllDeviceEventRsp_USR_T = 20710,
   DeleteDeviceEventReq_USR_T = 20720,
   DeleteDeviceEventRsp_USR_T = 20730,
+  ModifyDeviceEventReq_USR_T = 20740,
+  ModifyDeviceEventRsp_USR_T = 20750,
   AddStorageDetailReq_USR_T = 20800,
   AddStorageDetailRsp_USR_T = 20810,
   DeleteStorageDetailReq_USR_T = 20820,
@@ -13923,6 +13931,247 @@ class DeleteDeviceEventRsp_USR : public ::google::protobuf::Message /* @@protoc_
 };
 // -------------------------------------------------------------------
 
+class ModifyDeviceEventReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyDeviceEventReq_USR) */ {
+ public:
+  ModifyDeviceEventReq_USR();
+  virtual ~ModifyDeviceEventReq_USR();
+
+  ModifyDeviceEventReq_USR(const ModifyDeviceEventReq_USR& from);
+
+  inline ModifyDeviceEventReq_USR& operator=(const ModifyDeviceEventReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyDeviceEventReq_USR& default_instance();
+
+  static inline const ModifyDeviceEventReq_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyDeviceEventReq_USR*>(
+               &_ModifyDeviceEventReq_USR_default_instance_);
+  }
+
+  void Swap(ModifyDeviceEventReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyDeviceEventReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyDeviceEventReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyDeviceEventReq_USR& from);
+  void MergeFrom(const ModifyDeviceEventReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyDeviceEventReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strDeviceID = 2;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 2;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // string strEventID = 3;
+  void clear_streventid();
+  static const int kStrEventIDFieldNumber = 3;
+  const ::std::string& streventid() const;
+  void set_streventid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_streventid(::std::string&& value);
+  #endif
+  void set_streventid(const char* value);
+  void set_streventid(const char* value, size_t size);
+  ::std::string* mutable_streventid();
+  ::std::string* release_streventid();
+  void set_allocated_streventid(::std::string* streventid);
+
+  // string strUpdateTime = 6;
+  void clear_strupdatetime();
+  static const int kStrUpdateTimeFieldNumber = 6;
+  const ::std::string& strupdatetime() const;
+  void set_strupdatetime(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatetime(::std::string&& value);
+  #endif
+  void set_strupdatetime(const char* value);
+  void set_strupdatetime(const char* value, size_t size);
+  ::std::string* mutable_strupdatetime();
+  ::std::string* release_strupdatetime();
+  void set_allocated_strupdatetime(::std::string* strupdatetime);
+
+  // uint32 uiEventType = 4;
+  void clear_uieventtype();
+  static const int kUiEventTypeFieldNumber = 4;
+  ::google::protobuf::uint32 uieventtype() const;
+  void set_uieventtype(::google::protobuf::uint32 value);
+
+  // uint32 uiEventState = 5;
+  void clear_uieventstate();
+  static const int kUiEventStateFieldNumber = 5;
+  ::google::protobuf::uint32 uieventstate() const;
+  void set_uieventstate(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyDeviceEventReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr streventid_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatetime_;
+  ::google::protobuf::uint32 uieventtype_;
+  ::google::protobuf::uint32 uieventstate_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyDeviceEventRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ModifyDeviceEventRsp_USR) */ {
+ public:
+  ModifyDeviceEventRsp_USR();
+  virtual ~ModifyDeviceEventRsp_USR();
+
+  ModifyDeviceEventRsp_USR(const ModifyDeviceEventRsp_USR& from);
+
+  inline ModifyDeviceEventRsp_USR& operator=(const ModifyDeviceEventRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyDeviceEventRsp_USR& default_instance();
+
+  static inline const ModifyDeviceEventRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const ModifyDeviceEventRsp_USR*>(
+               &_ModifyDeviceEventRsp_USR_default_instance_);
+  }
+
+  void Swap(ModifyDeviceEventRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyDeviceEventRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyDeviceEventRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyDeviceEventRsp_USR& from);
+  void MergeFrom(const ModifyDeviceEventRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyDeviceEventRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyDeviceEventRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class AddStorageDetailReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddStorageDetailReq_USR) */ {
  public:
   AddStorageDetailReq_USR();
@@ -17198,6 +17447,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteDeviceEventReq_USR* release_deletedeviceeventreq_usr_value();
   void set_allocated_deletedeviceeventreq_usr_value(::Interactive::Message::DeleteDeviceEventReq_USR* deletedeviceeventreq_usr_value);
 
+  // .Interactive.Message.ModifyDeviceEventReq_USR ModifyDeviceEventReq_USR_Value = 420;
+  bool has_modifydeviceeventreq_usr_value() const;
+  void clear_modifydeviceeventreq_usr_value();
+  static const int kModifyDeviceEventReqUSRValueFieldNumber = 420;
+  const ::Interactive::Message::ModifyDeviceEventReq_USR& modifydeviceeventreq_usr_value() const;
+  ::Interactive::Message::ModifyDeviceEventReq_USR* mutable_modifydeviceeventreq_usr_value();
+  ::Interactive::Message::ModifyDeviceEventReq_USR* release_modifydeviceeventreq_usr_value();
+  void set_allocated_modifydeviceeventreq_usr_value(::Interactive::Message::ModifyDeviceEventReq_USR* modifydeviceeventreq_usr_value);
+
   // .Interactive.Message.AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;
   bool has_addstoragedetailreq_usr_value() const;
   void clear_addstoragedetailreq_usr_value();
@@ -17394,6 +17652,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryIfP2pIDValidReq_USR* queryifp2pidvalidreq_usr_value_;
   ::Interactive::Message::QueryAllDeviceEventReq_USR* queryalldeviceeventreq_usr_value_;
   ::Interactive::Message::DeleteDeviceEventReq_USR* deletedeviceeventreq_usr_value_;
+  ::Interactive::Message::ModifyDeviceEventReq_USR* modifydeviceeventreq_usr_value_;
   ::Interactive::Message::AddStorageDetailReq_USR* addstoragedetailreq_usr_value_;
   ::Interactive::Message::DeleteStorageDetailReq_USR* deletestoragedetailreq_usr_value_;
   ::Interactive::Message::ModifyStorageDetailReq_USR* modifystoragedetailreq_usr_value_;
@@ -17928,6 +18187,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeleteDeviceEventRsp_USR* release_deletedeviceeventrsp_usr_value();
   void set_allocated_deletedeviceeventrsp_usr_value(::Interactive::Message::DeleteDeviceEventRsp_USR* deletedeviceeventrsp_usr_value);
 
+  // .Interactive.Message.ModifyDeviceEventRsp_USR ModifyDeviceEventRsp_USR_Value = 520;
+  bool has_modifydeviceeventrsp_usr_value() const;
+  void clear_modifydeviceeventrsp_usr_value();
+  static const int kModifyDeviceEventRspUSRValueFieldNumber = 520;
+  const ::Interactive::Message::ModifyDeviceEventRsp_USR& modifydeviceeventrsp_usr_value() const;
+  ::Interactive::Message::ModifyDeviceEventRsp_USR* mutable_modifydeviceeventrsp_usr_value();
+  ::Interactive::Message::ModifyDeviceEventRsp_USR* release_modifydeviceeventrsp_usr_value();
+  void set_allocated_modifydeviceeventrsp_usr_value(::Interactive::Message::ModifyDeviceEventRsp_USR* modifydeviceeventrsp_usr_value);
+
   // .Interactive.Message.AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;
   bool has_addstoragedetailrsp_usr_value() const;
   void clear_addstoragedetailrsp_usr_value();
@@ -18113,6 +18381,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryIfP2pIDValidRsp_USR* queryifp2pidvalidrsp_usr_value_;
   ::Interactive::Message::QueryAllDeviceEventRsp_USR* queryalldeviceeventrsp_usr_value_;
   ::Interactive::Message::DeleteDeviceEventRsp_USR* deletedeviceeventrsp_usr_value_;
+  ::Interactive::Message::ModifyDeviceEventRsp_USR* modifydeviceeventrsp_usr_value_;
   ::Interactive::Message::AddStorageDetailRsp_USR* addstoragedetailrsp_usr_value_;
   ::Interactive::Message::DeleteStorageDetailRsp_USR* deletestoragedetailrsp_usr_value_;
   ::Interactive::Message::ModifyStorageDetailRsp_USR* modifystoragedetailrsp_usr_value_;
@@ -35500,6 +35769,302 @@ inline void DeleteDeviceEventRsp_USR::set_allocated_strvalue(::std::string* strv
 
 // -------------------------------------------------------------------
 
+// ModifyDeviceEventReq_USR
+
+// string strUserID = 1;
+inline void ModifyDeviceEventReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void ModifyDeviceEventReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+}
+#endif
+inline void ModifyDeviceEventReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+}
+inline void ModifyDeviceEventReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+}
+inline ::std::string* ModifyDeviceEventReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strUserID)
+}
+
+// string strDeviceID = 2;
+inline void ModifyDeviceEventReq_USR::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventReq_USR::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void ModifyDeviceEventReq_USR::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventReq_USR::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+}
+#endif
+inline void ModifyDeviceEventReq_USR::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+}
+inline void ModifyDeviceEventReq_USR::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+}
+inline ::std::string* ModifyDeviceEventReq_USR::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventReq_USR::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventReq_USR::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strDeviceID)
+}
+
+// string strEventID = 3;
+inline void ModifyDeviceEventReq_USR::clear_streventid() {
+  streventid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventReq_USR::streventid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+  return streventid_.GetNoArena();
+}
+inline void ModifyDeviceEventReq_USR::set_streventid(const ::std::string& value) {
+  
+  streventid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventReq_USR::set_streventid(::std::string&& value) {
+  
+  streventid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+}
+#endif
+inline void ModifyDeviceEventReq_USR::set_streventid(const char* value) {
+  
+  streventid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+}
+inline void ModifyDeviceEventReq_USR::set_streventid(const char* value, size_t size) {
+  
+  streventid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+}
+inline ::std::string* ModifyDeviceEventReq_USR::mutable_streventid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+  return streventid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventReq_USR::release_streventid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+  
+  return streventid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventReq_USR::set_allocated_streventid(::std::string* streventid) {
+  if (streventid != NULL) {
+    
+  } else {
+    
+  }
+  streventid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), streventid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strEventID)
+}
+
+// uint32 uiEventType = 4;
+inline void ModifyDeviceEventReq_USR::clear_uieventtype() {
+  uieventtype_ = 0u;
+}
+inline ::google::protobuf::uint32 ModifyDeviceEventReq_USR::uieventtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.uiEventType)
+  return uieventtype_;
+}
+inline void ModifyDeviceEventReq_USR::set_uieventtype(::google::protobuf::uint32 value) {
+  
+  uieventtype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.uiEventType)
+}
+
+// uint32 uiEventState = 5;
+inline void ModifyDeviceEventReq_USR::clear_uieventstate() {
+  uieventstate_ = 0u;
+}
+inline ::google::protobuf::uint32 ModifyDeviceEventReq_USR::uieventstate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.uiEventState)
+  return uieventstate_;
+}
+inline void ModifyDeviceEventReq_USR::set_uieventstate(::google::protobuf::uint32 value) {
+  
+  uieventstate_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.uiEventState)
+}
+
+// string strUpdateTime = 6;
+inline void ModifyDeviceEventReq_USR::clear_strupdatetime() {
+  strupdatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventReq_USR::strupdatetime() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+  return strupdatetime_.GetNoArena();
+}
+inline void ModifyDeviceEventReq_USR::set_strupdatetime(const ::std::string& value) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventReq_USR::set_strupdatetime(::std::string&& value) {
+  
+  strupdatetime_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+#endif
+inline void ModifyDeviceEventReq_USR::set_strupdatetime(const char* value) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+inline void ModifyDeviceEventReq_USR::set_strupdatetime(const char* value, size_t size) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+inline ::std::string* ModifyDeviceEventReq_USR::mutable_strupdatetime() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+  return strupdatetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventReq_USR::release_strupdatetime() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+  
+  return strupdatetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventReq_USR::set_allocated_strupdatetime(::std::string* strupdatetime) {
+  if (strupdatetime != NULL) {
+    
+  } else {
+    
+  }
+  strupdatetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatetime);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyDeviceEventRsp_USR
+
+// string strValue = 1;
+inline void ModifyDeviceEventRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyDeviceEventRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+}
+#endif
+inline void ModifyDeviceEventRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+}
+inline void ModifyDeviceEventRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+}
+inline ::std::string* ModifyDeviceEventRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
 // AddStorageDetailReq_USR
 
 // .Interactive.Message.StorageDetail storageDetail = 1;
@@ -39027,6 +39592,45 @@ inline void Req::set_allocated_deletedeviceeventreq_usr_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeleteDeviceEventReq_USR_Value)
 }
 
+// .Interactive.Message.ModifyDeviceEventReq_USR ModifyDeviceEventReq_USR_Value = 420;
+inline bool Req::has_modifydeviceeventreq_usr_value() const {
+  return this != internal_default_instance() && modifydeviceeventreq_usr_value_ != NULL;
+}
+inline void Req::clear_modifydeviceeventreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifydeviceeventreq_usr_value_ != NULL) delete modifydeviceeventreq_usr_value_;
+  modifydeviceeventreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyDeviceEventReq_USR& Req::modifydeviceeventreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.ModifyDeviceEventReq_USR_Value)
+  return modifydeviceeventreq_usr_value_ != NULL ? *modifydeviceeventreq_usr_value_
+                         : *::Interactive::Message::ModifyDeviceEventReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyDeviceEventReq_USR* Req::mutable_modifydeviceeventreq_usr_value() {
+  
+  if (modifydeviceeventreq_usr_value_ == NULL) {
+    modifydeviceeventreq_usr_value_ = new ::Interactive::Message::ModifyDeviceEventReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.ModifyDeviceEventReq_USR_Value)
+  return modifydeviceeventreq_usr_value_;
+}
+inline ::Interactive::Message::ModifyDeviceEventReq_USR* Req::release_modifydeviceeventreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.ModifyDeviceEventReq_USR_Value)
+  
+  ::Interactive::Message::ModifyDeviceEventReq_USR* temp = modifydeviceeventreq_usr_value_;
+  modifydeviceeventreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_modifydeviceeventreq_usr_value(::Interactive::Message::ModifyDeviceEventReq_USR* modifydeviceeventreq_usr_value) {
+  delete modifydeviceeventreq_usr_value_;
+  modifydeviceeventreq_usr_value_ = modifydeviceeventreq_usr_value;
+  if (modifydeviceeventreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ModifyDeviceEventReq_USR_Value)
+}
+
 // .Interactive.Message.AddStorageDetailReq_USR AddStorageDetailReq_USR_Value = 700;
 inline bool Req::has_addstoragedetailreq_usr_value() const {
   return this != internal_default_instance() && addstoragedetailreq_usr_value_ != NULL;
@@ -41593,6 +42197,45 @@ inline void Rsp::set_allocated_deletedeviceeventrsp_usr_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeleteDeviceEventRsp_USR_Value)
 }
 
+// .Interactive.Message.ModifyDeviceEventRsp_USR ModifyDeviceEventRsp_USR_Value = 520;
+inline bool Rsp::has_modifydeviceeventrsp_usr_value() const {
+  return this != internal_default_instance() && modifydeviceeventrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_modifydeviceeventrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && modifydeviceeventrsp_usr_value_ != NULL) delete modifydeviceeventrsp_usr_value_;
+  modifydeviceeventrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::ModifyDeviceEventRsp_USR& Rsp::modifydeviceeventrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.ModifyDeviceEventRsp_USR_Value)
+  return modifydeviceeventrsp_usr_value_ != NULL ? *modifydeviceeventrsp_usr_value_
+                         : *::Interactive::Message::ModifyDeviceEventRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::ModifyDeviceEventRsp_USR* Rsp::mutable_modifydeviceeventrsp_usr_value() {
+  
+  if (modifydeviceeventrsp_usr_value_ == NULL) {
+    modifydeviceeventrsp_usr_value_ = new ::Interactive::Message::ModifyDeviceEventRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.ModifyDeviceEventRsp_USR_Value)
+  return modifydeviceeventrsp_usr_value_;
+}
+inline ::Interactive::Message::ModifyDeviceEventRsp_USR* Rsp::release_modifydeviceeventrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.ModifyDeviceEventRsp_USR_Value)
+  
+  ::Interactive::Message::ModifyDeviceEventRsp_USR* temp = modifydeviceeventrsp_usr_value_;
+  modifydeviceeventrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_modifydeviceeventrsp_usr_value(::Interactive::Message::ModifyDeviceEventRsp_USR* modifydeviceeventrsp_usr_value) {
+  delete modifydeviceeventrsp_usr_value_;
+  modifydeviceeventrsp_usr_value_ = modifydeviceeventrsp_usr_value;
+  if (modifydeviceeventrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ModifyDeviceEventRsp_USR_Value)
+}
+
 // .Interactive.Message.AddStorageDetailRsp_USR AddStorageDetailRsp_USR_Value = 700;
 inline bool Rsp::has_addstoragedetailrsp_usr_value() const {
   return this != internal_default_instance() && addstoragedetailrsp_usr_value_ != NULL;
@@ -42302,6 +42945,10 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

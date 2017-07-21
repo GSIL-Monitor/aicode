@@ -108,7 +108,7 @@ public:
         std::string m_strDevSessionTimeoutCountThreshold;
         std::string m_strLTUserSite;
         std::string m_strLTUserSiteRC4Key;
-        std::string m_strUploadURL;
+        std::string m_strFileServerURL;
         std::string m_strGetIpInfoSite;
         std::string m_strMemAddressGlobal;
         std::string m_strMemPortGlobal;
@@ -235,6 +235,8 @@ public:
 
     bool DeleteDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool ModifyDeviceEventReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    
     bool AddStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool DeleteStorageDetailReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -408,6 +410,8 @@ private:
     void UpdateEventReadStatusToDB(std::list<std::string> strEventIDList, const unsigned int uiReadStatus);
 
     void DeleteDeviceEventToDB(const std::string &strEventID);
+
+    void ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState, const std::string &strUpdateTime);
 
     bool QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, std::string &strDeviceName);
 

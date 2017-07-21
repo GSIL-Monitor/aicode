@@ -145,6 +145,8 @@ public:
         QueryAllDeviceEventRsp_USR_T = 20710,
         DeleteDeviceEventReq_USR_T = 20720,        //删除设备事件请求
         DeleteDeviceEventRsp_USR_T = 20730,
+        ModifyDeviceEventReq_USR_T = 20740,        //修改设备事件请求
+        ModifyDeviceEventRsp_USR_T = 20750,
 
         AddStorageDetailReq_USR_T = 20800,         //用户新增存储详情
         AddStorageDetailRsp_USR_T = 20810,
@@ -999,6 +1001,29 @@ public:
     };
 
     struct DeleteDeviceEventRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyDeviceEventReq_USR : Req
+    {
+        std::string m_strUserID;
+        std::string m_strDeviceID;
+        std::string m_strEventID;
+        unsigned int m_uiEventType;
+        unsigned int m_uiEventState;
+        std::string m_strUpdateTime;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ModifyDeviceEventRsp_USR : Rsp
     {
         std::string m_strValue;
 
@@ -1937,6 +1962,11 @@ private:
     bool DeleteDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool DeleteDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool DeleteDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ModifyDeviceEventReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool ModifyDeviceEventReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ModifyDeviceEventRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool ModifyDeviceEventRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
     bool AddStorageDetailReq_USR_Serializer(const Req &req, std::string &strOutput);
     bool AddStorageDetailReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
