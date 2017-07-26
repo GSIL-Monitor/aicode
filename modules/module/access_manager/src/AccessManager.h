@@ -411,7 +411,8 @@ private:
 
     void DeleteDeviceEventToDB(const std::string &strEventID);
 
-    void ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState, const std::string &strUpdateTime);
+    void ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState, const std::string &strUpdateTime,
+        const std::string &strFileID);
 
     bool QuerySharedDeviceNameToDB(const std::string &strUserID, const std::string &strDeviceID, std::string &strDeviceName);
 

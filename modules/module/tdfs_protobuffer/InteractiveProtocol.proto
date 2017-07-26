@@ -1043,6 +1043,7 @@ message ModifyDeviceEventReq_USR                //修改设备事件请求
   uint32 uiEventType = 4;
   uint32 uiEventState = 5;
   string strUpdateTime = 6;
+  string strFileID = 7;
 }
 
 message ModifyDeviceEventRsp_USR                //修改设备事件响应

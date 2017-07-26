@@ -3319,6 +3319,7 @@ bool AccessManager::QueryAllConfigurationReqMgr(const std::string &strMsg, const
     if (!QueryAllConfigurationToDB(configurationList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all configuration item failed, src id is " << strSrcID);
+        return false;
     }
 
     blResult = true;
@@ -3793,7 +3794,8 @@ bool AccessManager::ModifyDeviceEventReqUser(const std::string &strMsg, const st
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("Modify device event rsp already send, dst id is " << strSrcID <<
             " and event id is " << req.m_strEventID <<
-            " and event state is " << req.m_uiEventState);
+            " and event state is " << req.m_uiEventState <<
+            " and file id is " << req.m_strFileID);
     }
     BOOST_SCOPE_EXIT_END
 
@@ -3804,7 +3806,7 @@ bool AccessManager::ModifyDeviceEventReqUser(const std::string &strMsg, const st
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::ModifyDeviceEventToDB, this, req.m_strEventID,
-        req.m_uiEventState, req.m_strUpdateTime));
+        req.m_uiEventState, req.m_strUpdateTime, req.m_strFileID));
 
     blResult = true;
 
@@ -5198,7 +5200,7 @@ bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler:
 {
     char sql[256] = { 0 };
     const char *sqlfmt = "select category, subcategory, latestversion, description, forceversion, filename, filesize, filepath, leaseduration, updatedate"
-        " from t_configuration_info where status = 0 limit %u, %u";
+        " from t_configuration_info where latestversion != '' and status = 0 limit %u, %u";
     snprintf(sql, sizeof(sql), sqlfmt, uiBeginIndex, uiPageSize);
 
     InteractiveProtoHandler::Configuration configuration;
@@ -7809,16 +7811,58 @@ void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
 }
 
 void AccessManager::ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState,
-    const std::string &strUpdateTime)
+    const std::string &strUpdateTime, const std::string &strFileID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_device_event_info set eventstate = %d, createdate = '%s'"
-        " where eventid = '%s' and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, uiEventState, strUpdateTime.c_str(), strEventID.c_str());
+    int size = sizeof(sql);
+    int len;
+    snprintf(sql, size, "update t_device_event_info set id = id");
+
+    bool blModified = false;
+
+    if (UNUSED_INPUT_UINT != uiEventState)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", eventstate = %d", uiEventState);
+
+        blModified = true;
+    }
+
+    if (!strUpdateTime.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", createdate = '%s'", strUpdateTime.c_str());
+
+        blModified = true;
+    }
+
+    if (!strFileID.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", fileid = '%s'", strFileID.c_str());
+
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyDeviceEventToDB completed, there is no change");
+        return;
+    }
+
+    len = strlen(sql);
+    snprintf(sql + len, size - len, " where eventid = '%s' and status = 0", strEventID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("ModifyDeviceEventToDB exec sql failed, sql is " << sql);
+        return;
+    }
+
+    //当文件ID不为空的时候，需要将对应的文件转换为mp4文件，目前暂不区分其它处理方式
+    if (!strFileID.empty())
+    {
+        m_EventFileProcessRunner.Post(boost::bind(&AccessManager::FileProcessHandler, this, strEventID, strFileID));
     }
 }
 

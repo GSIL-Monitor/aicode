@@ -5312,70 +5312,71 @@ bool HttpMsgHandler::ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
     }
     const std::string strEventID = itFind->second;
     
+    unsigned int uiEventType = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("event_type");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Event type not found.");
-        return blResult;
+        try
+        {
+            uiEventType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event report info of event type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event report info of event type is invalid and input is " << itFind->second);
+            return blResult;
+        }
     }
-
-    unsigned int uiEventType = 0;
-    try
-    {
-        uiEventType = boost::lexical_cast<unsigned int>(itFind->second);
-    }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Device event report info of event type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Device event report info of event type is invalid and input is " << itFind->second);
-        return blResult;
-    }
-
+           
+    unsigned int uiEventStatus = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("event_status");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Event status not found.");
-        return blResult;
+        try
+        {
+            uiEventStatus = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event report info of event status is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event report info of event status is invalid and input is " << itFind->second);
+            return blResult;
+        }
     }
 
-    unsigned int uiEventStatus = 0;
-    try
-    {
-        uiEventStatus = boost::lexical_cast<unsigned int>(itFind->second);
-    }
-    catch (boost::bad_lexical_cast & e)
-    {
-        LOG_ERROR_RLD("Device event report info of event status is invalid and error msg is " << e.what() << " and input is " << itFind->second);
-        return blResult;
-    }
-    catch (...)
-    {
-        LOG_ERROR_RLD("Device event report info of event status is invalid and input is " << itFind->second);
-        return blResult;
-    }
-
+    std::string strEventTime;
     itFind = pMsgInfoMap->find("event_time");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Event time not found.");
-        return blResult;
+        strEventTime = itFind->second;
     }
-    const std::string strEventTime = itFind->second;
-
+    
     if (!ValidDatetime(strEventTime))
     {
         LOG_ERROR_RLD("File begin date is invalid and input date is " << strEventTime);
         return blResult;
     }
 
+    std::string strFileID;
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileID = itFind->second;
+    }
+    
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Modify device event info received and sid is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
-        << " and event id is " << strEventID << " and event type is " << uiEventType << " and event status is " << uiEventStatus << " and event time is " << strEventTime);
+        << " and event id is " << strEventID << " and event type is " << uiEventType << " and event status is " << uiEventStatus << 
+        " and event time is " << strEventTime << " and file id is " << strFileID);
 
     Event ev;
     ev.m_strDevID = strDevID;
@@ -5383,7 +5384,7 @@ bool HttpMsgHandler::ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
     //ev.m_uiDevType = uiDevType;
     ev.m_uiEventStatus = uiEventStatus;
     ev.m_uiEventType = uiEventType;
-    //ev.m_strFileID = strFileid;
+    ev.m_strFileID = strFileID;
     ev.m_strEventTime = strEventTime;
     if (!ModifyDeviceEvent(strSid, ev))
     {
@@ -9132,6 +9133,7 @@ bool HttpMsgHandler::ModifyDeviceEvent(const std::string &strSid, const Event &e
         ModDevEventReportReq.m_uiEventState = ev.m_uiEventStatus;
         ModDevEventReportReq.m_uiEventType = ev.m_uiEventType;
         ModDevEventReportReq.m_strUpdateTime = ev.m_strEventTime;
+        ModDevEventReportReq.m_strFileID = ev.m_strFileID;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevEventReportReq, strSerializeOutPut))

@@ -14054,6 +14054,20 @@ class ModifyDeviceEventReq_USR : public ::google::protobuf::Message /* @@protoc_
   ::std::string* release_strupdatetime();
   void set_allocated_strupdatetime(::std::string* strupdatetime);
 
+  // string strFileID = 7;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 7;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
   // uint32 uiEventType = 4;
   void clear_uieventtype();
   static const int kUiEventTypeFieldNumber = 4;
@@ -14074,6 +14088,7 @@ class ModifyDeviceEventReq_USR : public ::google::protobuf::Message /* @@protoc_
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr streventid_;
   ::google::protobuf::internal::ArenaStringPtr strupdatetime_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
   mutable int _cached_size_;
@@ -36005,6 +36020,58 @@ inline void ModifyDeviceEventReq_USR::set_allocated_strupdatetime(::std::string*
   }
   strupdatetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatetime);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strUpdateTime)
+}
+
+// string strFileID = 7;
+inline void ModifyDeviceEventReq_USR::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyDeviceEventReq_USR::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void ModifyDeviceEventReq_USR::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+}
+#if LANG_CXX11
+inline void ModifyDeviceEventReq_USR::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+}
+#endif
+inline void ModifyDeviceEventReq_USR::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+}
+inline void ModifyDeviceEventReq_USR::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+}
+inline ::std::string* ModifyDeviceEventReq_USR::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyDeviceEventReq_USR::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyDeviceEventReq_USR::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
 }
 
 // -------------------------------------------------------------------

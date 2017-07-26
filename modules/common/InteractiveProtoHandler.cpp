@@ -5024,6 +5024,7 @@ void InteractiveProtoHandler::ModifyDeviceEventReq_USR::UnSerializer(const Inter
     m_uiEventType = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uieventtype();
     m_uiEventState = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uieventstate();
     m_strUpdateTime = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strupdatetime();
+    m_strFileID = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strfileid();
 }
 
 void InteractiveProtoHandler::ModifyDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -5036,6 +5037,7 @@ void InteractiveProtoHandler::ModifyDeviceEventReq_USR::Serializer(InteractiveMe
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uieventtype(m_uiEventType);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uieventstate(m_uiEventState);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strupdatetime(m_strUpdateTime);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strfileid(m_strFileID);
 }
 
 void InteractiveProtoHandler::ModifyDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

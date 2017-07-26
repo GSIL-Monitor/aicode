@@ -1017,6 +1017,7 @@ public:
         unsigned int m_uiEventType;
         unsigned int m_uiEventState;
         std::string m_strUpdateTime;
+        std::string m_strFileID;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
