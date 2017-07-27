@@ -256,6 +256,7 @@ private:
         std::string m_strPirIneffectiveTime;
         std::string m_strCurrentWifi;
         std::string m_strSubCategory;
+        std::string m_strDisturbMode;
     } DeviceProperty;
 
     typedef struct

@@ -338,6 +338,7 @@ public:
         std::string m_strPIRIneffectiveTime;
         std::string m_strCurrentWifi;
         std::string m_strSubCategory;
+        std::string m_strDisturbMode;
     };
 
     struct DeviceEvent

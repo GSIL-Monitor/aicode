@@ -3437,6 +3437,7 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             rsp.m_doorbellParameter.m_strPIRIneffectiveTime = doorbellParameter.m_strPIRIneffectiveTime;
             rsp.m_doorbellParameter.m_strCurrentWifi = doorbellParameter.m_strCurrentWifi;
             rsp.m_doorbellParameter.m_strSubCategory = doorbellParameter.m_strSubCategory;
+            rsp.m_doorbellParameter.m_strDisturbMode = doorbellParameter.m_strDisturbMode;
         }
 
         std::string strSerializeOutPut;
@@ -3464,6 +3465,7 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             " and PIR ineffective time is " << doorbellParameter.m_strPIRIneffectiveTime <<
             " and current wifi is " << doorbellParameter.m_strCurrentWifi <<
             " and sub category is " << doorbellParameter.m_strSubCategory <<
+            " and disturb mode is " << doorbellParameter.m_strDisturbMode <<
             " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -7325,6 +7327,14 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
         blModified = true;
     }
 
+    if (!doorbellParameter.m_strDisturbMode.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", disturb_mode = '%s'", "*" == doorbellParameter.m_strDisturbMode ? "" : doorbellParameter.m_strDisturbMode.c_str());
+
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("UpdateDoorbellParameterToDB completed, there is no change");
@@ -7362,7 +7372,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level,"
-        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi, sub_category"
+        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi, sub_category, disturb_mode"
         " from t_device_parameter_doorbell where deviceid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -7417,6 +7427,9 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
             break;
         case 15:
             doorbellParameter.m_strSubCategory = strColumn;
+            break;
+        case 16:
+            doorbellParameter.m_strDisturbMode = strColumn;
             Result = doorbellParameter;
             break;
 
@@ -7427,7 +7440,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryDoorbellParameterToDB exec sql error, sql is " << sql);
         return false;
@@ -7456,6 +7469,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
     doorbellParameter.m_strPIRIneffectiveTime = result.m_strPIRIneffectiveTime;
     doorbellParameter.m_strCurrentWifi = result.m_strCurrentWifi;
     doorbellParameter.m_strSubCategory = result.m_strSubCategory;
+    doorbellParameter.m_strDisturbMode = result.m_strDisturbMode;
 
     return true;
 }

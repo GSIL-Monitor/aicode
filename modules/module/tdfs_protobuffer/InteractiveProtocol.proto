@@ -343,6 +343,7 @@ message DoorbellParameter                       //门铃参数
   string strPIRIneffectiveTime = 14;            //PIR不生效时间配置项
   string strCurrentWifi = 15;                   //当前WIFI
   string strSubCategory = 16;                   //门铃类别
+  string strDisturbMode = 17;                   //免打扰模式
 }
 
 message DeviceEvent                             //设备事件

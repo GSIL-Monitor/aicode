@@ -3025,6 +3025,13 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     {
         strCurrentWifi = itFind->second;
     }
+
+    std::string strDisturbMode;
+    itFind = pMsgInfoMap->find("disturb_mode");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDisturbMode = itFind->second;
+    }
     
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
@@ -3040,7 +3047,7 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         " and volume level is " << strVolumeLevel << " and version number is " << strVersionNum << " and channel num is " << strChannelNum <<
         " and coding type is " << strCodeType << " and pir alarm switch is " << strPirAlarmSwitch << " and doorbell switch is " << strDoorbellSwitch <<
         " and pir alarm level is " << strPirAlarmLevel << " and pir ineffective time is " << strPirInEffectiveTime << " and currenct wifi is " << strCurrentWifi <<
-        " and sub category is " << strSubCategory);
+        " and sub category is " << strSubCategory << " and distrub mode is " << strDisturbMode);
 
     DeviceProperty devpt;
     devpt.m_strChannelCount = strChannelcount;
@@ -3081,6 +3088,7 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     devpt.m_strPirIneffectiveTime = strPirInEffectiveTime;
     devpt.m_strCurrentWifi = strCurrentWifi;
     devpt.m_strSubCategory = strSubCategory;
+    devpt.m_strDisturbMode = strDisturbMode;
 
     if (!DeviceSetProperty(strSid, devpt))
     {
@@ -4743,7 +4751,7 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("doorbell_switch", devpt.m_strDoorbellSwitch));
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_level", devpt.m_strPirAlarmLevel));
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_ineffective_time", devpt.m_strPirIneffectiveTime));
-
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("disturb_mode", devpt.m_strDisturbMode));
 
         if (strQueryType == "all")
         {
@@ -7725,7 +7733,7 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_doorbellParameter.m_strPIRIneffectiveTime = devpt.m_strPirIneffectiveTime;
         ModDevPtReq.m_doorbellParameter.m_strCurrentWifi = devpt.m_strCurrentWifi;
         ModDevPtReq.m_doorbellParameter.m_strSubCategory = devpt.m_strSubCategory;
-        
+        ModDevPtReq.m_doorbellParameter.m_strDisturbMode = devpt.m_strDisturbMode;
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))
         {
@@ -8800,6 +8808,7 @@ bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string 
             devpt.m_strDoorbellSwitch = QueryDevParamRsp.m_doorbellParameter.m_strDoorbellSwitch;
             devpt.m_strPirAlarmLevel = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmLevel;
             devpt.m_strPirIneffectiveTime = QueryDevParamRsp.m_doorbellParameter.m_strPIRIneffectiveTime;
+            devpt.m_strDisturbMode = QueryDevParamRsp.m_doorbellParameter.m_strDisturbMode;
 
             if (strQueryType == "all")
             {

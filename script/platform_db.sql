@@ -252,6 +252,7 @@ CREATE TABLE `t_device_parameter_doorbell` (
   `pir_ineffective_time` varchar(2000) DEFAULT '',  #PIR不生效时间配置项
   `current_wifi` varchar(50) DEFAULT '',            #当前WIFI
   `sub_category` varchar(50) DEFAULT '',            #门铃类别
+  `disturb_mode` varchar(50) DEFAULT '',            #免打扰模式
   `otherproperty` varchar(1000) DEFAULT '',         #其他属性
   `createdate` datetime NOT NULL,
   `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,

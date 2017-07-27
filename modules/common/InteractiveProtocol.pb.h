@@ -2608,6 +2608,20 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strsubcategory();
   void set_allocated_strsubcategory(::std::string* strsubcategory);
 
+  // string strDisturbMode = 17;
+  void clear_strdisturbmode();
+  static const int kStrDisturbModeFieldNumber = 17;
+  const ::std::string& strdisturbmode() const;
+  void set_strdisturbmode(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdisturbmode(::std::string&& value);
+  #endif
+  void set_strdisturbmode(const char* value);
+  void set_strdisturbmode(const char* value, size_t size);
+  ::std::string* mutable_strdisturbmode();
+  ::std::string* release_strdisturbmode();
+  void set_allocated_strdisturbmode(::std::string* strdisturbmode);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.DoorbellParameter)
  private:
 
@@ -2628,6 +2642,7 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::internal::ArenaStringPtr strpirineffectivetime_;
   ::google::protobuf::internal::ArenaStringPtr strcurrentwifi_;
   ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
+  ::google::protobuf::internal::ArenaStringPtr strdisturbmode_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -22710,6 +22725,58 @@ inline void DoorbellParameter::set_allocated_strsubcategory(::std::string* strsu
   }
   strsubcategory_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsubcategory);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strSubCategory)
+}
+
+// string strDisturbMode = 17;
+inline void DoorbellParameter::clear_strdisturbmode() {
+  strdisturbmode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strdisturbmode() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strDisturbMode)
+  return strdisturbmode_.GetNoArena();
+}
+inline void DoorbellParameter::set_strdisturbmode(const ::std::string& value) {
+  
+  strdisturbmode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strDisturbMode)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strdisturbmode(::std::string&& value) {
+  
+  strdisturbmode_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strDisturbMode)
+}
+#endif
+inline void DoorbellParameter::set_strdisturbmode(const char* value) {
+  
+  strdisturbmode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strDisturbMode)
+}
+inline void DoorbellParameter::set_strdisturbmode(const char* value, size_t size) {
+  
+  strdisturbmode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strDisturbMode)
+}
+inline ::std::string* DoorbellParameter::mutable_strdisturbmode() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strDisturbMode)
+  return strdisturbmode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strdisturbmode() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strDisturbMode)
+  
+  return strdisturbmode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strdisturbmode(::std::string* strdisturbmode) {
+  if (strdisturbmode != NULL) {
+    
+  } else {
+    
+  }
+  strdisturbmode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdisturbmode);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strDisturbMode)
 }
 
 // -------------------------------------------------------------------
