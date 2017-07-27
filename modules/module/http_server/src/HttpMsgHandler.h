@@ -298,6 +298,7 @@ private:
         std::string m_strEventID;
         std::string m_strFileURL;
         std::string m_strEventTime;
+        unsigned int m_uiViewAlready;
     } Event;
 
     typedef struct

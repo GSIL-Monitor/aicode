@@ -3687,7 +3687,8 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
                     " and event type is " << deviceEvent.m_uiEventType <<
                     " and event state is " << deviceEvent.m_uiEventState <<
                     " and file url is " << deviceEvent.m_strFileUrl <<
-                    " and event time is " << deviceEvent.m_strEventTime);
+                    " and event time is " << deviceEvent.m_strEventTime <<
+                    " and read state is " << deviceEvent.m_uiReadState);
 
                 ++i;
             }
@@ -3708,16 +3709,16 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
         return false;
     }
 
-    if (EVENT_MESSAGE_READ != req.m_uiReadState && !deviceEventList.empty())
-    {
-        std::list<std::string> strEventIDList;
-        for (InteractiveProtoHandler::DeviceEvent &deviceEvent : deviceEventList)
-        {
-            strEventIDList.push_back(deviceEvent.m_strEventID);
-        }
+    //if (EVENT_MESSAGE_READ != req.m_uiReadState && !deviceEventList.empty())
+    //{
+    //    std::list<std::string> strEventIDList;
+    //    for (InteractiveProtoHandler::DeviceEvent &deviceEvent : deviceEventList)
+    //    {
+    //        strEventIDList.push_back(deviceEvent.m_strEventID);
+    //    }
 
-        m_DBRuner.Post(boost::bind(&AccessManager::UpdateEventReadStatusToDB, this, strEventIDList, EVENT_MESSAGE_READ));
-    }
+    //    m_DBRuner.Post(boost::bind(&AccessManager::UpdateEventReadStatusToDB, this, strEventIDList, EVENT_MESSAGE_READ));
+    //}
 
     m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDeviceID, false));
 
@@ -3806,7 +3807,7 @@ bool AccessManager::ModifyDeviceEventReqUser(const std::string &strMsg, const st
     }
 
     m_DBRuner.Post(boost::bind(&AccessManager::ModifyDeviceEventToDB, this, req.m_strEventID,
-        req.m_uiEventState, req.m_strUpdateTime, req.m_strFileID));
+        req.m_uiEventState, req.m_strUpdateTime, req.m_strFileID, req.m_uiReadState));
 
     blResult = true;
 
@@ -7685,7 +7686,7 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, createdate from t_device_event_info"
+    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, createdate, readstate from t_device_event_info"
         " where deviceid = '%s' and storedtime < %d and status = 0";
     snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
@@ -7738,10 +7739,14 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
             deviceEvent.m_uiEventState = boost::lexical_cast<unsigned int>(strColumn);
             break;
         case 5:
-            deviceEvent.m_strFileUrl = m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + strColumn;
+            deviceEvent.m_strFileUrl = strColumn.empty() ? strColumn :
+                m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + strColumn;
             break;
         case 6:
             deviceEvent.m_strEventTime = strColumn;
+            break;
+        case 7:
+            deviceEvent.m_uiReadState = boost::lexical_cast<unsigned int>(strColumn);
             Result = deviceEvent;
             break;
 
@@ -7811,7 +7816,7 @@ void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
 }
 
 void AccessManager::ModifyDeviceEventToDB(const std::string &strEventID, const unsigned int uiEventState,
-    const std::string &strUpdateTime, const std::string &strFileID)
+    const std::string &strUpdateTime, const std::string &strFileID, const unsigned int uiReadState)
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
@@ -7848,6 +7853,14 @@ void AccessManager::ModifyDeviceEventToDB(const std::string &strEventID, const u
     {
         LOG_INFO_RLD("ModifyDeviceEventToDB completed, there is no change");
         return;
+    }
+
+    if (UNUSED_INPUT_UINT != uiReadState)
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", readstate = %d", uiReadState);
+
+        blModified = true;
     }
 
     len = strlen(sql);

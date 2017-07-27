@@ -349,6 +349,7 @@ public:
         unsigned int m_uiEventState;
         std::string m_strFileUrl;
         std::string m_strEventTime;
+        unsigned int m_uiReadState;
     };
 
     struct StorageDetail
@@ -1018,6 +1019,7 @@ public:
         unsigned int m_uiEventState;
         std::string m_strUpdateTime;
         std::string m_strFileID;
+        unsigned int m_uiReadState;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

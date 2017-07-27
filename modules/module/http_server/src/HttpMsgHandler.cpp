@@ -5172,6 +5172,7 @@ bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgI
         jsEvent["event_status"] = itBegin->m_uiEventStatus;
         jsEvent["event_type"] = itBegin->m_uiEventType;
         jsEvent["event_time"] = itBegin->m_strEventTime;
+        jsEvent["view_already"] = itBegin->m_uiViewAlready;
 
         jsEventList.append(jsEvent);
 
@@ -5357,26 +5358,47 @@ bool HttpMsgHandler::ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
     if (pMsgInfoMap->end() != itFind)
     {
         strEventTime = itFind->second;
+
+        if (!ValidDatetime(strEventTime))
+        {
+            LOG_ERROR_RLD("File begin date is invalid and input date is " << strEventTime);
+            return blResult;
+        }
     }
     
-    if (!ValidDatetime(strEventTime))
-    {
-        LOG_ERROR_RLD("File begin date is invalid and input date is " << strEventTime);
-        return blResult;
-    }
-
     std::string strFileID;
     itFind = pMsgInfoMap->find("fileid");
     if (pMsgInfoMap->end() != itFind)
     {
         strFileID = itFind->second;
     }
+
+    unsigned int uiViewAlready = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("view_already");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiViewAlready = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device event report info of event view already is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device event report info of event view already is invalid and input is " << itFind->second);
+            return blResult;
+        }
+
+    }
     
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Modify device event info received and sid is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
         << " and event id is " << strEventID << " and event type is " << uiEventType << " and event status is " << uiEventStatus << 
-        " and event time is " << strEventTime << " and file id is " << strFileID);
+        " and event time is " << strEventTime << " and file id is " << strFileID << " and view already is " << uiViewAlready);
 
     Event ev;
     ev.m_strDevID = strDevID;
@@ -5386,6 +5408,7 @@ bool HttpMsgHandler::ModifyDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
     ev.m_uiEventType = uiEventType;
     ev.m_strFileID = strFileID;
     ev.m_strEventTime = strEventTime;
+    ev.m_uiViewAlready = uiViewAlready;
     if (!ModifyDeviceEvent(strSid, ev))
     {
         LOG_ERROR_RLD("Modify device event report handle failed and device id is " << strDevID);
@@ -9036,6 +9059,7 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
             ev.m_uiEventStatus = it.m_uiEventState;
             ev.m_uiEventType = it.m_uiEventType;
             ev.m_strEventTime = it.m_strEventTime;
+            ev.m_uiViewAlready = it.m_uiReadState;
             evlist.push_back(std::move(ev));
         }
 
@@ -9134,6 +9158,7 @@ bool HttpMsgHandler::ModifyDeviceEvent(const std::string &strSid, const Event &e
         ModDevEventReportReq.m_uiEventType = ev.m_uiEventType;
         ModDevEventReportReq.m_strUpdateTime = ev.m_strEventTime;
         ModDevEventReportReq.m_strFileID = ev.m_strFileID;
+        ModDevEventReportReq.m_uiReadState = ev.m_uiViewAlready;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevEventReportReq, strSerializeOutPut))

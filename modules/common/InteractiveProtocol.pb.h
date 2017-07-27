@@ -2774,6 +2774,12 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::uint32 uieventstate() const;
   void set_uieventstate(::google::protobuf::uint32 value);
 
+  // uint32 uiReadState = 8;
+  void clear_uireadstate();
+  static const int kUiReadStateFieldNumber = 8;
+  ::google::protobuf::uint32 uireadstate() const;
+  void set_uireadstate(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.DeviceEvent)
  private:
 
@@ -2785,6 +2791,7 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
+  ::google::protobuf::uint32 uireadstate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -14080,6 +14087,12 @@ class ModifyDeviceEventReq_USR : public ::google::protobuf::Message /* @@protoc_
   ::google::protobuf::uint32 uieventstate() const;
   void set_uieventstate(::google::protobuf::uint32 value);
 
+  // uint32 uiReadState = 8;
+  void clear_uireadstate();
+  static const int kUiReadStateFieldNumber = 8;
+  ::google::protobuf::uint32 uireadstate() const;
+  void set_uireadstate(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.ModifyDeviceEventReq_USR)
  private:
 
@@ -14091,6 +14104,7 @@ class ModifyDeviceEventReq_USR : public ::google::protobuf::Message /* @@protoc_
   ::google::protobuf::internal::ArenaStringPtr strfileid_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
+  ::google::protobuf::uint32 uireadstate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -22950,6 +22964,20 @@ inline void DeviceEvent::set_allocated_streventtime(::std::string* streventtime)
   }
   streventtime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), streventtime);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEvent.strEventTime)
+}
+
+// uint32 uiReadState = 8;
+inline void DeviceEvent::clear_uireadstate() {
+  uireadstate_ = 0u;
+}
+inline ::google::protobuf::uint32 DeviceEvent::uireadstate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceEvent.uiReadState)
+  return uireadstate_;
+}
+inline void DeviceEvent::set_uireadstate(::google::protobuf::uint32 value) {
+  
+  uireadstate_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceEvent.uiReadState)
 }
 
 // -------------------------------------------------------------------
@@ -36072,6 +36100,20 @@ inline void ModifyDeviceEventReq_USR::set_allocated_strfileid(::std::string* str
   }
   strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ModifyDeviceEventReq_USR.strFileID)
+}
+
+// uint32 uiReadState = 8;
+inline void ModifyDeviceEventReq_USR::clear_uireadstate() {
+  uireadstate_ = 0u;
+}
+inline ::google::protobuf::uint32 ModifyDeviceEventReq_USR::uireadstate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ModifyDeviceEventReq_USR.uiReadState)
+  return uireadstate_;
+}
+inline void ModifyDeviceEventReq_USR::set_uireadstate(::google::protobuf::uint32 value) {
+  
+  uireadstate_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.ModifyDeviceEventReq_USR.uiReadState)
 }
 
 // -------------------------------------------------------------------

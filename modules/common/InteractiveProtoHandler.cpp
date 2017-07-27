@@ -439,6 +439,7 @@ void UnSerializeDeviceEventList(std::list<InteractiveProtoHandler::DeviceEvent> 
         deviceEvent.m_uiEventState = srcDeviceEvent.uieventstate();
         deviceEvent.m_strFileUrl = srcDeviceEvent.strfileurl();
         deviceEvent.m_strEventTime = srcDeviceEvent.streventtime();
+        deviceEvent.m_uiReadState = srcDeviceEvent.uireadstate();
 
         deviceEventList.push_back(std::move(deviceEvent));
     }
@@ -466,6 +467,7 @@ void SerializeDeviceEventList(const std::list<InteractiveProtoHandler::DeviceEve
         pDstDeviceEvent->set_uieventstate(itBegin->m_uiEventState);
         pDstDeviceEvent->set_strfileurl(itBegin->m_strFileUrl);
         pDstDeviceEvent->set_streventtime(itBegin->m_strEventTime);
+        pDstDeviceEvent->set_uireadstate(itBegin->m_uiReadState);
 
         ++i;
         ++itBegin;
@@ -5025,6 +5027,7 @@ void InteractiveProtoHandler::ModifyDeviceEventReq_USR::UnSerializer(const Inter
     m_uiEventState = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uieventstate();
     m_strUpdateTime = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strupdatetime();
     m_strFileID = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().strfileid();
+    m_uiReadState = InteractiveMsg.reqvalue().modifydeviceeventreq_usr_value().uireadstate();
 }
 
 void InteractiveProtoHandler::ModifyDeviceEventReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -5038,6 +5041,7 @@ void InteractiveProtoHandler::ModifyDeviceEventReq_USR::Serializer(InteractiveMe
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uieventstate(m_uiEventState);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strupdatetime(m_strUpdateTime);
     InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_strfileid(m_strFileID);
+    InteractiveMsg.mutable_reqvalue()->mutable_modifydeviceeventreq_usr_value()->set_uireadstate(m_uiReadState);
 }
 
 void InteractiveProtoHandler::ModifyDeviceEventRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

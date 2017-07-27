@@ -354,6 +354,7 @@ message DeviceEvent                             //设备事件
   uint32 uiEventState = 5;
   string strFileUrl = 6;
   string strEventTime = 7;
+  uint32 uiReadState = 8;
 }
 
 message StorageDetail                           //存储详情
@@ -1044,6 +1045,7 @@ message ModifyDeviceEventReq_USR                //修改设备事件请求
   uint32 uiEventState = 5;
   string strUpdateTime = 6;
   string strFileID = 7;
+  uint32 uiReadState = 8;
 }
 
 message ModifyDeviceEventRsp_USR                //修改设备事件响应
