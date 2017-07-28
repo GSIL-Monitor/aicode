@@ -7865,18 +7865,18 @@ void AccessManager::ModifyDeviceEventToDB(const std::string &strEventID, const u
         blModified = true;
     }
 
-    if (!blModified)
-    {
-        LOG_INFO_RLD("ModifyDeviceEventToDB completed, there is no change");
-        return;
-    }
-
     if (UNUSED_INPUT_UINT != uiReadState)
     {
         len = strlen(sql);
         snprintf(sql + len, size - len, ", readstate = %d", uiReadState);
 
         blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyDeviceEventToDB completed, there is no change");
+        return;
     }
 
     len = strlen(sql);
