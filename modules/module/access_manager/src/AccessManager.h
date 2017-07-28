@@ -438,6 +438,12 @@ private:
 
     void FileProcessHandler(const std::string &strEventID, const std::string &strFileID);
 
+    void DeleteDeviceParameter(const std::string &strDeviceID);
+
+    void DeleteIPCParameter(const std::string &strDeviceID);
+
+    void DeleteDoorbellParameter(const std::string &strDeviceID);
+
 private:
     ParamInfo m_ParamInfo;
 

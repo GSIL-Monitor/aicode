@@ -1102,6 +1102,8 @@ bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &s
     
     m_DBRuner.Post(boost::bind(&AccessManager::RemoveExpiredDeviceEventToDB, this, req.m_strDevIDList.front(), true));
 
+    m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceParameter, this, req.m_strDevIDList.front()));
+
     m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
 
     blResult = true;
@@ -8349,4 +8351,35 @@ void AccessManager::FileProcessHandler(const std::string &strEventID, const std:
     //
     ////删除无用的原始文件
     //RemoveRemoteFile(strFileID);
+}
+
+void AccessManager::DeleteDeviceParameter(const std::string &strDeviceID)
+{
+    DeleteIPCParameter(strDeviceID);
+    DeleteDoorbellParameter(strDeviceID);
+}
+
+void AccessManager::DeleteIPCParameter(const std::string &strDeviceID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_device_parameter_ipc where deviceid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteIPCParameter exec sql error, sql is " << sql);
+    }
+}
+
+void AccessManager::DeleteDoorbellParameter(const std::string &strDeviceID)
+{
+    //设备参数不需要标记为删除状态，直接删除
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_device_parameter_doorbell where deviceid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteDoorbellParameter exec sql error, sql is " << sql);
+    }
 }
