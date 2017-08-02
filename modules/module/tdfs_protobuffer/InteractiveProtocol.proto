@@ -356,6 +356,7 @@ message DeviceEvent                             //设备事件
   string strFileUrl = 6;
   string strEventTime = 7;
   uint32 uiReadState = 8;
+  string strThumbnailUrl = 9;
 }
 
 message StorageDetail                           //存储详情

@@ -351,6 +351,7 @@ public:
         std::string m_strFileUrl;
         std::string m_strEventTime;
         unsigned int m_uiReadState;
+        std::string m_strThumbnailUrl;
     };
 
     struct StorageDetail

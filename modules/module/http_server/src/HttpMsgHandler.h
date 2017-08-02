@@ -300,6 +300,7 @@ private:
         std::string m_strFileURL;
         std::string m_strEventTime;
         unsigned int m_uiViewAlready;
+        std::string m_strThumbnailURL;
     } Event;
 
     typedef struct

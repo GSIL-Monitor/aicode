@@ -72,12 +72,29 @@ m_MsgReceiver(new InterProcessHandler(InterProcessHandler::RECEIVE_MODE, "mp4_rs
             return;
         }
 
+        std::string strThumbnailFileid;
+        auto jsThumbnailFileid = root["thumbnail_fileid"];
+        if (!jsThumbnailFileid.isNull() && jsThumbnailFileid.isString() && !jsThumbnailFileid.asString().empty())
+        {
+            strThumbnailFileid = jsThumbnailFileid.asString();
+        }
+
+
         //更新事件记录中的文件ID字段
         const std::string &strFileIDOfMp4 = jsFileid.asString(); //jsFileid.asString() + ".mp4";
         char sql[1024] = { 0 };
-        const char *sqlfmt = "update t_device_event_info set  fileid = '%s' where eventid = '%s'";
-        snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), jsEventid.asString().c_str());
+        const char *sqlfmt = strThumbnailFileid.empty() ? "update t_device_event_info set  fileid = '%s' where eventid = '%s'" :
+            "update t_device_event_info set  fileid = '%s', thumbnail = '%s' where eventid = '%s'";
 
+        if (strThumbnailFileid.empty())
+        {
+            snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), jsEventid.asString().c_str());
+        }
+        else
+        {
+            snprintf(sql, sizeof(sql), sqlfmt, strFileIDOfMp4.c_str(), strThumbnailFileid.c_str(), jsEventid.asString().c_str());
+        }
+        
         if (!m_pMysql->QueryExec(std::string(sql)))
         {
             LOG_ERROR_RLD("Update device event error, sql is " << sql);
@@ -3692,7 +3709,8 @@ bool AccessManager::QueryAllDeviceEventReqUser(const std::string &strMsg, const 
                     " and event state is " << deviceEvent.m_uiEventState <<
                     " and file url is " << deviceEvent.m_strFileUrl <<
                     " and event time is " << deviceEvent.m_strEventTime <<
-                    " and read state is " << deviceEvent.m_uiReadState);
+                    " and read state is " << deviceEvent.m_uiReadState <<
+                    " and thumbnail url is " << deviceEvent.m_strThumbnailUrl);
 
                 ++i;
             }
@@ -7702,7 +7720,7 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len;
-    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, createdate, readstate from t_device_event_info"
+    const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, thumbnail, createdate, readstate from t_device_event_info"
         " where deviceid = '%s' and storedtime < %d and status = 0";
     snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
@@ -7759,9 +7777,13 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
                 m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + strColumn;
             break;
         case 6:
-            deviceEvent.m_strEventTime = strColumn;
+            deviceEvent.m_strThumbnailUrl = strColumn.empty() ? strColumn :
+                m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + strColumn;
             break;
         case 7:
+            deviceEvent.m_strEventTime = strColumn;
+            break;
+        case 8:
             deviceEvent.m_uiReadState = boost::lexical_cast<unsigned int>(strColumn);
             Result = deviceEvent;
             break;
@@ -8324,10 +8346,14 @@ void AccessManager::FileProcessHandler(const std::string &strEventID, const std:
         return;
     }
 
+    std::string strResolution("1280x720");
+
+
     Json::Value jsBody;
     jsBody["localpath"] = jsLocalPath.asString();
     jsBody["fileid"] = strFileID;
     jsBody["eventid"] = strEventID;
+    jsBody["img_resolution"] = strResolution;
     
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();

@@ -2771,6 +2771,20 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_streventtime();
   void set_allocated_streventtime(::std::string* streventtime);
 
+  // string strThumbnailUrl = 9;
+  void clear_strthumbnailurl();
+  static const int kStrThumbnailUrlFieldNumber = 9;
+  const ::std::string& strthumbnailurl() const;
+  void set_strthumbnailurl(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strthumbnailurl(::std::string&& value);
+  #endif
+  void set_strthumbnailurl(const char* value);
+  void set_strthumbnailurl(const char* value, size_t size);
+  ::std::string* mutable_strthumbnailurl();
+  ::std::string* release_strthumbnailurl();
+  void set_allocated_strthumbnailurl(::std::string* strthumbnailurl);
+
   // uint32 uiDeviceType = 2;
   void clear_uidevicetype();
   static const int kUiDeviceTypeFieldNumber = 2;
@@ -2803,6 +2817,7 @@ class DeviceEvent : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::internal::ArenaStringPtr streventid_;
   ::google::protobuf::internal::ArenaStringPtr strfileurl_;
   ::google::protobuf::internal::ArenaStringPtr streventtime_;
+  ::google::protobuf::internal::ArenaStringPtr strthumbnailurl_;
   ::google::protobuf::uint32 uidevicetype_;
   ::google::protobuf::uint32 uieventtype_;
   ::google::protobuf::uint32 uieventstate_;
@@ -23045,6 +23060,58 @@ inline void DeviceEvent::set_uireadstate(::google::protobuf::uint32 value) {
   
   uireadstate_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.DeviceEvent.uiReadState)
+}
+
+// string strThumbnailUrl = 9;
+inline void DeviceEvent::clear_strthumbnailurl() {
+  strthumbnailurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeviceEvent::strthumbnailurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceEvent.strThumbnailUrl)
+  return strthumbnailurl_.GetNoArena();
+}
+inline void DeviceEvent::set_strthumbnailurl(const ::std::string& value) {
+  
+  strthumbnailurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceEvent.strThumbnailUrl)
+}
+#if LANG_CXX11
+inline void DeviceEvent::set_strthumbnailurl(::std::string&& value) {
+  
+  strthumbnailurl_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DeviceEvent.strThumbnailUrl)
+}
+#endif
+inline void DeviceEvent::set_strthumbnailurl(const char* value) {
+  
+  strthumbnailurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeviceEvent.strThumbnailUrl)
+}
+inline void DeviceEvent::set_strthumbnailurl(const char* value, size_t size) {
+  
+  strthumbnailurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeviceEvent.strThumbnailUrl)
+}
+inline ::std::string* DeviceEvent::mutable_strthumbnailurl() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeviceEvent.strThumbnailUrl)
+  return strthumbnailurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeviceEvent::release_strthumbnailurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DeviceEvent.strThumbnailUrl)
+  
+  return strthumbnailurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeviceEvent::set_allocated_strthumbnailurl(::std::string* strthumbnailurl) {
+  if (strthumbnailurl != NULL) {
+    
+  } else {
+    
+  }
+  strthumbnailurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strthumbnailurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEvent.strThumbnailUrl)
 }
 
 // -------------------------------------------------------------------

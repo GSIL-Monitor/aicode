@@ -440,6 +440,7 @@ void UnSerializeDeviceEventList(std::list<InteractiveProtoHandler::DeviceEvent> 
         deviceEvent.m_strFileUrl = srcDeviceEvent.strfileurl();
         deviceEvent.m_strEventTime = srcDeviceEvent.streventtime();
         deviceEvent.m_uiReadState = srcDeviceEvent.uireadstate();
+        deviceEvent.m_strThumbnailUrl = srcDeviceEvent.strthumbnailurl();
 
         deviceEventList.push_back(std::move(deviceEvent));
     }
@@ -468,6 +469,7 @@ void SerializeDeviceEventList(const std::list<InteractiveProtoHandler::DeviceEve
         pDstDeviceEvent->set_strfileurl(itBegin->m_strFileUrl);
         pDstDeviceEvent->set_streventtime(itBegin->m_strEventTime);
         pDstDeviceEvent->set_uireadstate(itBegin->m_uiReadState);
+        pDstDeviceEvent->set_strthumbnailurl(itBegin->m_strThumbnailUrl);
 
         ++i;
         ++itBegin;

@@ -5181,6 +5181,7 @@ bool HttpMsgHandler::QueryDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsgI
         jsEvent["event_type"] = itBegin->m_uiEventType;
         jsEvent["event_time"] = itBegin->m_strEventTime;
         jsEvent["view_already"] = itBegin->m_uiViewAlready;
+        jsEvent["thumbnail"] = itBegin->m_strThumbnailURL;
 
         jsEventList.append(jsEvent);
 
@@ -9069,6 +9070,8 @@ bool HttpMsgHandler::QueryDeviceEvent(const std::string &strSid, const std::stri
             ev.m_uiEventType = it.m_uiEventType;
             ev.m_strEventTime = it.m_strEventTime;
             ev.m_uiViewAlready = it.m_uiReadState;
+            ev.m_strThumbnailURL = it.m_strThumbnailUrl;
+
             evlist.push_back(std::move(ev));
         }
 

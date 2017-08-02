@@ -272,6 +272,7 @@ CREATE TABLE `t_device_event_info` (
   `eventstate` int(11),             #时间状态，Motion支持Motion、Answered_Motion，Ring支持Accepted_Ring、Missed_Ring、Message_Ring
   `readstate` int(11) NOT NULL,     #查看状态，包括Unread、Read
   `fileid` varchar(200) DEFAULT '',
+  `thumbnail` varchar(1000) DEFAULT '',
   `storedtime` int(11) NOT NULL DEFAULT '0',  #已存储时长
   `createdate` datetime NOT NULL,
   `status` int(11) DEFAULT '0',
