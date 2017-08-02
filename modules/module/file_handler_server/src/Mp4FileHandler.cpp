@@ -34,8 +34,9 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strRe
     Json::Value fileid;
     Json::Value eventid;
     Json::Value path;
+    std::string thumbnail;
 
-    BOOST_SCOPE_EXIT(&blResult, &fileid, &eventid, &strVideoPath, &strAudioPath, &strResult)
+    BOOST_SCOPE_EXIT(&blResult, &fileid, &eventid, &thumbnail, &strVideoPath, &strAudioPath, &strResult)
     {
         std::string strRsp;
         Json::Value jsBody;
@@ -44,6 +45,7 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strRe
             jsBody["retcode"] = "0";
             jsBody["fileid"] = fileid.asString() + ".mp4";
             jsBody["eventid"] = eventid.asString();
+            jsBody["thumbnail_fileid"] = thumbnail;
         }
         else
         {
@@ -87,6 +89,13 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strRe
         return;
     }
 
+    Json::Value imgsize = root["img_resolution"];
+    if (imgsize.isNull() || !imgsize.isString() || imgsize.asString().empty())
+    {
+        LOG_ERROR_RLD("Mp4MsgHandler failed, receive message fromat error, raw message is: " << strMsg);
+        return;
+    }
+
     if (!SeparateVideoAndAudioFile(path.asString(), strVideoPath, strAudioPath))
     {
         LOG_ERROR_RLD("Mp4MsgHandler failed, separate file error, file id is " << fileid <<
@@ -115,6 +124,23 @@ void Mp4FileHandler::Mp4MsgHandler(const std::string &strMsg, std::string &strRe
         LOG_ERROR_RLD("Mp4MsgHandler failed, convert mp4 file error, file id is " << fileid <<
             " and event id is " << eventid << " and file path is " << path);
         return;
+    }
+
+    //生成视频缩略图
+    memset(cmd, 0, size);
+    snprintf(cmd, size, "./thumbnail.sh %s %s", path.asCString(), imgsize.asCString());
+
+    LOG_INFO_RLD("Mp4MsgHandler exec ffmpeg cmd: " << cmd);
+    status = system(cmd);
+    if (status == -1 || !WIFEXITED(status) || WEXITSTATUS(status))
+    {
+        LOG_ERROR_RLD("Mp4MsgHandler failed, generate video thumbnails error, file id is " << fileid <<
+            " and event id is " << eventid << " and file path is " << path <<
+            " and video resolution is " << imgsize);
+    }
+    else
+    {
+        thumbnail = fileid.asString() + "_" + imgsize.asString() + ".jpg";
     }
 
     //删除原始音视频帧文件
