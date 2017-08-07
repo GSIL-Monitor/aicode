@@ -7973,14 +7973,31 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID,
 void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID, const unsigned int uiExpiredTime)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select fileid from t_device_event_info where deviceid = '%s' and storedtime >= %d";
+    const char *sqlfmt = "select fileid, thumbnail from t_device_event_info where deviceid = '%s' and storedtime >= %d";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpiredTime);
+
+    struct FilePath
+    {
+        std::string fileid;
+        std::string thumbnail;
+    } filepath;
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {
-        Result = strColumn;
+        switch (uiColumnNum)
+        {
+        case 0:
+            filepath.fileid = strColumn;
+            break;
+        case 1:
+            filepath.thumbnail = strColumn;
+            Result = filepath;
+            break;
 
-        LOG_INFO_RLD("RemoveExpiredDeviceEventFile sql result fileid is " << strColumn);
+        default:
+            LOG_ERROR_RLD("RemoveExpiredDeviceEventFile sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
     };
 
     std::list<boost::any> ResultList;
@@ -7990,9 +8007,11 @@ void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID,
         return;
     }
 
-    for(auto &result : ResultList)
+    for (auto &result : ResultList)
     {
-        RemoveRemoteFile(boost::any_cast<std::string>(result));
+        auto path = boost::any_cast<FilePath>(result);
+        RemoveRemoteFile(path.fileid);
+        RemoveRemoteFile(path.thumbnail);
     }
 }
 
