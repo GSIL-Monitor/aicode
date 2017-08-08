@@ -332,7 +332,8 @@ private:
 
     void ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword);
 
-    void SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail);
+    void SendUserEmailAction(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail, 
+        const unsigned int uiAppType, const std::string &strAction);
 
     bool GetTimeZone(const std::string &strIpAddress, std::string &strCountryCode, std::string &strCountryNameEn, std::string &strCountryNameZh,
         std::string &strTimeZone);

@@ -401,6 +401,8 @@ bool AccessManager::RegisterUserReq(const std::string &strMsg, const std::string
     
     m_DBRuner.Post(boost::bind(&AccessManager::InsertUserToDB, this, UsrInfo));
 
+    m_DBRuner.Post(boost::bind(&AccessManager::SendUserEmailAction, this, RegUsrReq.m_userInfo.m_strUserName, RegUsrReq.m_userInfo.m_strUserPassword,
+        RegUsrReq.m_userInfo.m_strEmail, RegUsrReq.m_userInfo.m_uiTypeInfo, "reg"));
 
     blResult = true;
     
@@ -2483,7 +2485,8 @@ bool AccessManager::RetrievePwdReqUser(const std::string &strMsg, const std::str
 
     m_DBRuner.Post(boost::bind(&AccessManager::ResetUserPasswordToDB, this, RetrievePwdReqUsr.m_strUserName, strRandPwd));
 
-    m_DBRuner.Post(boost::bind(&AccessManager::SendUserResetPasswordEmail, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_strEmail));
+    m_DBRuner.Post(boost::bind(&AccessManager::SendUserEmailAction, this, RetrievePwdReqUsr.m_strUserName, strRandPwd, RetrievePwdReqUsr.m_strEmail,
+        RetrievePwdReqUsr.m_uiAppType, "rst"));
 
     LOG_INFO_RLD("Retrieve user password received and user name is " << RetrievePwdReqUsr.m_strUserName << " and session id is " << RetrievePwdReqUsr.m_strSID);
 
@@ -4591,11 +4594,13 @@ void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const 
     }
 }
 
-void AccessManager::SendUserResetPasswordEmail(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail)
+void AccessManager::SendUserEmailAction(const std::string &strUserName, const std::string &strUserPassword, const std::string &strEmail, 
+    const unsigned int uiAppType, const std::string &strAction)
 {
     char cmd[1024] = { 0 };
-    const char *param = "./mail.sh '%s' '%s' '%s'";
-    snprintf(cmd, sizeof(cmd), param, strEmail.c_str(), strUserName.c_str(), strUserPassword.c_str());
+    std::string strType = 0 == uiAppType ? "ring" : "camviews";
+    const char *param = "./mail.sh '%s' '%s' '%s' '%s' '%s'";
+    snprintf(cmd, sizeof(cmd), param, strEmail.c_str(), strUserName.c_str(), strUserPassword.c_str(), strType.c_str(), strAction.c_str());
 
     system(cmd);
 
