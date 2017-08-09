@@ -1470,6 +1470,23 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
         return false;
     }
 
+    std::string strSharedUserID;
+    if (req.m_relationInfo.m_strUserID.empty())
+    {
+        if (req.m_strUserName.empty() || !QueryUserIDByUserName(req.m_strUserName, strSharedUserID))
+        {
+            ReturnInfo::RetCode(ReturnInfo::SHARED_USERNAME_IS_INVALID_USER);
+
+            LOG_ERROR_RLD("Sharing device failed, query user id error, src id is " << strSrcID <<
+                " and user name is " << req.m_strUserName);
+            return false;
+        }
+    }
+    else
+    {
+        strSharedUserID = req.m_relationInfo.m_strUserID;
+    }
+
     //考虑到用户设备关系表后续查询的方便，用户与设备的关系在表中体现的是一条条记录
     //分享设备会在对应的用户设备关系表中只增加一条记录，原来的主动分享的记录不变化（还是表示设备最开始的归属）
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
@@ -1484,7 +1501,7 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
     relation.m_strCreateDate = strCurrentTime;
     relation.m_strDevID = req.m_relationInfo.m_strDevID;
     relation.m_strExtend = req.m_relationInfo.m_strValue;
-    relation.m_strUsrID = req.m_relationInfo.m_strUserID;
+    relation.m_strUsrID = strSharedUserID;
 
     m_DBRuner.Post(boost::bind(&AccessManager::SharingRelationToDB, this, relation));
     
@@ -8432,4 +8449,33 @@ void AccessManager::DeleteDoorbellParameter(const std::string &strDeviceID)
     {
         LOG_ERROR_RLD("DeleteDoorbellParameter exec sql error, sql is " << sql);
     }
+}
+
+bool AccessManager::QueryUserIDByUserName(const std::string &strUserName, std::string &strUserID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select userid from t_user_info where username = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserName.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+        LOG_INFO_RLD("QueryUserIDByUserName sql result user id is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryUserIDByUserName exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryUserIDByUserName sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    strUserID = boost::any_cast<std::string>(ResultList.front());
+    return true;
 }

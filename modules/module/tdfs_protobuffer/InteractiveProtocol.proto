@@ -839,7 +839,8 @@ message QueryUserRsp_USR                        //查询设备关联用户信息
 message SharingDevReq_USR                       //分享设备请求
 {
   Relation relationInfo = 1;
-  string strValue = 2;
+  string strUserName = 2;
+  string strValue = 3;
 }
 
 message SharingDevRsp_USR                       //分享设备响应

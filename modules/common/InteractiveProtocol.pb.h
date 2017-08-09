@@ -10680,9 +10680,23 @@ class SharingDevReq_USR : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // string strValue = 2;
+  // string strUserName = 2;
+  void clear_strusername();
+  static const int kStrUserNameFieldNumber = 2;
+  const ::std::string& strusername() const;
+  void set_strusername(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strusername(::std::string&& value);
+  #endif
+  void set_strusername(const char* value);
+  void set_strusername(const char* value, size_t size);
+  ::std::string* mutable_strusername();
+  ::std::string* release_strusername();
+  void set_allocated_strusername(::std::string* strusername);
+
+  // string strValue = 3;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 3;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -10707,6 +10721,7 @@ class SharingDevReq_USR : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strusername_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::Interactive::Message::Relation* relationinfo_;
   mutable int _cached_size_;
@@ -32375,7 +32390,59 @@ inline void SharingDevReq_USR::set_allocated_relationinfo(::Interactive::Message
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.relationInfo)
 }
 
-// string strValue = 2;
+// string strUserName = 2;
+inline void SharingDevReq_USR::clear_strusername() {
+  strusername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SharingDevReq_USR::strusername() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.SharingDevReq_USR.strUserName)
+  return strusername_.GetNoArena();
+}
+inline void SharingDevReq_USR::set_strusername(const ::std::string& value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.SharingDevReq_USR.strUserName)
+}
+#if LANG_CXX11
+inline void SharingDevReq_USR::set_strusername(::std::string&& value) {
+  
+  strusername_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.SharingDevReq_USR.strUserName)
+}
+#endif
+inline void SharingDevReq_USR::set_strusername(const char* value) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.SharingDevReq_USR.strUserName)
+}
+inline void SharingDevReq_USR::set_strusername(const char* value, size_t size) {
+  
+  strusername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.SharingDevReq_USR.strUserName)
+}
+inline ::std::string* SharingDevReq_USR::mutable_strusername() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.SharingDevReq_USR.strUserName)
+  return strusername_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SharingDevReq_USR::release_strusername() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.SharingDevReq_USR.strUserName)
+  
+  return strusername_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SharingDevReq_USR::set_allocated_strusername(::std::string* strusername) {
+  if (strusername != NULL) {
+    
+  } else {
+    
+  }
+  strusername_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strusername);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.SharingDevReq_USR.strUserName)
+}
+
+// string strValue = 3;
 inline void SharingDevReq_USR::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

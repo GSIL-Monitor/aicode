@@ -445,6 +445,8 @@ private:
 
     void DeleteDoorbellParameter(const std::string &strDeviceID);
 
+    bool QueryUserIDByUserName(const std::string &strUserName, std::string &strUserID);
+
 private:
     ParamInfo m_ParamInfo;
 

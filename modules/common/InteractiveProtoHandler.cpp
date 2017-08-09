@@ -3368,8 +3368,8 @@ void InteractiveProtoHandler::SharingDevReq_USR::UnSerializer(const InteractiveM
     m_relationInfo.m_strValue = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().strvalue();
     m_relationInfo.m_uiRelation = InteractiveMsg.reqvalue().sharingdevreq_usr_value().relationinfo().uirelation();
 
+    m_strUserName = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strusername();
     m_strValue = InteractiveMsg.reqvalue().sharingdevreq_usr_value().strvalue();
-
 
 }
 
@@ -3386,7 +3386,7 @@ void InteractiveProtoHandler::SharingDevReq_USR::Serializer(InteractiveMessage &
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->mutable_relationinfo()->set_uirelation(m_relationInfo.m_uiRelation);
     
     InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strvalue(m_strValue);
-
+    InteractiveMsg.mutable_reqvalue()->mutable_sharingdevreq_usr_value()->set_strusername(m_strUserName);
 }
 
 void InteractiveProtoHandler::SharingDevRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)

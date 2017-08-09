@@ -1652,14 +1652,26 @@ bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
     const std::string strUserID = itFind->second;
 
+    std::string strUserIDShared;
     itFind = pMsgInfoMap->find("userid_shared");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("User id of shared not found.");
+        strUserIDShared = itFind->second;
+    }
+    
+    std::string strUserNameShared;
+    itFind = pMsgInfoMap->find("username_shared");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserNameShared = itFind->second;
+    }
+
+    if (strUserIDShared.empty() && strUserNameShared.empty())
+    {
+        LOG_ERROR_RLD("User id and name are all empty.");
         return blResult;
     }
-    const std::string strUserIDShared = itFind->second;
-
+    
     itFind = pMsgInfoMap->find("devid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -1707,7 +1719,7 @@ bool HttpMsgHandler::SharingDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         << " and begin date is [" << strBeginDate << "]" << " and end date is " << strEndDate << " and value is [" << strValue << "]"
         << " and session id is " << strSid);
 
-    if (!SharingDevice(strSid, strUserIDShared, strDevID, strRelation, strBeginDate, strEndDate))
+    if (!SharingDevice(strSid, strUserIDShared, strUserNameShared, strDevID, strRelation, strBeginDate, strEndDate))
     {
         LOG_ERROR_RLD("Sharing device handle failed and device id is " << strDevID << " and user id of shared is " << strUserIDShared << " and session id is " << strSid);
         return blResult;
@@ -7035,7 +7047,7 @@ bool HttpMsgHandler::QueryUsersOfDevice(const std::string &strSid, const std::st
     
 }
 
-bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, 
+bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strUserNameShared, const std::string &strDevID,
     const std::string &strRelation, const std::string &strBeginDate, const std::string &strEndDate)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -7090,6 +7102,7 @@ bool HttpMsgHandler::SharingDevice(const std::string &strSid, const std::string 
         SharingDevReq.m_relationInfo.m_strUserID = strUserID;
         SharingDevReq.m_relationInfo.m_strValue = "";
         SharingDevReq.m_relationInfo.m_uiRelation = uiRelation;
+        SharingDevReq.m_strUserName = strUserNameShared;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(SharingDevReq, strSerializeOutPut))

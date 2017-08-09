@@ -366,7 +366,7 @@ private:
     bool QueryUsersOfDevice(const std::string &strSid, const std::string &strDevID, const unsigned int uiBeginIndex, std::list<T> &RelationList,
         std::list<std::string> &strUsrNameList);
 
-    bool SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation, 
+    bool SharingDevice(const std::string &strSid, const std::string &strUserID, const std::string &strUserNameShared, const std::string &strDevID, const std::string &strRelation,
         const std::string &strBeginDate, const std::string &strEndDate);
    
     bool CancelSharedDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, const std::string &strRelation);

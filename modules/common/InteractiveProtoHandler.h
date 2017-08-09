@@ -760,6 +760,7 @@ public:
     {
 
         Relation m_relationInfo;
+        std::string m_strUserName;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
