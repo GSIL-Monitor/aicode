@@ -32,6 +32,7 @@ public:
     static const int UNDELETED_DEVICE_EXISTED_USER;      //用户仍有未删除的设备
     static const int ACCOUNT_LOGIN_AT_OTHER_TERMINAL;    //账户在其他终端登录
     static const int SHARED_DEVICE_NOT_ADDED_BY_USER;    //设备尚未被用户添加
+    static const int SHARED_USERNAME_IS_INVALID_USER;    //用户名有误，找不到此用户
 
     //设备相关的错误代码
     static const int DEVICEID_NOT_EXISTED_DEV;           //设备ID不存在
