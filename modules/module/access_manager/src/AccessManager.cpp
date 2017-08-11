@@ -197,6 +197,7 @@ bool AccessManager::Init()
     m_EventFileProcessRunner.Run();
 
     m_MsgReceiver->RunReceivedMsg();
+    m_MsgSender->RunSendMsg();
 
     LOG_INFO_RLD("UserManager init success");
 

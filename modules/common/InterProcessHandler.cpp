@@ -9,7 +9,7 @@ typedef boost::interprocess::basic_string<char, std::char_traits<char>, StdStrin
 
 InterProcessHandler::InterProcessHandler(const unsigned int uiMode, const std::string &strID, const unsigned int uiRunTdNum /*= 2*/, const unsigned int uiMemSize /*= 4096*/) :
 m_strID(strID), m_strMutexID(strID + "_mutex"), m_strCondID(strID + "_cond"), m_uiMemSize(uiMemSize), m_uiRunTdNum(uiRunTdNum),
-m_MsgHandleRunner(uiRunTdNum), m_ReceiveMsgRunner(1), m_uiMode(uiMode), m_uiReceiveMsgFlag(1)
+m_MsgHandleRunner(uiRunTdNum), m_ReceiveMsgRunner(1), m_SendMsgRunner(1), m_uiMode(uiMode), m_uiReceiveMsgFlag(1)
 {
 }
 
@@ -19,6 +19,7 @@ InterProcessHandler::~InterProcessHandler()
     {
         m_uiReceiveMsgFlag = 0;
         m_ReceiveMsgRunner.Stop();
+        m_SendMsgRunner.Stop();
 
         m_MsgHandleRunner.Stop();
 
@@ -55,10 +56,13 @@ bool InterProcessHandler::Init()
     return true;
 }
 
-bool InterProcessHandler::SendMsg(const std::string &strMsg)
+void InterProcessHandler::SendMsg(const std::string &strMsg)
 {
-    boost::unique_lock<boost::mutex> Sendlock(m_SendMutex);
+    m_SendMsgRunner.Post(boost::bind(&InterProcessHandler::SendMsgInner, this, strMsg));
+}
 
+bool InterProcessHandler::SendMsgInner(const std::string &strMsg)
+{
     if (SEND_MODE != m_uiMode)
     {
         LOG_ERROR_RLD("Current mode is not send mode and mode is " << m_uiMode);
@@ -104,6 +108,14 @@ void InterProcessHandler::RunReceivedMsg(const bool isWaitRunFinished)
         
         m_ReceiveMsgRunner.Post(boost::bind(&InterProcessHandler::ReceiveMsg, this));
         m_ReceiveMsgRunner.Run(isWaitRunFinished);
+    }
+}
+
+void InterProcessHandler::RunSendMsg(const bool isWaitRunFinished /*= false*/)
+{
+    if (SEND_MODE == m_uiMode)
+    {        
+        m_SendMsgRunner.Run(isWaitRunFinished);
     }
 }
 

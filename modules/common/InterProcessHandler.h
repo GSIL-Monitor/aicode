@@ -24,16 +24,20 @@ public:
 
     bool Init();
     
-    bool SendMsg(const std::string &strMsg);
+    void SendMsg(const std::string &strMsg);
 
     void SetMsgOfReceivedHandler(InterPsMsgHandler ipmsghdr);
 
     void RunReceivedMsg(const bool isWaitRunFinished = false);
 
+    void RunSendMsg(const bool isWaitRunFinished = false);
+
 private:
     void MsgHandler(const std::string &strMsg);
 
     void ReceiveMsg();
+
+    bool SendMsgInner(const std::string &strMsg);
 
 private:
     std::string m_strID;
@@ -51,13 +55,11 @@ private:
     unsigned int m_uiRunTdNum;
     Runner m_MsgHandleRunner;
     Runner m_ReceiveMsgRunner;
+    Runner m_SendMsgRunner;
 
     unsigned int m_uiMode;
 
     boost::atomic_uint32_t m_uiReceiveMsgFlag;
-
-    boost::mutex m_SendMutex;
-
 };
 
 #endif

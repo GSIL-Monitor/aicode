@@ -306,6 +306,7 @@ bool FileHdrEx::Init()
 
 void FileHdrEx::Run()
 {
+    m_MsgSender->RunSendMsg(false);
     m_MsgReceiver->RunReceivedMsg(true);
 }
 
