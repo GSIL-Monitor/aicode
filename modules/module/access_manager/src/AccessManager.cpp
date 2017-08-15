@@ -177,11 +177,14 @@ bool AccessManager::Init()
             LOG_INFO_RLD("Refresh access domain name successful");
         }
 
-        if (m_ulTimerTimes > 0 && m_ulTimerTimes % 6 == 0)  //每隔一小时执行一次
+        if (m_ParamInfo.m_strMasterNode == "Yes")
         {
-            UpdateDeviceEventStoredTime();
+            if (m_ulTimerTimes > 0 && m_ulTimerTimes % 6 == 0)  //每隔一小时执行一次
+            {
+                UpdateDeviceEventStoredTime();
+            }
+            ++m_ulTimerTimes;
         }
-        ++m_ulTimerTimes;
     };
 
     m_DBTimer.SetTimeOutCallBack(TmFunc);
@@ -7744,7 +7747,7 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     int size = sizeof(sql);
     int len;
     const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, thumbnail, createdate, readstate from t_device_event_info"
-        " where deviceid = '%s' and storedtime < %d and status = 0";
+        " where deviceid = '%s' and storedtime <= %d and status = 0";
     snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (0 != uiEventType)
@@ -7867,8 +7870,8 @@ void AccessManager::UpdateEventReadStatusToDB(std::list<std::string> strEventIDL
 void AccessManager::DeleteDeviceEventToDB(const std::string &strEventID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_device_event_info set status = %d where eventid = '%s' and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, strEventID.c_str());
+    const char *sqlfmt = "delete from t_device_event_info where eventid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -7984,7 +7987,7 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID,
     RemoveExpiredDeviceEventFile(strDeviceID, uiExpireTime);
 
     char sql[1024] = { 0 };
-    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and storedtime >= %d and status = 0";
+    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and storedtime > %d and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -7996,7 +7999,7 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID,
 void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID, const unsigned int uiExpiredTime)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select fileid, thumbnail from t_device_event_info where deviceid = '%s' and storedtime >= %d";
+    const char *sqlfmt = "select fileid, thumbnail from t_device_event_info where deviceid = '%s' and storedtime > %d";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpiredTime);
 
     struct FilePath

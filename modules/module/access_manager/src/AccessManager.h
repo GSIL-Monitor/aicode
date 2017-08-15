@@ -115,6 +115,7 @@ public:
         std::string m_strUserLoginMutex;
         std::string m_strUserAllowDiffTerminal;
         std::string m_strUserKickoutType;
+        std::string m_strMasterNode;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo

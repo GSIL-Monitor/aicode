@@ -326,6 +326,12 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    const std::string &strMasterNode = GetConfig("General.MasterNode");
+    if (strMasterNode.empty())
+    {
+        LOG_ERROR_RLD("MasterNode config item not found.");
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 
     AccessManager::ParamInfo UmgParam;
@@ -347,6 +353,7 @@ int main(int argc, char* argv[])
     UmgParam.m_strUserLoginMutex = strUserLoginMutex;
     UmgParam.m_strUserAllowDiffTerminal = strUserAllowDiffTerminal;
     UmgParam.m_strUserKickoutType = strUserKickoutType;
+    UmgParam.m_strMasterNode = strMasterNode;
 
     AccessManager Umg(UmgParam);
     if (!Umg.Init())
