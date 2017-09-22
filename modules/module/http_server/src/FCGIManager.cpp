@@ -6,7 +6,16 @@
 #include <boost/algorithm/string.hpp>
 #include "FileManager.h"
 
-
+static std::string FCGX_GETPARAM(const char *name, FCGX_ParamArray envp)
+{
+    char *pFCGIValue = FCGX_GetParam(name, envp);
+    if (NULL == pFCGIValue)
+    {
+        return std::string("");
+    }
+    return std::string(pFCGIValue);
+}
+    
 
 const std::string FCGIManager::QUERY_STRING = "QUERY_STRING";
 
@@ -150,12 +159,24 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
 
     boost::shared_ptr<MsgInfoMap> pMsgInfoMap(new MsgInfoMap);
 
-    std::string strQueryStr = FCGX_GetParam(QUERY_STRING.c_str(), pRequest->envp);
+    std::string strQueryStr = FCGX_GETPARAM(QUERY_STRING.c_str(), pRequest->envp);
+    if (strQueryStr.empty())
+    {
+        LOG_ERROR_RLD("FCGI get query string is empty.");
+        return;
+    }
+
     std::string strAction;
     getURIRequestData(strQueryStr.c_str(), ACTION.c_str(), strAction);
             
-    std::string strMethod = FCGX_GetParam(REQUEST_METHOD.c_str(), pRequest->envp);
-    std::string strRequestUri = FCGX_GetParam(REQUEST_URI.c_str(), pRequest->envp);
+    std::string strMethod = FCGX_GETPARAM(REQUEST_METHOD.c_str(), pRequest->envp);
+    if (strMethod.empty())
+    {
+        LOG_ERROR_RLD("FCGI get method string is empty.");
+        return;
+    }
+
+    std::string strRequestUri = FCGX_GETPARAM(REQUEST_URI.c_str(), pRequest->envp);
     if (strRequestUri.empty())
     {
         LOG_ERROR_RLD("FCGI get request url is empty.");
@@ -179,13 +200,13 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     }
     strCgiName = sTmpBuf.substr(iPos + 1);
 
-    std::string strContentLen = FCGX_GetParam(CONTENT_LENGTH.c_str(), pRequest->envp);
+    std::string strContentLen = FCGX_GETPARAM(CONTENT_LENGTH.c_str(), pRequest->envp);
 
-    std::string strContentType = FCGX_GetParam(CONTENT_TYPE.c_str(), pRequest->envp);
+    std::string strContentType = FCGX_GETPARAM(CONTENT_TYPE.c_str(), pRequest->envp);
 
-    std::string strHttpRange = FCGX_GetParam(HTTP_RANGE.c_str(), pRequest->envp);
+    std::string strHttpRange = FCGX_GETPARAM(HTTP_RANGE.c_str(), pRequest->envp);
 
-    std::string strRemoteAddr = FCGX_GetParam(REMOTE_ADDR.c_str(), pRequest->envp);
+    std::string strRemoteAddr = FCGX_GETPARAM(REMOTE_ADDR.c_str(), pRequest->envp);
 
     if (strAction != "")      pMsgInfoMap->insert(MsgInfoMap::value_type(ACTION, strAction));
     if (strQueryStr != "")    pMsgInfoMap->insert(MsgInfoMap::value_type(QUERY_STRING, strQueryStr));
