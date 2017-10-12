@@ -244,7 +244,7 @@ private:
     bool QueryAllGuardStorePlan(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, std::list<Plan> &planlist);
 
 private:
-    bool ValidDatetime(const std::string &strDatetime);
+    bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);
 
     bool GetEntrance(const std::string &strEntrance, std::list<EntranceInfo> &einfolist);
 

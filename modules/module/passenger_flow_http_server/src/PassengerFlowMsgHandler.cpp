@@ -2046,7 +2046,7 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlanHandler(boost::shared_ptr<MsgI
     }
     const std::string strBeginTime = itFind->second;
 
-    if (!ValidDatetime(strBeginTime))
+    if (!ValidDatetime(strBeginTime, true))
     {
         LOG_ERROR_RLD("Begin time is invalid and value is " << strBeginTime);
         return blResult;
@@ -2060,7 +2060,7 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlanHandler(boost::shared_ptr<MsgI
     }
     const std::string strEndTime = itFind->second;
 
-    if (!ValidDatetime(strEndTime))
+    if (!ValidDatetime(strEndTime, true))
     {
         LOG_ERROR_RLD("End time is invalid and value is " << strEndTime);
         return blResult;
@@ -2071,7 +2071,7 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strBeginTime2 = itFind->second;
-        if (!ValidDatetime(strBeginTime2))
+        if (!ValidDatetime(strBeginTime2, true))
         {
             LOG_ERROR_RLD("Begin time2 is invalid and value is " << strBeginTime2);
             return blResult;
@@ -2083,7 +2083,7 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strEndTime2 = itFind->second;
-        if (!ValidDatetime(strEndTime2))
+        if (!ValidDatetime(strEndTime2, true))
         {
             LOG_ERROR_RLD("End time2 is invalid and value is " << strEndTime2);
             return blResult;
@@ -2271,7 +2271,7 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strBeginTime = itFind->second;
-        if (!ValidDatetime(strBeginTime))
+        if (!ValidDatetime(strBeginTime, true))
         {
             LOG_ERROR_RLD("Begin time is invalid and value is " << strBeginTime);
             return blResult;
@@ -2283,7 +2283,7 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strEndTime = itFind->second;
-        if (!ValidDatetime(strEndTime))
+        if (!ValidDatetime(strEndTime, true))
         {
             LOG_ERROR_RLD("End time is invalid and value is " << strEndTime);
             return blResult;
@@ -2295,7 +2295,7 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strBeginTime2 = itFind->second;
-        if (!ValidDatetime(strBeginTime2))
+        if (!ValidDatetime(strBeginTime2, true))
         {
             LOG_ERROR_RLD("Begin time2 is invalid and value is " << strBeginTime2);
             return blResult;
@@ -2307,7 +2307,7 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlanHandler(boost::shared_ptr<MsgI
     if (pMsgInfoMap->end() != itFind)
     {
         strEndTime2 = itFind->second;
-        if (!ValidDatetime(strEndTime2))
+        if (!ValidDatetime(strEndTime2, true))
         {
             LOG_ERROR_RLD("End time2 is invalid and value is " << strEndTime2);
             return blResult;
@@ -4097,11 +4097,25 @@ void PassengerFlowMsgHandler::WriteMsg(const std::map<std::string, std::string> 
 }
 
 
-bool PassengerFlowMsgHandler::ValidDatetime(const std::string &strDatetime)
+bool PassengerFlowMsgHandler::ValidDatetime(const std::string &strDatetime, const bool IsTime)
 {
     if (strDatetime.empty())
     {
         return false;
+    }
+
+    if (IsTime)
+    {
+        boost::regex reg0("([0-9]{2}[0-9]{2}[0-9]{2})"); //HHmmss
+        boost::regex reg2("([0-9]{2}:[0-9]{2}:[0-9]{2})"); //HH:mm:ss
+        boost::regex reg4("([0-9]{2}:[0-9]{2})"); //HH:mm
+        if (!boost::regex_match(strDatetime, reg0) && !boost::regex_match(strDatetime, reg2) && !boost::regex_match(strDatetime, reg4))
+        {
+            LOG_ERROR_RLD("Time is invalid and input date is " << strDatetime);
+            return false;
+        }
+
+        return true;
     }
 
     boost::regex reg0("([0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2})"); //yyyyMMddHHmmss
