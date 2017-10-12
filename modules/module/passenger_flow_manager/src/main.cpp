@@ -44,7 +44,7 @@ static void InitLog()
     int iLoglevel = LogRLD::INFO_LOG_LEVEL;
     int iSchedule = LogRLD::DAILY_LOG_SCHEDULE;
     int iMaxLogFileBackupNum = 10;
-    
+
     boost::filesystem::path currentPath = boost::filesystem::current_path() / CONFIG_FILE_NAME;
 
     //判断配置文件是否存在
@@ -127,7 +127,7 @@ static void InitLog()
     }
 
     boost::filesystem::path LogPath(strLogPath);
-    std::string strFileName =strLogInnerShowName + ".log";
+    std::string strFileName = strLogInnerShowName + ".log";
     LogPath = LogPath / strFileName;
 
     LogRLD::GetInstance().Init(iLoglevel, strHost, strLogInnerShowName, LogPath.string(), iSchedule, iMaxLogFileBackupNum, VERSION);
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
 
     InitLog();
 
-    LOG_INFO_RLD("AccessManager begin runing and daemon status is " << IsNeedDaemonRun);
+    LOG_INFO_RLD("Begin runing and daemon status is " << IsNeedDaemonRun);
 
     const std::string &strDBHost = GetConfig("DB.DBHost");
     if (strDBHost.empty())
@@ -229,7 +229,7 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("SelfID config item not found.");
         return 0;
     }
-    
+
     const std::string &strThreadOfWorking = GetConfig("General.ThreadOfWorking");
     if (strThreadOfWorking.empty())
     {
@@ -265,20 +265,6 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    const std::string &strLTUserSite = GetConfig("General.LTUserSite");
-    if (strLTUserSite.empty())
-    {
-        LOG_ERROR_RLD("LTUserSite config item not found.");
-        return 0;
-    }
-
-    const std::string &strLTUserSiteRC4Key = GetConfig("General.LTUserSiteRC4Key");
-    if (strLTUserSiteRC4Key.empty())
-    {
-        LOG_ERROR_RLD("LTUserSiteRC4Key config item not found.");
-        return 0;
-    }
-
     const std::string &strFileServerURL = GetConfig("General.FileServerURL");
     if (strFileServerURL.empty())
     {
@@ -304,7 +290,7 @@ int main(int argc, char* argv[])
     {
         LOG_INFO_RLD("Memcached of global port config item not found.");
     }
-    
+
     const std::string &strUserLoginMutex = GetConfig("General.UserLoginMutex");
     if (strUserLoginMutex.empty())
     {
@@ -344,8 +330,6 @@ int main(int argc, char* argv[])
     UmgParam.m_strMemPort = strMemcachedPort;
     UmgParam.m_strSessionTimeoutCountThreshold = strSessionTimeoutCountThreshold;
     UmgParam.m_strDevSessionTimeoutCountThreshold = strDevSessionTimeoutCountThreshold;
-    UmgParam.m_strLTUserSite = strLTUserSite;
-    UmgParam.m_strLTUserSiteRC4Key = strLTUserSiteRC4Key;
     UmgParam.m_strFileServerURL = strFileServerURL;
     UmgParam.m_strGetIpInfoSite = strGetIpInfoSite;
     UmgParam.m_strMemAddressGlobal = strMemcachedAddressGlobal;
@@ -361,8 +345,8 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("Failed to init user manager.");
         return 1;
     }
-    
-    ControlCenter::ParamInfo pinfo;    
+
+    ControlCenter::ParamInfo pinfo;
     pinfo.strRemoteAddress = strRemoteAddress;
     pinfo.strRemotePort = strRemotePort;
     pinfo.uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
@@ -376,7 +360,36 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgTypeParseHandler(boost::bind(&PassengerFlowManager::GetMsgType, &Umg, _1, _2));
 
-    
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreReq_T, boost::bind(&PassengerFlowManager::AddStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreReq_T, boost::bind(&PassengerFlowManager::DeleteStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreReq_T, boost::bind(&PassengerFlowManager::ModifyStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreInfoReq_T, boost::bind(&PassengerFlowManager::QueryStoreInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreReq_T, boost::bind(&PassengerFlowManager::QueryAllStoreReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddEntranceReq_T, boost::bind(&PassengerFlowManager::AddEntranceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEntranceReq_T, boost::bind(&PassengerFlowManager::DeleteEntranceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEntranceReq_T, boost::bind(&PassengerFlowManager::ModifyEntranceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddEntranceDeviceReq_T, boost::bind(&PassengerFlowManager::AddEntranceDeviceReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEntranceDeviceReq_T, boost::bind(&PassengerFlowManager::DeleteEntranceDeviceReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddEventReq_T, boost::bind(&PassengerFlowManager::AddEventReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEventReq_T, boost::bind(&PassengerFlowManager::DeleteEventReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEventReq_T, boost::bind(&PassengerFlowManager::ModifyEventReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryEventInfoReq_T, boost::bind(&PassengerFlowManager::QueryEventInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEventReq_T, boost::bind(&PassengerFlowManager::QueryAllEventReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddSmartGuardStoreReq_T, boost::bind(&PassengerFlowManager::AddSmartGuardStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteSmartGuardStoreReq_T, boost::bind(&PassengerFlowManager::DeleteSmartGuardStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifySmartGuardStoreReq_T, boost::bind(&PassengerFlowManager::ModifySmartGuardStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySmartGuardStoreInfoReq_T, boost::bind(&PassengerFlowManager::QuerySmartGuardStoreInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllSmartGuardStoreReq_T, boost::bind(&PassengerFlowManager::QueryAllSmartGuardStoreReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ImportPOSDataReq_T, boost::bind(&PassengerFlowManager::ImportPOSDataReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCustomerFlowStatisticReq_T, boost::bind(&PassengerFlowManager::QueryCustomerFlowStatisticReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ReportCustomerFlowDataReq_T, boost::bind(&PassengerFlowManager::ReportCustomerFlowDataReq, &Umg, _1, _2, _3));
+
 
     ccenter.Run(true);
 
