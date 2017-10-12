@@ -47,6 +47,13 @@ public:
     static const std::string QUERY_EVENT;
     static const std::string QUERY_ALL_EVENT;
 
+    static const std::string CREATE_GUARD_PLAN;
+    static const std::string DELETE_GUARD_PLAN;
+    static const std::string MODIFY_GUARD_PLAN;
+    static const std::string QUERY_GUARD_PLAN;
+    static const std::string QUERY_ALL_GUARD_PLAN;
+
+
 
     typedef struct _ParamInfo
     {
@@ -101,6 +108,17 @@ public:
     bool QueryAllEventHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
+    bool CreateGuardStorePlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeleteGuardStorePlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyGuardStorePlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryGuardStorePlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllGuardStorePlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
     bool UploadPassengerFlowHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
@@ -153,6 +171,21 @@ private:
         std::string m_strCreateDate;
     };
 
+    struct Plan 
+    {
+        std::string m_strPlanID;
+        std::string m_strUserID;
+        std::string m_strStoreID;
+        std::string m_strStoreName;
+        std::list<std::string> m_strEntranceIDList;
+        std::string m_strPlanName;
+        std::string m_strEnable;
+        std::string m_strBeginTime;
+        std::string m_strEndTime;
+        std::string m_strBeginTime2;
+        std::string m_strEndTime2;
+    };
+
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
@@ -199,6 +232,16 @@ private:
     bool QueryEvent(const std::string &strSid, EventInfo &eventinfo);
 
     bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<EventInfo> &eventinfoList);
+
+    bool CreateGuardStorePlan(const std::string &strSid, Plan &plan);
+
+    bool DeleteGuardStorePlan(const std::string &strSid, const std::string &strUserID, const std::string &strPlanID);
+
+    bool ModifyGuardStorePlan(const std::string &strSid, Plan &plan);
+
+    bool QueryGuardStorePlan(const std::string &strSid, Plan &plan);
+
+    bool QueryAllGuardStorePlan(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, std::list<Plan> &planlist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

@@ -293,6 +293,12 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_EVENT, boost::bind(&PassengerFlowMsgHandler::QueryEventHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_EVENT, boost::bind(&PassengerFlowMsgHandler::QueryAllEventHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::CreateGuardStorePlanHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::DeleteGuardStorePlanHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::ModifyGuardStorePlanHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryGuardStorePlanHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryAllGuardStorePlanHandler, &filehdr, _1, _2));
+
 
     fcgimgr.Run(true);
     return 0;
