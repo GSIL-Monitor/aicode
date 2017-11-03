@@ -15,6 +15,7 @@ CREATE TABLE `t_user_info` (
   `createdate` datetime NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0', #0正常，1删除
   `extend` varchar(4000) DEFAULT NULL,
+  `exceptionstate` int(11) DEFAULT '0', #0-正常
   PRIMARY KEY (`id`),
   INDEX index_ref1(userid),
   INDEX index_ref2(username, createdate),

@@ -24,6 +24,8 @@ const int ReturnInfo::UNDELETED_DEVICE_EXISTED_USER = 1012;        //сц╩╖хтспн╢и
 const int ReturnInfo::ACCOUNT_LOGIN_AT_OTHER_TERMINAL = 1013;      //ук╩╖тзфДкШжу╤к╣гб╪
 const int ReturnInfo::SHARED_DEVICE_NOT_ADDED_BY_USER = 1014;      //иХ╠╦ипн╢╠╩сц╩╖лМ╪с
 const int ReturnInfo::SHARED_USERNAME_IS_INVALID_USER = 1015;      //сц╩╖цШспнСё╛ур╡╩╣╫╢ксц╩╖
+const int ReturnInfo::LOGIN_USING_TEMP_PASSWORD_USER = 1016;       //сц╩╖й╧сцаый╠цэбК╣гб╪ё╛╠ьпКпч╦дцэбК
+const int ReturnInfo::SHARED_USERID_IS_INVALID_USER = 1017;        //сц╩╖IDспнСё╛ур╡╩╣╫╢ксц╩╖
 
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //иХ╠╦╤Ч╪╤сРцШря╠╩й╧сц
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //иХ╠╦P2PIDря╠╩й╧сц

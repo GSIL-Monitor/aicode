@@ -71,6 +71,8 @@ public:
     static const int DEVICE_BELONGTO_USER = 0;
     static const int DEVICE_SHAREDWITH_USER = 1;
 
+    static const int TEMP_LOGIN = 1;
+
     static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
 
     typedef struct _Relation
@@ -251,7 +253,7 @@ public:
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
-    void UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo);
+    void UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo, const std::string &strOldPasswd);
 
     void UnregisterUserToDB(const std::string &strUserID, const int iStatus);
 
@@ -264,6 +266,10 @@ private:
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool ValidUser(std::string &strUserID, std::string &strUserName, bool &blUserExist, const std::string &strUserPwd, const bool IsForceFromDB = false);
+
+    bool IsValidUserID(const std::string &strUserID);
+
+    bool IsTempLogin(const std::string &strUserName, bool &blTemp);
 
     bool GetMySqlUUID(std::string &strUuid);
 

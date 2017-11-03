@@ -612,11 +612,13 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
 
+    std::string strSid;
+    std::string strUserID;
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsRelationList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsRelationList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsRelationList, &strSid, &strUserID)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -625,6 +627,12 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            if (USER_PWD_RESET == ReturnInfo::RetCode())
+            {
+                ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sid", strSid));
+                ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", strUserID));
+            }
 
             this_->WriteMsg(ResultInfoMap, writer, blResult);
         }
@@ -724,7 +732,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         return blResult;
     }
     
-    std::string strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
+    strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
@@ -733,7 +741,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         " and user pwd is " << strUserpwd << " and terminal type is " << uiTerminalType <<
         " and strExtend is [" << strExtend << "]" << " and strValue is [" << strValue << "]");
         
-    std::string strSid;
+    
     std::list<InteractiveProtoHandler::Relation> relist;
     std::list<std::string> strDevNameList;
     if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiType, uiTerminalType, relist, strUserID, strSid, strDevNameList))

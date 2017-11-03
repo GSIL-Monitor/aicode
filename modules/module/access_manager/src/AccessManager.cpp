@@ -625,7 +625,7 @@ bool AccessManager::ModifyUsrInfoReq(const std::string &strMsg, const std::strin
         return false;
     }
 
-    m_DBRuner.Post(boost::bind(&AccessManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo));
+    m_DBRuner.Post(boost::bind(&AccessManager::UpdateUserInfoToDB, this, ModifyUsrReq.m_userInfo, ModifyUsrReq.m_strOldPwd));
 
     blResult = true;
 
@@ -774,6 +774,22 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         boost::bind(&AccessManager::SessionTimeoutProcessCB, this, _1), ClusterAccessCollector::USER_SESSION, LoginReqUsr.m_userInfo.m_strUserID,
         LoginReqUsr.m_uiTerminalType, LoginReqUsr.m_uiType);
         
+    bool blTempLogin;
+    if (!IsTempLogin(LoginReqUsr.m_userInfo.m_strUserName, blTempLogin))
+    {
+        LOG_ERROR_RLD("User login failed, check if user temp login error, src id is " << strSrcID <<
+            " and user name is " << LoginReqUsr.m_userInfo.m_strUserName);
+        return false;
+    }
+
+    if (blTempLogin)
+    {
+        LOG_ERROR_RLD("User login failed, user is login using temp password, src id is " << strSrcID <<
+            " and user name is " << LoginReqUsr.m_userInfo.m_strUserName);
+        ReturnInfo::RetCode(ReturnInfo::LOGIN_USING_TEMP_PASSWORD_USER);
+        return false;
+    }
+
     if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList, LoginReqUsr.m_uiType))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
@@ -1489,6 +1505,15 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
     else
     {
         strSharedUserID = req.m_relationInfo.m_strUserID;
+    }
+
+    if (!IsValidUserID(strSharedUserID))
+    {
+        ReturnInfo::RetCode(ReturnInfo::SHARED_USERID_IS_INVALID_USER);
+
+        LOG_ERROR_RLD("Sharing device failed, the user id is not valid, src id is " << strSrcID <<
+            " and shared user id is " << strSharedUserID);
+        return false;
     }
 
     //考虑到用户设备关系表后续查询的方便，用户与设备的关系在表中体现的是一条条记录
@@ -4606,8 +4631,8 @@ bool AccessManager::CheckEmailByUserName(const std::string &strUserName, const s
 void AccessManager::ResetUserPasswordToDB(const std::string &strUserName, const std::string &strUserPassword)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_user_info set userpassword = '%s' where username = '%s' and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), strUserName.c_str());
+    const char *sqlfmt = "update t_user_info set userpassword = '%s', exceptionstate = %d where username = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserPassword.c_str(), TEMP_LOGIN, strUserName.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -5317,7 +5342,7 @@ bool AccessManager::QueryAllConfigurationToDB(std::list<InteractiveProtoHandler:
     return true;
 }
 
-void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo)
+void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrInfo, const std::string &strOldPasswd)
 {
     std::list<std::string> strItemList;
     if (!UsrInfo.m_strUserPassword.empty())
@@ -5325,6 +5350,10 @@ void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrI
         char sql[1024] = { 0 };
         const char *sqlfmt = "userpassword = '%s'";
         snprintf(sql, sizeof(sql), sqlfmt, UsrInfo.m_strUserPassword.c_str());
+        if (UsrInfo.m_strUserPassword != strOldPasswd)
+        {
+            strncat(sql, ", exceptionstate = 0", sizeof(sql) - strlen(sql));
+        }
         strItemList.push_back(sql);
     }
 
@@ -5802,6 +5831,68 @@ bool AccessManager::ValidUser(std::string &strUserID, std::string &strUserName, 
     }
 
     LOG_INFO_RLD("Valid user success and user id is " << strUserID << " and user name is " << strUserName << " and user password is " << strUserPwd);
+
+    return true;
+}
+
+bool AccessManager::IsValidUserID(const std::string &strUserID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select id from t_user_info where userid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("IsValidUserID sql id is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsValidUserID exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("IsValidUserID failed, the user id is not valid");
+        return false;
+    }
+
+    return true;
+}
+
+bool AccessManager::IsTempLogin(const std::string &strUserName, bool &blTemp)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select exceptionstate from t_user_info where username = '%s' and exceptionstate = %d and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserName.c_str(), TEMP_LOGIN);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        Result = strColumn;
+
+        LOG_INFO_RLD("IsTempLogin sql user exception state is " << strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsTempLogin exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        blTemp = false;
+    }
+    else
+    {
+        blTemp = true;
+        LOG_INFO_RLD("IsTempLogin successful, the user is using temp password login");
+    }
 
     return true;
 }
@@ -7661,7 +7752,7 @@ bool AccessManager::QueryIfDeviceReportedToDB(const std::string &strP2PID, const
     };
 
     std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("QueryIfDeviceReportedToDB exec sql failed, sql is " << sql);
         return false;
@@ -7747,7 +7838,7 @@ bool AccessManager::QueryAllDeviceEventToDB(const std::string &strDeviceID, cons
     int size = sizeof(sql);
     int len;
     const char *sqlfmt = "select deviceid, devicetype, eventid, eventtype, eventstate, fileid, thumbnail, createdate, readstate from t_device_event_info"
-        " where deviceid = '%s' and storedtime <= %d and status = 0";
+        " where deviceid = '%s' and storedtime < %d and status = 0";
     snprintf(sql, size, sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (0 != uiEventType)
@@ -7987,7 +8078,7 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID,
     RemoveExpiredDeviceEventFile(strDeviceID, uiExpireTime);
 
     char sql[1024] = { 0 };
-    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and storedtime > %d and status = 0";
+    const char *sqlfmt = "delete from t_device_event_info where deviceid = '%s' and storedtime >= %d and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpireTime);
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -7999,7 +8090,7 @@ void AccessManager::RemoveExpiredDeviceEventToDB(const std::string &strDeviceID,
 void AccessManager::RemoveExpiredDeviceEventFile(const std::string &strDeviceID, const unsigned int uiExpiredTime)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select fileid, thumbnail from t_device_event_info where deviceid = '%s' and storedtime > %d";
+    const char *sqlfmt = "select fileid, thumbnail from t_device_event_info where deviceid = '%s' and storedtime >= %d";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), uiExpiredTime);
 
     struct FilePath

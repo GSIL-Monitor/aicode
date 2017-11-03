@@ -26,7 +26,7 @@ class InteractiveProtoHandler
 {
 public:
     InteractiveProtoHandler();
-    ~InteractiveProtoHandler();
+    virtual ~InteractiveProtoHandler();
 
     enum MsgType
     {

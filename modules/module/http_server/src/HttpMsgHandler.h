@@ -475,6 +475,8 @@ private:
     static const std::string FAILED_CODE;
     static const std::string FAILED_MSG;
 
+    static const int USER_PWD_RESET = 1016;
+
 };
 
 #endif

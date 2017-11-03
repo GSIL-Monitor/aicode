@@ -384,6 +384,38 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySmartGuardStoreInfoReq_T, boost::bind(&PassengerFlowManager::QuerySmartGuardStoreInfoReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllSmartGuardStoreReq_T, boost::bind(&PassengerFlowManager::QueryAllSmartGuardStoreReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddRegularPatrolReq_T, boost::bind(&PassengerFlowManager::AddRegularPatrolReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRegularPatrolReq_T, boost::bind(&PassengerFlowManager::DeleteRegularPatrolReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRegularPatrolReq_T, boost::bind(&PassengerFlowManager::ModifyRegularPatrolReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRegularPatrolInfoReq_T, boost::bind(&PassengerFlowManager::QueryRegularPatrolInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRegularPatrolReq_T, boost::bind(&PassengerFlowManager::QueryAllRegularPatrolReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::UserJoinStoreReq_T, boost::bind(&PassengerFlowManager::UserJoinStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::UserQuitStoreReq_T, boost::bind(&PassengerFlowManager::UserQuitStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreAllUserReq_T, boost::bind(&PassengerFlowManager::QueryStoreAllUserReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPCustomerReq_T, boost::bind(&PassengerFlowManager::AddVIPCustomerReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPCustomerReq_T, boost::bind(&PassengerFlowManager::DeleteVIPCustomerReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPCustomerReq_T, boost::bind(&PassengerFlowManager::ModifyVIPCustomerReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryVIPCustomerInfoReq_T, boost::bind(&PassengerFlowManager::QueryVIPCustomerInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPCustomerReq_T, boost::bind(&PassengerFlowManager::QueryAllVIPCustomerReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPConsumeHistoryReq_T, boost::bind(&PassengerFlowManager::AddVIPConsumeHistoryReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPConsumeHistoryReq_T, boost::bind(&PassengerFlowManager::DeleteVIPConsumeHistoryReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPConsumeHistoryReq_T, boost::bind(&PassengerFlowManager::ModifyVIPConsumeHistoryReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPConsumeHistoryReq_T, boost::bind(&PassengerFlowManager::QueryAllVIPConsumeHistoryReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddEvaluationTemplateReq_T, boost::bind(&PassengerFlowManager::AddEvaluationTemplateReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEvaluationTemplateReq_T, boost::bind(&PassengerFlowManager::DeleteEvaluationTemplateReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEvaluationTemplateReq_T, boost::bind(&PassengerFlowManager::ModifyEvaluationTemplateReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEvaluationTemplateReq_T, boost::bind(&PassengerFlowManager::QueryAllEvaluationTemplateReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreEvaluationReq_T, boost::bind(&PassengerFlowManager::AddStoreEvaluationReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreEvaluationReq_T, boost::bind(&PassengerFlowManager::DeleteStoreEvaluationReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreEvaluationReq_T, boost::bind(&PassengerFlowManager::ModifyStoreEvaluationReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreEvaluationInfoReq_T, boost::bind(&PassengerFlowManager::QueryStoreEvaluationInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreEvaluationReq_T, boost::bind(&PassengerFlowManager::QueryAllStoreEvaluationReq, &Umg, _1, _2, _3));
+
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ImportPOSDataReq_T, boost::bind(&PassengerFlowManager::ImportPOSDataReq, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCustomerFlowStatisticReq_T, boost::bind(&PassengerFlowManager::QueryCustomerFlowStatisticReq, &Umg, _1, _2, _3));

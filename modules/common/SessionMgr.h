@@ -73,6 +73,8 @@ public:
 
     bool Remove(const std::string &strSessionID);
 
+    bool RemoveByID(const std::string &strID);
+
 private:
     void TimeoutCB (const boost::system::error_code &ec);
 
@@ -93,6 +95,8 @@ private:
     bool SetSessionStatus(const std::string &strID, const int iStatus);
 
     bool GetTerminalType(const std::string &strID, unsigned int &uiTerminalType);
+
+    bool UpdateSidList(const std::string &strID, const std::string &strSessionID);
 
 private:
 

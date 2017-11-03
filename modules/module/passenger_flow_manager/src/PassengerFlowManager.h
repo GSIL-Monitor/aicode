@@ -27,8 +27,8 @@ public:
 
     static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
 
-    static const std::string READ_STATE;
-    static const std::string UNREAD_STATE;
+    static const char *READ_STATE;
+    static const char *UNREAD_STATE;
 
     typedef struct _ParamInfo
     {
@@ -110,6 +110,58 @@ public:
 
     bool QueryAllSmartGuardStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryRegularPatrolInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool UserJoinStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool UserQuitStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryStoreAllUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryVIPCustomerInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryStoreEvaluationInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool ImportPOSDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryCustomerFlowStatisticReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -176,7 +228,19 @@ private:
 
     void DeleteEvent(const std::string &strEventID, const std::string &strUserID);
 
+    void DeleteCreatedEvent(const std::string &strEventID, const std::string &strUserID);
+
+    void DeleteHandledEvent(const std::string &strEventID, const std::string &strUserID);
+
     void ModifyEvent(const PassengerFlowProtoHandler::Event &eventInfo);
+
+    void ModifyEventType(const std::string &strEventID, const std::list<unsigned int> &typeList);
+
+    void ModifyEventHandler(const std::string &strEventID, const std::list<std::string> &handlerList);
+
+    void DeleteEventType(const std::string &strEventID);
+
+    void DeleteEventHandler(const std::string &strEventID);
 
     bool QueryEventInfo(const std::string &strEventID, PassengerFlowProtoHandler::Event &eventInfo);
 
@@ -184,7 +248,7 @@ private:
 
     bool QueryEventUserAssociation(const std::string &strEventID, std::list<std::string> &handlerList);
 
-    bool QueryEventRemark(const std::string &strEventID, std::list<std::list<std::string>> &strRemarkList);
+    bool QueryEventRemark(const std::string &strEventID, std::string &strRemark);
 
     bool QueryAllEvent(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Event> &eventList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
@@ -198,6 +262,10 @@ private:
 
     void ModifySmartGuardStore(const PassengerFlowProtoHandler::SmartGuardStore &smartGuardStore);
 
+    void ModifyGuardStoreEntranceAssociation(const std::string &strPlanID, const std::list<std::string> &entranceList);
+
+    void DeleteGuardStoreEntranceAssociation(const std::string &strPlanID);
+
     bool QuerySmartGuardStoreInfo(const std::string &strPlanID, PassengerFlowProtoHandler::SmartGuardStore &smartGuardStore);
 
     bool QueryGuardStoreEntranceAssociation(const std::string &strPlanID, std::list<std::string> &strEntranceIDList);
@@ -206,6 +274,90 @@ private:
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryAllSmartGuardStoreByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::SmartGuardStore> &smartGuardStoreList);
+
+    void AddRegularPatrol(const std::string &strUserID, const PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
+
+    void AddPatrolPlanStoreAssociation(const std::string &strPlanID, const std::string &strStoreID);
+
+    void AddRegularPatrolTime(const std::string &strPlanID, const std::string &strTime);
+
+    void DeleteRegularPatrol(const std::string &strPlanID);
+
+    void ModifyRegularPatrol(const PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
+
+    void ModifyPatrolPlanStoreAssociation(const std::string &strPlanID, const std::list<std::string> &storeList);
+
+    void DeletePatrolPlanStoreAssociation(const std::string &strPlanID);
+
+    void ModifyRegularPatrolTime(const std::string &strPlanID, const std::list<std::string> &timeList);
+
+    void DeleteRegularPatrolTime(const std::string &strPlanID);
+
+    bool QueryRegularPatrolInfo(const std::string &strPlanID, PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
+
+    bool QueryPatrolPlanStoreAssociation(const std::string &strPlanID, std::string &strStoreInfo);
+
+    bool QueryRegularPatrolTime(const std::string &strPlanID, std::list<std::string> &strTimeList);
+
+    bool QueryAllRegularPatrolByUser(const std::string &strUser, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QueryAllRegularPatrolByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList);
+
+    void UserJoinStore(const std::string &strUserID, const std::string &strStoreID, const std::string &strRole);
+
+    void UserQuitStore(const std::string &strUserID, const std::string &strStoreID);
+
+    bool QueryStoreAllUser(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::UserBrief> &userList);
+
+    void AddVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo);
+
+    void DeleteVIPCustomer(const std::string &strVIPID);
+
+    void ModifyVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo);
+
+    bool QueryVIPCustomerInfo(const std::string &strPlanID, PassengerFlowProtoHandler::VIPCustomer &customerInfo);
+
+    bool QueryAllVIPCustomer(std::list<PassengerFlowProtoHandler::VIPCustomer> &customerList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void AddVIPConsumeHistory(const PassengerFlowProtoHandler::VIPConsumeHistory &consumeHistory);
+
+    void DeleteVIPConsumeHistory(const std::string &strConsumeID);
+
+    void ModifyVIPConsumeHistory(const PassengerFlowProtoHandler::VIPConsumeHistory &consumeHistory);
+
+    bool QueryAllVIPConsumeHistory(const std::string &strVIPID, std::list<PassengerFlowProtoHandler::VIPConsumeHistory> &consumeList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void AddEvaluationTemplate(const PassengerFlowProtoHandler::EvaluationItem &evaluationItem);
+
+    void DeleteEvaluationTemplate(const std::string &strItemID);
+
+    void ModifyEvaluationTemplate(const PassengerFlowProtoHandler::EvaluationItem &evaluationItem);
+
+    bool QueryAllEvaluationTemplate(std::list<PassengerFlowProtoHandler::EvaluationItem> &evaluationItemList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void AddStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
+
+    void AddStoreEvaluationScore(const std::string &strEvaluationID, const PassengerFlowProtoHandler::EvaluationItemScore &itemScore);
+
+    void DeleteStoreEvaluation(const std::string &strEvaluationID);
+
+    void ModifyStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
+
+    void ModifyStoreEvaluationScore(const std::string &strEvaluationID, const std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList);
+
+    void DeleteStoreEvaluationScore(const std::string &strEvaluationID);
+
+    bool QueryStoreEvaluationInfo(const std::string &strEvaluationID, PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
+
+    bool QueyrStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
+        std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList);
+
+    bool QueryAllStoreEvaluation(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::StoreEvaluation> &storeEvaluationList,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     void ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount,
         const double dDealAmount, const std::string &strDealDate);

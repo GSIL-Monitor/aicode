@@ -8,8 +8,8 @@
 #include "json/json.h"
 #include "HttpClient.h"
 
-const std::string PassengerFlowManager::READ_STATE = "read";
-const std::string PassengerFlowManager::UNREAD_STATE = "unread";
+const char *PassengerFlowManager::READ_STATE = "read";
+const char *PassengerFlowManager::UNREAD_STATE = "unread";
 
 PassengerFlowManager::PassengerFlowManager(const ParamInfo &pinfo) :
     m_ParamInfo(pinfo),
@@ -476,7 +476,7 @@ bool PassengerFlowManager::QueryAllStoreReq(const std::string &strMsg, const std
             return false;
         }
 
-    if (!QueryAllStore(req.m_strUserID, storeList))
+    if (!QueryAllStore(req.m_strUserID, storeList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all store failed, src id is " << strSrcID);
         return false;
@@ -816,7 +816,8 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
     eventInfo.m_strExpireDate = req.m_eventInfo.m_strExpireDate;
     eventInfo.m_strUserID = req.m_eventInfo.m_strUserID;
     eventInfo.m_strDeviceID = req.m_eventInfo.m_strDeviceID;
-    eventInfo.m_strProcessState = req.m_eventInfo.m_strProcessState;
+    eventInfo.m_strProcessState = "processing";
+    eventInfo.m_strRemark = req.m_eventInfo.m_strRemark;
     eventInfo.m_uiTypeList = req.m_eventInfo.m_uiTypeList;
     eventInfo.m_strHandlerList = req.m_eventInfo.m_strHandlerList;
     eventInfo.m_strCreateDate = CurrentTime();
@@ -945,6 +946,7 @@ bool PassengerFlowManager::QueryEventInfoReq(const std::string &strMsg, const st
             rsp.m_eventInfo.m_strUserID = eventInfo.m_strUserID;
             rsp.m_eventInfo.m_strDeviceID = eventInfo.m_strDeviceID;
             rsp.m_eventInfo.m_strProcessState = eventInfo.m_strProcessState;
+            rsp.m_eventInfo.m_strRemark = eventInfo.m_strRemark;
             rsp.m_eventInfo.m_uiTypeList.swap(eventInfo.m_uiTypeList);
             rsp.m_eventInfo.m_strHandlerList.swap(eventInfo.m_strHandlerList);
             rsp.m_eventInfo.m_strCreateDate = eventInfo.m_strCreateDate;
@@ -1045,7 +1047,7 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
             return false;
         }
 
-    if (!QueryAllEvent(req.m_strUserID, eventList))
+    if (!QueryAllEvent(req.m_strUserID, eventList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
         return false;
@@ -1105,6 +1107,9 @@ bool PassengerFlowManager::AddSmartGuardStoreReq(const std::string &strMsg, cons
     smartGuardStore.m_strEnable = req.m_smartGuardStore.m_strEnable;
     smartGuardStore.m_strBeginTime = req.m_smartGuardStore.m_strBeginTime;
     smartGuardStore.m_strEndTime = req.m_smartGuardStore.m_strEndTime;
+    smartGuardStore.m_strBeginTime2 = req.m_smartGuardStore.m_strBeginTime2;
+    smartGuardStore.m_strEndTime2 = req.m_smartGuardStore.m_strEndTime2;
+    smartGuardStore.m_strEntranceIDList = req.m_smartGuardStore.m_strEntranceIDList;
     smartGuardStore.m_strCreateDate = CurrentTime();
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddSmartGuardStore, this, req.m_strUserID,
@@ -1225,11 +1230,16 @@ bool PassengerFlowManager::QuerySmartGuardStoreInfoReq(const std::string &strMsg
 
         if (blResult)
         {
+            rsp.m_smartGuardStore.m_strStoreID = smartGuardStore.m_strStoreID;
+            rsp.m_smartGuardStore.m_strStoreName = smartGuardStore.m_strStoreName;
             rsp.m_smartGuardStore.m_strPlanID = smartGuardStore.m_strPlanID;
             rsp.m_smartGuardStore.m_strPlanName = smartGuardStore.m_strPlanName;
             rsp.m_smartGuardStore.m_strEnable = smartGuardStore.m_strEnable;
             rsp.m_smartGuardStore.m_strBeginTime = smartGuardStore.m_strBeginTime;
             rsp.m_smartGuardStore.m_strEndTime = smartGuardStore.m_strEndTime;
+            rsp.m_smartGuardStore.m_strBeginTime2 = smartGuardStore.m_strBeginTime2;
+            rsp.m_smartGuardStore.m_strEndTime2 = smartGuardStore.m_strEndTime2;
+            rsp.m_smartGuardStore.m_strEntranceIDList = smartGuardStore.m_strEntranceIDList;
             rsp.m_smartGuardStore.m_strCreateDate = smartGuardStore.m_strCreateDate;
         }
 
@@ -1242,11 +1252,15 @@ bool PassengerFlowManager::QuerySmartGuardStoreInfoReq(const std::string &strMsg
 
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("Query smart guard store info rsp already send, dst id is " << strSrcID
+            << " and store id is " << smartGuardStore.m_strStoreID
+            << " and store name is " << smartGuardStore.m_strStoreName
             << " and plan id is " << smartGuardStore.m_strPlanID
             << " and plan name is " << smartGuardStore.m_strPlanName
             << " and enable is " << smartGuardStore.m_strEnable
             << " and begin time is " << smartGuardStore.m_strBeginTime
             << " and end time is " << smartGuardStore.m_strEndTime
+            << " and begin time 2 is " << smartGuardStore.m_strBeginTime2
+            << " and end time 2 is " << smartGuardStore.m_strEndTime2
             << " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -1326,7 +1340,7 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreReq(const std::string &strMsg,
 
     if (!req.m_strUserID.empty())
     {
-        if (!QueryAllSmartGuardStoreByUser(req.m_strUserID, planList))
+        if (!QueryAllSmartGuardStoreByUser(req.m_strUserID, planList, req.m_uiBeginIndex))
         {
             LOG_ERROR_RLD("Query all smart guard store failed, src id is " << strSrcID);
             return false;
@@ -1339,6 +1353,1436 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreReq(const std::string &strMsg,
             LOG_ERROR_RLD("Query all smart guard store failed, src id is " << strSrcID);
             return false;
         }
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strPlanID;
+    PassengerFlowProtoHandler::AddRegularPatrolReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strPlanID)
+    {
+        PassengerFlowProtoHandler::AddRegularPatrolRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRegularPatrolRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strPlanID = blResult ? strPlanID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add regular patrol rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add regular patrol rsp already send, dst id is " << strSrcID
+            << " and plan id is " << strPlanID
+            << " and plan name is " << req.m_regularPatrol.m_strPlanName
+            << " and enable is " << req.m_regularPatrol.m_strEnable
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add regular patrol req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::RegularPatrol regularPatrol;
+    regularPatrol.m_strPlanID = strPlanID = CreateUUID();
+    regularPatrol.m_strPlanName = req.m_regularPatrol.m_strPlanName;
+    regularPatrol.m_strEnable = req.m_regularPatrol.m_strEnable;
+    regularPatrol.m_strStoreIDList = req.m_regularPatrol.m_strStoreIDList;
+    regularPatrol.m_strPatrolTimeList = req.m_regularPatrol.m_strPatrolTimeList;
+    regularPatrol.m_strCreateDate = CurrentTime();
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddRegularPatrol, this, req.m_strUserID, regularPatrol));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteRegularPatrolReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteRegularPatrolRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRegularPatrolRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete regular patrol rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete regular patrol rsp already send, dst id is " << strSrcID
+            << " and plan id is " << req.m_strPlanID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete regular patrol req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteRegularPatrol, this, req.m_strPlanID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyRegularPatrolReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyRegularPatrolRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRegularPatrolRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify regular patrol rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify regular patrol rsp already send, dst id is " << strSrcID
+            << " and plan id is " << req.m_regularPatrol.m_strPlanID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify regular patrol req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyRegularPatrol, this, req.m_regularPatrol));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryRegularPatrolInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryRegularPatrolInfoReq req;
+    PassengerFlowProtoHandler::RegularPatrol regularPatrol;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &regularPatrol)
+    {
+        PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRegularPatrolInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_regularPatrol.m_strPlanID = regularPatrol.m_strPlanID;
+            rsp.m_regularPatrol.m_strPlanName = regularPatrol.m_strPlanName;
+            rsp.m_regularPatrol.m_strEnable = regularPatrol.m_strEnable;
+            rsp.m_regularPatrol.m_strStoreInfo = regularPatrol.m_strStoreInfo;
+            rsp.m_regularPatrol.m_strStoreIDList = regularPatrol.m_strStoreIDList;
+            rsp.m_regularPatrol.m_strPatrolTimeList = regularPatrol.m_strPatrolTimeList;
+            rsp.m_regularPatrol.m_strCreateDate = regularPatrol.m_strCreateDate;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query regular patrol info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query regular patrol info rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and plan id is " << req.m_strPlanID
+            << " and plan name is " << regularPatrol.m_strPlanName
+            << " and enable is " << regularPatrol.m_strEnable
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query regular patrol info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryRegularPatrolInfo(req.m_strPlanID, regularPatrol))
+    {
+        LOG_ERROR_RLD("Query regular patrol info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllRegularPatrolReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllRegularPatrolReq req;
+    std::list<PassengerFlowProtoHandler::RegularPatrol> planList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &planList)
+    {
+        PassengerFlowProtoHandler::QueryAllRegularPatrolRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRegularPatrolRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_planList.swap(planList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all regular patrol rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all regular patrol rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &plan : rsp.m_planList)
+            {
+                LOG_INFO_RLD("RegularPatrol info[" << i++ << "]:"
+                    << " smart plan id is " << plan.m_strPlanID
+                    << " and plan name is " << plan.m_strPlanName
+                    << " and enable is " << plan.m_strEnable);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all regular patrol req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!req.m_strUserID.empty())
+    {
+        if (!QueryAllRegularPatrolByUser(req.m_strUserID, planList, req.m_uiBeginIndex))
+        {
+            LOG_ERROR_RLD("Query all regular patrol failed, src id is " << strSrcID);
+            return false;
+        }
+    }
+    else
+    {
+        if (!QueryAllRegularPatrolByDevice(req.m_strDeviceID, planList))
+        {
+            LOG_ERROR_RLD("Query all regular patrol failed, src id is " << strSrcID);
+            return false;
+        }
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::UserJoinStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::UserJoinStoreReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::UserJoinStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserJoinStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User join store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User join store rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and store id is " << req.m_strStoreID
+            << " and user role is " << req.m_strRole
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("User join store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::UserJoinStore, this, req.m_strUserID, req.m_strStoreID, req.m_strRole));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::UserQuitStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::UserQuitStoreReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::UserQuitStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserQuitStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User quit store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User quit store rsp already send, dst id is " << strSrcID
+            << " and administrator id is " << req.m_strAdministratorID
+            << " and user id is " << req.m_strUserID
+            << " and store id is " << req.m_strStoreID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("User quit store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::UserQuitStore, this, req.m_strUserID, req.m_strStoreID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryStoreAllUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::list<PassengerFlowProtoHandler::UserBrief> userList;
+    PassengerFlowProtoHandler::QueryStoreAllUserReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &userList, &req)
+    {
+        PassengerFlowProtoHandler::QueryStoreAllUserRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreAllUserRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_userList.swap(userList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query store all user rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query store all user rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and store id is " << req.m_strStoreID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query store all user req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryStoreAllUser(req.m_strStoreID, userList))
+    {
+        LOG_ERROR_RLD("Query store all user failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strVIPID;
+    PassengerFlowProtoHandler::AddVIPCustomerReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strVIPID)
+    {
+        PassengerFlowProtoHandler::AddVIPCustomerRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPCustomerRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strVIPID = blResult ? strVIPID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add vip customer rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add vip customer rsp already send, dst id is " << strSrcID
+            << " and vip id is " << strVIPID
+            << " and profile picture is " << req.m_customerInfo.m_strProfilePicture
+            << " and vip name is " << req.m_customerInfo.m_strVIPName
+            << " and cellphone is " << req.m_customerInfo.m_strCellphone
+            << " and register date is " << req.m_customerInfo.m_strRegisterDate
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add vip customer req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::VIPCustomer customerInfo;
+    customerInfo.m_strVIPID = strVIPID = CreateUUID();
+    customerInfo.m_strProfilePicture = req.m_customerInfo.m_strProfilePicture;
+    customerInfo.m_strVIPName = req.m_customerInfo.m_strVIPName;
+    customerInfo.m_strCellphone = req.m_customerInfo.m_strCellphone;
+    customerInfo.m_strVisitDate = req.m_customerInfo.m_strVisitDate;
+    customerInfo.m_uiVisitTimes = req.m_customerInfo.m_uiVisitTimes;
+    customerInfo.m_strRegisterDate = CurrentTime();
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddVIPCustomer, this, customerInfo));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteVIPCustomerReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteVIPCustomerRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPCustomerRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete vip customer rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete vip customer rsp already send, dst id is " << strSrcID
+            << " and vip id is " << req.m_strVIPID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete vip customer req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteVIPCustomer, this, req.m_strVIPID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyVIPCustomerReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyVIPCustomerRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPCustomerRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify vip customer rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify vip customer rsp already send, dst id is " << strSrcID
+            << " and vip id is " << req.m_customerInfo.m_strVIPID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify vip customer req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyVIPCustomer, this, req.m_customerInfo));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryVIPCustomerInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryVIPCustomerInfoReq req;
+    PassengerFlowProtoHandler::VIPCustomer customerInfo;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &customerInfo)
+    {
+        PassengerFlowProtoHandler::QueryVIPCustomerInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryVIPCustomerInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_customerInfo.m_strVIPID = customerInfo.m_strVIPID;
+            rsp.m_customerInfo.m_strProfilePicture = customerInfo.m_strProfilePicture;
+            rsp.m_customerInfo.m_strVIPName = customerInfo.m_strVIPName;
+            rsp.m_customerInfo.m_strCellphone = customerInfo.m_strCellphone;
+            rsp.m_customerInfo.m_strVisitDate = customerInfo.m_strVisitDate;
+            rsp.m_customerInfo.m_uiVisitTimes = customerInfo.m_uiVisitTimes;
+            rsp.m_customerInfo.m_strRegisterDate = customerInfo.m_strRegisterDate;
+            rsp.m_customerInfo.m_consumeHistoryList = customerInfo.m_consumeHistoryList;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query vip customer info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query vip customer info rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and vip id is " << req.m_strVIPID
+            << " and profile picture is " << customerInfo.m_strProfilePicture
+            << " and vip name is " << customerInfo.m_strVIPName
+            << " and cellphone is " << customerInfo.m_strCellphone
+            << " and visit date is " << customerInfo.m_strVisitDate
+            << " and visit times is " << customerInfo.m_uiVisitTimes
+            << " and register date is " << customerInfo.m_strRegisterDate
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query vip customer info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryVIPCustomerInfo(req.m_strVIPID, customerInfo))
+    {
+        LOG_ERROR_RLD("Query vip customer info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllVIPCustomerReq req;
+    std::list<PassengerFlowProtoHandler::VIPCustomer> customerList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &customerList)
+    {
+        PassengerFlowProtoHandler::QueryAllVIPCustomerRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPCustomerRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_customerList.swap(customerList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all vip customer rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all vip customer rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &customer : rsp.m_customerList)
+            {
+                LOG_INFO_RLD("VIPCustomer info[" << i++ << "]:"
+                    << " smart vip id is " << customer.m_strVIPID
+                    << " and profile picture is " << customer.m_strProfilePicture
+                    << " and vip name is " << customer.m_strVIPName
+                    << " and cellphone is " << customer.m_strCellphone
+                    << " and visit date is " << customer.m_strVisitDate
+                    << " and visit times is " << customer.m_uiVisitTimes
+                    << " and register date is " << customer.m_strRegisterDate);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all vip customer req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllVIPCustomer(customerList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all vip customer failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strConsumeID;
+    PassengerFlowProtoHandler::AddVIPConsumeHistoryReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strConsumeID)
+    {
+        PassengerFlowProtoHandler::AddVIPConsumeHistoryRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPConsumeHistoryRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strConsumeID = blResult ? strConsumeID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add vip consume history rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add vip consume history rsp already send, dst id is " << strSrcID
+            << " and consume id is " << strConsumeID
+            << " and vip id is " << req.m_consumeHistory.m_strVIPID
+            << " and goods name is " << req.m_consumeHistory.m_strGoodsName
+            << " and goods number is " << req.m_consumeHistory.m_uiGoodsNumber
+            << " and salesman is " << req.m_consumeHistory.m_strSalesman
+            << " and consume amount is " << req.m_consumeHistory.m_dConsumeAmount
+            << " and consume date is " << req.m_consumeHistory.m_strConsumeDate
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add vip consume history req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::VIPConsumeHistory consumeHistory;
+    consumeHistory.m_strConsumeID = strConsumeID = CreateUUID();
+    consumeHistory.m_strVIPID = req.m_consumeHistory.m_strVIPID;
+    consumeHistory.m_strGoodsName = req.m_consumeHistory.m_strGoodsName;
+    consumeHistory.m_uiGoodsNumber = req.m_consumeHistory.m_uiGoodsNumber;
+    consumeHistory.m_strSalesman = req.m_consumeHistory.m_strSalesman;
+    consumeHistory.m_dConsumeAmount = req.m_consumeHistory.m_dConsumeAmount;
+    consumeHistory.m_strConsumeDate = req.m_consumeHistory.m_strConsumeDate;
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddVIPConsumeHistory, this, consumeHistory));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteVIPConsumeHistoryReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteVIPConsumeHistoryRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPConsumeHistoryRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete vip consume history rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete vip consume history rsp already send, dst id is " << strSrcID
+            << " and consume id is " << req.m_strConsumeID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete vip consume history req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteVIPConsumeHistory, this, req.m_strConsumeID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyVIPConsumeHistoryReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyVIPConsumeHistoryRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPConsumeHistoryRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify vip consume history rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify vip consume history rsp already send, dst id is " << strSrcID
+            << " and vip id is " << req.m_consumeHistory.m_strVIPID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify vip consume history req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyVIPConsumeHistory, this, req.m_consumeHistory));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllVIPConsumeHistoryReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryReq req;
+    std::list<PassengerFlowProtoHandler::VIPConsumeHistory> consumeList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &consumeList)
+    {
+        PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPConsumeHistoryRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_consumeHistoryList.swap(consumeList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all vip consume history rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all vip consume history rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &consume : rsp.m_consumeHistoryList)
+            {
+                LOG_INFO_RLD("VIPConsumeHistory info[" << i++ << "]:"
+                    << " consume id is " << consume.m_strConsumeID
+                    << " and goods name is " << consume.m_strGoodsName
+                    << " and goods number is " << consume.m_uiGoodsNumber
+                    << " and salesman is " << consume.m_strSalesman
+                    << " and consume amount is " << consume.m_dConsumeAmount
+                    << " and consume date is " << consume.m_strConsumeDate);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all vip consume history req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllVIPConsumeHistory(req.m_strVIPID, consumeList, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all vip consume history failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strEvaluationID;
+    PassengerFlowProtoHandler::AddEvaluationTemplateReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strEvaluationID)
+    {
+        PassengerFlowProtoHandler::AddEvaluationTemplateRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEvaluationTemplateRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strEvaluationID = blResult ? strEvaluationID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add evaluation template rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add evaluation template rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << strEvaluationID
+            << " and evaluation item is " << req.m_evaluationItem.m_strItemName
+            << " and description is " << req.m_evaluationItem.m_strDescription
+            << " and total point is " << req.m_evaluationItem.m_dTotalPoint
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add evaluation template req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::EvaluationItem evaluationItem;
+    evaluationItem.m_strItemID = strEvaluationID = CreateUUID();
+    evaluationItem.m_strItemName = req.m_evaluationItem.m_strItemName;
+    evaluationItem.m_strDescription = req.m_evaluationItem.m_strDescription;
+    evaluationItem.m_dTotalPoint = req.m_evaluationItem.m_dTotalPoint;
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddEvaluationTemplate, this, evaluationItem));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteEvaluationTemplateReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteEvaluationTemplateRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEvaluationTemplateRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete evaluation template rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete evaluation template rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << req.m_strEvaluationID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete evaluation template req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteEvaluationTemplate, this, req.m_strEvaluationID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyEvaluationTemplateReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyEvaluationTemplateRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEvaluationTemplateRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify evaluation template rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify evaluation template rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << req.m_evaluationItem.m_strItemID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify evaluation template req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyEvaluationTemplate, this, req.m_evaluationItem));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllEvaluationTemplateReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllEvaluationTemplateReq req;
+    std::list<PassengerFlowProtoHandler::EvaluationItem> evaluationItemList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &evaluationItemList)
+    {
+        PassengerFlowProtoHandler::QueryAllEvaluationTemplateRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEvaluationTemplateRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_evaluationItemList.swap(evaluationItemList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all evaluation template rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all evaluation template rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &item : rsp.m_evaluationItemList)
+            {
+                LOG_INFO_RLD("EvaluationTemplate info[" << i++ << "]:"
+                    << " evaluation id is " << item.m_strItemID
+                    << " and evaluation item is " << item.m_strItemName
+                    << " and description is " << item.m_strDescription
+                    << " and total point is " << item.m_dTotalPoint);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all evaluation template req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllEvaluationTemplate(evaluationItemList))
+    {
+        LOG_ERROR_RLD("Query all evaluation template failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strEvaluationID;
+    PassengerFlowProtoHandler::AddStoreEvaluationReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strEvaluationID)
+    {
+        PassengerFlowProtoHandler::AddStoreEvaluationRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreEvaluationRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strEvaluationID = blResult ? strEvaluationID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add store evaluation rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add store evaluation rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << strEvaluationID
+            << " and store id is " << req.m_storeEvaluation.m_strStoreID
+            << " and check status is " << req.m_storeEvaluation.m_uiCheckStatus
+            << " and check user id is " << req.m_storeEvaluation.m_strUserIDCheck
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add store evaluation req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::StoreEvaluation storeEvaluation;
+    storeEvaluation.m_strEvaluationID = strEvaluationID = CreateUUID();
+    storeEvaluation.m_strStoreID = req.m_storeEvaluation.m_strStoreID;
+    storeEvaluation.m_strUserIDCreate = req.m_storeEvaluation.m_strUserIDCreate;
+    storeEvaluation.m_strUserIDCheck = req.m_storeEvaluation.m_strUserIDCheck;
+    storeEvaluation.m_itemScoreList = req.m_storeEvaluation.m_itemScoreList;
+    storeEvaluation.m_uiCheckStatus = 0;
+    storeEvaluation.m_strCreateDate = CurrentTime();
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddStoreEvaluation, this, storeEvaluation));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteStoreEvaluationReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteStoreEvaluationRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreEvaluationRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete store evaluation rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete store evaluation rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << req.m_strEvaluationID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete store evaluation req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteStoreEvaluation, this, req.m_strEvaluationID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyStoreEvaluationReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyStoreEvaluationRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreEvaluationRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify store evaluation rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify store evaluation rsp already send, dst id is " << strSrcID
+            << " and vip id is " << req.m_storeEvaluation.m_strEvaluationID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify store evaluation req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyStoreEvaluation, this, req.m_storeEvaluation));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryStoreEvaluationInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryStoreEvaluationInfoReq req;
+    PassengerFlowProtoHandler::StoreEvaluation storeEvaluation;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &storeEvaluation)
+    {
+        PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreEvaluationInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_storeEvaluation.m_strEvaluationID = storeEvaluation.m_strEvaluationID;
+            rsp.m_storeEvaluation.m_strStoreID = storeEvaluation.m_strStoreID;
+            rsp.m_storeEvaluation.m_strUserIDCreate = storeEvaluation.m_strUserIDCreate;
+            rsp.m_storeEvaluation.m_strUserIDCheck = storeEvaluation.m_strUserIDCheck;
+            rsp.m_storeEvaluation.m_dTotalScore = storeEvaluation.m_dTotalScore;
+            rsp.m_storeEvaluation.m_uiCheckStatus = storeEvaluation.m_uiCheckStatus;
+            rsp.m_storeEvaluation.m_strCreateDate = storeEvaluation.m_strCreateDate;
+            rsp.m_storeEvaluation.m_itemScoreList.swap(storeEvaluation.m_itemScoreList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query store evaluation info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query store evaluation info rsp already send, dst id is " << strSrcID
+            << " and evaluation id is " << storeEvaluation.m_strEvaluationID
+            << " and store id is " << storeEvaluation.m_strStoreID
+            << " and user id create is " << storeEvaluation.m_strUserIDCreate
+            << " and user id check is " << storeEvaluation.m_strUserIDCheck
+            << " and total score is " << storeEvaluation.m_dTotalScore
+            << " and check status is " << storeEvaluation.m_uiCheckStatus
+            << " and create date is " << storeEvaluation.m_strCreateDate
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query store evaluation info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryStoreEvaluationInfo(req.m_strEvaluationID, storeEvaluation))
+    {
+        LOG_ERROR_RLD("Query store evaluation info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllStoreEvaluationReq req;
+    std::list<PassengerFlowProtoHandler::StoreEvaluation> storeEvaluationList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &storeEvaluationList)
+    {
+        PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreEvaluationRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_storeEvaluationList.swap(storeEvaluationList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all store evaluation rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all store evaluation rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &evaluation : rsp.m_storeEvaluationList)
+            {
+                LOG_INFO_RLD("StoreEvaluation info[" << i++ << "]:"
+                    << " evaluation id is " << evaluation.m_strEvaluationID
+                    << " and check status is " << evaluation.m_uiCheckStatus
+                    << " and check user id is " << evaluation.m_strUserIDCheck);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all store evaluation req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllStoreEvaluation(req.m_strStoreID, storeEvaluationList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all store evaluation failed, src id is " << strSrcID);
+        return false;
     }
 
     blResult = true;
@@ -2066,7 +3510,7 @@ void PassengerFlowManager::AddEvent(const PassengerFlowProtoHandler::Event &even
 {
     char sql[512] = { 0 };
     const char *sqlfmt = "insert into t_event_info (id, event_id, source, submit_date, expire_date, user_id, device_id, process_state, create_date)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, eventInfo.m_strEventID.c_str(), eventInfo.m_strSource.c_str(),
         eventInfo.m_strSubmitDate.c_str(), eventInfo.m_strExpireDate.c_str(), eventInfo.m_strUserID.c_str(),
         eventInfo.m_strDeviceID.c_str(), eventInfo.m_strProcessState.c_str(), eventInfo.m_strCreateDate.c_str());
@@ -2103,12 +3547,24 @@ void PassengerFlowManager::AddEventType(const std::string &strEventID, const uns
     }
 }
 
+void PassengerFlowManager::AddEventUserAssociation(const std::string &strEventID, const std::string &strUserID, const std::string &strUserRole)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_event_user_association (id, event_id, user_id, user_role, read_state, create_date)"
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str(), strUserRole.c_str(), UNREAD_STATE, CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddEventUserAssociation exec sql failed, sql is " << sql);
+    }
+}
 
 void PassengerFlowManager::AddEventRemark(const std::string &strEventID, const std::string &strUserID, const std::string &strRemark)
 {
     char sql[512] = { 0 };
     const char *sqlfmt = "insert into t_event_remark (id, event_id, remark, user_id, create_date)"
-        " values (uuid(), '%s', %d, '%s')";
+        " values (uuid(), '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strRemark.c_str(), strUserID.c_str(), CurrentTime().c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -2117,20 +3573,25 @@ void PassengerFlowManager::AddEventRemark(const std::string &strEventID, const s
     }
 }
 
-void PassengerFlowManager::AddEventUserAssociation(const std::string &strEventID, const std::string &strUserID, const std::string &strUserRole)
+void PassengerFlowManager::DeleteEvent(const std::string &strEventID, const std::string &strUserID)
+{
+    DeleteCreatedEvent(strEventID, strUserID);
+    DeleteHandledEvent(strEventID, strUserID);
+}
+
+void PassengerFlowManager::DeleteCreatedEvent(const std::string &strEventID, const std::string &strUserID)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_event_user_association (id, event_id, user_id, user_role, read_state, create_date)"
-        " values (uuid(), '%s', '%s', '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str(), strUserRole.c_str(), UNREAD_STATE.c_str(), CurrentTime().c_str());
+    const char *sqlfmt = "update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
-        LOG_ERROR_RLD("AddEventUserAssociation exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("DeleteCreatedEvent exec sql failed, sql is " << sql);
     }
 }
 
-void PassengerFlowManager::DeleteEvent(const std::string &strEventID, const std::string &strUserID)
+void PassengerFlowManager::DeleteHandledEvent(const std::string &strEventID, const std::string &strUserID)
 {
     char sql[512] = { 0 };
     const char *sqlfmt = "delete from t_event_user_association where event_id = '%s' and user_id = '%s'";
@@ -2138,7 +3599,7 @@ void PassengerFlowManager::DeleteEvent(const std::string &strEventID, const std:
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
-        LOG_ERROR_RLD("DeleteEvent exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("DeleteHandledEvent exec sql failed, sql is " << sql);
     }
 }
 
@@ -2168,6 +3629,21 @@ void PassengerFlowManager::ModifyEvent(const PassengerFlowProtoHandler::Event &e
         blModified = true;
     }
 
+    if (!eventInfo.m_uiTypeList.empty())
+    {
+        ModifyEventType(eventInfo.m_strEventID, eventInfo.m_uiTypeList);
+    }
+
+    if (!eventInfo.m_strHandlerList.empty())
+    {
+        ModifyEventHandler(eventInfo.m_strEventID, eventInfo.m_strHandlerList);
+    }
+
+    if (!eventInfo.m_strRemark.empty())
+    {
+        AddEventRemark(eventInfo.m_strEventID, eventInfo.m_strUserID, eventInfo.m_strRemark);
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("ModifyEvent completed, event info is not changed");
@@ -2179,6 +3655,50 @@ void PassengerFlowManager::ModifyEvent(const PassengerFlowProtoHandler::Event &e
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("ModifyEvent exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyEventType(const std::string &strEventID, const std::list<unsigned int> &typeList)
+{
+    DeleteEventType(strEventID);
+
+    for (auto type : typeList)
+    {
+        AddEventType(strEventID, type);
+    }
+}
+
+void PassengerFlowManager::ModifyEventHandler(const std::string &strEventID, const std::list<std::string> &handlerList)
+{
+    DeleteEventHandler(strEventID);
+
+    for (auto &handler : handlerList)
+    {
+        AddEventUserAssociation(strEventID, handler, "handler");
+    }
+}
+
+void PassengerFlowManager::DeleteEventType(const std::string &strEventID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_event_type where event_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteEventType exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteEventHandler(const std::string &strEventID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_event_user_association where event_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteEventHandler exec sql failed, sql is " << sql);
     }
 }
 
@@ -2263,24 +3783,11 @@ bool PassengerFlowManager::QueryEventInfo(const std::string &strEventID, Passeng
         return false;
     }
 
-    std::list<std::list<std::string>> remarkList;
-    if (!QueryEventRemark(eventInfo.m_strEventID, remarkList))
+    if (!QueryEventRemark(eventInfo.m_strEventID, eventInfo.m_strRemark))
     {
         LOG_ERROR_RLD("QueryEventInfo failed, query event remark error, event id is " << eventInfo.m_strEventID);
         return false;
     }
-
-    Json::Value root;
-    Json::FastWriter writer;
-    root.resize(0);
-    for (auto &remark : remarkList)
-    {
-        Json::Value value;
-        for (auto &elem : remark) value.append(elem);
-
-        root.append(value);
-    }
-    eventInfo.m_strRemark = writer.write(root);
 
     return true;
 }
@@ -2296,7 +3803,7 @@ bool PassengerFlowManager::QueryEventType(const std::string &strEventID, std::li
         switch (uiColumnNum)
         {
         case 0:
-            result = strColumn;
+            result = boost::lexical_cast<unsigned int>(strColumn);
             break;
 
         default:
@@ -2368,7 +3875,7 @@ bool PassengerFlowManager::QueryEventUserAssociation(const std::string &strEvent
     return true;
 }
 
-bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::list<std::list<std::string>> &strRemarkList)
+bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::string &strRemark)
 {
     char sql[512] = { 0 };
     const char *sqlfmt = "select create_date, user_id, remark from t_event_remark where event_id = '%s'";
@@ -2406,10 +3913,16 @@ bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::
         return false;
     }
 
+    Json::Value root;
+    Json::FastWriter writer;
     for (auto &result : ResultList)
     {
-        strRemarkList.push_back(boost::any_cast<std::list<std::string>>(result));
+        auto remarkList = boost::any_cast<std::list<std::string>>(result);
+        Json::Value value;
+        for (auto &remark : remarkList) value.append(remark);
+        root.append(value);
     }
+    strRemark = writer.write(root);
 
     return true;
 }
@@ -2418,10 +3931,12 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, std::list
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select a.event_id, a.source, a.submit_date, a.user_id, a.device_id, a.process_state from"
-        " t_event_info a join t_event_user_association b on a.event_id = b.event_id"
-        " where b.user_id = '%s' limit %d, %d";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiBeginIndex, uiPageSize);
+    const char *sqlfmt = "select event_id, source, submit_date, expire_date, user_id, device_id, process_state"
+        " from t_event_info where user_id = '%s' and state = 0 union all"
+        " select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state"
+        " from t_event_info a join t_event_user_association b on a.event_id = b.event_id"
+        " where b.user_id = '%s' order by submit_date limit %d, %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strUserID.c_str(), uiBeginIndex, uiPageSize);
 
     PassengerFlowProtoHandler::Event rstEvent;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
@@ -2438,12 +3953,15 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, std::list
             rstEvent.m_strSubmitDate = strColumn;
             break;
         case 3:
-            rstEvent.m_strUserID = strColumn;
+            rstEvent.m_strExpireDate = strColumn;
             break;
         case 4:
-            rstEvent.m_strDeviceID = strColumn;
+            rstEvent.m_strUserID = strColumn;
             break;
         case 5:
+            rstEvent.m_strDeviceID = strColumn;
+            break;
+        case 6:
             rstEvent.m_strProcessState = strColumn;
             result = rstEvent;
             break;
@@ -2463,9 +3981,16 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, std::list
         return false;
     }
 
-    for (auto &result : ResultList)
+    for (auto result : ResultList)
     {
-        eventList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::Event>(result)));
+        auto event = boost::any_cast<PassengerFlowProtoHandler::Event>(result);
+        std::list<unsigned int> type;
+        QueryEventType(event.m_strEventID, event.m_uiTypeList);
+
+        std::list<std::string> handler;
+        QueryEventUserAssociation(event.m_strEventID, event.m_strHandlerList);
+
+        eventList.push_back(std::move(event));
     }
 
     return true;
@@ -2476,25 +4001,30 @@ void PassengerFlowManager::AddSmartGuardStore(const std::string &strUserID, cons
 {
     char sql[512] = { 0 };
     const char *sqlfmt = "insert into t_smart_guard_store_plan"
-        " (id, plan_id, user_id, store_id, plan_name, enable, begin_time, end_time, begin_time2, end_time2)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s)";
+        " (id, plan_id, user_id, store_id, plan_name, enable, begin_time, end_time, begin_time2, end_time2, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, smartGuardStore.m_strPlanID.c_str(), strUserID.c_str(), strStoreID.c_str(), smartGuardStore.m_strPlanName.c_str(),
         smartGuardStore.m_strEnable.c_str(), smartGuardStore.m_strBeginTime.c_str(), smartGuardStore.m_strEndTime.c_str(),
         smartGuardStore.m_strBeginTime2.empty() ? "null" : ("'" + smartGuardStore.m_strBeginTime2 + "'").c_str(),
-        smartGuardStore.m_strEndTime2.empty() ? "null" : ("'" + smartGuardStore.m_strEndTime2 + "'").c_str());
+        smartGuardStore.m_strEndTime2.empty() ? "null" : ("'" + smartGuardStore.m_strEndTime2 + "'").c_str(), smartGuardStore.m_strCreateDate.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("AddSmartGuardStore exec sql failed, sql is " << sql);
+    }
+
+    for (auto &entrance : smartGuardStore.m_strEntranceIDList)
+    {
+        AddGuardStoreEntranceAssociation(smartGuardStore.m_strPlanID, entrance);
     }
 }
 
 void PassengerFlowManager::AddGuardStoreEntranceAssociation(const std::string &strPlanID, const std::string &strEntranceID)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_guard_plan_entrance_association (id, plan_id, entrance_id)"
-        " values(uuid(), '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strEntranceID.c_str());
+    const char *sqlfmt = "insert into t_guard_plan_entrance_association (id, plan_id, entrance_id, create_date)"
+        " values(uuid(), '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strEntranceID.c_str(), CurrentTime().c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -2507,7 +4037,7 @@ void PassengerFlowManager::DeleteSmartGuardStore(const std::string &strPlanID)
     char sql[512] = { 0 };
     const char *sqlfmt = "delete a, b from"
         " t_smart_guard_store_plan a left join t_guard_plan_entrance_association b on a.plan_id = b.plan_id"
-        " where plan_id = '%s'";
+        " where a.plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -2522,7 +4052,7 @@ void PassengerFlowManager::ModifySmartGuardStore(const PassengerFlowProtoHandler
 
     char sql[512] = { 0 };
     int size = sizeof(sql);
-    int len = snprintf(sql, size, "update t_entrance_info set id = id");
+    int len = snprintf(sql, size, "update t_smart_guard_store_plan set id = id");
 
     if (!smartGuardStore.m_strPlanName.empty())
     {
@@ -2560,9 +4090,14 @@ void PassengerFlowManager::ModifySmartGuardStore(const PassengerFlowProtoHandler
         blModified = true;
     }
 
+    if (!smartGuardStore.m_strEntranceIDList.empty())
+    {
+        ModifyGuardStoreEntranceAssociation(smartGuardStore.m_strPlanID, smartGuardStore.m_strEntranceIDList);
+    }
+
     if (!blModified)
     {
-        LOG_INFO_RLD("ModifySmartGuardStore completed, entrance info is not changed");
+        LOG_INFO_RLD("ModifySmartGuardStore completed, smart guard sotre info is not changed");
         return;
     }
 
@@ -2571,6 +4106,28 @@ void PassengerFlowManager::ModifySmartGuardStore(const PassengerFlowProtoHandler
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("ModifySmartGuardStore exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyGuardStoreEntranceAssociation(const std::string &strPlanID, const std::list<std::string> &entranceList)
+{
+    DeleteGuardStoreEntranceAssociation(strPlanID);
+
+    for (auto &entrance : entranceList)
+    {
+        AddGuardStoreEntranceAssociation(strPlanID, entrance);
+    }
+}
+
+void PassengerFlowManager::DeleteGuardStoreEntranceAssociation(const std::string &strPlanID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_guard_plan_entrance_association where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteGuardStoreEntranceAssociation exec sql failed, sql is " << sql);
     }
 }
 
@@ -2634,15 +4191,15 @@ bool PassengerFlowManager::QuerySmartGuardStoreInfo(const std::string &strPlanID
         return false;
     }
 
-    auto event = boost::any_cast<PassengerFlowProtoHandler::SmartGuardStore>(ResultList.front());
-    smartGuardStore.m_strStoreID = rstGuardStore.m_strStoreID;
-    smartGuardStore.m_strStoreName = rstGuardStore.m_strStoreName;
-    smartGuardStore.m_strPlanName = rstGuardStore.m_strPlanName;
-    smartGuardStore.m_strEnable = rstGuardStore.m_strEnable;
-    smartGuardStore.m_strBeginTime = rstGuardStore.m_strBeginTime;
-    smartGuardStore.m_strEndTime = rstGuardStore.m_strEndTime;
-    smartGuardStore.m_strBeginTime2 = rstGuardStore.m_strBeginTime2;
-    smartGuardStore.m_strEndTime2 = rstGuardStore.m_strEndTime2;
+    auto guardPlan = boost::any_cast<PassengerFlowProtoHandler::SmartGuardStore>(ResultList.front());
+    smartGuardStore.m_strStoreID = guardPlan.m_strStoreID;
+    smartGuardStore.m_strStoreName = guardPlan.m_strStoreName;
+    smartGuardStore.m_strPlanName = guardPlan.m_strPlanName;
+    smartGuardStore.m_strEnable = guardPlan.m_strEnable;
+    smartGuardStore.m_strBeginTime = guardPlan.m_strBeginTime;
+    smartGuardStore.m_strEndTime = guardPlan.m_strEndTime;
+    smartGuardStore.m_strBeginTime2 = guardPlan.m_strBeginTime2;
+    smartGuardStore.m_strEndTime2 = guardPlan.m_strEndTime2;
 
     return QueryGuardStoreEntranceAssociation(strPlanID, smartGuardStore.m_strEntranceIDList);
 }
@@ -2753,10 +4310,10 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreByUser(const std::string &strU
 bool PassengerFlowManager::QueryAllSmartGuardStoreByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::SmartGuardStore> &smartGuardStoreList)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select d.store_id, d.store_name, d.plan_name, d.enable, d.begin_time, d.end_time, ifnull(d.begin_time2, ''), ifnull(d.end_time2, '')"
-        " t_entrance_device_association a join t_guard_plan_entrance_association b on a.entrance_id = b.entrance_id"
-        " join t_guard_plan_entrance_association c on b.entrance_id = c.entrance_id"
-        " join t_smart_guard_store_plan d on c.plan_id = d.plan_id"
+    const char *sqlfmt = "select d.store_id, d.store_name, c.plan_id, c.plan_name, c.enable, c.begin_time, c.end_time, ifnull(c.begin_time2, ''), ifnull(c.end_time2, '')"
+        " from t_entrance_device_association a join t_guard_plan_entrance_association b on a.entrance_id = b.entrance_id"
+        " join t_smart_guard_store_plan c on b.plan_id = c.plan_id"
+        " join t_store_info d on c.store_id = d.store_id"
         " where a.device_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -2772,21 +4329,24 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreByDevice(const std::string &st
             rstGuardStore.m_strStoreName = strColumn;
             break;
         case 2:
-            rstGuardStore.m_strPlanName = strColumn;
+            rstGuardStore.m_strPlanID = strColumn;
             break;
         case 3:
-            rstGuardStore.m_strEnable = strColumn;
+            rstGuardStore.m_strPlanName = strColumn;
             break;
         case 4:
-            rstGuardStore.m_strBeginTime = strColumn;
+            rstGuardStore.m_strEnable = strColumn;
             break;
         case 5:
-            rstGuardStore.m_strEndTime = strColumn;
+            rstGuardStore.m_strBeginTime = strColumn;
             break;
         case 6:
-            rstGuardStore.m_strBeginTime2 = strColumn;
+            rstGuardStore.m_strEndTime = strColumn;
             break;
         case 7:
+            rstGuardStore.m_strBeginTime2 = strColumn;
+            break;
+        case 8:
             rstGuardStore.m_strEndTime2 = strColumn;
             result = rstGuardStore;
             break;
@@ -2809,6 +4369,1225 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreByDevice(const std::string &st
     for (auto &result : ResultList)
     {
         smartGuardStoreList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::SmartGuardStore>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddRegularPatrol(const std::string &strUserID, const PassengerFlowProtoHandler::RegularPatrol &regularPatrol)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_regular_patrol_plan"
+        " (id, plan_id, user_id, plan_name, enable, last_update_time, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, regularPatrol.m_strPlanID.c_str(), strUserID.c_str(), regularPatrol.m_strPlanName.c_str(),
+        regularPatrol.m_strEnable.c_str(), CurrentTime().c_str(), regularPatrol.m_strCreateDate.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddRegularPatrol exec sql failed, sql is " << sql);
+    }
+
+    for (auto &store : regularPatrol.m_strStoreIDList)
+    {
+        AddPatrolPlanStoreAssociation(regularPatrol.m_strPlanID, store);
+    }
+
+    for (auto &store : regularPatrol.m_strPatrolTimeList)
+    {
+        AddRegularPatrolTime(regularPatrol.m_strPlanID, store);
+    }
+}
+
+void PassengerFlowManager::AddPatrolPlanStoreAssociation(const std::string &strPlanID, const std::string &strStoreID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_patrol_plan_store_association (id, plan_id, store_id, create_date)"
+        " values(uuid(), '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strStoreID.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddPatrolPlanStoreAssociation exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::AddRegularPatrolTime(const std::string &strPlanID, const std::string &strTime)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_regular_patrol_time (id, plan_id, patrol_time, create_date)"
+        " values(uuid(), '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strTime.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddRegularPatrolTime exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteRegularPatrol(const std::string &strPlanID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete a, b, c from"
+        " t_regular_patrol_plan a left join t_patrol_plan_store_association b on a.plan_id = b.plan_id"
+        " left join t_regular_patrol_time c on a.plan_id = c.plan_id"
+        " where a.plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteRegularPatrol exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyRegularPatrol(const PassengerFlowProtoHandler::RegularPatrol &regularPatrol)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_regular_patrol_plan set id = id");
+
+    if (!regularPatrol.m_strPlanName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", plan_name = '%s'", regularPatrol.m_strPlanName.c_str());
+        blModified = true;
+    }
+
+    if (!regularPatrol.m_strEnable.empty())
+    {
+        len += snprintf(sql + len, size - len, ", enable = '%s'", regularPatrol.m_strEnable.c_str());
+        blModified = true;
+    }
+
+    if (!regularPatrol.m_strStoreIDList.empty())
+    {
+        ModifyPatrolPlanStoreAssociation(regularPatrol.m_strPlanID, regularPatrol.m_strStoreIDList);
+    }
+
+    if (!regularPatrol.m_strPatrolTimeList.empty())
+    {
+        ModifyRegularPatrolTime(regularPatrol.m_strPlanID, regularPatrol.m_strPatrolTimeList);
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyRegularPatrol completed, regular patrol plan info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where plan_id = '%s'", regularPatrol.m_strPlanID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyRegularPatrol exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyPatrolPlanStoreAssociation(const std::string &strPlanID, const std::list<std::string> &storeList)
+{
+    DeletePatrolPlanStoreAssociation(strPlanID);
+
+    for (auto &store : storeList)
+    {
+        AddPatrolPlanStoreAssociation(strPlanID, store);
+    }
+}
+
+void PassengerFlowManager::DeletePatrolPlanStoreAssociation(const std::string &strPlanID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_patrol_plan_store_association where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeletePatrolPlanStoreAssociation exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyRegularPatrolTime(const std::string &strPlanID, const std::list<std::string> &timeList)
+{
+    DeleteRegularPatrolTime(strPlanID);
+
+    for (auto &time : timeList)
+    {
+        AddRegularPatrolTime(strPlanID, time);
+    }
+}
+
+void PassengerFlowManager::DeleteRegularPatrolTime(const std::string &strPlanID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_regular_patrol_time where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteRegularPatrolTime exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryRegularPatrolInfo(const std::string &strPlanID, PassengerFlowProtoHandler::RegularPatrol &regularPatrol)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select plan_name, enable from t_regular_patrol_plan where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    PassengerFlowProtoHandler::RegularPatrol rstGuardStore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstGuardStore.m_strPlanName = strColumn;
+            break;
+        case 1:
+            rstGuardStore.m_strEnable = strColumn;
+            result = rstGuardStore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRegularPatrolInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryRegularPatrolInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryRegularPatrolInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto patrolPlan = boost::any_cast<PassengerFlowProtoHandler::RegularPatrol>(ResultList.front());
+    regularPatrol.m_strPlanName = patrolPlan.m_strPlanName;
+    regularPatrol.m_strEnable = patrolPlan.m_strEnable;
+
+    return QueryPatrolPlanStoreAssociation(strPlanID, regularPatrol.m_strStoreInfo)
+        && QueryRegularPatrolTime(strPlanID, regularPatrol.m_strPatrolTimeList);
+}
+
+bool PassengerFlowManager::QueryPatrolPlanStoreAssociation(const std::string &strPlanID, std::string &strStoreInfo)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select b.store_id, b.store_name from"
+        " t_patrol_plan_store_association a join t_store_info b on a.store_id = b.store_id"
+        " where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    std::list<std::string> rstList;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstList.push_back(strColumn);
+            break;
+        case 1:
+            rstList.push_back(strColumn);
+            result = rstList;
+            rstList.clear();
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryPatrolPlanStoreAssociation sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryPatrolPlanStoreAssociation exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    Json::Value root;
+    Json::FastWriter writer;
+    for (auto &result : ResultList)
+    {
+        auto storeList = boost::any_cast<std::list<std::string>>(result);
+        Json::Value value;
+        for (auto &store : storeList) value.append(store);
+        root.append(value);
+    }
+    strStoreInfo = writer.write(root);
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryRegularPatrolTime(const std::string &strPlanID, std::list<std::string> &strTimeList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select patrol_time from t_regular_patrol_time where plan_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            result = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRegularPatrolTime sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryRegularPatrolTime exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        strTimeList.push_back(boost::any_cast<std::string>(result));
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllRegularPatrolByUser(const std::string &strUserID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select plan_id, plan_name, enable from t_regular_patrol_plan where user_id = '%s' limit %d, %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiBeginIndex, uiPageSize);
+
+    PassengerFlowProtoHandler::RegularPatrol rstGuardStore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstGuardStore.m_strPlanID = strColumn;
+            break;
+        case 1:
+            rstGuardStore.m_strPlanName = strColumn;
+            break;
+        case 2:
+            rstGuardStore.m_strEnable = strColumn;
+            result = rstGuardStore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllRegularPatrolByUser sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllRegularPatrolByUser exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        auto plan = boost::any_cast<PassengerFlowProtoHandler::RegularPatrol>(result);
+        QueryPatrolPlanStoreAssociation(plan.m_strPlanID, plan.m_strStoreInfo);
+        QueryRegularPatrolTime(plan.m_strPlanID, plan.m_strPatrolTimeList);
+
+        regularPatrolList.push_back(plan);
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllRegularPatrolByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select d.plan_id, d.plan_name, d.enable from"
+        " t_entrance_device_association a join t_entrance_info b on a.entrance_id = b.entrance_id"
+        " join t_patrol_plan_store_association c on b.store_id = c.store_id"
+        " join t_regular_patrol_plan d on c.plan_id = d.plan_id"
+        " where a.device_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
+
+    PassengerFlowProtoHandler::RegularPatrol rstGuardStore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstGuardStore.m_strPlanID = strColumn;
+            break;
+        case 1:
+            rstGuardStore.m_strPlanName = strColumn;
+            break;
+        case 2:
+            rstGuardStore.m_strEnable = strColumn;
+            result = rstGuardStore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllRegularPatrolByDevice sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllRegularPatrolByDevice exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        auto plan = boost::any_cast<PassengerFlowProtoHandler::RegularPatrol>(result);
+        QueryPatrolPlanStoreAssociation(plan.m_strPlanID, plan.m_strStoreInfo);
+        QueryRegularPatrolTime(plan.m_strPlanID, plan.m_strPatrolTimeList);
+
+        regularPatrolList.push_back(plan);
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::UserJoinStore(const std::string &strUserID, const std::string &strStoreID, const std::string &strRole)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_user_store_association (id, user_id, store_id, user_role, create_date)"
+        " values (uuid(), '%s', '%s', '%s', '%s') on duplicate key update update_date = current_time";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreID.c_str(), strRole.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UserJoinStore exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::UserQuitStore(const std::string &strUserID, const std::string &strStoreID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_user_store_association where user_id = '%s' and store_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreID.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("UserQuitStore exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select a.user_id, b.aliasname, a.user_role from"
+        " t_user_store_association a join PlatformDB.t_user_info b on a.user_id = b.userid"
+        " where store_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
+
+    PassengerFlowProtoHandler::UserBrief user;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            user.m_strUserID = strColumn;
+            break;
+        case 1:
+            user.m_strUserName = strColumn;
+            break;
+        case 2:
+            user.m_strRole = strColumn;
+            result = user;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryStoreAllUser sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryStoreAllUser exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        userList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::UserBrief>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_vip_customer_info"
+        " (id, vip_id, profile_picture, vip_name, cellphone, visit_date, visit_times, register_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, customerInfo.m_strVIPID.c_str(), customerInfo.m_strProfilePicture.c_str(),
+        customerInfo.m_strVIPName.c_str(), customerInfo.m_strCellphone.c_str(), customerInfo.m_strVisitDate.c_str(),
+        customerInfo.m_uiVisitTimes, CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddVIPCustomer exec sql failed, sql is " << sql);
+    }
+
+    for (auto &consume : customerInfo.m_consumeHistoryList)
+    {
+        AddVIPConsumeHistory(consume);
+    }
+}
+
+void PassengerFlowManager::DeleteVIPCustomer(const std::string &strVIPID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete a, b from"
+        " t_vip_customer_info a left join t_vip_consume_history b on a.vip_id = b.vip_id"
+        " where a.vip_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteVIPCustomer exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_vip_customer_info set id = id");
+
+    if (!customerInfo.m_strProfilePicture.empty())
+    {
+        len += snprintf(sql + len, size - len, ", profile_picture = '%s'", customerInfo.m_strProfilePicture.c_str());
+        blModified = true;
+    }
+
+    if (!customerInfo.m_strVIPName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", vip_name = '%s'", customerInfo.m_strVIPName.c_str());
+        blModified = true;
+    }
+
+    if (!customerInfo.m_strCellphone.empty())
+    {
+        len += snprintf(sql + len, size - len, ", cellphone = '%s'", customerInfo.m_strCellphone.c_str());
+        blModified = true;
+    }
+
+    if (!customerInfo.m_strVisitDate.empty())
+    {
+        len += snprintf(sql + len, size - len, ", visit_date = '%s'", customerInfo.m_strVisitDate.c_str());
+        blModified = true;
+    }
+
+    if (customerInfo.m_uiVisitTimes != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, ", visit_times = %d", customerInfo.m_uiVisitTimes);
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyVIPCustomer completed, vip customer info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where vip_id = '%s'", customerInfo.m_strVIPID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyVIPCustomer exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryVIPCustomerInfo(const std::string &strVIPID, PassengerFlowProtoHandler::VIPCustomer &customerInfo)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select profile_picture, vip_name, cellphone, visit_date, visit_times, register_date from"
+        " t_vip_customer_info where vip_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str());
+
+    PassengerFlowProtoHandler::VIPCustomer rstCustomer;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstCustomer.m_strProfilePicture = strColumn;
+            break;
+        case 1:
+            rstCustomer.m_strVIPName = strColumn;
+            break;
+        case 2:
+            rstCustomer.m_strCellphone = strColumn;
+            break;
+        case 3:
+            rstCustomer.m_strVisitDate = strColumn;
+            break;
+        case 4:
+            rstCustomer.m_uiVisitTimes = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 5:
+            rstCustomer.m_strRegisterDate = strColumn;
+            result = rstCustomer;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryVIPCustomerInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryVIPCustomerInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryVIPCustomerInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto customer = boost::any_cast<PassengerFlowProtoHandler::VIPCustomer>(ResultList.front());
+    customerInfo.m_strProfilePicture = customer.m_strProfilePicture;
+    customerInfo.m_strVIPName = customer.m_strVIPName;
+    customerInfo.m_strCellphone = customer.m_strCellphone;
+    customerInfo.m_strVisitDate = customer.m_strVisitDate;
+    customerInfo.m_uiVisitTimes = customer.m_uiVisitTimes;
+    customerInfo.m_strRegisterDate = customer.m_strRegisterDate;
+
+    return QueryAllVIPConsumeHistory(strVIPID, customerInfo.m_consumeHistoryList);
+}
+
+bool PassengerFlowManager::QueryAllVIPCustomer(std::list<PassengerFlowProtoHandler::VIPCustomer> &customerInfoList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select vip_id, profile_picture, vip_name, cellphone, visit_date, visit_times, register_date"
+        " from t_vip_customer_info limit %d, %d";
+    snprintf(sql, sizeof(sql), sqlfmt, uiBeginIndex, uiPageSize);
+
+    PassengerFlowProtoHandler::VIPCustomer rstCustomer;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstCustomer.m_strVIPID = strColumn;
+            break;
+        case 1:
+            rstCustomer.m_strProfilePicture = strColumn;
+            break;
+        case 2:
+            rstCustomer.m_strVIPName = strColumn;
+            break;
+        case 3:
+            rstCustomer.m_strCellphone = strColumn;
+            break;
+        case 4:
+            rstCustomer.m_strVisitDate = strColumn;
+            break;
+        case 5:
+            rstCustomer.m_uiVisitTimes = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 6:
+            rstCustomer.m_strRegisterDate = strColumn;
+            result = rstCustomer;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllVIPCustomerByUser sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllVIPCustomerByUser exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        customerInfoList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::VIPCustomer>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddVIPConsumeHistory(const PassengerFlowProtoHandler::VIPConsumeHistory &consumeHistory)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_vip_consume_history (id, consume_id, vip_id, goods_name, goods_number, salesman, consume_amount, consume_date)"
+        " values(uuid(), '%s', '%s', '%s', %d, '%s', %f, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, consumeHistory.m_strConsumeID.c_str(), consumeHistory.m_strVIPID.c_str(), consumeHistory.m_strGoodsName.c_str(),
+        consumeHistory.m_uiGoodsNumber, consumeHistory.m_strSalesman.c_str(), consumeHistory.m_dConsumeAmount, consumeHistory.m_strConsumeDate.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddVIPConsumeHistory exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteVIPConsumeHistory(const std::string &strVIPID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_vip_consume_history where consume_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteVIPConsumeHistory exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyVIPConsumeHistory(const PassengerFlowProtoHandler::VIPConsumeHistory &consumeHistory)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_vip_consume_history set id = id");
+
+    if (!consumeHistory.m_strGoodsName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", goods_name = '%s'", consumeHistory.m_strGoodsName.c_str());
+        blModified = true;
+    }
+
+    if (consumeHistory.m_uiGoodsNumber != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, ", goods_number = %d", consumeHistory.m_uiGoodsNumber);
+        blModified = true;
+    }
+
+    if (!consumeHistory.m_strSalesman.empty())
+    {
+        len += snprintf(sql + len, size - len, ", salesman = '%s'", consumeHistory.m_strSalesman.c_str());
+        blModified = true;
+    }
+
+    if (consumeHistory.m_dConsumeAmount >= 0.0)
+    {
+        len += snprintf(sql + len, size - len, ", consume_amount = %f", consumeHistory.m_dConsumeAmount);
+        blModified = true;
+    }
+
+    if (!consumeHistory.m_strConsumeDate.empty())
+    {
+        len += snprintf(sql + len, size - len, ", consume_date = '%s'", consumeHistory.m_strConsumeDate.c_str());
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyVIPConsumeHistory completed, vip consume history info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where consume_id = '%s'", consumeHistory.m_strConsumeID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyVIPConsumeHistory exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryAllVIPConsumeHistory(const std::string &strVIPID, std::list<PassengerFlowProtoHandler::VIPConsumeHistory> &consumeHistoryList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select consume_id, goods_name, goods_number, salesman, consume_amount, consume_date from"
+        " t_vip_consume_history where vip_id = '%s' order by consume_date desc limit %d, %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str(), uiBeginIndex, uiPageSize);
+
+    PassengerFlowProtoHandler::VIPConsumeHistory rstConsumeHistory;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstConsumeHistory.m_strConsumeID = strColumn;
+            break;
+        case 1:
+            rstConsumeHistory.m_strGoodsName = strColumn;
+            break;
+        case 2:
+            rstConsumeHistory.m_uiGoodsNumber = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 3:
+            rstConsumeHistory.m_strSalesman = strColumn;
+            break;
+        case 4:
+            rstConsumeHistory.m_dConsumeAmount = boost::lexical_cast<double>(strColumn);
+            break;
+        case 5:
+            rstConsumeHistory.m_strConsumeDate = strColumn;
+            result = rstConsumeHistory;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllVIPConsumeHistory sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllVIPConsumeHistory exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        consumeHistoryList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::VIPConsumeHistory>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddEvaluationTemplate(const PassengerFlowProtoHandler::EvaluationItem &evaluationItem)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_evaluation_item (id, item_id, item_name, description, total_point, create_date)"
+        " values(uuid(), '%s', '%s', '%s', %f, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, evaluationItem.m_strItemID.c_str(), evaluationItem.m_strItemName.c_str(),
+        evaluationItem.m_strDescription.c_str(), evaluationItem.m_dTotalPoint, CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddEvaluationTemplate exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteEvaluationTemplate(const std::string &strItemID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_evaluation_item where item_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strItemID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteEvaluationTemplate exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyEvaluationTemplate(const PassengerFlowProtoHandler::EvaluationItem &evaluationItem)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_evaluation_item set id = id");
+
+    if (!evaluationItem.m_strItemName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", item_name = '%s'", evaluationItem.m_strItemName.c_str());
+        blModified = true;
+    }
+
+    if (!evaluationItem.m_strDescription.empty())
+    {
+        len += snprintf(sql + len, size - len, ", description = '%s'", evaluationItem.m_strDescription.c_str());
+        blModified = true;
+    }
+
+    if (evaluationItem.m_dTotalPoint >= 0.0)
+    {
+        len += snprintf(sql + len, size - len, ", total_point = %f", evaluationItem.m_dTotalPoint);
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyEvaluationTemplate completed, evaluation item info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where item_id = '%s'", evaluationItem.m_strItemID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyEvaluationTemplate exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryAllEvaluationTemplate(std::list<PassengerFlowProtoHandler::EvaluationItem> &evaluationItemList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select item_id, item_name, description, total_point from t_evaluation_item";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    PassengerFlowProtoHandler::EvaluationItem rstEvaluationItem;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstEvaluationItem.m_strItemID = strColumn;
+            break;
+        case 1:
+            rstEvaluationItem.m_strItemName = strColumn;
+            break;
+        case 2:
+            rstEvaluationItem.m_strDescription = strColumn;
+            break;
+        case 3:
+            rstEvaluationItem.m_dTotalPoint = boost::lexical_cast<double>(strColumn);
+            result = rstEvaluationItem;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllEvaluationTemplate sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllEvaluationTemplate exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        evaluationItemList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::EvaluationItem>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_store_evaluation (id, evaluation_id, store_id, user_id_create, user_id_check, check_status, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, storeEvaluation.m_strEvaluationID.c_str(), storeEvaluation.m_strStoreID.c_str(),
+        storeEvaluation.m_strUserIDCreate.c_str(), storeEvaluation.m_strUserIDCheck.c_str(), storeEvaluation.m_uiCheckStatus, CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddStoreEvaluation exec sql failed, sql is " << sql);
+    }
+
+    for (auto it = storeEvaluation.m_itemScoreList.begin(), end = storeEvaluation.m_itemScoreList.end(); it != end; ++it)
+    {
+        AddStoreEvaluationScore(storeEvaluation.m_strEvaluationID, *it);
+    }
+}
+
+void PassengerFlowManager::AddStoreEvaluationScore(const std::string &strEvaluationID, const PassengerFlowProtoHandler::EvaluationItemScore &itemScore)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_store_evaluation_score (id, evaluation_id, item_id, score, description, create_date)"
+        " values(uuid(), '%s', '%s', %f, '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str(), itemScore.m_evaluationItem.m_strItemID.c_str(), itemScore.m_dScore,
+        itemScore.m_strDescription.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddStoreEvaluationScore exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteStoreEvaluation(const std::string &strEvaluationID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete a, b from"
+        " t_store_evaluation a left join t_store_evaluation_score b on a.evaluation_id = b.evaluation_id"
+        " where a.evaluation_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteStoreEvaluation exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_store_evaluation set id = id");
+
+    if (!storeEvaluation.m_strUserIDCheck.empty())
+    {
+        len += snprintf(sql + len, size - len, ", user_id_check = '%s'", storeEvaluation.m_strUserIDCheck.c_str());
+        blModified = true;
+    }
+
+    if (storeEvaluation.m_uiCheckStatus != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, ", check_status = %d", storeEvaluation.m_uiCheckStatus);
+        blModified = true;
+    }
+
+    if (!storeEvaluation.m_itemScoreList.empty())
+    {
+        ModifyStoreEvaluationScore(storeEvaluation.m_strEvaluationID, storeEvaluation.m_itemScoreList);
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyStoreEvaluation completed, store evaluation info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where evaluation_id = '%s'", storeEvaluation.m_strEvaluationID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyStoreEvaluation exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyStoreEvaluationScore(const std::string &strEvaluationID, const std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList)
+{
+    DeleteStoreEvaluationScore(strEvaluationID);
+
+    for (auto &score : scoreList)
+    {
+        AddStoreEvaluationScore(strEvaluationID, score);
+    }
+}
+
+void PassengerFlowManager::DeleteStoreEvaluationScore(const std::string &strEvaluationID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_store_evaluation_score where evaluation_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteStoreEvaluationScore exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryStoreEvaluationInfo(const std::string &strEvaluationID, PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select user_id_create, user_id_check, check_status, create_date"
+        " from t_store_evaluation where evaluation_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
+
+    PassengerFlowProtoHandler::StoreEvaluation rstStoreEvaluation;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstStoreEvaluation.m_strUserIDCreate = strColumn;
+            break;
+        case 1:
+            rstStoreEvaluation.m_strUserIDCheck = strColumn;
+            break;
+        case 2:
+            rstStoreEvaluation.m_uiCheckStatus = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 3:
+            rstStoreEvaluation.m_strCreateDate = strColumn;
+            result = rstStoreEvaluation;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryStoreEvaluationInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryStoreEvaluationInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryStoreEvaluationInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto evaluation = boost::any_cast<PassengerFlowProtoHandler::StoreEvaluation>(ResultList.front());
+    storeEvaluation.m_strUserIDCreate = evaluation.m_strUserIDCreate;
+    storeEvaluation.m_strUserIDCheck = evaluation.m_strUserIDCheck;
+    storeEvaluation.m_uiCheckStatus = evaluation.m_uiCheckStatus;
+    storeEvaluation.m_strCreateDate = evaluation.m_strCreateDate;
+
+    return QueyrStoreEvaluationScore(strEvaluationID, storeEvaluation.m_dTotalScore, storeEvaluation.m_itemScoreList);
+}
+
+bool PassengerFlowManager::QueyrStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
+    std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select a.score, a.description, b.item_id, b.item_name, b.description, b.total_point from"
+        " t_store_evaluation_score a join t_evaluation_item b on a.item_id = b.item_id"
+        " where a.evaluation_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
+
+    PassengerFlowProtoHandler::EvaluationItemScore rstScore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstScore.m_dScore = boost::lexical_cast<double>(strColumn);
+            break;
+        case 1:
+            rstScore.m_strDescription = strColumn;
+            break;
+        case 2:
+            rstScore.m_evaluationItem.m_strItemID = strColumn;
+            break;
+        case 3:
+            rstScore.m_evaluationItem.m_strItemName = strColumn;
+            break;
+        case 4:
+            rstScore.m_evaluationItem.m_strDescription = strColumn;
+            break;
+        case 5:
+            rstScore.m_evaluationItem.m_dTotalPoint = boost::lexical_cast<double>(strColumn);
+            result = rstScore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueyrStoreEvaluationScore sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueyrStoreEvaluationScore exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    dTotalScore = 0.0;
+    for (auto &result : ResultList)
+    {
+        auto score = boost::any_cast<PassengerFlowProtoHandler::EvaluationItemScore>(result);
+        dTotalScore += score.m_dScore;
+        scoreList.push_back(std::move(score));
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::StoreEvaluation> &storeEvaluationList,
+    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select a.evaluation_id, a.user_id_create, a.user_id_check, a.check_status, a.create_date, sum(b.score) from"
+        " t_store_evaluation a join t_store_evaluation_score b on a.evaluation_id = b.evaluation_id"
+        " where a.store_id = '%s'";
+
+    int len = snprintf(sql, size, sqlfmt, strStoreID.c_str());
+
+    if (!strBeginDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.create_date >= '%s'", strBeginDate.c_str());
+    }
+
+    if (!strEndDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.create_date <= '%s'", strEndDate.c_str());
+    }
+
+    snprintf(sql + len, size - len, " group by a.evaluation_id, a.user_id_create, a.user_id_check, a.check_status, a.create_date limit %d, %d", uiBeginIndex, uiPageSize);
+
+    PassengerFlowProtoHandler::StoreEvaluation rstStoreEvaluation;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstStoreEvaluation.m_strEvaluationID = strColumn;
+            break;
+        case 1:
+            rstStoreEvaluation.m_strUserIDCreate = strColumn;
+            break;
+        case 2:
+            rstStoreEvaluation.m_strUserIDCheck = strColumn;
+            break;
+        case 3:
+            rstStoreEvaluation.m_uiCheckStatus = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 4:
+            rstStoreEvaluation.m_strCreateDate = strColumn;
+            break;
+        case 5:
+            rstStoreEvaluation.m_dTotalScore = boost::lexical_cast<double>(strColumn);
+            result = rstStoreEvaluation;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllStoreEvaluation sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllStoreEvaluation exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        storeEvaluationList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::StoreEvaluation>(result)));
     }
 
     return true;

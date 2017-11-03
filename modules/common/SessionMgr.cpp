@@ -123,8 +123,11 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
             jsBody["id"] = strID;
             jsBody["threshold"] = uiThreshold;
             jsBody["terminaltype"] = uiTerminalType;
-            jsBody["sid"] = strSessionID;
-
+            Json::Value jsSid;
+            jsSid[(unsigned int)0] = strSessionID;
+            jsBody["sid"] = jsSid;
+            //jsBody["sid"] = strSessionID;
+            
             Json::FastWriter fastwriter;
             const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
@@ -133,9 +136,18 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
                 LOG_ERROR_RLD("Create id failed because memcache error.");
                 return CACHE_ERROR;
             }
+
+            LOG_INFO_RLD("ID info is " << strBody);
         }
         else
         {
+            //更新缓存中sid信息
+            if (!UpdateSidList(strID, strSessionID))
+            {
+                LOG_ERROR_RLD("Update session id list failed and id is " << strID << " and session id is " << strSessionID);
+                return CACHE_ERROR;
+            }
+
             //该id已经有会话登录
             if (m_blUserLoginMutex) //启用会话互斥
             {
@@ -449,6 +461,60 @@ bool SessionMgr::Remove(const std::string &strSessionID)
     return true;
 }
 
+bool SessionMgr::RemoveByID(const std::string &strID)
+{
+    std::string strValue;
+    if (!MemCacheGet(strID, strValue))
+    {
+        LOG_ERROR_RLD("Remove session by id failed beacuse key not found from memcached and key is " << strID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Remove session by id failed beacuse value parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Remove session by id failed beacuse json root parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value JSid = root["sid"];
+    if (JSid.isNull())
+    {
+        LOG_ERROR_RLD("Remove session by id failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!JSid.isArray())
+    {
+        LOG_ERROR_RLD("Session id info failed, raw data is : " << strValue);
+        return false;
+    }
+
+    for (unsigned int i = 0; i < JSid.size(); ++i)
+    {
+        auto jsSidValue = JSid[i];
+        if (jsSidValue.isNull() || !jsSidValue.isString())
+        {
+            LOG_ERROR_RLD("Session id info failed, raw data is : " << strValue);
+            return false;
+        }
+
+        LOG_INFO_RLD("Remove session  id is " << jsSidValue.asString());
+
+        Remove(jsSidValue.asString());        
+    }
+    
+    LOG_INFO_RLD("Remove session by id " << strID << " is succeed.");
+    return true;
+}
+
 bool SessionMgr::MemCacheRemove(const std::string &strKey)
 {
     boost::unique_lock<boost::mutex> lock(m_MemcachedMutex);
@@ -519,10 +585,13 @@ bool SessionMgr::MemCacheCreate(const std::string &strKey, const std::string &st
         return false;
     }
 
-    if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemClGlobal->set(strKey.c_str(), strValue.c_str(), strValue.size(), CurrentTimeValue)))
+    if (!m_strMemAddressGlobal.empty() && !m_strMemPortGlobal.empty())
     {
-        LOG_ERROR_RLD("Memcache of global set failed, return code is " << iRet << " and key id is " << strKey);
-        return false;
+        if (MemcacheClient::CACHE_SUCCESS != (iRet = m_pMemClGlobal->set(strKey.c_str(), strValue.c_str(), strValue.size(), CurrentTimeValue)))
+        {
+            LOG_ERROR_RLD("Memcache of global set failed, return code is " << iRet << " and key id is " << strKey);
+            return false;
+        }
     }
 
     return true;
@@ -594,50 +663,71 @@ bool SessionMgr::SetSessionStatus(const std::string &strID, const int iStatus)
         return false;
     }
 
-    //获取得到设备/用户ID对应的SessionID值
-    const std::string &strSid = JSid.asString();
-    
-    std::string strValueSid;
-    if (!MemCacheGet(strSid, strValueSid))
+    if (!JSid.isArray())
     {
-        LOG_ERROR_RLD("Set session status failed beacuse key not found from memcached and key is " << strSid);
+        LOG_ERROR_RLD("Session id info failed, raw data is : " << strValue);
         return false;
     }
 
-    Json::Reader readersid;
-    Json::Value rootsid;
-    if (!readersid.parse(strValueSid, rootsid, false))
+    for (unsigned int i = 0; i < JSid.size(); ++i)
     {
-        LOG_ERROR_RLD("Set session status failed beacuse value parsed failed and key is " << strSid << " and value is " << strValueSid);
-        return false;
+        auto jsSidValue = JSid[i];
+        if (jsSidValue.isNull() || !jsSidValue.isString())
+        {
+            LOG_ERROR_RLD("Session id info failed, raw data is : " << strValue);
+            return false;
+        }
+
+        LOG_INFO_RLD("Set session id is " << jsSidValue.asString() << " and status value is " << iStatus);
+
+        {
+            //获取得到设备/用户ID对应的SessionID值
+            const std::string &strSid = jsSidValue.asString();
+
+            std::string strValueSid;
+            if (!MemCacheGet(strSid, strValueSid))
+            {
+                LOG_ERROR_RLD("Set session status failed beacuse key not found from memcached and key is " << strSid);
+                return false;
+            }
+
+            Json::Reader readersid;
+            Json::Value rootsid;
+            if (!readersid.parse(strValueSid, rootsid, false))
+            {
+                LOG_ERROR_RLD("Set session status failed beacuse value parsed failed and key is " << strSid << " and value is " << strValueSid);
+                return false;
+            }
+
+            if (!rootsid.isObject())
+            {
+                LOG_ERROR_RLD("Set session status failed beacuse json root parsed failed and key is " << strSid << " and value is " << strValueSid);
+                return false;
+            }
+
+            Json::Value jThreshold = rootsid["threshold"];
+
+            if (jThreshold.isNull())
+            {
+                LOG_ERROR_RLD("Set session status failed beacuse json threshold  json value is null and key is " << strSid << " and value is " << strValueSid);
+                return false;
+            }
+
+            rootsid["status"] = iStatus;
+
+            Json::FastWriter fastwriter;
+            const std::string &strBody = fastwriter.write(rootsid); //jsBody.toStyledString();
+
+            if (!MemCacheReset(strSid, strBody, jThreshold.asUInt()))
+            {
+                LOG_ERROR_RLD("Set session status failed becasue memecache failed, id is " << strSid);
+                return false;
+            }
+
+            LOG_INFO_RLD("Set session status and id is " << strSid << " and value is " << strBody);
+        }
     }
 
-    if (!rootsid.isObject())
-    {
-        LOG_ERROR_RLD("Set session status failed beacuse json root parsed failed and key is " << strSid << " and value is " << strValueSid);
-        return false;
-    }
-    
-    Json::Value jThreshold = rootsid["threshold"];
-    
-    if (jThreshold.isNull())
-    {
-        LOG_ERROR_RLD("Set session status failed beacuse json threshold  json value is null and key is " << strSid << " and value is " << strValueSid);
-        return false;
-    }
-
-    rootsid["status"] = iStatus;
-
-    Json::FastWriter fastwriter;
-    const std::string &strBody = fastwriter.write(rootsid); //jsBody.toStyledString();
-
-    if (!MemCacheReset(strSid, strBody, jThreshold.asUInt()))
-    {
-        LOG_ERROR_RLD("Set session status failed becasue memecache failed, id is " << strSid);
-        return false;
-    }
-
-    LOG_INFO_RLD("Set session status and id is " << strSid << " and value is " << strBody);
     return true;
 }
 
@@ -673,6 +763,69 @@ bool SessionMgr::GetTerminalType(const std::string &strID, unsigned int &uiTermi
     }
 
     uiTerminalType = jTerm.asUInt();
+
+    return true;
+}
+
+bool SessionMgr::UpdateSidList(const std::string &strID, const std::string &strSessionID)
+{
+    std::string strValue;
+    if (!MemCacheGet(strID, strValue))
+    {
+        LOG_ERROR_RLD("Update session list failed beacuse key not found from memcached and key is " << strID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Update session list failed beacuse value parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Update session list failed beacuse json root parsed failed and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value JSid = root["sid"];
+    if (JSid.isNull())
+    {
+        LOG_ERROR_RLD("Update session list failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!JSid.isArray())
+    {
+        LOG_ERROR_RLD("Update session list failed, raw data is : " << strValue);
+        return false;
+    }
+
+    unsigned int uiSize = JSid.size();
+    JSid[uiSize] = strSessionID;
+
+    LOG_INFO_RLD("Update session list and session id is " << strSessionID << " and id is " << strID << " and session list size is " << JSid.size());
+    
+    root["sid"] = JSid;
+
+    Json::Value jThreshold = root["threshold"];
+
+    if (jThreshold.isNull())
+    {
+        LOG_ERROR_RLD("Update session list failed beacuse json threshold  json value is null and session id is " << strSessionID << " and id is " << strID);
+        return false;
+    }
+
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(root); //jsBody.toStyledString();
+
+    if (!MemCacheCreate(strID, strBody, jThreshold.asUInt()))
+    {
+        LOG_ERROR_RLD("Update session list failed because memcache error.");
+        return CACHE_ERROR;
+    }
 
     return true;
 }

@@ -4,7 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/scope_exit.hpp>
-#include "json/json.h"
+
 #include "util.h"
 #include "mime_types.h"
 #include "LogRLD.h"
@@ -67,6 +67,59 @@ const std::string PassengerFlowMsgHandler::MODIFY_GUARD_PLAN("modify_smart_guard
 const std::string PassengerFlowMsgHandler::QUERY_GUARD_PLAN("query_smart_guard_store");
 
 const std::string PassengerFlowMsgHandler::QUERY_ALL_GUARD_PLAN("query_all_smart_guard_store");
+
+const std::string PassengerFlowMsgHandler::CREATE_PATROL_PLAN("create_regular_patrol");
+
+const std::string PassengerFlowMsgHandler::DELETE_PATROL_PLAN("delete_regular_patrol");
+
+const std::string PassengerFlowMsgHandler::MODIFY_PATROL_PLAN("modify_regular_patrol");
+
+const std::string PassengerFlowMsgHandler::QUERY_PATROL_PLAN("query_regular_patrol");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_PATROL_PLAN("query_all_regular_patrol");
+
+const std::string PassengerFlowMsgHandler::CREATE_VIP("create_vip_customer");
+
+const std::string PassengerFlowMsgHandler::DELETE_VIP("delete_vip_customer");
+
+const std::string PassengerFlowMsgHandler::MODIFY_VIP("modify_vip_customer");
+
+const std::string PassengerFlowMsgHandler::QUERY_VIP("query_vip_customer");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_VIP("query_all_vip_customer");
+
+const std::string PassengerFlowMsgHandler::CREATE_VIP_CONSUME("add_consume_history");
+
+const std::string PassengerFlowMsgHandler::DELETE_VIP_CONSUME("delete_consume_history");
+
+const std::string PassengerFlowMsgHandler::MODIFY_VIP_CONSUME("modify_consume_history");
+
+const std::string PassengerFlowMsgHandler::QUERY_VIP_CONSUME("query_all_consume_history");
+
+const std::string PassengerFlowMsgHandler::USER_JOIN_STORE("user_join_store");
+
+const std::string PassengerFlowMsgHandler::USER_QUIT_STORE("user_quit_store");
+
+const std::string PassengerFlowMsgHandler::QUERY_USER_STORE("query_store_all_user");
+
+const std::string PassengerFlowMsgHandler::CREATE_EVALUATION_TEMPLATE("create_evaluation_template");
+
+const std::string PassengerFlowMsgHandler::DELETE_EVALUATION_TEMPLATE("remove_evaluation_template");
+
+const std::string PassengerFlowMsgHandler::MODIFY_EVALUATION_TEMPLATE("modify_evaluation_template");
+
+const std::string PassengerFlowMsgHandler::QUERY_EVALUATION_TEMPLATE("query_evaluation_template");
+
+
+const std::string PassengerFlowMsgHandler::CREATE_EVALUATION_OF_STORE("create_store_evaluation");
+
+const std::string PassengerFlowMsgHandler::DELETE_EVALUATION_OF_STORE("remove_store_evaluation");
+
+const std::string PassengerFlowMsgHandler::MODIFY_EVALUATION_OF_STORE("modify_store_evaluation");
+
+const std::string PassengerFlowMsgHandler::QUERY_EVALUATION_OF_STORE("query_store_evaluation");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_EVALUATION_OF_STORE("query_all_store_evaluation");
 
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -2491,7 +2544,7 @@ bool PassengerFlowMsgHandler::QueryAllGuardStorePlanHandler(boost::shared_ptr<Ms
 
     std::string strDevID;
     itFind = pMsgInfoMap->find("deviceid");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
         strDevID = itFind->second;
     }
@@ -2545,6 +2598,2676 @@ bool PassengerFlowMsgHandler::QueryAllGuardStorePlanHandler(boost::shared_ptr<Ms
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("plan_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Plan name not found.");
+        return blResult;
+    }
+    const std::string strPatrolName = itFind->second;
+
+    itFind = pMsgInfoMap->find("enable");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Enable not found.");
+        return blResult;
+    }
+    std::string strEnable = itFind->second;
+    boost::to_lower(strEnable);
+    if (strEnable != "yes" && strEnable != "no")
+    {
+        LOG_ERROR_RLD("Enable string format is invalid and value is " << strEnable);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    std::list<std::string> strStoreIDList;
+    if (!GetValueList(strStoreID, strStoreIDList))
+    {
+        LOG_ERROR_RLD("Store id list parse failed");
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("patrol_time");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol time not found.");
+        return blResult;
+    }
+    const std::string strPatrolTime = itFind->second;
+
+    std::list<std::string> strPatrolTimeList;
+    if (!GetValueList(strPatrolTime, strPatrolTimeList))
+    {
+        LOG_ERROR_RLD("Patrol time list parse failed");
+        return blResult;
+    }
+
+    for (auto itBegin = strPatrolTimeList.begin(), itEnd = strPatrolTimeList.end(); itBegin != itEnd; ++itBegin)
+    {
+        if (!ValidDatetime(*itBegin, true))
+        {
+            LOG_ERROR_RLD("Patrol time is invalid and value is " << *itBegin);
+            return blResult;
+        }
+    }
+
+    Patrol pat;
+    pat.m_strEnable = strEnable;
+    pat.m_strPatrolName = strPatrolName;
+    pat.m_strPatrolTimeList.swap(strPatrolTimeList);
+    pat.m_strStoreIDList.swap(strStoreIDList);
+    pat.m_strUserID = strUserID;
+
+    if (!CreateRegularPatrol(strSid, pat))
+    {
+        LOG_ERROR_RLD("Create regular patrol failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
+        << " and patrol name is " << strPatrolName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_id", pat.m_strPatrolID));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool PassengerFlowMsgHandler::DeleteRegularPatrolPlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("planid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Plan id not found.");
+        return blResult;
+    }
+    const std::string strPlanID = itFind->second;
+
+    if (!DeleteRegularPatrol(strSid, strUserID, strPlanID))
+    {
+        LOG_ERROR_RLD("Delete regular patrol failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete regular patrol info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("planid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Plan id not found.");
+        return blResult;
+    }
+    const std::string strPatrolID = itFind->second;
+
+    std::string strPatrolName;
+    itFind = pMsgInfoMap->find("plan_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolName = itFind->second;
+    }
+    
+    std::string strEnable;
+    itFind = pMsgInfoMap->find("enable");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEnable = itFind->second;
+        boost::to_lower(strEnable);
+        if (strEnable != "yes" && strEnable != "no")
+        {
+            LOG_ERROR_RLD("Enable string format is invalid and value is " << strEnable);
+            return blResult;
+        }
+    }
+    
+    std::list<std::string> strStoreIDList;
+    std::string strStoreID;
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStoreID = itFind->second;
+        if (!GetValueList(strStoreID, strStoreIDList))
+        {
+            LOG_ERROR_RLD("Store id list parse failed");
+            return blResult;
+        }
+    }
+    
+    std::list<std::string> strPatrolTimeList;
+    std::string strPatrolTime;
+    itFind = pMsgInfoMap->find("patrol_time");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolTime = itFind->second;
+        if (!GetValueList(strPatrolTime, strPatrolTimeList))
+        {
+            LOG_ERROR_RLD("Patrol time list parse failed");
+            return blResult;
+        }
+
+        for (auto itBegin = strPatrolTimeList.begin(), itEnd = strPatrolTimeList.end(); itBegin != itEnd; ++itBegin)
+        {
+            if (!ValidDatetime(*itBegin, true))
+            {
+                LOG_ERROR_RLD("Patrol time is invalid and value is " << *itBegin);
+                return blResult;
+            }
+        }
+    }
+    
+    Patrol pat;
+    pat.m_strEnable = strEnable;
+    pat.m_strPatrolName = strPatrolName;
+    pat.m_strPatrolTimeList.swap(strPatrolTimeList);
+    pat.m_strStoreIDList.swap(strStoreIDList);
+    pat.m_strUserID = strUserID;
+    pat.m_strPatrolID = strPatrolID;
+
+    if (!ModifyRegularPatrol(strSid, pat))
+    {
+        LOG_ERROR_RLD("Modify regular patrol failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
+        << " and patrol name is " << strPatrolName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsStoreList;
+    Json::Value jsPatrolTimeList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreList, &jsPatrolTimeList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["store"] = jsStoreList;
+                (*pJsBody)["patrol_time"] = jsPatrolTimeList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("planid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Plan id not found.");
+        return blResult;
+    }
+    const std::string strPlanID = itFind->second;
+
+    Patrol pat;
+    pat.m_strUserID = strUserID;
+    pat.m_strPatrolID = strPlanID;
+
+    if (!QueryRegularPatrolPlan(strSid, pat))
+    {
+        LOG_ERROR_RLD("Query regular patrol failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = pat.m_strPatrolTimeList.begin(), itEnd = pat.m_strPatrolTimeList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsPatrolTimeList[i] = *itBegin;
+    }
+
+    Json::Reader reader;
+    if (!reader.parse(pat.m_strPatrolInfo, jsStoreList, false))
+    {
+        LOG_ERROR_RLD("Parsed failed and value is " << pat.m_strPatrolInfo);
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query regulan patrol info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_id", pat.m_strPatrolID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_name", pat.m_strPatrolName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("enable", pat.m_strEnable));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlanHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsPatrolInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPatrolInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["regular_patrol"] = jsPatrolInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    std::string strUserID;
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserID = itFind->second;
+    }
+
+    std::string strDevID;
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevID = itFind->second;
+    }
+
+    if (strUserID.empty() && strDevID.empty())
+    {
+        LOG_ERROR_RLD("User id and device id not found.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all regular patrol info received and session id is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID);
+
+    std::list<Patrol> patrolinfoList;
+    if (!QueryAllRegularPatrolPlan(strSid, strUserID, strDevID, patrolinfoList))
+    {
+        LOG_ERROR_RLD("Query all regular patrol handle failed");
+        return blResult;
+    }
+
+    auto itBegin = patrolinfoList.begin();
+    auto itEnd = patrolinfoList.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsPlanInfo;
+        jsPlanInfo["plan_id"] = itBegin->m_strPatrolID;
+        jsPlanInfo["plan_name"] = itBegin->m_strPatrolName;
+        jsPlanInfo["enable"] = itBegin->m_strEnable;
+        
+        Json::Value jsPatrolTimeList;
+        unsigned int i = 0;
+        for (auto itB = itBegin->m_strPatrolTimeList.begin(), itE = itBegin->m_strPatrolTimeList.end(); itB != itE; ++itB, ++i)
+        {
+            jsPatrolTimeList[i] = *itB;
+        }
+
+        jsPlanInfo["patrol_time"] = jsPatrolTimeList;
+                
+        Json::Value jsStoreList;
+        Json::Reader reader;
+        if (!reader.parse(itBegin->m_strPatrolInfo, jsStoreList, false))
+        {
+            LOG_ERROR_RLD("Parsed failed and value is " << itBegin->m_strPatrolInfo);
+            return blResult;
+        }
+
+        jsPlanInfo["store"] = jsStoreList;
+
+        jsPatrolInfoList.append(jsPlanInfo);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::CreateVIPHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("profile_picture");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Picture not found.");
+        return blResult;
+    }
+    const std::string strPicture = itFind->second;
+
+    itFind = pMsgInfoMap->find("cellphone");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Cell phone not found.");
+        return blResult;
+    }
+    std::string strCellphone = itFind->second;
+
+    itFind = pMsgInfoMap->find("vip_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip name not found.");
+        return blResult;
+    }
+    std::string strVipName = itFind->second;
+
+    std::string strVisitDate;
+    itFind = pMsgInfoMap->find("visit_date");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVisitDate = itFind->second;
+        if (!ValidDatetime(strVisitDate))
+        {
+            LOG_ERROR_RLD("Visit date is invalid and value is " << strVisitDate);
+            return blResult;
+        }
+    }
+
+    std::string strVisitTimes;
+    unsigned int uiVisitTimes;
+    itFind = pMsgInfoMap->find("visit_times");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVisitTimes = itFind->second;
+        if (!ValidType<unsigned int>(strVisitTimes, uiVisitTimes))
+        {
+            LOG_ERROR_RLD("Visit times is invalid and value is " << strVisitTimes);
+            return blResult;
+        }
+    }
+
+    VIP vip;
+    vip.m_strCellphone = strCellphone;
+    vip.m_strVipName = strVipName;
+    vip.m_strVipUserID = strUserID;
+    vip.m_strVisitDate = strVisitDate;
+    vip.m_uiVisitTimes = uiVisitTimes;
+    vip.m_strProfilePicture = strPicture;
+
+    if (!CreateVIP(strSid, vip))
+    {
+        LOG_ERROR_RLD("Create vip failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create vip info received and session id is " << strSid << " and vip id is " << vip.m_strVipID << " and user id is " << strUserID
+        << " and vip name is " << strVipName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("vipid", vip.m_strVipID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::DeleteVIPHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("vipid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip id not found.");
+        return blResult;
+    }
+    const std::string strVipID = itFind->second;
+
+    if (!DeleteVIP(strSid, strUserID, strVipID))
+    {
+        LOG_ERROR_RLD("Delete vip failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete vip info received and session id is " << strSid << " and user id is " << strUserID
+        << " and vip id  is " << strVipID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyVIPHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("vipid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip id not found.");
+        return blResult;
+    }
+    const std::string strVipID = itFind->second;
+
+    std::string strPicture;
+    itFind = pMsgInfoMap->find("profile_picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPicture = itFind->second;
+    }
+    
+    std::string strCellphone;
+    itFind = pMsgInfoMap->find("cellphone");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCellphone = itFind->second;
+    }
+    
+    std::string strVipName;
+    itFind = pMsgInfoMap->find("vip_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVipName = itFind->second;
+    }
+    
+    std::string strVisitDate;
+    itFind = pMsgInfoMap->find("visit_date");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVisitDate = itFind->second;
+        if (!ValidDatetime(strVisitDate))
+        {
+            LOG_ERROR_RLD("Visit date is invalid and value is " << strVisitDate);
+            return blResult;
+        }
+    }
+
+    std::string strVisitTimes;
+    unsigned int uiVisitTimes;
+    itFind = pMsgInfoMap->find("visit_times");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strVisitTimes = itFind->second;
+        if (!ValidType<unsigned int>(strVisitTimes, uiVisitTimes))
+        {
+            LOG_ERROR_RLD("Visit times is invalid and value is " << strVisitTimes);
+            return blResult;
+        }
+    }
+
+    VIP vip;
+    vip.m_strCellphone = strCellphone;
+    vip.m_strVipName = strVipName;
+    vip.m_strVipID = strVipID;
+    vip.m_strVipUserID = strUserID;
+    vip.m_strVisitDate = strVisitDate;
+    vip.m_uiVisitTimes = uiVisitTimes;
+    vip.m_strProfilePicture = strPicture;
+
+    if (!ModifyVIP(strSid, vip))
+    {
+        LOG_ERROR_RLD("Modify vip failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify vip info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
+        << " and vip name is " << strVipName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryVIPHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsComHisList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsComHisList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["consume_history"] = jsComHisList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("vipid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip id not found.");
+        return blResult;
+    }
+    const std::string strVipID = itFind->second;
+
+    VIP vip;
+    vip.m_strVipUserID = strUserID;
+    vip.m_strVipID = strVipID;
+
+    if (!QueryVIP(strSid, vip))
+    {
+        LOG_ERROR_RLD("Query vip failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = vip.m_ConsumeHistoryList.begin(), itEnd = vip.m_ConsumeHistoryList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsComHis;
+        jsComHis["goods_name"] = itBegin->m_strGoodName;
+        jsComHis["goods_number"] = itBegin->m_uiGoodNum;
+        jsComHis["salesman"] = itBegin->m_strSalesman;
+        jsComHis["consume_amount"] = boost::lexical_cast<std::string>(itBegin->m_dConsumeAmount);
+        jsComHis["consume_date"] = itBegin->m_strConsumeDate;
+
+        jsComHisList[i] = jsComHis;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query vip info received and session id is " << strSid << " and user id is " << strUserID
+        << " and vip id  is " << strVipID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("profile_picture", vip.m_strProfilePicture));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("vip_name", vip.m_strVipName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("vip_id", vip.m_strVipID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("cellphone", vip.m_strCellphone));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("visit_date", vip.m_strVisitDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("visit_times", boost::lexical_cast<std::string>(vip.m_uiVisitTimes)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("register_date", vip.m_strRegisterDate));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllVIPHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsVipInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsVipInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["vip_customer"] = jsVipInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    std::string strUserID;
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserID = itFind->second;
+    }
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all vip info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex);
+
+    std::list<VIP> VipList;
+    if (!QueryAllVIP(strSid, strUserID, uiBeginIndex, VipList))
+    {
+        LOG_ERROR_RLD("Query all vip handle failed");
+        return blResult;
+    }
+
+    auto itBegin = VipList.begin();
+    auto itEnd = VipList.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsVipInfo;
+        jsVipInfo["profile_picture"] = itBegin->m_strProfilePicture;
+        jsVipInfo["vip_name"] = itBegin->m_strVipName;
+        jsVipInfo["vip_id"] = itBegin->m_strVipID;
+        jsVipInfo["cellphone"] = itBegin->m_strCellphone;
+        jsVipInfo["visit_date"] = itBegin->m_strVisitDate;
+        jsVipInfo["visit_times"] = boost::lexical_cast<std::string>(itBegin->m_uiVisitTimes);
+        jsVipInfo["register_date"] = itBegin->m_strRegisterDate;
+        
+        jsVipInfoList.append(jsVipInfo);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::CreateVIPConsumeHistoryHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("vipid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip id not found.");
+        return blResult;
+    }
+    const std::string strVipID = itFind->second;
+    
+    itFind = pMsgInfoMap->find("goods_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Goods name not found.");
+        return blResult;
+    }
+    const std::string strGoodsName = itFind->second;
+
+    itFind = pMsgInfoMap->find("goods_number");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Goods number not found.");
+        return blResult;
+    }
+    
+    unsigned int uiGoodsNumber;
+    if (!ValidType<unsigned int>(itFind->second, uiGoodsNumber))
+    {
+        LOG_ERROR_RLD("Goods number is invalid and value is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("salesman");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sales man not found.");
+        return blResult;
+    }
+    std::string strSalesMan = itFind->second;
+
+
+    itFind = pMsgInfoMap->find("consume_amount");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Consume amount not found.");
+        return blResult;
+    }
+
+    double dConsumAmount;
+    if (!ValidType<double>(itFind->second, dConsumAmount))
+    {
+        LOG_ERROR_RLD("Consume amount is invalid and value is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("consume_date");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Consume date not found.");
+        return blResult;
+    }
+
+    std::string strConsumeDate = itFind->second;
+    if (!ValidDatetime(strConsumeDate))
+    {
+        LOG_ERROR_RLD("Consume date is invalid and value is " << strConsumeDate);
+        return blResult;
+    }
+    
+    VIP::ConsumeHistory vch;
+    vch.m_dConsumeAmount = dConsumAmount;
+    vch.m_strConsumeDate = strConsumeDate;
+    vch.m_strGoodName = strGoodsName;
+    vch.m_strSalesman = strSalesMan;
+    vch.m_uiGoodNum = uiGoodsNumber;
+
+    if (!CreateVIPConsumeHistory(strSid, strUserID, strVipID, vch))
+    {
+        LOG_ERROR_RLD("Create vip consume history failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create vip consume history info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
+        << " and goods name is " << strGoodsName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("consume_id", vch.m_strConsumeID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::DeleteVIPConsumeHistoryHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("consumeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Consume id not found.");
+        return blResult;
+    }
+    const std::string strConsumeID = itFind->second;
+
+    if (!DeleteVIPConsumeHistory(strSid, strUserID, strConsumeID))
+    {
+        LOG_ERROR_RLD("Delete consume failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete vip consume info received and session id is " << strSid << " and user id is " << strUserID
+        << " and consume id  is " << strConsumeID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyVIPConsumeHistoryHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("consumeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Consume id not found.");
+        return blResult;
+    }
+    const std::string strConsumeID = itFind->second;
+    
+    std::string strGoodsName;
+    itFind = pMsgInfoMap->find("goods_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strGoodsName = itFind->second;
+    }
+    
+    unsigned int uiGoodsNumber = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("goods_number");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<unsigned int>(itFind->second, uiGoodsNumber))
+        {
+            LOG_ERROR_RLD("Goods number is invalid and value is " << itFind->second);
+            return blResult;
+        }
+    }
+    
+    std::string strSalesMan;
+    itFind = pMsgInfoMap->find("salesman");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strSalesMan = itFind->second;
+    }
+    
+    double dConsumAmount = -1; //0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("consume_amount");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<double>(itFind->second, dConsumAmount))
+        {
+            LOG_ERROR_RLD("Consume amount is invalid and value is " << itFind->second);
+            return blResult;
+        }
+    }    
+    
+    std::string strConsumeDate;
+    itFind = pMsgInfoMap->find("consume_date");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strConsumeDate = itFind->second;
+        if (!ValidDatetime(strConsumeDate))
+        {
+            LOG_ERROR_RLD("Consume date is invalid and value is " << strConsumeDate);
+            return blResult;
+        }
+    }
+
+    VIP::ConsumeHistory vch;
+    vch.m_dConsumeAmount = dConsumAmount;
+    vch.m_strConsumeDate = strConsumeDate;
+    vch.m_strGoodName = strGoodsName;
+    vch.m_strSalesman = strSalesMan;
+    vch.m_uiGoodNum = uiGoodsNumber;
+    vch.m_strConsumeID = strConsumeID;
+
+    if (!ModifyVIPConsumeHistory(strSid, strUserID, vch))
+    {
+        LOG_ERROR_RLD("Modify vip consume history failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify vip consume history info received and session id is " << strSid << " and consume id is " << strConsumeID << " and user id is " << strUserID
+        << " and goods name is " << strGoodsName);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryVIPConsumeHistoryHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsComHisList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsComHisList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["consume_history"] = jsComHisList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("vipid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Vip id not found.");
+        return blResult;
+    }
+    const std::string strVipID = itFind->second;
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::list<VIP::ConsumeHistory> vphlist;    
+    if (!QueryVIPConsumeHistory(strSid, strUserID, strVipID, uiBeginIndex, vphlist))
+    {
+        LOG_ERROR_RLD("Query vip consume failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = vphlist.begin(), itEnd = vphlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsComHis;
+        jsComHis["goods_name"] = itBegin->m_strGoodName;
+        jsComHis["goods_number"] = itBegin->m_uiGoodNum;
+        jsComHis["salesman"] = itBegin->m_strSalesman;
+        jsComHis["consume_amount"] = boost::lexical_cast<std::string>(itBegin->m_dConsumeAmount);
+        jsComHis["consume_date"] = itBegin->m_strConsumeDate;
+
+        jsComHisList[i] = jsComHis;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query vip consume info received and session id is " << strSid << " and user id is " << strUserID
+        << " and vip id  is " << strVipID << " and consume history record size is " << vphlist.size());
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::UserJoinStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    itFind = pMsgInfoMap->find("role");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role not found.");
+        return blResult;
+    }
+    const std::string strRole = itFind->second;
+
+    
+    UserOfStore us;
+    us.m_strRole = strRole;
+    us.m_strStoreID = strStoreID;
+    us.m_strUserID = strUserID;
+
+    if (!UserJoinStore(strSid, us))
+    {
+        LOG_ERROR_RLD("User join store failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("User join store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
+        << " and role is " << strRole);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::UserQuitStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    std::string strAdminID;
+    itFind = pMsgInfoMap->find("administratorid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strAdminID = itFind->second;
+    }
+    
+    UserOfStore us;
+    us.m_strStoreID = strStoreID;
+    us.m_strUserID = strUserID;
+
+    if (!UserQuitStore(strSid, strAdminID, us))
+    {
+        LOG_ERROR_RLD("User quit store failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("User quit store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
+        << " and admin id is " << strAdminID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsUserOfStoreList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsUserOfStoreList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["user"] = jsUserOfStoreList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+    
+    UserOfStore us;
+    us.m_strUserID = strUserID;
+    us.m_strStoreID = strStoreID;
+
+    std::list<UserOfStore> uslist;
+    if (!QueryUserOfStore(strSid, us, uslist))
+    {
+        LOG_ERROR_RLD("Query user of store failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = uslist.begin(), itEnd = uslist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsUserofStore;
+        jsUserofStore["user_id"] = itBegin->m_strUserID;
+        jsUserofStore["user_name"] = itBegin->m_strUserName;
+        jsUserofStore["role"] = itBegin->m_strRole;
+
+        jsUserOfStoreList[i] = jsUserofStore;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query user of store info received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id  is " << strStoreID << " and user of store record size is " << uslist.size());
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::CreateEvaluationTemplateHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("evaluation");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation not found.");
+        return blResult;
+    }
+    const std::string strEvaluation = itFind->second;
+
+    itFind = pMsgInfoMap->find("evaluation_desc");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation desc not found.");
+        return blResult;
+    }
+    const std::string strEvaluationDesc = itFind->second;
+
+    itFind = pMsgInfoMap->find("evaluation_value");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation value not found.");
+        return blResult;
+    }
+
+    double dEvaluationValue = 0;
+    if (!ValidType<double>(itFind->second, dEvaluationValue))
+    {
+        LOG_ERROR_RLD("Evaluation value is invalid and value is " << itFind->second);
+        return blResult;
+    }
+
+    EvaluationTemplate evt;
+    evt.m_dEvaluationValue = dEvaluationValue;
+    evt.m_strEvaluation = strEvaluation;
+    evt.m_strEvaluationDesc = strEvaluationDesc;
+    evt.m_strUserIDOfCreataion = strUserID;    
+
+    if (!CreateEvaluationTemplate(strSid, evt))
+    {
+        LOG_ERROR_RLD("Create evaluation template failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
+        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("evaluation_id", evt.m_strEvaluationTmpID));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool PassengerFlowMsgHandler::DeleteEvaluationTemplateHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("evaluationid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("evaluation id not found.");
+        return blResult;
+    }
+    const std::string strEvaluationID = itFind->second;
+
+    if (!DeleteEvaluationTemplate(strSid, strUserID, strEvaluationID))
+    {
+        LOG_ERROR_RLD("Delete evaluation template failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete evaluation template info received and session id is " << strSid << " and user id is " << strUserID
+        << " and evaluation id  is " << strEvaluationID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyEvaluationTemplateHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("evaluationid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation id not found.");
+        return blResult;
+    }
+    const std::string strEvaluationID = itFind->second;
+
+    std::string strEvaluation;
+    itFind = pMsgInfoMap->find("evaluation");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEvaluation = itFind->second;
+    }
+
+    std::string strEvaluationDesc;
+    itFind = pMsgInfoMap->find("evaluation_desc");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEvaluationDesc = itFind->second;
+    }
+    
+    double dEvaluationValue = -1;
+    itFind = pMsgInfoMap->find("evaluation_value");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<double>(itFind->second, dEvaluationValue))
+        {
+            LOG_ERROR_RLD("Evaluation value is invalid and value is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    EvaluationTemplate evt;
+    evt.m_dEvaluationValue = dEvaluationValue;
+    evt.m_strEvaluation = strEvaluation;
+    evt.m_strEvaluationDesc = strEvaluationDesc;
+    evt.m_strUserIDOfCreataion = strUserID;
+    evt.m_strEvaluationTmpID = strEvaluationID;
+
+    if (!ModifyEvaluationTemplate(strSid, evt))
+    {
+        LOG_ERROR_RLD("Modify evaluation template failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
+        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryEvaluationTemplateHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsEvaList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEvaList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["evaluation_template"] = jsEvaList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    std::list<EvaluationTemplate> evtlist;
+    if (!QueryEvalutaionTemplate(strSid, strUserID, evtlist))
+    {
+        LOG_ERROR_RLD("Query evaluation template failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = evtlist.begin(), itEnd = evtlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsEva;
+        jsEva["evaluation"] = itBegin->m_strEvaluation;
+        jsEva["evaluation_id"] = itBegin->m_strEvaluationTmpID;
+        jsEva["evaluation_desc"] = itBegin->m_strEvaluationDesc;
+        jsEva["evaluation_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaluationValue);
+        
+        jsEvaList[i] = jsEva;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query evaluation template info received and session id is " << strSid << " and user id is " << strUserID
+        << " and evaluation record size is " << evtlist.size());
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid_check");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id of checking not found.");
+        return blResult;
+    }
+    const std::string strUserIDCheck = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+    
+    itFind = pMsgInfoMap->find("evaluation_info");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation info not found.");
+        return blResult;
+    }
+    const std::string strEvaluationInfo = itFind->second;
+    if (strEvaluationInfo.empty())
+    {
+        LOG_ERROR_RLD("Evaluation info is empty.");
+        return blResult;
+    }
+    
+    Evaluation ev;
+    ev.m_strUserID = strUserID;
+    ev.m_strUserIDOfCheck = strUserIDCheck;
+    ev.m_strStoreID = strStoreID;
+
+    auto EvaluationParse = [&](Json::Value jsValue) ->bool
+    {
+        if (!jsValue.isObject())
+        {
+            LOG_ERROR_RLD("Evaluation parse failed");
+            return blResult;
+        }
+
+        auto jsEvaluationID = jsValue["evaluation_id"];
+        if (jsEvaluationID.isNull() || !jsEvaluationID.isString() || jsEvaluationID.asString().empty())
+        {
+            LOG_ERROR_RLD("Evaluation id parse failed");
+            return blResult;
+        }
+
+        auto jsEvaluationDesc = jsValue["evaluation_desc"];
+        if (jsEvaluationDesc.isNull() || !jsEvaluationDesc.isString() || jsEvaluationDesc.asString().empty())
+        {
+            LOG_ERROR_RLD("Evaluation desc parse failed");
+            return blResult;
+        }
+
+        auto jsEvaluationValue = jsValue["evaluation_value"];
+        if (jsEvaluationValue.isNull() || !jsEvaluationValue.isString() || jsEvaluationValue.asString().empty())
+        {
+            LOG_ERROR_RLD("Evaluation value parse failed");
+            return blResult;
+        }
+
+        double dEvaluationValue = 0;
+        if (!ValidType<double>(jsEvaluationValue.asString(), dEvaluationValue))
+        {
+            LOG_ERROR_RLD("Evaluation value is invalid and value is " << jsEvaluationValue.asString());
+            return blResult;
+        }
+
+        EvaluationTemplate evt;
+        evt.m_dEvaluationValue = dEvaluationValue;
+        evt.m_strEvaluationTmpID = jsEvaluationID.asString();
+        evt.m_strEvaluationDesc = jsEvaluationDesc.asString();
+
+        ev.m_evlist.push_back(std::move(evt));
+        
+        return true;
+    };
+
+    if (!GetValueFromList(strEvaluationInfo, EvaluationParse))
+    {
+        LOG_ERROR_RLD("Evaluation parse failed and value is " << strEvaluationInfo);
+        return blResult;
+    }
+    
+    if (!CreateEvaluation(strSid, ev))
+    {
+        LOG_ERROR_RLD("Create evaluation failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create evaluation info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and evaluation id is " << ev.m_strEvaluationID << " and evaluation info is " << strEvaluationInfo);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("store_evaluation_id", ev.m_strEvaluationID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::DeleteEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("store_evaluation_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("evaluation id of store not found.");
+        return blResult;
+    }
+    const std::string strEvaluationIDOfStore = itFind->second;
+
+    if (!DeleteEvaluation(strSid, strUserID, strEvaluationIDOfStore))
+    {
+        LOG_ERROR_RLD("Delete evaluation failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete evaluation info received and session id is " << strSid << " and user id is " << strUserID
+        << " and evaluation id of store is " << strEvaluationIDOfStore);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("store_evaluation_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Evaluation id of store not found.");
+        return blResult;
+    }
+    const std::string strEvaluationIDOfStore = itFind->second;
+    
+    std::string strUserIDCheck;
+    itFind = pMsgInfoMap->find("userid_check");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserIDCheck = itFind->second;
+    }
+    
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    unsigned int uiCheckStatus = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("check_status");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<unsigned int>(itFind->second, uiCheckStatus))
+        {
+            LOG_ERROR_RLD("Check status  is invalid and value is " << itFind->second);
+            return blResult;
+        }
+    }    
+
+    Evaluation ev;
+    ev.m_strUserID = strUserID;
+    ev.m_strUserIDOfCheck = strUserIDCheck;
+    ev.m_strStoreID = strStoreID;
+    ev.m_strEvaluationID = strEvaluationIDOfStore;
+    ev.m_uiCheckStatus = uiCheckStatus;
+
+    std::string strEvaluationInfo;
+    itFind = pMsgInfoMap->find("evaluation_info");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEvaluationInfo = itFind->second;
+        if (strEvaluationInfo.empty())
+        {
+            LOG_ERROR_RLD("Evaluation info is empty.");
+            return blResult;
+        }
+
+        auto EvaluationParse = [&](Json::Value jsValue) ->bool
+        {
+            if (!jsValue.isObject())
+            {
+                LOG_ERROR_RLD("Evaluation parse failed");
+                return blResult;
+            }
+
+            auto jsEvaluationID = jsValue["evaluation_id"];
+            if (jsEvaluationID.isNull() || !jsEvaluationID.isString() || jsEvaluationID.asString().empty())
+            {
+                LOG_ERROR_RLD("Evaluation id parse failed");
+                return blResult;
+            }
+
+            auto jsEvaluationDesc = jsValue["evaluation_desc"];
+            if (jsEvaluationDesc.isNull() || !jsEvaluationDesc.isString() || jsEvaluationDesc.asString().empty())
+            {
+                LOG_ERROR_RLD("Evaluation desc parse failed");
+                return blResult;
+            }
+
+            auto jsEvaluationValue = jsValue["evaluation_value"];
+            if (jsEvaluationValue.isNull() || !jsEvaluationValue.isString() || jsEvaluationValue.asString().empty())
+            {
+                LOG_ERROR_RLD("Evaluation value parse failed");
+                return blResult;
+            }
+
+            double dEvaluationValue = 0;
+            if (!ValidType<double>(jsEvaluationValue.asString(), dEvaluationValue))
+            {
+                LOG_ERROR_RLD("Evaluation value is invalid and value is " << jsEvaluationValue.asString());
+                return blResult;
+            }
+
+            EvaluationTemplate evt;
+            evt.m_dEvaluationValue = dEvaluationValue;
+            evt.m_strEvaluationTmpID = jsEvaluationID.asString();
+            evt.m_strEvaluationDesc = jsEvaluationDesc.asString();
+
+            ev.m_evlist.push_back(std::move(evt));
+
+            return true;
+        };
+
+        if (!GetValueFromList(strEvaluationInfo, EvaluationParse))
+        {
+            LOG_ERROR_RLD("Evaluation parse failed and value is " << strEvaluationInfo);
+            return blResult;
+        }
+        
+    }
+    
+    if (!ModifyEvaluation(strSid, ev))
+    {
+        LOG_ERROR_RLD("Modify evaluation failed.");
+        return blResult;
+    }
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify evaluation info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and evalutaion id is " << strEvaluationIDOfStore << " and evaluation info is " << strEvaluationInfo);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsEvaList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEvaList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["evaluation_info"] = jsEvaList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    itFind = pMsgInfoMap->find("store_evaluation_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store evaluation id not found.");
+        return blResult;
+    }
+    const std::string strEvaluationIDOfStore = itFind->second;
+    
+    Evaluation ev;
+    ev.m_strStoreID = strStoreID;
+    ev.m_strEvaluationID = strEvaluationIDOfStore;
+
+    if (!QueryEvaluation(strSid, strUserID, ev))
+    {
+        LOG_ERROR_RLD("Query evaluation failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = ev.m_evlist.begin(), itEnd = ev.m_evlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsEva;
+        jsEva["evaluation_id"] = itBegin->m_strEvaluationTmpID;
+        jsEva["evaluation_template_desc"] = itBegin->m_strEvaluationDesc;
+        jsEva["evaluation_template_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaluationValue);
+        jsEva["evaluation"] = itBegin->m_strEvaluation;
+        jsEva["evaluation_desc"] = itBegin->m_strEvaDescActive;
+        jsEva["evaluation_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaValueActive);
+        jsEvaList[i] = jsEva;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query evaluation info received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID << " and evaluation id of store is " << strEvaluationIDOfStore);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("check_status", boost::lexical_cast<std::string>(ev.m_uiCheckStatus)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid_check", ev.m_strUserIDOfCheck));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", ev.m_strUserID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("evaluation_date", ev.m_strEvaluationDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("evaluation_total_value", boost::lexical_cast<std::string>(ev.m_dEvaluationTotalValue)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("store_evaluation_id", ev.m_strEvaluationID));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsEvaList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEvaList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["evaluation_info"] = jsEvaList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+        if (!ValidDatetime(strBeginDate))
+        {
+            LOG_ERROR_RLD("Begin data is invalid and value is " << strBeginDate);
+            return blResult;
+        }
+    }
+    
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+        if (!ValidDatetime(strEndDate))
+        {
+            LOG_ERROR_RLD("End data is invalid and value is " << strEndDate);
+            return blResult;
+        }
+    }
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+    
+    std::list<Evaluation> evlist;
+    if (!QueryAllEvaluationOfStore(strSid, strUserID, strStoreID, strBeginDate, strEndDate, uiBeginIndex, evlist))
+    {
+        LOG_ERROR_RLD("Query all evaluation of store failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = evlist.begin(), itEnd = evlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsEva;
+        jsEva["store_evaluation_id"] = itBegin->m_strEvaluationID;
+        jsEva["check_status"] = boost::lexical_cast<std::string>(itBegin->m_uiCheckStatus);
+        jsEva["userid_check"] = itBegin->m_strUserIDOfCheck;
+        jsEva["userid"] = itBegin->m_strUserID;
+        jsEva["evaluation_date"] = itBegin->m_strEvaluationDate;
+        jsEva["evaluation_total_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaluationTotalValue);
+        
+        jsEvaList[i] = jsEva;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all evaluation info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
 
     blResult = true;
 
@@ -3791,18 +6514,18 @@ bool PassengerFlowMsgHandler::DeleteGuardStorePlan(const std::string &strSid, co
     {
         const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
 
-        PassengerFlowProtoHandler::DeleteEventRsp DelEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEventRsp))
+        PassengerFlowProtoHandler::DeleteSmartGuardStoreRsp DelPlanRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelPlanRsp))
         {
             LOG_ERROR_RLD("Delete plan rsp unserialize failed.");
             return iRet = CommMsgHandler::FAILED;
         }
 
-        iRet = DelEventRsp.m_iRetcode;
+        iRet = DelPlanRsp.m_iRetcode;
 
         LOG_INFO_RLD("Delete plan and plan id is " << strPlanID << " and session id is " << strSid << " and user id is " << strUserID <<
-            " and return code is " << DelEventRsp.m_iRetcode <<
-            " and return msg is " << DelEventRsp.m_strRetMsg);
+            " and return code is " << DelPlanRsp.m_iRetcode <<
+            " and return msg is " << DelPlanRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
@@ -4008,6 +6731,1602 @@ bool PassengerFlowMsgHandler::QueryAllGuardStorePlan(const std::string &strSid, 
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
 
+}
+
+bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Patrol &pat)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddRegularPatrolReq AddPatrolReq;
+        AddPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRegularPatrolReq_T;
+        AddPatrolReq.m_uiMsgSeq = 1;
+        AddPatrolReq.m_strSID = strSid;
+
+        AddPatrolReq.m_strUserID = pat.m_strUserID;
+        AddPatrolReq.m_regularPatrol.m_strEnable = pat.m_strEnable;
+        AddPatrolReq.m_regularPatrol.m_strPatrolTimeList.swap(pat.m_strPatrolTimeList);
+        AddPatrolReq.m_regularPatrol.m_strPlanName = pat.m_strPatrolName;
+        AddPatrolReq.m_regularPatrol.m_strStoreIDList.swap(pat.m_strStoreIDList);
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddPatrolReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create regular patrol req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddRegularPatrolRsp AddPatrolRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddPatrolRsp))
+        {
+            LOG_ERROR_RLD("Create regular patrol rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddPatrolRsp.m_iRetcode;
+
+        pat.m_strPatrolID = AddPatrolRsp.m_strPlanID;
+
+        LOG_INFO_RLD("Create regular patrol and patrol id is " << pat.m_strPatrolID << " and session id is " << strSid <<
+            " and return code is " << AddPatrolRsp.m_iRetcode <<
+            " and return msg is " << AddPatrolRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteRegularPatrol(const std::string &strSid, const std::string &strUserID, const std::string &strPlanID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteRegularPatrolReq DelPatrolReq;
+        DelPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRegularPatrolReq_T;
+        DelPatrolReq.m_uiMsgSeq = 1;
+        DelPatrolReq.m_strSID = strSid;
+
+        DelPatrolReq.m_strUserID = strUserID;
+        DelPatrolReq.m_strPlanID = strPlanID;
+
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelPatrolReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete regular patrol req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteRegularPatrolRsp DelPatrolRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelPatrolRsp))
+        {
+            LOG_ERROR_RLD("Delete regular patrol rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelPatrolRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete regular patrol and plan id is " << strPlanID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelPatrolRsp.m_iRetcode <<
+            " and return msg is " << DelPatrolRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Patrol &pat)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyRegularPatrolReq ModPatrolReq;
+        ModPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRegularPatrolReq_T;
+        ModPatrolReq.m_uiMsgSeq = 1;
+        ModPatrolReq.m_strSID = strSid;
+
+        ModPatrolReq.m_strUserID = pat.m_strUserID;
+        ModPatrolReq.m_regularPatrol.m_strPlanID = pat.m_strPatrolID;
+        ModPatrolReq.m_regularPatrol.m_strEnable = pat.m_strEnable;
+        ModPatrolReq.m_regularPatrol.m_strPatrolTimeList.swap(pat.m_strPatrolTimeList);
+        ModPatrolReq.m_regularPatrol.m_strPlanName = pat.m_strPatrolName;
+        ModPatrolReq.m_regularPatrol.m_strStoreIDList.swap(pat.m_strStoreIDList);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModPatrolReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify regular patrol req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyRegularPatrolRsp ModPatrolRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModPatrolRsp))
+        {
+            LOG_ERROR_RLD("Modify regular patrol rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModPatrolRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify regular patrol and patrol id is " << pat.m_strPatrolID << " and session id is " << strSid <<
+            " and return code is " << ModPatrolRsp.m_iRetcode <<
+            " and return msg is " << ModPatrolRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, Patrol &pat)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryRegularPatrolInfoReq QueryPantrolReq;
+        QueryPantrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRegularPatrolInfoReq_T;
+        QueryPantrolReq.m_uiMsgSeq = 1;
+        QueryPantrolReq.m_strSID = strSid;
+
+        QueryPantrolReq.m_strUserID = pat.m_strUserID;
+        QueryPantrolReq.m_strPlanID = pat.m_strPatrolID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPantrolReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query regular patrol req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp QueryPatrolRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryPatrolRsp))
+        {
+            LOG_ERROR_RLD("Query regular patrol rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        pat.m_strEnable = QueryPatrolRsp.m_regularPatrol.m_strEnable;
+        pat.m_strPatrolID = QueryPatrolRsp.m_regularPatrol.m_strPlanID;
+        pat.m_strPatrolInfo = QueryPatrolRsp.m_regularPatrol.m_strStoreInfo;
+        pat.m_strPatrolName = QueryPatrolRsp.m_regularPatrol.m_strPlanName;
+        pat.m_strPatrolTimeList.swap(QueryPatrolRsp.m_regularPatrol.m_strPatrolTimeList);
+        pat.m_strStoreIDList.swap(QueryPatrolRsp.m_regularPatrol.m_strStoreIDList);
+        
+        iRet = QueryPatrolRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query regular patrol and plan id is " << pat.m_strPatrolID << " and session id is " << strSid <<
+            " and return code is " << QueryPatrolRsp.m_iRetcode <<
+            " and return msg is " << QueryPatrolRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, std::list<Patrol> &patlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllRegularPatrolReq QueryAllPatrolReq;
+        QueryAllPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRegularPatrolReq_T;
+        QueryAllPatrolReq.m_uiMsgSeq = 1;
+        QueryAllPatrolReq.m_strSID = strSid;
+
+        QueryAllPatrolReq.m_strUserID = strUserID;
+        QueryAllPatrolReq.m_strDeviceID = strDevID;
+        QueryAllPatrolReq.m_uiBeginIndex = 0;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllPatrolReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all regular patrol req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllRegularPatrolRsp QueryAllPatrolRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllPatrolRsp))
+        {
+            LOG_ERROR_RLD("Query all regular patrol rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        auto itBegin = QueryAllPatrolRsp.m_planList.begin();
+        auto itEnd = QueryAllPatrolRsp.m_planList.end();
+        while (itBegin != itEnd)
+        {
+            Patrol patinfo;
+            patinfo.m_strEnable = itBegin->m_strEnable;
+            patinfo.m_strPatrolID = itBegin->m_strPlanID;
+            patinfo.m_strPatrolInfo = itBegin->m_strStoreInfo;
+            patinfo.m_strPatrolName = itBegin->m_strPlanName;
+            patinfo.m_strPatrolTimeList.swap(itBegin->m_strPatrolTimeList);
+            patinfo.m_strStoreIDList.swap(itBegin->m_strStoreIDList);
+            
+            patlist.push_back(std::move(patinfo));
+
+            ++itBegin;
+        }
+
+        iRet = QueryAllPatrolRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all regular patrol and user id is " << strUserID << " and session id is " << strSid << " and device id is " << strDevID <<
+            " and return code is " << QueryAllPatrolRsp.m_iRetcode <<
+            " and return msg is " << QueryAllPatrolRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreateVIP(const std::string &strSid, VIP &vip)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddVIPCustomerReq AddVipReq;
+        AddVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPCustomerReq_T;
+        AddVipReq.m_uiMsgSeq = 1;
+        AddVipReq.m_strSID = strSid;
+
+        AddVipReq.m_strUserID = vip.m_strVipUserID;
+
+        for (auto itBegin = vip.m_ConsumeHistoryList.begin(), itEnd = vip.m_ConsumeHistoryList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::VIPConsumeHistory vph;
+            vph.m_dConsumeAmount = itBegin->m_dConsumeAmount;
+            vph.m_strConsumeDate = itBegin->m_strConsumeDate;
+            vph.m_strGoodsName = itBegin->m_strGoodName;
+            vph.m_strSalesman = itBegin->m_strSalesman;
+            //vph.m_strVIPID = vip.m_strVipID;
+            vph.m_uiGoodsNumber = itBegin->m_uiGoodNum;
+
+            AddVipReq.m_customerInfo.m_consumeHistoryList.push_back(std::move(vph));
+
+        }
+
+        AddVipReq.m_customerInfo.m_strCellphone = vip.m_strCellphone;
+        AddVipReq.m_customerInfo.m_strProfilePicture = vip.m_strProfilePicture;
+        AddVipReq.m_customerInfo.m_strVIPName = vip.m_strVipName;
+        AddVipReq.m_customerInfo.m_strVisitDate = vip.m_strVisitDate;
+        AddVipReq.m_customerInfo.m_uiVisitTimes = vip.m_uiVisitTimes;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create vip req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddVIPCustomerRsp AddVipRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddVipRsp))
+        {
+            LOG_ERROR_RLD("Create vip rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddVipRsp.m_iRetcode;
+
+        vip.m_strVipID = AddVipRsp.m_strVIPID;
+
+        LOG_INFO_RLD("Create vip and vip id is " << vip.m_strVipID << " and session id is " << strSid <<
+            " and return code is " << AddVipRsp.m_iRetcode <<
+            " and return msg is " << AddVipRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteVIP(const std::string &strSid, const std::string &strUserID, const std::string &strVipID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteVIPCustomerReq DelVipReq;
+        DelVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPCustomerReq_T;
+        DelVipReq.m_uiMsgSeq = 1;
+        DelVipReq.m_strSID = strSid;
+
+        DelVipReq.m_strUserID = strUserID;
+        DelVipReq.m_strVIPID = strVipID;
+
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete vip req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteVIPCustomerRsp DelVipRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelVipRsp))
+        {
+            LOG_ERROR_RLD("Delete vip rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelVipRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete vip and vip id is " << strVipID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelVipRsp.m_iRetcode <<
+            " and return msg is " << DelVipRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyVIP(const std::string &strSid, VIP &vip)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyVIPCustomerReq ModVipReq;
+        ModVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPCustomerReq_T;
+        ModVipReq.m_uiMsgSeq = 1;
+        ModVipReq.m_strSID = strSid;
+
+        ModVipReq.m_strUserID = vip.m_strVipUserID;
+
+        for (auto itBegin = vip.m_ConsumeHistoryList.begin(), itEnd = vip.m_ConsumeHistoryList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::VIPConsumeHistory vph;
+            vph.m_dConsumeAmount = itBegin->m_dConsumeAmount;
+            vph.m_strConsumeDate = itBegin->m_strConsumeDate;
+            vph.m_strGoodsName = itBegin->m_strGoodName;
+            vph.m_strSalesman = itBegin->m_strSalesman;
+            //vph.m_strVIPID = vip.m_strVipID;
+            vph.m_uiGoodsNumber = itBegin->m_uiGoodNum;
+
+            ModVipReq.m_customerInfo.m_consumeHistoryList.push_back(std::move(vph));
+
+        }
+
+        ModVipReq.m_customerInfo.m_strCellphone = vip.m_strCellphone;
+        ModVipReq.m_customerInfo.m_strProfilePicture = vip.m_strProfilePicture;
+        ModVipReq.m_customerInfo.m_strVIPName = vip.m_strVipName;
+        ModVipReq.m_customerInfo.m_strVisitDate = vip.m_strVisitDate;
+        ModVipReq.m_customerInfo.m_uiVisitTimes = vip.m_uiVisitTimes;
+        ModVipReq.m_customerInfo.m_strVIPID = vip.m_strVipID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify vip req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyVIPCustomerRsp ModVipRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModVipRsp))
+        {
+            LOG_ERROR_RLD("Modify vip rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModVipRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify vip and vip id is " << vip.m_strVipID << " and session id is " << strSid <<
+            " and return code is " << ModVipRsp.m_iRetcode <<
+            " and return msg is " << ModVipRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryVIP(const std::string &strSid, VIP &vip)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryVIPCustomerInfoReq QueryVipReq;
+        QueryVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryVIPCustomerInfoReq_T;
+        QueryVipReq.m_uiMsgSeq = 1;
+        QueryVipReq.m_strSID = strSid;
+
+        QueryVipReq.m_strUserID = vip.m_strVipUserID;
+        QueryVipReq.m_strVIPID = vip.m_strVipID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query vip req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryVIPCustomerInfoRsp QueryVipRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryVipRsp))
+        {
+            LOG_ERROR_RLD("Query vip rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryVipRsp.m_customerInfo.m_consumeHistoryList.begin(), itEnd = QueryVipRsp.m_customerInfo.m_consumeHistoryList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            VIP::ConsumeHistory vpc;
+            vpc.m_dConsumeAmount = itBegin->m_dConsumeAmount;
+            vpc.m_strConsumeDate = itBegin->m_strConsumeDate;
+            vpc.m_strGoodName = itBegin->m_strGoodsName;
+            vpc.m_strSalesman = itBegin->m_strSalesman;
+            vpc.m_uiGoodNum = itBegin->m_uiGoodsNumber;
+            
+            vip.m_ConsumeHistoryList.push_back(std::move(vpc));
+        }
+
+        vip.m_strCellphone = QueryVipRsp.m_customerInfo.m_strCellphone;
+        vip.m_strProfilePicture = QueryVipRsp.m_customerInfo.m_strProfilePicture;
+        vip.m_strRegisterDate = QueryVipRsp.m_customerInfo.m_strRegisterDate;
+        //vip.m_strVipID = QueryVipRsp.m_customerInfo.m_strVIPID;
+        vip.m_strVipName = QueryVipRsp.m_customerInfo.m_strVIPName;
+        //vip.m_strVipUserID = QueryVipRsp.m_customerInfo.
+        vip.m_strVisitDate = QueryVipRsp.m_customerInfo.m_strVisitDate;
+        vip.m_uiVisitTimes = QueryVipRsp.m_customerInfo.m_uiVisitTimes;        
+
+        iRet = QueryVipRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query vip and vip id is " << vip.m_strVipID << " and session id is " << strSid << " and vip name is " << vip.m_strVipName <<
+            " and return code is " << QueryVipRsp.m_iRetcode <<
+            " and return msg is " << QueryVipRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllVIP(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<VIP> &viplist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllVIPCustomerReq QueryAllVipReq;
+        QueryAllVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPCustomerReq_T;
+        QueryAllVipReq.m_uiMsgSeq = 1;
+        QueryAllVipReq.m_strSID = strSid;
+
+        QueryAllVipReq.m_strUserID = strUserID;
+        QueryAllVipReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllVipReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all vip req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllVIPCustomerRsp QueryAllVipRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllVipRsp))
+        {
+            LOG_ERROR_RLD("Query all vip rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        auto itBegin = QueryAllVipRsp.m_customerList.begin();
+        auto itEnd = QueryAllVipRsp.m_customerList.end();
+        while (itBegin != itEnd)
+        {
+            VIP vip;
+
+            for (auto itBegin2 = itBegin->m_consumeHistoryList.begin(), itEnd2 = itBegin->m_consumeHistoryList.end();
+                itBegin2 != itEnd2; ++itBegin2)
+            {
+                VIP::ConsumeHistory vpc;
+                vpc.m_dConsumeAmount = itBegin2->m_dConsumeAmount;
+                vpc.m_strConsumeDate = itBegin2->m_strConsumeDate;
+                vpc.m_strGoodName = itBegin2->m_strGoodsName;
+                vpc.m_strSalesman = itBegin2->m_strSalesman;
+                vpc.m_uiGoodNum = itBegin2->m_uiGoodsNumber;
+
+                vip.m_ConsumeHistoryList.push_back(std::move(vpc));
+            }
+            
+            vip.m_strCellphone = itBegin->m_strCellphone;
+            vip.m_strProfilePicture = itBegin->m_strProfilePicture;
+            vip.m_strRegisterDate = itBegin->m_strRegisterDate;
+            vip.m_strVipID = itBegin->m_strVIPID;
+            vip.m_strVipName = itBegin->m_strVIPName;
+            //vip.m_strVipUserID = strUserID;
+            vip.m_strVisitDate = itBegin->m_strVisitDate;
+            vip.m_uiVisitTimes = itBegin->m_uiVisitTimes;
+
+            viplist.push_back(std::move(vip));
+
+            ++itBegin;
+        }
+
+        iRet = QueryAllVipRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all vip and user id is " << strUserID << " and session id is " << strSid << " and begin index is " << uiBeginIndex <<
+            " and return code is " << QueryAllVipRsp.m_iRetcode <<
+            " and return msg is " << QueryAllVipRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreateVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strVipID, VIP::ConsumeHistory &vph)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddVIPConsumeHistoryReq AddVipConsumeReq;
+        AddVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPConsumeHistoryReq_T;
+        AddVipConsumeReq.m_uiMsgSeq = 1;
+        AddVipConsumeReq.m_strSID = strSid;
+
+        AddVipConsumeReq.m_strUserID = strUserID;
+                
+        AddVipConsumeReq.m_consumeHistory.m_dConsumeAmount = vph.m_dConsumeAmount;
+        AddVipConsumeReq.m_consumeHistory.m_strConsumeDate = vph.m_strConsumeDate;
+        AddVipConsumeReq.m_consumeHistory.m_strConsumeID = vph.m_strConsumeID;
+        AddVipConsumeReq.m_consumeHistory.m_strGoodsName = vph.m_strGoodName;
+        AddVipConsumeReq.m_consumeHistory.m_strSalesman = vph.m_strSalesman;
+        AddVipConsumeReq.m_consumeHistory.m_uiGoodsNumber = vph.m_uiGoodNum;
+        AddVipConsumeReq.m_consumeHistory.m_strVIPID = strVipID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipConsumeReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create vip consume history req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddVIPConsumeHistoryRsp AddVipConsumeRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddVipConsumeRsp))
+        {
+            LOG_ERROR_RLD("Create vip consume history rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddVipConsumeRsp.m_iRetcode;
+
+        vph.m_strConsumeID = AddVipConsumeRsp.m_strConsumeID;
+
+        LOG_INFO_RLD("Create vip consume history and consumer id is " << vph.m_strConsumeID << " and session id is " << strSid <<
+            " and return code is " << AddVipConsumeRsp.m_iRetcode <<
+            " and return msg is " << AddVipConsumeRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strConsumeID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteVIPConsumeHistoryReq DelVipConsumeReq;
+        DelVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPConsumeHistoryReq_T;
+        DelVipConsumeReq.m_uiMsgSeq = 1;
+        DelVipConsumeReq.m_strSID = strSid;
+
+        DelVipConsumeReq.m_strUserID = strUserID;
+        DelVipConsumeReq.m_strConsumeID = strConsumeID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipConsumeReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete vip consume req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteVIPConsumeHistoryRsp DelVipConsumeRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelVipConsumeRsp))
+        {
+            LOG_ERROR_RLD("Delete vip consume rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelVipConsumeRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete vip consume id is " << strConsumeID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelVipConsumeRsp.m_iRetcode <<
+            " and return msg is " << DelVipConsumeRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, VIP::ConsumeHistory &vph)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyVIPConsumeHistoryReq ModVipConsumeReq;
+        ModVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPConsumeHistoryReq_T;
+        ModVipConsumeReq.m_uiMsgSeq = 1;
+        ModVipConsumeReq.m_strSID = strSid;
+
+        ModVipConsumeReq.m_strUserID = strUserID;
+
+        ModVipConsumeReq.m_consumeHistory.m_dConsumeAmount = vph.m_dConsumeAmount;
+        ModVipConsumeReq.m_consumeHistory.m_strConsumeDate = vph.m_strConsumeDate;
+        ModVipConsumeReq.m_consumeHistory.m_strConsumeID = vph.m_strConsumeID;
+        ModVipConsumeReq.m_consumeHistory.m_strGoodsName = vph.m_strGoodName;
+        ModVipConsumeReq.m_consumeHistory.m_strSalesman = vph.m_strSalesman;
+        ModVipConsumeReq.m_consumeHistory.m_uiGoodsNumber = vph.m_uiGoodNum;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipConsumeReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify vip consume history req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyVIPConsumeHistoryRsp ModVipConsumeRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModVipConsumeRsp))
+        {
+            LOG_ERROR_RLD("Modify vip consume history rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModVipConsumeRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify vip consume history and user id is " << strUserID << " and consume id is " << vph.m_strConsumeID << " and session id is " << strSid <<
+            " and return code is " << ModVipConsumeRsp.m_iRetcode <<
+            " and return msg is " << ModVipConsumeRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strVipID, 
+    const unsigned int uiBeginIndex, std::list<VIP::ConsumeHistory> &vphlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryReq QueryVipComsumeHisReq;
+        QueryVipComsumeHisReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPConsumeHistoryReq_T;
+        QueryVipComsumeHisReq.m_uiMsgSeq = 1;
+        QueryVipComsumeHisReq.m_strSID = strSid;
+
+        QueryVipComsumeHisReq.m_strUserID = strUserID;
+        QueryVipComsumeHisReq.m_strVIPID = strVipID;
+        QueryVipComsumeHisReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipComsumeHisReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query vip consume req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryRsp QueryVipConsumeHisRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryVipConsumeHisRsp))
+        {
+            LOG_ERROR_RLD("Query vip consume rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryVipConsumeHisRsp.m_consumeHistoryList.begin(), itEnd = QueryVipConsumeHisRsp.m_consumeHistoryList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            VIP::ConsumeHistory vpc;
+            vpc.m_dConsumeAmount = itBegin->m_dConsumeAmount;
+            vpc.m_strConsumeDate = itBegin->m_strConsumeDate;
+            vpc.m_strGoodName = itBegin->m_strGoodsName;
+            vpc.m_strSalesman = itBegin->m_strSalesman;
+            vpc.m_uiGoodNum = itBegin->m_uiGoodsNumber;
+
+            vphlist.push_back(std::move(vpc));
+
+        }
+
+        iRet = QueryVipConsumeHisRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query vip consume and vip id is " << strVipID << " and session id is " << strSid << " and user id is " << strUserID << 
+            " and begin index is " << uiBeginIndex <<
+            " and return code is " << QueryVipConsumeHisRsp.m_iRetcode <<
+            " and return msg is " << QueryVipConsumeHisRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::UserJoinStore(const std::string &strSid, UserOfStore &us)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::UserJoinStoreReq UserJoinStoreReq;
+        UserJoinStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserJoinStoreReq_T;
+        UserJoinStoreReq.m_uiMsgSeq = 1;
+        UserJoinStoreReq.m_strSID = strSid;
+
+        UserJoinStoreReq.m_strRole = us.m_strRole;
+        UserJoinStoreReq.m_strStoreID = us.m_strStoreID;
+        UserJoinStoreReq.m_strUserID = us.m_strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserJoinStoreReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User join store event req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::UserJoinStoreRsp UserJoinStoreRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserJoinStoreRsp))
+        {
+            LOG_ERROR_RLD("User join store rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = UserJoinStoreRsp.m_iRetcode;
+
+        LOG_INFO_RLD("User join store  and session id is " << strSid << " and user id is " << us.m_strUserID << " and store id is " << us.m_strStoreID <<
+            " and role is " << us.m_strRole <<
+            " and return code is " << UserJoinStoreRsp.m_iRetcode <<
+            " and return msg is " << UserJoinStoreRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::UserQuitStore(const std::string &strSid, const std::string &strAdminID, UserOfStore &us)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::UserQuitStoreReq UserQuitStoreReq;
+        UserQuitStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserQuitStoreReq_T;
+        UserQuitStoreReq.m_uiMsgSeq = 1;
+        UserQuitStoreReq.m_strSID = strSid;
+
+        UserQuitStoreReq.m_strAdministratorID = strAdminID;
+        UserQuitStoreReq.m_strStoreID = us.m_strStoreID;
+        UserQuitStoreReq.m_strUserID = us.m_strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserQuitStoreReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User quit store req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::UserQuitStoreRsp UserQuitStoreRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserQuitStoreRsp))
+        {
+            LOG_ERROR_RLD("User quit store rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = UserQuitStoreRsp.m_iRetcode;
+
+        LOG_INFO_RLD("User quit store and session id is " << strSid << " and user id is " << us.m_strUserID << " and store id is " << us.m_strStoreID <<
+            " and admin id is " << strAdminID <<
+            " and return code is " << UserQuitStoreRsp.m_iRetcode <<
+            " and return msg is " << UserQuitStoreRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const UserOfStore &us, std::list<UserOfStore> &uslist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryStoreAllUserReq QueryUserOfStoreReq;
+        QueryUserOfStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreAllUserReq_T;
+        QueryUserOfStoreReq.m_uiMsgSeq = 1;
+        QueryUserOfStoreReq.m_strSID = strSid;
+
+        QueryUserOfStoreReq.m_strStoreID = us.m_strStoreID;
+        QueryUserOfStoreReq.m_strUserID = us.m_strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserOfStoreReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user of store req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryStoreAllUserRsp QueryUserOfStoreRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUserOfStoreRsp))
+        {
+            LOG_ERROR_RLD("Query user of store rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryUserOfStoreRsp.m_iRetcode;
+
+        for (auto itBegin = QueryUserOfStoreRsp.m_userList.begin(), itEnd = QueryUserOfStoreRsp.m_userList.end(); itBegin != itEnd; ++itBegin)
+        {
+            UserOfStore us;
+            us.m_strRole = itBegin->m_strRole;
+            us.m_strUserID = itBegin->m_strUserID;
+            us.m_strUserName = itBegin->m_strUserName;
+
+            uslist.push_back(std::move(us));
+        }
+
+        LOG_INFO_RLD("Query user of store  and session id is " << strSid << " and user id is " << us.m_strUserID << " and store id is " << us.m_strStoreID <<
+            " and return code is " << QueryUserOfStoreRsp.m_iRetcode <<
+            " and return msg is " << QueryUserOfStoreRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreateEvaluationTemplate(const std::string &strSid, EvaluationTemplate &evt)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddEvaluationTemplateReq AddEvaTmpReq;
+        AddEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEvaluationTemplateReq_T;
+        AddEvaTmpReq.m_uiMsgSeq = 1;
+        AddEvaTmpReq.m_strSID = strSid;
+
+        AddEvaTmpReq.m_strUserID = evt.m_strUserIDOfCreataion;
+
+        AddEvaTmpReq.m_evaluationItem.m_dTotalPoint = evt.m_dEvaluationValue;
+        AddEvaTmpReq.m_evaluationItem.m_strDescription = evt.m_strEvaluationDesc;
+        AddEvaTmpReq.m_evaluationItem.m_strItemName = evt.m_strEvaluation;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaTmpReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create evaluation template req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddEvaluationTemplateRsp AddEvaTmpRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEvaTmpRsp))
+        {
+            LOG_ERROR_RLD("Create evaluation template rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddEvaTmpRsp.m_iRetcode;
+
+        evt.m_strEvaluationTmpID = AddEvaTmpRsp.m_strEvaluationID;
+
+        LOG_INFO_RLD("Create evaluation template and evaluation id is " << evt.m_strEvaluationTmpID << " and session id is " << strSid <<
+            " and return code is " << AddEvaTmpRsp.m_iRetcode <<
+            " and return msg is " << AddEvaTmpRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteEvaluationTemplate(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteEvaluationTemplateReq DelEvaTmpReq;
+        DelEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEvaluationTemplateReq_T;
+        DelEvaTmpReq.m_uiMsgSeq = 1;
+        DelEvaTmpReq.m_strSID = strSid;
+
+        DelEvaTmpReq.m_strUserID = strUserID;
+        DelEvaTmpReq.m_strEvaluationID = strEvaluationID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaTmpReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete evaluation template req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteEvaluationTemplateRsp DelEvaTmpRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEvaTmpRsp))
+        {
+            LOG_ERROR_RLD("Delete evaluation template rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelEvaTmpRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete evaluation template id is " << strEvaluationID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelEvaTmpRsp.m_iRetcode <<
+            " and return msg is " << DelEvaTmpRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyEvaluationTemplate(const std::string &strSid, EvaluationTemplate &evt)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyEvaluationTemplateReq ModEvaTmpReq;
+        ModEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEvaluationTemplateReq_T;
+        ModEvaTmpReq.m_uiMsgSeq = 1;
+        ModEvaTmpReq.m_strSID = strSid;
+
+        ModEvaTmpReq.m_strUserID = evt.m_strUserIDOfCreataion;
+
+        ModEvaTmpReq.m_evaluationItem.m_dTotalPoint = evt.m_dEvaluationValue;
+        ModEvaTmpReq.m_evaluationItem.m_strDescription = evt.m_strEvaluationDesc;
+        ModEvaTmpReq.m_evaluationItem.m_strItemID = evt.m_strEvaluationTmpID;
+        ModEvaTmpReq.m_evaluationItem.m_strItemName = evt.m_strEvaluation;
+
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaTmpReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify evaluation template req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyEvaluationTemplateRsp ModEvaTmpRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEvaTmpRsp))
+        {
+            LOG_ERROR_RLD("Modify evaluation template rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModEvaTmpRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify evaluation template and evaluation id is " << evt.m_strEvaluationTmpID << " and session id is " << strSid <<
+            " and return code is " << ModEvaTmpRsp.m_iRetcode <<
+            " and return msg is " << ModEvaTmpRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryEvalutaionTemplate(const std::string &strSid, const std::string &strUserID, std::list<EvaluationTemplate> &evtlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllEvaluationTemplateReq QueryEvaTmpReq;
+        QueryEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEvaluationTemplateReq_T;
+        QueryEvaTmpReq.m_uiMsgSeq = 1;
+        QueryEvaTmpReq.m_strSID = strSid;
+
+        QueryEvaTmpReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaTmpReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query evaluation template req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllEvaluationTemplateRsp QueryEvaTmpRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaTmpRsp))
+        {
+            LOG_ERROR_RLD("Query evaluation template rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryEvaTmpRsp.m_evaluationItemList.begin(), itEnd = QueryEvaTmpRsp.m_evaluationItemList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            EvaluationTemplate evt;
+            evt.m_dEvaluationValue = itBegin->m_dTotalPoint;
+            evt.m_strEvaluation = itBegin->m_strItemName;
+            evt.m_strEvaluationDesc = itBegin->m_strDescription;
+            evt.m_strEvaluationTmpID = itBegin->m_strItemID;
+            
+            evtlist.push_back(std::move(evt));
+        }
+
+        iRet = QueryEvaTmpRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query evaluation template and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryEvaTmpRsp.m_iRetcode <<
+            " and return msg is " << QueryEvaTmpRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evaluation &ev)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddStoreEvaluationReq AddEvaReq;
+        AddEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreEvaluationReq_T;
+        AddEvaReq.m_uiMsgSeq = 1;
+        AddEvaReq.m_strSID = strSid;
+
+        AddEvaReq.m_storeEvaluation.m_strStoreID = ev.m_strStoreID;
+        AddEvaReq.m_storeEvaluation.m_strUserIDCheck = ev.m_strUserIDOfCheck;
+        AddEvaReq.m_storeEvaluation.m_strUserIDCreate = ev.m_strUserID;
+
+        for (auto itBegin = ev.m_evlist.begin(), itEnd = ev.m_evlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::EvaluationItemScore evs;
+            evs.m_dScore = itBegin->m_dEvaluationValue;
+            evs.m_evaluationItem.m_strItemID = itBegin->m_strEvaluationTmpID;
+            evs.m_strDescription = itBegin->m_strEvaluationDesc;
+
+            AddEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
+        }
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create evaluation req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddStoreEvaluationRsp AddEvaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEvaRsp))
+        {
+            LOG_ERROR_RLD("Create evaluation rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddEvaRsp.m_iRetcode;
+
+        ev.m_strEvaluationID = AddEvaRsp.m_strEvaluationID;
+
+        LOG_INFO_RLD("Create evaluation and evaluation id is " << ev.m_strEvaluationID <<
+            " and session id is " << strSid << " and user id is " << ev.m_strUserID <<
+            " and return code is " << AddEvaRsp.m_iRetcode <<
+            " and return msg is " << AddEvaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+    m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+    CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteEvaluation(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationIDOfStore)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteStoreEvaluationReq DelEvaReq;
+        DelEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreEvaluationReq_T;
+        DelEvaReq.m_uiMsgSeq = 1;
+        DelEvaReq.m_strSID = strSid;
+
+        DelEvaReq.m_strUserID = strUserID;
+        DelEvaReq.m_strEvaluationID = strEvaluationIDOfStore;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete evaluation req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteStoreEvaluationRsp DelEvaTmpRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEvaTmpRsp))
+        {
+            LOG_ERROR_RLD("Delete evaluation rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelEvaTmpRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete evaluation id of store is " << strEvaluationIDOfStore << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelEvaTmpRsp.m_iRetcode <<
+            " and return msg is " << DelEvaTmpRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evaluation &ev)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyStoreEvaluationReq ModEvaReq;
+        ModEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreEvaluationReq_T;
+        ModEvaReq.m_uiMsgSeq = 1;
+        ModEvaReq.m_strSID = strSid;
+
+        ModEvaReq.m_strUserID = ev.m_strUserID;
+        ModEvaReq.m_storeEvaluation.m_strEvaluationID = ev.m_strEvaluationID;
+        ModEvaReq.m_storeEvaluation.m_strStoreID = ev.m_strStoreID;
+        ModEvaReq.m_storeEvaluation.m_strUserIDCheck = ev.m_strUserIDOfCheck;
+        //ModEvaReq.m_storeEvaluation.m_strUserIDCreate = ev.m_strUserID; //修改人不一定是创建人
+        ModEvaReq.m_storeEvaluation.m_uiCheckStatus = ev.m_uiCheckStatus;
+
+        for (auto itBegin = ev.m_evlist.begin(), itEnd = ev.m_evlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::EvaluationItemScore evs;
+            evs.m_dScore = itBegin->m_dEvaluationValue;
+            evs.m_evaluationItem.m_strItemID = itBegin->m_strEvaluationTmpID;
+            evs.m_strDescription = itBegin->m_strEvaluationDesc;
+
+            ModEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
+        }
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify evaluation req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyStoreEvaluationRsp ModEvaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEvaRsp))
+        {
+            LOG_ERROR_RLD("Modify evaluation rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModEvaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify evaluation and evaluation id is " << ev.m_strEvaluationID <<
+        " and session id is " << strSid << " and user id is " << ev.m_strUserID <<
+        " and return code is " << ModEvaRsp.m_iRetcode <<
+        " and return msg is " << ModEvaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+    m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+    CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const std::string &strUserID, Evaluation &ev)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryStoreEvaluationInfoReq QueryEvaReq;
+        QueryEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreEvaluationInfoReq_T;
+        QueryEvaReq.m_uiMsgSeq = 1;
+        QueryEvaReq.m_strSID = strSid;
+
+        QueryEvaReq.m_strUserID = strUserID;
+        QueryEvaReq.m_strStoreID = ev.m_strStoreID;
+        QueryEvaReq.m_strEvaluationID = ev.m_strEvaluationID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query evaluation req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp QueryEvaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaRsp))
+        {
+            LOG_ERROR_RLD("Query evaluation rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        ev.m_dEvaluationTotalValue = QueryEvaRsp.m_storeEvaluation.m_dTotalScore;
+        ev.m_strEvaluationDate = QueryEvaRsp.m_storeEvaluation.m_strCreateDate;
+        ev.m_strEvaluationID = QueryEvaRsp.m_storeEvaluation.m_strEvaluationID;
+        ev.m_strStoreID = QueryEvaRsp.m_storeEvaluation.m_strStoreID;
+        ev.m_strUserID = QueryEvaRsp.m_storeEvaluation.m_strUserIDCreate;
+        ev.m_strUserIDOfCheck = QueryEvaRsp.m_storeEvaluation.m_strUserIDCheck;
+        ev.m_uiCheckStatus = QueryEvaRsp.m_storeEvaluation.m_uiCheckStatus;
+
+        for (auto itBegin = QueryEvaRsp.m_storeEvaluation.m_itemScoreList.begin(), itEnd = QueryEvaRsp.m_storeEvaluation.m_itemScoreList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            EvaluationTemplate evt;
+            evt.m_dEvaluationValue = itBegin->m_evaluationItem.m_dTotalPoint;
+            evt.m_dEvaValueActive = itBegin->m_dScore;
+            evt.m_strEvaDescActive = itBegin->m_strDescription;
+            evt.m_strEvaluation = itBegin->m_evaluationItem.m_strItemName;
+            evt.m_strEvaluationDesc = itBegin->m_evaluationItem.m_strDescription;
+            evt.m_strEvaluationTmpID = itBegin->m_evaluationItem.m_strItemID;
+            
+            ev.m_evlist.push_back(std::move(evt));
+        }
+
+        iRet = QueryEvaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query evaluation template and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryEvaRsp.m_iRetcode <<
+            " and return msg is " << QueryEvaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<Evaluation> &evlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllStoreEvaluationReq QueryEvaReq;
+        QueryEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreEvaluationReq_T;
+        QueryEvaReq.m_uiMsgSeq = 1;
+        QueryEvaReq.m_strSID = strSid;
+
+        QueryEvaReq.m_strUserID = strUserID;
+        QueryEvaReq.m_strStoreID = strStoreID;
+        QueryEvaReq.m_strBeginDate = strBeginDate;
+        QueryEvaReq.m_strEndDate = strEndDate;
+        QueryEvaReq.m_uiBeginIndex = uiBeginIndex;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all evaluation req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp QueryEvaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaRsp))
+        {
+            LOG_ERROR_RLD("Query all evaluation rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryEvaRsp.m_storeEvaluationList.begin(), itEnd = QueryEvaRsp.m_storeEvaluationList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            Evaluation ev;
+            ev.m_dEvaluationTotalValue = itBegin->m_dTotalScore;
+            ev.m_strEvaluationDate = itBegin->m_strCreateDate;
+            ev.m_strEvaluationID = itBegin->m_strEvaluationID;
+            ev.m_strStoreID = itBegin->m_strStoreID;
+            ev.m_strUserID = itBegin->m_strUserIDCreate;
+            ev.m_strUserIDOfCheck = itBegin->m_strUserIDCheck;
+            ev.m_uiCheckStatus = itBegin->m_uiCheckStatus;
+
+            evlist.push_back(std::move(ev));
+        }
+
+        iRet = QueryEvaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all evaluation template and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryEvaRsp.m_iRetcode <<
+            " and return msg is " << QueryEvaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter wr)
@@ -4359,6 +8678,54 @@ bool PassengerFlowMsgHandler::GetValueList(const std::string &strValue, std::lis
         strValueList.emplace_back(jsValueItem.asString());
 
         LOG_INFO_RLD("Value item is " << jsValueItem.asString());
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::GetValueFromList(const std::string &strValue, boost::function<bool(Json::Value &)> ParseFunc)
+{
+    bool blResult = false;
+
+    if (NULL == ParseFunc)
+    {
+        LOG_ERROR_RLD("Parse func is null.");
+        return blResult;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strValue, root))
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+
+    if (!root.isArray())
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Value list size is " << root.size());
+
+    for (unsigned int i = 0; i < root.size(); ++i)
+    {
+        auto jsValueItem = root[i];
+        if (jsValueItem.isNull())
+        {
+            LOG_ERROR_RLD("Value info type is null, raw data is: " << strValue);
+            return blResult;
+        }
+
+        if (!ParseFunc(jsValueItem))
+        {
+            LOG_ERROR_RLD("Value parse failed and row date is " << strValue);
+            return blResult;
+        }
     }
 
     blResult = true;

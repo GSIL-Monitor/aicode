@@ -1,0 +1,1128 @@
+/////////////////////////////////////////////////
+//作者：蔡志勇
+//日期：2017-8-28
+//内容：客流分析系统协议框架定义
+//版本：1.0.0
+/////////////////////////////////////////////////
+
+///////////////传输协议格式介绍//////////////////
+//    __   ____   ____   ______   ____   ______   ______
+//   |RG|,|长度|,|源端|,|目标端|,|类型|,|协议体|,|校验和|
+//   ￣￣  ￣￣   ￣￣   ￣￣￣   ￣￣   ￣￣￣   ￣￣￣
+//长度：  该值为“源端,目标端,类型,协议体,校验和”的字节数，不包括长度字段后面的逗号。
+//源端：  该值为消息传输投递的源头，代表发送消息自身实体，可以唯一表示源端。
+//目标端：该值为消息传输投递的目标，代表接收消息实体，一般都需要实现约定好。
+//类型：  该值为消息的具体业务类型，目前该值填写0.
+//协议体：该值为业务协议的具体内容，就是下面采用protobuffer协议序列化后形成的字节缓冲区，支持Base64编码。
+//校验和：该值为“源端,目标端,类型, 协议体”的crc16计算得出的值。
+/////////////////////////////////////////////////
+
+///////////////传输协议会话ID解析////////////////
+//传输客户端在发起链接时，需要首先与服务器进行一次交互通信，以便获取当前这次链接的会话ID来进行通信，具体解析步骤如下：
+//  1：客户端发起链接，按照前述的“传输协议格式”，源端为客户端ID，目标端为0，类型为0，协议体内容如下，来发送消息到服务端。
+//     {"ID":"XXX","PWD":"XXX"} 注意：目前该内容服务器段暂未使用，所以客户端可以填写任意值。
+//  2：客户端接受响应报文，Decode64处理之后，获得一个json格式字符串，在root节点处解析Key值为UUID的Value，该值就是这次传输
+//     链接的会话ID值。
+//  3：后续客户端在这次链接中进行消息发送，包装传输协议格式时，“源端”这个值就是会话ID值。
+/////////////////////////////////////////////////
+
+
+
+//Explicit 'optional' labels are disallowed in the Proto3 syntax.
+//To define 'optional' fields in Proto3, simply remove the 'optional' label, as fields are 'optional' by default.
+
+syntax = "proto3";
+
+package CustomerFlow.Interactive.Message;
+
+enum CustomerFlowMsgType
+{
+    Init_T = 0;
+
+    CustomerFlowPreHandleReq_T = 9000;
+    CustomerFlowPreHandleRsp_T = 9010;
+    ShakehandReq_T = 9100;
+    ShakehandRsp_T = 9110;
+
+    AddGroupReq_T = 10000;                 //添加群组
+    AddGroupRsp_T = 10010;
+    DeleteGroupReq_T = 10020;              //删除群组
+    DeleteGroupRsp_T = 10030;
+    ModifyGroupReq_T = 10040;              //修改群组
+    ModifyGroupRsp_T = 10050;
+    QueryGroupInfoReq_T = 10060;           //查询群组信息
+    QueryGroupInfoRsp_T = 10070;
+    QueryAllGroupReq_T = 10080;            //查询所有群组
+    QueryAllGroupRsp_T = 10090;
+
+    AddStoreReq_T = 10100;                 //添加店铺
+    AddStoreRsp_T = 10110;
+    DeleteStoreReq_T = 10120;              //删除店铺
+    DeleteStoreRsp_T = 10130;
+    ModifyStoreReq_T = 10140;              //修改店铺
+    ModifyStoreRsp_T = 10150;
+    QueryStoreInfoReq_T = 10160;           //查询店铺信息
+    QueryStoreInfoRsp_T = 10170;
+    QueryAllStoreReq_T = 10180;            //查询所有店铺
+    QueryAllStoreRsp_T = 10190;
+
+    AddEntranceReq_T = 10200;              //添加出入口
+    AddEntranceRsp_T = 10210;
+    DeleteEntranceReq_T = 10220;           //删除出入口
+    DeleteEntranceRsp_T = 10230;
+    ModifyEntranceReq_T = 10240;           //修改出入口
+    ModifyEntranceRsp_T = 10250;
+    AddEntranceDeviceReq_T = 10260;        //出入口绑定设备
+    AddEntranceDeviceRsp_T = 10270;
+    DeleteEntranceDeviceReq_T = 10280;     //出入口解绑设备
+    DeleteEntranceDeviceRsp_T = 10290;
+
+    AddEventReq_T = 10340;                 //添加事件
+    AddEventRsp_T = 10350;
+    DeleteEventReq_T = 10360;              //删除事件
+    DeleteEventRsp_T = 10370;
+    ModifyEventReq_T = 10380;              //修改事件
+    ModifyEventRsp_T = 10390;
+    QueryEventInfoReq_T = 10400;           //查询事件信息
+    QueryEventInfoRsp_T = 10410;
+    QueryAllEventReq_T = 10420;            //查询所有事件
+    QueryAllEventRsp_T = 10430;
+
+    AddSmartGuardStoreReq_T = 10440;       //添加智能看店计划
+    AddSmartGuardStoreRsp_T = 10450;
+    DeleteSmartGuardStoreReq_T = 10460;    //删除智能看店计划
+    DeleteSmartGuardStoreRsp_T = 10470;
+    ModifySmartGuardStoreReq_T = 10480;    //修改智能看店计划
+    ModifySmartGuardStoreRsp_T = 10490;
+    QuerySmartGuardStoreInfoReq_T = 10500; //查询智能看店计划信息
+    QuerySmartGuardStoreInfoRsp_T = 10510;
+    QueryAllSmartGuardStoreReq_T = 10520;  //查询所有智能看店计划
+    QueryAllSmartGuardStoreRsp_T = 10530;
+
+    AddRegularPatrolReq_T = 10540;         //添加定时巡店计划
+    AddRegularPatrolRsp_T = 10550;
+    DeleteRegularPatrolReq_T = 10560;      //删除定时巡店计划
+    DeleteRegularPatrolRsp_T = 10570;
+    ModifyRegularPatrolReq_T = 10580;      //修改定时巡店计划
+    ModifyRegularPatrolRsp_T = 10590;
+    QueryRegularPatrolInfoReq_T = 10600;   //查询定时巡店计划信息
+    QueryRegularPatrolInfoRsp_T = 10610;
+    QueryAllRegularPatrolReq_T = 10620;    //查询所有定时巡店计划
+    QueryAllRegularPatrolRsp_T = 10630;
+
+    UserJoinStoreReq_T = 10700;            //用户加入店铺
+    UserJoinStoreRsp_T = 10710;
+    UserQuitStoreReq_T = 10720;            //用户退出店铺
+    UserQuitStoreRsp_T = 10730;
+    QueryStoreAllUserReq_T = 10740;        //查询店铺所有用户
+    QueryStoreAllUserRsp_T = 10750;
+
+    AddVIPCustomerReq_T = 18000;           //添加VIP客户
+    AddVIPCustomerRsp_T = 18010;
+    DeleteVIPCustomerReq_T = 18020;        //删除VIP客户
+    DeleteVIPCustomerRsp_T = 18030;
+    ModifyVIPCustomerReq_T = 18040;        //修改VIP客户
+    ModifyVIPCustomerRsp_T = 18050;
+    QueryVIPCustomerInfoReq_T = 18060;     //查询VIP客户信息
+    QueryVIPCustomerInfoRsp_T = 18070;
+    QueryAllVIPCustomerReq_T = 18080;      //查询所有VIP客户
+    QueryAllVIPCustomerRsp_T = 18090;
+
+    AddVIPConsumeHistoryReq_T = 18100;        //添加VIP客户消费记录
+    AddVIPConsumeHistoryRsp_T = 18110;
+    DeleteVIPConsumeHistoryReq_T = 18120;     //删除VIP客户消费记录
+    DeleteVIPConsumeHistoryRsp_T = 18130;
+    ModifyVIPConsumeHistoryReq_T = 18140;     //修改VIP客户消费记录
+    ModifyVIPConsumeHistoryRsp_T = 18150;
+    QueryAllVIPConsumeHistoryReq_T = 18160;   //查询VIP客户消费记录
+    QueryAllVIPConsumeHistoryRsp_T = 18170;
+
+    AddEvaluationTemplateReq_T = 18200;       //添加店铺考评模板
+    AddEvaluationTemplateRsp_T = 18210;
+    DeleteEvaluationTemplateReq_T = 18220;    //删除店铺考评模板
+    DeleteEvaluationTemplateRsp_T = 18230;
+    ModifyEvaluationTemplateReq_T = 18240;    //修改店铺考评模板
+    ModifyEvaluationTemplateRsp_T = 18250;
+    QueryAllEvaluationTemplateReq_T = 18260;  //查询店铺考评模板
+    QueryAllEvaluationTemplateRsp_T = 18270;
+
+    AddStoreEvaluationReq_T = 18300;          //添加店铺考评
+    AddStoreEvaluationRsp_T = 18310;
+    DeleteStoreEvaluationReq_T = 18320;       //删除店铺考评
+    DeleteStoreEvaluationRsp_T = 18330;
+    ModifyStoreEvaluationReq_T = 18340;       //修改店铺考评
+    ModifyStoreEvaluationRsp_T = 18350;
+    QueryStoreEvaluationInfoReq_T = 18360;    //查询店铺考评信息
+    QueryStoreEvaluationInfoRsp_T = 18370;
+    QueryAllStoreEvaluationReq_T = 18380;     //查询所有店铺考评
+    QueryAllStoreEvaluationRsp_T = 18390;
+
+    ImportPOSDataReq_T = 20000;               //录入POS数据
+    ImportPOSDataRsp_T = 20010;
+
+    QueryCustomerFlowStatisticReq_T = 20900;  //查询客流统计
+    QueryCustomerFlowStatisticRsp_T = 20910;
+
+    //////////////////////////////////////////////////////////
+
+    ReportCustomerFlowDataReq_T = 30000;      //设备上报客流数据
+    ReportCustomerFlowDataRsp_T = 30010;
+}
+
+message Group                            //群组信息
+{
+    string strGroupID = 1;
+    string strGroupName = 2;
+    string strCreateDate = 3;
+    string strExtend = 4;
+    uint32 uiState = 5;
+}
+
+message Entrance                         //出入口信息
+{
+    string strEntranceID = 1;
+    string strEntranceName = 2;
+    repeated string strDeviceID = 3;
+}
+
+message Store                            //店铺信息
+{
+    string strStoreID = 1;
+    string strStoreName = 2;
+    string strGoodsCategory = 3;
+    string strAddress = 4;
+    repeated Entrance entrance = 5;
+    string strCreateDate = 6;
+    string strExtend = 7;
+    uint32 uiState = 8;
+}
+
+message UserGroupAssociation             //用户群组关联信息
+{
+    string strUserID = 1;
+    string strGroupID = 2;
+    string strUserRole = 3;
+}
+
+message UserStoreAssociation             //用户店铺关联信息
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strUserRole = 3;
+}
+
+message Event                            //事件信息
+{
+    string strEventID = 1;
+    string strSource = 2;
+    string strSubmitDate = 3;
+    string strExpireDate = 4;
+    string strUserID = 5;
+    string strDeviceID = 6;
+    string strProcessState = 7;
+    string strRemark = 8;
+    repeated uint32 uiType = 9;
+    repeated string strHandler = 10;
+    string strCreateDate = 11;
+    string strExtend = 12;
+    uint32 uiState = 13;
+}
+
+message SmartGuardStore                  //智能看店计划
+{
+    string strPlanID = 1;
+    string strStoreID = 2;
+    string strStoreName = 3;
+    string strPlanName = 4;
+    repeated string strEntranceID = 5;
+    string strEnable = 6;
+    string strBeginTime = 7;
+    string strEndTime = 8;
+    string strBeginTime2 = 9;
+    string strEndTime2 = 10;
+    uint32 uiState = 11;
+    string strCreateDate = 12;
+}
+
+message RegularPatrol                    //定时巡店
+{
+    string strPlanID = 1;
+    string strPlanName = 2;
+    string strEnable = 3;
+    string strStoreInfo = 4;
+    repeated string strStoreID = 5;
+    repeated string strPatrolTime = 6;
+    uint32 uiState = 7;
+    string strCreateDate = 8;
+}
+
+message UserBrief                        //用户简要信息
+{
+    string strUserID = 1;
+    string strUserName = 2;
+    string strRole = 3;
+}
+
+message VIPConsumeHistory                //VIP客户消费记录
+{
+    string strConsumeID = 1;
+    string strVIPID = 2;
+    string strGoodsName = 3;
+    uint32 uiGoodsNumber = 4;
+    string strSalesman = 5;
+    double dConsumeAmount = 6;
+    string strConsumeDate = 7;
+}
+
+message VIPCustomer                      //VIP客户资料
+{
+    string strVIPID = 1;
+    string strProfilePicture = 2;
+    string strVIPName = 3;
+    string strCellphone = 4;
+    string strVisitDate = 5;
+    uint32 uiVisitTimes = 6;
+    string strRegisterDate = 7;
+    repeated VIPConsumeHistory consumeHistory = 8;
+    uint32 uiState = 9;
+}
+
+message EvaluationItem                   //店铺考评条目
+{
+    string strItemID = 1;
+    string strItemName = 2;
+    string strDescription = 3;
+    double dTotalPoint = 4;
+}
+
+message EvaluationItemScore              //店铺考评条目得分
+{
+    EvaluationItem evaluationItem = 1;
+    double dScore = 2;
+    string strDescription = 3;
+}
+
+message StoreEvaluation                  //店铺考评
+{
+    string strEvaluationID = 1;
+    string strStoreID = 2;
+    string strUserIDCreate = 3;
+    string strUserIDCheck = 4;
+    double dTotalScore = 5;
+    uint32 uiCheckStatus = 6;
+    repeated EvaluationItemScore itemScore = 7;
+    string strCreateDate = 8;
+}
+
+message RawCustomerFlow                  //设备客流信息
+{
+    uint32 uiEnterNumber = 1;
+    uint32 uiLeaveNumber = 2;
+    uint32 uiStayNumber = 3;
+    string strDataTime = 4;
+}
+
+message CustomerFlowPreHandleReq         //消息预处理请求
+{
+    string strValue = 1;
+}
+
+message CustomerFlowPreHandleRsp         //消息预处理响应
+{
+    string strValue = 1;
+}
+
+message ShakehandReq                     //握手请求
+{
+    string strID = 1;
+}
+
+message ShakehandRsp                     //握手响应
+{
+    string strValue = 1;
+}
+
+message AddGroupReq                      //添加群组请求
+{
+    string strUserID = 1;
+    Group groupInfo = 2;
+}
+
+message AddGroupRsp                      //添加群组响应
+{
+    string strGroupID = 1;
+}
+
+message DeleteGroupReq                   //删除群组请求
+{
+    string strUserID = 1;
+    string strGroupID = 2;
+}
+
+message DeleteGroupRsp                   //删除群组响应
+{
+    string strValue = 1;
+}
+
+message ModifyGroupReq                   //修改群组请求
+{
+    string strUserID = 1;
+    Group groupInfo = 2;
+}
+
+message ModifyGroupRsp                   //修改群组响应
+{
+    string strValue = 1;
+}
+
+message QueryGroupInfoReq                //查询群组信息请求
+{
+    string strUserID = 1;
+    string strGroupID = 2;
+}
+
+message QueryGroupInfoRsp                //查询群组信息响应
+{
+    Group groupInfo = 1;
+}
+
+message QueryAllGroupReq                 //查询所有群组请求
+{
+    string strUserID = 1;
+}
+
+message QueryAllGroupRsp                 //查询所有群组响应
+{
+    repeated Group groupInfo = 1;
+}
+
+message AddStoreReq                      //添加店铺请求
+{
+    string strUserID = 1;
+    Store storeInfo = 2;
+}
+
+message AddStoreRsp                      //添加店铺响应
+{
+    string strStoreID = 1;
+}
+
+message DeleteStoreReq                   //删除店铺请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+}
+
+message DeleteStoreRsp                   //删除店铺响应
+{
+    string strValue = 1;
+}
+
+message ModifyStoreReq                   //修改店铺请求
+{
+    string strUserID = 1;
+    Store storeInfo = 2;
+}
+
+message ModifyStoreRsp                   //修改店铺响应
+{
+    string strValue = 1;
+}
+
+message QueryStoreInfoReq                //查询店铺信息请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+}
+
+message QueryStoreInfoRsp                //查询店铺信息响应
+{
+    Store storeInfo = 1;
+}
+
+message QueryAllStoreReq                 //查询所有店铺请求
+{
+    string strUserID = 1;
+    uint32 uiBeginIndex = 2;
+}
+
+message QueryAllStoreRsp                 //查询所有店铺响应
+{
+    repeated Store storeInfo = 1;
+}
+
+message AddEntranceReq                   //添加出入口请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    Entrance entranceInfo = 3;
+}
+
+message AddEntranceRsp                   //添加出入口响应
+{
+    string strEntranceID = 1;
+}
+
+message DeleteEntranceReq                //删除出入口请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strEntranceID = 3;
+}
+
+message DeleteEntranceRsp                //删除出入口响应
+{
+    string strValue = 1;
+}
+
+message ModifyEntranceReq                //修改出入口请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    Entrance entranceInfo = 3;
+    repeated string strAddedDeviceID = 4;
+    repeated string strDeletedDeviceID = 5;
+}
+
+message ModifyEntranceRsp                //修改出入口响应
+{
+    string strValue = 1;
+}
+
+message AddEntranceDeviceReq             //出入口绑定设备请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strEntranceID = 3;
+    string strDeviceID = 4;
+}
+
+message AddEntranceDeviceRsp             //出入口绑定设备响应
+{
+    string strValue = 1;
+}
+
+message DeleteEntranceDeviceReq          //出入口解绑设备请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strEntranceID = 3;
+    string strDeviceID = 4;
+}
+
+message DeleteEntranceDeviceRsp          //出入口解绑设备响应
+{
+    string strValue = 1;
+}
+
+message AddEventReq                      //添加事件请求
+{
+    Event eventInfo = 1;
+}
+
+message AddEventRsp                      //添加事件响应
+{
+    string strEventID = 1;
+}
+
+message DeleteEventReq                   //删除事件请求
+{
+    string strUserID = 1;
+    string strEventID = 2;
+}
+
+message DeleteEventRsp                   //删除事件响应
+{
+    string strValue = 1;
+}
+
+message ModifyEventReq                   //修改事件请求
+{
+    string strUserID = 1;
+    Event eventInfo = 2;
+}
+
+message ModifyEventRsp                   //修改事件响应
+{
+    string strValue = 1;
+}
+
+message QueryEventInfoReq                //查询事件信息请求
+{
+    string strUserID = 1;
+    string strEventID = 2;
+}
+
+message QueryEventInfoRsp                //查询事件信息响应
+{
+    Event eventInfo = 1;
+}
+
+message QueryAllEventReq                 //查询所有事件请求
+{
+    string strUserID = 1;
+    uint32 uiBeginIndex = 2;
+}
+
+message QueryAllEventRsp                 //查询所有事件响应
+{
+    repeated Event eventInfo = 1;
+}
+
+message AddSmartGuardStoreReq            //添加智能看店计划请求
+{
+    string strUserID = 1;
+    SmartGuardStore smartGuardStore = 2;
+}
+
+message AddSmartGuardStoreRsp            //添加智能看店计划响应
+{
+    string strPlanID = 1;
+}
+
+message DeleteSmartGuardStoreReq         //删除智能看店计划请求
+{
+    string strUserID = 1;
+    string strPlanID = 2;
+}
+
+message DeleteSmartGuardStoreRsp         //删除智能看店计划响应
+{
+    string strValue = 1;
+}
+
+message ModifySmartGuardStoreReq         //修改智能看店计划请求
+{
+    string strUserID = 1;
+    SmartGuardStore smartGuardStore = 2;
+}
+
+message ModifySmartGuardStoreRsp         //修改智能看店计划响应
+{
+    string strValue = 1;
+}
+
+message QuerySmartGuardStoreInfoReq      //查询智能看店计划信息请求
+{
+    string strUserID = 1;
+    string strPlanID = 2;
+}
+
+message QuerySmartGuardStoreInfoRsp      //查询智能看店计划信息响应
+{
+    SmartGuardStore smartGuardStore = 1;
+}
+
+message QueryAllSmartGuardStoreReq       //查询所有智能看店计划请求
+{
+    string strUserID = 1;
+    string strDeviceID = 2;
+    uint32 uiBeginIndex = 3;
+}
+
+message QueryAllSmartGuardStoreRsp       //查询所有智能看店计划响应
+{
+    repeated SmartGuardStore smartGuardStore = 1;
+}
+
+message AddRegularPatrolReq              //添加定时巡店计划请求
+{
+    string strUserID = 1;
+    RegularPatrol regularPatrol = 2;
+}
+
+message AddRegularPatrolRsp              //添加定时巡店计划响应
+{
+    string strPlanID = 1;
+}
+
+message DeleteRegularPatrolReq           //删除定时巡店计划请求
+{
+    string strUserID = 1;
+    string strPlanID = 2;
+}
+
+message DeleteRegularPatrolRsp           //删除定时巡店计划响应
+{
+    string strValue = 1;
+}
+
+message ModifyRegularPatrolReq           //修改定时巡店计划请求
+{
+    string strUserID = 1;
+    RegularPatrol regularPatrol = 2;
+}
+
+message ModifyRegularPatrolRsp           //修改定时巡店计划响应
+{
+    string strValue = 1;
+}
+
+message QueryRegularPatrolInfoReq        //查询定时巡店计划信息请求
+{
+    string strUserID = 1;
+    string strPlanID = 2;
+}
+
+message QueryRegularPatrolInfoRsp        //查询定时巡店计划信息响应
+{
+    RegularPatrol regularPatrol = 1;
+}
+
+message QueryAllRegularPatrolReq         //查询所有定时巡店计划请求
+{
+    string strUserID = 1;
+    string strDeviceID = 2;
+    uint32 uiBeginIndex = 3;
+}
+
+message QueryAllRegularPatrolRsp         //查询所有定时巡店计划响应
+{
+    repeated RegularPatrol regularPatrol = 1;
+}
+
+message UserJoinStoreReq                 //用户加入店铺请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strRole = 3;
+}
+
+message UserJoinStoreRsp                 //用户加入店铺响应
+{
+    string strValue = 1;
+}
+
+message UserQuitStoreReq                 //用户退出店铺请求
+{
+    string strAdministratorID = 1;
+    string strUserID = 2;
+    string strStoreID = 3;
+}
+
+message UserQuitStoreRsp                 //用户退出店铺响应
+{
+    string strValue = 1;
+}
+
+message QueryStoreAllUserReq             //查询店铺所有用户请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+}
+
+message QueryStoreAllUserRsp             //查询店铺所有用户响应
+{
+    repeated UserBrief user = 1;
+}
+
+message AddVIPCustomerReq                //添加VIP客户请求
+{
+    string strUserID = 1;
+    VIPCustomer customerInfo = 2;
+}
+
+message AddVIPCustomerRsp                //添加VIP客户响应
+{
+    string strVIPID = 1;
+}
+
+message DeleteVIPCustomerReq             //删除VIP客户请求
+{
+    string strUserID = 1;
+    string strVIPID = 2;
+}
+
+message DeleteVIPCustomerRsp             //删除VIP客户响应
+{
+    string strValue = 1;
+}
+
+message ModifyVIPCustomerReq             //修改VIP客户请求
+{
+    string strUserID = 1;
+    VIPCustomer customerInfo = 2;
+}
+
+message ModifyVIPCustomerRsp             //修改VIP客户响应
+{
+    string strValue = 1;
+}
+
+message QueryVIPCustomerInfoReq          //查询VIP客户信息请求
+{
+    string strUserID = 1;
+    string strVIPID = 2;
+}
+
+message QueryVIPCustomerInfoRsp          //查询VIP客户信息响应
+{
+    VIPCustomer customerInfo = 1;
+}
+
+message QueryAllVIPCustomerReq           //查询所有VIP客户请求
+{
+    string strUserID = 1;
+    uint32 uiBeginIndex = 2;
+}
+
+message QueryAllVIPCustomerRsp           //查询所有VIP客户响应
+{
+    repeated VIPCustomer customer = 1;
+}
+
+message AddVIPConsumeHistoryReq          //添加VIP客户消费记录请求
+{
+    string strUserID = 1;
+    VIPConsumeHistory consumeHistory = 2;
+}
+
+message AddVIPConsumeHistoryRsp          //添加VIP客户消费记录响应
+{
+    string strConsumeID = 1;
+}
+
+message DeleteVIPConsumeHistoryReq       //删除VIP客户消费记录请求
+{
+    string strUserID = 1;
+    string strConsumeID = 2;
+}
+
+message DeleteVIPConsumeHistoryRsp       //删除VIP客户消费记录响应
+{
+    string strValue = 1;
+}
+
+message ModifyVIPConsumeHistoryReq       //修改VIP客户消费记录请求
+{
+    string strUserID = 1;
+    VIPConsumeHistory consumeHistory = 2;
+}
+
+message ModifyVIPConsumeHistoryRsp       //修改VIP客户消费记录响应
+{
+    string strValue = 1;
+}
+
+message QueryAllVIPConsumeHistoryReq     //查询VIP客户消费记录请求
+{
+    string strUserID = 1;
+    string strVIPID = 2;
+    uint32 uiBeginIndex = 3;
+}
+
+message QueryAllVIPConsumeHistoryRsp     //查询VIP客户消费记录响应
+{
+    repeated VIPConsumeHistory consumeHistory = 1;
+}
+
+message AddEvaluationTemplateReq         //添加店铺考评模板请求
+{
+    string strUserID = 1;
+    EvaluationItem evaluationItem = 2;
+}
+
+message AddEvaluationTemplateRsp         //添加店铺考评模板响应
+{
+    string strEvaluationID = 1;
+}
+
+message DeleteEvaluationTemplateReq      //删除店铺考评模板请求
+{
+    string strUserID = 1;
+    string strEvaluationID = 2;
+}
+
+message DeleteEvaluationTemplateRsp      //删除店铺考评模板响应
+{
+    string strValue = 1;
+}
+
+message ModifyEvaluationTemplateReq      //修改店铺考评模板请求
+{
+    string strUserID = 1;
+    EvaluationItem evaluationItem = 2;
+}
+
+message ModifyEvaluationTemplateRsp      //修改店铺考评模板响应
+{
+    string strValue = 1;
+}
+
+message QueryAllEvaluationTemplateReq    //查询店铺考评模板请求
+{
+    string strUserID = 1;
+}
+
+message QueryAllEvaluationTemplateRsp    //查询店铺考评模板响应
+{
+    repeated EvaluationItem evaluationItem = 1;
+}
+
+message AddStoreEvaluationReq            //添加店铺考评请求
+{
+    StoreEvaluation storeEvaluation = 1;
+}
+
+message AddStoreEvaluationRsp            //添加店铺考评响应
+{
+    string strEvaluationID = 1;
+}
+
+message DeleteStoreEvaluationReq         //删除店铺考评请求
+{
+    string strUserID = 1;
+    string strEvaluationID = 2;
+}
+
+message DeleteStoreEvaluationRsp         //删除店铺考评响应
+{
+    string strValue = 1;
+}
+
+message ModifyStoreEvaluationReq         //修改店铺考评请求
+{
+    string strUserID = 1;
+    StoreEvaluation storeEvaluation = 2;
+}
+
+message ModifyStoreEvaluationRsp         //修改店铺考评响应
+{
+    string strValue = 1;
+}
+
+message QueryStoreEvaluationInfoReq      //查询店铺考评信息请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strEvaluationID = 3;
+}
+
+message QueryStoreEvaluationInfoRsp      //查询店铺考评信息响应
+{
+    StoreEvaluation storeEvaluation = 1;
+}
+
+message QueryAllStoreEvaluationReq       //查询所有店铺考评请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strBeginDate = 3;
+    string strEndDate = 4;
+    uint32 uiBeginIndex = 5;
+}
+
+message QueryAllStoreEvaluationRsp       //查询所有店铺考评响应
+{
+    repeated StoreEvaluation storeEvaluation = 1;
+}
+
+message ImportPOSDataReq                 //录入POS数据请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    uint32 uiOrderAmount = 3;
+    uint32 uiGoodsAmount = 4;
+    double dDealAmount = 5;
+    string strDealDate = 6;
+}
+
+message ImportPOSDataRsp                 //录入POS数据响应
+{
+    string strValue = 1;
+}
+
+message QueryCustomerFlowStatisticReq    //查询客流统计请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strBeginDate = 3;
+    string strEndDate = 4;
+    uint32 uiTimePrecision = 5;
+}
+
+message QueryCustomerFlowStatisticRsp    //查询客流统计响应
+{
+    string strChartData = 1;
+}
+
+message ReportCustomerFlowDataReq        //设备上报客流数据请求
+{
+    string strDeviceID = 1;
+    repeated RawCustomerFlow customerFlow = 2;
+}
+
+message ReportCustomerFlowDataRsp        //设备上报客流数据响应
+{
+    string strValue = 1;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//请求对象
+message Request
+{
+    CustomerFlowPreHandleReq CustomerFlowPreHandleReq_Value = 10; //消息预处理
+    ShakehandReq ShakehandReq_Value = 50;                  //握手
+
+    AddGroupReq AddGroupReq_Value = 100;                   //添加群组
+    DeleteGroupReq DeleteGroupReq_Value = 110;             //删除群组
+    ModifyGroupReq ModifyGroupReq_Value = 120;             //修改群组
+    QueryGroupInfoReq QueryGroupInfoReq_Value = 130;       //查询群组信息
+    QueryAllGroupReq QueryAllGroupReq_Value = 140;         //查询所有群组
+
+    AddStoreReq AddStoreReq_Value = 150;                   //添加店铺
+    DeleteStoreReq DeleteStoreReq_Value = 160;             //删除店铺
+    ModifyStoreReq ModifyStoreReq_Value = 170;             //修改店铺
+    QueryStoreInfoReq QueryStoreInfoReq_Value = 180;       //查询店铺信息
+    QueryAllStoreReq QueryAllStoreReq_Value = 190;         //查询所有店铺
+
+    AddEntranceReq AddEntranceReq_Value = 200;             //添加出入口
+    DeleteEntranceReq DeleteEntranceReq_Value = 210;       //删除出入口
+    ModifyEntranceReq ModifyEntranceReq_Value = 220;       //修改出入口
+    AddEntranceDeviceReq AddEntranceDeviceReq_Value = 230;        //出入口绑定设备
+    DeleteEntranceDeviceReq DeleteEntranceDeviceReq_Value = 240;  //出入口解绑设备
+
+    AddEventReq AddEventReq_Value = 300;                   //添加事件
+    DeleteEventReq DeleteEventReq_Value = 310;             //删除事件
+    ModifyEventReq ModifyEventReq_Value = 320;             //修改事件
+    QueryEventInfoReq QueryEventInfoReq_Value = 330;       //查询事件信息
+    QueryAllEventReq QueryAllEventReq_Value = 340;         //查询所有事件
+
+    AddSmartGuardStoreReq AddSmartGuardStoreReq_Value = 350;                   //添加智能看店计划
+    DeleteSmartGuardStoreReq DeleteSmartGuardStoreReq_Value = 360;             //删除智能看店计划
+    ModifySmartGuardStoreReq ModifySmartGuardStoreReq_Value = 370;             //修改智能看店计划
+    QuerySmartGuardStoreInfoReq QuerySmartGuardStoreInfoReq_Value = 380;       //查询智能看店计划信息
+    QueryAllSmartGuardStoreReq QueryAllSmartGuardStoreReq_Value = 390;         //查询所有智能看店计划
+
+    AddRegularPatrolReq AddRegularPatrolReq_Value = 400;                       //添加定时巡店计划
+    DeleteRegularPatrolReq DeleteRegularPatrolReq_Value = 410;                 //删除定时巡店计划
+    ModifyRegularPatrolReq ModifyRegularPatrolReq_Value = 420;                 //修改定时巡店计划
+    QueryRegularPatrolInfoReq QueryRegularPatrolInfoReq_Value = 430;           //查询定时巡店计划信息
+    QueryAllRegularPatrolReq QueryAllRegularPatrolReq_Value = 440;             //查询所有定时巡店计划
+
+    UserJoinStoreReq UserJoinStoreReq_Value = 500;                             //用户加入店铺
+    UserQuitStoreReq UserQuitStoreReq_Value = 510;                             //用户退出店铺
+    QueryStoreAllUserReq QueryStoreAllUserReq_Value = 520;                     //查询店铺所有用户
+
+    AddVIPCustomerReq AddVIPCustomerReq_Value = 800;                           //添加VIP客户
+    DeleteVIPCustomerReq DeleteVIPCustomerReq_Value = 810;                     //删除VIP客户
+    ModifyVIPCustomerReq ModifyVIPCustomerReq_Value = 820;                     //修改VIP客户
+    QueryVIPCustomerInfoReq QueryVIPCustomerInfoReq_Value = 830;               //查询VIP客户信息
+    QueryAllVIPCustomerReq QueryAllVIPCustomerReq_Value = 840;                 //查询所有VIP客户
+
+    AddVIPConsumeHistoryReq AddVIPConsumeHistoryReq_Value = 850;               //添加VIP客户消费记录
+    DeleteVIPConsumeHistoryReq DeleteVIPConsumeHistoryReq_Value = 860;         //删除VIP客户消费记录
+    ModifyVIPConsumeHistoryReq ModifyVIPConsumeHistoryReq_Value = 870;         //修改VIP客户消费记录
+    QueryAllVIPConsumeHistoryReq QueryAllVIPConsumeHistoryReq_Value = 880;     //查询VIP客户消费记录
+
+    AddEvaluationTemplateReq AddEvaluationTemplateReq_Value = 900;             //添加店铺考评模板
+    DeleteEvaluationTemplateReq DeleteEvaluationTemplateReq_Value = 910;       //删除店铺考评模板
+    ModifyEvaluationTemplateReq ModifyEvaluationTemplateReq_Value = 920;       //修改店铺考评模板
+    QueryAllEvaluationTemplateReq QueryAllEvaluationTemplateReq_Value = 930;   //查询店铺考评模板
+
+    AddStoreEvaluationReq AddStoreEvaluationReq_Value = 950;                   //添加店铺考评
+    DeleteStoreEvaluationReq DeleteStoreEvaluationReq_Value = 960;             //删除店铺考评
+    ModifyStoreEvaluationReq ModifyStoreEvaluationReq_Value = 970;             //修改店铺考评
+    QueryStoreEvaluationInfoReq QueryStoreEvaluationInfoReq_Value = 980;       //查询店铺考评信息
+    QueryAllStoreEvaluationReq QueryAllStoreEvaluationReq_Value = 990;         //查询所有店铺考评
+
+    ImportPOSDataReq ImportPOSDataReq_Value = 2000;                            //录入POS数据
+
+    QueryCustomerFlowStatisticReq QueryCustomerFlowStatisticReq_Value = 2900;  //查询客流统计
+
+    //////////////////////////////////////////////////////////////////////
+
+    ReportCustomerFlowDataReq ReportCustomerFlowDataReq_Value = 3000;          //设备上报客流信息
+}
+
+//响应对象
+message Response
+{
+    int32 iRetcode = 1;                                    //返回码
+    string strRetMsg = 2;                                  //返回消息
+
+    CustomerFlowPreHandleRsp CustomerFlowPreHandleRsp_Value = 10; //消息预处理
+    ShakehandRsp ShakehandRsp_Value = 50;                  //握手
+
+    AddGroupRsp AddGroupRsp_Value = 100;                   //添加群组
+    DeleteGroupRsp DeleteGroupRsp_Value = 110;             //删除群组
+    ModifyGroupRsp ModifyGroupRsp_Value = 120;             //修改群组
+    QueryGroupInfoRsp QueryGroupInfoRsp_Value = 130;       //查询群组信息
+    QueryAllGroupRsp QueryAllGroupRsp_Value = 140;         //查询所有群组
+
+    AddStoreRsp AddStoreRsp_Value = 150;                   //添加店铺
+    DeleteStoreRsp DeleteStoreRsp_Value = 160;             //删除店铺
+    ModifyStoreRsp ModifyStoreRsp_Value = 170;             //修改店铺
+    QueryStoreInfoRsp QueryStoreInfoRsp_Value = 180;       //查询店铺信息
+    QueryAllStoreRsp QueryAllStoreRsp_Value = 190;         //查询所有店铺
+
+    AddEntranceRsp AddEntranceRsp_Value = 200;             //添加出入口
+    DeleteEntranceRsp DeleteEntranceRsp_Value = 210;       //删除出入口
+    ModifyEntranceRsp ModifyEntranceRsp_Value = 220;       //修改出入口
+    AddEntranceDeviceRsp AddEntranceDeviceRsp_Value = 230;        //出入口绑定设备
+    DeleteEntranceDeviceRsp DeleteEntranceDeviceRsp_Value = 240;  //出入口解绑设备
+
+    AddEventRsp AddEventRsp_Value = 300;                   //添加事件
+    DeleteEventRsp DeleteEventRsp_Value = 310;             //删除事件
+    ModifyEventRsp ModifyEventRsp_Value = 320;             //修改事件
+    QueryEventInfoRsp QueryEventInfoRsp_Value = 330;       //查询事件信息
+    QueryAllEventRsp QueryAllEventRsp_Value = 340;         //查询所有事件
+
+    AddSmartGuardStoreRsp AddSmartGuardStoreRsp_Value = 350;                   //添加智能看店计划
+    DeleteSmartGuardStoreRsp DeleteSmartGuardStoreRsp_Value = 360;             //删除智能看店计划
+    ModifySmartGuardStoreRsp ModifySmartGuardStoreRsp_Value = 370;             //修改智能看店计划
+    QuerySmartGuardStoreInfoRsp QuerySmartGuardStoreInfoRsp_Value = 380;       //查询智能看店计划信息
+    QueryAllSmartGuardStoreRsp QueryAllSmartGuardStoreRsp_Value = 390;         //查询所有智能看店计划
+
+    AddRegularPatrolRsp AddRegularPatrolRsp_Value = 400;                       //添加定时巡店计划
+    DeleteRegularPatrolRsp DeleteRegularPatrolRsp_Value = 410;                 //删除定时巡店计划
+    ModifyRegularPatrolRsp ModifyRegularPatrolRsp_Value = 420;                 //修改定时巡店计划
+    QueryRegularPatrolInfoRsp QueryRegularPatrolInfoRsp_Value = 430;           //查询定时巡店计划信息
+    QueryAllRegularPatrolRsp QueryAllRegularPatrolRsp_Value = 440;             //查询所有定时巡店计划
+
+    UserJoinStoreRsp UserJoinStoreRsp_Value = 500;                             //用户加入店铺
+    UserQuitStoreRsp UserQuitStoreRsp_Value = 510;                             //用户退出店铺
+    QueryStoreAllUserRsp QueryStoreAllUserRsp_Value = 520;                     //查询店铺所有用户
+
+    AddVIPCustomerRsp AddVIPCustomerRsp_Value = 800;                           //添加VIP客户
+    DeleteVIPCustomerRsp DeleteVIPCustomerRsp_Value = 810;                     //删除VIP客户
+    ModifyVIPCustomerRsp ModifyVIPCustomerRsp_Value = 820;                     //修改VIP客户
+    QueryVIPCustomerInfoRsp QueryVIPCustomerInfoRsp_Value = 830;               //查询VIP客户信息
+    QueryAllVIPCustomerRsp QueryAllVIPCustomerRsp_Value = 840;                 //查询所有VIP客户
+
+    AddVIPConsumeHistoryRsp AddVIPConsumeHistoryRsp_Value = 850;               //添加VIP客户消费记录
+    DeleteVIPConsumeHistoryRsp DeleteVIPConsumeHistoryRsp_Value = 860;         //删除VIP客户消费记录
+    ModifyVIPConsumeHistoryRsp ModifyVIPConsumeHistoryRsp_Value = 870;         //修改VIP客户消费记录
+    QueryAllVIPConsumeHistoryRsp QueryAllVIPConsumeHistoryRsp_Value = 880;     //查询VIP客户消费记录
+
+    AddEvaluationTemplateRsp AddEvaluationTemplateRsp_Value = 900;             //添加店铺考评模板
+    DeleteEvaluationTemplateRsp DeleteEvaluationTemplateRsp_Value = 910;       //删除店铺考评模板
+    ModifyEvaluationTemplateRsp ModifyEvaluationTemplateRsp_Value = 920;       //修改店铺考评模板
+    QueryAllEvaluationTemplateRsp QueryAllEvaluationTemplateRsp_Value = 930;   //查询店铺考评模板
+
+    AddStoreEvaluationRsp AddStoreEvaluationRsp_Value = 950;                   //添加店铺考评
+    DeleteStoreEvaluationRsp DeleteStoreEvaluationRsp_Value = 960;             //删除店铺考评
+    ModifyStoreEvaluationRsp ModifyStoreEvaluationRsp_Value = 970;             //修改店铺考评
+    QueryStoreEvaluationInfoRsp QueryStoreEvaluationInfoRsp_Value = 980;       //查询店铺考评信息
+    QueryAllStoreEvaluationRsp QueryAllStoreEvaluationRsp_Value = 990;         //查询所有店铺考评
+
+    ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;                            //录入POS数据
+
+    QueryCustomerFlowStatisticRsp QueryCustomerFlowStatisticRsp_Value = 2900;  //查询客流统计
+
+    //////////////////////////////////////////////////////////////////////
+
+    ReportCustomerFlowDataRsp ReportCustomerFlowDataRsp_Value = 3000;          //设备上报客流信息
+}
+
+//主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理
+message CustomerFlowMessage
+{
+    CustomerFlowMsgType type = 1;   //消息类型
+    uint64 uiMsgSeq = 2;            //消息序号
+    string strSID = 3;              //会话ID
+    Request reqValue = 4;           //请求值
+    Response rspValue = 5;          //响应值
+}
