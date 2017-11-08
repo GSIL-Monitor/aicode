@@ -240,6 +240,21 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
         }        
     }
 
+    {
+        auto itBegin = m_MsgPreHandlerList.begin();
+        auto itEnd = m_MsgPreHandlerList.end();
+        while (itBegin != itEnd)
+        {
+            if (!(*itBegin)(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest)))
+            {
+                LOG_ERROR_RLD("Receive msg prehandler failed.");
+                return;
+            }
+
+            ++itBegin;
+        }
+    }
+
     auto itBegin = pMsgInfoMap->begin();
     auto itEnd = pMsgInfoMap->end();
     while (itBegin != itEnd)
@@ -262,21 +277,6 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     {
         LOG_ERROR_RLD("Not found action handler, action error: " << strAction);
         return;
-    }
-
-    {
-        auto itBegin = m_MsgPreHandlerList.begin();
-        auto itEnd = m_MsgPreHandlerList.end();
-        while (itBegin != itEnd)
-        {
-            if (!(*itBegin)(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest)))
-            {
-                LOG_ERROR_RLD("Receive msg prehandler failed.");
-                return;
-            }
-
-            ++itBegin;
-        }
     }
 
     itFindHandler->second(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest));
