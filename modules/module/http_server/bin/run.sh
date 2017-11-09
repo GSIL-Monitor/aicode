@@ -15,5 +15,5 @@ ulimit -c unlimited
 
 CURDIR=`pwd`
 ./nginx_1.10.2/sbin/nginx -p $CURDIR/nginx_1.10.2
-./spawn-fcgi -p 9000 -F 1 -f "$CURDIR/access.cgi"
+./spawn-fcgi -a 127.0.0.1 -p 9000 -F 1 -f "$CURDIR/access.cgi"
 
