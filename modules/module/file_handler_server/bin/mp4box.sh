@@ -13,7 +13,7 @@ if [ $# -eq 3 ]; then
     output=$3
 
     if [ -s "$video" ]; then
-        ./MP4Box -add $video -fps $framerate -new $output
+        ./MP4Box -add $video -fps $framerate -tmp . -new $output
     else
         echo "input video is empty"
         exit -1
@@ -39,7 +39,9 @@ else
         param+="-add $audio "
     fi
 
-    param+="-fps $framerate -new $output"
+    param+="-fps $framerate -tmp . -new $output"
 
-    ./MP4Box $param
+    date +%x-%H:%M:%S >>box.log
+    ./MP4Box $param 2>>box.log
+    echo "" >>box.log
 fi

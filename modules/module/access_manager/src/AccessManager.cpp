@@ -725,7 +725,7 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
     
     bool blUserExist = false;
     if (!ValidUser(LoginReqUsr.m_userInfo.m_strUserID, LoginReqUsr.m_userInfo.m_strUserName, blUserExist,
-        LoginReqUsr.m_userInfo.m_strUserPassword, false))
+        LoginReqUsr.m_userInfo.m_strUserPassword, true))
     {
         if (blUserExist)
         {

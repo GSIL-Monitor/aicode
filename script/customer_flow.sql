@@ -95,7 +95,7 @@ create table `t_evaluation_item` (
     `id` varchar(36) not null,
     `item_id` varchar(36) not null                   comment '条目ID',
     `item_name` varchar(256) not null                comment '条目名称',
-    `description` varchar(256) default ''            comment '描述',
+    `description` varchar(1024) default ''            comment '描述',
     `total_point` double not null                    comment '总分',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
@@ -126,7 +126,7 @@ create table `t_store_evaluation_score` (
     `evaluation_id` varchar(36) not null             comment '考评ID',
     `item_id` varchar(36) not null                   comment '考评条目',
     `score` double default 0.0                       comment '得分',
-    `description` varchar(256) default ''            comment '描述',
+    `description` varchar(1024) default ''           comment '描述',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -771,4 +771,33 @@ create table `t_vip_consume_history` (
     index index_ref2 (`vip_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='VIP客户消费记录表';
 
+drop table if exists `t_remote_patrol_store`;
+create table `t_remote_patrol_store` (
+    `id` varchar(36) not null,
+    `patrol_id` varchar(36) not null                 comment '巡查ID',
+    `user_id` varchar(36) default ''                 comment '用户ID',
+    `device_id` varchar(36) default ''               comment '设备ID',
+    `store_id` varchar(36) not null                  comment '店铺ID',
+    `patrol_date` datetime not null                  comment '巡查日期',
+    `patrol_result` int not null                     comment '巡查结果',
+    `description` varchar(1024) default ''           comment '描述',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`patrol_id`),
+    index index_ref2 (`user_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店记录表';
+
+drop table if exists `t_patrol_store_screenshot_association`;
+create table `t_patrol_store_screenshot_association` (
+    `id` varchar(36) not null,
+    `patrol_id` varchar(36) not null                 comment '巡查ID',
+    `screenshot_id` varchar(64) not null             comment '截图ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`patrol_id`)   
+) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店截图关联表';
 

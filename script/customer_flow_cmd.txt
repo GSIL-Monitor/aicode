@@ -145,3 +145,20 @@ curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F 
 查询所有店铺考评
 curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F begindate='2017-11-02 10:50:30' -F enddate='2017-11-02 12:58:30' -F beginindex= http://172.20.120.22/passenger_flow.cgi?action=query_all_store_evaluation
 
+创建巡店记录
+curl -F sid=sss -F userid=user01 -F deviceid= -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F patrol_date='2017-11-08 15:30:15' -F patrol_picture='["pic1","pic2"]' -F patrol_result=1 -F patrol_desc=desc1 http://172.20.120.22/passenger_flow.cgi?action=create_patrol_record
+
+删除巡店记录
+curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F patrol_id=959DE5228D2B6E45B905065E4265496E http://172.20.120.22/passenger_flow.cgi?action=remove_patrol_record
+
+修改巡店记录
+curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F patrol_id=959DE5228D2B6E45B905065E4265496E -F patrol_picture='["pic4","pic5"]' -F patrol_result=0 -F patrol_desc=descmod http://172.20.120.22/passenger_flow.cgi?action=modify_patrol_record
+
+查询巡店记录信息
+curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F patrol_id=959DE5228D2B6E45B905065E4265496E http://172.20.120.22/passenger_flow.cgi?action=query_patrol_record
+
+查询所有巡店记录
+curl -F sid=sss -F userid=user01 -F storeid=2FEB47CD8C03BE40924A81CA090A2EE0 -F begindate='2017-11-12 10:50:30' -F enddate='2017-11-22 12:58:30' -F beginindex= http://172.20.120.22/passenger_flow.cgi?action=query_all_patrol_record
+
+
+

@@ -157,6 +157,17 @@ enum CustomerFlowMsgType
     QueryAllStoreEvaluationReq_T = 18380;     //查询所有店铺考评
     QueryAllStoreEvaluationRsp_T = 18390;
 
+    AddRemotePatrolStoreReq_T = 18400;        //添加远程巡店记录
+    AddRemotePatrolStoreRsp_T = 18410;
+    DeleteRemotePatrolStoreReq_T = 18420;     //删除远程巡店记录
+    DeleteRemotePatrolStoreRsp_T = 18430;
+    ModifyRemotePatrolStoreReq_T = 18440;     //修改远程巡店记录
+    ModifyRemotePatrolStoreRsp_T = 18450;
+    QueryRemotePatrolStoreInfoReq_T = 18460;  //查询远程巡店记录信息
+    QueryRemotePatrolStoreInfoRsp_T = 18470;
+    QueryAllRemotePatrolStoreReq_T = 18480;   //查询所有远程巡店记录
+    QueryAllRemotePatrolStoreRsp_T = 18490;
+
     ImportPOSDataReq_T = 20000;               //录入POS数据
     ImportPOSDataRsp_T = 20010;
 
@@ -312,6 +323,19 @@ message StoreEvaluation                  //店铺考评
     uint32 uiCheckStatus = 6;
     repeated EvaluationItemScore itemScore = 7;
     string strCreateDate = 8;
+}
+
+message RemotePatrolStore                //远程巡店记录
+{
+    string strPatrolID = 1;
+    string strUserID = 2;
+    string strDeviceID = 3;
+    string strStoreID = 4;
+    string strPatrolDate = 5;
+    repeated string strPatrolPicture = 6;
+    uint32 uiPatrolResult = 7;
+    string strDescription = 8;
+    string strCreateDate = 9;
 }
 
 message RawCustomerFlow                  //设备客流信息
@@ -917,6 +941,63 @@ message QueryAllStoreEvaluationRsp       //查询所有店铺考评响应
     repeated StoreEvaluation storeEvaluation = 1;
 }
 
+message AddRemotePatrolStoreReq          //添加远程巡店记录请求
+{
+    RemotePatrolStore patrolStore = 1;
+}
+
+message AddRemotePatrolStoreRsp          //添加远程巡店记录响应
+{
+    string strPatrolID = 1;
+}
+
+message DeleteRemotePatrolStoreReq       //删除远程巡店记录请求
+{
+    string strUserID = 1;
+    string strPatrolID = 2;
+}
+
+message DeleteRemotePatrolStoreRsp       //删除远程巡店记录响应
+{
+    string strValue = 1;
+}
+
+message ModifyRemotePatrolStoreReq       //修改远程巡店记录请求
+{
+    string strUserID = 1;
+    RemotePatrolStore patrolStore = 2;
+}
+
+message ModifyRemotePatrolStoreRsp       //修改远程巡店记录响应
+{
+    string strValue = 1;
+}
+
+message QueryRemotePatrolStoreInfoReq    //查询远程巡店记录信息请求
+{
+    string strUserID = 1;
+    string strPatrolID = 2;
+}
+
+message QueryRemotePatrolStoreInfoRsp    //查询远程巡店记录信息响应
+{
+    RemotePatrolStore patrolStore = 1;
+}
+
+message QueryAllRemotePatrolStoreReq     //查询所有远程巡店记录请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strBeginDate = 3;
+    string strEndDate = 4;
+    uint32 uiBeginIndex = 5;
+}
+
+message QueryAllRemotePatrolStoreRsp     //查询所有远程巡店记录响应
+{
+    repeated RemotePatrolStore patrolStore = 1;
+}
+
 message ImportPOSDataReq                 //录入POS数据请求
 {
     string strUserID = 1;
@@ -1028,6 +1109,12 @@ message Request
     QueryStoreEvaluationInfoReq QueryStoreEvaluationInfoReq_Value = 980;       //查询店铺考评信息
     QueryAllStoreEvaluationReq QueryAllStoreEvaluationReq_Value = 990;         //查询所有店铺考评
 
+    AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;              //添加远程巡店记录
+    DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;        //删除远程巡店记录
+    ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;        //修改远程巡店记录
+    QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;  //查询远程巡店记录信息
+    QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;    //查询所有远程巡店记录
+
     ImportPOSDataReq ImportPOSDataReq_Value = 2000;                            //录入POS数据
 
     QueryCustomerFlowStatisticReq QueryCustomerFlowStatisticReq_Value = 2900;  //查询客流统计
@@ -1107,6 +1194,12 @@ message Response
     ModifyStoreEvaluationRsp ModifyStoreEvaluationRsp_Value = 970;             //修改店铺考评
     QueryStoreEvaluationInfoRsp QueryStoreEvaluationInfoRsp_Value = 980;       //查询店铺考评信息
     QueryAllStoreEvaluationRsp QueryAllStoreEvaluationRsp_Value = 990;         //查询所有店铺考评
+
+    AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;              //添加远程巡店记录
+    DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;        //删除远程巡店记录
+    ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;        //修改远程巡店记录
+    QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;  //查询远程巡店记录信息
+    QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;    //查询所有远程巡店记录
 
     ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;                            //录入POS数据
 

@@ -162,6 +162,16 @@ public:
 
     bool QueryAllStoreEvaluationReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryRemotePatrolStoreInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool ImportPOSDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryCustomerFlowStatisticReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -353,10 +363,29 @@ private:
 
     bool QueryStoreEvaluationInfo(const std::string &strEvaluationID, PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
 
-    bool QueyrStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
+    bool QueryStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
         std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList);
 
     bool QueryAllStoreEvaluation(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::StoreEvaluation> &storeEvaluationList,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void AddRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
+
+    void AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strScreenshot);
+
+    void DeleteRemotePatrolStore(const std::string &strPatrolID);
+
+    void ModifyRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
+
+    void ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::list<std::string> &screenshotList);
+
+    void DeleteRemotePatrolStoreScreenshot(const std::string &strPatrolID);
+
+    bool QueryRemotePatrolStoreInfo(const std::string &strPatrolID, PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
+
+    bool QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<std::string> &scoreList);
+
+    bool QueryAllRemotePatrolStore(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     void ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount,

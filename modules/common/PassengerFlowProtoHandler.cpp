@@ -817,6 +817,56 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddRemotePatrolStoreReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddRemotePatrolStoreReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRemotePatrolStoreReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddRemotePatrolStoreRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddRemotePatrolStoreRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRemotePatrolStoreRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteRemotePatrolStoreReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteRemotePatrolStoreRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRemotePatrolStoreReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRemotePatrolStoreRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRemotePatrolStoreInfoReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRemotePatrolStoreInfoRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRemotePatrolStoreReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRemotePatrolStoreRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::ImportPOSDataReq_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ImportPOSDataReq_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ImportPOSDataReq_T, handler));
@@ -1981,6 +2031,106 @@ bool PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp_Serializer(const Requ
 bool PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<QueryAllStoreEvaluationRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::AddRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<AddRemotePatrolStoreReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<AddRemotePatrolStoreReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::AddRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<AddRemotePatrolStoreRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<AddRemotePatrolStoreRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<DeleteRemotePatrolStoreReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<DeleteRemotePatrolStoreReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteRemotePatrolStoreRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<DeleteRemotePatrolStoreRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ModifyRemotePatrolStoreReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ModifyRemotePatrolStoreReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyRemotePatrolStoreRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ModifyRemotePatrolStoreRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryRemotePatrolStoreInfoReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryRemotePatrolStoreInfoReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryRemotePatrolStoreInfoRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryRemotePatrolStoreInfoRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllRemotePatrolStoreReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryAllRemotePatrolStoreReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllRemotePatrolStoreRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryAllRemotePatrolStoreRsp, Request>(message, rsp);
 }
 
 bool PassengerFlowProtoHandler::ImportPOSDataReq_Serializer(const Request &req, std::string &strOutput)
@@ -4708,6 +4858,291 @@ void PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp::UnSerializer(const C
         evaluation.m_strCreateDate = rspEvaluation.strcreatedate();
 
         m_storeEvaluationList.push_back(evaluation);
+    }
+}
+
+void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRemotePatrolStoreReq_T);
+
+    auto patrol = message.mutable_reqvalue()->mutable_addremotepatrolstorereq_value()->mutable_patrolstore();
+    patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
+    patrol->set_struserid(m_patrolStore.m_strUserID);
+    patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
+    patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
+    patrol->set_strdescription(m_patrolStore.m_strDescription);
+    patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
+
+    for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+    {
+        patrol->add_strpatrolpicture(*it);
+    }
+}
+
+void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+
+    auto patrol = message.reqvalue().addremotepatrolstorereq_value().patrolstore();
+    m_patrolStore.m_strPatrolID = patrol.strpatrolid();
+    m_patrolStore.m_strUserID = patrol.struserid();
+    m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
+    m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
+    m_patrolStore.m_strDescription = patrol.strdescription();
+    m_patrolStore.m_strCreateDate = patrol.strcreatedate();
+
+    for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+}
+
+void PassengerFlowProtoHandler::AddRemotePatrolStoreRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRemotePatrolStoreRsp_T);
+    message.mutable_rspvalue()->mutable_addremotepatrolstorersp_value()->set_strpatrolid(m_strPatrolID);
+}
+
+void PassengerFlowProtoHandler::AddRemotePatrolStoreRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    m_strPatrolID = message.rspvalue().addremotepatrolstorersp_value().strpatrolid();
+}
+
+void PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteRemotePatrolStoreReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_deleteremotepatrolstorereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strpatrolid(m_strPatrolID);
+}
+
+void PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().deleteremotepatrolstorereq_value();
+    m_strUserID = req.struserid();
+    m_strPatrolID = req.strpatrolid();
+}
+
+void PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteRemotePatrolStoreRsp_T);
+
+    message.mutable_rspvalue()->mutable_deleteremotepatrolstorersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().deleteremotepatrolstorersp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRemotePatrolStoreReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_modifyremotepatrolstorereq_value();
+    req->set_struserid(m_strUserID);
+
+    auto patrol = req->mutable_patrolstore();
+    patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
+    patrol->set_struserid(m_patrolStore.m_strUserID);
+    patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
+    patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
+    patrol->set_strdescription(m_patrolStore.m_strDescription);
+    patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
+
+    for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+    {
+        patrol->add_strpatrolpicture(*it);
+    }
+}
+
+void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().modifyremotepatrolstorereq_value();
+    m_strUserID = req.struserid();
+
+    auto patrol = req.patrolstore();
+    m_patrolStore.m_strPatrolID = patrol.strpatrolid();
+    m_patrolStore.m_strUserID = patrol.struserid();
+    m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
+    m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
+    m_patrolStore.m_strDescription = patrol.strdescription();
+    m_patrolStore.m_strCreateDate = patrol.strcreatedate();
+
+    for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+}
+
+void PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRemotePatrolStoreRsp_T);
+
+    message.mutable_rspvalue()->mutable_modifyremotepatrolstorersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().modifyremotepatrolstorersp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRemotePatrolStoreInfoReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_queryremotepatrolstoreinforeq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strpatrolid(m_strPatrolID);
+}
+
+void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+
+    auto req = message.reqvalue().queryremotepatrolstoreinforeq_value();
+    m_strUserID = req.struserid();
+    m_strPatrolID = req.strpatrolid();
+}
+
+void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRemotePatrolStoreInfoRsp_T);
+
+    auto patrol = message.mutable_rspvalue()->mutable_queryremotepatrolstoreinforsp_value()->mutable_patrolstore();
+    patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
+    patrol->set_struserid(m_patrolStore.m_strUserID);
+    patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
+    patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
+    patrol->set_strdescription(m_patrolStore.m_strDescription);
+    patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
+
+    for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+    {
+        patrol->add_strpatrolpicture(*it);
+    }
+}
+
+void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto patrol = message.rspvalue().queryremotepatrolstoreinforsp_value().patrolstore();
+    m_patrolStore.m_strPatrolID = patrol.strpatrolid();
+    m_patrolStore.m_strUserID = patrol.struserid();
+    m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
+    m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
+    m_patrolStore.m_strDescription = patrol.strdescription();
+    m_patrolStore.m_strCreateDate = patrol.strcreatedate();
+
+    for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+}
+
+void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRemotePatrolStoreReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_queryallremotepatrolstorereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strstoreid(m_strStoreID);
+    req->set_strbegindate(m_strBeginDate);
+    req->set_strenddate(m_strEndDate);
+    req->set_uibeginindex(m_uiBeginIndex);
+}
+
+void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+
+    auto req = message.reqvalue().queryallremotepatrolstorereq_value();
+    m_strUserID = req.struserid();
+    m_strStoreID = req.strstoreid();
+    m_strBeginDate = req.strbegindate();
+    m_strEndDate = req.strenddate();
+    m_uiBeginIndex = req.uibeginindex();
+}
+
+void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRemotePatrolStoreRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_queryallremotepatrolstorersp_value();
+    for (auto it = m_patrolStoreList.begin(), end = m_patrolStoreList.end(); it != end; ++it)
+    {
+        auto patrol = rsp->add_patrolstore();
+        patrol->set_strpatrolid(it->m_strPatrolID);
+        patrol->set_struserid(it->m_strUserID);
+        patrol->set_strdeviceid(it->m_strDeviceID);
+        patrol->set_strstoreid(it->m_strStoreID);
+        patrol->set_strpatroldate(it->m_strPatrolDate);
+        patrol->set_uipatrolresult(it->m_uiPatrolResult);
+        patrol->set_strdescription(it->m_strDescription);
+        patrol->set_strcreatedate(it->m_strCreateDate);
+
+        for (auto pic = it->m_strPatrolPictureList.begin(), end = it->m_strPatrolPictureList.end(); pic != end; ++pic)
+        {
+            patrol->add_strpatrolpicture(*pic);
+        }
+    }
+}
+
+void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto rsp = message.rspvalue().queryallremotepatrolstorersp_value();
+    for (int i = 0, sz = rsp.patrolstore_size(); i < sz; ++i)
+    {
+        auto rspPatrol = rsp.patrolstore(i);
+        PassengerFlowProtoHandler::RemotePatrolStore patrol;
+        patrol.m_strPatrolID = rspPatrol.strpatrolid();
+        patrol.m_strUserID = rspPatrol.struserid();
+        patrol.m_strDeviceID = rspPatrol.strdeviceid();
+        patrol.m_strStoreID = rspPatrol.strstoreid();
+        patrol.m_strPatrolDate = rspPatrol.strpatroldate();
+        patrol.m_uiPatrolResult = rspPatrol.uipatrolresult();
+        patrol.m_strDescription = rspPatrol.strdescription();
+        patrol.m_strCreateDate = rspPatrol.strcreatedate();
+
+        for (int i = 0, sz = rspPatrol.strpatrolpicture_size(); i < sz; ++i)
+        {
+            patrol.m_strPatrolPictureList.push_back(rspPatrol.strpatrolpicture(i));
+        }
+
+        m_patrolStoreList.push_back(patrol);
     }
 }
 

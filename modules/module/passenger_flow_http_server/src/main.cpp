@@ -331,6 +331,13 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::CreatePatrolRecordHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::DeletePatrolRecordHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::ModifyPatrolRecordHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryPatrolRecordHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryAllPatrolRecordHandler, &filehdr, _1, _2));
+
+
     fcgimgr.Run(true);
     return 0;
 }

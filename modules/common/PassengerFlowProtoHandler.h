@@ -144,6 +144,17 @@ public:
         QueryAllStoreEvaluationReq_T = 18380,     //查询所有店铺考评
         QueryAllStoreEvaluationRsp_T = 18390,
 
+        AddRemotePatrolStoreReq_T = 18400,        //添加远程巡店记录
+        AddRemotePatrolStoreRsp_T = 18410,
+        DeleteRemotePatrolStoreReq_T = 18420,     //删除远程巡店记录
+        DeleteRemotePatrolStoreRsp_T = 18430,
+        ModifyRemotePatrolStoreReq_T = 18440,     //修改远程巡店记录
+        ModifyRemotePatrolStoreRsp_T = 18450,
+        QueryRemotePatrolStoreInfoReq_T = 18460,  //查询远程巡店记录信息
+        QueryRemotePatrolStoreInfoRsp_T = 18470,
+        QueryAllRemotePatrolStoreReq_T = 18480,   //查询所有远程巡店记录
+        QueryAllRemotePatrolStoreRsp_T = 18490,
+
         ImportPOSDataReq_T = 20000,               //录入POS数据
         ImportPOSDataRsp_T = 20010,
 
@@ -297,6 +308,19 @@ public:
         double m_dTotalScore;
         unsigned int m_uiCheckStatus;
         std::list<EvaluationItemScore> m_itemScoreList;
+        std::string m_strCreateDate;
+    };
+
+    struct RemotePatrolStore                //远程巡店记录
+    {
+        std::string m_strPatrolID;
+        std::string m_strUserID;
+        std::string m_strDeviceID;
+        std::string m_strStoreID;
+        std::string m_strPatrolDate;
+        std::list<std::string> m_strPatrolPictureList;
+        unsigned int m_uiPatrolResult;
+        std::string m_strDescription;
         std::string m_strCreateDate;
     };
 
@@ -1246,6 +1270,93 @@ public:
         virtual void UnSerializer(const CustomerFlowMessage &message);
     };
 
+    struct AddRemotePatrolStoreReq : Request
+    {
+        RemotePatrolStore m_patrolStore;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddRemotePatrolStoreRsp : Response
+    {
+        std::string m_strPatrolID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteRemotePatrolStoreReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strPatrolID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteRemotePatrolStoreRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyRemotePatrolStoreReq : Request
+    {
+        std::string m_strUserID;
+        RemotePatrolStore m_patrolStore;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyRemotePatrolStoreRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryRemotePatrolStoreInfoReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strPatrolID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryRemotePatrolStoreInfoRsp : Response
+    {
+        RemotePatrolStore m_patrolStore;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllRemotePatrolStoreReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strStoreID;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiBeginIndex;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllRemotePatrolStoreRsp : Response
+    {
+        std::list<RemotePatrolStore> m_patrolStoreList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
     struct ImportPOSDataReq : Request
     {
         std::string m_strUserID;
@@ -1581,6 +1692,31 @@ private:
     bool QueryAllStoreEvaluationReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool QueryAllStoreEvaluationRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QueryAllStoreEvaluationRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool AddRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput);
+    bool AddRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool AddRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool AddRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool DeleteRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput);
+    bool DeleteRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool DeleteRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool DeleteRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool ModifyRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput);
+    bool ModifyRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ModifyRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ModifyRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryRemotePatrolStoreInfoReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryRemotePatrolStoreInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryRemotePatrolStoreInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryRemotePatrolStoreInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryAllRemotePatrolStoreReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryAllRemotePatrolStoreReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryAllRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryAllRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
     bool ImportPOSDataReq_Serializer(const Request &req, std::string &strOutput);
     bool ImportPOSDataReq_UnSerializer(const CustomerFlowMessage &message, Request &req);

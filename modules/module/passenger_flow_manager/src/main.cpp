@@ -416,6 +416,12 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreEvaluationInfoReq_T, boost::bind(&PassengerFlowManager::QueryStoreEvaluationInfoReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreEvaluationReq_T, boost::bind(&PassengerFlowManager::QueryAllStoreEvaluationReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddRemotePatrolStoreReq_T, boost::bind(&PassengerFlowManager::AddRemotePatrolStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRemotePatrolStoreReq_T, boost::bind(&PassengerFlowManager::DeleteRemotePatrolStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRemotePatrolStoreReq_T, boost::bind(&PassengerFlowManager::ModifyRemotePatrolStoreReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRemotePatrolStoreInfoReq_T, boost::bind(&PassengerFlowManager::QueryRemotePatrolStoreInfoReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRemotePatrolStoreReq_T, boost::bind(&PassengerFlowManager::QueryAllRemotePatrolStoreReq, &Umg, _1, _2, _3));
+
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ImportPOSDataReq_T, boost::bind(&PassengerFlowManager::ImportPOSDataReq, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCustomerFlowStatisticReq_T, boost::bind(&PassengerFlowManager::QueryCustomerFlowStatisticReq, &Umg, _1, _2, _3));

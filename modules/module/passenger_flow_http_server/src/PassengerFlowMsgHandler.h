@@ -86,6 +86,11 @@ public:
     static const std::string QUERY_EVALUATION_OF_STORE;
     static const std::string QUERY_ALL_EVALUATION_OF_STORE;
 
+    static const std::string CREATE_PATROL_RECORD;
+    static const std::string DELETE_PATROL_RECORD;
+    static const std::string MODIFY_PATROL_RECORD;
+    static const std::string QUERY_PATROL_RECORD;
+    static const std::string QUERY_ALL_PATROL_RECORD;
 
 
     typedef struct _ParamInfo
@@ -208,6 +213,17 @@ public:
     bool QueryEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryAllEvaluationOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool CreatePatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeletePatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     bool UploadPassengerFlowHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
@@ -346,6 +362,19 @@ private:
         std::list<EvaluationTemplate> m_evlist;
     };
 
+    struct PatrolRecord
+    {
+        std::string m_strPatrolID;
+        std::string m_strUserID;
+        std::string m_strDevID;
+        std::string m_strStoreID;
+        std::string m_strPatrolDate;
+        std::list<std::string> m_strPatrolPicIDList;
+        std::list<std::string> m_strPatrolPicURLList;
+        unsigned int m_uiPatrolResult;
+        std::string m_strPatrolDesc;
+    };
+
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
@@ -455,6 +484,13 @@ private:
     bool QueryEvaluation(const std::string &strSid, const std::string &strUserID, Evaluation &ev);
     bool QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<Evaluation> &evlist);
+
+    bool CreatePatrolRecord(const std::string &strSid, PatrolRecord &pr);
+    bool DeletePatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strPatrolID);
+    bool ModifyPatrolRecord(const std::string &strSid, PatrolRecord &pr);
+    bool QueryPatrolRecord(const std::string &strSid, PatrolRecord &pr);
+    bool QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);

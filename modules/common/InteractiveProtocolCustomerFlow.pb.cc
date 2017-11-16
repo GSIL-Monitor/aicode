@@ -48,6 +48,8 @@ class EvaluationItemScoreDefaultTypeInternal : public ::google::protobuf::intern
 } _EvaluationItemScore_default_instance_;
 class StoreEvaluationDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<StoreEvaluation> {
 } _StoreEvaluation_default_instance_;
+class RemotePatrolStoreDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RemotePatrolStore> {
+} _RemotePatrolStore_default_instance_;
 class RawCustomerFlowDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RawCustomerFlow> {
 } _RawCustomerFlow_default_instance_;
 class CustomerFlowPreHandleReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<CustomerFlowPreHandleReq> {
@@ -262,6 +264,26 @@ class QueryAllStoreEvaluationReqDefaultTypeInternal : public ::google::protobuf:
 } _QueryAllStoreEvaluationReq_default_instance_;
 class QueryAllStoreEvaluationRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryAllStoreEvaluationRsp> {
 } _QueryAllStoreEvaluationRsp_default_instance_;
+class AddRemotePatrolStoreReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AddRemotePatrolStoreReq> {
+} _AddRemotePatrolStoreReq_default_instance_;
+class AddRemotePatrolStoreRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<AddRemotePatrolStoreRsp> {
+} _AddRemotePatrolStoreRsp_default_instance_;
+class DeleteRemotePatrolStoreReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DeleteRemotePatrolStoreReq> {
+} _DeleteRemotePatrolStoreReq_default_instance_;
+class DeleteRemotePatrolStoreRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DeleteRemotePatrolStoreRsp> {
+} _DeleteRemotePatrolStoreRsp_default_instance_;
+class ModifyRemotePatrolStoreReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ModifyRemotePatrolStoreReq> {
+} _ModifyRemotePatrolStoreReq_default_instance_;
+class ModifyRemotePatrolStoreRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ModifyRemotePatrolStoreRsp> {
+} _ModifyRemotePatrolStoreRsp_default_instance_;
+class QueryRemotePatrolStoreInfoReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryRemotePatrolStoreInfoReq> {
+} _QueryRemotePatrolStoreInfoReq_default_instance_;
+class QueryRemotePatrolStoreInfoRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryRemotePatrolStoreInfoRsp> {
+} _QueryRemotePatrolStoreInfoRsp_default_instance_;
+class QueryAllRemotePatrolStoreReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryAllRemotePatrolStoreReq> {
+} _QueryAllRemotePatrolStoreReq_default_instance_;
+class QueryAllRemotePatrolStoreRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryAllRemotePatrolStoreRsp> {
+} _QueryAllRemotePatrolStoreRsp_default_instance_;
 class ImportPOSDataReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ImportPOSDataReq> {
 } _ImportPOSDataReq_default_instance_;
 class ImportPOSDataRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<ImportPOSDataRsp> {
@@ -286,7 +308,7 @@ namespace protobuf_InteractiveProtocolCustomerFlow_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[130];
+::google::protobuf::Metadata file_level_metadata[141];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -437,6 +459,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, uicheckstatus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, itemscore_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, strcreatedate_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strpatrolid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strdeviceid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strstoreid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strpatroldate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strpatrolpicture_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, uipatrolresult_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strdescription_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemotePatrolStore, strcreatedate_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RawCustomerFlow, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1041,6 +1076,63 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllStoreEvaluationRsp, storeevaluation_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddRemotePatrolStoreReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddRemotePatrolStoreReq, patrolstore_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddRemotePatrolStoreRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddRemotePatrolStoreRsp, strpatrolid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteRemotePatrolStoreReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteRemotePatrolStoreReq, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteRemotePatrolStoreReq, strpatrolid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteRemotePatrolStoreRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DeleteRemotePatrolStoreRsp, strvalue_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRemotePatrolStoreReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRemotePatrolStoreReq, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRemotePatrolStoreReq, patrolstore_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRemotePatrolStoreRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRemotePatrolStoreRsp, strvalue_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryRemotePatrolStoreInfoReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryRemotePatrolStoreInfoReq, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryRemotePatrolStoreInfoReq, strpatrolid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryRemotePatrolStoreInfoRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryRemotePatrolStoreInfoRsp, patrolstore_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, strstoreid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, strbegindate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, strenddate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreReq, uibeginindex_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryAllRemotePatrolStoreRsp, patrolstore_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ImportPOSDataReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -1137,6 +1229,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, modifystoreevaluationreq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, querystoreevaluationinforeq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryallstoreevaluationreq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, addremotepatrolstorereq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, deleteremotepatrolstorereq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, modifyremotepatrolstorereq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryremotepatrolstoreinforeq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, queryallremotepatrolstorereq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, importposdatareq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, querycustomerflowstatisticreq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, reportcustomerflowdatareq_value_),
@@ -1199,6 +1296,11 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, modifystoreevaluationrsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, querystoreevaluationinforsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryallstoreevaluationrsp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, addremotepatrolstorersp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, deleteremotepatrolstorersp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, modifyremotepatrolstorersp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryremotepatrolstoreinforsp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, queryallremotepatrolstorersp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, importposdatarsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, querycustomerflowstatisticrsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, reportcustomerflowdatarsp_value_),
@@ -1228,122 +1330,133 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 118, -1, sizeof(EvaluationItem)},
   { 126, -1, sizeof(EvaluationItemScore)},
   { 133, -1, sizeof(StoreEvaluation)},
-  { 145, -1, sizeof(RawCustomerFlow)},
-  { 153, -1, sizeof(CustomerFlowPreHandleReq)},
-  { 158, -1, sizeof(CustomerFlowPreHandleRsp)},
-  { 163, -1, sizeof(ShakehandReq)},
-  { 168, -1, sizeof(ShakehandRsp)},
-  { 173, -1, sizeof(AddGroupReq)},
-  { 179, -1, sizeof(AddGroupRsp)},
-  { 184, -1, sizeof(DeleteGroupReq)},
-  { 190, -1, sizeof(DeleteGroupRsp)},
-  { 195, -1, sizeof(ModifyGroupReq)},
-  { 201, -1, sizeof(ModifyGroupRsp)},
-  { 206, -1, sizeof(QueryGroupInfoReq)},
-  { 212, -1, sizeof(QueryGroupInfoRsp)},
-  { 217, -1, sizeof(QueryAllGroupReq)},
-  { 222, -1, sizeof(QueryAllGroupRsp)},
-  { 227, -1, sizeof(AddStoreReq)},
-  { 233, -1, sizeof(AddStoreRsp)},
-  { 238, -1, sizeof(DeleteStoreReq)},
-  { 244, -1, sizeof(DeleteStoreRsp)},
-  { 249, -1, sizeof(ModifyStoreReq)},
-  { 255, -1, sizeof(ModifyStoreRsp)},
-  { 260, -1, sizeof(QueryStoreInfoReq)},
-  { 266, -1, sizeof(QueryStoreInfoRsp)},
-  { 271, -1, sizeof(QueryAllStoreReq)},
-  { 277, -1, sizeof(QueryAllStoreRsp)},
-  { 282, -1, sizeof(AddEntranceReq)},
-  { 289, -1, sizeof(AddEntranceRsp)},
-  { 294, -1, sizeof(DeleteEntranceReq)},
-  { 301, -1, sizeof(DeleteEntranceRsp)},
-  { 306, -1, sizeof(ModifyEntranceReq)},
-  { 315, -1, sizeof(ModifyEntranceRsp)},
-  { 320, -1, sizeof(AddEntranceDeviceReq)},
-  { 328, -1, sizeof(AddEntranceDeviceRsp)},
-  { 333, -1, sizeof(DeleteEntranceDeviceReq)},
-  { 341, -1, sizeof(DeleteEntranceDeviceRsp)},
-  { 346, -1, sizeof(AddEventReq)},
-  { 351, -1, sizeof(AddEventRsp)},
-  { 356, -1, sizeof(DeleteEventReq)},
-  { 362, -1, sizeof(DeleteEventRsp)},
-  { 367, -1, sizeof(ModifyEventReq)},
-  { 373, -1, sizeof(ModifyEventRsp)},
-  { 378, -1, sizeof(QueryEventInfoReq)},
-  { 384, -1, sizeof(QueryEventInfoRsp)},
-  { 389, -1, sizeof(QueryAllEventReq)},
-  { 395, -1, sizeof(QueryAllEventRsp)},
-  { 400, -1, sizeof(AddSmartGuardStoreReq)},
-  { 406, -1, sizeof(AddSmartGuardStoreRsp)},
-  { 411, -1, sizeof(DeleteSmartGuardStoreReq)},
-  { 417, -1, sizeof(DeleteSmartGuardStoreRsp)},
-  { 422, -1, sizeof(ModifySmartGuardStoreReq)},
-  { 428, -1, sizeof(ModifySmartGuardStoreRsp)},
-  { 433, -1, sizeof(QuerySmartGuardStoreInfoReq)},
-  { 439, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
-  { 444, -1, sizeof(QueryAllSmartGuardStoreReq)},
-  { 451, -1, sizeof(QueryAllSmartGuardStoreRsp)},
-  { 456, -1, sizeof(AddRegularPatrolReq)},
-  { 462, -1, sizeof(AddRegularPatrolRsp)},
-  { 467, -1, sizeof(DeleteRegularPatrolReq)},
-  { 473, -1, sizeof(DeleteRegularPatrolRsp)},
-  { 478, -1, sizeof(ModifyRegularPatrolReq)},
-  { 484, -1, sizeof(ModifyRegularPatrolRsp)},
-  { 489, -1, sizeof(QueryRegularPatrolInfoReq)},
-  { 495, -1, sizeof(QueryRegularPatrolInfoRsp)},
-  { 500, -1, sizeof(QueryAllRegularPatrolReq)},
-  { 507, -1, sizeof(QueryAllRegularPatrolRsp)},
-  { 512, -1, sizeof(UserJoinStoreReq)},
-  { 519, -1, sizeof(UserJoinStoreRsp)},
-  { 524, -1, sizeof(UserQuitStoreReq)},
-  { 531, -1, sizeof(UserQuitStoreRsp)},
-  { 536, -1, sizeof(QueryStoreAllUserReq)},
-  { 542, -1, sizeof(QueryStoreAllUserRsp)},
-  { 547, -1, sizeof(AddVIPCustomerReq)},
-  { 553, -1, sizeof(AddVIPCustomerRsp)},
-  { 558, -1, sizeof(DeleteVIPCustomerReq)},
-  { 564, -1, sizeof(DeleteVIPCustomerRsp)},
-  { 569, -1, sizeof(ModifyVIPCustomerReq)},
-  { 575, -1, sizeof(ModifyVIPCustomerRsp)},
-  { 580, -1, sizeof(QueryVIPCustomerInfoReq)},
-  { 586, -1, sizeof(QueryVIPCustomerInfoRsp)},
-  { 591, -1, sizeof(QueryAllVIPCustomerReq)},
-  { 597, -1, sizeof(QueryAllVIPCustomerRsp)},
-  { 602, -1, sizeof(AddVIPConsumeHistoryReq)},
-  { 608, -1, sizeof(AddVIPConsumeHistoryRsp)},
-  { 613, -1, sizeof(DeleteVIPConsumeHistoryReq)},
-  { 619, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
-  { 624, -1, sizeof(ModifyVIPConsumeHistoryReq)},
-  { 630, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
-  { 635, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
-  { 642, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
-  { 647, -1, sizeof(AddEvaluationTemplateReq)},
-  { 653, -1, sizeof(AddEvaluationTemplateRsp)},
-  { 658, -1, sizeof(DeleteEvaluationTemplateReq)},
-  { 664, -1, sizeof(DeleteEvaluationTemplateRsp)},
-  { 669, -1, sizeof(ModifyEvaluationTemplateReq)},
-  { 675, -1, sizeof(ModifyEvaluationTemplateRsp)},
-  { 680, -1, sizeof(QueryAllEvaluationTemplateReq)},
-  { 685, -1, sizeof(QueryAllEvaluationTemplateRsp)},
-  { 690, -1, sizeof(AddStoreEvaluationReq)},
-  { 695, -1, sizeof(AddStoreEvaluationRsp)},
-  { 700, -1, sizeof(DeleteStoreEvaluationReq)},
-  { 706, -1, sizeof(DeleteStoreEvaluationRsp)},
-  { 711, -1, sizeof(ModifyStoreEvaluationReq)},
-  { 717, -1, sizeof(ModifyStoreEvaluationRsp)},
-  { 722, -1, sizeof(QueryStoreEvaluationInfoReq)},
-  { 729, -1, sizeof(QueryStoreEvaluationInfoRsp)},
-  { 734, -1, sizeof(QueryAllStoreEvaluationReq)},
-  { 743, -1, sizeof(QueryAllStoreEvaluationRsp)},
-  { 748, -1, sizeof(ImportPOSDataReq)},
-  { 758, -1, sizeof(ImportPOSDataRsp)},
-  { 763, -1, sizeof(QueryCustomerFlowStatisticReq)},
-  { 772, -1, sizeof(QueryCustomerFlowStatisticRsp)},
-  { 777, -1, sizeof(ReportCustomerFlowDataReq)},
-  { 783, -1, sizeof(ReportCustomerFlowDataRsp)},
-  { 788, -1, sizeof(Request)},
-  { 848, -1, sizeof(Response)},
-  { 910, -1, sizeof(CustomerFlowMessage)},
+  { 145, -1, sizeof(RemotePatrolStore)},
+  { 158, -1, sizeof(RawCustomerFlow)},
+  { 166, -1, sizeof(CustomerFlowPreHandleReq)},
+  { 171, -1, sizeof(CustomerFlowPreHandleRsp)},
+  { 176, -1, sizeof(ShakehandReq)},
+  { 181, -1, sizeof(ShakehandRsp)},
+  { 186, -1, sizeof(AddGroupReq)},
+  { 192, -1, sizeof(AddGroupRsp)},
+  { 197, -1, sizeof(DeleteGroupReq)},
+  { 203, -1, sizeof(DeleteGroupRsp)},
+  { 208, -1, sizeof(ModifyGroupReq)},
+  { 214, -1, sizeof(ModifyGroupRsp)},
+  { 219, -1, sizeof(QueryGroupInfoReq)},
+  { 225, -1, sizeof(QueryGroupInfoRsp)},
+  { 230, -1, sizeof(QueryAllGroupReq)},
+  { 235, -1, sizeof(QueryAllGroupRsp)},
+  { 240, -1, sizeof(AddStoreReq)},
+  { 246, -1, sizeof(AddStoreRsp)},
+  { 251, -1, sizeof(DeleteStoreReq)},
+  { 257, -1, sizeof(DeleteStoreRsp)},
+  { 262, -1, sizeof(ModifyStoreReq)},
+  { 268, -1, sizeof(ModifyStoreRsp)},
+  { 273, -1, sizeof(QueryStoreInfoReq)},
+  { 279, -1, sizeof(QueryStoreInfoRsp)},
+  { 284, -1, sizeof(QueryAllStoreReq)},
+  { 290, -1, sizeof(QueryAllStoreRsp)},
+  { 295, -1, sizeof(AddEntranceReq)},
+  { 302, -1, sizeof(AddEntranceRsp)},
+  { 307, -1, sizeof(DeleteEntranceReq)},
+  { 314, -1, sizeof(DeleteEntranceRsp)},
+  { 319, -1, sizeof(ModifyEntranceReq)},
+  { 328, -1, sizeof(ModifyEntranceRsp)},
+  { 333, -1, sizeof(AddEntranceDeviceReq)},
+  { 341, -1, sizeof(AddEntranceDeviceRsp)},
+  { 346, -1, sizeof(DeleteEntranceDeviceReq)},
+  { 354, -1, sizeof(DeleteEntranceDeviceRsp)},
+  { 359, -1, sizeof(AddEventReq)},
+  { 364, -1, sizeof(AddEventRsp)},
+  { 369, -1, sizeof(DeleteEventReq)},
+  { 375, -1, sizeof(DeleteEventRsp)},
+  { 380, -1, sizeof(ModifyEventReq)},
+  { 386, -1, sizeof(ModifyEventRsp)},
+  { 391, -1, sizeof(QueryEventInfoReq)},
+  { 397, -1, sizeof(QueryEventInfoRsp)},
+  { 402, -1, sizeof(QueryAllEventReq)},
+  { 408, -1, sizeof(QueryAllEventRsp)},
+  { 413, -1, sizeof(AddSmartGuardStoreReq)},
+  { 419, -1, sizeof(AddSmartGuardStoreRsp)},
+  { 424, -1, sizeof(DeleteSmartGuardStoreReq)},
+  { 430, -1, sizeof(DeleteSmartGuardStoreRsp)},
+  { 435, -1, sizeof(ModifySmartGuardStoreReq)},
+  { 441, -1, sizeof(ModifySmartGuardStoreRsp)},
+  { 446, -1, sizeof(QuerySmartGuardStoreInfoReq)},
+  { 452, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
+  { 457, -1, sizeof(QueryAllSmartGuardStoreReq)},
+  { 464, -1, sizeof(QueryAllSmartGuardStoreRsp)},
+  { 469, -1, sizeof(AddRegularPatrolReq)},
+  { 475, -1, sizeof(AddRegularPatrolRsp)},
+  { 480, -1, sizeof(DeleteRegularPatrolReq)},
+  { 486, -1, sizeof(DeleteRegularPatrolRsp)},
+  { 491, -1, sizeof(ModifyRegularPatrolReq)},
+  { 497, -1, sizeof(ModifyRegularPatrolRsp)},
+  { 502, -1, sizeof(QueryRegularPatrolInfoReq)},
+  { 508, -1, sizeof(QueryRegularPatrolInfoRsp)},
+  { 513, -1, sizeof(QueryAllRegularPatrolReq)},
+  { 520, -1, sizeof(QueryAllRegularPatrolRsp)},
+  { 525, -1, sizeof(UserJoinStoreReq)},
+  { 532, -1, sizeof(UserJoinStoreRsp)},
+  { 537, -1, sizeof(UserQuitStoreReq)},
+  { 544, -1, sizeof(UserQuitStoreRsp)},
+  { 549, -1, sizeof(QueryStoreAllUserReq)},
+  { 555, -1, sizeof(QueryStoreAllUserRsp)},
+  { 560, -1, sizeof(AddVIPCustomerReq)},
+  { 566, -1, sizeof(AddVIPCustomerRsp)},
+  { 571, -1, sizeof(DeleteVIPCustomerReq)},
+  { 577, -1, sizeof(DeleteVIPCustomerRsp)},
+  { 582, -1, sizeof(ModifyVIPCustomerReq)},
+  { 588, -1, sizeof(ModifyVIPCustomerRsp)},
+  { 593, -1, sizeof(QueryVIPCustomerInfoReq)},
+  { 599, -1, sizeof(QueryVIPCustomerInfoRsp)},
+  { 604, -1, sizeof(QueryAllVIPCustomerReq)},
+  { 610, -1, sizeof(QueryAllVIPCustomerRsp)},
+  { 615, -1, sizeof(AddVIPConsumeHistoryReq)},
+  { 621, -1, sizeof(AddVIPConsumeHistoryRsp)},
+  { 626, -1, sizeof(DeleteVIPConsumeHistoryReq)},
+  { 632, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
+  { 637, -1, sizeof(ModifyVIPConsumeHistoryReq)},
+  { 643, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
+  { 648, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
+  { 655, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
+  { 660, -1, sizeof(AddEvaluationTemplateReq)},
+  { 666, -1, sizeof(AddEvaluationTemplateRsp)},
+  { 671, -1, sizeof(DeleteEvaluationTemplateReq)},
+  { 677, -1, sizeof(DeleteEvaluationTemplateRsp)},
+  { 682, -1, sizeof(ModifyEvaluationTemplateReq)},
+  { 688, -1, sizeof(ModifyEvaluationTemplateRsp)},
+  { 693, -1, sizeof(QueryAllEvaluationTemplateReq)},
+  { 698, -1, sizeof(QueryAllEvaluationTemplateRsp)},
+  { 703, -1, sizeof(AddStoreEvaluationReq)},
+  { 708, -1, sizeof(AddStoreEvaluationRsp)},
+  { 713, -1, sizeof(DeleteStoreEvaluationReq)},
+  { 719, -1, sizeof(DeleteStoreEvaluationRsp)},
+  { 724, -1, sizeof(ModifyStoreEvaluationReq)},
+  { 730, -1, sizeof(ModifyStoreEvaluationRsp)},
+  { 735, -1, sizeof(QueryStoreEvaluationInfoReq)},
+  { 742, -1, sizeof(QueryStoreEvaluationInfoRsp)},
+  { 747, -1, sizeof(QueryAllStoreEvaluationReq)},
+  { 756, -1, sizeof(QueryAllStoreEvaluationRsp)},
+  { 761, -1, sizeof(AddRemotePatrolStoreReq)},
+  { 766, -1, sizeof(AddRemotePatrolStoreRsp)},
+  { 771, -1, sizeof(DeleteRemotePatrolStoreReq)},
+  { 777, -1, sizeof(DeleteRemotePatrolStoreRsp)},
+  { 782, -1, sizeof(ModifyRemotePatrolStoreReq)},
+  { 788, -1, sizeof(ModifyRemotePatrolStoreRsp)},
+  { 793, -1, sizeof(QueryRemotePatrolStoreInfoReq)},
+  { 799, -1, sizeof(QueryRemotePatrolStoreInfoRsp)},
+  { 804, -1, sizeof(QueryAllRemotePatrolStoreReq)},
+  { 813, -1, sizeof(QueryAllRemotePatrolStoreRsp)},
+  { 818, -1, sizeof(ImportPOSDataReq)},
+  { 828, -1, sizeof(ImportPOSDataRsp)},
+  { 833, -1, sizeof(QueryCustomerFlowStatisticReq)},
+  { 842, -1, sizeof(QueryCustomerFlowStatisticRsp)},
+  { 847, -1, sizeof(ReportCustomerFlowDataReq)},
+  { 853, -1, sizeof(ReportCustomerFlowDataRsp)},
+  { 858, -1, sizeof(Request)},
+  { 923, -1, sizeof(Response)},
+  { 990, -1, sizeof(CustomerFlowMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1361,6 +1474,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_EvaluationItem_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_EvaluationItemScore_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_StoreEvaluation_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_RemotePatrolStore_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RawCustomerFlow_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_CustomerFlowPreHandleReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_CustomerFlowPreHandleRsp_default_instance_),
@@ -1468,6 +1582,16 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryStoreEvaluationInfoRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryAllStoreEvaluationReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryAllStoreEvaluationRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_AddRemotePatrolStoreReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_AddRemotePatrolStoreRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteRemotePatrolStoreReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DeleteRemotePatrolStoreRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_ModifyRemotePatrolStoreReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_ModifyRemotePatrolStoreRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryRemotePatrolStoreInfoReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryRemotePatrolStoreInfoRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryAllRemotePatrolStoreReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryAllRemotePatrolStoreRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ImportPOSDataReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ImportPOSDataRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryCustomerFlowStatisticReq_default_instance_),
@@ -1497,7 +1621,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 130);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 141);
 }
 
 }  // namespace
@@ -1531,238 +1655,260 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[12].reflection;
   _StoreEvaluation_default_instance_.Shutdown();
   delete file_level_metadata[13].reflection;
-  _RawCustomerFlow_default_instance_.Shutdown();
+  _RemotePatrolStore_default_instance_.Shutdown();
   delete file_level_metadata[14].reflection;
-  _CustomerFlowPreHandleReq_default_instance_.Shutdown();
+  _RawCustomerFlow_default_instance_.Shutdown();
   delete file_level_metadata[15].reflection;
-  _CustomerFlowPreHandleRsp_default_instance_.Shutdown();
+  _CustomerFlowPreHandleReq_default_instance_.Shutdown();
   delete file_level_metadata[16].reflection;
-  _ShakehandReq_default_instance_.Shutdown();
+  _CustomerFlowPreHandleRsp_default_instance_.Shutdown();
   delete file_level_metadata[17].reflection;
-  _ShakehandRsp_default_instance_.Shutdown();
+  _ShakehandReq_default_instance_.Shutdown();
   delete file_level_metadata[18].reflection;
-  _AddGroupReq_default_instance_.Shutdown();
+  _ShakehandRsp_default_instance_.Shutdown();
   delete file_level_metadata[19].reflection;
-  _AddGroupRsp_default_instance_.Shutdown();
+  _AddGroupReq_default_instance_.Shutdown();
   delete file_level_metadata[20].reflection;
-  _DeleteGroupReq_default_instance_.Shutdown();
+  _AddGroupRsp_default_instance_.Shutdown();
   delete file_level_metadata[21].reflection;
-  _DeleteGroupRsp_default_instance_.Shutdown();
+  _DeleteGroupReq_default_instance_.Shutdown();
   delete file_level_metadata[22].reflection;
-  _ModifyGroupReq_default_instance_.Shutdown();
+  _DeleteGroupRsp_default_instance_.Shutdown();
   delete file_level_metadata[23].reflection;
-  _ModifyGroupRsp_default_instance_.Shutdown();
+  _ModifyGroupReq_default_instance_.Shutdown();
   delete file_level_metadata[24].reflection;
-  _QueryGroupInfoReq_default_instance_.Shutdown();
+  _ModifyGroupRsp_default_instance_.Shutdown();
   delete file_level_metadata[25].reflection;
-  _QueryGroupInfoRsp_default_instance_.Shutdown();
+  _QueryGroupInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[26].reflection;
-  _QueryAllGroupReq_default_instance_.Shutdown();
+  _QueryGroupInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[27].reflection;
-  _QueryAllGroupRsp_default_instance_.Shutdown();
+  _QueryAllGroupReq_default_instance_.Shutdown();
   delete file_level_metadata[28].reflection;
-  _AddStoreReq_default_instance_.Shutdown();
+  _QueryAllGroupRsp_default_instance_.Shutdown();
   delete file_level_metadata[29].reflection;
-  _AddStoreRsp_default_instance_.Shutdown();
+  _AddStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[30].reflection;
-  _DeleteStoreReq_default_instance_.Shutdown();
+  _AddStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[31].reflection;
-  _DeleteStoreRsp_default_instance_.Shutdown();
+  _DeleteStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[32].reflection;
-  _ModifyStoreReq_default_instance_.Shutdown();
+  _DeleteStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[33].reflection;
-  _ModifyStoreRsp_default_instance_.Shutdown();
+  _ModifyStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[34].reflection;
-  _QueryStoreInfoReq_default_instance_.Shutdown();
+  _ModifyStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[35].reflection;
-  _QueryStoreInfoRsp_default_instance_.Shutdown();
+  _QueryStoreInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[36].reflection;
-  _QueryAllStoreReq_default_instance_.Shutdown();
+  _QueryStoreInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[37].reflection;
-  _QueryAllStoreRsp_default_instance_.Shutdown();
+  _QueryAllStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[38].reflection;
-  _AddEntranceReq_default_instance_.Shutdown();
+  _QueryAllStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[39].reflection;
-  _AddEntranceRsp_default_instance_.Shutdown();
+  _AddEntranceReq_default_instance_.Shutdown();
   delete file_level_metadata[40].reflection;
-  _DeleteEntranceReq_default_instance_.Shutdown();
+  _AddEntranceRsp_default_instance_.Shutdown();
   delete file_level_metadata[41].reflection;
-  _DeleteEntranceRsp_default_instance_.Shutdown();
+  _DeleteEntranceReq_default_instance_.Shutdown();
   delete file_level_metadata[42].reflection;
-  _ModifyEntranceReq_default_instance_.Shutdown();
+  _DeleteEntranceRsp_default_instance_.Shutdown();
   delete file_level_metadata[43].reflection;
-  _ModifyEntranceRsp_default_instance_.Shutdown();
+  _ModifyEntranceReq_default_instance_.Shutdown();
   delete file_level_metadata[44].reflection;
-  _AddEntranceDeviceReq_default_instance_.Shutdown();
+  _ModifyEntranceRsp_default_instance_.Shutdown();
   delete file_level_metadata[45].reflection;
-  _AddEntranceDeviceRsp_default_instance_.Shutdown();
+  _AddEntranceDeviceReq_default_instance_.Shutdown();
   delete file_level_metadata[46].reflection;
-  _DeleteEntranceDeviceReq_default_instance_.Shutdown();
+  _AddEntranceDeviceRsp_default_instance_.Shutdown();
   delete file_level_metadata[47].reflection;
-  _DeleteEntranceDeviceRsp_default_instance_.Shutdown();
+  _DeleteEntranceDeviceReq_default_instance_.Shutdown();
   delete file_level_metadata[48].reflection;
-  _AddEventReq_default_instance_.Shutdown();
+  _DeleteEntranceDeviceRsp_default_instance_.Shutdown();
   delete file_level_metadata[49].reflection;
-  _AddEventRsp_default_instance_.Shutdown();
+  _AddEventReq_default_instance_.Shutdown();
   delete file_level_metadata[50].reflection;
-  _DeleteEventReq_default_instance_.Shutdown();
+  _AddEventRsp_default_instance_.Shutdown();
   delete file_level_metadata[51].reflection;
-  _DeleteEventRsp_default_instance_.Shutdown();
+  _DeleteEventReq_default_instance_.Shutdown();
   delete file_level_metadata[52].reflection;
-  _ModifyEventReq_default_instance_.Shutdown();
+  _DeleteEventRsp_default_instance_.Shutdown();
   delete file_level_metadata[53].reflection;
-  _ModifyEventRsp_default_instance_.Shutdown();
+  _ModifyEventReq_default_instance_.Shutdown();
   delete file_level_metadata[54].reflection;
-  _QueryEventInfoReq_default_instance_.Shutdown();
+  _ModifyEventRsp_default_instance_.Shutdown();
   delete file_level_metadata[55].reflection;
-  _QueryEventInfoRsp_default_instance_.Shutdown();
+  _QueryEventInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[56].reflection;
-  _QueryAllEventReq_default_instance_.Shutdown();
+  _QueryEventInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[57].reflection;
-  _QueryAllEventRsp_default_instance_.Shutdown();
+  _QueryAllEventReq_default_instance_.Shutdown();
   delete file_level_metadata[58].reflection;
-  _AddSmartGuardStoreReq_default_instance_.Shutdown();
+  _QueryAllEventRsp_default_instance_.Shutdown();
   delete file_level_metadata[59].reflection;
-  _AddSmartGuardStoreRsp_default_instance_.Shutdown();
+  _AddSmartGuardStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[60].reflection;
-  _DeleteSmartGuardStoreReq_default_instance_.Shutdown();
+  _AddSmartGuardStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[61].reflection;
-  _DeleteSmartGuardStoreRsp_default_instance_.Shutdown();
+  _DeleteSmartGuardStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[62].reflection;
-  _ModifySmartGuardStoreReq_default_instance_.Shutdown();
+  _DeleteSmartGuardStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[63].reflection;
-  _ModifySmartGuardStoreRsp_default_instance_.Shutdown();
+  _ModifySmartGuardStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[64].reflection;
-  _QuerySmartGuardStoreInfoReq_default_instance_.Shutdown();
+  _ModifySmartGuardStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[65].reflection;
-  _QuerySmartGuardStoreInfoRsp_default_instance_.Shutdown();
+  _QuerySmartGuardStoreInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[66].reflection;
-  _QueryAllSmartGuardStoreReq_default_instance_.Shutdown();
+  _QuerySmartGuardStoreInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[67].reflection;
-  _QueryAllSmartGuardStoreRsp_default_instance_.Shutdown();
+  _QueryAllSmartGuardStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[68].reflection;
-  _AddRegularPatrolReq_default_instance_.Shutdown();
+  _QueryAllSmartGuardStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[69].reflection;
-  _AddRegularPatrolRsp_default_instance_.Shutdown();
+  _AddRegularPatrolReq_default_instance_.Shutdown();
   delete file_level_metadata[70].reflection;
-  _DeleteRegularPatrolReq_default_instance_.Shutdown();
+  _AddRegularPatrolRsp_default_instance_.Shutdown();
   delete file_level_metadata[71].reflection;
-  _DeleteRegularPatrolRsp_default_instance_.Shutdown();
+  _DeleteRegularPatrolReq_default_instance_.Shutdown();
   delete file_level_metadata[72].reflection;
-  _ModifyRegularPatrolReq_default_instance_.Shutdown();
+  _DeleteRegularPatrolRsp_default_instance_.Shutdown();
   delete file_level_metadata[73].reflection;
-  _ModifyRegularPatrolRsp_default_instance_.Shutdown();
+  _ModifyRegularPatrolReq_default_instance_.Shutdown();
   delete file_level_metadata[74].reflection;
-  _QueryRegularPatrolInfoReq_default_instance_.Shutdown();
+  _ModifyRegularPatrolRsp_default_instance_.Shutdown();
   delete file_level_metadata[75].reflection;
-  _QueryRegularPatrolInfoRsp_default_instance_.Shutdown();
+  _QueryRegularPatrolInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[76].reflection;
-  _QueryAllRegularPatrolReq_default_instance_.Shutdown();
+  _QueryRegularPatrolInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[77].reflection;
-  _QueryAllRegularPatrolRsp_default_instance_.Shutdown();
+  _QueryAllRegularPatrolReq_default_instance_.Shutdown();
   delete file_level_metadata[78].reflection;
-  _UserJoinStoreReq_default_instance_.Shutdown();
+  _QueryAllRegularPatrolRsp_default_instance_.Shutdown();
   delete file_level_metadata[79].reflection;
-  _UserJoinStoreRsp_default_instance_.Shutdown();
+  _UserJoinStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[80].reflection;
-  _UserQuitStoreReq_default_instance_.Shutdown();
+  _UserJoinStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[81].reflection;
-  _UserQuitStoreRsp_default_instance_.Shutdown();
+  _UserQuitStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[82].reflection;
-  _QueryStoreAllUserReq_default_instance_.Shutdown();
+  _UserQuitStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[83].reflection;
-  _QueryStoreAllUserRsp_default_instance_.Shutdown();
+  _QueryStoreAllUserReq_default_instance_.Shutdown();
   delete file_level_metadata[84].reflection;
-  _AddVIPCustomerReq_default_instance_.Shutdown();
+  _QueryStoreAllUserRsp_default_instance_.Shutdown();
   delete file_level_metadata[85].reflection;
-  _AddVIPCustomerRsp_default_instance_.Shutdown();
+  _AddVIPCustomerReq_default_instance_.Shutdown();
   delete file_level_metadata[86].reflection;
-  _DeleteVIPCustomerReq_default_instance_.Shutdown();
+  _AddVIPCustomerRsp_default_instance_.Shutdown();
   delete file_level_metadata[87].reflection;
-  _DeleteVIPCustomerRsp_default_instance_.Shutdown();
+  _DeleteVIPCustomerReq_default_instance_.Shutdown();
   delete file_level_metadata[88].reflection;
-  _ModifyVIPCustomerReq_default_instance_.Shutdown();
+  _DeleteVIPCustomerRsp_default_instance_.Shutdown();
   delete file_level_metadata[89].reflection;
-  _ModifyVIPCustomerRsp_default_instance_.Shutdown();
+  _ModifyVIPCustomerReq_default_instance_.Shutdown();
   delete file_level_metadata[90].reflection;
-  _QueryVIPCustomerInfoReq_default_instance_.Shutdown();
+  _ModifyVIPCustomerRsp_default_instance_.Shutdown();
   delete file_level_metadata[91].reflection;
-  _QueryVIPCustomerInfoRsp_default_instance_.Shutdown();
+  _QueryVIPCustomerInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[92].reflection;
-  _QueryAllVIPCustomerReq_default_instance_.Shutdown();
+  _QueryVIPCustomerInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[93].reflection;
-  _QueryAllVIPCustomerRsp_default_instance_.Shutdown();
+  _QueryAllVIPCustomerReq_default_instance_.Shutdown();
   delete file_level_metadata[94].reflection;
-  _AddVIPConsumeHistoryReq_default_instance_.Shutdown();
+  _QueryAllVIPCustomerRsp_default_instance_.Shutdown();
   delete file_level_metadata[95].reflection;
-  _AddVIPConsumeHistoryRsp_default_instance_.Shutdown();
+  _AddVIPConsumeHistoryReq_default_instance_.Shutdown();
   delete file_level_metadata[96].reflection;
-  _DeleteVIPConsumeHistoryReq_default_instance_.Shutdown();
+  _AddVIPConsumeHistoryRsp_default_instance_.Shutdown();
   delete file_level_metadata[97].reflection;
-  _DeleteVIPConsumeHistoryRsp_default_instance_.Shutdown();
+  _DeleteVIPConsumeHistoryReq_default_instance_.Shutdown();
   delete file_level_metadata[98].reflection;
-  _ModifyVIPConsumeHistoryReq_default_instance_.Shutdown();
+  _DeleteVIPConsumeHistoryRsp_default_instance_.Shutdown();
   delete file_level_metadata[99].reflection;
-  _ModifyVIPConsumeHistoryRsp_default_instance_.Shutdown();
+  _ModifyVIPConsumeHistoryReq_default_instance_.Shutdown();
   delete file_level_metadata[100].reflection;
-  _QueryAllVIPConsumeHistoryReq_default_instance_.Shutdown();
+  _ModifyVIPConsumeHistoryRsp_default_instance_.Shutdown();
   delete file_level_metadata[101].reflection;
-  _QueryAllVIPConsumeHistoryRsp_default_instance_.Shutdown();
+  _QueryAllVIPConsumeHistoryReq_default_instance_.Shutdown();
   delete file_level_metadata[102].reflection;
-  _AddEvaluationTemplateReq_default_instance_.Shutdown();
+  _QueryAllVIPConsumeHistoryRsp_default_instance_.Shutdown();
   delete file_level_metadata[103].reflection;
-  _AddEvaluationTemplateRsp_default_instance_.Shutdown();
+  _AddEvaluationTemplateReq_default_instance_.Shutdown();
   delete file_level_metadata[104].reflection;
-  _DeleteEvaluationTemplateReq_default_instance_.Shutdown();
+  _AddEvaluationTemplateRsp_default_instance_.Shutdown();
   delete file_level_metadata[105].reflection;
-  _DeleteEvaluationTemplateRsp_default_instance_.Shutdown();
+  _DeleteEvaluationTemplateReq_default_instance_.Shutdown();
   delete file_level_metadata[106].reflection;
-  _ModifyEvaluationTemplateReq_default_instance_.Shutdown();
+  _DeleteEvaluationTemplateRsp_default_instance_.Shutdown();
   delete file_level_metadata[107].reflection;
-  _ModifyEvaluationTemplateRsp_default_instance_.Shutdown();
+  _ModifyEvaluationTemplateReq_default_instance_.Shutdown();
   delete file_level_metadata[108].reflection;
-  _QueryAllEvaluationTemplateReq_default_instance_.Shutdown();
+  _ModifyEvaluationTemplateRsp_default_instance_.Shutdown();
   delete file_level_metadata[109].reflection;
-  _QueryAllEvaluationTemplateRsp_default_instance_.Shutdown();
+  _QueryAllEvaluationTemplateReq_default_instance_.Shutdown();
   delete file_level_metadata[110].reflection;
-  _AddStoreEvaluationReq_default_instance_.Shutdown();
+  _QueryAllEvaluationTemplateRsp_default_instance_.Shutdown();
   delete file_level_metadata[111].reflection;
-  _AddStoreEvaluationRsp_default_instance_.Shutdown();
+  _AddStoreEvaluationReq_default_instance_.Shutdown();
   delete file_level_metadata[112].reflection;
-  _DeleteStoreEvaluationReq_default_instance_.Shutdown();
+  _AddStoreEvaluationRsp_default_instance_.Shutdown();
   delete file_level_metadata[113].reflection;
-  _DeleteStoreEvaluationRsp_default_instance_.Shutdown();
+  _DeleteStoreEvaluationReq_default_instance_.Shutdown();
   delete file_level_metadata[114].reflection;
-  _ModifyStoreEvaluationReq_default_instance_.Shutdown();
+  _DeleteStoreEvaluationRsp_default_instance_.Shutdown();
   delete file_level_metadata[115].reflection;
-  _ModifyStoreEvaluationRsp_default_instance_.Shutdown();
+  _ModifyStoreEvaluationReq_default_instance_.Shutdown();
   delete file_level_metadata[116].reflection;
-  _QueryStoreEvaluationInfoReq_default_instance_.Shutdown();
+  _ModifyStoreEvaluationRsp_default_instance_.Shutdown();
   delete file_level_metadata[117].reflection;
-  _QueryStoreEvaluationInfoRsp_default_instance_.Shutdown();
+  _QueryStoreEvaluationInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[118].reflection;
-  _QueryAllStoreEvaluationReq_default_instance_.Shutdown();
+  _QueryStoreEvaluationInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[119].reflection;
-  _QueryAllStoreEvaluationRsp_default_instance_.Shutdown();
+  _QueryAllStoreEvaluationReq_default_instance_.Shutdown();
   delete file_level_metadata[120].reflection;
-  _ImportPOSDataReq_default_instance_.Shutdown();
+  _QueryAllStoreEvaluationRsp_default_instance_.Shutdown();
   delete file_level_metadata[121].reflection;
-  _ImportPOSDataRsp_default_instance_.Shutdown();
+  _AddRemotePatrolStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[122].reflection;
-  _QueryCustomerFlowStatisticReq_default_instance_.Shutdown();
+  _AddRemotePatrolStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[123].reflection;
-  _QueryCustomerFlowStatisticRsp_default_instance_.Shutdown();
+  _DeleteRemotePatrolStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[124].reflection;
-  _ReportCustomerFlowDataReq_default_instance_.Shutdown();
+  _DeleteRemotePatrolStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[125].reflection;
-  _ReportCustomerFlowDataRsp_default_instance_.Shutdown();
+  _ModifyRemotePatrolStoreReq_default_instance_.Shutdown();
   delete file_level_metadata[126].reflection;
-  _Request_default_instance_.Shutdown();
+  _ModifyRemotePatrolStoreRsp_default_instance_.Shutdown();
   delete file_level_metadata[127].reflection;
-  _Response_default_instance_.Shutdown();
+  _QueryRemotePatrolStoreInfoReq_default_instance_.Shutdown();
   delete file_level_metadata[128].reflection;
-  _CustomerFlowMessage_default_instance_.Shutdown();
+  _QueryRemotePatrolStoreInfoRsp_default_instance_.Shutdown();
   delete file_level_metadata[129].reflection;
+  _QueryAllRemotePatrolStoreReq_default_instance_.Shutdown();
+  delete file_level_metadata[130].reflection;
+  _QueryAllRemotePatrolStoreRsp_default_instance_.Shutdown();
+  delete file_level_metadata[131].reflection;
+  _ImportPOSDataReq_default_instance_.Shutdown();
+  delete file_level_metadata[132].reflection;
+  _ImportPOSDataRsp_default_instance_.Shutdown();
+  delete file_level_metadata[133].reflection;
+  _QueryCustomerFlowStatisticReq_default_instance_.Shutdown();
+  delete file_level_metadata[134].reflection;
+  _QueryCustomerFlowStatisticRsp_default_instance_.Shutdown();
+  delete file_level_metadata[135].reflection;
+  _ReportCustomerFlowDataReq_default_instance_.Shutdown();
+  delete file_level_metadata[136].reflection;
+  _ReportCustomerFlowDataRsp_default_instance_.Shutdown();
+  delete file_level_metadata[137].reflection;
+  _Request_default_instance_.Shutdown();
+  delete file_level_metadata[138].reflection;
+  _Response_default_instance_.Shutdown();
+  delete file_level_metadata[139].reflection;
+  _CustomerFlowMessage_default_instance_.Shutdown();
+  delete file_level_metadata[140].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -1783,6 +1929,7 @@ void TableStruct::InitDefaultsImpl() {
   _EvaluationItem_default_instance_.DefaultConstruct();
   _EvaluationItemScore_default_instance_.DefaultConstruct();
   _StoreEvaluation_default_instance_.DefaultConstruct();
+  _RemotePatrolStore_default_instance_.DefaultConstruct();
   _RawCustomerFlow_default_instance_.DefaultConstruct();
   _CustomerFlowPreHandleReq_default_instance_.DefaultConstruct();
   _CustomerFlowPreHandleRsp_default_instance_.DefaultConstruct();
@@ -1890,6 +2037,16 @@ void TableStruct::InitDefaultsImpl() {
   _QueryStoreEvaluationInfoRsp_default_instance_.DefaultConstruct();
   _QueryAllStoreEvaluationReq_default_instance_.DefaultConstruct();
   _QueryAllStoreEvaluationRsp_default_instance_.DefaultConstruct();
+  _AddRemotePatrolStoreReq_default_instance_.DefaultConstruct();
+  _AddRemotePatrolStoreRsp_default_instance_.DefaultConstruct();
+  _DeleteRemotePatrolStoreReq_default_instance_.DefaultConstruct();
+  _DeleteRemotePatrolStoreRsp_default_instance_.DefaultConstruct();
+  _ModifyRemotePatrolStoreReq_default_instance_.DefaultConstruct();
+  _ModifyRemotePatrolStoreRsp_default_instance_.DefaultConstruct();
+  _QueryRemotePatrolStoreInfoReq_default_instance_.DefaultConstruct();
+  _QueryRemotePatrolStoreInfoRsp_default_instance_.DefaultConstruct();
+  _QueryAllRemotePatrolStoreReq_default_instance_.DefaultConstruct();
+  _QueryAllRemotePatrolStoreRsp_default_instance_.DefaultConstruct();
   _ImportPOSDataReq_default_instance_.DefaultConstruct();
   _ImportPOSDataRsp_default_instance_.DefaultConstruct();
   _QueryCustomerFlowStatisticReq_default_instance_.DefaultConstruct();
@@ -1955,6 +2112,12 @@ void TableStruct::InitDefaultsImpl() {
       ::CustomerFlow::Interactive::Message::StoreEvaluation::internal_default_instance());
   _QueryStoreEvaluationInfoRsp_default_instance_.get_mutable()->storeevaluation_ = const_cast< ::CustomerFlow::Interactive::Message::StoreEvaluation*>(
       ::CustomerFlow::Interactive::Message::StoreEvaluation::internal_default_instance());
+  _AddRemotePatrolStoreReq_default_instance_.get_mutable()->patrolstore_ = const_cast< ::CustomerFlow::Interactive::Message::RemotePatrolStore*>(
+      ::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance());
+  _ModifyRemotePatrolStoreReq_default_instance_.get_mutable()->patrolstore_ = const_cast< ::CustomerFlow::Interactive::Message::RemotePatrolStore*>(
+      ::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance());
+  _QueryRemotePatrolStoreInfoRsp_default_instance_.get_mutable()->patrolstore_ = const_cast< ::CustomerFlow::Interactive::Message::RemotePatrolStore*>(
+      ::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance());
   _Request_default_instance_.get_mutable()->customerflowprehandlereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleReq*>(
       ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->shakehandreq_value_ = const_cast< ::CustomerFlow::Interactive::Message::ShakehandReq*>(
@@ -2061,6 +2224,16 @@ void TableStruct::InitDefaultsImpl() {
       ::CustomerFlow::Interactive::Message::QueryStoreEvaluationInfoReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->queryallstoreevaluationreq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq*>(
       ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->addremotepatrolstorereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq*>(
+      ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->deleteremotepatrolstorereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq*>(
+      ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->modifyremotepatrolstorereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq*>(
+      ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->queryremotepatrolstoreinforeq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq*>(
+      ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->queryallremotepatrolstorereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq*>(
+      ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->importposdatareq_value_ = const_cast< ::CustomerFlow::Interactive::Message::ImportPOSDataReq*>(
       ::CustomerFlow::Interactive::Message::ImportPOSDataReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->querycustomerflowstatisticreq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticReq*>(
@@ -2173,6 +2346,16 @@ void TableStruct::InitDefaultsImpl() {
       ::CustomerFlow::Interactive::Message::QueryStoreEvaluationInfoRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->queryallstoreevaluationrsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp*>(
       ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->addremotepatrolstorersp_value_ = const_cast< ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp*>(
+      ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->deleteremotepatrolstorersp_value_ = const_cast< ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp*>(
+      ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->modifyremotepatrolstorersp_value_ = const_cast< ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp*>(
+      ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->queryremotepatrolstoreinforsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp*>(
+      ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->queryallremotepatrolstorersp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp*>(
+      ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->importposdatarsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::ImportPOSDataRsp*>(
       ::CustomerFlow::Interactive::Message::ImportPOSDataRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->querycustomerflowstatisticrsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticRsp*>(
@@ -2251,573 +2434,636 @@ void AddDescriptorsImpl() {
       " \001(\t\022\023\n\013dTotalScore\030\005 \001(\001\022\025\n\ruiCheckStat"
       "us\030\006 \001(\r\022H\n\titemScore\030\007 \003(\01325.CustomerFl"
       "ow.Interactive.Message.EvaluationItemSco"
-      "re\022\025\n\rstrCreateDate\030\010 \001(\t\"j\n\017RawCustomer"
-      "Flow\022\025\n\ruiEnterNumber\030\001 \001(\r\022\025\n\ruiLeaveNu"
-      "mber\030\002 \001(\r\022\024\n\014uiStayNumber\030\003 \001(\r\022\023\n\013strD"
-      "ataTime\030\004 \001(\t\",\n\030CustomerFlowPreHandleRe"
-      "q\022\020\n\010strValue\030\001 \001(\t\",\n\030CustomerFlowPreHa"
-      "ndleRsp\022\020\n\010strValue\030\001 \001(\t\"\035\n\014ShakehandRe"
-      "q\022\r\n\005strID\030\001 \001(\t\" \n\014ShakehandRsp\022\020\n\010strV"
-      "alue\030\001 \001(\t\"\\\n\013AddGroupReq\022\021\n\tstrUserID\030\001"
-      " \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.CustomerFlow.I"
-      "nteractive.Message.Group\"!\n\013AddGroupRsp\022"
-      "\022\n\nstrGroupID\030\001 \001(\t\"7\n\016DeleteGroupReq\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\"\"\n\016"
-      "DeleteGroupRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016Modi"
-      "fyGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupIn"
-      "fo\030\002 \001(\0132\'.CustomerFlow.Interactive.Mess"
-      "age.Group\"\"\n\016ModifyGroupRsp\022\020\n\010strValue\030"
-      "\001 \001(\t\":\n\021QueryGroupInfoReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\"O\n\021QueryGroupI"
-      "nfoRsp\022:\n\tgroupInfo\030\001 \001(\0132\'.CustomerFlow"
-      ".Interactive.Message.Group\"%\n\020QueryAllGr"
-      "oupReq\022\021\n\tstrUserID\030\001 \001(\t\"N\n\020QueryAllGro"
-      "upRsp\022:\n\tgroupInfo\030\001 \003(\0132\'.CustomerFlow."
-      "Interactive.Message.Group\"\\\n\013AddStoreReq"
-      "\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo\030\002 \001(\0132\'"
-      ".CustomerFlow.Interactive.Message.Store\""
-      "!\n\013AddStoreRsp\022\022\n\nstrStoreID\030\001 \001(\t\"7\n\016De"
-      "leteStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrSt"
-      "oreID\030\002 \001(\t\"\"\n\016DeleteStoreRsp\022\020\n\010strValu"
-      "e\030\001 \001(\t\"_\n\016ModifyStoreReq\022\021\n\tstrUserID\030\001"
-      " \001(\t\022:\n\tstoreInfo\030\002 \001(\0132\'.CustomerFlow.I"
-      "nteractive.Message.Store\"\"\n\016ModifyStoreR"
-      "sp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryStoreInfoRe"
-      "q\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t"
-      "\"O\n\021QueryStoreInfoRsp\022:\n\tstoreInfo\030\001 \001(\013"
-      "2\'.CustomerFlow.Interactive.Message.Stor"
-      "e\";\n\020QueryAllStoreReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\024\n\014uiBeginIndex\030\002 \001(\r\"N\n\020QueryAllStoreR"
-      "sp\022:\n\tstoreInfo\030\001 \003(\0132\'.CustomerFlow.Int"
-      "eractive.Message.Store\"y\n\016AddEntranceReq"
-      "\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022"
-      "@\n\014entranceInfo\030\003 \001(\0132*.CustomerFlow.Int"
-      "eractive.Message.Entrance\"\'\n\016AddEntrance"
-      "Rsp\022\025\n\rstrEntranceID\030\001 \001(\t\"Q\n\021DeleteEntr"
-      "anceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID"
-      "\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\"%\n\021DeleteE"
-      "ntranceRsp\022\020\n\010strValue\030\001 \001(\t\"\262\001\n\021ModifyE"
-      "ntranceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStor"
-      "eID\030\002 \001(\t\022@\n\014entranceInfo\030\003 \001(\0132*.Custom"
-      "erFlow.Interactive.Message.Entrance\022\030\n\020s"
-      "trAddedDeviceID\030\004 \003(\t\022\032\n\022strDeletedDevic"
-      "eID\030\005 \003(\t\"%\n\021ModifyEntranceRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"i\n\024AddEntranceDeviceReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEn"
-      "tranceID\030\003 \001(\t\022\023\n\013strDeviceID\030\004 \001(\t\"(\n\024A"
-      "ddEntranceDeviceRsp\022\020\n\010strValue\030\001 \001(\t\"l\n"
-      "\027DeleteEntranceDeviceReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntranceID"
-      "\030\003 \001(\t\022\023\n\013strDeviceID\030\004 \001(\t\"+\n\027DeleteEnt"
-      "ranceDeviceRsp\022\020\n\010strValue\030\001 \001(\t\"I\n\013AddE"
-      "ventReq\022:\n\teventInfo\030\001 \001(\0132\'.CustomerFlo"
-      "w.Interactive.Message.Event\"!\n\013AddEventR"
-      "sp\022\022\n\nstrEventID\030\001 \001(\t\"7\n\016DeleteEventReq"
-      "\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrEventID\030\002 \001(\t\""
-      "\"\n\016DeleteEventRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016M"
-      "odifyEventReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\teven"
-      "tInfo\030\002 \001(\0132\'.CustomerFlow.Interactive.M"
-      "essage.Event\"\"\n\016ModifyEventRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\":\n\021QueryEventInfoReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\022\022\n\nstrEventID\030\002 \001(\t\"O\n\021QueryEve"
-      "ntInfoRsp\022:\n\teventInfo\030\001 \001(\0132\'.CustomerF"
-      "low.Interactive.Message.Event\";\n\020QueryAl"
-      "lEventReq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginI"
-      "ndex\030\002 \001(\r\"N\n\020QueryAllEventRsp\022:\n\teventI"
-      "nfo\030\001 \003(\0132\'.CustomerFlow.Interactive.Mes"
-      "sage.Event\"v\n\025AddSmartGuardStoreReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001(\0132"
-      "1.CustomerFlow.Interactive.Message.Smart"
-      "GuardStore\"*\n\025AddSmartGuardStoreRsp\022\021\n\ts"
-      "trPlanID\030\001 \001(\t\"@\n\030DeleteSmartGuardStoreR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t"
-      "\",\n\030DeleteSmartGuardStoreRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"y\n\030ModifySmartGuardStoreReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001(\01321"
-      ".CustomerFlow.Interactive.Message.SmartG"
-      "uardStore\",\n\030ModifySmartGuardStoreRsp\022\020\n"
-      "\010strValue\030\001 \001(\t\"C\n\033QuerySmartGuardStoreI"
-      "nfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002"
-      " \001(\t\"i\n\033QuerySmartGuardStoreInfoRsp\022J\n\017s"
-      "martGuardStore\030\001 \001(\01321.CustomerFlow.Inte"
-      "ractive.Message.SmartGuardStore\"Z\n\032Query"
-      "AllSmartGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 "
-      "\001(\r\"h\n\032QueryAllSmartGuardStoreRsp\022J\n\017sma"
-      "rtGuardStore\030\001 \003(\01321.CustomerFlow.Intera"
-      "ctive.Message.SmartGuardStore\"p\n\023AddRegu"
-      "larPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rregul"
-      "arPatrol\030\002 \001(\0132/.CustomerFlow.Interactiv"
-      "e.Message.RegularPatrol\"(\n\023AddRegularPat"
-      "rolRsp\022\021\n\tstrPlanID\030\001 \001(\t\">\n\026DeleteRegul"
-      "arPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPla"
-      "nID\030\002 \001(\t\"*\n\026DeleteRegularPatrolRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"s\n\026ModifyRegularPatrolReq\022"
-      "\021\n\tstrUserID\030\001 \001(\t\022F\n\rregularPatrol\030\002 \001("
-      "\0132/.CustomerFlow.Interactive.Message.Reg"
-      "ularPatrol\"*\n\026ModifyRegularPatrolRsp\022\020\n\010"
-      "strValue\030\001 \001(\t\"A\n\031QueryRegularPatrolInfo"
-      "Req\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001("
-      "\t\"c\n\031QueryRegularPatrolInfoRsp\022F\n\rregula"
-      "rPatrol\030\001 \001(\0132/.CustomerFlow.Interactive"
-      ".Message.RegularPatrol\"X\n\030QueryAllRegula"
-      "rPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strDevi"
-      "ceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"b\n\030Quer"
-      "yAllRegularPatrolRsp\022F\n\rregularPatrol\030\001 "
-      "\003(\0132/.CustomerFlow.Interactive.Message.R"
-      "egularPatrol\"J\n\020UserJoinStoreReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\017\n\007strRo"
-      "le\030\003 \001(\t\"$\n\020UserJoinStoreRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"U\n\020UserQuitStoreReq\022\032\n\022strAdminis"
-      "tratorID\030\001 \001(\t\022\021\n\tstrUserID\030\002 \001(\t\022\022\n\nstr"
-      "StoreID\030\003 \001(\t\"$\n\020UserQuitStoreRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"=\n\024QueryStoreAllUserReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"Q\n\024Qu"
-      "eryStoreAllUserRsp\0229\n\004user\030\001 \003(\0132+.Custo"
-      "merFlow.Interactive.Message.UserBrief\"k\n"
-      "\021AddVIPCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022C\n"
-      "\014customerInfo\030\002 \001(\0132-.CustomerFlow.Inter"
-      "active.Message.VIPCustomer\"%\n\021AddVIPCust"
-      "omerRsp\022\020\n\010strVIPID\030\001 \001(\t\";\n\024DeleteVIPCu"
-      "stomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID"
-      "\030\002 \001(\t\"(\n\024DeleteVIPCustomerRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"n\n\024ModifyVIPCustomerReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001(\0132-.Cust"
-      "omerFlow.Interactive.Message.VIPCustomer"
-      "\"(\n\024ModifyVIPCustomerRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\">\n\027QueryVIPCustomerInfoReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"^\n\027QueryVIPCu"
-      "stomerInfoRsp\022C\n\014customerInfo\030\001 \001(\0132-.Cu"
-      "stomerFlow.Interactive.Message.VIPCustom"
-      "er\"A\n\026QueryAllVIPCustomerReq\022\021\n\tstrUserI"
-      "D\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"Y\n\026QueryAl"
-      "lVIPCustomerRsp\022\?\n\010customer\030\001 \003(\0132-.Cust"
-      "omerFlow.Interactive.Message.VIPCustomer"
-      "\"y\n\027AddVIPConsumeHistoryReq\022\021\n\tstrUserID"
-      "\030\001 \001(\t\022K\n\016consumeHistory\030\002 \001(\01323.Custome"
-      "rFlow.Interactive.Message.VIPConsumeHist"
-      "ory\"/\n\027AddVIPConsumeHistoryRsp\022\024\n\014strCon"
-      "sumeID\030\001 \001(\t\"E\n\032DeleteVIPConsumeHistoryR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014strConsumeID\030\002 "
-      "\001(\t\".\n\032DeleteVIPConsumeHistoryRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"|\n\032ModifyVIPConsumeHistoryRe"
-      "q\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consumeHistory\030\002"
-      " \001(\01323.CustomerFlow.Interactive.Message."
-      "VIPConsumeHistory\".\n\032ModifyVIPConsumeHis"
-      "toryRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\034QueryAllVIP"
-      "ConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
-      "strVIPID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"k\n\034"
-      "QueryAllVIPConsumeHistoryRsp\022K\n\016consumeH"
-      "istory\030\001 \003(\01323.CustomerFlow.Interactive."
-      "Message.VIPConsumeHistory\"w\n\030AddEvaluati"
-      "onTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016eval"
-      "uationItem\030\002 \001(\01320.CustomerFlow.Interact"
-      "ive.Message.EvaluationItem\"3\n\030AddEvaluat"
-      "ionTemplateRsp\022\027\n\017strEvaluationID\030\001 \001(\t\""
-      "I\n\033DeleteEvaluationTemplateReq\022\021\n\tstrUse"
-      "rID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\"/\n\033De"
-      "leteEvaluationTemplateRsp\022\020\n\010strValue\030\001 "
-      "\001(\t\"z\n\033ModifyEvaluationTemplateReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001(\01320."
-      "CustomerFlow.Interactive.Message.Evaluat"
-      "ionItem\"/\n\033ModifyEvaluationTemplateRsp\022\020"
-      "\n\010strValue\030\001 \001(\t\"2\n\035QueryAllEvaluationTe"
-      "mplateReq\022\021\n\tstrUserID\030\001 \001(\t\"i\n\035QueryAll"
-      "EvaluationTemplateRsp\022H\n\016evaluationItem\030"
-      "\001 \003(\01320.CustomerFlow.Interactive.Message"
-      ".EvaluationItem\"c\n\025AddStoreEvaluationReq"
-      "\022J\n\017storeEvaluation\030\001 \001(\01321.CustomerFlow"
-      ".Interactive.Message.StoreEvaluation\"0\n\025"
-      "AddStoreEvaluationRsp\022\027\n\017strEvaluationID"
-      "\030\001 \001(\t\"F\n\030DeleteStoreEvaluationReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\","
-      "\n\030DeleteStoreEvaluationRsp\022\020\n\010strValue\030\001"
-      " \001(\t\"y\n\030ModifyStoreEvaluationReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022J\n\017storeEvaluation\030\002 \001(\01321.C"
-      "ustomerFlow.Interactive.Message.StoreEva"
-      "luation\",\n\030ModifyStoreEvaluationRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"]\n\033QueryStoreEvaluationInf"
-      "oReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 "
-      "\001(\t\022\027\n\017strEvaluationID\030\003 \001(\t\"i\n\033QuerySto"
-      "reEvaluationInfoRsp\022J\n\017storeEvaluation\030\001"
-      " \001(\01321.CustomerFlow.Interactive.Message."
-      "StoreEvaluation\"\203\001\n\032QueryAllStoreEvaluat"
-      "ionReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
-      "\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEndDat"
-      "e\030\004 \001(\t\022\024\n\014uiBeginIndex\030\005 \001(\r\"h\n\032QueryAl"
-      "lStoreEvaluationRsp\022J\n\017storeEvaluation\030\001"
-      " \003(\01321.CustomerFlow.Interactive.Message."
-      "StoreEvaluation\"\221\001\n\020ImportPOSDataReq\022\021\n\t"
-      "strUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\ru"
-      "iOrderAmount\030\003 \001(\r\022\025\n\ruiGoodsAmount\030\004 \001("
-      "\r\022\023\n\013dDealAmount\030\005 \001(\001\022\023\n\013strDealDate\030\006 "
-      "\001(\t\"$\n\020ImportPOSDataRsp\022\020\n\010strValue\030\001 \001("
-      "\t\"\211\001\n\035QueryCustomerFlowStatisticReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014st"
-      "rBeginDate\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\027\n\017"
-      "uiTimePrecision\030\005 \001(\r\"5\n\035QueryCustomerFl"
-      "owStatisticRsp\022\024\n\014strChartData\030\001 \001(\t\"y\n\031"
-      "ReportCustomerFlowDataReq\022\023\n\013strDeviceID"
-      "\030\001 \001(\t\022G\n\014customerFlow\030\002 \003(\01321.CustomerF"
-      "low.Interactive.Message.RawCustomerFlow\""
-      "-\n\031ReportCustomerFlowDataRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"\366(\n\007Request\022b\n\036CustomerFlowPreHan"
-      "dleReq_Value\030\n \001(\0132:.CustomerFlow.Intera"
-      "ctive.Message.CustomerFlowPreHandleReq\022J"
-      "\n\022ShakehandReq_Value\0302 \001(\0132..CustomerFlo"
-      "w.Interactive.Message.ShakehandReq\022H\n\021Ad"
-      "dGroupReq_Value\030d \001(\0132-.CustomerFlow.Int"
-      "eractive.Message.AddGroupReq\022N\n\024DeleteGr"
-      "oupReq_Value\030n \001(\01320.CustomerFlow.Intera"
-      "ctive.Message.DeleteGroupReq\022N\n\024ModifyGr"
-      "oupReq_Value\030x \001(\01320.CustomerFlow.Intera"
-      "ctive.Message.ModifyGroupReq\022U\n\027QueryGro"
-      "upInfoReq_Value\030\202\001 \001(\01323.CustomerFlow.In"
-      "teractive.Message.QueryGroupInfoReq\022S\n\026Q"
-      "ueryAllGroupReq_Value\030\214\001 \001(\01322.CustomerF"
-      "low.Interactive.Message.QueryAllGroupReq"
-      "\022I\n\021AddStoreReq_Value\030\226\001 \001(\0132-.CustomerF"
-      "low.Interactive.Message.AddStoreReq\022O\n\024D"
-      "eleteStoreReq_Value\030\240\001 \001(\01320.CustomerFlo"
-      "w.Interactive.Message.DeleteStoreReq\022O\n\024"
-      "ModifyStoreReq_Value\030\252\001 \001(\01320.CustomerFl"
-      "ow.Interactive.Message.ModifyStoreReq\022U\n"
-      "\027QueryStoreInfoReq_Value\030\264\001 \001(\01323.Custom"
-      "erFlow.Interactive.Message.QueryStoreInf"
-      "oReq\022S\n\026QueryAllStoreReq_Value\030\276\001 \001(\01322."
-      "CustomerFlow.Interactive.Message.QueryAl"
-      "lStoreReq\022O\n\024AddEntranceReq_Value\030\310\001 \001(\013"
-      "20.CustomerFlow.Interactive.Message.AddE"
-      "ntranceReq\022U\n\027DeleteEntranceReq_Value\030\322\001"
-      " \001(\01323.CustomerFlow.Interactive.Message."
-      "DeleteEntranceReq\022U\n\027ModifyEntranceReq_V"
-      "alue\030\334\001 \001(\01323.CustomerFlow.Interactive.M"
-      "essage.ModifyEntranceReq\022[\n\032AddEntranceD"
-      "eviceReq_Value\030\346\001 \001(\01326.CustomerFlow.Int"
-      "eractive.Message.AddEntranceDeviceReq\022a\n"
-      "\035DeleteEntranceDeviceReq_Value\030\360\001 \001(\01329."
-      "CustomerFlow.Interactive.Message.DeleteE"
-      "ntranceDeviceReq\022I\n\021AddEventReq_Value\030\254\002"
-      " \001(\0132-.CustomerFlow.Interactive.Message."
-      "AddEventReq\022O\n\024DeleteEventReq_Value\030\266\002 \001"
-      "(\01320.CustomerFlow.Interactive.Message.De"
-      "leteEventReq\022O\n\024ModifyEventReq_Value\030\300\002 "
-      "\001(\01320.CustomerFlow.Interactive.Message.M"
-      "odifyEventReq\022U\n\027QueryEventInfoReq_Value"
-      "\030\312\002 \001(\01323.CustomerFlow.Interactive.Messa"
-      "ge.QueryEventInfoReq\022S\n\026QueryAllEventReq"
-      "_Value\030\324\002 \001(\01322.CustomerFlow.Interactive"
-      ".Message.QueryAllEventReq\022]\n\033AddSmartGua"
-      "rdStoreReq_Value\030\336\002 \001(\01327.CustomerFlow.I"
-      "nteractive.Message.AddSmartGuardStoreReq"
-      "\022c\n\036DeleteSmartGuardStoreReq_Value\030\350\002 \001("
-      "\0132:.CustomerFlow.Interactive.Message.Del"
-      "eteSmartGuardStoreReq\022c\n\036ModifySmartGuar"
-      "dStoreReq_Value\030\362\002 \001(\0132:.CustomerFlow.In"
-      "teractive.Message.ModifySmartGuardStoreR"
-      "eq\022i\n!QuerySmartGuardStoreInfoReq_Value\030"
-      "\374\002 \001(\0132=.CustomerFlow.Interactive.Messag"
-      "e.QuerySmartGuardStoreInfoReq\022g\n QueryAl"
-      "lSmartGuardStoreReq_Value\030\206\003 \001(\0132<.Custo"
-      "merFlow.Interactive.Message.QueryAllSmar"
-      "tGuardStoreReq\022Y\n\031AddRegularPatrolReq_Va"
-      "lue\030\220\003 \001(\01325.CustomerFlow.Interactive.Me"
-      "ssage.AddRegularPatrolReq\022_\n\034DeleteRegul"
-      "arPatrolReq_Value\030\232\003 \001(\01328.CustomerFlow."
-      "Interactive.Message.DeleteRegularPatrolR"
-      "eq\022_\n\034ModifyRegularPatrolReq_Value\030\244\003 \001("
-      "\01328.CustomerFlow.Interactive.Message.Mod"
-      "ifyRegularPatrolReq\022e\n\037QueryRegularPatro"
-      "lInfoReq_Value\030\256\003 \001(\0132;.CustomerFlow.Int"
-      "eractive.Message.QueryRegularPatrolInfoR"
-      "eq\022c\n\036QueryAllRegularPatrolReq_Value\030\270\003 "
-      "\001(\0132:.CustomerFlow.Interactive.Message.Q"
-      "ueryAllRegularPatrolReq\022S\n\026UserJoinStore"
-      "Req_Value\030\364\003 \001(\01322.CustomerFlow.Interact"
-      "ive.Message.UserJoinStoreReq\022S\n\026UserQuit"
-      "StoreReq_Value\030\376\003 \001(\01322.CustomerFlow.Int"
-      "eractive.Message.UserQuitStoreReq\022[\n\032Que"
-      "ryStoreAllUserReq_Value\030\210\004 \001(\01326.Custome"
-      "rFlow.Interactive.Message.QueryStoreAllU"
-      "serReq\022U\n\027AddVIPCustomerReq_Value\030\240\006 \001(\013"
-      "23.CustomerFlow.Interactive.Message.AddV"
-      "IPCustomerReq\022[\n\032DeleteVIPCustomerReq_Va"
-      "lue\030\252\006 \001(\01326.CustomerFlow.Interactive.Me"
-      "ssage.DeleteVIPCustomerReq\022[\n\032ModifyVIPC"
-      "ustomerReq_Value\030\264\006 \001(\01326.CustomerFlow.I"
-      "nteractive.Message.ModifyVIPCustomerReq\022"
-      "a\n\035QueryVIPCustomerInfoReq_Value\030\276\006 \001(\0132"
-      "9.CustomerFlow.Interactive.Message.Query"
-      "VIPCustomerInfoReq\022_\n\034QueryAllVIPCustome"
-      "rReq_Value\030\310\006 \001(\01328.CustomerFlow.Interac"
-      "tive.Message.QueryAllVIPCustomerReq\022a\n\035A"
-      "ddVIPConsumeHistoryReq_Value\030\322\006 \001(\01329.Cu"
-      "stomerFlow.Interactive.Message.AddVIPCon"
-      "sumeHistoryReq\022g\n DeleteVIPConsumeHistor"
-      "yReq_Value\030\334\006 \001(\0132<.CustomerFlow.Interac"
-      "tive.Message.DeleteVIPConsumeHistoryReq\022"
-      "g\n ModifyVIPConsumeHistoryReq_Value\030\346\006 \001"
-      "(\0132<.CustomerFlow.Interactive.Message.Mo"
-      "difyVIPConsumeHistoryReq\022k\n\"QueryAllVIPC"
-      "onsumeHistoryReq_Value\030\360\006 \001(\0132>.Customer"
-      "Flow.Interactive.Message.QueryAllVIPCons"
-      "umeHistoryReq\022c\n\036AddEvaluationTemplateRe"
-      "q_Value\030\204\007 \001(\0132:.CustomerFlow.Interactiv"
-      "e.Message.AddEvaluationTemplateReq\022i\n!De"
-      "leteEvaluationTemplateReq_Value\030\216\007 \001(\0132="
-      ".CustomerFlow.Interactive.Message.Delete"
-      "EvaluationTemplateReq\022i\n!ModifyEvaluatio"
-      "nTemplateReq_Value\030\230\007 \001(\0132=.CustomerFlow"
-      ".Interactive.Message.ModifyEvaluationTem"
-      "plateReq\022m\n#QueryAllEvaluationTemplateRe"
-      "q_Value\030\242\007 \001(\0132\?.CustomerFlow.Interactiv"
-      "e.Message.QueryAllEvaluationTemplateReq\022"
-      "]\n\033AddStoreEvaluationReq_Value\030\266\007 \001(\01327."
-      "CustomerFlow.Interactive.Message.AddStor"
-      "eEvaluationReq\022c\n\036DeleteStoreEvaluationR"
-      "eq_Value\030\300\007 \001(\0132:.CustomerFlow.Interacti"
-      "ve.Message.DeleteStoreEvaluationReq\022c\n\036M"
-      "odifyStoreEvaluationReq_Value\030\312\007 \001(\0132:.C"
-      "ustomerFlow.Interactive.Message.ModifySt"
-      "oreEvaluationReq\022i\n!QueryStoreEvaluation"
-      "InfoReq_Value\030\324\007 \001(\0132=.CustomerFlow.Inte"
-      "ractive.Message.QueryStoreEvaluationInfo"
-      "Req\022g\n QueryAllStoreEvaluationReq_Value\030"
-      "\336\007 \001(\0132<.CustomerFlow.Interactive.Messag"
-      "e.QueryAllStoreEvaluationReq\022S\n\026ImportPO"
-      "SDataReq_Value\030\320\017 \001(\01322.CustomerFlow.Int"
-      "eractive.Message.ImportPOSDataReq\022m\n#Que"
-      "ryCustomerFlowStatisticReq_Value\030\324\026 \001(\0132"
-      "\?.CustomerFlow.Interactive.Message.Query"
-      "CustomerFlowStatisticReq\022e\n\037ReportCustom"
-      "erFlowDataReq_Value\030\270\027 \001(\0132;.CustomerFlo"
-      "w.Interactive.Message.ReportCustomerFlow"
-      "DataReq\"\234)\n\010Response\022\020\n\010iRetcode\030\001 \001(\005\022\021"
-      "\n\tstrRetMsg\030\002 \001(\t\022b\n\036CustomerFlowPreHand"
-      "leRsp_Value\030\n \001(\0132:.CustomerFlow.Interac"
-      "tive.Message.CustomerFlowPreHandleRsp\022J\n"
-      "\022ShakehandRsp_Value\0302 \001(\0132..CustomerFlow"
-      ".Interactive.Message.ShakehandRsp\022H\n\021Add"
-      "GroupRsp_Value\030d \001(\0132-.CustomerFlow.Inte"
-      "ractive.Message.AddGroupRsp\022N\n\024DeleteGro"
-      "upRsp_Value\030n \001(\01320.CustomerFlow.Interac"
-      "tive.Message.DeleteGroupRsp\022N\n\024ModifyGro"
-      "upRsp_Value\030x \001(\01320.CustomerFlow.Interac"
-      "tive.Message.ModifyGroupRsp\022U\n\027QueryGrou"
-      "pInfoRsp_Value\030\202\001 \001(\01323.CustomerFlow.Int"
-      "eractive.Message.QueryGroupInfoRsp\022S\n\026Qu"
-      "eryAllGroupRsp_Value\030\214\001 \001(\01322.CustomerFl"
-      "ow.Interactive.Message.QueryAllGroupRsp\022"
-      "I\n\021AddStoreRsp_Value\030\226\001 \001(\0132-.CustomerFl"
-      "ow.Interactive.Message.AddStoreRsp\022O\n\024De"
-      "leteStoreRsp_Value\030\240\001 \001(\01320.CustomerFlow"
-      ".Interactive.Message.DeleteStoreRsp\022O\n\024M"
-      "odifyStoreRsp_Value\030\252\001 \001(\01320.CustomerFlo"
-      "w.Interactive.Message.ModifyStoreRsp\022U\n\027"
-      "QueryStoreInfoRsp_Value\030\264\001 \001(\01323.Custome"
-      "rFlow.Interactive.Message.QueryStoreInfo"
-      "Rsp\022S\n\026QueryAllStoreRsp_Value\030\276\001 \001(\01322.C"
-      "ustomerFlow.Interactive.Message.QueryAll"
-      "StoreRsp\022O\n\024AddEntranceRsp_Value\030\310\001 \001(\0132"
-      "0.CustomerFlow.Interactive.Message.AddEn"
-      "tranceRsp\022U\n\027DeleteEntranceRsp_Value\030\322\001 "
-      "\001(\01323.CustomerFlow.Interactive.Message.D"
-      "eleteEntranceRsp\022U\n\027ModifyEntranceRsp_Va"
-      "lue\030\334\001 \001(\01323.CustomerFlow.Interactive.Me"
-      "ssage.ModifyEntranceRsp\022[\n\032AddEntranceDe"
-      "viceRsp_Value\030\346\001 \001(\01326.CustomerFlow.Inte"
-      "ractive.Message.AddEntranceDeviceRsp\022a\n\035"
-      "DeleteEntranceDeviceRsp_Value\030\360\001 \001(\01329.C"
-      "ustomerFlow.Interactive.Message.DeleteEn"
-      "tranceDeviceRsp\022I\n\021AddEventRsp_Value\030\254\002 "
-      "\001(\0132-.CustomerFlow.Interactive.Message.A"
-      "ddEventRsp\022O\n\024DeleteEventRsp_Value\030\266\002 \001("
-      "\01320.CustomerFlow.Interactive.Message.Del"
-      "eteEventRsp\022O\n\024ModifyEventRsp_Value\030\300\002 \001"
-      "(\01320.CustomerFlow.Interactive.Message.Mo"
-      "difyEventRsp\022U\n\027QueryEventInfoRsp_Value\030"
-      "\312\002 \001(\01323.CustomerFlow.Interactive.Messag"
-      "e.QueryEventInfoRsp\022S\n\026QueryAllEventRsp_"
-      "Value\030\324\002 \001(\01322.CustomerFlow.Interactive."
-      "Message.QueryAllEventRsp\022]\n\033AddSmartGuar"
-      "dStoreRsp_Value\030\336\002 \001(\01327.CustomerFlow.In"
-      "teractive.Message.AddSmartGuardStoreRsp\022"
-      "c\n\036DeleteSmartGuardStoreRsp_Value\030\350\002 \001(\013"
-      "2:.CustomerFlow.Interactive.Message.Dele"
-      "teSmartGuardStoreRsp\022c\n\036ModifySmartGuard"
-      "StoreRsp_Value\030\362\002 \001(\0132:.CustomerFlow.Int"
-      "eractive.Message.ModifySmartGuardStoreRs"
-      "p\022i\n!QuerySmartGuardStoreInfoRsp_Value\030\374"
-      "\002 \001(\0132=.CustomerFlow.Interactive.Message"
-      ".QuerySmartGuardStoreInfoRsp\022g\n QueryAll"
-      "SmartGuardStoreRsp_Value\030\206\003 \001(\0132<.Custom"
-      "erFlow.Interactive.Message.QueryAllSmart"
-      "GuardStoreRsp\022Y\n\031AddRegularPatrolRsp_Val"
-      "ue\030\220\003 \001(\01325.CustomerFlow.Interactive.Mes"
-      "sage.AddRegularPatrolRsp\022_\n\034DeleteRegula"
-      "rPatrolRsp_Value\030\232\003 \001(\01328.CustomerFlow.I"
-      "nteractive.Message.DeleteRegularPatrolRs"
-      "p\022_\n\034ModifyRegularPatrolRsp_Value\030\244\003 \001(\013"
-      "28.CustomerFlow.Interactive.Message.Modi"
-      "fyRegularPatrolRsp\022e\n\037QueryRegularPatrol"
-      "InfoRsp_Value\030\256\003 \001(\0132;.CustomerFlow.Inte"
-      "ractive.Message.QueryRegularPatrolInfoRs"
-      "p\022c\n\036QueryAllRegularPatrolRsp_Value\030\270\003 \001"
-      "(\0132:.CustomerFlow.Interactive.Message.Qu"
-      "eryAllRegularPatrolRsp\022S\n\026UserJoinStoreR"
-      "sp_Value\030\364\003 \001(\01322.CustomerFlow.Interacti"
-      "ve.Message.UserJoinStoreRsp\022S\n\026UserQuitS"
-      "toreRsp_Value\030\376\003 \001(\01322.CustomerFlow.Inte"
-      "ractive.Message.UserQuitStoreRsp\022[\n\032Quer"
-      "yStoreAllUserRsp_Value\030\210\004 \001(\01326.Customer"
-      "Flow.Interactive.Message.QueryStoreAllUs"
-      "erRsp\022U\n\027AddVIPCustomerRsp_Value\030\240\006 \001(\0132"
-      "3.CustomerFlow.Interactive.Message.AddVI"
-      "PCustomerRsp\022[\n\032DeleteVIPCustomerRsp_Val"
-      "ue\030\252\006 \001(\01326.CustomerFlow.Interactive.Mes"
-      "sage.DeleteVIPCustomerRsp\022[\n\032ModifyVIPCu"
-      "stomerRsp_Value\030\264\006 \001(\01326.CustomerFlow.In"
-      "teractive.Message.ModifyVIPCustomerRsp\022a"
-      "\n\035QueryVIPCustomerInfoRsp_Value\030\276\006 \001(\01329"
-      ".CustomerFlow.Interactive.Message.QueryV"
-      "IPCustomerInfoRsp\022_\n\034QueryAllVIPCustomer"
-      "Rsp_Value\030\310\006 \001(\01328.CustomerFlow.Interact"
-      "ive.Message.QueryAllVIPCustomerRsp\022a\n\035Ad"
-      "dVIPConsumeHistoryRsp_Value\030\322\006 \001(\01329.Cus"
-      "tomerFlow.Interactive.Message.AddVIPCons"
-      "umeHistoryRsp\022g\n DeleteVIPConsumeHistory"
-      "Rsp_Value\030\334\006 \001(\0132<.CustomerFlow.Interact"
-      "ive.Message.DeleteVIPConsumeHistoryRsp\022g"
-      "\n ModifyVIPConsumeHistoryRsp_Value\030\346\006 \001("
-      "\0132<.CustomerFlow.Interactive.Message.Mod"
-      "ifyVIPConsumeHistoryRsp\022k\n\"QueryAllVIPCo"
-      "nsumeHistoryRsp_Value\030\360\006 \001(\0132>.CustomerF"
-      "low.Interactive.Message.QueryAllVIPConsu"
-      "meHistoryRsp\022c\n\036AddEvaluationTemplateRsp"
-      "_Value\030\204\007 \001(\0132:.CustomerFlow.Interactive"
-      ".Message.AddEvaluationTemplateRsp\022i\n!Del"
-      "eteEvaluationTemplateRsp_Value\030\216\007 \001(\0132=."
-      "CustomerFlow.Interactive.Message.DeleteE"
-      "valuationTemplateRsp\022i\n!ModifyEvaluation"
-      "TemplateRsp_Value\030\230\007 \001(\0132=.CustomerFlow."
-      "Interactive.Message.ModifyEvaluationTemp"
-      "lateRsp\022m\n#QueryAllEvaluationTemplateRsp"
-      "_Value\030\242\007 \001(\0132\?.CustomerFlow.Interactive"
-      ".Message.QueryAllEvaluationTemplateRsp\022]"
-      "\n\033AddStoreEvaluationRsp_Value\030\266\007 \001(\01327.C"
-      "ustomerFlow.Interactive.Message.AddStore"
-      "EvaluationRsp\022c\n\036DeleteStoreEvaluationRs"
-      "p_Value\030\300\007 \001(\0132:.CustomerFlow.Interactiv"
-      "e.Message.DeleteStoreEvaluationRsp\022c\n\036Mo"
-      "difyStoreEvaluationRsp_Value\030\312\007 \001(\0132:.Cu"
-      "stomerFlow.Interactive.Message.ModifySto"
-      "reEvaluationRsp\022i\n!QueryStoreEvaluationI"
-      "nfoRsp_Value\030\324\007 \001(\0132=.CustomerFlow.Inter"
-      "active.Message.QueryStoreEvaluationInfoR"
-      "sp\022g\n QueryAllStoreEvaluationRsp_Value\030\336"
-      "\007 \001(\0132<.CustomerFlow.Interactive.Message"
-      ".QueryAllStoreEvaluationRsp\022S\n\026ImportPOS"
-      "DataRsp_Value\030\320\017 \001(\01322.CustomerFlow.Inte"
-      "ractive.Message.ImportPOSDataRsp\022m\n#Quer"
-      "yCustomerFlowStatisticRsp_Value\030\324\026 \001(\0132\?"
-      ".CustomerFlow.Interactive.Message.QueryC"
-      "ustomerFlowStatisticRsp\022e\n\037ReportCustome"
-      "rFlowDataRsp_Value\030\270\027 \001(\0132;.CustomerFlow"
-      ".Interactive.Message.ReportCustomerFlowD"
-      "ataRsp\"\367\001\n\023CustomerFlowMessage\022C\n\004type\030\001"
-      " \001(\01625.CustomerFlow.Interactive.Message."
-      "CustomerFlowMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n"
-      "\006strSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\0132).Custom"
-      "erFlow.Interactive.Message.Request\022<\n\010rs"
-      "pValue\030\005 \001(\0132*.CustomerFlow.Interactive."
-      "Message.Response*\225\032\n\023CustomerFlowMsgType"
-      "\022\n\n\006Init_T\020\000\022\037\n\032CustomerFlowPreHandleReq"
-      "_T\020\250F\022\037\n\032CustomerFlowPreHandleRsp_T\020\262F\022\023"
-      "\n\016ShakehandReq_T\020\214G\022\023\n\016ShakehandRsp_T\020\226G"
-      "\022\022\n\rAddGroupReq_T\020\220N\022\022\n\rAddGroupRsp_T\020\232N"
-      "\022\025\n\020DeleteGroupReq_T\020\244N\022\025\n\020DeleteGroupRs"
-      "p_T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025\n\020ModifyG"
-      "roupRsp_T\020\302N\022\030\n\023QueryGroupInfoReq_T\020\314N\022\030"
-      "\n\023QueryGroupInfoRsp_T\020\326N\022\027\n\022QueryAllGrou"
-      "pReq_T\020\340N\022\027\n\022QueryAllGroupRsp_T\020\352N\022\022\n\rAd"
-      "dStoreReq_T\020\364N\022\022\n\rAddStoreRsp_T\020\376N\022\025\n\020De"
-      "leteStoreReq_T\020\210O\022\025\n\020DeleteStoreRsp_T\020\222O"
-      "\022\025\n\020ModifyStoreReq_T\020\234O\022\025\n\020ModifyStoreRs"
-      "p_T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260O\022\030\n\023Quer"
-      "yStoreInfoRsp_T\020\272O\022\027\n\022QueryAllStoreReq_T"
-      "\020\304O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n\020AddEntra"
-      "nceReq_T\020\330O\022\025\n\020AddEntranceRsp_T\020\342O\022\030\n\023De"
-      "leteEntranceReq_T\020\354O\022\030\n\023DeleteEntranceRs"
-      "p_T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200P\022\030\n\023Modi"
-      "fyEntranceRsp_T\020\212P\022\033\n\026AddEntranceDeviceR"
-      "eq_T\020\224P\022\033\n\026AddEntranceDeviceRsp_T\020\236P\022\036\n\031"
-      "DeleteEntranceDeviceReq_T\020\250P\022\036\n\031DeleteEn"
-      "tranceDeviceRsp_T\020\262P\022\022\n\rAddEventReq_T\020\344P"
-      "\022\022\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteEventReq_T"
-      "\020\370P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020ModifyEven"
-      "tReq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226Q\022\030\n\023Quer"
-      "yEventInfoReq_T\020\240Q\022\030\n\023QueryEventInfoRsp_"
-      "T\020\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027\n\022QueryAl"
-      "lEventRsp_T\020\276Q\022\034\n\027AddSmartGuardStoreReq_"
-      "T\020\310Q\022\034\n\027AddSmartGuardStoreRsp_T\020\322Q\022\037\n\032De"
-      "leteSmartGuardStoreReq_T\020\334Q\022\037\n\032DeleteSma"
-      "rtGuardStoreRsp_T\020\346Q\022\037\n\032ModifySmartGuard"
-      "StoreReq_T\020\360Q\022\037\n\032ModifySmartGuardStoreRs"
-      "p_T\020\372Q\022\"\n\035QuerySmartGuardStoreInfoReq_T\020"
-      "\204R\022\"\n\035QuerySmartGuardStoreInfoRsp_T\020\216R\022!"
-      "\n\034QueryAllSmartGuardStoreReq_T\020\230R\022!\n\034Que"
-      "ryAllSmartGuardStoreRsp_T\020\242R\022\032\n\025AddRegul"
-      "arPatrolReq_T\020\254R\022\032\n\025AddRegularPatrolRsp_"
-      "T\020\266R\022\035\n\030DeleteRegularPatrolReq_T\020\300R\022\035\n\030D"
-      "eleteRegularPatrolRsp_T\020\312R\022\035\n\030ModifyRegu"
-      "larPatrolReq_T\020\324R\022\035\n\030ModifyRegularPatrol"
-      "Rsp_T\020\336R\022 \n\033QueryRegularPatrolInfoReq_T\020"
-      "\350R\022 \n\033QueryRegularPatrolInfoRsp_T\020\362R\022\037\n\032"
-      "QueryAllRegularPatrolReq_T\020\374R\022\037\n\032QueryAl"
-      "lRegularPatrolRsp_T\020\206S\022\027\n\022UserJoinStoreR"
-      "eq_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326S\022\027\n\022User"
-      "QuitStoreReq_T\020\340S\022\027\n\022UserQuitStoreRsp_T\020"
-      "\352S\022\033\n\026QueryStoreAllUserReq_T\020\364S\022\033\n\026Query"
-      "StoreAllUserRsp_T\020\376S\022\031\n\023AddVIPCustomerRe"
-      "q_T\020\320\214\001\022\031\n\023AddVIPCustomerRsp_T\020\332\214\001\022\034\n\026De"
-      "leteVIPCustomerReq_T\020\344\214\001\022\034\n\026DeleteVIPCus"
-      "tomerRsp_T\020\356\214\001\022\034\n\026ModifyVIPCustomerReq_T"
-      "\020\370\214\001\022\034\n\026ModifyVIPCustomerRsp_T\020\202\215\001\022\037\n\031Qu"
-      "eryVIPCustomerInfoReq_T\020\214\215\001\022\037\n\031QueryVIPC"
-      "ustomerInfoRsp_T\020\226\215\001\022\036\n\030QueryAllVIPCusto"
-      "merReq_T\020\240\215\001\022\036\n\030QueryAllVIPCustomerRsp_T"
-      "\020\252\215\001\022\037\n\031AddVIPConsumeHistoryReq_T\020\264\215\001\022\037\n"
-      "\031AddVIPConsumeHistoryRsp_T\020\276\215\001\022\"\n\034Delete"
-      "VIPConsumeHistoryReq_T\020\310\215\001\022\"\n\034DeleteVIPC"
-      "onsumeHistoryRsp_T\020\322\215\001\022\"\n\034ModifyVIPConsu"
-      "meHistoryReq_T\020\334\215\001\022\"\n\034ModifyVIPConsumeHi"
-      "storyRsp_T\020\346\215\001\022$\n\036QueryAllVIPConsumeHist"
-      "oryReq_T\020\360\215\001\022$\n\036QueryAllVIPConsumeHistor"
-      "yRsp_T\020\372\215\001\022 \n\032AddEvaluationTemplateReq_T"
-      "\020\230\216\001\022 \n\032AddEvaluationTemplateRsp_T\020\242\216\001\022#"
-      "\n\035DeleteEvaluationTemplateReq_T\020\254\216\001\022#\n\035D"
-      "eleteEvaluationTemplateRsp_T\020\266\216\001\022#\n\035Modi"
-      "fyEvaluationTemplateReq_T\020\300\216\001\022#\n\035ModifyE"
-      "valuationTemplateRsp_T\020\312\216\001\022%\n\037QueryAllEv"
-      "aluationTemplateReq_T\020\324\216\001\022%\n\037QueryAllEva"
-      "luationTemplateRsp_T\020\336\216\001\022\035\n\027AddStoreEval"
-      "uationReq_T\020\374\216\001\022\035\n\027AddStoreEvaluationRsp"
-      "_T\020\206\217\001\022 \n\032DeleteStoreEvaluationReq_T\020\220\217\001"
-      "\022 \n\032DeleteStoreEvaluationRsp_T\020\232\217\001\022 \n\032Mo"
-      "difyStoreEvaluationReq_T\020\244\217\001\022 \n\032ModifySt"
-      "oreEvaluationRsp_T\020\256\217\001\022#\n\035QueryStoreEval"
-      "uationInfoReq_T\020\270\217\001\022#\n\035QueryStoreEvaluat"
-      "ionInfoRsp_T\020\302\217\001\022\"\n\034QueryAllStoreEvaluat"
-      "ionReq_T\020\314\217\001\022\"\n\034QueryAllStoreEvaluationR"
-      "sp_T\020\326\217\001\022\030\n\022ImportPOSDataReq_T\020\240\234\001\022\030\n\022Im"
-      "portPOSDataRsp_T\020\252\234\001\022%\n\037QueryCustomerFlo"
-      "wStatisticReq_T\020\244\243\001\022%\n\037QueryCustomerFlow"
-      "StatisticRsp_T\020\256\243\001\022!\n\033ReportCustomerFlow"
-      "DataReq_T\020\260\352\001\022!\n\033ReportCustomerFlowDataR"
-      "sp_T\020\272\352\001b\006proto3"
+      "re\022\025\n\rstrCreateDate\030\010 \001(\t\"\334\001\n\021RemotePatr"
+      "olStore\022\023\n\013strPatrolID\030\001 \001(\t\022\021\n\tstrUserI"
+      "D\030\002 \001(\t\022\023\n\013strDeviceID\030\003 \001(\t\022\022\n\nstrStore"
+      "ID\030\004 \001(\t\022\025\n\rstrPatrolDate\030\005 \001(\t\022\030\n\020strPa"
+      "trolPicture\030\006 \003(\t\022\026\n\016uiPatrolResult\030\007 \001("
+      "\r\022\026\n\016strDescription\030\010 \001(\t\022\025\n\rstrCreateDa"
+      "te\030\t \001(\t\"j\n\017RawCustomerFlow\022\025\n\ruiEnterNu"
+      "mber\030\001 \001(\r\022\025\n\ruiLeaveNumber\030\002 \001(\r\022\024\n\014uiS"
+      "tayNumber\030\003 \001(\r\022\023\n\013strDataTime\030\004 \001(\t\",\n\030"
+      "CustomerFlowPreHandleReq\022\020\n\010strValue\030\001 \001"
+      "(\t\",\n\030CustomerFlowPreHandleRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"\035\n\014ShakehandReq\022\r\n\005strID\030\001 \001(\t\""
+      " \n\014ShakehandRsp\022\020\n\010strValue\030\001 \001(\t\"\\\n\013Add"
+      "GroupReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupInfo"
+      "\030\002 \001(\0132\'.CustomerFlow.Interactive.Messag"
+      "e.Group\"!\n\013AddGroupRsp\022\022\n\nstrGroupID\030\001 \001"
+      "(\t\"7\n\016DeleteGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022"
+      "\022\n\nstrGroupID\030\002 \001(\t\"\"\n\016DeleteGroupRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"_\n\016ModifyGroupReq\022\021\n\tstr"
+      "UserID\030\001 \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.Custom"
+      "erFlow.Interactive.Message.Group\"\"\n\016Modi"
+      "fyGroupRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryGro"
+      "upInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroup"
+      "ID\030\002 \001(\t\"O\n\021QueryGroupInfoRsp\022:\n\tgroupIn"
+      "fo\030\001 \001(\0132\'.CustomerFlow.Interactive.Mess"
+      "age.Group\"%\n\020QueryAllGroupReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\"N\n\020QueryAllGroupRsp\022:\n\tgroupInf"
+      "o\030\001 \003(\0132\'.CustomerFlow.Interactive.Messa"
+      "ge.Group\"\\\n\013AddStoreReq\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022:\n\tstoreInfo\030\002 \001(\0132\'.CustomerFlow.Int"
+      "eractive.Message.Store\"!\n\013AddStoreRsp\022\022\n"
+      "\nstrStoreID\030\001 \001(\t\"7\n\016DeleteStoreReq\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"\"\n\016De"
+      "leteStoreRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016Modify"
+      "StoreReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo"
+      "\030\002 \001(\0132\'.CustomerFlow.Interactive.Messag"
+      "e.Store\"\"\n\016ModifyStoreRsp\022\020\n\010strValue\030\001 "
+      "\001(\t\":\n\021QueryStoreInfoReq\022\021\n\tstrUserID\030\001 "
+      "\001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"O\n\021QueryStoreInf"
+      "oRsp\022:\n\tstoreInfo\030\001 \001(\0132\'.CustomerFlow.I"
+      "nteractive.Message.Store\";\n\020QueryAllStor"
+      "eReq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginIndex\030"
+      "\002 \001(\r\"N\n\020QueryAllStoreRsp\022:\n\tstoreInfo\030\001"
+      " \003(\0132\'.CustomerFlow.Interactive.Message."
+      "Store\"y\n\016AddEntranceReq\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014entranceInfo\030\003"
+      " \001(\0132*.CustomerFlow.Interactive.Message."
+      "Entrance\"\'\n\016AddEntranceRsp\022\025\n\rstrEntranc"
+      "eID\030\001 \001(\t\"Q\n\021DeleteEntranceReq\022\021\n\tstrUse"
+      "rID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntr"
+      "anceID\030\003 \001(\t\"%\n\021DeleteEntranceRsp\022\020\n\010str"
+      "Value\030\001 \001(\t\"\262\001\n\021ModifyEntranceReq\022\021\n\tstr"
+      "UserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014entr"
+      "anceInfo\030\003 \001(\0132*.CustomerFlow.Interactiv"
+      "e.Message.Entrance\022\030\n\020strAddedDeviceID\030\004"
+      " \003(\t\022\032\n\022strDeletedDeviceID\030\005 \003(\t\"%\n\021Modi"
+      "fyEntranceRsp\022\020\n\010strValue\030\001 \001(\t\"i\n\024AddEn"
+      "tranceDeviceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nst"
+      "rStoreID\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n"
+      "\013strDeviceID\030\004 \001(\t\"(\n\024AddEntranceDeviceR"
+      "sp\022\020\n\010strValue\030\001 \001(\t\"l\n\027DeleteEntranceDe"
+      "viceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID"
+      "\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strDevi"
+      "ceID\030\004 \001(\t\"+\n\027DeleteEntranceDeviceRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"I\n\013AddEventReq\022:\n\teventI"
+      "nfo\030\001 \001(\0132\'.CustomerFlow.Interactive.Mes"
+      "sage.Event\"!\n\013AddEventRsp\022\022\n\nstrEventID\030"
+      "\001 \001(\t\"7\n\016DeleteEventReq\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022\022\n\nstrEventID\030\002 \001(\t\"\"\n\016DeleteEventRsp"
+      "\022\020\n\010strValue\030\001 \001(\t\"_\n\016ModifyEventReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022:\n\teventInfo\030\002 \001(\0132\'.Cus"
+      "tomerFlow.Interactive.Message.Event\"\"\n\016M"
+      "odifyEventRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021Query"
+      "EventInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrEv"
+      "entID\030\002 \001(\t\"O\n\021QueryEventInfoRsp\022:\n\teven"
+      "tInfo\030\001 \001(\0132\'.CustomerFlow.Interactive.M"
+      "essage.Event\";\n\020QueryAllEventReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"N\n\020Que"
+      "ryAllEventRsp\022:\n\teventInfo\030\001 \003(\0132\'.Custo"
+      "merFlow.Interactive.Message.Event\"v\n\025Add"
+      "SmartGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n"
+      "\017smartGuardStore\030\002 \001(\01321.CustomerFlow.In"
+      "teractive.Message.SmartGuardStore\"*\n\025Add"
+      "SmartGuardStoreRsp\022\021\n\tstrPlanID\030\001 \001(\t\"@\n"
+      "\030DeleteSmartGuardStoreReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\",\n\030DeleteSmartGu"
+      "ardStoreRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\030ModifyS"
+      "martGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n\017"
+      "smartGuardStore\030\002 \001(\01321.CustomerFlow.Int"
+      "eractive.Message.SmartGuardStore\",\n\030Modi"
+      "fySmartGuardStoreRsp\022\020\n\010strValue\030\001 \001(\t\"C"
+      "\n\033QuerySmartGuardStoreInfoReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"i\n\033QuerySmar"
+      "tGuardStoreInfoRsp\022J\n\017smartGuardStore\030\001 "
+      "\001(\01321.CustomerFlow.Interactive.Message.S"
+      "martGuardStore\"Z\n\032QueryAllSmartGuardStor"
+      "eReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strDeviceID\030\002"
+      " \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"h\n\032QueryAllSm"
+      "artGuardStoreRsp\022J\n\017smartGuardStore\030\001 \003("
+      "\01321.CustomerFlow.Interactive.Message.Sma"
+      "rtGuardStore\"p\n\023AddRegularPatrolReq\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022F\n\rregularPatrol\030\002 \001(\0132/."
+      "CustomerFlow.Interactive.Message.Regular"
+      "Patrol\"(\n\023AddRegularPatrolRsp\022\021\n\tstrPlan"
+      "ID\030\001 \001(\t\">\n\026DeleteRegularPatrolReq\022\021\n\tst"
+      "rUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"*\n\026Dele"
+      "teRegularPatrolRsp\022\020\n\010strValue\030\001 \001(\t\"s\n\026"
+      "ModifyRegularPatrolReq\022\021\n\tstrUserID\030\001 \001("
+      "\t\022F\n\rregularPatrol\030\002 \001(\0132/.CustomerFlow."
+      "Interactive.Message.RegularPatrol\"*\n\026Mod"
+      "ifyRegularPatrolRsp\022\020\n\010strValue\030\001 \001(\t\"A\n"
+      "\031QueryRegularPatrolInfoReq\022\021\n\tstrUserID\030"
+      "\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"c\n\031QueryRegular"
+      "PatrolInfoRsp\022F\n\rregularPatrol\030\001 \001(\0132/.C"
+      "ustomerFlow.Interactive.Message.RegularP"
+      "atrol\"X\n\030QueryAllRegularPatrolReq\022\021\n\tstr"
+      "UserID\030\001 \001(\t\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiB"
+      "eginIndex\030\003 \001(\r\"b\n\030QueryAllRegularPatrol"
+      "Rsp\022F\n\rregularPatrol\030\001 \003(\0132/.CustomerFlo"
+      "w.Interactive.Message.RegularPatrol\"J\n\020U"
+      "serJoinStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nst"
+      "rStoreID\030\002 \001(\t\022\017\n\007strRole\030\003 \001(\t\"$\n\020UserJ"
+      "oinStoreRsp\022\020\n\010strValue\030\001 \001(\t\"U\n\020UserQui"
+      "tStoreReq\022\032\n\022strAdministratorID\030\001 \001(\t\022\021\n"
+      "\tstrUserID\030\002 \001(\t\022\022\n\nstrStoreID\030\003 \001(\t\"$\n\020"
+      "UserQuitStoreRsp\022\020\n\010strValue\030\001 \001(\t\"=\n\024Qu"
+      "eryStoreAllUserReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
+      "\nstrStoreID\030\002 \001(\t\"Q\n\024QueryStoreAllUserRs"
+      "p\0229\n\004user\030\001 \003(\0132+.CustomerFlow.Interacti"
+      "ve.Message.UserBrief\"k\n\021AddVIPCustomerRe"
+      "q\022\021\n\tstrUserID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001"
+      "(\0132-.CustomerFlow.Interactive.Message.VI"
+      "PCustomer\"%\n\021AddVIPCustomerRsp\022\020\n\010strVIP"
+      "ID\030\001 \001(\t\";\n\024DeleteVIPCustomerReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"(\n\024DeleteV"
+      "IPCustomerRsp\022\020\n\010strValue\030\001 \001(\t\"n\n\024Modif"
+      "yVIPCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022C\n\014cu"
+      "stomerInfo\030\002 \001(\0132-.CustomerFlow.Interact"
+      "ive.Message.VIPCustomer\"(\n\024ModifyVIPCust"
+      "omerRsp\022\020\n\010strValue\030\001 \001(\t\">\n\027QueryVIPCus"
+      "tomerInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVI"
+      "PID\030\002 \001(\t\"^\n\027QueryVIPCustomerInfoRsp\022C\n\014"
+      "customerInfo\030\001 \001(\0132-.CustomerFlow.Intera"
+      "ctive.Message.VIPCustomer\"A\n\026QueryAllVIP"
+      "CustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBegi"
+      "nIndex\030\002 \001(\r\"Y\n\026QueryAllVIPCustomerRsp\022\?"
+      "\n\010customer\030\001 \003(\0132-.CustomerFlow.Interact"
+      "ive.Message.VIPCustomer\"y\n\027AddVIPConsume"
+      "HistoryReq\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consume"
+      "History\030\002 \001(\01323.CustomerFlow.Interactive"
+      ".Message.VIPConsumeHistory\"/\n\027AddVIPCons"
+      "umeHistoryRsp\022\024\n\014strConsumeID\030\001 \001(\t\"E\n\032D"
+      "eleteVIPConsumeHistoryReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\024\n\014strConsumeID\030\002 \001(\t\".\n\032DeleteVIPC"
+      "onsumeHistoryRsp\022\020\n\010strValue\030\001 \001(\t\"|\n\032Mo"
+      "difyVIPConsumeHistoryReq\022\021\n\tstrUserID\030\001 "
+      "\001(\t\022K\n\016consumeHistory\030\002 \001(\01323.CustomerFl"
+      "ow.Interactive.Message.VIPConsumeHistory"
+      "\".\n\032ModifyVIPConsumeHistoryRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"Y\n\034QueryAllVIPConsumeHistoryReq"
+      "\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n"
+      "\014uiBeginIndex\030\003 \001(\r\"k\n\034QueryAllVIPConsum"
+      "eHistoryRsp\022K\n\016consumeHistory\030\001 \003(\01323.Cu"
+      "stomerFlow.Interactive.Message.VIPConsum"
+      "eHistory\"w\n\030AddEvaluationTemplateReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001(\0132"
+      "0.CustomerFlow.Interactive.Message.Evalu"
+      "ationItem\"3\n\030AddEvaluationTemplateRsp\022\027\n"
+      "\017strEvaluationID\030\001 \001(\t\"I\n\033DeleteEvaluati"
+      "onTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strE"
+      "valuationID\030\002 \001(\t\"/\n\033DeleteEvaluationTem"
+      "plateRsp\022\020\n\010strValue\030\001 \001(\t\"z\n\033ModifyEval"
+      "uationTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016"
+      "evaluationItem\030\002 \001(\01320.CustomerFlow.Inte"
+      "ractive.Message.EvaluationItem\"/\n\033Modify"
+      "EvaluationTemplateRsp\022\020\n\010strValue\030\001 \001(\t\""
+      "2\n\035QueryAllEvaluationTemplateReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\"i\n\035QueryAllEvaluationTemplat"
+      "eRsp\022H\n\016evaluationItem\030\001 \003(\01320.CustomerF"
+      "low.Interactive.Message.EvaluationItem\"c"
+      "\n\025AddStoreEvaluationReq\022J\n\017storeEvaluati"
+      "on\030\001 \001(\01321.CustomerFlow.Interactive.Mess"
+      "age.StoreEvaluation\"0\n\025AddStoreEvaluatio"
+      "nRsp\022\027\n\017strEvaluationID\030\001 \001(\t\"F\n\030DeleteS"
+      "toreEvaluationReq\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017"
+      "strEvaluationID\030\002 \001(\t\",\n\030DeleteStoreEval"
+      "uationRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\030ModifySto"
+      "reEvaluationReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n\017st"
+      "oreEvaluation\030\002 \001(\01321.CustomerFlow.Inter"
+      "active.Message.StoreEvaluation\",\n\030Modify"
+      "StoreEvaluationRsp\022\020\n\010strValue\030\001 \001(\t\"]\n\033"
+      "QueryStoreEvaluationInfoReq\022\021\n\tstrUserID"
+      "\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\027\n\017strEvaluat"
+      "ionID\030\003 \001(\t\"i\n\033QueryStoreEvaluationInfoR"
+      "sp\022J\n\017storeEvaluation\030\001 \001(\01321.CustomerFl"
+      "ow.Interactive.Message.StoreEvaluation\"\203"
+      "\001\n\032QueryAllStoreEvaluationReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBegin"
+      "Date\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBegi"
+      "nIndex\030\005 \001(\r\"h\n\032QueryAllStoreEvaluationR"
+      "sp\022J\n\017storeEvaluation\030\001 \003(\01321.CustomerFl"
+      "ow.Interactive.Message.StoreEvaluation\"c"
+      "\n\027AddRemotePatrolStoreReq\022H\n\013patrolStore"
+      "\030\001 \001(\01323.CustomerFlow.Interactive.Messag"
+      "e.RemotePatrolStore\".\n\027AddRemotePatrolSt"
+      "oreRsp\022\023\n\013strPatrolID\030\001 \001(\t\"D\n\032DeleteRem"
+      "otePatrolStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013"
+      "strPatrolID\030\002 \001(\t\".\n\032DeleteRemotePatrolS"
+      "toreRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\032ModifyRemot"
+      "ePatrolStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\013pa"
+      "trolStore\030\002 \001(\01323.CustomerFlow.Interacti"
+      "ve.Message.RemotePatrolStore\".\n\032ModifyRe"
+      "motePatrolStoreRsp\022\020\n\010strValue\030\001 \001(\t\"G\n\035"
+      "QueryRemotePatrolStoreInfoReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\023\n\013strPatrolID\030\002 \001(\t\"i\n\035QueryRe"
+      "motePatrolStoreInfoRsp\022H\n\013patrolStore\030\001 "
+      "\001(\01323.CustomerFlow.Interactive.Message.R"
+      "emotePatrolStore\"\205\001\n\034QueryAllRemotePatro"
+      "lStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStore"
+      "ID\030\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEnd"
+      "Date\030\004 \001(\t\022\024\n\014uiBeginIndex\030\005 \001(\r\"h\n\034Quer"
+      "yAllRemotePatrolStoreRsp\022H\n\013patrolStore\030"
+      "\001 \003(\01323.CustomerFlow.Interactive.Message"
+      ".RemotePatrolStore\"\221\001\n\020ImportPOSDataReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025"
+      "\n\ruiOrderAmount\030\003 \001(\r\022\025\n\ruiGoodsAmount\030\004"
+      " \001(\r\022\023\n\013dDealAmount\030\005 \001(\001\022\023\n\013strDealDate"
+      "\030\006 \001(\t\"$\n\020ImportPOSDataRsp\022\020\n\010strValue\030\001"
+      " \001(\t\"\211\001\n\035QueryCustomerFlowStatisticReq\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n"
+      "\014strBeginDate\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022"
+      "\027\n\017uiTimePrecision\030\005 \001(\r\"5\n\035QueryCustome"
+      "rFlowStatisticRsp\022\024\n\014strChartData\030\001 \001(\t\""
+      "y\n\031ReportCustomerFlowDataReq\022\023\n\013strDevic"
+      "eID\030\001 \001(\t\022G\n\014customerFlow\030\002 \003(\01321.Custom"
+      "erFlow.Interactive.Message.RawCustomerFl"
+      "ow\"-\n\031ReportCustomerFlowDataRsp\022\020\n\010strVa"
+      "lue\030\001 \001(\t\"\207-\n\007Request\022b\n\036CustomerFlowPre"
+      "HandleReq_Value\030\n \001(\0132:.CustomerFlow.Int"
+      "eractive.Message.CustomerFlowPreHandleRe"
+      "q\022J\n\022ShakehandReq_Value\0302 \001(\0132..Customer"
+      "Flow.Interactive.Message.ShakehandReq\022H\n"
+      "\021AddGroupReq_Value\030d \001(\0132-.CustomerFlow."
+      "Interactive.Message.AddGroupReq\022N\n\024Delet"
+      "eGroupReq_Value\030n \001(\01320.CustomerFlow.Int"
+      "eractive.Message.DeleteGroupReq\022N\n\024Modif"
+      "yGroupReq_Value\030x \001(\01320.CustomerFlow.Int"
+      "eractive.Message.ModifyGroupReq\022U\n\027Query"
+      "GroupInfoReq_Value\030\202\001 \001(\01323.CustomerFlow"
+      ".Interactive.Message.QueryGroupInfoReq\022S"
+      "\n\026QueryAllGroupReq_Value\030\214\001 \001(\01322.Custom"
+      "erFlow.Interactive.Message.QueryAllGroup"
+      "Req\022I\n\021AddStoreReq_Value\030\226\001 \001(\0132-.Custom"
+      "erFlow.Interactive.Message.AddStoreReq\022O"
+      "\n\024DeleteStoreReq_Value\030\240\001 \001(\01320.Customer"
+      "Flow.Interactive.Message.DeleteStoreReq\022"
+      "O\n\024ModifyStoreReq_Value\030\252\001 \001(\01320.Custome"
+      "rFlow.Interactive.Message.ModifyStoreReq"
+      "\022U\n\027QueryStoreInfoReq_Value\030\264\001 \001(\01323.Cus"
+      "tomerFlow.Interactive.Message.QueryStore"
+      "InfoReq\022S\n\026QueryAllStoreReq_Value\030\276\001 \001(\013"
+      "22.CustomerFlow.Interactive.Message.Quer"
+      "yAllStoreReq\022O\n\024AddEntranceReq_Value\030\310\001 "
+      "\001(\01320.CustomerFlow.Interactive.Message.A"
+      "ddEntranceReq\022U\n\027DeleteEntranceReq_Value"
+      "\030\322\001 \001(\01323.CustomerFlow.Interactive.Messa"
+      "ge.DeleteEntranceReq\022U\n\027ModifyEntranceRe"
+      "q_Value\030\334\001 \001(\01323.CustomerFlow.Interactiv"
+      "e.Message.ModifyEntranceReq\022[\n\032AddEntran"
+      "ceDeviceReq_Value\030\346\001 \001(\01326.CustomerFlow."
+      "Interactive.Message.AddEntranceDeviceReq"
+      "\022a\n\035DeleteEntranceDeviceReq_Value\030\360\001 \001(\013"
+      "29.CustomerFlow.Interactive.Message.Dele"
+      "teEntranceDeviceReq\022I\n\021AddEventReq_Value"
+      "\030\254\002 \001(\0132-.CustomerFlow.Interactive.Messa"
+      "ge.AddEventReq\022O\n\024DeleteEventReq_Value\030\266"
+      "\002 \001(\01320.CustomerFlow.Interactive.Message"
+      ".DeleteEventReq\022O\n\024ModifyEventReq_Value\030"
+      "\300\002 \001(\01320.CustomerFlow.Interactive.Messag"
+      "e.ModifyEventReq\022U\n\027QueryEventInfoReq_Va"
+      "lue\030\312\002 \001(\01323.CustomerFlow.Interactive.Me"
+      "ssage.QueryEventInfoReq\022S\n\026QueryAllEvent"
+      "Req_Value\030\324\002 \001(\01322.CustomerFlow.Interact"
+      "ive.Message.QueryAllEventReq\022]\n\033AddSmart"
+      "GuardStoreReq_Value\030\336\002 \001(\01327.CustomerFlo"
+      "w.Interactive.Message.AddSmartGuardStore"
+      "Req\022c\n\036DeleteSmartGuardStoreReq_Value\030\350\002"
+      " \001(\0132:.CustomerFlow.Interactive.Message."
+      "DeleteSmartGuardStoreReq\022c\n\036ModifySmartG"
+      "uardStoreReq_Value\030\362\002 \001(\0132:.CustomerFlow"
+      ".Interactive.Message.ModifySmartGuardSto"
+      "reReq\022i\n!QuerySmartGuardStoreInfoReq_Val"
+      "ue\030\374\002 \001(\0132=.CustomerFlow.Interactive.Mes"
+      "sage.QuerySmartGuardStoreInfoReq\022g\n Quer"
+      "yAllSmartGuardStoreReq_Value\030\206\003 \001(\0132<.Cu"
+      "stomerFlow.Interactive.Message.QueryAllS"
+      "martGuardStoreReq\022Y\n\031AddRegularPatrolReq"
+      "_Value\030\220\003 \001(\01325.CustomerFlow.Interactive"
+      ".Message.AddRegularPatrolReq\022_\n\034DeleteRe"
+      "gularPatrolReq_Value\030\232\003 \001(\01328.CustomerFl"
+      "ow.Interactive.Message.DeleteRegularPatr"
+      "olReq\022_\n\034ModifyRegularPatrolReq_Value\030\244\003"
+      " \001(\01328.CustomerFlow.Interactive.Message."
+      "ModifyRegularPatrolReq\022e\n\037QueryRegularPa"
+      "trolInfoReq_Value\030\256\003 \001(\0132;.CustomerFlow."
+      "Interactive.Message.QueryRegularPatrolIn"
+      "foReq\022c\n\036QueryAllRegularPatrolReq_Value\030"
+      "\270\003 \001(\0132:.CustomerFlow.Interactive.Messag"
+      "e.QueryAllRegularPatrolReq\022S\n\026UserJoinSt"
+      "oreReq_Value\030\364\003 \001(\01322.CustomerFlow.Inter"
+      "active.Message.UserJoinStoreReq\022S\n\026UserQ"
+      "uitStoreReq_Value\030\376\003 \001(\01322.CustomerFlow."
+      "Interactive.Message.UserQuitStoreReq\022[\n\032"
+      "QueryStoreAllUserReq_Value\030\210\004 \001(\01326.Cust"
+      "omerFlow.Interactive.Message.QueryStoreA"
+      "llUserReq\022U\n\027AddVIPCustomerReq_Value\030\240\006 "
+      "\001(\01323.CustomerFlow.Interactive.Message.A"
+      "ddVIPCustomerReq\022[\n\032DeleteVIPCustomerReq"
+      "_Value\030\252\006 \001(\01326.CustomerFlow.Interactive"
+      ".Message.DeleteVIPCustomerReq\022[\n\032ModifyV"
+      "IPCustomerReq_Value\030\264\006 \001(\01326.CustomerFlo"
+      "w.Interactive.Message.ModifyVIPCustomerR"
+      "eq\022a\n\035QueryVIPCustomerInfoReq_Value\030\276\006 \001"
+      "(\01329.CustomerFlow.Interactive.Message.Qu"
+      "eryVIPCustomerInfoReq\022_\n\034QueryAllVIPCust"
+      "omerReq_Value\030\310\006 \001(\01328.CustomerFlow.Inte"
+      "ractive.Message.QueryAllVIPCustomerReq\022a"
+      "\n\035AddVIPConsumeHistoryReq_Value\030\322\006 \001(\01329"
+      ".CustomerFlow.Interactive.Message.AddVIP"
+      "ConsumeHistoryReq\022g\n DeleteVIPConsumeHis"
+      "toryReq_Value\030\334\006 \001(\0132<.CustomerFlow.Inte"
+      "ractive.Message.DeleteVIPConsumeHistoryR"
+      "eq\022g\n ModifyVIPConsumeHistoryReq_Value\030\346"
+      "\006 \001(\0132<.CustomerFlow.Interactive.Message"
+      ".ModifyVIPConsumeHistoryReq\022k\n\"QueryAllV"
+      "IPConsumeHistoryReq_Value\030\360\006 \001(\0132>.Custo"
+      "merFlow.Interactive.Message.QueryAllVIPC"
+      "onsumeHistoryReq\022c\n\036AddEvaluationTemplat"
+      "eReq_Value\030\204\007 \001(\0132:.CustomerFlow.Interac"
+      "tive.Message.AddEvaluationTemplateReq\022i\n"
+      "!DeleteEvaluationTemplateReq_Value\030\216\007 \001("
+      "\0132=.CustomerFlow.Interactive.Message.Del"
+      "eteEvaluationTemplateReq\022i\n!ModifyEvalua"
+      "tionTemplateReq_Value\030\230\007 \001(\0132=.CustomerF"
+      "low.Interactive.Message.ModifyEvaluation"
+      "TemplateReq\022m\n#QueryAllEvaluationTemplat"
+      "eReq_Value\030\242\007 \001(\0132\?.CustomerFlow.Interac"
+      "tive.Message.QueryAllEvaluationTemplateR"
+      "eq\022]\n\033AddStoreEvaluationReq_Value\030\266\007 \001(\013"
+      "27.CustomerFlow.Interactive.Message.AddS"
+      "toreEvaluationReq\022c\n\036DeleteStoreEvaluati"
+      "onReq_Value\030\300\007 \001(\0132:.CustomerFlow.Intera"
+      "ctive.Message.DeleteStoreEvaluationReq\022c"
+      "\n\036ModifyStoreEvaluationReq_Value\030\312\007 \001(\0132"
+      ":.CustomerFlow.Interactive.Message.Modif"
+      "yStoreEvaluationReq\022i\n!QueryStoreEvaluat"
+      "ionInfoReq_Value\030\324\007 \001(\0132=.CustomerFlow.I"
+      "nteractive.Message.QueryStoreEvaluationI"
+      "nfoReq\022g\n QueryAllStoreEvaluationReq_Val"
+      "ue\030\336\007 \001(\0132<.CustomerFlow.Interactive.Mes"
+      "sage.QueryAllStoreEvaluationReq\022a\n\035AddRe"
+      "motePatrolStoreReq_Value\030\350\007 \001(\01329.Custom"
+      "erFlow.Interactive.Message.AddRemotePatr"
+      "olStoreReq\022g\n DeleteRemotePatrolStoreReq"
+      "_Value\030\362\007 \001(\0132<.CustomerFlow.Interactive"
+      ".Message.DeleteRemotePatrolStoreReq\022g\n M"
+      "odifyRemotePatrolStoreReq_Value\030\374\007 \001(\0132<"
+      ".CustomerFlow.Interactive.Message.Modify"
+      "RemotePatrolStoreReq\022m\n#QueryRemotePatro"
+      "lStoreInfoReq_Value\030\206\010 \001(\0132\?.CustomerFlo"
+      "w.Interactive.Message.QueryRemotePatrolS"
+      "toreInfoReq\022k\n\"QueryAllRemotePatrolStore"
+      "Req_Value\030\220\010 \001(\0132>.CustomerFlow.Interact"
+      "ive.Message.QueryAllRemotePatrolStoreReq"
+      "\022S\n\026ImportPOSDataReq_Value\030\320\017 \001(\01322.Cust"
+      "omerFlow.Interactive.Message.ImportPOSDa"
+      "taReq\022m\n#QueryCustomerFlowStatisticReq_V"
+      "alue\030\324\026 \001(\0132\?.CustomerFlow.Interactive.M"
+      "essage.QueryCustomerFlowStatisticReq\022e\n\037"
+      "ReportCustomerFlowDataReq_Value\030\270\027 \001(\0132;"
+      ".CustomerFlow.Interactive.Message.Report"
+      "CustomerFlowDataReq\"\255-\n\010Response\022\020\n\010iRet"
+      "code\030\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022b\n\036Custome"
+      "rFlowPreHandleRsp_Value\030\n \001(\0132:.Customer"
+      "Flow.Interactive.Message.CustomerFlowPre"
+      "HandleRsp\022J\n\022ShakehandRsp_Value\0302 \001(\0132.."
+      "CustomerFlow.Interactive.Message.Shakeha"
+      "ndRsp\022H\n\021AddGroupRsp_Value\030d \001(\0132-.Custo"
+      "merFlow.Interactive.Message.AddGroupRsp\022"
+      "N\n\024DeleteGroupRsp_Value\030n \001(\01320.Customer"
+      "Flow.Interactive.Message.DeleteGroupRsp\022"
+      "N\n\024ModifyGroupRsp_Value\030x \001(\01320.Customer"
+      "Flow.Interactive.Message.ModifyGroupRsp\022"
+      "U\n\027QueryGroupInfoRsp_Value\030\202\001 \001(\01323.Cust"
+      "omerFlow.Interactive.Message.QueryGroupI"
+      "nfoRsp\022S\n\026QueryAllGroupRsp_Value\030\214\001 \001(\0132"
+      "2.CustomerFlow.Interactive.Message.Query"
+      "AllGroupRsp\022I\n\021AddStoreRsp_Value\030\226\001 \001(\0132"
+      "-.CustomerFlow.Interactive.Message.AddSt"
+      "oreRsp\022O\n\024DeleteStoreRsp_Value\030\240\001 \001(\01320."
+      "CustomerFlow.Interactive.Message.DeleteS"
+      "toreRsp\022O\n\024ModifyStoreRsp_Value\030\252\001 \001(\01320"
+      ".CustomerFlow.Interactive.Message.Modify"
+      "StoreRsp\022U\n\027QueryStoreInfoRsp_Value\030\264\001 \001"
+      "(\01323.CustomerFlow.Interactive.Message.Qu"
+      "eryStoreInfoRsp\022S\n\026QueryAllStoreRsp_Valu"
+      "e\030\276\001 \001(\01322.CustomerFlow.Interactive.Mess"
+      "age.QueryAllStoreRsp\022O\n\024AddEntranceRsp_V"
+      "alue\030\310\001 \001(\01320.CustomerFlow.Interactive.M"
+      "essage.AddEntranceRsp\022U\n\027DeleteEntranceR"
+      "sp_Value\030\322\001 \001(\01323.CustomerFlow.Interacti"
+      "ve.Message.DeleteEntranceRsp\022U\n\027ModifyEn"
+      "tranceRsp_Value\030\334\001 \001(\01323.CustomerFlow.In"
+      "teractive.Message.ModifyEntranceRsp\022[\n\032A"
+      "ddEntranceDeviceRsp_Value\030\346\001 \001(\01326.Custo"
+      "merFlow.Interactive.Message.AddEntranceD"
+      "eviceRsp\022a\n\035DeleteEntranceDeviceRsp_Valu"
+      "e\030\360\001 \001(\01329.CustomerFlow.Interactive.Mess"
+      "age.DeleteEntranceDeviceRsp\022I\n\021AddEventR"
+      "sp_Value\030\254\002 \001(\0132-.CustomerFlow.Interacti"
+      "ve.Message.AddEventRsp\022O\n\024DeleteEventRsp"
+      "_Value\030\266\002 \001(\01320.CustomerFlow.Interactive"
+      ".Message.DeleteEventRsp\022O\n\024ModifyEventRs"
+      "p_Value\030\300\002 \001(\01320.CustomerFlow.Interactiv"
+      "e.Message.ModifyEventRsp\022U\n\027QueryEventIn"
+      "foRsp_Value\030\312\002 \001(\01323.CustomerFlow.Intera"
+      "ctive.Message.QueryEventInfoRsp\022S\n\026Query"
+      "AllEventRsp_Value\030\324\002 \001(\01322.CustomerFlow."
+      "Interactive.Message.QueryAllEventRsp\022]\n\033"
+      "AddSmartGuardStoreRsp_Value\030\336\002 \001(\01327.Cus"
+      "tomerFlow.Interactive.Message.AddSmartGu"
+      "ardStoreRsp\022c\n\036DeleteSmartGuardStoreRsp_"
+      "Value\030\350\002 \001(\0132:.CustomerFlow.Interactive."
+      "Message.DeleteSmartGuardStoreRsp\022c\n\036Modi"
+      "fySmartGuardStoreRsp_Value\030\362\002 \001(\0132:.Cust"
+      "omerFlow.Interactive.Message.ModifySmart"
+      "GuardStoreRsp\022i\n!QuerySmartGuardStoreInf"
+      "oRsp_Value\030\374\002 \001(\0132=.CustomerFlow.Interac"
+      "tive.Message.QuerySmartGuardStoreInfoRsp"
+      "\022g\n QueryAllSmartGuardStoreRsp_Value\030\206\003 "
+      "\001(\0132<.CustomerFlow.Interactive.Message.Q"
+      "ueryAllSmartGuardStoreRsp\022Y\n\031AddRegularP"
+      "atrolRsp_Value\030\220\003 \001(\01325.CustomerFlow.Int"
+      "eractive.Message.AddRegularPatrolRsp\022_\n\034"
+      "DeleteRegularPatrolRsp_Value\030\232\003 \001(\01328.Cu"
+      "stomerFlow.Interactive.Message.DeleteReg"
+      "ularPatrolRsp\022_\n\034ModifyRegularPatrolRsp_"
+      "Value\030\244\003 \001(\01328.CustomerFlow.Interactive."
+      "Message.ModifyRegularPatrolRsp\022e\n\037QueryR"
+      "egularPatrolInfoRsp_Value\030\256\003 \001(\0132;.Custo"
+      "merFlow.Interactive.Message.QueryRegular"
+      "PatrolInfoRsp\022c\n\036QueryAllRegularPatrolRs"
+      "p_Value\030\270\003 \001(\0132:.CustomerFlow.Interactiv"
+      "e.Message.QueryAllRegularPatrolRsp\022S\n\026Us"
+      "erJoinStoreRsp_Value\030\364\003 \001(\01322.CustomerFl"
+      "ow.Interactive.Message.UserJoinStoreRsp\022"
+      "S\n\026UserQuitStoreRsp_Value\030\376\003 \001(\01322.Custo"
+      "merFlow.Interactive.Message.UserQuitStor"
+      "eRsp\022[\n\032QueryStoreAllUserRsp_Value\030\210\004 \001("
+      "\01326.CustomerFlow.Interactive.Message.Que"
+      "ryStoreAllUserRsp\022U\n\027AddVIPCustomerRsp_V"
+      "alue\030\240\006 \001(\01323.CustomerFlow.Interactive.M"
+      "essage.AddVIPCustomerRsp\022[\n\032DeleteVIPCus"
+      "tomerRsp_Value\030\252\006 \001(\01326.CustomerFlow.Int"
+      "eractive.Message.DeleteVIPCustomerRsp\022[\n"
+      "\032ModifyVIPCustomerRsp_Value\030\264\006 \001(\01326.Cus"
+      "tomerFlow.Interactive.Message.ModifyVIPC"
+      "ustomerRsp\022a\n\035QueryVIPCustomerInfoRsp_Va"
+      "lue\030\276\006 \001(\01329.CustomerFlow.Interactive.Me"
+      "ssage.QueryVIPCustomerInfoRsp\022_\n\034QueryAl"
+      "lVIPCustomerRsp_Value\030\310\006 \001(\01328.CustomerF"
+      "low.Interactive.Message.QueryAllVIPCusto"
+      "merRsp\022a\n\035AddVIPConsumeHistoryRsp_Value\030"
+      "\322\006 \001(\01329.CustomerFlow.Interactive.Messag"
+      "e.AddVIPConsumeHistoryRsp\022g\n DeleteVIPCo"
+      "nsumeHistoryRsp_Value\030\334\006 \001(\0132<.CustomerF"
+      "low.Interactive.Message.DeleteVIPConsume"
+      "HistoryRsp\022g\n ModifyVIPConsumeHistoryRsp"
+      "_Value\030\346\006 \001(\0132<.CustomerFlow.Interactive"
+      ".Message.ModifyVIPConsumeHistoryRsp\022k\n\"Q"
+      "ueryAllVIPConsumeHistoryRsp_Value\030\360\006 \001(\013"
+      "2>.CustomerFlow.Interactive.Message.Quer"
+      "yAllVIPConsumeHistoryRsp\022c\n\036AddEvaluatio"
+      "nTemplateRsp_Value\030\204\007 \001(\0132:.CustomerFlow"
+      ".Interactive.Message.AddEvaluationTempla"
+      "teRsp\022i\n!DeleteEvaluationTemplateRsp_Val"
+      "ue\030\216\007 \001(\0132=.CustomerFlow.Interactive.Mes"
+      "sage.DeleteEvaluationTemplateRsp\022i\n!Modi"
+      "fyEvaluationTemplateRsp_Value\030\230\007 \001(\0132=.C"
+      "ustomerFlow.Interactive.Message.ModifyEv"
+      "aluationTemplateRsp\022m\n#QueryAllEvaluatio"
+      "nTemplateRsp_Value\030\242\007 \001(\0132\?.CustomerFlow"
+      ".Interactive.Message.QueryAllEvaluationT"
+      "emplateRsp\022]\n\033AddStoreEvaluationRsp_Valu"
+      "e\030\266\007 \001(\01327.CustomerFlow.Interactive.Mess"
+      "age.AddStoreEvaluationRsp\022c\n\036DeleteStore"
+      "EvaluationRsp_Value\030\300\007 \001(\0132:.CustomerFlo"
+      "w.Interactive.Message.DeleteStoreEvaluat"
+      "ionRsp\022c\n\036ModifyStoreEvaluationRsp_Value"
+      "\030\312\007 \001(\0132:.CustomerFlow.Interactive.Messa"
+      "ge.ModifyStoreEvaluationRsp\022i\n!QueryStor"
+      "eEvaluationInfoRsp_Value\030\324\007 \001(\0132=.Custom"
+      "erFlow.Interactive.Message.QueryStoreEva"
+      "luationInfoRsp\022g\n QueryAllStoreEvaluatio"
+      "nRsp_Value\030\336\007 \001(\0132<.CustomerFlow.Interac"
+      "tive.Message.QueryAllStoreEvaluationRsp\022"
+      "a\n\035AddRemotePatrolStoreRsp_Value\030\350\007 \001(\0132"
+      "9.CustomerFlow.Interactive.Message.AddRe"
+      "motePatrolStoreRsp\022g\n DeleteRemotePatrol"
+      "StoreRsp_Value\030\362\007 \001(\0132<.CustomerFlow.Int"
+      "eractive.Message.DeleteRemotePatrolStore"
+      "Rsp\022g\n ModifyRemotePatrolStoreRsp_Value\030"
+      "\374\007 \001(\0132<.CustomerFlow.Interactive.Messag"
+      "e.ModifyRemotePatrolStoreRsp\022m\n#QueryRem"
+      "otePatrolStoreInfoRsp_Value\030\206\010 \001(\0132\?.Cus"
+      "tomerFlow.Interactive.Message.QueryRemot"
+      "ePatrolStoreInfoRsp\022k\n\"QueryAllRemotePat"
+      "rolStoreRsp_Value\030\220\010 \001(\0132>.CustomerFlow."
+      "Interactive.Message.QueryAllRemotePatrol"
+      "StoreRsp\022S\n\026ImportPOSDataRsp_Value\030\320\017 \001("
+      "\01322.CustomerFlow.Interactive.Message.Imp"
+      "ortPOSDataRsp\022m\n#QueryCustomerFlowStatis"
+      "ticRsp_Value\030\324\026 \001(\0132\?.CustomerFlow.Inter"
+      "active.Message.QueryCustomerFlowStatisti"
+      "cRsp\022e\n\037ReportCustomerFlowDataRsp_Value\030"
+      "\270\027 \001(\0132;.CustomerFlow.Interactive.Messag"
+      "e.ReportCustomerFlowDataRsp\"\367\001\n\023Customer"
+      "FlowMessage\022C\n\004type\030\001 \001(\01625.CustomerFlow"
+      ".Interactive.Message.CustomerFlowMsgType"
+      "\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022;\n\010re"
+      "qValue\030\004 \001(\0132).CustomerFlow.Interactive."
+      "Message.Request\022<\n\010rspValue\030\005 \001(\0132*.Cust"
+      "omerFlow.Interactive.Message.Response*\201\035"
+      "\n\023CustomerFlowMsgType\022\n\n\006Init_T\020\000\022\037\n\032Cus"
+      "tomerFlowPreHandleReq_T\020\250F\022\037\n\032CustomerFl"
+      "owPreHandleRsp_T\020\262F\022\023\n\016ShakehandReq_T\020\214G"
+      "\022\023\n\016ShakehandRsp_T\020\226G\022\022\n\rAddGroupReq_T\020\220"
+      "N\022\022\n\rAddGroupRsp_T\020\232N\022\025\n\020DeleteGroupReq_"
+      "T\020\244N\022\025\n\020DeleteGroupRsp_T\020\256N\022\025\n\020ModifyGro"
+      "upReq_T\020\270N\022\025\n\020ModifyGroupRsp_T\020\302N\022\030\n\023Que"
+      "ryGroupInfoReq_T\020\314N\022\030\n\023QueryGroupInfoRsp"
+      "_T\020\326N\022\027\n\022QueryAllGroupReq_T\020\340N\022\027\n\022QueryA"
+      "llGroupRsp_T\020\352N\022\022\n\rAddStoreReq_T\020\364N\022\022\n\rA"
+      "ddStoreRsp_T\020\376N\022\025\n\020DeleteStoreReq_T\020\210O\022\025"
+      "\n\020DeleteStoreRsp_T\020\222O\022\025\n\020ModifyStoreReq_"
+      "T\020\234O\022\025\n\020ModifyStoreRsp_T\020\246O\022\030\n\023QueryStor"
+      "eInfoReq_T\020\260O\022\030\n\023QueryStoreInfoRsp_T\020\272O\022"
+      "\027\n\022QueryAllStoreReq_T\020\304O\022\027\n\022QueryAllStor"
+      "eRsp_T\020\316O\022\025\n\020AddEntranceReq_T\020\330O\022\025\n\020AddE"
+      "ntranceRsp_T\020\342O\022\030\n\023DeleteEntranceReq_T\020\354"
+      "O\022\030\n\023DeleteEntranceRsp_T\020\366O\022\030\n\023ModifyEnt"
+      "ranceReq_T\020\200P\022\030\n\023ModifyEntranceRsp_T\020\212P\022"
+      "\033\n\026AddEntranceDeviceReq_T\020\224P\022\033\n\026AddEntra"
+      "nceDeviceRsp_T\020\236P\022\036\n\031DeleteEntranceDevic"
+      "eReq_T\020\250P\022\036\n\031DeleteEntranceDeviceRsp_T\020\262"
+      "P\022\022\n\rAddEventReq_T\020\344P\022\022\n\rAddEventRsp_T\020\356"
+      "P\022\025\n\020DeleteEventReq_T\020\370P\022\025\n\020DeleteEventR"
+      "sp_T\020\202Q\022\025\n\020ModifyEventReq_T\020\214Q\022\025\n\020Modify"
+      "EventRsp_T\020\226Q\022\030\n\023QueryEventInfoReq_T\020\240Q\022"
+      "\030\n\023QueryEventInfoRsp_T\020\252Q\022\027\n\022QueryAllEve"
+      "ntReq_T\020\264Q\022\027\n\022QueryAllEventRsp_T\020\276Q\022\034\n\027A"
+      "ddSmartGuardStoreReq_T\020\310Q\022\034\n\027AddSmartGua"
+      "rdStoreRsp_T\020\322Q\022\037\n\032DeleteSmartGuardStore"
+      "Req_T\020\334Q\022\037\n\032DeleteSmartGuardStoreRsp_T\020\346"
+      "Q\022\037\n\032ModifySmartGuardStoreReq_T\020\360Q\022\037\n\032Mo"
+      "difySmartGuardStoreRsp_T\020\372Q\022\"\n\035QuerySmar"
+      "tGuardStoreInfoReq_T\020\204R\022\"\n\035QuerySmartGua"
+      "rdStoreInfoRsp_T\020\216R\022!\n\034QueryAllSmartGuar"
+      "dStoreReq_T\020\230R\022!\n\034QueryAllSmartGuardStor"
+      "eRsp_T\020\242R\022\032\n\025AddRegularPatrolReq_T\020\254R\022\032\n"
+      "\025AddRegularPatrolRsp_T\020\266R\022\035\n\030DeleteRegul"
+      "arPatrolReq_T\020\300R\022\035\n\030DeleteRegularPatrolR"
+      "sp_T\020\312R\022\035\n\030ModifyRegularPatrolReq_T\020\324R\022\035"
+      "\n\030ModifyRegularPatrolRsp_T\020\336R\022 \n\033QueryRe"
+      "gularPatrolInfoReq_T\020\350R\022 \n\033QueryRegularP"
+      "atrolInfoRsp_T\020\362R\022\037\n\032QueryAllRegularPatr"
+      "olReq_T\020\374R\022\037\n\032QueryAllRegularPatrolRsp_T"
+      "\020\206S\022\027\n\022UserJoinStoreReq_T\020\314S\022\027\n\022UserJoin"
+      "StoreRsp_T\020\326S\022\027\n\022UserQuitStoreReq_T\020\340S\022\027"
+      "\n\022UserQuitStoreRsp_T\020\352S\022\033\n\026QueryStoreAll"
+      "UserReq_T\020\364S\022\033\n\026QueryStoreAllUserRsp_T\020\376"
+      "S\022\031\n\023AddVIPCustomerReq_T\020\320\214\001\022\031\n\023AddVIPCu"
+      "stomerRsp_T\020\332\214\001\022\034\n\026DeleteVIPCustomerReq_"
+      "T\020\344\214\001\022\034\n\026DeleteVIPCustomerRsp_T\020\356\214\001\022\034\n\026M"
+      "odifyVIPCustomerReq_T\020\370\214\001\022\034\n\026ModifyVIPCu"
+      "stomerRsp_T\020\202\215\001\022\037\n\031QueryVIPCustomerInfoR"
+      "eq_T\020\214\215\001\022\037\n\031QueryVIPCustomerInfoRsp_T\020\226\215"
+      "\001\022\036\n\030QueryAllVIPCustomerReq_T\020\240\215\001\022\036\n\030Que"
+      "ryAllVIPCustomerRsp_T\020\252\215\001\022\037\n\031AddVIPConsu"
+      "meHistoryReq_T\020\264\215\001\022\037\n\031AddVIPConsumeHisto"
+      "ryRsp_T\020\276\215\001\022\"\n\034DeleteVIPConsumeHistoryRe"
+      "q_T\020\310\215\001\022\"\n\034DeleteVIPConsumeHistoryRsp_T\020"
+      "\322\215\001\022\"\n\034ModifyVIPConsumeHistoryReq_T\020\334\215\001\022"
+      "\"\n\034ModifyVIPConsumeHistoryRsp_T\020\346\215\001\022$\n\036Q"
+      "ueryAllVIPConsumeHistoryReq_T\020\360\215\001\022$\n\036Que"
+      "ryAllVIPConsumeHistoryRsp_T\020\372\215\001\022 \n\032AddEv"
+      "aluationTemplateReq_T\020\230\216\001\022 \n\032AddEvaluati"
+      "onTemplateRsp_T\020\242\216\001\022#\n\035DeleteEvaluationT"
+      "emplateReq_T\020\254\216\001\022#\n\035DeleteEvaluationTemp"
+      "lateRsp_T\020\266\216\001\022#\n\035ModifyEvaluationTemplat"
+      "eReq_T\020\300\216\001\022#\n\035ModifyEvaluationTemplateRs"
+      "p_T\020\312\216\001\022%\n\037QueryAllEvaluationTemplateReq"
+      "_T\020\324\216\001\022%\n\037QueryAllEvaluationTemplateRsp_"
+      "T\020\336\216\001\022\035\n\027AddStoreEvaluationReq_T\020\374\216\001\022\035\n\027"
+      "AddStoreEvaluationRsp_T\020\206\217\001\022 \n\032DeleteSto"
+      "reEvaluationReq_T\020\220\217\001\022 \n\032DeleteStoreEval"
+      "uationRsp_T\020\232\217\001\022 \n\032ModifyStoreEvaluation"
+      "Req_T\020\244\217\001\022 \n\032ModifyStoreEvaluationRsp_T\020"
+      "\256\217\001\022#\n\035QueryStoreEvaluationInfoReq_T\020\270\217\001"
+      "\022#\n\035QueryStoreEvaluationInfoRsp_T\020\302\217\001\022\"\n"
+      "\034QueryAllStoreEvaluationReq_T\020\314\217\001\022\"\n\034Que"
+      "ryAllStoreEvaluationRsp_T\020\326\217\001\022\037\n\031AddRemo"
+      "tePatrolStoreReq_T\020\340\217\001\022\037\n\031AddRemotePatro"
+      "lStoreRsp_T\020\352\217\001\022\"\n\034DeleteRemotePatrolSto"
+      "reReq_T\020\364\217\001\022\"\n\034DeleteRemotePatrolStoreRs"
+      "p_T\020\376\217\001\022\"\n\034ModifyRemotePatrolStoreReq_T\020"
+      "\210\220\001\022\"\n\034ModifyRemotePatrolStoreRsp_T\020\222\220\001\022"
+      "%\n\037QueryRemotePatrolStoreInfoReq_T\020\234\220\001\022%"
+      "\n\037QueryRemotePatrolStoreInfoRsp_T\020\246\220\001\022$\n"
+      "\036QueryAllRemotePatrolStoreReq_T\020\260\220\001\022$\n\036Q"
+      "ueryAllRemotePatrolStoreRsp_T\020\272\220\001\022\030\n\022Imp"
+      "ortPOSDataReq_T\020\240\234\001\022\030\n\022ImportPOSDataRsp_"
+      "T\020\252\234\001\022%\n\037QueryCustomerFlowStatisticReq_T"
+      "\020\244\243\001\022%\n\037QueryCustomerFlowStatisticRsp_T\020"
+      "\256\243\001\022!\n\033ReportCustomerFlowDataReq_T\020\260\352\001\022!"
+      "\n\033ReportCustomerFlowDataRsp_T\020\272\352\001b\006proto"
+      "3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 24896);
+      descriptor, 27401);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolCustomerFlow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -2949,6 +3195,16 @@ bool CustomerFlowMsgType_IsValid(int value) {
     case 18370:
     case 18380:
     case 18390:
+    case 18400:
+    case 18410:
+    case 18420:
+    case 18430:
+    case 18440:
+    case 18450:
+    case 18460:
+    case 18470:
+    case 18480:
+    case 18490:
     case 20000:
     case 20010:
     case 20900:
@@ -14100,6 +14356,1091 @@ void StoreEvaluation::set_allocated_strcreatedate(::std::string* strcreatedate) 
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int RemotePatrolStore::kStrPatrolIDFieldNumber;
+const int RemotePatrolStore::kStrUserIDFieldNumber;
+const int RemotePatrolStore::kStrDeviceIDFieldNumber;
+const int RemotePatrolStore::kStrStoreIDFieldNumber;
+const int RemotePatrolStore::kStrPatrolDateFieldNumber;
+const int RemotePatrolStore::kStrPatrolPictureFieldNumber;
+const int RemotePatrolStore::kUiPatrolResultFieldNumber;
+const int RemotePatrolStore::kStrDescriptionFieldNumber;
+const int RemotePatrolStore::kStrCreateDateFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+RemotePatrolStore::RemotePatrolStore()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.RemotePatrolStore)
+}
+RemotePatrolStore::RemotePatrolStore(const RemotePatrolStore& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      strpatrolpicture_(from.strpatrolpicture_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpatrolid().size() > 0) {
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  strdeviceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdeviceid().size() > 0) {
+    strdeviceid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdeviceid_);
+  }
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strstoreid().size() > 0) {
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  strpatroldate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpatroldate().size() > 0) {
+    strpatroldate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatroldate_);
+  }
+  strdescription_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdescription().size() > 0) {
+    strdescription_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdescription_);
+  }
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strcreatedate().size() > 0) {
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  uipatrolresult_ = from.uipatrolresult_;
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.RemotePatrolStore)
+}
+
+void RemotePatrolStore::SharedCtor() {
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdeviceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatroldate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdescription_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uipatrolresult_ = 0u;
+  _cached_size_ = 0;
+}
+
+RemotePatrolStore::~RemotePatrolStore() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  SharedDtor();
+}
+
+void RemotePatrolStore::SharedDtor() {
+  strpatrolid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdeviceid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatroldate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdescription_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void RemotePatrolStore::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RemotePatrolStore::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14].descriptor;
+}
+
+const RemotePatrolStore& RemotePatrolStore::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+RemotePatrolStore* RemotePatrolStore::New(::google::protobuf::Arena* arena) const {
+  RemotePatrolStore* n = new RemotePatrolStore;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void RemotePatrolStore::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  strpatrolpicture_.Clear();
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatroldate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uipatrolresult_ = 0u;
+}
+
+bool RemotePatrolStore::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strPatrolID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpatrolid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatrolid().data(), this->strpatrolid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strUserID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strDeviceID = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdeviceid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdeviceid().data(), this->strdeviceid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strStoreID = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strstoreid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strstoreid().data(), this->strstoreid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strPatrolDate = 5;
+      case 5: {
+        if (tag == 42u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpatroldate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatroldate().data(), this->strpatroldate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated string strPatrolPicture = 6;
+      case 6: {
+        if (tag == 50u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_strpatrolpicture()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatrolpicture(this->strpatrolpicture_size() - 1).data(),
+            this->strpatrolpicture(this->strpatrolpicture_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiPatrolResult = 7;
+      case 7: {
+        if (tag == 56u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uipatrolresult_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strDescription = 8;
+      case 8: {
+        if (tag == 66u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdescription()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdescription().data(), this->strdescription().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strCreateDate = 9;
+      case 9: {
+        if (tag == 74u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strcreatedate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strcreatedate().data(), this->strcreatedate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  return false;
+#undef DO_
+}
+
+void RemotePatrolStore::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strpatrolid(), output);
+  }
+
+  // string strUserID = 2;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->struserid(), output);
+  }
+
+  // string strDeviceID = 3;
+  if (this->strdeviceid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdeviceid().data(), this->strdeviceid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strdeviceid(), output);
+  }
+
+  // string strStoreID = 4;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strstoreid(), output);
+  }
+
+  // string strPatrolDate = 5;
+  if (this->strpatroldate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatroldate().data(), this->strpatroldate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->strpatroldate(), output);
+  }
+
+  // repeated string strPatrolPicture = 6;
+  for (int i = 0; i < this->strpatrolpicture_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolpicture(i).data(), this->strpatrolpicture(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->strpatrolpicture(i), output);
+  }
+
+  // uint32 uiPatrolResult = 7;
+  if (this->uipatrolresult() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(7, this->uipatrolresult(), output);
+  }
+
+  // string strDescription = 8;
+  if (this->strdescription().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdescription().data(), this->strdescription().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->strdescription(), output);
+  }
+
+  // string strCreateDate = 9;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->strcreatedate(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.RemotePatrolStore)
+}
+
+::google::protobuf::uint8* RemotePatrolStore::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strpatrolid(), target);
+  }
+
+  // string strUserID = 2;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->struserid(), target);
+  }
+
+  // string strDeviceID = 3;
+  if (this->strdeviceid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdeviceid().data(), this->strdeviceid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strdeviceid(), target);
+  }
+
+  // string strStoreID = 4;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strstoreid(), target);
+  }
+
+  // string strPatrolDate = 5;
+  if (this->strpatroldate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatroldate().data(), this->strpatroldate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->strpatroldate(), target);
+  }
+
+  // repeated string strPatrolPicture = 6;
+  for (int i = 0; i < this->strpatrolpicture_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolpicture(i).data(), this->strpatrolpicture(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(6, this->strpatrolpicture(i), target);
+  }
+
+  // uint32 uiPatrolResult = 7;
+  if (this->uipatrolresult() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->uipatrolresult(), target);
+  }
+
+  // string strDescription = 8;
+  if (this->strdescription().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdescription().data(), this->strdescription().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->strdescription(), target);
+  }
+
+  // string strCreateDate = 9;
+  if (this->strcreatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strcreatedate().data(), this->strcreatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->strcreatedate(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  return target;
+}
+
+size_t RemotePatrolStore::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  size_t total_size = 0;
+
+  // repeated string strPatrolPicture = 6;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->strpatrolpicture_size());
+  for (int i = 0; i < this->strpatrolpicture_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->strpatrolpicture(i));
+  }
+
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpatrolid());
+  }
+
+  // string strUserID = 2;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // string strDeviceID = 3;
+  if (this->strdeviceid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdeviceid());
+  }
+
+  // string strStoreID = 4;
+  if (this->strstoreid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strstoreid());
+  }
+
+  // string strPatrolDate = 5;
+  if (this->strpatroldate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpatroldate());
+  }
+
+  // string strDescription = 8;
+  if (this->strdescription().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdescription());
+  }
+
+  // string strCreateDate = 9;
+  if (this->strcreatedate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strcreatedate());
+  }
+
+  // uint32 uiPatrolResult = 7;
+  if (this->uipatrolresult() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uipatrolresult());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RemotePatrolStore::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  GOOGLE_DCHECK_NE(&from, this);
+  const RemotePatrolStore* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const RemotePatrolStore>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.RemotePatrolStore)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.RemotePatrolStore)
+    MergeFrom(*source);
+  }
+}
+
+void RemotePatrolStore::MergeFrom(const RemotePatrolStore& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strpatrolpicture_.MergeFrom(from.strpatrolpicture_);
+  if (from.strpatrolid().size() > 0) {
+
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.strdeviceid().size() > 0) {
+
+    strdeviceid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdeviceid_);
+  }
+  if (from.strstoreid().size() > 0) {
+
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  if (from.strpatroldate().size() > 0) {
+
+    strpatroldate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatroldate_);
+  }
+  if (from.strdescription().size() > 0) {
+
+    strdescription_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdescription_);
+  }
+  if (from.strcreatedate().size() > 0) {
+
+    strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
+  }
+  if (from.uipatrolresult() != 0) {
+    set_uipatrolresult(from.uipatrolresult());
+  }
+}
+
+void RemotePatrolStore::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RemotePatrolStore::CopyFrom(const RemotePatrolStore& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RemotePatrolStore::IsInitialized() const {
+  return true;
+}
+
+void RemotePatrolStore::Swap(RemotePatrolStore* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void RemotePatrolStore::InternalSwap(RemotePatrolStore* other) {
+  strpatrolpicture_.UnsafeArenaSwap(&other->strpatrolpicture_);
+  strpatrolid_.Swap(&other->strpatrolid_);
+  struserid_.Swap(&other->struserid_);
+  strdeviceid_.Swap(&other->strdeviceid_);
+  strstoreid_.Swap(&other->strstoreid_);
+  strpatroldate_.Swap(&other->strpatroldate_);
+  strdescription_.Swap(&other->strdescription_);
+  strcreatedate_.Swap(&other->strcreatedate_);
+  std::swap(uipatrolresult_, other->uipatrolresult_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata RemotePatrolStore::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// RemotePatrolStore
+
+// string strPatrolID = 1;
+void RemotePatrolStore::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+void RemotePatrolStore::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+#endif
+void RemotePatrolStore::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+void RemotePatrolStore::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+::std::string* RemotePatrolStore::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+
+// string strUserID = 2;
+void RemotePatrolStore::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  return struserid_.GetNoArena();
+}
+void RemotePatrolStore::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+#endif
+void RemotePatrolStore::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+void RemotePatrolStore::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+::std::string* RemotePatrolStore::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+
+// string strDeviceID = 3;
+void RemotePatrolStore::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+void RemotePatrolStore::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+#endif
+void RemotePatrolStore::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+void RemotePatrolStore::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+::std::string* RemotePatrolStore::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+
+// string strStoreID = 4;
+void RemotePatrolStore::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+void RemotePatrolStore::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+#endif
+void RemotePatrolStore::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+void RemotePatrolStore::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+::std::string* RemotePatrolStore::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+
+// string strPatrolDate = 5;
+void RemotePatrolStore::clear_strpatroldate() {
+  strpatroldate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strpatroldate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  return strpatroldate_.GetNoArena();
+}
+void RemotePatrolStore::set_strpatroldate(const ::std::string& value) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strpatroldate(::std::string&& value) {
+  
+  strpatroldate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+#endif
+void RemotePatrolStore::set_strpatroldate(const char* value) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+void RemotePatrolStore::set_strpatroldate(const char* value, size_t size) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+::std::string* RemotePatrolStore::mutable_strpatroldate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  return strpatroldate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strpatroldate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  
+  return strpatroldate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strpatroldate(::std::string* strpatroldate) {
+  if (strpatroldate != NULL) {
+    
+  } else {
+    
+  }
+  strpatroldate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatroldate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+
+// repeated string strPatrolPicture = 6;
+int RemotePatrolStore::strpatrolpicture_size() const {
+  return strpatrolpicture_.size();
+}
+void RemotePatrolStore::clear_strpatrolpicture() {
+  strpatrolpicture_.Clear();
+}
+const ::std::string& RemotePatrolStore::strpatrolpicture(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Get(index);
+}
+::std::string* RemotePatrolStore::mutable_strpatrolpicture(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Mutable(index);
+}
+void RemotePatrolStore::set_strpatrolpicture(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  strpatrolpicture_.Mutable(index)->assign(value);
+}
+void RemotePatrolStore::set_strpatrolpicture(int index, const char* value) {
+  strpatrolpicture_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+void RemotePatrolStore::set_strpatrolpicture(int index, const char* value, size_t size) {
+  strpatrolpicture_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+::std::string* RemotePatrolStore::add_strpatrolpicture() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Add();
+}
+void RemotePatrolStore::add_strpatrolpicture(const ::std::string& value) {
+  strpatrolpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+void RemotePatrolStore::add_strpatrolpicture(const char* value) {
+  strpatrolpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+void RemotePatrolStore::add_strpatrolpicture(const char* value, size_t size) {
+  strpatrolpicture_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RemotePatrolStore::strpatrolpicture() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+RemotePatrolStore::mutable_strpatrolpicture() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return &strpatrolpicture_;
+}
+
+// uint32 uiPatrolResult = 7;
+void RemotePatrolStore::clear_uipatrolresult() {
+  uipatrolresult_ = 0u;
+}
+::google::protobuf::uint32 RemotePatrolStore::uipatrolresult() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.uiPatrolResult)
+  return uipatrolresult_;
+}
+void RemotePatrolStore::set_uipatrolresult(::google::protobuf::uint32 value) {
+  
+  uipatrolresult_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.uiPatrolResult)
+}
+
+// string strDescription = 8;
+void RemotePatrolStore::clear_strdescription() {
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strdescription() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  return strdescription_.GetNoArena();
+}
+void RemotePatrolStore::set_strdescription(const ::std::string& value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strdescription(::std::string&& value) {
+  
+  strdescription_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+#endif
+void RemotePatrolStore::set_strdescription(const char* value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+void RemotePatrolStore::set_strdescription(const char* value, size_t size) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+::std::string* RemotePatrolStore::mutable_strdescription() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  return strdescription_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strdescription() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  
+  return strdescription_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strdescription(::std::string* strdescription) {
+  if (strdescription != NULL) {
+    
+  } else {
+    
+  }
+  strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+
+// string strCreateDate = 9;
+void RemotePatrolStore::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RemotePatrolStore::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+void RemotePatrolStore::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+#if LANG_CXX11
+void RemotePatrolStore::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+#endif
+void RemotePatrolStore::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+void RemotePatrolStore::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+::std::string* RemotePatrolStore::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RemotePatrolStore::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RemotePatrolStore::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RawCustomerFlow::kUiEnterNumberFieldNumber;
 const int RawCustomerFlow::kUiLeaveNumberFieldNumber;
 const int RawCustomerFlow::kUiStayNumberFieldNumber;
@@ -14152,7 +15493,7 @@ void RawCustomerFlow::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RawCustomerFlow::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15].descriptor;
 }
 
 const RawCustomerFlow& RawCustomerFlow::default_instance() {
@@ -14430,7 +15771,7 @@ void RawCustomerFlow::InternalSwap(RawCustomerFlow* other) {
 
 ::google::protobuf::Metadata RawCustomerFlow::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14579,7 +15920,7 @@ void CustomerFlowPreHandleReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowPreHandleReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16].descriptor;
 }
 
 const CustomerFlowPreHandleReq& CustomerFlowPreHandleReq::default_instance() {
@@ -14753,7 +16094,7 @@ void CustomerFlowPreHandleReq::InternalSwap(CustomerFlowPreHandleReq* other) {
 
 ::google::protobuf::Metadata CustomerFlowPreHandleReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14860,7 +16201,7 @@ void CustomerFlowPreHandleRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowPreHandleRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17].descriptor;
 }
 
 const CustomerFlowPreHandleRsp& CustomerFlowPreHandleRsp::default_instance() {
@@ -15034,7 +16375,7 @@ void CustomerFlowPreHandleRsp::InternalSwap(CustomerFlowPreHandleRsp* other) {
 
 ::google::protobuf::Metadata CustomerFlowPreHandleRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15141,7 +16482,7 @@ void ShakehandReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18].descriptor;
 }
 
 const ShakehandReq& ShakehandReq::default_instance() {
@@ -15315,7 +16656,7 @@ void ShakehandReq::InternalSwap(ShakehandReq* other) {
 
 ::google::protobuf::Metadata ShakehandReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15422,7 +16763,7 @@ void ShakehandRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19].descriptor;
 }
 
 const ShakehandRsp& ShakehandRsp::default_instance() {
@@ -15596,7 +16937,7 @@ void ShakehandRsp::InternalSwap(ShakehandRsp* other) {
 
 ::google::protobuf::Metadata ShakehandRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15713,7 +17054,7 @@ void AddGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20].descriptor;
 }
 
 const AddGroupReq& AddGroupReq::default_instance() {
@@ -15926,7 +17267,7 @@ void AddGroupReq::InternalSwap(AddGroupReq* other) {
 
 ::google::protobuf::Metadata AddGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16072,7 +17413,7 @@ void AddGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21].descriptor;
 }
 
 const AddGroupRsp& AddGroupRsp::default_instance() {
@@ -16246,7 +17587,7 @@ void AddGroupRsp::InternalSwap(AddGroupRsp* other) {
 
 ::google::protobuf::Metadata AddGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16360,7 +17701,7 @@ void DeleteGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22].descriptor;
 }
 
 const DeleteGroupReq& DeleteGroupReq::default_instance() {
@@ -16583,7 +17924,7 @@ void DeleteGroupReq::InternalSwap(DeleteGroupReq* other) {
 
 ::google::protobuf::Metadata DeleteGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16742,7 +18083,7 @@ void DeleteGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23].descriptor;
 }
 
 const DeleteGroupRsp& DeleteGroupRsp::default_instance() {
@@ -16916,7 +18257,7 @@ void DeleteGroupRsp::InternalSwap(DeleteGroupRsp* other) {
 
 ::google::protobuf::Metadata DeleteGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17033,7 +18374,7 @@ void ModifyGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24].descriptor;
 }
 
 const ModifyGroupReq& ModifyGroupReq::default_instance() {
@@ -17246,7 +18587,7 @@ void ModifyGroupReq::InternalSwap(ModifyGroupReq* other) {
 
 ::google::protobuf::Metadata ModifyGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17392,7 +18733,7 @@ void ModifyGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25].descriptor;
 }
 
 const ModifyGroupRsp& ModifyGroupRsp::default_instance() {
@@ -17566,7 +18907,7 @@ void ModifyGroupRsp::InternalSwap(ModifyGroupRsp* other) {
 
 ::google::protobuf::Metadata ModifyGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17680,7 +19021,7 @@ void QueryGroupInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryGroupInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26].descriptor;
 }
 
 const QueryGroupInfoReq& QueryGroupInfoReq::default_instance() {
@@ -17903,7 +19244,7 @@ void QueryGroupInfoReq::InternalSwap(QueryGroupInfoReq* other) {
 
 ::google::protobuf::Metadata QueryGroupInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18065,7 +19406,7 @@ void QueryGroupInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryGroupInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27].descriptor;
 }
 
 const QueryGroupInfoRsp& QueryGroupInfoRsp::default_instance() {
@@ -18229,7 +19570,7 @@ void QueryGroupInfoRsp::InternalSwap(QueryGroupInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryGroupInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18323,7 +19664,7 @@ void QueryAllGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28].descriptor;
 }
 
 const QueryAllGroupReq& QueryAllGroupReq::default_instance() {
@@ -18497,7 +19838,7 @@ void QueryAllGroupReq::InternalSwap(QueryAllGroupReq* other) {
 
 ::google::protobuf::Metadata QueryAllGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18599,7 +19940,7 @@ void QueryAllGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29].descriptor;
 }
 
 const QueryAllGroupRsp& QueryAllGroupRsp::default_instance() {
@@ -18764,7 +20105,7 @@ void QueryAllGroupRsp::InternalSwap(QueryAllGroupRsp* other) {
 
 ::google::protobuf::Metadata QueryAllGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18859,7 +20200,7 @@ void AddStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30].descriptor;
 }
 
 const AddStoreReq& AddStoreReq::default_instance() {
@@ -19072,7 +20413,7 @@ void AddStoreReq::InternalSwap(AddStoreReq* other) {
 
 ::google::protobuf::Metadata AddStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19218,7 +20559,7 @@ void AddStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31].descriptor;
 }
 
 const AddStoreRsp& AddStoreRsp::default_instance() {
@@ -19392,7 +20733,7 @@ void AddStoreRsp::InternalSwap(AddStoreRsp* other) {
 
 ::google::protobuf::Metadata AddStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19506,7 +20847,7 @@ void DeleteStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32].descriptor;
 }
 
 const DeleteStoreReq& DeleteStoreReq::default_instance() {
@@ -19729,7 +21070,7 @@ void DeleteStoreReq::InternalSwap(DeleteStoreReq* other) {
 
 ::google::protobuf::Metadata DeleteStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19888,7 +21229,7 @@ void DeleteStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33].descriptor;
 }
 
 const DeleteStoreRsp& DeleteStoreRsp::default_instance() {
@@ -20062,7 +21403,7 @@ void DeleteStoreRsp::InternalSwap(DeleteStoreRsp* other) {
 
 ::google::protobuf::Metadata DeleteStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20179,7 +21520,7 @@ void ModifyStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34].descriptor;
 }
 
 const ModifyStoreReq& ModifyStoreReq::default_instance() {
@@ -20392,7 +21733,7 @@ void ModifyStoreReq::InternalSwap(ModifyStoreReq* other) {
 
 ::google::protobuf::Metadata ModifyStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20538,7 +21879,7 @@ void ModifyStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35].descriptor;
 }
 
 const ModifyStoreRsp& ModifyStoreRsp::default_instance() {
@@ -20712,7 +22053,7 @@ void ModifyStoreRsp::InternalSwap(ModifyStoreRsp* other) {
 
 ::google::protobuf::Metadata ModifyStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20826,7 +22167,7 @@ void QueryStoreInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36].descriptor;
 }
 
 const QueryStoreInfoReq& QueryStoreInfoReq::default_instance() {
@@ -21049,7 +22390,7 @@ void QueryStoreInfoReq::InternalSwap(QueryStoreInfoReq* other) {
 
 ::google::protobuf::Metadata QueryStoreInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21211,7 +22552,7 @@ void QueryStoreInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37].descriptor;
 }
 
 const QueryStoreInfoRsp& QueryStoreInfoRsp::default_instance() {
@@ -21375,7 +22716,7 @@ void QueryStoreInfoRsp::InternalSwap(QueryStoreInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryStoreInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21472,7 +22813,7 @@ void QueryAllStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38].descriptor;
 }
 
 const QueryAllStoreReq& QueryAllStoreReq::default_instance() {
@@ -21681,7 +23022,7 @@ void QueryAllStoreReq::InternalSwap(QueryAllStoreReq* other) {
 
 ::google::protobuf::Metadata QueryAllStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21797,7 +23138,7 @@ void QueryAllStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39].descriptor;
 }
 
 const QueryAllStoreRsp& QueryAllStoreRsp::default_instance() {
@@ -21962,7 +23303,7 @@ void QueryAllStoreRsp::InternalSwap(QueryAllStoreRsp* other) {
 
 ::google::protobuf::Metadata QueryAllStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22064,7 +23405,7 @@ void AddEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40].descriptor;
 }
 
 const AddEntranceReq& AddEntranceReq::default_instance() {
@@ -22326,7 +23667,7 @@ void AddEntranceReq::InternalSwap(AddEntranceReq* other) {
 
 ::google::protobuf::Metadata AddEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22524,7 +23865,7 @@ void AddEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41].descriptor;
 }
 
 const AddEntranceRsp& AddEntranceRsp::default_instance() {
@@ -22698,7 +24039,7 @@ void AddEntranceRsp::InternalSwap(AddEntranceRsp* other) {
 
 ::google::protobuf::Metadata AddEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22819,7 +24160,7 @@ void DeleteEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42].descriptor;
 }
 
 const DeleteEntranceReq& DeleteEntranceReq::default_instance() {
@@ -23091,7 +24432,7 @@ void DeleteEntranceReq::InternalSwap(DeleteEntranceReq* other) {
 
 ::google::protobuf::Metadata DeleteEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23302,7 +24643,7 @@ void DeleteEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43].descriptor;
 }
 
 const DeleteEntranceRsp& DeleteEntranceRsp::default_instance() {
@@ -23476,7 +24817,7 @@ void DeleteEntranceRsp::InternalSwap(DeleteEntranceRsp* other) {
 
 ::google::protobuf::Metadata DeleteEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23604,7 +24945,7 @@ void ModifyEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44].descriptor;
 }
 
 const ModifyEntranceReq& ModifyEntranceReq::default_instance() {
@@ -23960,7 +25301,7 @@ void ModifyEntranceReq::InternalSwap(ModifyEntranceReq* other) {
 
 ::google::protobuf::Metadata ModifyEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24268,7 +25609,7 @@ void ModifyEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45].descriptor;
 }
 
 const ModifyEntranceRsp& ModifyEntranceRsp::default_instance() {
@@ -24442,7 +25783,7 @@ void ModifyEntranceRsp::InternalSwap(ModifyEntranceRsp* other) {
 
 ::google::protobuf::Metadata ModifyEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24570,7 +25911,7 @@ void AddEntranceDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceDeviceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46].descriptor;
 }
 
 const AddEntranceDeviceReq& AddEntranceDeviceReq::default_instance() {
@@ -24891,7 +26232,7 @@ void AddEntranceDeviceReq::InternalSwap(AddEntranceDeviceReq* other) {
 
 ::google::protobuf::Metadata AddEntranceDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25154,7 +26495,7 @@ void AddEntranceDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47].descriptor;
 }
 
 const AddEntranceDeviceRsp& AddEntranceDeviceRsp::default_instance() {
@@ -25328,7 +26669,7 @@ void AddEntranceDeviceRsp::InternalSwap(AddEntranceDeviceRsp* other) {
 
 ::google::protobuf::Metadata AddEntranceDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25456,7 +26797,7 @@ void DeleteEntranceDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceDeviceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48].descriptor;
 }
 
 const DeleteEntranceDeviceReq& DeleteEntranceDeviceReq::default_instance() {
@@ -25777,7 +27118,7 @@ void DeleteEntranceDeviceReq::InternalSwap(DeleteEntranceDeviceReq* other) {
 
 ::google::protobuf::Metadata DeleteEntranceDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26040,7 +27381,7 @@ void DeleteEntranceDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49].descriptor;
 }
 
 const DeleteEntranceDeviceRsp& DeleteEntranceDeviceRsp::default_instance() {
@@ -26214,7 +27555,7 @@ void DeleteEntranceDeviceRsp::InternalSwap(DeleteEntranceDeviceRsp* other) {
 
 ::google::protobuf::Metadata DeleteEntranceDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26324,7 +27665,7 @@ void AddEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50].descriptor;
 }
 
 const AddEventReq& AddEventReq::default_instance() {
@@ -26488,7 +27829,7 @@ void AddEventReq::InternalSwap(AddEventReq* other) {
 
 ::google::protobuf::Metadata AddEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26582,7 +27923,7 @@ void AddEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51].descriptor;
 }
 
 const AddEventRsp& AddEventRsp::default_instance() {
@@ -26756,7 +28097,7 @@ void AddEventRsp::InternalSwap(AddEventRsp* other) {
 
 ::google::protobuf::Metadata AddEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26870,7 +28211,7 @@ void DeleteEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52].descriptor;
 }
 
 const DeleteEventReq& DeleteEventReq::default_instance() {
@@ -27093,7 +28434,7 @@ void DeleteEventReq::InternalSwap(DeleteEventReq* other) {
 
 ::google::protobuf::Metadata DeleteEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27252,7 +28593,7 @@ void DeleteEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53].descriptor;
 }
 
 const DeleteEventRsp& DeleteEventRsp::default_instance() {
@@ -27426,7 +28767,7 @@ void DeleteEventRsp::InternalSwap(DeleteEventRsp* other) {
 
 ::google::protobuf::Metadata DeleteEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27543,7 +28884,7 @@ void ModifyEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54].descriptor;
 }
 
 const ModifyEventReq& ModifyEventReq::default_instance() {
@@ -27756,7 +29097,7 @@ void ModifyEventReq::InternalSwap(ModifyEventReq* other) {
 
 ::google::protobuf::Metadata ModifyEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27902,7 +29243,7 @@ void ModifyEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55].descriptor;
 }
 
 const ModifyEventRsp& ModifyEventRsp::default_instance() {
@@ -28076,7 +29417,7 @@ void ModifyEventRsp::InternalSwap(ModifyEventRsp* other) {
 
 ::google::protobuf::Metadata ModifyEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28190,7 +29531,7 @@ void QueryEventInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryEventInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56].descriptor;
 }
 
 const QueryEventInfoReq& QueryEventInfoReq::default_instance() {
@@ -28413,7 +29754,7 @@ void QueryEventInfoReq::InternalSwap(QueryEventInfoReq* other) {
 
 ::google::protobuf::Metadata QueryEventInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28575,7 +29916,7 @@ void QueryEventInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryEventInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57].descriptor;
 }
 
 const QueryEventInfoRsp& QueryEventInfoRsp::default_instance() {
@@ -28739,7 +30080,7 @@ void QueryEventInfoRsp::InternalSwap(QueryEventInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryEventInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28836,7 +30177,7 @@ void QueryAllEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58].descriptor;
 }
 
 const QueryAllEventReq& QueryAllEventReq::default_instance() {
@@ -29045,7 +30386,7 @@ void QueryAllEventReq::InternalSwap(QueryAllEventReq* other) {
 
 ::google::protobuf::Metadata QueryAllEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29161,7 +30502,7 @@ void QueryAllEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59].descriptor;
 }
 
 const QueryAllEventRsp& QueryAllEventRsp::default_instance() {
@@ -29326,7 +30667,7 @@ void QueryAllEventRsp::InternalSwap(QueryAllEventRsp* other) {
 
 ::google::protobuf::Metadata QueryAllEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29421,7 +30762,7 @@ void AddSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60].descriptor;
 }
 
 const AddSmartGuardStoreReq& AddSmartGuardStoreReq::default_instance() {
@@ -29634,7 +30975,7 @@ void AddSmartGuardStoreReq::InternalSwap(AddSmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata AddSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29780,7 +31121,7 @@ void AddSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61].descriptor;
 }
 
 const AddSmartGuardStoreRsp& AddSmartGuardStoreRsp::default_instance() {
@@ -29954,7 +31295,7 @@ void AddSmartGuardStoreRsp::InternalSwap(AddSmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata AddSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30068,7 +31409,7 @@ void DeleteSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62].descriptor;
 }
 
 const DeleteSmartGuardStoreReq& DeleteSmartGuardStoreReq::default_instance() {
@@ -30291,7 +31632,7 @@ void DeleteSmartGuardStoreReq::InternalSwap(DeleteSmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata DeleteSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30450,7 +31791,7 @@ void DeleteSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63].descriptor;
 }
 
 const DeleteSmartGuardStoreRsp& DeleteSmartGuardStoreRsp::default_instance() {
@@ -30624,7 +31965,7 @@ void DeleteSmartGuardStoreRsp::InternalSwap(DeleteSmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata DeleteSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30741,7 +32082,7 @@ void ModifySmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifySmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64].descriptor;
 }
 
 const ModifySmartGuardStoreReq& ModifySmartGuardStoreReq::default_instance() {
@@ -30954,7 +32295,7 @@ void ModifySmartGuardStoreReq::InternalSwap(ModifySmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata ModifySmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31100,7 +32441,7 @@ void ModifySmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifySmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65].descriptor;
 }
 
 const ModifySmartGuardStoreRsp& ModifySmartGuardStoreRsp::default_instance() {
@@ -31274,7 +32615,7 @@ void ModifySmartGuardStoreRsp::InternalSwap(ModifySmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata ModifySmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31388,7 +32729,7 @@ void QuerySmartGuardStoreInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QuerySmartGuardStoreInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66].descriptor;
 }
 
 const QuerySmartGuardStoreInfoReq& QuerySmartGuardStoreInfoReq::default_instance() {
@@ -31611,7 +32952,7 @@ void QuerySmartGuardStoreInfoReq::InternalSwap(QuerySmartGuardStoreInfoReq* othe
 
 ::google::protobuf::Metadata QuerySmartGuardStoreInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31773,7 +33114,7 @@ void QuerySmartGuardStoreInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QuerySmartGuardStoreInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67].descriptor;
 }
 
 const QuerySmartGuardStoreInfoRsp& QuerySmartGuardStoreInfoRsp::default_instance() {
@@ -31937,7 +33278,7 @@ void QuerySmartGuardStoreInfoRsp::InternalSwap(QuerySmartGuardStoreInfoRsp* othe
 
 ::google::protobuf::Metadata QuerySmartGuardStoreInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32041,7 +33382,7 @@ void QueryAllSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68].descriptor;
 }
 
 const QueryAllSmartGuardStoreReq& QueryAllSmartGuardStoreReq::default_instance() {
@@ -32299,7 +33640,7 @@ void QueryAllSmartGuardStoreReq::InternalSwap(QueryAllSmartGuardStoreReq* other)
 
 ::google::protobuf::Metadata QueryAllSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32467,7 +33808,7 @@ void QueryAllSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69].descriptor;
 }
 
 const QueryAllSmartGuardStoreRsp& QueryAllSmartGuardStoreRsp::default_instance() {
@@ -32632,7 +33973,7 @@ void QueryAllSmartGuardStoreRsp::InternalSwap(QueryAllSmartGuardStoreRsp* other)
 
 ::google::protobuf::Metadata QueryAllSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32727,7 +34068,7 @@ void AddRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70].descriptor;
 }
 
 const AddRegularPatrolReq& AddRegularPatrolReq::default_instance() {
@@ -32940,7 +34281,7 @@ void AddRegularPatrolReq::InternalSwap(AddRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata AddRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33086,7 +34427,7 @@ void AddRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71].descriptor;
 }
 
 const AddRegularPatrolRsp& AddRegularPatrolRsp::default_instance() {
@@ -33260,7 +34601,7 @@ void AddRegularPatrolRsp::InternalSwap(AddRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata AddRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33374,7 +34715,7 @@ void DeleteRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72].descriptor;
 }
 
 const DeleteRegularPatrolReq& DeleteRegularPatrolReq::default_instance() {
@@ -33597,7 +34938,7 @@ void DeleteRegularPatrolReq::InternalSwap(DeleteRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata DeleteRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33756,7 +35097,7 @@ void DeleteRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73].descriptor;
 }
 
 const DeleteRegularPatrolRsp& DeleteRegularPatrolRsp::default_instance() {
@@ -33930,7 +35271,7 @@ void DeleteRegularPatrolRsp::InternalSwap(DeleteRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata DeleteRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34047,7 +35388,7 @@ void ModifyRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74].descriptor;
 }
 
 const ModifyRegularPatrolReq& ModifyRegularPatrolReq::default_instance() {
@@ -34260,7 +35601,7 @@ void ModifyRegularPatrolReq::InternalSwap(ModifyRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata ModifyRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34406,7 +35747,7 @@ void ModifyRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75].descriptor;
 }
 
 const ModifyRegularPatrolRsp& ModifyRegularPatrolRsp::default_instance() {
@@ -34580,7 +35921,7 @@ void ModifyRegularPatrolRsp::InternalSwap(ModifyRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata ModifyRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34694,7 +36035,7 @@ void QueryRegularPatrolInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRegularPatrolInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76].descriptor;
 }
 
 const QueryRegularPatrolInfoReq& QueryRegularPatrolInfoReq::default_instance() {
@@ -34917,7 +36258,7 @@ void QueryRegularPatrolInfoReq::InternalSwap(QueryRegularPatrolInfoReq* other) {
 
 ::google::protobuf::Metadata QueryRegularPatrolInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35079,7 +36420,7 @@ void QueryRegularPatrolInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRegularPatrolInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77].descriptor;
 }
 
 const QueryRegularPatrolInfoRsp& QueryRegularPatrolInfoRsp::default_instance() {
@@ -35243,7 +36584,7 @@ void QueryRegularPatrolInfoRsp::InternalSwap(QueryRegularPatrolInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryRegularPatrolInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35347,7 +36688,7 @@ void QueryAllRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78].descriptor;
 }
 
 const QueryAllRegularPatrolReq& QueryAllRegularPatrolReq::default_instance() {
@@ -35605,7 +36946,7 @@ void QueryAllRegularPatrolReq::InternalSwap(QueryAllRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata QueryAllRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35773,7 +37114,7 @@ void QueryAllRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79].descriptor;
 }
 
 const QueryAllRegularPatrolRsp& QueryAllRegularPatrolRsp::default_instance() {
@@ -35938,7 +37279,7 @@ void QueryAllRegularPatrolRsp::InternalSwap(QueryAllRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata QueryAllRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36037,7 +37378,7 @@ void UserJoinStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserJoinStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80].descriptor;
 }
 
 const UserJoinStoreReq& UserJoinStoreReq::default_instance() {
@@ -36309,7 +37650,7 @@ void UserJoinStoreReq::InternalSwap(UserJoinStoreReq* other) {
 
 ::google::protobuf::Metadata UserJoinStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36520,7 +37861,7 @@ void UserJoinStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserJoinStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81].descriptor;
 }
 
 const UserJoinStoreRsp& UserJoinStoreRsp::default_instance() {
@@ -36694,7 +38035,7 @@ void UserJoinStoreRsp::InternalSwap(UserJoinStoreRsp* other) {
 
 ::google::protobuf::Metadata UserJoinStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36815,7 +38156,7 @@ void UserQuitStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserQuitStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82].descriptor;
 }
 
 const UserQuitStoreReq& UserQuitStoreReq::default_instance() {
@@ -37087,7 +38428,7 @@ void UserQuitStoreReq::InternalSwap(UserQuitStoreReq* other) {
 
 ::google::protobuf::Metadata UserQuitStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37298,7 +38639,7 @@ void UserQuitStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserQuitStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83].descriptor;
 }
 
 const UserQuitStoreRsp& UserQuitStoreRsp::default_instance() {
@@ -37472,7 +38813,7 @@ void UserQuitStoreRsp::InternalSwap(UserQuitStoreRsp* other) {
 
 ::google::protobuf::Metadata UserQuitStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37586,7 +38927,7 @@ void QueryStoreAllUserReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreAllUserReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84].descriptor;
 }
 
 const QueryStoreAllUserReq& QueryStoreAllUserReq::default_instance() {
@@ -37809,7 +39150,7 @@ void QueryStoreAllUserReq::InternalSwap(QueryStoreAllUserReq* other) {
 
 ::google::protobuf::Metadata QueryStoreAllUserReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37963,7 +39304,7 @@ void QueryStoreAllUserRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreAllUserRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85].descriptor;
 }
 
 const QueryStoreAllUserRsp& QueryStoreAllUserRsp::default_instance() {
@@ -38128,7 +39469,7 @@ void QueryStoreAllUserRsp::InternalSwap(QueryStoreAllUserRsp* other) {
 
 ::google::protobuf::Metadata QueryStoreAllUserRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38223,7 +39564,7 @@ void AddVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86].descriptor;
 }
 
 const AddVIPCustomerReq& AddVIPCustomerReq::default_instance() {
@@ -38436,7 +39777,7 @@ void AddVIPCustomerReq::InternalSwap(AddVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata AddVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38582,7 +39923,7 @@ void AddVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87].descriptor;
 }
 
 const AddVIPCustomerRsp& AddVIPCustomerRsp::default_instance() {
@@ -38756,7 +40097,7 @@ void AddVIPCustomerRsp::InternalSwap(AddVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata AddVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38870,7 +40211,7 @@ void DeleteVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88].descriptor;
 }
 
 const DeleteVIPCustomerReq& DeleteVIPCustomerReq::default_instance() {
@@ -39093,7 +40434,7 @@ void DeleteVIPCustomerReq::InternalSwap(DeleteVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata DeleteVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -39252,7 +40593,7 @@ void DeleteVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89].descriptor;
 }
 
 const DeleteVIPCustomerRsp& DeleteVIPCustomerRsp::default_instance() {
@@ -39426,7 +40767,7 @@ void DeleteVIPCustomerRsp::InternalSwap(DeleteVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata DeleteVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -39543,7 +40884,7 @@ void ModifyVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90].descriptor;
 }
 
 const ModifyVIPCustomerReq& ModifyVIPCustomerReq::default_instance() {
@@ -39756,7 +41097,7 @@ void ModifyVIPCustomerReq::InternalSwap(ModifyVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata ModifyVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -39902,7 +41243,7 @@ void ModifyVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91].descriptor;
 }
 
 const ModifyVIPCustomerRsp& ModifyVIPCustomerRsp::default_instance() {
@@ -40076,7 +41417,7 @@ void ModifyVIPCustomerRsp::InternalSwap(ModifyVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata ModifyVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40190,7 +41531,7 @@ void QueryVIPCustomerInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryVIPCustomerInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92].descriptor;
 }
 
 const QueryVIPCustomerInfoReq& QueryVIPCustomerInfoReq::default_instance() {
@@ -40413,7 +41754,7 @@ void QueryVIPCustomerInfoReq::InternalSwap(QueryVIPCustomerInfoReq* other) {
 
 ::google::protobuf::Metadata QueryVIPCustomerInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40575,7 +41916,7 @@ void QueryVIPCustomerInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryVIPCustomerInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93].descriptor;
 }
 
 const QueryVIPCustomerInfoRsp& QueryVIPCustomerInfoRsp::default_instance() {
@@ -40739,7 +42080,7 @@ void QueryVIPCustomerInfoRsp::InternalSwap(QueryVIPCustomerInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryVIPCustomerInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40836,7 +42177,7 @@ void QueryAllVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94].descriptor;
 }
 
 const QueryAllVIPCustomerReq& QueryAllVIPCustomerReq::default_instance() {
@@ -41045,7 +42386,7 @@ void QueryAllVIPCustomerReq::InternalSwap(QueryAllVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata QueryAllVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41161,7 +42502,7 @@ void QueryAllVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95].descriptor;
 }
 
 const QueryAllVIPCustomerRsp& QueryAllVIPCustomerRsp::default_instance() {
@@ -41326,7 +42667,7 @@ void QueryAllVIPCustomerRsp::InternalSwap(QueryAllVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata QueryAllVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41421,7 +42762,7 @@ void AddVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96].descriptor;
 }
 
 const AddVIPConsumeHistoryReq& AddVIPConsumeHistoryReq::default_instance() {
@@ -41634,7 +42975,7 @@ void AddVIPConsumeHistoryReq::InternalSwap(AddVIPConsumeHistoryReq* other) {
 
 ::google::protobuf::Metadata AddVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41780,7 +43121,7 @@ void AddVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97].descriptor;
 }
 
 const AddVIPConsumeHistoryRsp& AddVIPConsumeHistoryRsp::default_instance() {
@@ -41954,7 +43295,7 @@ void AddVIPConsumeHistoryRsp::InternalSwap(AddVIPConsumeHistoryRsp* other) {
 
 ::google::protobuf::Metadata AddVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42068,7 +43409,7 @@ void DeleteVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98].descriptor;
 }
 
 const DeleteVIPConsumeHistoryReq& DeleteVIPConsumeHistoryReq::default_instance() {
@@ -42291,7 +43632,7 @@ void DeleteVIPConsumeHistoryReq::InternalSwap(DeleteVIPConsumeHistoryReq* other)
 
 ::google::protobuf::Metadata DeleteVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42450,7 +43791,7 @@ void DeleteVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99].descriptor;
 }
 
 const DeleteVIPConsumeHistoryRsp& DeleteVIPConsumeHistoryRsp::default_instance() {
@@ -42624,7 +43965,7 @@ void DeleteVIPConsumeHistoryRsp::InternalSwap(DeleteVIPConsumeHistoryRsp* other)
 
 ::google::protobuf::Metadata DeleteVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42741,7 +44082,7 @@ void ModifyVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100].descriptor;
 }
 
 const ModifyVIPConsumeHistoryReq& ModifyVIPConsumeHistoryReq::default_instance() {
@@ -42954,7 +44295,7 @@ void ModifyVIPConsumeHistoryReq::InternalSwap(ModifyVIPConsumeHistoryReq* other)
 
 ::google::protobuf::Metadata ModifyVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -43100,7 +44441,7 @@ void ModifyVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101].descriptor;
 }
 
 const ModifyVIPConsumeHistoryRsp& ModifyVIPConsumeHistoryRsp::default_instance() {
@@ -43274,7 +44615,7 @@ void ModifyVIPConsumeHistoryRsp::InternalSwap(ModifyVIPConsumeHistoryRsp* other)
 
 ::google::protobuf::Metadata ModifyVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -43391,7 +44732,7 @@ void QueryAllVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102].descriptor;
 }
 
 const QueryAllVIPConsumeHistoryReq& QueryAllVIPConsumeHistoryReq::default_instance() {
@@ -43649,7 +44990,7 @@ void QueryAllVIPConsumeHistoryReq::InternalSwap(QueryAllVIPConsumeHistoryReq* ot
 
 ::google::protobuf::Metadata QueryAllVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -43817,7 +45158,7 @@ void QueryAllVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103].descriptor;
 }
 
 const QueryAllVIPConsumeHistoryRsp& QueryAllVIPConsumeHistoryRsp::default_instance() {
@@ -43982,7 +45323,7 @@ void QueryAllVIPConsumeHistoryRsp::InternalSwap(QueryAllVIPConsumeHistoryRsp* ot
 
 ::google::protobuf::Metadata QueryAllVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44077,7 +45418,7 @@ void AddEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104].descriptor;
 }
 
 const AddEvaluationTemplateReq& AddEvaluationTemplateReq::default_instance() {
@@ -44290,7 +45631,7 @@ void AddEvaluationTemplateReq::InternalSwap(AddEvaluationTemplateReq* other) {
 
 ::google::protobuf::Metadata AddEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44436,7 +45777,7 @@ void AddEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105].descriptor;
 }
 
 const AddEvaluationTemplateRsp& AddEvaluationTemplateRsp::default_instance() {
@@ -44610,7 +45951,7 @@ void AddEvaluationTemplateRsp::InternalSwap(AddEvaluationTemplateRsp* other) {
 
 ::google::protobuf::Metadata AddEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44724,7 +46065,7 @@ void DeleteEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106].descriptor;
 }
 
 const DeleteEvaluationTemplateReq& DeleteEvaluationTemplateReq::default_instance() {
@@ -44947,7 +46288,7 @@ void DeleteEvaluationTemplateReq::InternalSwap(DeleteEvaluationTemplateReq* othe
 
 ::google::protobuf::Metadata DeleteEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45106,7 +46447,7 @@ void DeleteEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107].descriptor;
 }
 
 const DeleteEvaluationTemplateRsp& DeleteEvaluationTemplateRsp::default_instance() {
@@ -45280,7 +46621,7 @@ void DeleteEvaluationTemplateRsp::InternalSwap(DeleteEvaluationTemplateRsp* othe
 
 ::google::protobuf::Metadata DeleteEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45397,7 +46738,7 @@ void ModifyEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108].descriptor;
 }
 
 const ModifyEvaluationTemplateReq& ModifyEvaluationTemplateReq::default_instance() {
@@ -45610,7 +46951,7 @@ void ModifyEvaluationTemplateReq::InternalSwap(ModifyEvaluationTemplateReq* othe
 
 ::google::protobuf::Metadata ModifyEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45756,7 +47097,7 @@ void ModifyEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109].descriptor;
 }
 
 const ModifyEvaluationTemplateRsp& ModifyEvaluationTemplateRsp::default_instance() {
@@ -45930,7 +47271,7 @@ void ModifyEvaluationTemplateRsp::InternalSwap(ModifyEvaluationTemplateRsp* othe
 
 ::google::protobuf::Metadata ModifyEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46037,7 +47378,7 @@ void QueryAllEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110].descriptor;
 }
 
 const QueryAllEvaluationTemplateReq& QueryAllEvaluationTemplateReq::default_instance() {
@@ -46211,7 +47552,7 @@ void QueryAllEvaluationTemplateReq::InternalSwap(QueryAllEvaluationTemplateReq* 
 
 ::google::protobuf::Metadata QueryAllEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46313,7 +47654,7 @@ void QueryAllEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111].descriptor;
 }
 
 const QueryAllEvaluationTemplateRsp& QueryAllEvaluationTemplateRsp::default_instance() {
@@ -46478,7 +47819,7 @@ void QueryAllEvaluationTemplateRsp::InternalSwap(QueryAllEvaluationTemplateRsp* 
 
 ::google::protobuf::Metadata QueryAllEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46566,7 +47907,7 @@ void AddStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112].descriptor;
 }
 
 const AddStoreEvaluationReq& AddStoreEvaluationReq::default_instance() {
@@ -46730,7 +48071,7 @@ void AddStoreEvaluationReq::InternalSwap(AddStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata AddStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46824,7 +48165,7 @@ void AddStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113].descriptor;
 }
 
 const AddStoreEvaluationRsp& AddStoreEvaluationRsp::default_instance() {
@@ -46998,7 +48339,7 @@ void AddStoreEvaluationRsp::InternalSwap(AddStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata AddStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47112,7 +48453,7 @@ void DeleteStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114].descriptor;
 }
 
 const DeleteStoreEvaluationReq& DeleteStoreEvaluationReq::default_instance() {
@@ -47335,7 +48676,7 @@ void DeleteStoreEvaluationReq::InternalSwap(DeleteStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata DeleteStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47494,7 +48835,7 @@ void DeleteStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115].descriptor;
 }
 
 const DeleteStoreEvaluationRsp& DeleteStoreEvaluationRsp::default_instance() {
@@ -47668,7 +49009,7 @@ void DeleteStoreEvaluationRsp::InternalSwap(DeleteStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata DeleteStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47785,7 +49126,7 @@ void ModifyStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116].descriptor;
 }
 
 const ModifyStoreEvaluationReq& ModifyStoreEvaluationReq::default_instance() {
@@ -47998,7 +49339,7 @@ void ModifyStoreEvaluationReq::InternalSwap(ModifyStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata ModifyStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48144,7 +49485,7 @@ void ModifyStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117].descriptor;
 }
 
 const ModifyStoreEvaluationRsp& ModifyStoreEvaluationRsp::default_instance() {
@@ -48318,7 +49659,7 @@ void ModifyStoreEvaluationRsp::InternalSwap(ModifyStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata ModifyStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48439,7 +49780,7 @@ void QueryStoreEvaluationInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreEvaluationInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118].descriptor;
 }
 
 const QueryStoreEvaluationInfoReq& QueryStoreEvaluationInfoReq::default_instance() {
@@ -48711,7 +50052,7 @@ void QueryStoreEvaluationInfoReq::InternalSwap(QueryStoreEvaluationInfoReq* othe
 
 ::google::protobuf::Metadata QueryStoreEvaluationInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48925,7 +50266,7 @@ void QueryStoreEvaluationInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreEvaluationInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119].descriptor;
 }
 
 const QueryStoreEvaluationInfoRsp& QueryStoreEvaluationInfoRsp::default_instance() {
@@ -49089,7 +50430,7 @@ void QueryStoreEvaluationInfoRsp::InternalSwap(QueryStoreEvaluationInfoRsp* othe
 
 ::google::protobuf::Metadata QueryStoreEvaluationInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -49207,7 +50548,7 @@ void QueryAllStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120].descriptor;
 }
 
 const QueryAllStoreEvaluationReq& QueryAllStoreEvaluationReq::default_instance() {
@@ -49563,7 +50904,7 @@ void QueryAllStoreEvaluationReq::InternalSwap(QueryAllStoreEvaluationReq* other)
 
 ::google::protobuf::Metadata QueryAllStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -49835,7 +51176,7 @@ void QueryAllStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121].descriptor;
 }
 
 const QueryAllStoreEvaluationRsp& QueryAllStoreEvaluationRsp::default_instance() {
@@ -50000,7 +51341,7 @@ void QueryAllStoreEvaluationRsp::InternalSwap(QueryAllStoreEvaluationRsp* other)
 
 ::google::protobuf::Metadata QueryAllStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50034,6 +51375,3420 @@ const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message
 QueryAllStoreEvaluationRsp::storeevaluation() const {
   // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllStoreEvaluationRsp.storeEvaluation)
   return storeevaluation_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int AddRemotePatrolStoreReq::kPatrolStoreFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+AddRemotePatrolStoreReq::AddRemotePatrolStoreReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+}
+AddRemotePatrolStoreReq::AddRemotePatrolStoreReq(const AddRemotePatrolStoreReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_patrolstore()) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore(*from.patrolstore_);
+  } else {
+    patrolstore_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+}
+
+void AddRemotePatrolStoreReq::SharedCtor() {
+  patrolstore_ = NULL;
+  _cached_size_ = 0;
+}
+
+AddRemotePatrolStoreReq::~AddRemotePatrolStoreReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  SharedDtor();
+}
+
+void AddRemotePatrolStoreReq::SharedDtor() {
+  if (this != internal_default_instance()) {
+    delete patrolstore_;
+  }
+}
+
+void AddRemotePatrolStoreReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AddRemotePatrolStoreReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122].descriptor;
+}
+
+const AddRemotePatrolStoreReq& AddRemotePatrolStoreReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+AddRemotePatrolStoreReq* AddRemotePatrolStoreReq::New(::google::protobuf::Arena* arena) const {
+  AddRemotePatrolStoreReq* n = new AddRemotePatrolStoreReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void AddRemotePatrolStoreReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) {
+    delete patrolstore_;
+  }
+  patrolstore_ = NULL;
+}
+
+bool AddRemotePatrolStoreReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_patrolstore()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  return false;
+#undef DO_
+}
+
+void AddRemotePatrolStoreReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->patrolstore_, output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+}
+
+::google::protobuf::uint8* AddRemotePatrolStoreReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->patrolstore_, false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  return target;
+}
+
+size_t AddRemotePatrolStoreReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  size_t total_size = 0;
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->patrolstore_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AddRemotePatrolStoreReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AddRemotePatrolStoreReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddRemotePatrolStoreReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+    MergeFrom(*source);
+  }
+}
+
+void AddRemotePatrolStoreReq::MergeFrom(const AddRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_patrolstore()) {
+    mutable_patrolstore()->::CustomerFlow::Interactive::Message::RemotePatrolStore::MergeFrom(from.patrolstore());
+  }
+}
+
+void AddRemotePatrolStoreReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddRemotePatrolStoreReq::CopyFrom(const AddRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddRemotePatrolStoreReq::IsInitialized() const {
+  return true;
+}
+
+void AddRemotePatrolStoreReq::Swap(AddRemotePatrolStoreReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void AddRemotePatrolStoreReq::InternalSwap(AddRemotePatrolStoreReq* other) {
+  std::swap(patrolstore_, other->patrolstore_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata AddRemotePatrolStoreReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// AddRemotePatrolStoreReq
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+bool AddRemotePatrolStoreReq::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+void AddRemotePatrolStoreReq::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::RemotePatrolStore& AddRemotePatrolStoreReq::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* AddRemotePatrolStoreReq::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  return patrolstore_;
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* AddRemotePatrolStoreReq::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+void AddRemotePatrolStoreReq::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int AddRemotePatrolStoreRsp::kStrPatrolIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+AddRemotePatrolStoreRsp::AddRemotePatrolStoreRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+}
+AddRemotePatrolStoreRsp::AddRemotePatrolStoreRsp(const AddRemotePatrolStoreRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpatrolid().size() > 0) {
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+}
+
+void AddRemotePatrolStoreRsp::SharedCtor() {
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+AddRemotePatrolStoreRsp::~AddRemotePatrolStoreRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  SharedDtor();
+}
+
+void AddRemotePatrolStoreRsp::SharedDtor() {
+  strpatrolid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void AddRemotePatrolStoreRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AddRemotePatrolStoreRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123].descriptor;
+}
+
+const AddRemotePatrolStoreRsp& AddRemotePatrolStoreRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+AddRemotePatrolStoreRsp* AddRemotePatrolStoreRsp::New(::google::protobuf::Arena* arena) const {
+  AddRemotePatrolStoreRsp* n = new AddRemotePatrolStoreRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void AddRemotePatrolStoreRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool AddRemotePatrolStoreRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strPatrolID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpatrolid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatrolid().data(), this->strpatrolid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  return false;
+#undef DO_
+}
+
+void AddRemotePatrolStoreRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strpatrolid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+}
+
+::google::protobuf::uint8* AddRemotePatrolStoreRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strpatrolid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  return target;
+}
+
+size_t AddRemotePatrolStoreRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  size_t total_size = 0;
+
+  // string strPatrolID = 1;
+  if (this->strpatrolid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpatrolid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AddRemotePatrolStoreRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AddRemotePatrolStoreRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddRemotePatrolStoreRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+    MergeFrom(*source);
+  }
+}
+
+void AddRemotePatrolStoreRsp::MergeFrom(const AddRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strpatrolid().size() > 0) {
+
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+}
+
+void AddRemotePatrolStoreRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddRemotePatrolStoreRsp::CopyFrom(const AddRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddRemotePatrolStoreRsp::IsInitialized() const {
+  return true;
+}
+
+void AddRemotePatrolStoreRsp::Swap(AddRemotePatrolStoreRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void AddRemotePatrolStoreRsp::InternalSwap(AddRemotePatrolStoreRsp* other) {
+  strpatrolid_.Swap(&other->strpatrolid_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata AddRemotePatrolStoreRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// AddRemotePatrolStoreRsp
+
+// string strPatrolID = 1;
+void AddRemotePatrolStoreRsp::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& AddRemotePatrolStoreRsp::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+void AddRemotePatrolStoreRsp::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+#if LANG_CXX11
+void AddRemotePatrolStoreRsp::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+#endif
+void AddRemotePatrolStoreRsp::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+void AddRemotePatrolStoreRsp::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+::std::string* AddRemotePatrolStoreRsp::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* AddRemotePatrolStoreRsp::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void AddRemotePatrolStoreRsp::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DeleteRemotePatrolStoreReq::kStrUserIDFieldNumber;
+const int DeleteRemotePatrolStoreReq::kStrPatrolIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DeleteRemotePatrolStoreReq::DeleteRemotePatrolStoreReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+}
+DeleteRemotePatrolStoreReq::DeleteRemotePatrolStoreReq(const DeleteRemotePatrolStoreReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpatrolid().size() > 0) {
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+}
+
+void DeleteRemotePatrolStoreReq::SharedCtor() {
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+DeleteRemotePatrolStoreReq::~DeleteRemotePatrolStoreReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  SharedDtor();
+}
+
+void DeleteRemotePatrolStoreReq::SharedDtor() {
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void DeleteRemotePatrolStoreReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DeleteRemotePatrolStoreReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124].descriptor;
+}
+
+const DeleteRemotePatrolStoreReq& DeleteRemotePatrolStoreReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+DeleteRemotePatrolStoreReq* DeleteRemotePatrolStoreReq::New(::google::protobuf::Arena* arena) const {
+  DeleteRemotePatrolStoreReq* n = new DeleteRemotePatrolStoreReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DeleteRemotePatrolStoreReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool DeleteRemotePatrolStoreReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUserID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strPatrolID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpatrolid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatrolid().data(), this->strpatrolid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  return false;
+#undef DO_
+}
+
+void DeleteRemotePatrolStoreReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->struserid(), output);
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strpatrolid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+}
+
+::google::protobuf::uint8* DeleteRemotePatrolStoreReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->struserid(), target);
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strpatrolid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  return target;
+}
+
+size_t DeleteRemotePatrolStoreReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  size_t total_size = 0;
+
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpatrolid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DeleteRemotePatrolStoreReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DeleteRemotePatrolStoreReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DeleteRemotePatrolStoreReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+    MergeFrom(*source);
+  }
+}
+
+void DeleteRemotePatrolStoreReq::MergeFrom(const DeleteRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.strpatrolid().size() > 0) {
+
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+}
+
+void DeleteRemotePatrolStoreReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DeleteRemotePatrolStoreReq::CopyFrom(const DeleteRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DeleteRemotePatrolStoreReq::IsInitialized() const {
+  return true;
+}
+
+void DeleteRemotePatrolStoreReq::Swap(DeleteRemotePatrolStoreReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DeleteRemotePatrolStoreReq::InternalSwap(DeleteRemotePatrolStoreReq* other) {
+  struserid_.Swap(&other->struserid_);
+  strpatrolid_.Swap(&other->strpatrolid_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DeleteRemotePatrolStoreReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// DeleteRemotePatrolStoreReq
+
+// string strUserID = 1;
+void DeleteRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& DeleteRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+void DeleteRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+void DeleteRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+#endif
+void DeleteRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+void DeleteRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+::std::string* DeleteRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* DeleteRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void DeleteRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+
+// string strPatrolID = 2;
+void DeleteRemotePatrolStoreReq::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& DeleteRemotePatrolStoreReq::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+void DeleteRemotePatrolStoreReq::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+#if LANG_CXX11
+void DeleteRemotePatrolStoreReq::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+#endif
+void DeleteRemotePatrolStoreReq::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+void DeleteRemotePatrolStoreReq::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+::std::string* DeleteRemotePatrolStoreReq::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* DeleteRemotePatrolStoreReq::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void DeleteRemotePatrolStoreReq::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DeleteRemotePatrolStoreRsp::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DeleteRemotePatrolStoreRsp::DeleteRemotePatrolStoreRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+}
+DeleteRemotePatrolStoreRsp::DeleteRemotePatrolStoreRsp(const DeleteRemotePatrolStoreRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strvalue().size() > 0) {
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+}
+
+void DeleteRemotePatrolStoreRsp::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+DeleteRemotePatrolStoreRsp::~DeleteRemotePatrolStoreRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  SharedDtor();
+}
+
+void DeleteRemotePatrolStoreRsp::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void DeleteRemotePatrolStoreRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DeleteRemotePatrolStoreRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125].descriptor;
+}
+
+const DeleteRemotePatrolStoreRsp& DeleteRemotePatrolStoreRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+DeleteRemotePatrolStoreRsp* DeleteRemotePatrolStoreRsp::New(::google::protobuf::Arena* arena) const {
+  DeleteRemotePatrolStoreRsp* n = new DeleteRemotePatrolStoreRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DeleteRemotePatrolStoreRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool DeleteRemotePatrolStoreRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strValue = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  return false;
+#undef DO_
+}
+
+void DeleteRemotePatrolStoreRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+}
+
+::google::protobuf::uint8* DeleteRemotePatrolStoreRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  return target;
+}
+
+size_t DeleteRemotePatrolStoreRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  size_t total_size = 0;
+
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DeleteRemotePatrolStoreRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DeleteRemotePatrolStoreRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DeleteRemotePatrolStoreRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+    MergeFrom(*source);
+  }
+}
+
+void DeleteRemotePatrolStoreRsp::MergeFrom(const DeleteRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void DeleteRemotePatrolStoreRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DeleteRemotePatrolStoreRsp::CopyFrom(const DeleteRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DeleteRemotePatrolStoreRsp::IsInitialized() const {
+  return true;
+}
+
+void DeleteRemotePatrolStoreRsp::Swap(DeleteRemotePatrolStoreRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DeleteRemotePatrolStoreRsp::InternalSwap(DeleteRemotePatrolStoreRsp* other) {
+  strvalue_.Swap(&other->strvalue_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DeleteRemotePatrolStoreRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// DeleteRemotePatrolStoreRsp
+
+// string strValue = 1;
+void DeleteRemotePatrolStoreRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& DeleteRemotePatrolStoreRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+void DeleteRemotePatrolStoreRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+#if LANG_CXX11
+void DeleteRemotePatrolStoreRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+#endif
+void DeleteRemotePatrolStoreRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+void DeleteRemotePatrolStoreRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+::std::string* DeleteRemotePatrolStoreRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* DeleteRemotePatrolStoreRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void DeleteRemotePatrolStoreRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ModifyRemotePatrolStoreReq::kStrUserIDFieldNumber;
+const int ModifyRemotePatrolStoreReq::kPatrolStoreFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ModifyRemotePatrolStoreReq::ModifyRemotePatrolStoreReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+}
+ModifyRemotePatrolStoreReq::ModifyRemotePatrolStoreReq(const ModifyRemotePatrolStoreReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.has_patrolstore()) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore(*from.patrolstore_);
+  } else {
+    patrolstore_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+}
+
+void ModifyRemotePatrolStoreReq::SharedCtor() {
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  patrolstore_ = NULL;
+  _cached_size_ = 0;
+}
+
+ModifyRemotePatrolStoreReq::~ModifyRemotePatrolStoreReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  SharedDtor();
+}
+
+void ModifyRemotePatrolStoreReq::SharedDtor() {
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete patrolstore_;
+  }
+}
+
+void ModifyRemotePatrolStoreReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModifyRemotePatrolStoreReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126].descriptor;
+}
+
+const ModifyRemotePatrolStoreReq& ModifyRemotePatrolStoreReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+ModifyRemotePatrolStoreReq* ModifyRemotePatrolStoreReq::New(::google::protobuf::Arena* arena) const {
+  ModifyRemotePatrolStoreReq* n = new ModifyRemotePatrolStoreReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ModifyRemotePatrolStoreReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) {
+    delete patrolstore_;
+  }
+  patrolstore_ = NULL;
+}
+
+bool ModifyRemotePatrolStoreReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUserID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_patrolstore()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  return false;
+#undef DO_
+}
+
+void ModifyRemotePatrolStoreReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->struserid(), output);
+  }
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+  if (this->has_patrolstore()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->patrolstore_, output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+}
+
+::google::protobuf::uint8* ModifyRemotePatrolStoreReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->struserid(), target);
+  }
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+  if (this->has_patrolstore()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, *this->patrolstore_, false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  return target;
+}
+
+size_t ModifyRemotePatrolStoreReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  size_t total_size = 0;
+
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+  if (this->has_patrolstore()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->patrolstore_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModifyRemotePatrolStoreReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ModifyRemotePatrolStoreReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ModifyRemotePatrolStoreReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+    MergeFrom(*source);
+  }
+}
+
+void ModifyRemotePatrolStoreReq::MergeFrom(const ModifyRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.has_patrolstore()) {
+    mutable_patrolstore()->::CustomerFlow::Interactive::Message::RemotePatrolStore::MergeFrom(from.patrolstore());
+  }
+}
+
+void ModifyRemotePatrolStoreReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModifyRemotePatrolStoreReq::CopyFrom(const ModifyRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModifyRemotePatrolStoreReq::IsInitialized() const {
+  return true;
+}
+
+void ModifyRemotePatrolStoreReq::Swap(ModifyRemotePatrolStoreReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ModifyRemotePatrolStoreReq::InternalSwap(ModifyRemotePatrolStoreReq* other) {
+  struserid_.Swap(&other->struserid_);
+  std::swap(patrolstore_, other->patrolstore_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ModifyRemotePatrolStoreReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ModifyRemotePatrolStoreReq
+
+// string strUserID = 1;
+void ModifyRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ModifyRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+void ModifyRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+void ModifyRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+#endif
+void ModifyRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+void ModifyRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+::std::string* ModifyRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ModifyRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ModifyRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+bool ModifyRemotePatrolStoreReq::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+void ModifyRemotePatrolStoreReq::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::RemotePatrolStore& ModifyRemotePatrolStoreReq::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* ModifyRemotePatrolStoreReq::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  return patrolstore_;
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* ModifyRemotePatrolStoreReq::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+void ModifyRemotePatrolStoreReq::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ModifyRemotePatrolStoreRsp::kStrValueFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ModifyRemotePatrolStoreRsp::ModifyRemotePatrolStoreRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+}
+ModifyRemotePatrolStoreRsp::ModifyRemotePatrolStoreRsp(const ModifyRemotePatrolStoreRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strvalue().size() > 0) {
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+}
+
+void ModifyRemotePatrolStoreRsp::SharedCtor() {
+  strvalue_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+ModifyRemotePatrolStoreRsp::~ModifyRemotePatrolStoreRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  SharedDtor();
+}
+
+void ModifyRemotePatrolStoreRsp::SharedDtor() {
+  strvalue_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void ModifyRemotePatrolStoreRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModifyRemotePatrolStoreRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127].descriptor;
+}
+
+const ModifyRemotePatrolStoreRsp& ModifyRemotePatrolStoreRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+ModifyRemotePatrolStoreRsp* ModifyRemotePatrolStoreRsp::New(::google::protobuf::Arena* arena) const {
+  ModifyRemotePatrolStoreRsp* n = new ModifyRemotePatrolStoreRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ModifyRemotePatrolStoreRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool ModifyRemotePatrolStoreRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strValue = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strvalue()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strvalue().data(), this->strvalue().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  return false;
+#undef DO_
+}
+
+void ModifyRemotePatrolStoreRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strvalue(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+}
+
+::google::protobuf::uint8* ModifyRemotePatrolStoreRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strvalue().data(), this->strvalue().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strvalue(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  return target;
+}
+
+size_t ModifyRemotePatrolStoreRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  size_t total_size = 0;
+
+  // string strValue = 1;
+  if (this->strvalue().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strvalue());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModifyRemotePatrolStoreRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ModifyRemotePatrolStoreRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ModifyRemotePatrolStoreRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+    MergeFrom(*source);
+  }
+}
+
+void ModifyRemotePatrolStoreRsp::MergeFrom(const ModifyRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strvalue().size() > 0) {
+
+    strvalue_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strvalue_);
+  }
+}
+
+void ModifyRemotePatrolStoreRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModifyRemotePatrolStoreRsp::CopyFrom(const ModifyRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModifyRemotePatrolStoreRsp::IsInitialized() const {
+  return true;
+}
+
+void ModifyRemotePatrolStoreRsp::Swap(ModifyRemotePatrolStoreRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ModifyRemotePatrolStoreRsp::InternalSwap(ModifyRemotePatrolStoreRsp* other) {
+  strvalue_.Swap(&other->strvalue_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ModifyRemotePatrolStoreRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ModifyRemotePatrolStoreRsp
+
+// string strValue = 1;
+void ModifyRemotePatrolStoreRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ModifyRemotePatrolStoreRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+void ModifyRemotePatrolStoreRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+#if LANG_CXX11
+void ModifyRemotePatrolStoreRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+#endif
+void ModifyRemotePatrolStoreRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+void ModifyRemotePatrolStoreRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+::std::string* ModifyRemotePatrolStoreRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ModifyRemotePatrolStoreRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ModifyRemotePatrolStoreRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryRemotePatrolStoreInfoReq::kStrUserIDFieldNumber;
+const int QueryRemotePatrolStoreInfoReq::kStrPatrolIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryRemotePatrolStoreInfoReq::QueryRemotePatrolStoreInfoReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+}
+QueryRemotePatrolStoreInfoReq::QueryRemotePatrolStoreInfoReq(const QueryRemotePatrolStoreInfoReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpatrolid().size() > 0) {
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+}
+
+void QueryRemotePatrolStoreInfoReq::SharedCtor() {
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+QueryRemotePatrolStoreInfoReq::~QueryRemotePatrolStoreInfoReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  SharedDtor();
+}
+
+void QueryRemotePatrolStoreInfoReq::SharedDtor() {
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryRemotePatrolStoreInfoReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryRemotePatrolStoreInfoReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128].descriptor;
+}
+
+const QueryRemotePatrolStoreInfoReq& QueryRemotePatrolStoreInfoReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryRemotePatrolStoreInfoReq* QueryRemotePatrolStoreInfoReq::New(::google::protobuf::Arena* arena) const {
+  QueryRemotePatrolStoreInfoReq* n = new QueryRemotePatrolStoreInfoReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryRemotePatrolStoreInfoReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool QueryRemotePatrolStoreInfoReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUserID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strPatrolID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpatrolid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpatrolid().data(), this->strpatrolid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  return false;
+#undef DO_
+}
+
+void QueryRemotePatrolStoreInfoReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->struserid(), output);
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strpatrolid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+}
+
+::google::protobuf::uint8* QueryRemotePatrolStoreInfoReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->struserid(), target);
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpatrolid().data(), this->strpatrolid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strpatrolid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  return target;
+}
+
+size_t QueryRemotePatrolStoreInfoReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  size_t total_size = 0;
+
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // string strPatrolID = 2;
+  if (this->strpatrolid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpatrolid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryRemotePatrolStoreInfoReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryRemotePatrolStoreInfoReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryRemotePatrolStoreInfoReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+    MergeFrom(*source);
+  }
+}
+
+void QueryRemotePatrolStoreInfoReq::MergeFrom(const QueryRemotePatrolStoreInfoReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.strpatrolid().size() > 0) {
+
+    strpatrolid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpatrolid_);
+  }
+}
+
+void QueryRemotePatrolStoreInfoReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryRemotePatrolStoreInfoReq::CopyFrom(const QueryRemotePatrolStoreInfoReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryRemotePatrolStoreInfoReq::IsInitialized() const {
+  return true;
+}
+
+void QueryRemotePatrolStoreInfoReq::Swap(QueryRemotePatrolStoreInfoReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryRemotePatrolStoreInfoReq::InternalSwap(QueryRemotePatrolStoreInfoReq* other) {
+  struserid_.Swap(&other->struserid_);
+  strpatrolid_.Swap(&other->strpatrolid_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryRemotePatrolStoreInfoReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryRemotePatrolStoreInfoReq
+
+// string strUserID = 1;
+void QueryRemotePatrolStoreInfoReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryRemotePatrolStoreInfoReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  return struserid_.GetNoArena();
+}
+void QueryRemotePatrolStoreInfoReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+#if LANG_CXX11
+void QueryRemotePatrolStoreInfoReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+#endif
+void QueryRemotePatrolStoreInfoReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+void QueryRemotePatrolStoreInfoReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+::std::string* QueryRemotePatrolStoreInfoReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryRemotePatrolStoreInfoReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryRemotePatrolStoreInfoReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+
+// string strPatrolID = 2;
+void QueryRemotePatrolStoreInfoReq::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryRemotePatrolStoreInfoReq::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+#if LANG_CXX11
+void QueryRemotePatrolStoreInfoReq::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+#endif
+void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+::std::string* QueryRemotePatrolStoreInfoReq::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryRemotePatrolStoreInfoReq::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryRemotePatrolStoreInfoReq::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryRemotePatrolStoreInfoRsp::kPatrolStoreFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryRemotePatrolStoreInfoRsp::QueryRemotePatrolStoreInfoRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+}
+QueryRemotePatrolStoreInfoRsp::QueryRemotePatrolStoreInfoRsp(const QueryRemotePatrolStoreInfoRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_patrolstore()) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore(*from.patrolstore_);
+  } else {
+    patrolstore_ = NULL;
+  }
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+}
+
+void QueryRemotePatrolStoreInfoRsp::SharedCtor() {
+  patrolstore_ = NULL;
+  _cached_size_ = 0;
+}
+
+QueryRemotePatrolStoreInfoRsp::~QueryRemotePatrolStoreInfoRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  SharedDtor();
+}
+
+void QueryRemotePatrolStoreInfoRsp::SharedDtor() {
+  if (this != internal_default_instance()) {
+    delete patrolstore_;
+  }
+}
+
+void QueryRemotePatrolStoreInfoRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryRemotePatrolStoreInfoRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129].descriptor;
+}
+
+const QueryRemotePatrolStoreInfoRsp& QueryRemotePatrolStoreInfoRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryRemotePatrolStoreInfoRsp* QueryRemotePatrolStoreInfoRsp::New(::google::protobuf::Arena* arena) const {
+  QueryRemotePatrolStoreInfoRsp* n = new QueryRemotePatrolStoreInfoRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryRemotePatrolStoreInfoRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) {
+    delete patrolstore_;
+  }
+  patrolstore_ = NULL;
+}
+
+bool QueryRemotePatrolStoreInfoRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_patrolstore()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  return false;
+#undef DO_
+}
+
+void QueryRemotePatrolStoreInfoRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->patrolstore_, output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+}
+
+::google::protobuf::uint8* QueryRemotePatrolStoreInfoRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->patrolstore_, false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  return target;
+}
+
+size_t QueryRemotePatrolStoreInfoRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  size_t total_size = 0;
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  if (this->has_patrolstore()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->patrolstore_);
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryRemotePatrolStoreInfoRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryRemotePatrolStoreInfoRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryRemotePatrolStoreInfoRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+    MergeFrom(*source);
+  }
+}
+
+void QueryRemotePatrolStoreInfoRsp::MergeFrom(const QueryRemotePatrolStoreInfoRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.has_patrolstore()) {
+    mutable_patrolstore()->::CustomerFlow::Interactive::Message::RemotePatrolStore::MergeFrom(from.patrolstore());
+  }
+}
+
+void QueryRemotePatrolStoreInfoRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryRemotePatrolStoreInfoRsp::CopyFrom(const QueryRemotePatrolStoreInfoRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryRemotePatrolStoreInfoRsp::IsInitialized() const {
+  return true;
+}
+
+void QueryRemotePatrolStoreInfoRsp::Swap(QueryRemotePatrolStoreInfoRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryRemotePatrolStoreInfoRsp::InternalSwap(QueryRemotePatrolStoreInfoRsp* other) {
+  std::swap(patrolstore_, other->patrolstore_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryRemotePatrolStoreInfoRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryRemotePatrolStoreInfoRsp
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+bool QueryRemotePatrolStoreInfoRsp::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+void QueryRemotePatrolStoreInfoRsp::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::RemotePatrolStore& QueryRemotePatrolStoreInfoRsp::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryRemotePatrolStoreInfoRsp::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  return patrolstore_;
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryRemotePatrolStoreInfoRsp::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+void QueryRemotePatrolStoreInfoRsp::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryAllRemotePatrolStoreReq::kStrUserIDFieldNumber;
+const int QueryAllRemotePatrolStoreReq::kStrStoreIDFieldNumber;
+const int QueryAllRemotePatrolStoreReq::kStrBeginDateFieldNumber;
+const int QueryAllRemotePatrolStoreReq::kStrEndDateFieldNumber;
+const int QueryAllRemotePatrolStoreReq::kUiBeginIndexFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryAllRemotePatrolStoreReq::QueryAllRemotePatrolStoreReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+}
+QueryAllRemotePatrolStoreReq::QueryAllRemotePatrolStoreReq(const QueryAllRemotePatrolStoreReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strstoreid().size() > 0) {
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strbegindate().size() > 0) {
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strenddate().size() > 0) {
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
+  uibeginindex_ = from.uibeginindex_;
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+}
+
+void QueryAllRemotePatrolStoreReq::SharedCtor() {
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uibeginindex_ = 0u;
+  _cached_size_ = 0;
+}
+
+QueryAllRemotePatrolStoreReq::~QueryAllRemotePatrolStoreReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  SharedDtor();
+}
+
+void QueryAllRemotePatrolStoreReq::SharedDtor() {
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryAllRemotePatrolStoreReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryAllRemotePatrolStoreReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130].descriptor;
+}
+
+const QueryAllRemotePatrolStoreReq& QueryAllRemotePatrolStoreReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryAllRemotePatrolStoreReq* QueryAllRemotePatrolStoreReq::New(::google::protobuf::Arena* arena) const {
+  QueryAllRemotePatrolStoreReq* n = new QueryAllRemotePatrolStoreReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryAllRemotePatrolStoreReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uibeginindex_ = 0u;
+}
+
+bool QueryAllRemotePatrolStoreReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUserID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strStoreID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strstoreid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strstoreid().data(), this->strstoreid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strBeginDate = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strbegindate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strbegindate().data(), this->strbegindate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strEndDate = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strenddate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strenddate().data(), this->strenddate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiBeginIndex = 5;
+      case 5: {
+        if (tag == 40u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uibeginindex_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  return false;
+#undef DO_
+}
+
+void QueryAllRemotePatrolStoreReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->struserid(), output);
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strstoreid(), output);
+  }
+
+  // string strBeginDate = 3;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strbegindate(), output);
+  }
+
+  // string strEndDate = 4;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strenddate(), output);
+  }
+
+  // uint32 uiBeginIndex = 5;
+  if (this->uibeginindex() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->uibeginindex(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+}
+
+::google::protobuf::uint8* QueryAllRemotePatrolStoreReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->struserid(), target);
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strstoreid(), target);
+  }
+
+  // string strBeginDate = 3;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strbegindate(), target);
+  }
+
+  // string strEndDate = 4;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strenddate(), target);
+  }
+
+  // uint32 uiBeginIndex = 5;
+  if (this->uibeginindex() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->uibeginindex(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  return target;
+}
+
+size_t QueryAllRemotePatrolStoreReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  size_t total_size = 0;
+
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strstoreid());
+  }
+
+  // string strBeginDate = 3;
+  if (this->strbegindate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strbegindate());
+  }
+
+  // string strEndDate = 4;
+  if (this->strenddate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strenddate());
+  }
+
+  // uint32 uiBeginIndex = 5;
+  if (this->uibeginindex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uibeginindex());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryAllRemotePatrolStoreReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryAllRemotePatrolStoreReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryAllRemotePatrolStoreReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+    MergeFrom(*source);
+  }
+}
+
+void QueryAllRemotePatrolStoreReq::MergeFrom(const QueryAllRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.strstoreid().size() > 0) {
+
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  if (from.strbegindate().size() > 0) {
+
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  if (from.strenddate().size() > 0) {
+
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
+  if (from.uibeginindex() != 0) {
+    set_uibeginindex(from.uibeginindex());
+  }
+}
+
+void QueryAllRemotePatrolStoreReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryAllRemotePatrolStoreReq::CopyFrom(const QueryAllRemotePatrolStoreReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryAllRemotePatrolStoreReq::IsInitialized() const {
+  return true;
+}
+
+void QueryAllRemotePatrolStoreReq::Swap(QueryAllRemotePatrolStoreReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryAllRemotePatrolStoreReq::InternalSwap(QueryAllRemotePatrolStoreReq* other) {
+  struserid_.Swap(&other->struserid_);
+  strstoreid_.Swap(&other->strstoreid_);
+  strbegindate_.Swap(&other->strbegindate_);
+  strenddate_.Swap(&other->strenddate_);
+  std::swap(uibeginindex_, other->uibeginindex_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryAllRemotePatrolStoreReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryAllRemotePatrolStoreReq
+
+// string strUserID = 1;
+void QueryAllRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryAllRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+void QueryAllRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+void QueryAllRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+#endif
+void QueryAllRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+void QueryAllRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+::std::string* QueryAllRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryAllRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryAllRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+
+// string strStoreID = 2;
+void QueryAllRemotePatrolStoreReq::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryAllRemotePatrolStoreReq::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+void QueryAllRemotePatrolStoreReq::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+#if LANG_CXX11
+void QueryAllRemotePatrolStoreReq::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+#endif
+void QueryAllRemotePatrolStoreReq::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+void QueryAllRemotePatrolStoreReq::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+::std::string* QueryAllRemotePatrolStoreReq::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryAllRemotePatrolStoreReq::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryAllRemotePatrolStoreReq::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+
+// string strBeginDate = 3;
+void QueryAllRemotePatrolStoreReq::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryAllRemotePatrolStoreReq::strbegindate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+void QueryAllRemotePatrolStoreReq::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+#if LANG_CXX11
+void QueryAllRemotePatrolStoreReq::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+#endif
+void QueryAllRemotePatrolStoreReq::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+void QueryAllRemotePatrolStoreReq::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+::std::string* QueryAllRemotePatrolStoreReq::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryAllRemotePatrolStoreReq::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryAllRemotePatrolStoreReq::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+
+// string strEndDate = 4;
+void QueryAllRemotePatrolStoreReq::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryAllRemotePatrolStoreReq::strenddate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  return strenddate_.GetNoArena();
+}
+void QueryAllRemotePatrolStoreReq::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+#if LANG_CXX11
+void QueryAllRemotePatrolStoreReq::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+#endif
+void QueryAllRemotePatrolStoreReq::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+void QueryAllRemotePatrolStoreReq::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+::std::string* QueryAllRemotePatrolStoreReq::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryAllRemotePatrolStoreReq::release_strenddate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryAllRemotePatrolStoreReq::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+
+// uint32 uiBeginIndex = 5;
+void QueryAllRemotePatrolStoreReq::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+::google::protobuf::uint32 QueryAllRemotePatrolStoreReq::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.uiBeginIndex)
+  return uibeginindex_;
+}
+void QueryAllRemotePatrolStoreReq::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.uiBeginIndex)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryAllRemotePatrolStoreRsp::kPatrolStoreFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryAllRemotePatrolStoreRsp::QueryAllRemotePatrolStoreRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+}
+QueryAllRemotePatrolStoreRsp::QueryAllRemotePatrolStoreRsp(const QueryAllRemotePatrolStoreRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      patrolstore_(from.patrolstore_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+}
+
+void QueryAllRemotePatrolStoreRsp::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+QueryAllRemotePatrolStoreRsp::~QueryAllRemotePatrolStoreRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  SharedDtor();
+}
+
+void QueryAllRemotePatrolStoreRsp::SharedDtor() {
+}
+
+void QueryAllRemotePatrolStoreRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryAllRemotePatrolStoreRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131].descriptor;
+}
+
+const QueryAllRemotePatrolStoreRsp& QueryAllRemotePatrolStoreRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryAllRemotePatrolStoreRsp* QueryAllRemotePatrolStoreRsp::New(::google::protobuf::Arena* arena) const {
+  QueryAllRemotePatrolStoreRsp* n = new QueryAllRemotePatrolStoreRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryAllRemotePatrolStoreRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  patrolstore_.Clear();
+}
+
+bool QueryAllRemotePatrolStoreRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(input->IncrementRecursionDepth());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_patrolstore()));
+        } else {
+          goto handle_unusual;
+        }
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  return false;
+#undef DO_
+}
+
+void QueryAllRemotePatrolStoreRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  // repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  for (unsigned int i = 0, n = this->patrolstore_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->patrolstore(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+}
+
+::google::protobuf::uint8* QueryAllRemotePatrolStoreRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  // repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  for (unsigned int i = 0, n = this->patrolstore_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, this->patrolstore(i), false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  return target;
+}
+
+size_t QueryAllRemotePatrolStoreRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  size_t total_size = 0;
+
+  // repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  {
+    unsigned int count = this->patrolstore_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->patrolstore(i));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryAllRemotePatrolStoreRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryAllRemotePatrolStoreRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryAllRemotePatrolStoreRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+    MergeFrom(*source);
+  }
+}
+
+void QueryAllRemotePatrolStoreRsp::MergeFrom(const QueryAllRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  patrolstore_.MergeFrom(from.patrolstore_);
+}
+
+void QueryAllRemotePatrolStoreRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryAllRemotePatrolStoreRsp::CopyFrom(const QueryAllRemotePatrolStoreRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryAllRemotePatrolStoreRsp::IsInitialized() const {
+  return true;
+}
+
+void QueryAllRemotePatrolStoreRsp::Swap(QueryAllRemotePatrolStoreRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryAllRemotePatrolStoreRsp::InternalSwap(QueryAllRemotePatrolStoreRsp* other) {
+  patrolstore_.UnsafeArenaSwap(&other->patrolstore_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryAllRemotePatrolStoreRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryAllRemotePatrolStoreRsp
+
+// repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+int QueryAllRemotePatrolStoreRsp::patrolstore_size() const {
+  return patrolstore_.size();
+}
+void QueryAllRemotePatrolStoreRsp::clear_patrolstore() {
+  patrolstore_.Clear();
+}
+const ::CustomerFlow::Interactive::Message::RemotePatrolStore& QueryAllRemotePatrolStoreRsp::patrolstore(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Get(index);
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryAllRemotePatrolStoreRsp::mutable_patrolstore(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Mutable(index);
+}
+::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryAllRemotePatrolStoreRsp::add_patrolstore() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >*
+QueryAllRemotePatrolStoreRsp::mutable_patrolstore() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return &patrolstore_;
+}
+const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >&
+QueryAllRemotePatrolStoreRsp::patrolstore() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50107,7 +54862,7 @@ void ImportPOSDataReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImportPOSDataReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132].descriptor;
 }
 
 const ImportPOSDataReq& ImportPOSDataReq::default_instance() {
@@ -50481,7 +55236,7 @@ void ImportPOSDataReq::InternalSwap(ImportPOSDataReq* other) {
 
 ::google::protobuf::Metadata ImportPOSDataReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50734,7 +55489,7 @@ void ImportPOSDataRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImportPOSDataRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133].descriptor;
 }
 
 const ImportPOSDataRsp& ImportPOSDataRsp::default_instance() {
@@ -50908,7 +55663,7 @@ void ImportPOSDataRsp::InternalSwap(ImportPOSDataRsp* other) {
 
 ::google::protobuf::Metadata ImportPOSDataRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51039,7 +55794,7 @@ void QueryCustomerFlowStatisticReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryCustomerFlowStatisticReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134].descriptor;
 }
 
 const QueryCustomerFlowStatisticReq& QueryCustomerFlowStatisticReq::default_instance() {
@@ -51395,7 +56150,7 @@ void QueryCustomerFlowStatisticReq::InternalSwap(QueryCustomerFlowStatisticReq* 
 
 ::google::protobuf::Metadata QueryCustomerFlowStatisticReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51672,7 +56427,7 @@ void QueryCustomerFlowStatisticRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryCustomerFlowStatisticRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135].descriptor;
 }
 
 const QueryCustomerFlowStatisticRsp& QueryCustomerFlowStatisticRsp::default_instance() {
@@ -51846,7 +56601,7 @@ void QueryCustomerFlowStatisticRsp::InternalSwap(QueryCustomerFlowStatisticRsp* 
 
 ::google::protobuf::Metadata QueryCustomerFlowStatisticRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51955,7 +56710,7 @@ void ReportCustomerFlowDataReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ReportCustomerFlowDataReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136].descriptor;
 }
 
 const ReportCustomerFlowDataReq& ReportCustomerFlowDataReq::default_instance() {
@@ -52169,7 +56924,7 @@ void ReportCustomerFlowDataReq::InternalSwap(ReportCustomerFlowDataReq* other) {
 
 ::google::protobuf::Metadata ReportCustomerFlowDataReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -52306,7 +57061,7 @@ void ReportCustomerFlowDataRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ReportCustomerFlowDataRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137].descriptor;
 }
 
 const ReportCustomerFlowDataRsp& ReportCustomerFlowDataRsp::default_instance() {
@@ -52480,7 +57235,7 @@ void ReportCustomerFlowDataRsp::InternalSwap(ReportCustomerFlowDataRsp* other) {
 
 ::google::protobuf::Metadata ReportCustomerFlowDataRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -52596,6 +57351,11 @@ const int Request::kDeleteStoreEvaluationReqValueFieldNumber;
 const int Request::kModifyStoreEvaluationReqValueFieldNumber;
 const int Request::kQueryStoreEvaluationInfoReqValueFieldNumber;
 const int Request::kQueryAllStoreEvaluationReqValueFieldNumber;
+const int Request::kAddRemotePatrolStoreReqValueFieldNumber;
+const int Request::kDeleteRemotePatrolStoreReqValueFieldNumber;
+const int Request::kModifyRemotePatrolStoreReqValueFieldNumber;
+const int Request::kQueryRemotePatrolStoreInfoReqValueFieldNumber;
+const int Request::kQueryAllRemotePatrolStoreReqValueFieldNumber;
 const int Request::kImportPOSDataReqValueFieldNumber;
 const int Request::kQueryCustomerFlowStatisticReqValueFieldNumber;
 const int Request::kReportCustomerFlowDataReqValueFieldNumber;
@@ -52879,6 +57639,31 @@ Request::Request(const Request& from)
   } else {
     queryallstoreevaluationreq_value_ = NULL;
   }
+  if (from.has_addremotepatrolstorereq_value()) {
+    addremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq(*from.addremotepatrolstorereq_value_);
+  } else {
+    addremotepatrolstorereq_value_ = NULL;
+  }
+  if (from.has_deleteremotepatrolstorereq_value()) {
+    deleteremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq(*from.deleteremotepatrolstorereq_value_);
+  } else {
+    deleteremotepatrolstorereq_value_ = NULL;
+  }
+  if (from.has_modifyremotepatrolstorereq_value()) {
+    modifyremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq(*from.modifyremotepatrolstorereq_value_);
+  } else {
+    modifyremotepatrolstorereq_value_ = NULL;
+  }
+  if (from.has_queryremotepatrolstoreinforeq_value()) {
+    queryremotepatrolstoreinforeq_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq(*from.queryremotepatrolstoreinforeq_value_);
+  } else {
+    queryremotepatrolstoreinforeq_value_ = NULL;
+  }
+  if (from.has_queryallremotepatrolstorereq_value()) {
+    queryallremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq(*from.queryallremotepatrolstorereq_value_);
+  } else {
+    queryallremotepatrolstorereq_value_ = NULL;
+  }
   if (from.has_importposdatareq_value()) {
     importposdatareq_value_ = new ::CustomerFlow::Interactive::Message::ImportPOSDataReq(*from.importposdatareq_value_);
   } else {
@@ -53069,6 +57854,21 @@ void Request::SharedDtor() {
     delete queryallstoreevaluationreq_value_;
   }
   if (this != internal_default_instance()) {
+    delete addremotepatrolstorereq_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete deleteremotepatrolstorereq_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete modifyremotepatrolstorereq_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete queryremotepatrolstoreinforeq_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete queryallremotepatrolstorereq_value_;
+  }
+  if (this != internal_default_instance()) {
     delete importposdatareq_value_;
   }
   if (this != internal_default_instance()) {
@@ -53086,7 +57886,7 @@ void Request::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Request::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138].descriptor;
 }
 
 const Request& Request::default_instance() {
@@ -53316,6 +58116,26 @@ void Request::Clear() {
     delete queryallstoreevaluationreq_value_;
   }
   queryallstoreevaluationreq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorereq_value_ != NULL) {
+    delete addremotepatrolstorereq_value_;
+  }
+  addremotepatrolstorereq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorereq_value_ != NULL) {
+    delete deleteremotepatrolstorereq_value_;
+  }
+  deleteremotepatrolstorereq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorereq_value_ != NULL) {
+    delete modifyremotepatrolstorereq_value_;
+  }
+  modifyremotepatrolstorereq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforeq_value_ != NULL) {
+    delete queryremotepatrolstoreinforeq_value_;
+  }
+  queryremotepatrolstoreinforeq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorereq_value_ != NULL) {
+    delete queryallremotepatrolstorereq_value_;
+  }
+  queryallremotepatrolstorereq_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && importposdatareq_value_ != NULL) {
     delete importposdatareq_value_;
   }
@@ -53923,6 +58743,61 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
+      // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+      case 1000: {
+        if (tag == 8002u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_addremotepatrolstorereq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+      case 1010: {
+        if (tag == 8082u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_deleteremotepatrolstorereq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+      case 1020: {
+        if (tag == 8162u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_modifyremotepatrolstorereq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+      case 1030: {
+        if (tag == 8242u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_queryremotepatrolstoreinforeq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+      case 1040: {
+        if (tag == 8322u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_queryallremotepatrolstorereq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
       case 2000: {
         if (tag == 16002u) {
@@ -54296,6 +59171,36 @@ void Request::SerializeWithCachedSizes(
   if (this->has_queryallstoreevaluationreq_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       990, *this->queryallstoreevaluationreq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+  if (this->has_addremotepatrolstorereq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1000, *this->addremotepatrolstorereq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+  if (this->has_deleteremotepatrolstorereq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1010, *this->deleteremotepatrolstorereq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+  if (this->has_modifyremotepatrolstorereq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1020, *this->modifyremotepatrolstorereq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforeq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1030, *this->queryremotepatrolstoreinforeq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+  if (this->has_queryallremotepatrolstorereq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1040, *this->queryallremotepatrolstorereq_value_, output);
   }
 
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
@@ -54692,6 +59597,41 @@ void Request::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         990, *this->queryallstoreevaluationreq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+  if (this->has_addremotepatrolstorereq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1000, *this->addremotepatrolstorereq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+  if (this->has_deleteremotepatrolstorereq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1010, *this->deleteremotepatrolstorereq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+  if (this->has_modifyremotepatrolstorereq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1020, *this->modifyremotepatrolstorereq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforeq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1030, *this->queryremotepatrolstoreinforeq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+  if (this->has_queryallremotepatrolstorereq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1040, *this->queryallremotepatrolstorereq_value_, false, target);
   }
 
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
@@ -55094,6 +60034,41 @@ size_t Request::ByteSizeLong() const {
         *this->queryallstoreevaluationreq_value_);
   }
 
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+  if (this->has_addremotepatrolstorereq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->addremotepatrolstorereq_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+  if (this->has_deleteremotepatrolstorereq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->deleteremotepatrolstorereq_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+  if (this->has_modifyremotepatrolstorereq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->modifyremotepatrolstorereq_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforeq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->queryremotepatrolstoreinforeq_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+  if (this->has_queryallremotepatrolstorereq_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->queryallremotepatrolstorereq_value_);
+  }
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
   if (this->has_importposdatareq_value()) {
     total_size += 2 +
@@ -55300,6 +60275,21 @@ void Request::MergeFrom(const Request& from) {
   if (from.has_queryallstoreevaluationreq_value()) {
     mutable_queryallstoreevaluationreq_value()->::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq::MergeFrom(from.queryallstoreevaluationreq_value());
   }
+  if (from.has_addremotepatrolstorereq_value()) {
+    mutable_addremotepatrolstorereq_value()->::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq::MergeFrom(from.addremotepatrolstorereq_value());
+  }
+  if (from.has_deleteremotepatrolstorereq_value()) {
+    mutable_deleteremotepatrolstorereq_value()->::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq::MergeFrom(from.deleteremotepatrolstorereq_value());
+  }
+  if (from.has_modifyremotepatrolstorereq_value()) {
+    mutable_modifyremotepatrolstorereq_value()->::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq::MergeFrom(from.modifyremotepatrolstorereq_value());
+  }
+  if (from.has_queryremotepatrolstoreinforeq_value()) {
+    mutable_queryremotepatrolstoreinforeq_value()->::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq::MergeFrom(from.queryremotepatrolstoreinforeq_value());
+  }
+  if (from.has_queryallremotepatrolstorereq_value()) {
+    mutable_queryallremotepatrolstorereq_value()->::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq::MergeFrom(from.queryallremotepatrolstorereq_value());
+  }
   if (from.has_importposdatareq_value()) {
     mutable_importposdatareq_value()->::CustomerFlow::Interactive::Message::ImportPOSDataReq::MergeFrom(from.importposdatareq_value());
   }
@@ -55387,6 +60377,11 @@ void Request::InternalSwap(Request* other) {
   std::swap(modifystoreevaluationreq_value_, other->modifystoreevaluationreq_value_);
   std::swap(querystoreevaluationinforeq_value_, other->querystoreevaluationinforeq_value_);
   std::swap(queryallstoreevaluationreq_value_, other->queryallstoreevaluationreq_value_);
+  std::swap(addremotepatrolstorereq_value_, other->addremotepatrolstorereq_value_);
+  std::swap(deleteremotepatrolstorereq_value_, other->deleteremotepatrolstorereq_value_);
+  std::swap(modifyremotepatrolstorereq_value_, other->modifyremotepatrolstorereq_value_);
+  std::swap(queryremotepatrolstoreinforeq_value_, other->queryremotepatrolstoreinforeq_value_);
+  std::swap(queryallremotepatrolstorereq_value_, other->queryallremotepatrolstorereq_value_);
   std::swap(importposdatareq_value_, other->importposdatareq_value_);
   std::swap(querycustomerflowstatisticreq_value_, other->querycustomerflowstatisticreq_value_);
   std::swap(reportcustomerflowdatareq_value_, other->reportcustomerflowdatareq_value_);
@@ -55395,7 +60390,7 @@ void Request::InternalSwap(Request* other) {
 
 ::google::protobuf::Metadata Request::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -57468,6 +62463,201 @@ void Request::set_allocated_queryallstoreevaluationreq_value(::CustomerFlow::Int
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllStoreEvaluationReq_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+bool Request::has_addremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && addremotepatrolstorereq_value_ != NULL;
+}
+void Request::clear_addremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorereq_value_ != NULL) delete addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq& Request::addremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  return addremotepatrolstorereq_value_ != NULL ? *addremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* Request::mutable_addremotepatrolstorereq_value() {
+  
+  if (addremotepatrolstorereq_value_ == NULL) {
+    addremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  return addremotepatrolstorereq_value_;
+}
+::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* Request::release_addremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* temp = addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_addremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* addremotepatrolstorereq_value) {
+  delete addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = addremotepatrolstorereq_value;
+  if (addremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+bool Request::has_deleteremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && deleteremotepatrolstorereq_value_ != NULL;
+}
+void Request::clear_deleteremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorereq_value_ != NULL) delete deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq& Request::deleteremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  return deleteremotepatrolstorereq_value_ != NULL ? *deleteremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* Request::mutable_deleteremotepatrolstorereq_value() {
+  
+  if (deleteremotepatrolstorereq_value_ == NULL) {
+    deleteremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  return deleteremotepatrolstorereq_value_;
+}
+::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* Request::release_deleteremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* temp = deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_deleteremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* deleteremotepatrolstorereq_value) {
+  delete deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = deleteremotepatrolstorereq_value;
+  if (deleteremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+bool Request::has_modifyremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && modifyremotepatrolstorereq_value_ != NULL;
+}
+void Request::clear_modifyremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorereq_value_ != NULL) delete modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq& Request::modifyremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  return modifyremotepatrolstorereq_value_ != NULL ? *modifyremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* Request::mutable_modifyremotepatrolstorereq_value() {
+  
+  if (modifyremotepatrolstorereq_value_ == NULL) {
+    modifyremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  return modifyremotepatrolstorereq_value_;
+}
+::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* Request::release_modifyremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* temp = modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_modifyremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* modifyremotepatrolstorereq_value) {
+  delete modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = modifyremotepatrolstorereq_value;
+  if (modifyremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+bool Request::has_queryremotepatrolstoreinforeq_value() const {
+  return this != internal_default_instance() && queryremotepatrolstoreinforeq_value_ != NULL;
+}
+void Request::clear_queryremotepatrolstoreinforeq_value() {
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforeq_value_ != NULL) delete queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq& Request::queryremotepatrolstoreinforeq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  return queryremotepatrolstoreinforeq_value_ != NULL ? *queryremotepatrolstoreinforeq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* Request::mutable_queryremotepatrolstoreinforeq_value() {
+  
+  if (queryremotepatrolstoreinforeq_value_ == NULL) {
+    queryremotepatrolstoreinforeq_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  return queryremotepatrolstoreinforeq_value_;
+}
+::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* Request::release_queryremotepatrolstoreinforeq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* temp = queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_queryremotepatrolstoreinforeq_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* queryremotepatrolstoreinforeq_value) {
+  delete queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = queryremotepatrolstoreinforeq_value;
+  if (queryremotepatrolstoreinforeq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+bool Request::has_queryallremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && queryallremotepatrolstorereq_value_ != NULL;
+}
+void Request::clear_queryallremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorereq_value_ != NULL) delete queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq& Request::queryallremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  return queryallremotepatrolstorereq_value_ != NULL ? *queryallremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* Request::mutable_queryallremotepatrolstorereq_value() {
+  
+  if (queryallremotepatrolstorereq_value_ == NULL) {
+    queryallremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  return queryallremotepatrolstorereq_value_;
+}
+::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* Request::release_queryallremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* temp = queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_queryallremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value) {
+  delete queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = queryallremotepatrolstorereq_value;
+  if (queryallremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
 bool Request::has_importposdatareq_value() const {
   return this != internal_default_instance() && importposdatareq_value_ != NULL;
@@ -57645,6 +62835,11 @@ const int Response::kDeleteStoreEvaluationRspValueFieldNumber;
 const int Response::kModifyStoreEvaluationRspValueFieldNumber;
 const int Response::kQueryStoreEvaluationInfoRspValueFieldNumber;
 const int Response::kQueryAllStoreEvaluationRspValueFieldNumber;
+const int Response::kAddRemotePatrolStoreRspValueFieldNumber;
+const int Response::kDeleteRemotePatrolStoreRspValueFieldNumber;
+const int Response::kModifyRemotePatrolStoreRspValueFieldNumber;
+const int Response::kQueryRemotePatrolStoreInfoRspValueFieldNumber;
+const int Response::kQueryAllRemotePatrolStoreRspValueFieldNumber;
 const int Response::kImportPOSDataRspValueFieldNumber;
 const int Response::kQueryCustomerFlowStatisticRspValueFieldNumber;
 const int Response::kReportCustomerFlowDataRspValueFieldNumber;
@@ -57932,6 +63127,31 @@ Response::Response(const Response& from)
   } else {
     queryallstoreevaluationrsp_value_ = NULL;
   }
+  if (from.has_addremotepatrolstorersp_value()) {
+    addremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp(*from.addremotepatrolstorersp_value_);
+  } else {
+    addremotepatrolstorersp_value_ = NULL;
+  }
+  if (from.has_deleteremotepatrolstorersp_value()) {
+    deleteremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp(*from.deleteremotepatrolstorersp_value_);
+  } else {
+    deleteremotepatrolstorersp_value_ = NULL;
+  }
+  if (from.has_modifyremotepatrolstorersp_value()) {
+    modifyremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp(*from.modifyremotepatrolstorersp_value_);
+  } else {
+    modifyremotepatrolstorersp_value_ = NULL;
+  }
+  if (from.has_queryremotepatrolstoreinforsp_value()) {
+    queryremotepatrolstoreinforsp_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp(*from.queryremotepatrolstoreinforsp_value_);
+  } else {
+    queryremotepatrolstoreinforsp_value_ = NULL;
+  }
+  if (from.has_queryallremotepatrolstorersp_value()) {
+    queryallremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp(*from.queryallremotepatrolstorersp_value_);
+  } else {
+    queryallremotepatrolstorersp_value_ = NULL;
+  }
   if (from.has_importposdatarsp_value()) {
     importposdatarsp_value_ = new ::CustomerFlow::Interactive::Message::ImportPOSDataRsp(*from.importposdatarsp_value_);
   } else {
@@ -58125,6 +63345,21 @@ void Response::SharedDtor() {
     delete queryallstoreevaluationrsp_value_;
   }
   if (this != internal_default_instance()) {
+    delete addremotepatrolstorersp_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete deleteremotepatrolstorersp_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete modifyremotepatrolstorersp_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete queryremotepatrolstoreinforsp_value_;
+  }
+  if (this != internal_default_instance()) {
+    delete queryallremotepatrolstorersp_value_;
+  }
+  if (this != internal_default_instance()) {
     delete importposdatarsp_value_;
   }
   if (this != internal_default_instance()) {
@@ -58142,7 +63377,7 @@ void Response::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Response::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139].descriptor;
 }
 
 const Response& Response::default_instance() {
@@ -58373,6 +63608,26 @@ void Response::Clear() {
     delete queryallstoreevaluationrsp_value_;
   }
   queryallstoreevaluationrsp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorersp_value_ != NULL) {
+    delete addremotepatrolstorersp_value_;
+  }
+  addremotepatrolstorersp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorersp_value_ != NULL) {
+    delete deleteremotepatrolstorersp_value_;
+  }
+  deleteremotepatrolstorersp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorersp_value_ != NULL) {
+    delete modifyremotepatrolstorersp_value_;
+  }
+  modifyremotepatrolstorersp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforsp_value_ != NULL) {
+    delete queryremotepatrolstoreinforsp_value_;
+  }
+  queryremotepatrolstoreinforsp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorersp_value_ != NULL) {
+    delete queryallremotepatrolstorersp_value_;
+  }
+  queryallremotepatrolstorersp_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && importposdatarsp_value_ != NULL) {
     delete importposdatarsp_value_;
   }
@@ -59009,6 +64264,61 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+      case 1000: {
+        if (tag == 8002u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_addremotepatrolstorersp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+      case 1010: {
+        if (tag == 8082u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_deleteremotepatrolstorersp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+      case 1020: {
+        if (tag == 8162u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_modifyremotepatrolstorersp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+      case 1030: {
+        if (tag == 8242u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_queryremotepatrolstoreinforsp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+      case 1040: {
+        if (tag == 8322u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_queryallremotepatrolstorersp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
       case 2000: {
         if (tag == 16002u) {
@@ -59397,6 +64707,36 @@ void Response::SerializeWithCachedSizes(
   if (this->has_queryallstoreevaluationrsp_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       990, *this->queryallstoreevaluationrsp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+  if (this->has_addremotepatrolstorersp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1000, *this->addremotepatrolstorersp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+  if (this->has_deleteremotepatrolstorersp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1010, *this->deleteremotepatrolstorersp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+  if (this->has_modifyremotepatrolstorersp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1020, *this->modifyremotepatrolstorersp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforsp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1030, *this->queryremotepatrolstoreinforsp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+  if (this->has_queryallremotepatrolstorersp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1040, *this->queryallremotepatrolstorersp_value_, output);
   }
 
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
@@ -59811,6 +65151,41 @@ void Response::SerializeWithCachedSizes(
         990, *this->queryallstoreevaluationrsp_value_, false, target);
   }
 
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+  if (this->has_addremotepatrolstorersp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1000, *this->addremotepatrolstorersp_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+  if (this->has_deleteremotepatrolstorersp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1010, *this->deleteremotepatrolstorersp_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+  if (this->has_modifyremotepatrolstorersp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1020, *this->modifyremotepatrolstorersp_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforsp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1030, *this->queryremotepatrolstoreinforsp_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+  if (this->has_queryallremotepatrolstorersp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1040, *this->queryallremotepatrolstorersp_value_, false, target);
+  }
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
   if (this->has_importposdatarsp_value()) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -60218,6 +65593,41 @@ size_t Response::ByteSizeLong() const {
         *this->queryallstoreevaluationrsp_value_);
   }
 
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+  if (this->has_addremotepatrolstorersp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->addremotepatrolstorersp_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+  if (this->has_deleteremotepatrolstorersp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->deleteremotepatrolstorersp_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+  if (this->has_modifyremotepatrolstorersp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->modifyremotepatrolstorersp_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+  if (this->has_queryremotepatrolstoreinforsp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->queryremotepatrolstoreinforsp_value_);
+  }
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+  if (this->has_queryallremotepatrolstorersp_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->queryallremotepatrolstorersp_value_);
+  }
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
   if (this->has_importposdatarsp_value()) {
     total_size += 2 +
@@ -60435,6 +65845,21 @@ void Response::MergeFrom(const Response& from) {
   if (from.has_queryallstoreevaluationrsp_value()) {
     mutable_queryallstoreevaluationrsp_value()->::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp::MergeFrom(from.queryallstoreevaluationrsp_value());
   }
+  if (from.has_addremotepatrolstorersp_value()) {
+    mutable_addremotepatrolstorersp_value()->::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp::MergeFrom(from.addremotepatrolstorersp_value());
+  }
+  if (from.has_deleteremotepatrolstorersp_value()) {
+    mutable_deleteremotepatrolstorersp_value()->::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp::MergeFrom(from.deleteremotepatrolstorersp_value());
+  }
+  if (from.has_modifyremotepatrolstorersp_value()) {
+    mutable_modifyremotepatrolstorersp_value()->::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp::MergeFrom(from.modifyremotepatrolstorersp_value());
+  }
+  if (from.has_queryremotepatrolstoreinforsp_value()) {
+    mutable_queryremotepatrolstoreinforsp_value()->::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp::MergeFrom(from.queryremotepatrolstoreinforsp_value());
+  }
+  if (from.has_queryallremotepatrolstorersp_value()) {
+    mutable_queryallremotepatrolstorersp_value()->::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp::MergeFrom(from.queryallremotepatrolstorersp_value());
+  }
   if (from.has_importposdatarsp_value()) {
     mutable_importposdatarsp_value()->::CustomerFlow::Interactive::Message::ImportPOSDataRsp::MergeFrom(from.importposdatarsp_value());
   }
@@ -60526,6 +65951,11 @@ void Response::InternalSwap(Response* other) {
   std::swap(modifystoreevaluationrsp_value_, other->modifystoreevaluationrsp_value_);
   std::swap(querystoreevaluationinforsp_value_, other->querystoreevaluationinforsp_value_);
   std::swap(queryallstoreevaluationrsp_value_, other->queryallstoreevaluationrsp_value_);
+  std::swap(addremotepatrolstorersp_value_, other->addremotepatrolstorersp_value_);
+  std::swap(deleteremotepatrolstorersp_value_, other->deleteremotepatrolstorersp_value_);
+  std::swap(modifyremotepatrolstorersp_value_, other->modifyremotepatrolstorersp_value_);
+  std::swap(queryremotepatrolstoreinforsp_value_, other->queryremotepatrolstoreinforsp_value_);
+  std::swap(queryallremotepatrolstorersp_value_, other->queryallremotepatrolstorersp_value_);
   std::swap(importposdatarsp_value_, other->importposdatarsp_value_);
   std::swap(querycustomerflowstatisticrsp_value_, other->querycustomerflowstatisticrsp_value_);
   std::swap(reportcustomerflowdatarsp_value_, other->reportcustomerflowdatarsp_value_);
@@ -60535,7 +65965,7 @@ void Response::InternalSwap(Response* other) {
 
 ::google::protobuf::Metadata Response::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -62674,6 +68104,201 @@ void Response::set_allocated_queryallstoreevaluationrsp_value(::CustomerFlow::In
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllStoreEvaluationRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+bool Response::has_addremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && addremotepatrolstorersp_value_ != NULL;
+}
+void Response::clear_addremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorersp_value_ != NULL) delete addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp& Response::addremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  return addremotepatrolstorersp_value_ != NULL ? *addremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* Response::mutable_addremotepatrolstorersp_value() {
+  
+  if (addremotepatrolstorersp_value_ == NULL) {
+    addremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  return addremotepatrolstorersp_value_;
+}
+::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* Response::release_addremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* temp = addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_addremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* addremotepatrolstorersp_value) {
+  delete addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = addremotepatrolstorersp_value;
+  if (addremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+bool Response::has_deleteremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && deleteremotepatrolstorersp_value_ != NULL;
+}
+void Response::clear_deleteremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorersp_value_ != NULL) delete deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp& Response::deleteremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  return deleteremotepatrolstorersp_value_ != NULL ? *deleteremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* Response::mutable_deleteremotepatrolstorersp_value() {
+  
+  if (deleteremotepatrolstorersp_value_ == NULL) {
+    deleteremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  return deleteremotepatrolstorersp_value_;
+}
+::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* Response::release_deleteremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* temp = deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_deleteremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* deleteremotepatrolstorersp_value) {
+  delete deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = deleteremotepatrolstorersp_value;
+  if (deleteremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+bool Response::has_modifyremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && modifyremotepatrolstorersp_value_ != NULL;
+}
+void Response::clear_modifyremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorersp_value_ != NULL) delete modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp& Response::modifyremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  return modifyremotepatrolstorersp_value_ != NULL ? *modifyremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* Response::mutable_modifyremotepatrolstorersp_value() {
+  
+  if (modifyremotepatrolstorersp_value_ == NULL) {
+    modifyremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  return modifyremotepatrolstorersp_value_;
+}
+::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* Response::release_modifyremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* temp = modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_modifyremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* modifyremotepatrolstorersp_value) {
+  delete modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = modifyremotepatrolstorersp_value;
+  if (modifyremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+bool Response::has_queryremotepatrolstoreinforsp_value() const {
+  return this != internal_default_instance() && queryremotepatrolstoreinforsp_value_ != NULL;
+}
+void Response::clear_queryremotepatrolstoreinforsp_value() {
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforsp_value_ != NULL) delete queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp& Response::queryremotepatrolstoreinforsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  return queryremotepatrolstoreinforsp_value_ != NULL ? *queryremotepatrolstoreinforsp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* Response::mutable_queryremotepatrolstoreinforsp_value() {
+  
+  if (queryremotepatrolstoreinforsp_value_ == NULL) {
+    queryremotepatrolstoreinforsp_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  return queryremotepatrolstoreinforsp_value_;
+}
+::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* Response::release_queryremotepatrolstoreinforsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* temp = queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_queryremotepatrolstoreinforsp_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* queryremotepatrolstoreinforsp_value) {
+  delete queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = queryremotepatrolstoreinforsp_value;
+  if (queryremotepatrolstoreinforsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+bool Response::has_queryallremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && queryallremotepatrolstorersp_value_ != NULL;
+}
+void Response::clear_queryallremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorersp_value_ != NULL) delete queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp& Response::queryallremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  return queryallremotepatrolstorersp_value_ != NULL ? *queryallremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* Response::mutable_queryallremotepatrolstorersp_value() {
+  
+  if (queryallremotepatrolstorersp_value_ == NULL) {
+    queryallremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  return queryallremotepatrolstorersp_value_;
+}
+::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* Response::release_queryallremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* temp = queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_queryallremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value) {
+  delete queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = queryallremotepatrolstorersp_value;
+  if (queryallremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
 bool Response::has_importposdatarsp_value() const {
   return this != internal_default_instance() && importposdatarsp_value_ != NULL;
@@ -62865,7 +68490,7 @@ void CustomerFlowMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowMessage::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140].descriptor;
 }
 
 const CustomerFlowMessage& CustomerFlowMessage::default_instance() {
@@ -63189,7 +68814,7 @@ void CustomerFlowMessage::InternalSwap(CustomerFlowMessage* other) {
 
 ::google::protobuf::Metadata CustomerFlowMessage::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

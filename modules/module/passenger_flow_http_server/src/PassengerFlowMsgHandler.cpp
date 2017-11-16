@@ -121,6 +121,16 @@ const std::string PassengerFlowMsgHandler::QUERY_EVALUATION_OF_STORE("query_stor
 
 const std::string PassengerFlowMsgHandler::QUERY_ALL_EVALUATION_OF_STORE("query_all_store_evaluation");
 
+const std::string PassengerFlowMsgHandler::CREATE_PATROL_RECORD("create_patrol_record");
+
+const std::string PassengerFlowMsgHandler::DELETE_PATROL_RECORD("remove_patrol_record");
+
+const std::string PassengerFlowMsgHandler::MODIFY_PATROL_RECORD("modify_patrol_record");
+
+const std::string PassengerFlowMsgHandler::QUERY_PATROL_RECORD("query_patrol_record");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_PATROL_RECORD("query_all_patrol_record");
+
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new PassengerFlowProtoHandler)
@@ -5274,6 +5284,551 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
     return blResult;
 }
 
+bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    std::string strUserID;
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strUserID = itFind->second;
+    }
+    
+    std::string strDevID;
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevID = itFind->second;
+    }
+
+    if (strUserID.empty() && strDevID.empty())
+    {
+        LOG_ERROR_RLD("User id and device id all empty.");
+        return blResult;
+    }
+        
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    itFind = pMsgInfoMap->find("patrol_date");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol date not found.");
+        return blResult;
+    }
+    const std::string strPatrolDate = itFind->second;
+    if (!ValidDatetime(strPatrolDate))
+    {
+        LOG_ERROR_RLD("Patrol date is invalid and value is " << strPatrolDate);
+        return blResult;
+    }
+
+    std::list<std::string> strPicIDList;    
+    itFind = pMsgInfoMap->find("patrol_picture");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol picture info not found.");
+        return blResult;
+    }
+    const std::string strPatrolPicInfo = itFind->second;
+
+    if (!GetValueList(strPatrolPicInfo, strPicIDList))
+    {
+        LOG_ERROR_RLD("Patrol picture list parse failed");
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("patrol_result");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol result not found.");
+        return blResult;
+    }
+    const std::string strPatrolResult = itFind->second;
+
+    unsigned int uiPatrolResult = 0;
+    if (!ValidType<unsigned int>(strPatrolResult, uiPatrolResult))
+    {
+        LOG_ERROR_RLD("Value is invalid and value is " << strPatrolResult);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("patrol_desc");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol desc not found.");
+        return blResult;
+    }
+    const std::string strPatrolDesc = itFind->second;
+
+    PatrolRecord pr;
+    pr.m_strDevID = strDevID;
+    pr.m_strPatrolDate = strPatrolDate;
+    pr.m_strPatrolDesc = strPatrolDesc;
+    pr.m_strPatrolPicIDList.swap(strPicIDList);
+    pr.m_strStoreID = strStoreID;
+    pr.m_strUserID = strUserID;
+    pr.m_uiPatrolResult = uiPatrolResult;
+    
+    if (!CreatePatrolRecord(strSid, pr))
+    {
+        LOG_ERROR_RLD("Create patrol record failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create patrol record info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and ptrol record id is " << pr.m_strPatrolID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_id", pr.m_strPatrolID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::DeletePatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("patrol_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol id of store not found.");
+        return blResult;
+    }
+    const std::string strPatrolID = itFind->second;
+
+    if (!DeletePatrolRecord(strSid, strUserID, strPatrolID))
+    {
+        LOG_ERROR_RLD("Delete patrol record failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete patrol record info received and session id is " << strSid << " and user id is " << strUserID
+        << " and patrol id of store is " << strPatrolID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("patrol_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strPatrolID = itFind->second;
+        
+    std::list<std::string> strPicIDList;
+    itFind = pMsgInfoMap->find("patrol_picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        const std::string strPatrolPicInfo = itFind->second;
+
+        if (!GetValueList(strPatrolPicInfo, strPicIDList))
+        {
+            LOG_ERROR_RLD("Patrol picture list parse failed");
+            return blResult;
+        }
+    }
+    
+    unsigned int uiPatrolResult = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("patrol_result");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        const std::string strPatrolResult = itFind->second;
+        
+        if (!ValidType<unsigned int>(strPatrolResult, uiPatrolResult))
+        {
+            LOG_ERROR_RLD("Value is invalid and value is " << strPatrolResult);
+            return blResult;
+        }
+    }
+       
+    std::string strPatrolDesc;
+    itFind = pMsgInfoMap->find("patrol_desc");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolDesc = itFind->second;
+    }
+    
+
+    PatrolRecord pr;
+    pr.m_strPatrolID = strPatrolID;
+    pr.m_strPatrolDesc = strPatrolDesc;
+    pr.m_strPatrolPicIDList.swap(strPicIDList);
+    pr.m_strUserID = strUserID;
+    pr.m_uiPatrolResult = uiPatrolResult;
+
+    if (!ModifyPatrolRecord(strSid, pr))
+    {
+        LOG_ERROR_RLD("Modify patrol record failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify patrol record info received and session id is " << strSid << " and user id is " << strUserID << " and patrol id is " << strPatrolID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsPatrolPicURLList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPatrolPicURLList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["patrol_picture"] = jsPatrolPicURLList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("patrol_id");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol id not found.");
+        return blResult;
+    }
+    const std::string strPatrolID = itFind->second;
+
+    PatrolRecord pr;
+    pr.m_strUserID = strUserID;
+    pr.m_strPatrolID = strPatrolID;
+
+    if (!QueryPatrolRecord(strSid, pr))
+    {
+        LOG_ERROR_RLD("Query patrol record failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = pr.m_strPatrolPicURLList.begin(), itEnd = pr.m_strPatrolPicURLList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsPatrolPicURLList[i] = *itBegin;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query patrol record info received and session id is " << strSid << " and user id is " << strUserID
+        << " and patrol id is " << strPatrolID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_result", boost::lexical_cast<std::string>(pr.m_uiPatrolResult)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", pr.m_strUserID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_desc", pr.m_strPatrolDesc));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", pr.m_strDevID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storeid", pr.m_strStoreID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_date", pr.m_strPatrolDate));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsPatrolRecordList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPatrolRecordList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["patrol_record_info"] = jsPatrolRecordList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+        if (!ValidDatetime(strBeginDate))
+        {
+            LOG_ERROR_RLD("Begin data is invalid and value is " << strBeginDate);
+            return blResult;
+        }
+    }
+
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+        if (!ValidDatetime(strEndDate))
+        {
+            LOG_ERROR_RLD("End data is invalid and value is " << strEndDate);
+            return blResult;
+        }
+    }
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::list<PatrolRecord> prlist;
+    if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, strBeginDate, strEndDate, uiBeginIndex, prlist))
+    {
+        LOG_ERROR_RLD("Query all evaluation of store failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = prlist.begin(), itEnd = prlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsPr;
+        jsPr["userid"] = itBegin->m_strUserID;
+        jsPr["patrol_result"] = boost::lexical_cast<std::string>(itBegin->m_uiPatrolResult);
+        jsPr["patrol_desc"] = itBegin->m_strPatrolDesc;
+        jsPr["deviceid"] = itBegin->m_strDevID;
+        jsPr["storeid"] = itBegin->m_strStoreID;
+        jsPr["patrol_date"] = itBegin->m_strPatrolDate;
+
+        Json::Value jsPatrolPicURLList;
+        unsigned int k = 0;
+        for (auto itBegin2 = itBegin->m_strPatrolPicURLList.begin(), itEnd2 = itBegin->m_strPatrolPicURLList.end(); itBegin2 != itEnd2; ++itBegin2, ++k)
+        {
+            jsPatrolPicURLList[k] = *itBegin2;
+        }
+
+        jsPr["patrol_picture"] = jsPatrolPicURLList;
+
+        jsPatrolRecordList[i] = jsPr;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all patrol info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowMsgHandler::UploadPassengerFlowHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
@@ -8317,6 +8872,308 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSi
         LOG_INFO_RLD("Query all evaluation template and session id is " << strSid << " and user id is " << strUserID <<
             " and return code is " << QueryEvaRsp.m_iRetcode <<
             " and return msg is " << QueryEvaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, PatrolRecord &pr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddRemotePatrolStoreReq AddRemotePRReq;
+        AddRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRemotePatrolStoreReq_T;
+        AddRemotePRReq.m_uiMsgSeq = 1;
+        AddRemotePRReq.m_strSID = strSid;
+
+        AddRemotePRReq.m_patrolStore.m_strDescription = pr.m_strPatrolDesc;
+        AddRemotePRReq.m_patrolStore.m_strDeviceID = pr.m_strDevID;
+        AddRemotePRReq.m_patrolStore.m_strPatrolDate = pr.m_strPatrolDate;
+        AddRemotePRReq.m_patrolStore.m_strPatrolPictureList.swap(pr.m_strPatrolPicIDList);
+        AddRemotePRReq.m_patrolStore.m_strStoreID = pr.m_strStoreID;
+        AddRemotePRReq.m_patrolStore.m_strUserID = pr.m_strUserID;
+        AddRemotePRReq.m_patrolStore.m_uiPatrolResult = pr.m_uiPatrolResult;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddRemotePRReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create patrol record req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddRemotePatrolStoreRsp AddRemotePRRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddRemotePRRsp))
+        {
+            LOG_ERROR_RLD("Create patrol record rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddRemotePRRsp.m_iRetcode;
+
+        pr.m_strPatrolID = AddRemotePRRsp.m_strPatrolID;
+
+        LOG_INFO_RLD("Create patrol record and patrol id is " << pr.m_strPatrolID <<
+            " and session id is " << strSid <<
+            " and return code is " << AddRemotePRRsp.m_iRetcode <<
+            " and return msg is " << AddRemotePRRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeletePatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strPatrolID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq DelRemotePRReq;
+        DelRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRemotePatrolStoreReq_T;
+        DelRemotePRReq.m_uiMsgSeq = 1;
+        DelRemotePRReq.m_strSID = strSid;
+
+        DelRemotePRReq.m_strUserID = strUserID;
+        DelRemotePRReq.m_strPatrolID = strPatrolID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelRemotePRReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete patrol record req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp DelRemotePRRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelRemotePRRsp))
+        {
+            LOG_ERROR_RLD("Delete patrol record unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelRemotePRRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete patrol record id is " << strPatrolID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelRemotePRRsp.m_iRetcode <<
+            " and return msg is " << DelRemotePRRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyPatrolRecord(const std::string &strSid, PatrolRecord &pr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq ModRemotePRReq;
+        ModRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRemotePatrolStoreReq_T;
+        ModRemotePRReq.m_uiMsgSeq = 1;
+        ModRemotePRReq.m_strSID = strSid;
+
+        ModRemotePRReq.m_strUserID = pr.m_strUserID;
+
+        ModRemotePRReq.m_patrolStore.m_strPatrolID = pr.m_strPatrolID;
+        ModRemotePRReq.m_patrolStore.m_strDescription = pr.m_strPatrolDesc;
+        ModRemotePRReq.m_patrolStore.m_strDeviceID = pr.m_strDevID;
+        ModRemotePRReq.m_patrolStore.m_strPatrolDate = pr.m_strPatrolDate;
+        ModRemotePRReq.m_patrolStore.m_strPatrolPictureList.swap(pr.m_strPatrolPicIDList);
+        ModRemotePRReq.m_patrolStore.m_strStoreID = pr.m_strStoreID;
+        ModRemotePRReq.m_patrolStore.m_strUserID = pr.m_strUserID;
+        ModRemotePRReq.m_patrolStore.m_uiPatrolResult = pr.m_uiPatrolResult;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModRemotePRReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify patrol record req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp ModRemotePRRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModRemotePRRsp))
+        {
+            LOG_ERROR_RLD("Modify patrol record rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModRemotePRRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify patrol record and patrol id is " << pr.m_strPatrolID <<
+            " and session id is " << strSid <<
+            " and return code is " << ModRemotePRRsp.m_iRetcode <<
+            " and return msg is " << ModRemotePRRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, PatrolRecord &pr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq QueryRemotePRReq;
+        QueryRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRemotePatrolStoreInfoReq_T;
+        QueryRemotePRReq.m_uiMsgSeq = 1;
+        QueryRemotePRReq.m_strSID = strSid;
+
+        QueryRemotePRReq.m_strPatrolID = pr.m_strPatrolID;
+        QueryRemotePRReq.m_strUserID = pr.m_strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRemotePRReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query patrol record req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp QueryRemotePRRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryRemotePRRsp))
+        {
+            LOG_ERROR_RLD("Query patrol record rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        pr.m_strDevID = QueryRemotePRRsp.m_patrolStore.m_strDeviceID;
+        pr.m_strPatrolDate = QueryRemotePRRsp.m_patrolStore.m_strPatrolDate;
+        pr.m_strPatrolDesc = QueryRemotePRRsp.m_patrolStore.m_strDescription;
+        pr.m_strStoreID = QueryRemotePRRsp.m_patrolStore.m_strStoreID;
+        pr.m_strUserID = QueryRemotePRRsp.m_patrolStore.m_strUserID;
+        pr.m_uiPatrolResult = QueryRemotePRRsp.m_patrolStore.m_uiPatrolResult;
+        
+        pr.m_strPatrolPicURLList.swap(QueryRemotePRRsp.m_patrolStore.m_strPatrolPictureList);
+
+        iRet = QueryRemotePRRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query patrol record and patrol id is " << pr.m_strPatrolID <<
+            " and session id is " << strSid <<
+            " and return code is " << QueryRemotePRRsp.m_iRetcode <<
+            " and return msg is " << QueryRemotePRRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq QueryAllRemotePRReq;
+        QueryAllRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRemotePatrolStoreReq_T;
+        QueryAllRemotePRReq.m_uiMsgSeq = 1;
+        QueryAllRemotePRReq.m_strSID = strSid;
+
+        QueryAllRemotePRReq.m_strBeginDate = strBeginDate;
+        QueryAllRemotePRReq.m_strEndDate = strEndDate;
+        QueryAllRemotePRReq.m_strStoreID = strStoreID;
+        QueryAllRemotePRReq.m_strUserID = strUserID;
+        QueryAllRemotePRReq.m_uiBeginIndex = uiBeginIndex;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRemotePRReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all patrol record req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp QueryAllRemotePRRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllRemotePRRsp))
+        {
+            LOG_ERROR_RLD("Query patrol record rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryAllRemotePRRsp.m_patrolStoreList.begin(), itEnd = QueryAllRemotePRRsp.m_patrolStoreList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PatrolRecord pr;
+            pr.m_strDevID = itBegin->m_strDeviceID;
+            pr.m_strPatrolDate = itBegin->m_strPatrolDate;
+            pr.m_strPatrolDesc = itBegin->m_strDescription;
+            pr.m_strStoreID = itBegin->m_strStoreID;
+            pr.m_strUserID = itBegin->m_strUserID;
+            pr.m_uiPatrolResult = itBegin->m_uiPatrolResult;
+
+            pr.m_strPatrolPicURLList.swap(itBegin->m_strPatrolPictureList);
+
+            prlist.push_back(std::move(pr));
+        }
+
+        iRet = QueryAllRemotePRRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all patrol record and store id is " << strStoreID <<
+            " and session id is " << strSid <<
+            " and return code is " << QueryAllRemotePRRsp.m_iRetcode <<
+            " and return msg is " << QueryAllRemotePRRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

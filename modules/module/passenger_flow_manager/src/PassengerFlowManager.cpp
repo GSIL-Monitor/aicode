@@ -2790,6 +2790,292 @@ bool PassengerFlowManager::QueryAllStoreEvaluationReq(const std::string &strMsg,
     return blResult;
 }
 
+bool PassengerFlowManager::AddRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strPatrolID;
+    PassengerFlowProtoHandler::AddRemotePatrolStoreReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strPatrolID)
+    {
+        PassengerFlowProtoHandler::AddRemotePatrolStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRemotePatrolStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strPatrolID = blResult ? strPatrolID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add remote patrol store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add remote patrol store rsp already send, dst id is " << strSrcID
+            << " and patrol id is " << strPatrolID
+            << " and user id is " << req.m_patrolStore.m_strUserID
+            << " and device id is " << req.m_patrolStore.m_strDeviceID
+            << " and store id is " << req.m_patrolStore.m_strStoreID
+            << " and patrol date is " << req.m_patrolStore.m_strPatrolDate
+            << " and patrol result is " << req.m_patrolStore.m_uiPatrolResult
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add remote patrol store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::RemotePatrolStore patrolStore;
+    patrolStore.m_strPatrolID = strPatrolID = CreateUUID();
+    patrolStore.m_strUserID = req.m_patrolStore.m_strUserID;
+    patrolStore.m_strDeviceID = req.m_patrolStore.m_strDeviceID;
+    patrolStore.m_strStoreID = req.m_patrolStore.m_strStoreID;
+    patrolStore.m_strPatrolDate = req.m_patrolStore.m_strPatrolDate;
+    patrolStore.m_strPatrolPictureList = req.m_patrolStore.m_strPatrolPictureList;
+    patrolStore.m_uiPatrolResult = req.m_patrolStore.m_uiPatrolResult;
+    patrolStore.m_strDescription = req.m_patrolStore.m_strDescription;
+    patrolStore.m_strCreateDate = CurrentTime();
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddRemotePatrolStore, this, patrolStore));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRemotePatrolStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete remote patrol store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete remote patrol store rsp already send, dst id is " << strSrcID
+            << " and patrol id is " << req.m_strPatrolID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete remote patrol store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteRemotePatrolStore, this, req.m_strPatrolID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRemotePatrolStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify remote patrol store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify remote patrol store rsp already send, dst id is " << strSrcID
+            << " and vip id is " << req.m_patrolStore.m_strPatrolID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify remote patrol store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyRemotePatrolStore, this, req.m_patrolStore));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryRemotePatrolStoreInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq req;
+    PassengerFlowProtoHandler::RemotePatrolStore patrolStore;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &patrolStore)
+    {
+        PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRemotePatrolStoreInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_patrolStore.m_strPatrolID = patrolStore.m_strPatrolID;
+            rsp.m_patrolStore.m_strUserID = patrolStore.m_strUserID;
+            rsp.m_patrolStore.m_strDeviceID = patrolStore.m_strDeviceID;
+            rsp.m_patrolStore.m_strStoreID = patrolStore.m_strStoreID;
+            rsp.m_patrolStore.m_strPatrolDate = patrolStore.m_strPatrolDate;
+            rsp.m_patrolStore.m_strPatrolPictureList = patrolStore.m_strPatrolPictureList;
+            rsp.m_patrolStore.m_uiPatrolResult = patrolStore.m_uiPatrolResult;
+            rsp.m_patrolStore.m_strDescription = patrolStore.m_strDescription;
+            rsp.m_patrolStore.m_strCreateDate = patrolStore.m_strCreateDate;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query remote patrol store info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query remote patrol store info rsp already send, dst id is " << strSrcID
+            << " and patrol id is " << patrolStore.m_strPatrolID
+            << " and user id is " << patrolStore.m_strUserID
+            << " and device id is " << patrolStore.m_strDeviceID
+            << " and store id is " << patrolStore.m_strStoreID
+            << " and patrol date is " << patrolStore.m_strPatrolDate
+            << " and patrol result is " << patrolStore.m_uiPatrolResult
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query remote patrol store info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryRemotePatrolStoreInfo(req.m_strPatrolID, patrolStore))
+    {
+        LOG_ERROR_RLD("Query remote patrol store info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq req;
+    std::list<PassengerFlowProtoHandler::RemotePatrolStore> patrolStoreList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &patrolStoreList)
+    {
+        PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRemotePatrolStoreRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_patrolStoreList.swap(patrolStoreList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all remote patrol store rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all remote patrol store rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &patrol : rsp.m_patrolStoreList)
+            {
+                LOG_INFO_RLD("RemotePatrolStore info[" << i++ << "]:"
+                    << " patrol id is " << patrol.m_strPatrolID
+                    << " and user id is " << patrol.m_strUserID
+                    << " and device id is " << patrol.m_strDeviceID
+                    << " and patrol date is " << patrol.m_strPatrolDate
+                    << " and patrol result is " << patrol.m_uiPatrolResult);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all remote patrol store req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllRemotePatrolStore(req.m_strStoreID, patrolStoreList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+    {
+        LOG_ERROR_RLD("Query all remote patrol store failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowManager::ImportPOSDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
@@ -5459,10 +5745,10 @@ bool PassengerFlowManager::QueryStoreEvaluationInfo(const std::string &strEvalua
     storeEvaluation.m_uiCheckStatus = evaluation.m_uiCheckStatus;
     storeEvaluation.m_strCreateDate = evaluation.m_strCreateDate;
 
-    return QueyrStoreEvaluationScore(strEvaluationID, storeEvaluation.m_dTotalScore, storeEvaluation.m_itemScoreList);
+    return QueryStoreEvaluationScore(strEvaluationID, storeEvaluation.m_dTotalScore, storeEvaluation.m_itemScoreList);
 }
 
-bool PassengerFlowManager::QueyrStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
+bool PassengerFlowManager::QueryStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
     std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList)
 {
     char sql[512] = { 0 };
@@ -5497,7 +5783,7 @@ bool PassengerFlowManager::QueyrStoreEvaluationScore(const std::string &strEvalu
             break;
 
         default:
-            LOG_ERROR_RLD("QueyrStoreEvaluationScore sql callback error, row num is " << uiRowNum
+            LOG_ERROR_RLD("QueryStoreEvaluationScore sql callback error, row num is " << uiRowNum
                 << " and column num is " << uiColumnNum
                 << " and value is " << strColumn);
             break;
@@ -5507,7 +5793,7 @@ bool PassengerFlowManager::QueyrStoreEvaluationScore(const std::string &strEvalu
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
-        LOG_ERROR_RLD("QueyrStoreEvaluationScore exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("QueryStoreEvaluationScore exec sql failed, sql is " << sql);
         return false;
     }
 
@@ -5588,6 +5874,297 @@ bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID
     for (auto &result : ResultList)
     {
         storeEvaluationList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::StoreEvaluation>(result)));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_remote_patrol_store (id, patrol_id, user_id, device_id, store_id, patrol_date, patrol_result, description, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, patrolStore.m_strPatrolID.c_str(), patrolStore.m_strUserID.c_str(),
+        patrolStore.m_strDeviceID.c_str(), patrolStore.m_strStoreID.c_str(), patrolStore.m_strPatrolDate.c_str(),
+        patrolStore.m_uiPatrolResult, patrolStore.m_strDescription.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddRemotePatrolStore exec sql failed, sql is " << sql);
+    }
+
+    for (auto it = patrolStore.m_strPatrolPictureList.begin(), end = patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+    {
+        AddRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, *it);
+    }
+}
+
+void PassengerFlowManager::AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strScreenshot)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "insert into t_patrol_store_screenshot_association (id, patrol_id, screenshot_id, create_date)"
+        " values(uuid(), '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str(), strScreenshot.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddRemotePatrolStoreScreenshot exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::DeleteRemotePatrolStore(const std::string &strPatrolID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete a, b from"
+        " t_remote_patrol_store a left join t_patrol_store_screenshot_association b on a.patrol_id = b.patrol_id"
+        " where a.patrol_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteRemotePatrolStore exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
+{
+    bool blModified = false;
+
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_remote_patrol_store set id = id");
+
+    if (!patrolStore.m_strPatrolDate.empty())
+    {
+        len += snprintf(sql + len, size - len, ", patrol_date = '%s'", patrolStore.m_strPatrolDate.c_str());
+        blModified = true;
+    }
+
+    if (patrolStore.m_uiPatrolResult != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, ", patrol_result = %d", patrolStore.m_uiPatrolResult);
+        blModified = true;
+    }
+
+    if (!patrolStore.m_strDescription.empty())
+    {
+        len += snprintf(sql + len, size - len, ", description = '%s'", patrolStore.m_strDescription.c_str());
+        blModified = true;
+    }
+
+    if (!patrolStore.m_strPatrolPictureList.empty())
+    {
+        ModifyRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, patrolStore.m_strPatrolPictureList);
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyRemotePatrolStore completed, remote patrol store info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where patrol_id = '%s'", patrolStore.m_strPatrolID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyRemotePatrolStore exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::list<std::string> &screenshotList)
+{
+    DeleteRemotePatrolStoreScreenshot(strPatrolID);
+
+    for (auto &screenshot : screenshotList)
+    {
+        AddRemotePatrolStoreScreenshot(strPatrolID, screenshot);
+    }
+}
+
+void PassengerFlowManager::DeleteRemotePatrolStoreScreenshot(const std::string &strPatrolID)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "delete from t_patrol_store_screenshot_association where patrol_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteRemotePatrolStoreScore exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatrolID, PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select user_id, device_id, store_id, patrol_date, patrol_result, description"
+        " from t_remote_patrol_store where patrol_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
+
+    PassengerFlowProtoHandler::RemotePatrolStore rstPatrolStore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstPatrolStore.m_strUserID = strColumn;
+            break;
+        case 1:
+            rstPatrolStore.m_strDeviceID = strColumn;
+            break;
+        case 2:
+            rstPatrolStore.m_strStoreID = strColumn;
+            break;
+        case 3:
+            rstPatrolStore.m_strPatrolDate = strColumn;
+            break;
+        case 4:
+            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 5:
+            rstPatrolStore.m_strDescription = strColumn;
+            result = rstPatrolStore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRemotePatrolStoreInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryRemotePatrolStoreInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryRemotePatrolStoreInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto patrol = boost::any_cast<PassengerFlowProtoHandler::RemotePatrolStore>(ResultList.front());
+    patrolStore.m_strUserID = patrol.m_strUserID;
+    patrolStore.m_strDeviceID = patrol.m_strDeviceID;
+    patrolStore.m_strStoreID = patrol.m_strStoreID;
+    patrolStore.m_uiPatrolResult = patrol.m_uiPatrolResult;
+    patrolStore.m_strPatrolDate = patrol.m_strPatrolDate;
+    patrolStore.m_strDescription = patrol.m_strDescription;
+
+    return QueryRemotePatrolStoreScreenshot(strPatrolID, patrolStore.m_strPatrolPictureList);
+}
+
+bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<std::string> &screenshotList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select screenshot_id from t_patrol_store_screenshot_association where patrol_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            result = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRemotePatrolStoreScreenshot sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryRemotePatrolStoreScreenshot exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        screenshotList.push_back(boost::any_cast<std::string>(result));
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
+    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[512] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select patrol_id, user_id, device_id, store_id, patrol_date, patrol_result, description from"
+        " t_remote_patrol_store where store_id = '%s'";
+
+    int len = snprintf(sql, size, sqlfmt, strStoreID.c_str());
+
+    if (!strBeginDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and create_date >= '%s'", strBeginDate.c_str());
+    }
+
+    if (!strEndDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and create_date <= '%s'", strEndDate.c_str());
+    }
+
+    snprintf(sql + len, size - len, " order by patrol_date desc limit %d, %d", uiBeginIndex, uiPageSize);
+
+    PassengerFlowProtoHandler::RemotePatrolStore rstPatrolStore;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstPatrolStore.m_strPatrolID = strColumn;
+            break;
+        case 1:
+            rstPatrolStore.m_strUserID = strColumn;
+            break;
+        case 2:
+            rstPatrolStore.m_strDeviceID = strColumn;
+            break;
+        case 3:
+            rstPatrolStore.m_strStoreID = strColumn;
+            break;
+        case 4:
+            rstPatrolStore.m_strPatrolDate = strColumn;
+            break;
+        case 5:
+            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 6:
+            rstPatrolStore.m_strDescription = strColumn;
+            result = rstPatrolStore;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllRemotePatrolStore sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllRemotePatrolStore exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        auto patrolStore = boost::any_cast<PassengerFlowProtoHandler::RemotePatrolStore>(result);
+        QueryRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, patrolStore.m_strPatrolPictureList);
+
+        patrolStoreList.push_back(std::move(patrolStore));
     }
 
     return true;

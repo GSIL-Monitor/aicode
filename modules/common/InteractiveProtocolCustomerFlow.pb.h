@@ -69,6 +69,12 @@ extern AddRegularPatrolReqDefaultTypeInternal _AddRegularPatrolReq_default_insta
 class AddRegularPatrolRsp;
 class AddRegularPatrolRspDefaultTypeInternal;
 extern AddRegularPatrolRspDefaultTypeInternal _AddRegularPatrolRsp_default_instance_;
+class AddRemotePatrolStoreReq;
+class AddRemotePatrolStoreReqDefaultTypeInternal;
+extern AddRemotePatrolStoreReqDefaultTypeInternal _AddRemotePatrolStoreReq_default_instance_;
+class AddRemotePatrolStoreRsp;
+class AddRemotePatrolStoreRspDefaultTypeInternal;
+extern AddRemotePatrolStoreRspDefaultTypeInternal _AddRemotePatrolStoreRsp_default_instance_;
 class AddSmartGuardStoreReq;
 class AddSmartGuardStoreReqDefaultTypeInternal;
 extern AddSmartGuardStoreReqDefaultTypeInternal _AddSmartGuardStoreReq_default_instance_;
@@ -144,6 +150,12 @@ extern DeleteRegularPatrolReqDefaultTypeInternal _DeleteRegularPatrolReq_default
 class DeleteRegularPatrolRsp;
 class DeleteRegularPatrolRspDefaultTypeInternal;
 extern DeleteRegularPatrolRspDefaultTypeInternal _DeleteRegularPatrolRsp_default_instance_;
+class DeleteRemotePatrolStoreReq;
+class DeleteRemotePatrolStoreReqDefaultTypeInternal;
+extern DeleteRemotePatrolStoreReqDefaultTypeInternal _DeleteRemotePatrolStoreReq_default_instance_;
+class DeleteRemotePatrolStoreRsp;
+class DeleteRemotePatrolStoreRspDefaultTypeInternal;
+extern DeleteRemotePatrolStoreRspDefaultTypeInternal _DeleteRemotePatrolStoreRsp_default_instance_;
 class DeleteSmartGuardStoreReq;
 class DeleteSmartGuardStoreReqDefaultTypeInternal;
 extern DeleteSmartGuardStoreReqDefaultTypeInternal _DeleteSmartGuardStoreReq_default_instance_;
@@ -225,6 +237,12 @@ extern ModifyRegularPatrolReqDefaultTypeInternal _ModifyRegularPatrolReq_default
 class ModifyRegularPatrolRsp;
 class ModifyRegularPatrolRspDefaultTypeInternal;
 extern ModifyRegularPatrolRspDefaultTypeInternal _ModifyRegularPatrolRsp_default_instance_;
+class ModifyRemotePatrolStoreReq;
+class ModifyRemotePatrolStoreReqDefaultTypeInternal;
+extern ModifyRemotePatrolStoreReqDefaultTypeInternal _ModifyRemotePatrolStoreReq_default_instance_;
+class ModifyRemotePatrolStoreRsp;
+class ModifyRemotePatrolStoreRspDefaultTypeInternal;
+extern ModifyRemotePatrolStoreRspDefaultTypeInternal _ModifyRemotePatrolStoreRsp_default_instance_;
 class ModifySmartGuardStoreReq;
 class ModifySmartGuardStoreReqDefaultTypeInternal;
 extern ModifySmartGuardStoreReqDefaultTypeInternal _ModifySmartGuardStoreReq_default_instance_;
@@ -279,6 +297,12 @@ extern QueryAllRegularPatrolReqDefaultTypeInternal _QueryAllRegularPatrolReq_def
 class QueryAllRegularPatrolRsp;
 class QueryAllRegularPatrolRspDefaultTypeInternal;
 extern QueryAllRegularPatrolRspDefaultTypeInternal _QueryAllRegularPatrolRsp_default_instance_;
+class QueryAllRemotePatrolStoreReq;
+class QueryAllRemotePatrolStoreReqDefaultTypeInternal;
+extern QueryAllRemotePatrolStoreReqDefaultTypeInternal _QueryAllRemotePatrolStoreReq_default_instance_;
+class QueryAllRemotePatrolStoreRsp;
+class QueryAllRemotePatrolStoreRspDefaultTypeInternal;
+extern QueryAllRemotePatrolStoreRspDefaultTypeInternal _QueryAllRemotePatrolStoreRsp_default_instance_;
 class QueryAllSmartGuardStoreReq;
 class QueryAllSmartGuardStoreReqDefaultTypeInternal;
 extern QueryAllSmartGuardStoreReqDefaultTypeInternal _QueryAllSmartGuardStoreReq_default_instance_;
@@ -333,6 +357,12 @@ extern QueryRegularPatrolInfoReqDefaultTypeInternal _QueryRegularPatrolInfoReq_d
 class QueryRegularPatrolInfoRsp;
 class QueryRegularPatrolInfoRspDefaultTypeInternal;
 extern QueryRegularPatrolInfoRspDefaultTypeInternal _QueryRegularPatrolInfoRsp_default_instance_;
+class QueryRemotePatrolStoreInfoReq;
+class QueryRemotePatrolStoreInfoReqDefaultTypeInternal;
+extern QueryRemotePatrolStoreInfoReqDefaultTypeInternal _QueryRemotePatrolStoreInfoReq_default_instance_;
+class QueryRemotePatrolStoreInfoRsp;
+class QueryRemotePatrolStoreInfoRspDefaultTypeInternal;
+extern QueryRemotePatrolStoreInfoRspDefaultTypeInternal _QueryRemotePatrolStoreInfoRsp_default_instance_;
 class QuerySmartGuardStoreInfoReq;
 class QuerySmartGuardStoreInfoReqDefaultTypeInternal;
 extern QuerySmartGuardStoreInfoReqDefaultTypeInternal _QuerySmartGuardStoreInfoReq_default_instance_;
@@ -369,6 +399,9 @@ extern RawCustomerFlowDefaultTypeInternal _RawCustomerFlow_default_instance_;
 class RegularPatrol;
 class RegularPatrolDefaultTypeInternal;
 extern RegularPatrolDefaultTypeInternal _RegularPatrol_default_instance_;
+class RemotePatrolStore;
+class RemotePatrolStoreDefaultTypeInternal;
+extern RemotePatrolStoreDefaultTypeInternal _RemotePatrolStore_default_instance_;
 class ReportCustomerFlowDataReq;
 class ReportCustomerFlowDataReqDefaultTypeInternal;
 extern ReportCustomerFlowDataReqDefaultTypeInternal _ReportCustomerFlowDataReq_default_instance_;
@@ -550,6 +583,16 @@ enum CustomerFlowMsgType {
   QueryStoreEvaluationInfoRsp_T = 18370,
   QueryAllStoreEvaluationReq_T = 18380,
   QueryAllStoreEvaluationRsp_T = 18390,
+  AddRemotePatrolStoreReq_T = 18400,
+  AddRemotePatrolStoreRsp_T = 18410,
+  DeleteRemotePatrolStoreReq_T = 18420,
+  DeleteRemotePatrolStoreRsp_T = 18430,
+  ModifyRemotePatrolStoreReq_T = 18440,
+  ModifyRemotePatrolStoreRsp_T = 18450,
+  QueryRemotePatrolStoreInfoReq_T = 18460,
+  QueryRemotePatrolStoreInfoRsp_T = 18470,
+  QueryAllRemotePatrolStoreReq_T = 18480,
+  QueryAllRemotePatrolStoreRsp_T = 18490,
   ImportPOSDataReq_T = 20000,
   ImportPOSDataRsp_T = 20010,
   QueryCustomerFlowStatisticReq_T = 20900,
@@ -2864,6 +2907,211 @@ class StoreEvaluation : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   double dtotalscore_;
   ::google::protobuf::uint32 uicheckstatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RemotePatrolStore : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.RemotePatrolStore) */ {
+ public:
+  RemotePatrolStore();
+  virtual ~RemotePatrolStore();
+
+  RemotePatrolStore(const RemotePatrolStore& from);
+
+  inline RemotePatrolStore& operator=(const RemotePatrolStore& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemotePatrolStore& default_instance();
+
+  static inline const RemotePatrolStore* internal_default_instance() {
+    return reinterpret_cast<const RemotePatrolStore*>(
+               &_RemotePatrolStore_default_instance_);
+  }
+
+  void Swap(RemotePatrolStore* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RemotePatrolStore* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RemotePatrolStore* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RemotePatrolStore& from);
+  void MergeFrom(const RemotePatrolStore& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RemotePatrolStore* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strPatrolPicture = 6;
+  int strpatrolpicture_size() const;
+  void clear_strpatrolpicture();
+  static const int kStrPatrolPictureFieldNumber = 6;
+  const ::std::string& strpatrolpicture(int index) const;
+  ::std::string* mutable_strpatrolpicture(int index);
+  void set_strpatrolpicture(int index, const ::std::string& value);
+  void set_strpatrolpicture(int index, const char* value);
+  void set_strpatrolpicture(int index, const char* value, size_t size);
+  ::std::string* add_strpatrolpicture();
+  void add_strpatrolpicture(const ::std::string& value);
+  void add_strpatrolpicture(const char* value);
+  void add_strpatrolpicture(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strpatrolpicture() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strpatrolpicture();
+
+  // string strPatrolID = 1;
+  void clear_strpatrolid();
+  static const int kStrPatrolIDFieldNumber = 1;
+  const ::std::string& strpatrolid() const;
+  void set_strpatrolid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatrolid(::std::string&& value);
+  #endif
+  void set_strpatrolid(const char* value);
+  void set_strpatrolid(const char* value, size_t size);
+  ::std::string* mutable_strpatrolid();
+  ::std::string* release_strpatrolid();
+  void set_allocated_strpatrolid(::std::string* strpatrolid);
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strDeviceID = 3;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 3;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // string strStoreID = 4;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 4;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strPatrolDate = 5;
+  void clear_strpatroldate();
+  static const int kStrPatrolDateFieldNumber = 5;
+  const ::std::string& strpatroldate() const;
+  void set_strpatroldate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatroldate(::std::string&& value);
+  #endif
+  void set_strpatroldate(const char* value);
+  void set_strpatroldate(const char* value, size_t size);
+  ::std::string* mutable_strpatroldate();
+  ::std::string* release_strpatroldate();
+  void set_allocated_strpatroldate(::std::string* strpatroldate);
+
+  // string strDescription = 8;
+  void clear_strdescription();
+  static const int kStrDescriptionFieldNumber = 8;
+  const ::std::string& strdescription() const;
+  void set_strdescription(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdescription(::std::string&& value);
+  #endif
+  void set_strdescription(const char* value);
+  void set_strdescription(const char* value, size_t size);
+  ::std::string* mutable_strdescription();
+  ::std::string* release_strdescription();
+  void set_allocated_strdescription(::std::string* strdescription);
+
+  // string strCreateDate = 9;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 9;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // uint32 uiPatrolResult = 7;
+  void clear_uipatrolresult();
+  static const int kUiPatrolResultFieldNumber = 7;
+  ::google::protobuf::uint32 uipatrolresult() const;
+  void set_uipatrolresult(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.RemotePatrolStore)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strpatrolpicture_;
+  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strpatroldate_;
+  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::uint32 uipatrolresult_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -13395,6 +13643,996 @@ class QueryAllStoreEvaluationRsp : public ::google::protobuf::Message /* @@proto
 };
 // -------------------------------------------------------------------
 
+class AddRemotePatrolStoreReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq) */ {
+ public:
+  AddRemotePatrolStoreReq();
+  virtual ~AddRemotePatrolStoreReq();
+
+  AddRemotePatrolStoreReq(const AddRemotePatrolStoreReq& from);
+
+  inline AddRemotePatrolStoreReq& operator=(const AddRemotePatrolStoreReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddRemotePatrolStoreReq& default_instance();
+
+  static inline const AddRemotePatrolStoreReq* internal_default_instance() {
+    return reinterpret_cast<const AddRemotePatrolStoreReq*>(
+               &_AddRemotePatrolStoreReq_default_instance_);
+  }
+
+  void Swap(AddRemotePatrolStoreReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddRemotePatrolStoreReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddRemotePatrolStoreReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddRemotePatrolStoreReq& from);
+  void MergeFrom(const AddRemotePatrolStoreReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddRemotePatrolStoreReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  bool has_patrolstore() const;
+  void clear_patrolstore();
+  static const int kPatrolStoreFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::RemotePatrolStore& patrolstore() const;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* mutable_patrolstore();
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* release_patrolstore();
+  void set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddRemotePatrolStoreRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp) */ {
+ public:
+  AddRemotePatrolStoreRsp();
+  virtual ~AddRemotePatrolStoreRsp();
+
+  AddRemotePatrolStoreRsp(const AddRemotePatrolStoreRsp& from);
+
+  inline AddRemotePatrolStoreRsp& operator=(const AddRemotePatrolStoreRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddRemotePatrolStoreRsp& default_instance();
+
+  static inline const AddRemotePatrolStoreRsp* internal_default_instance() {
+    return reinterpret_cast<const AddRemotePatrolStoreRsp*>(
+               &_AddRemotePatrolStoreRsp_default_instance_);
+  }
+
+  void Swap(AddRemotePatrolStoreRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddRemotePatrolStoreRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddRemotePatrolStoreRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddRemotePatrolStoreRsp& from);
+  void MergeFrom(const AddRemotePatrolStoreRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddRemotePatrolStoreRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strPatrolID = 1;
+  void clear_strpatrolid();
+  static const int kStrPatrolIDFieldNumber = 1;
+  const ::std::string& strpatrolid() const;
+  void set_strpatrolid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatrolid(::std::string&& value);
+  #endif
+  void set_strpatrolid(const char* value);
+  void set_strpatrolid(const char* value, size_t size);
+  ::std::string* mutable_strpatrolid();
+  ::std::string* release_strpatrolid();
+  void set_allocated_strpatrolid(::std::string* strpatrolid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteRemotePatrolStoreReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq) */ {
+ public:
+  DeleteRemotePatrolStoreReq();
+  virtual ~DeleteRemotePatrolStoreReq();
+
+  DeleteRemotePatrolStoreReq(const DeleteRemotePatrolStoreReq& from);
+
+  inline DeleteRemotePatrolStoreReq& operator=(const DeleteRemotePatrolStoreReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteRemotePatrolStoreReq& default_instance();
+
+  static inline const DeleteRemotePatrolStoreReq* internal_default_instance() {
+    return reinterpret_cast<const DeleteRemotePatrolStoreReq*>(
+               &_DeleteRemotePatrolStoreReq_default_instance_);
+  }
+
+  void Swap(DeleteRemotePatrolStoreReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteRemotePatrolStoreReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteRemotePatrolStoreReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteRemotePatrolStoreReq& from);
+  void MergeFrom(const DeleteRemotePatrolStoreReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteRemotePatrolStoreReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strPatrolID = 2;
+  void clear_strpatrolid();
+  static const int kStrPatrolIDFieldNumber = 2;
+  const ::std::string& strpatrolid() const;
+  void set_strpatrolid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatrolid(::std::string&& value);
+  #endif
+  void set_strpatrolid(const char* value);
+  void set_strpatrolid(const char* value, size_t size);
+  ::std::string* mutable_strpatrolid();
+  ::std::string* release_strpatrolid();
+  void set_allocated_strpatrolid(::std::string* strpatrolid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteRemotePatrolStoreRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp) */ {
+ public:
+  DeleteRemotePatrolStoreRsp();
+  virtual ~DeleteRemotePatrolStoreRsp();
+
+  DeleteRemotePatrolStoreRsp(const DeleteRemotePatrolStoreRsp& from);
+
+  inline DeleteRemotePatrolStoreRsp& operator=(const DeleteRemotePatrolStoreRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteRemotePatrolStoreRsp& default_instance();
+
+  static inline const DeleteRemotePatrolStoreRsp* internal_default_instance() {
+    return reinterpret_cast<const DeleteRemotePatrolStoreRsp*>(
+               &_DeleteRemotePatrolStoreRsp_default_instance_);
+  }
+
+  void Swap(DeleteRemotePatrolStoreRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteRemotePatrolStoreRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteRemotePatrolStoreRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteRemotePatrolStoreRsp& from);
+  void MergeFrom(const DeleteRemotePatrolStoreRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteRemotePatrolStoreRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyRemotePatrolStoreReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq) */ {
+ public:
+  ModifyRemotePatrolStoreReq();
+  virtual ~ModifyRemotePatrolStoreReq();
+
+  ModifyRemotePatrolStoreReq(const ModifyRemotePatrolStoreReq& from);
+
+  inline ModifyRemotePatrolStoreReq& operator=(const ModifyRemotePatrolStoreReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyRemotePatrolStoreReq& default_instance();
+
+  static inline const ModifyRemotePatrolStoreReq* internal_default_instance() {
+    return reinterpret_cast<const ModifyRemotePatrolStoreReq*>(
+               &_ModifyRemotePatrolStoreReq_default_instance_);
+  }
+
+  void Swap(ModifyRemotePatrolStoreReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyRemotePatrolStoreReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyRemotePatrolStoreReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyRemotePatrolStoreReq& from);
+  void MergeFrom(const ModifyRemotePatrolStoreReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyRemotePatrolStoreReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+  bool has_patrolstore() const;
+  void clear_patrolstore();
+  static const int kPatrolStoreFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::RemotePatrolStore& patrolstore() const;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* mutable_patrolstore();
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* release_patrolstore();
+  void set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyRemotePatrolStoreRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp) */ {
+ public:
+  ModifyRemotePatrolStoreRsp();
+  virtual ~ModifyRemotePatrolStoreRsp();
+
+  ModifyRemotePatrolStoreRsp(const ModifyRemotePatrolStoreRsp& from);
+
+  inline ModifyRemotePatrolStoreRsp& operator=(const ModifyRemotePatrolStoreRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyRemotePatrolStoreRsp& default_instance();
+
+  static inline const ModifyRemotePatrolStoreRsp* internal_default_instance() {
+    return reinterpret_cast<const ModifyRemotePatrolStoreRsp*>(
+               &_ModifyRemotePatrolStoreRsp_default_instance_);
+  }
+
+  void Swap(ModifyRemotePatrolStoreRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyRemotePatrolStoreRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyRemotePatrolStoreRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyRemotePatrolStoreRsp& from);
+  void MergeFrom(const ModifyRemotePatrolStoreRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyRemotePatrolStoreRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRemotePatrolStoreInfoReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq) */ {
+ public:
+  QueryRemotePatrolStoreInfoReq();
+  virtual ~QueryRemotePatrolStoreInfoReq();
+
+  QueryRemotePatrolStoreInfoReq(const QueryRemotePatrolStoreInfoReq& from);
+
+  inline QueryRemotePatrolStoreInfoReq& operator=(const QueryRemotePatrolStoreInfoReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRemotePatrolStoreInfoReq& default_instance();
+
+  static inline const QueryRemotePatrolStoreInfoReq* internal_default_instance() {
+    return reinterpret_cast<const QueryRemotePatrolStoreInfoReq*>(
+               &_QueryRemotePatrolStoreInfoReq_default_instance_);
+  }
+
+  void Swap(QueryRemotePatrolStoreInfoReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRemotePatrolStoreInfoReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRemotePatrolStoreInfoReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRemotePatrolStoreInfoReq& from);
+  void MergeFrom(const QueryRemotePatrolStoreInfoReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRemotePatrolStoreInfoReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strPatrolID = 2;
+  void clear_strpatrolid();
+  static const int kStrPatrolIDFieldNumber = 2;
+  const ::std::string& strpatrolid() const;
+  void set_strpatrolid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatrolid(::std::string&& value);
+  #endif
+  void set_strpatrolid(const char* value);
+  void set_strpatrolid(const char* value, size_t size);
+  ::std::string* mutable_strpatrolid();
+  ::std::string* release_strpatrolid();
+  void set_allocated_strpatrolid(::std::string* strpatrolid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRemotePatrolStoreInfoRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp) */ {
+ public:
+  QueryRemotePatrolStoreInfoRsp();
+  virtual ~QueryRemotePatrolStoreInfoRsp();
+
+  QueryRemotePatrolStoreInfoRsp(const QueryRemotePatrolStoreInfoRsp& from);
+
+  inline QueryRemotePatrolStoreInfoRsp& operator=(const QueryRemotePatrolStoreInfoRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRemotePatrolStoreInfoRsp& default_instance();
+
+  static inline const QueryRemotePatrolStoreInfoRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryRemotePatrolStoreInfoRsp*>(
+               &_QueryRemotePatrolStoreInfoRsp_default_instance_);
+  }
+
+  void Swap(QueryRemotePatrolStoreInfoRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRemotePatrolStoreInfoRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRemotePatrolStoreInfoRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRemotePatrolStoreInfoRsp& from);
+  void MergeFrom(const QueryRemotePatrolStoreInfoRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRemotePatrolStoreInfoRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  bool has_patrolstore() const;
+  void clear_patrolstore();
+  static const int kPatrolStoreFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::RemotePatrolStore& patrolstore() const;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* mutable_patrolstore();
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* release_patrolstore();
+  void set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllRemotePatrolStoreReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq) */ {
+ public:
+  QueryAllRemotePatrolStoreReq();
+  virtual ~QueryAllRemotePatrolStoreReq();
+
+  QueryAllRemotePatrolStoreReq(const QueryAllRemotePatrolStoreReq& from);
+
+  inline QueryAllRemotePatrolStoreReq& operator=(const QueryAllRemotePatrolStoreReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllRemotePatrolStoreReq& default_instance();
+
+  static inline const QueryAllRemotePatrolStoreReq* internal_default_instance() {
+    return reinterpret_cast<const QueryAllRemotePatrolStoreReq*>(
+               &_QueryAllRemotePatrolStoreReq_default_instance_);
+  }
+
+  void Swap(QueryAllRemotePatrolStoreReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllRemotePatrolStoreReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllRemotePatrolStoreReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllRemotePatrolStoreReq& from);
+  void MergeFrom(const QueryAllRemotePatrolStoreReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllRemotePatrolStoreReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strStoreID = 2;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 2;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strBeginDate = 3;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 3;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbegindate(::std::string&& value);
+  #endif
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // string strEndDate = 4;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 4;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strenddate(::std::string&& value);
+  #endif
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
+  // uint32 uiBeginIndex = 5;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 5;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
+  ::google::protobuf::uint32 uibeginindex_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllRemotePatrolStoreRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp) */ {
+ public:
+  QueryAllRemotePatrolStoreRsp();
+  virtual ~QueryAllRemotePatrolStoreRsp();
+
+  QueryAllRemotePatrolStoreRsp(const QueryAllRemotePatrolStoreRsp& from);
+
+  inline QueryAllRemotePatrolStoreRsp& operator=(const QueryAllRemotePatrolStoreRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllRemotePatrolStoreRsp& default_instance();
+
+  static inline const QueryAllRemotePatrolStoreRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryAllRemotePatrolStoreRsp*>(
+               &_QueryAllRemotePatrolStoreRsp_default_instance_);
+  }
+
+  void Swap(QueryAllRemotePatrolStoreRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllRemotePatrolStoreRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllRemotePatrolStoreRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllRemotePatrolStoreRsp& from);
+  void MergeFrom(const QueryAllRemotePatrolStoreRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllRemotePatrolStoreRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+  int patrolstore_size() const;
+  void clear_patrolstore();
+  static const int kPatrolStoreFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::RemotePatrolStore& patrolstore(int index) const;
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* mutable_patrolstore(int index);
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* add_patrolstore();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >*
+      mutable_patrolstore();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >&
+      patrolstore() const;
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore > patrolstore_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class ImportPOSDataReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ImportPOSDataReq) */ {
  public:
   ImportPOSDataReq();
@@ -14601,6 +15839,51 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq* release_queryallstoreevaluationreq_value();
   void set_allocated_queryallstoreevaluationreq_value(::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq* queryallstoreevaluationreq_value);
 
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+  bool has_addremotepatrolstorereq_value() const;
+  void clear_addremotepatrolstorereq_value();
+  static const int kAddRemotePatrolStoreReqValueFieldNumber = 1000;
+  const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq& addremotepatrolstorereq_value() const;
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* mutable_addremotepatrolstorereq_value();
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* release_addremotepatrolstorereq_value();
+  void set_allocated_addremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* addremotepatrolstorereq_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+  bool has_deleteremotepatrolstorereq_value() const;
+  void clear_deleteremotepatrolstorereq_value();
+  static const int kDeleteRemotePatrolStoreReqValueFieldNumber = 1010;
+  const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq& deleteremotepatrolstorereq_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* mutable_deleteremotepatrolstorereq_value();
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* release_deleteremotepatrolstorereq_value();
+  void set_allocated_deleteremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* deleteremotepatrolstorereq_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+  bool has_modifyremotepatrolstorereq_value() const;
+  void clear_modifyremotepatrolstorereq_value();
+  static const int kModifyRemotePatrolStoreReqValueFieldNumber = 1020;
+  const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq& modifyremotepatrolstorereq_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* mutable_modifyremotepatrolstorereq_value();
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* release_modifyremotepatrolstorereq_value();
+  void set_allocated_modifyremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* modifyremotepatrolstorereq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+  bool has_queryremotepatrolstoreinforeq_value() const;
+  void clear_queryremotepatrolstoreinforeq_value();
+  static const int kQueryRemotePatrolStoreInfoReqValueFieldNumber = 1030;
+  const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq& queryremotepatrolstoreinforeq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* mutable_queryremotepatrolstoreinforeq_value();
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* release_queryremotepatrolstoreinforeq_value();
+  void set_allocated_queryremotepatrolstoreinforeq_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* queryremotepatrolstoreinforeq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+  bool has_queryallremotepatrolstorereq_value() const;
+  void clear_queryallremotepatrolstorereq_value();
+  static const int kQueryAllRemotePatrolStoreReqValueFieldNumber = 1040;
+  const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq& queryallremotepatrolstorereq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* mutable_queryallremotepatrolstorereq_value();
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* release_queryallremotepatrolstorereq_value();
+  void set_allocated_queryallremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
   bool has_importposdatareq_value() const;
   void clear_importposdatareq_value();
@@ -14685,6 +15968,11 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::ModifyStoreEvaluationReq* modifystoreevaluationreq_value_;
   ::CustomerFlow::Interactive::Message::QueryStoreEvaluationInfoReq* querystoreevaluationinforeq_value_;
   ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationReq* queryallstoreevaluationreq_value_;
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* addremotepatrolstorereq_value_;
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* deleteremotepatrolstorereq_value_;
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* modifyremotepatrolstorereq_value_;
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* queryremotepatrolstoreinforeq_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataReq* importposdatareq_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticReq* querycustomerflowstatisticreq_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* reportcustomerflowdatareq_value_;
@@ -15251,6 +16539,51 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp* release_queryallstoreevaluationrsp_value();
   void set_allocated_queryallstoreevaluationrsp_value(::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp* queryallstoreevaluationrsp_value);
 
+  // .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+  bool has_addremotepatrolstorersp_value() const;
+  void clear_addremotepatrolstorersp_value();
+  static const int kAddRemotePatrolStoreRspValueFieldNumber = 1000;
+  const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp& addremotepatrolstorersp_value() const;
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* mutable_addremotepatrolstorersp_value();
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* release_addremotepatrolstorersp_value();
+  void set_allocated_addremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* addremotepatrolstorersp_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+  bool has_deleteremotepatrolstorersp_value() const;
+  void clear_deleteremotepatrolstorersp_value();
+  static const int kDeleteRemotePatrolStoreRspValueFieldNumber = 1010;
+  const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp& deleteremotepatrolstorersp_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* mutable_deleteremotepatrolstorersp_value();
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* release_deleteremotepatrolstorersp_value();
+  void set_allocated_deleteremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* deleteremotepatrolstorersp_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+  bool has_modifyremotepatrolstorersp_value() const;
+  void clear_modifyremotepatrolstorersp_value();
+  static const int kModifyRemotePatrolStoreRspValueFieldNumber = 1020;
+  const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp& modifyremotepatrolstorersp_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* mutable_modifyremotepatrolstorersp_value();
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* release_modifyremotepatrolstorersp_value();
+  void set_allocated_modifyremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* modifyremotepatrolstorersp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+  bool has_queryremotepatrolstoreinforsp_value() const;
+  void clear_queryremotepatrolstoreinforsp_value();
+  static const int kQueryRemotePatrolStoreInfoRspValueFieldNumber = 1030;
+  const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp& queryremotepatrolstoreinforsp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* mutable_queryremotepatrolstoreinforsp_value();
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* release_queryremotepatrolstoreinforsp_value();
+  void set_allocated_queryremotepatrolstoreinforsp_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* queryremotepatrolstoreinforsp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+  bool has_queryallremotepatrolstorersp_value() const;
+  void clear_queryallremotepatrolstorersp_value();
+  static const int kQueryAllRemotePatrolStoreRspValueFieldNumber = 1040;
+  const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp& queryallremotepatrolstorersp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* mutable_queryallremotepatrolstorersp_value();
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* release_queryallremotepatrolstorersp_value();
+  void set_allocated_queryallremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
   bool has_importposdatarsp_value() const;
   void clear_importposdatarsp_value();
@@ -15342,6 +16675,11 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::ModifyStoreEvaluationRsp* modifystoreevaluationrsp_value_;
   ::CustomerFlow::Interactive::Message::QueryStoreEvaluationInfoRsp* querystoreevaluationinforsp_value_;
   ::CustomerFlow::Interactive::Message::QueryAllStoreEvaluationRsp* queryallstoreevaluationrsp_value_;
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* addremotepatrolstorersp_value_;
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* deleteremotepatrolstorersp_value_;
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* modifyremotepatrolstorersp_value_;
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* queryremotepatrolstoreinforsp_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataRsp* importposdatarsp_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticRsp* querycustomerflowstatisticrsp_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* reportcustomerflowdatarsp_value_;
@@ -19580,6 +20918,443 @@ inline void StoreEvaluation::set_allocated_strcreatedate(::std::string* strcreat
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.StoreEvaluation.strCreateDate)
+}
+
+// -------------------------------------------------------------------
+
+// RemotePatrolStore
+
+// string strPatrolID = 1;
+inline void RemotePatrolStore::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+#endif
+inline void RemotePatrolStore::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+inline void RemotePatrolStore::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+inline ::std::string* RemotePatrolStore::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolID)
+}
+
+// string strUserID = 2;
+inline void RemotePatrolStore::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+#endif
+inline void RemotePatrolStore::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+inline void RemotePatrolStore::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+inline ::std::string* RemotePatrolStore::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strUserID)
+}
+
+// string strDeviceID = 3;
+inline void RemotePatrolStore::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+#endif
+inline void RemotePatrolStore::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+inline void RemotePatrolStore::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+inline ::std::string* RemotePatrolStore::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
+}
+
+// string strStoreID = 4;
+inline void RemotePatrolStore::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+#endif
+inline void RemotePatrolStore::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+inline void RemotePatrolStore::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+inline ::std::string* RemotePatrolStore::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
+}
+
+// string strPatrolDate = 5;
+inline void RemotePatrolStore::clear_strpatroldate() {
+  strpatroldate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strpatroldate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  return strpatroldate_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strpatroldate(const ::std::string& value) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strpatroldate(::std::string&& value) {
+  
+  strpatroldate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+#endif
+inline void RemotePatrolStore::set_strpatroldate(const char* value) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+inline void RemotePatrolStore::set_strpatroldate(const char* value, size_t size) {
+  
+  strpatroldate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+inline ::std::string* RemotePatrolStore::mutable_strpatroldate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  return strpatroldate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strpatroldate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+  
+  return strpatroldate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strpatroldate(::std::string* strpatroldate) {
+  if (strpatroldate != NULL) {
+    
+  } else {
+    
+  }
+  strpatroldate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatroldate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
+}
+
+// repeated string strPatrolPicture = 6;
+inline int RemotePatrolStore::strpatrolpicture_size() const {
+  return strpatrolpicture_.size();
+}
+inline void RemotePatrolStore::clear_strpatrolpicture() {
+  strpatrolpicture_.Clear();
+}
+inline const ::std::string& RemotePatrolStore::strpatrolpicture(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Get(index);
+}
+inline ::std::string* RemotePatrolStore::mutable_strpatrolpicture(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Mutable(index);
+}
+inline void RemotePatrolStore::set_strpatrolpicture(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  strpatrolpicture_.Mutable(index)->assign(value);
+}
+inline void RemotePatrolStore::set_strpatrolpicture(int index, const char* value) {
+  strpatrolpicture_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+inline void RemotePatrolStore::set_strpatrolpicture(int index, const char* value, size_t size) {
+  strpatrolpicture_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+inline ::std::string* RemotePatrolStore::add_strpatrolpicture() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_.Add();
+}
+inline void RemotePatrolStore::add_strpatrolpicture(const ::std::string& value) {
+  strpatrolpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+inline void RemotePatrolStore::add_strpatrolpicture(const char* value) {
+  strpatrolpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+inline void RemotePatrolStore::add_strpatrolpicture(const char* value, size_t size) {
+  strpatrolpicture_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RemotePatrolStore::strpatrolpicture() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return strpatrolpicture_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+RemotePatrolStore::mutable_strpatrolpicture() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolPicture)
+  return &strpatrolpicture_;
+}
+
+// uint32 uiPatrolResult = 7;
+inline void RemotePatrolStore::clear_uipatrolresult() {
+  uipatrolresult_ = 0u;
+}
+inline ::google::protobuf::uint32 RemotePatrolStore::uipatrolresult() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.uiPatrolResult)
+  return uipatrolresult_;
+}
+inline void RemotePatrolStore::set_uipatrolresult(::google::protobuf::uint32 value) {
+  
+  uipatrolresult_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.uiPatrolResult)
+}
+
+// string strDescription = 8;
+inline void RemotePatrolStore::clear_strdescription() {
+  strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strdescription() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  return strdescription_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strdescription(const ::std::string& value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strdescription(::std::string&& value) {
+  
+  strdescription_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+#endif
+inline void RemotePatrolStore::set_strdescription(const char* value) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+inline void RemotePatrolStore::set_strdescription(const char* value, size_t size) {
+  
+  strdescription_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+inline ::std::string* RemotePatrolStore::mutable_strdescription() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  return strdescription_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strdescription() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+  
+  return strdescription_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strdescription(::std::string* strdescription) {
+  if (strdescription != NULL) {
+    
+  } else {
+    
+  }
+  strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
+}
+
+// string strCreateDate = 9;
+inline void RemotePatrolStore::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+#endif
+inline void RemotePatrolStore::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+inline void RemotePatrolStore::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+inline ::std::string* RemotePatrolStore::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
 }
 
 // -------------------------------------------------------------------
@@ -28167,6 +29942,831 @@ QueryAllStoreEvaluationRsp::storeevaluation() const {
 
 // -------------------------------------------------------------------
 
+// AddRemotePatrolStoreReq
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+inline bool AddRemotePatrolStoreReq::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+inline void AddRemotePatrolStoreReq::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::RemotePatrolStore& AddRemotePatrolStoreReq::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* AddRemotePatrolStoreReq::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  return patrolstore_;
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* AddRemotePatrolStoreReq::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+inline void AddRemotePatrolStoreReq::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq.patrolStore)
+}
+
+// -------------------------------------------------------------------
+
+// AddRemotePatrolStoreRsp
+
+// string strPatrolID = 1;
+inline void AddRemotePatrolStoreRsp::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddRemotePatrolStoreRsp::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+inline void AddRemotePatrolStoreRsp::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+#if LANG_CXX11
+inline void AddRemotePatrolStoreRsp::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+#endif
+inline void AddRemotePatrolStoreRsp::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+inline void AddRemotePatrolStoreRsp::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+inline ::std::string* AddRemotePatrolStoreRsp::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddRemotePatrolStoreRsp::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddRemotePatrolStoreRsp::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp.strPatrolID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteRemotePatrolStoreReq
+
+// string strUserID = 1;
+inline void DeleteRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void DeleteRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+inline void DeleteRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+#endif
+inline void DeleteRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+inline void DeleteRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+inline ::std::string* DeleteRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strUserID)
+}
+
+// string strPatrolID = 2;
+inline void DeleteRemotePatrolStoreReq::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteRemotePatrolStoreReq::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+inline void DeleteRemotePatrolStoreReq::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+#if LANG_CXX11
+inline void DeleteRemotePatrolStoreReq::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+#endif
+inline void DeleteRemotePatrolStoreReq::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+inline void DeleteRemotePatrolStoreReq::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+inline ::std::string* DeleteRemotePatrolStoreReq::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteRemotePatrolStoreReq::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteRemotePatrolStoreReq::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq.strPatrolID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteRemotePatrolStoreRsp
+
+// string strValue = 1;
+inline void DeleteRemotePatrolStoreRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteRemotePatrolStoreRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteRemotePatrolStoreRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+#if LANG_CXX11
+inline void DeleteRemotePatrolStoreRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+#endif
+inline void DeleteRemotePatrolStoreRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+inline void DeleteRemotePatrolStoreRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+inline ::std::string* DeleteRemotePatrolStoreRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteRemotePatrolStoreRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteRemotePatrolStoreRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyRemotePatrolStoreReq
+
+// string strUserID = 1;
+inline void ModifyRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void ModifyRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+inline void ModifyRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+#endif
+inline void ModifyRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+inline void ModifyRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+inline ::std::string* ModifyRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 2;
+inline bool ModifyRemotePatrolStoreReq::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+inline void ModifyRemotePatrolStoreReq::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::RemotePatrolStore& ModifyRemotePatrolStoreReq::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* ModifyRemotePatrolStoreReq::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  return patrolstore_;
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* ModifyRemotePatrolStoreReq::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+inline void ModifyRemotePatrolStoreReq::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq.patrolStore)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyRemotePatrolStoreRsp
+
+// string strValue = 1;
+inline void ModifyRemotePatrolStoreRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyRemotePatrolStoreRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyRemotePatrolStoreRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+#if LANG_CXX11
+inline void ModifyRemotePatrolStoreRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+#endif
+inline void ModifyRemotePatrolStoreRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+inline void ModifyRemotePatrolStoreRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+inline ::std::string* ModifyRemotePatrolStoreRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyRemotePatrolStoreRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyRemotePatrolStoreRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRemotePatrolStoreInfoReq
+
+// string strUserID = 1;
+inline void QueryRemotePatrolStoreInfoReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryRemotePatrolStoreInfoReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryRemotePatrolStoreInfoReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryRemotePatrolStoreInfoReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+#endif
+inline void QueryRemotePatrolStoreInfoReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+inline void QueryRemotePatrolStoreInfoReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+inline ::std::string* QueryRemotePatrolStoreInfoReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryRemotePatrolStoreInfoReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryRemotePatrolStoreInfoReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strUserID)
+}
+
+// string strPatrolID = 2;
+inline void QueryRemotePatrolStoreInfoReq::clear_strpatrolid() {
+  strpatrolid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryRemotePatrolStoreInfoReq::strpatrolid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  return strpatrolid_.GetNoArena();
+}
+inline void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const ::std::string& value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+#if LANG_CXX11
+inline void QueryRemotePatrolStoreInfoReq::set_strpatrolid(::std::string&& value) {
+  
+  strpatrolid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+#endif
+inline void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const char* value) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+inline void QueryRemotePatrolStoreInfoReq::set_strpatrolid(const char* value, size_t size) {
+  
+  strpatrolid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+inline ::std::string* QueryRemotePatrolStoreInfoReq::mutable_strpatrolid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  return strpatrolid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryRemotePatrolStoreInfoReq::release_strpatrolid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+  
+  return strpatrolid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryRemotePatrolStoreInfoReq::set_allocated_strpatrolid(::std::string* strpatrolid) {
+  if (strpatrolid != NULL) {
+    
+  } else {
+    
+  }
+  strpatrolid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpatrolid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq.strPatrolID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRemotePatrolStoreInfoRsp
+
+// .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+inline bool QueryRemotePatrolStoreInfoRsp::has_patrolstore() const {
+  return this != internal_default_instance() && patrolstore_ != NULL;
+}
+inline void QueryRemotePatrolStoreInfoRsp::clear_patrolstore() {
+  if (GetArenaNoVirtual() == NULL && patrolstore_ != NULL) delete patrolstore_;
+  patrolstore_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::RemotePatrolStore& QueryRemotePatrolStoreInfoRsp::patrolstore() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  return patrolstore_ != NULL ? *patrolstore_
+                         : *::CustomerFlow::Interactive::Message::RemotePatrolStore::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryRemotePatrolStoreInfoRsp::mutable_patrolstore() {
+  
+  if (patrolstore_ == NULL) {
+    patrolstore_ = new ::CustomerFlow::Interactive::Message::RemotePatrolStore;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  return patrolstore_;
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryRemotePatrolStoreInfoRsp::release_patrolstore() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+  
+  ::CustomerFlow::Interactive::Message::RemotePatrolStore* temp = patrolstore_;
+  patrolstore_ = NULL;
+  return temp;
+}
+inline void QueryRemotePatrolStoreInfoRsp::set_allocated_patrolstore(::CustomerFlow::Interactive::Message::RemotePatrolStore* patrolstore) {
+  delete patrolstore_;
+  patrolstore_ = patrolstore;
+  if (patrolstore) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp.patrolStore)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllRemotePatrolStoreReq
+
+// string strUserID = 1;
+inline void QueryAllRemotePatrolStoreReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRemotePatrolStoreReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryAllRemotePatrolStoreReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryAllRemotePatrolStoreReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+#endif
+inline void QueryAllRemotePatrolStoreReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+inline void QueryAllRemotePatrolStoreReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRemotePatrolStoreReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strUserID)
+}
+
+// string strStoreID = 2;
+inline void QueryAllRemotePatrolStoreReq::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRemotePatrolStoreReq::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void QueryAllRemotePatrolStoreReq::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+#if LANG_CXX11
+inline void QueryAllRemotePatrolStoreReq::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+#endif
+inline void QueryAllRemotePatrolStoreReq::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+inline void QueryAllRemotePatrolStoreReq::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRemotePatrolStoreReq::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
+}
+
+// string strBeginDate = 3;
+inline void QueryAllRemotePatrolStoreReq::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRemotePatrolStoreReq::strbegindate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+inline void QueryAllRemotePatrolStoreReq::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+#if LANG_CXX11
+inline void QueryAllRemotePatrolStoreReq::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+#endif
+inline void QueryAllRemotePatrolStoreReq::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+inline void QueryAllRemotePatrolStoreReq::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRemotePatrolStoreReq::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
+}
+
+// string strEndDate = 4;
+inline void QueryAllRemotePatrolStoreReq::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRemotePatrolStoreReq::strenddate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  return strenddate_.GetNoArena();
+}
+inline void QueryAllRemotePatrolStoreReq::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+#if LANG_CXX11
+inline void QueryAllRemotePatrolStoreReq::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+#endif
+inline void QueryAllRemotePatrolStoreReq::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+inline void QueryAllRemotePatrolStoreReq::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::release_strenddate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRemotePatrolStoreReq::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
+}
+
+// uint32 uiBeginIndex = 5;
+inline void QueryAllRemotePatrolStoreReq::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllRemotePatrolStoreReq::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryAllRemotePatrolStoreReq::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.uiBeginIndex)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllRemotePatrolStoreRsp
+
+// repeated .CustomerFlow.Interactive.Message.RemotePatrolStore patrolStore = 1;
+inline int QueryAllRemotePatrolStoreRsp::patrolstore_size() const {
+  return patrolstore_.size();
+}
+inline void QueryAllRemotePatrolStoreRsp::clear_patrolstore() {
+  patrolstore_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::RemotePatrolStore& QueryAllRemotePatrolStoreRsp::patrolstore(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryAllRemotePatrolStoreRsp::mutable_patrolstore(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::RemotePatrolStore* QueryAllRemotePatrolStoreRsp::add_patrolstore() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >*
+QueryAllRemotePatrolStoreRsp::mutable_patrolstore() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return &patrolstore_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore >&
+QueryAllRemotePatrolStoreRsp::patrolstore() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
+  return patrolstore_;
+}
+
+// -------------------------------------------------------------------
+
 // ImportPOSDataReq
 
 // string strUserID = 1;
@@ -30918,6 +33518,201 @@ inline void Request::set_allocated_queryallstoreevaluationreq_value(::CustomerFl
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllStoreEvaluationReq_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddRemotePatrolStoreReq AddRemotePatrolStoreReq_Value = 1000;
+inline bool Request::has_addremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && addremotepatrolstorereq_value_ != NULL;
+}
+inline void Request::clear_addremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorereq_value_ != NULL) delete addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq& Request::addremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  return addremotepatrolstorereq_value_ != NULL ? *addremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* Request::mutable_addremotepatrolstorereq_value() {
+  
+  if (addremotepatrolstorereq_value_ == NULL) {
+    addremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  return addremotepatrolstorereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* Request::release_addremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* temp = addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_addremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreReq* addremotepatrolstorereq_value) {
+  delete addremotepatrolstorereq_value_;
+  addremotepatrolstorereq_value_ = addremotepatrolstorereq_value;
+  if (addremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.AddRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreReq DeleteRemotePatrolStoreReq_Value = 1010;
+inline bool Request::has_deleteremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && deleteremotepatrolstorereq_value_ != NULL;
+}
+inline void Request::clear_deleteremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorereq_value_ != NULL) delete deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq& Request::deleteremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  return deleteremotepatrolstorereq_value_ != NULL ? *deleteremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* Request::mutable_deleteremotepatrolstorereq_value() {
+  
+  if (deleteremotepatrolstorereq_value_ == NULL) {
+    deleteremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  return deleteremotepatrolstorereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* Request::release_deleteremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* temp = deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_deleteremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreReq* deleteremotepatrolstorereq_value) {
+  delete deleteremotepatrolstorereq_value_;
+  deleteremotepatrolstorereq_value_ = deleteremotepatrolstorereq_value;
+  if (deleteremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.DeleteRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreReq ModifyRemotePatrolStoreReq_Value = 1020;
+inline bool Request::has_modifyremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && modifyremotepatrolstorereq_value_ != NULL;
+}
+inline void Request::clear_modifyremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorereq_value_ != NULL) delete modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq& Request::modifyremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  return modifyremotepatrolstorereq_value_ != NULL ? *modifyremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* Request::mutable_modifyremotepatrolstorereq_value() {
+  
+  if (modifyremotepatrolstorereq_value_ == NULL) {
+    modifyremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  return modifyremotepatrolstorereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* Request::release_modifyremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* temp = modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_modifyremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* modifyremotepatrolstorereq_value) {
+  delete modifyremotepatrolstorereq_value_;
+  modifyremotepatrolstorereq_value_ = modifyremotepatrolstorereq_value;
+  if (modifyremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ModifyRemotePatrolStoreReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;
+inline bool Request::has_queryremotepatrolstoreinforeq_value() const {
+  return this != internal_default_instance() && queryremotepatrolstoreinforeq_value_ != NULL;
+}
+inline void Request::clear_queryremotepatrolstoreinforeq_value() {
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforeq_value_ != NULL) delete queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq& Request::queryremotepatrolstoreinforeq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  return queryremotepatrolstoreinforeq_value_ != NULL ? *queryremotepatrolstoreinforeq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* Request::mutable_queryremotepatrolstoreinforeq_value() {
+  
+  if (queryremotepatrolstoreinforeq_value_ == NULL) {
+    queryremotepatrolstoreinforeq_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  return queryremotepatrolstoreinforeq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* Request::release_queryremotepatrolstoreinforeq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* temp = queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryremotepatrolstoreinforeq_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* queryremotepatrolstoreinforeq_value) {
+  delete queryremotepatrolstoreinforeq_value_;
+  queryremotepatrolstoreinforeq_value_ = queryremotepatrolstoreinforeq_value;
+  if (queryremotepatrolstoreinforeq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryRemotePatrolStoreInfoReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;
+inline bool Request::has_queryallremotepatrolstorereq_value() const {
+  return this != internal_default_instance() && queryallremotepatrolstorereq_value_ != NULL;
+}
+inline void Request::clear_queryallremotepatrolstorereq_value() {
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorereq_value_ != NULL) delete queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq& Request::queryallremotepatrolstorereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  return queryallremotepatrolstorereq_value_ != NULL ? *queryallremotepatrolstorereq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* Request::mutable_queryallremotepatrolstorereq_value() {
+  
+  if (queryallremotepatrolstorereq_value_ == NULL) {
+    queryallremotepatrolstorereq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  return queryallremotepatrolstorereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* Request::release_queryallremotepatrolstorereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* temp = queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryallremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value) {
+  delete queryallremotepatrolstorereq_value_;
+  queryallremotepatrolstorereq_value_ = queryallremotepatrolstorereq_value;
+  if (queryallremotepatrolstorereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
 inline bool Request::has_importposdatareq_value() const {
   return this != internal_default_instance() && importposdatareq_value_ != NULL;
@@ -33172,6 +35967,201 @@ inline void Response::set_allocated_queryallstoreevaluationrsp_value(::CustomerF
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllStoreEvaluationRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddRemotePatrolStoreRsp AddRemotePatrolStoreRsp_Value = 1000;
+inline bool Response::has_addremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && addremotepatrolstorersp_value_ != NULL;
+}
+inline void Response::clear_addremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && addremotepatrolstorersp_value_ != NULL) delete addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp& Response::addremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  return addremotepatrolstorersp_value_ != NULL ? *addremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* Response::mutable_addremotepatrolstorersp_value() {
+  
+  if (addremotepatrolstorersp_value_ == NULL) {
+    addremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  return addremotepatrolstorersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* Response::release_addremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* temp = addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_addremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::AddRemotePatrolStoreRsp* addremotepatrolstorersp_value) {
+  delete addremotepatrolstorersp_value_;
+  addremotepatrolstorersp_value_ = addremotepatrolstorersp_value;
+  if (addremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.AddRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteRemotePatrolStoreRsp DeleteRemotePatrolStoreRsp_Value = 1010;
+inline bool Response::has_deleteremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && deleteremotepatrolstorersp_value_ != NULL;
+}
+inline void Response::clear_deleteremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && deleteremotepatrolstorersp_value_ != NULL) delete deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp& Response::deleteremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  return deleteremotepatrolstorersp_value_ != NULL ? *deleteremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* Response::mutable_deleteremotepatrolstorersp_value() {
+  
+  if (deleteremotepatrolstorersp_value_ == NULL) {
+    deleteremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  return deleteremotepatrolstorersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* Response::release_deleteremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* temp = deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_deleteremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::DeleteRemotePatrolStoreRsp* deleteremotepatrolstorersp_value) {
+  delete deleteremotepatrolstorersp_value_;
+  deleteremotepatrolstorersp_value_ = deleteremotepatrolstorersp_value;
+  if (deleteremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.DeleteRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;
+inline bool Response::has_modifyremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && modifyremotepatrolstorersp_value_ != NULL;
+}
+inline void Response::clear_modifyremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && modifyremotepatrolstorersp_value_ != NULL) delete modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp& Response::modifyremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  return modifyremotepatrolstorersp_value_ != NULL ? *modifyremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* Response::mutable_modifyremotepatrolstorersp_value() {
+  
+  if (modifyremotepatrolstorersp_value_ == NULL) {
+    modifyremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  return modifyremotepatrolstorersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* Response::release_modifyremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* temp = modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_modifyremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* modifyremotepatrolstorersp_value) {
+  delete modifyremotepatrolstorersp_value_;
+  modifyremotepatrolstorersp_value_ = modifyremotepatrolstorersp_value;
+  if (modifyremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ModifyRemotePatrolStoreRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;
+inline bool Response::has_queryremotepatrolstoreinforsp_value() const {
+  return this != internal_default_instance() && queryremotepatrolstoreinforsp_value_ != NULL;
+}
+inline void Response::clear_queryremotepatrolstoreinforsp_value() {
+  if (GetArenaNoVirtual() == NULL && queryremotepatrolstoreinforsp_value_ != NULL) delete queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp& Response::queryremotepatrolstoreinforsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  return queryremotepatrolstoreinforsp_value_ != NULL ? *queryremotepatrolstoreinforsp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* Response::mutable_queryremotepatrolstoreinforsp_value() {
+  
+  if (queryremotepatrolstoreinforsp_value_ == NULL) {
+    queryremotepatrolstoreinforsp_value_ = new ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  return queryremotepatrolstoreinforsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* Response::release_queryremotepatrolstoreinforsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* temp = queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryremotepatrolstoreinforsp_value(::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* queryremotepatrolstoreinforsp_value) {
+  delete queryremotepatrolstoreinforsp_value_;
+  queryremotepatrolstoreinforsp_value_ = queryremotepatrolstoreinforsp_value;
+  if (queryremotepatrolstoreinforsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryRemotePatrolStoreInfoRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;
+inline bool Response::has_queryallremotepatrolstorersp_value() const {
+  return this != internal_default_instance() && queryallremotepatrolstorersp_value_ != NULL;
+}
+inline void Response::clear_queryallremotepatrolstorersp_value() {
+  if (GetArenaNoVirtual() == NULL && queryallremotepatrolstorersp_value_ != NULL) delete queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp& Response::queryallremotepatrolstorersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  return queryallremotepatrolstorersp_value_ != NULL ? *queryallremotepatrolstorersp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* Response::mutable_queryallremotepatrolstorersp_value() {
+  
+  if (queryallremotepatrolstorersp_value_ == NULL) {
+    queryallremotepatrolstorersp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  return queryallremotepatrolstorersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* Response::release_queryallremotepatrolstorersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* temp = queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryallremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value) {
+  delete queryallremotepatrolstorersp_value_;
+  queryallremotepatrolstorersp_value_ = queryallremotepatrolstorersp_value;
+  if (queryallremotepatrolstorersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
 inline bool Response::has_importposdatarsp_value() const {
   return this != internal_default_instance() && importposdatarsp_value_ != NULL;
@@ -33452,6 +36442,28 @@ inline void CustomerFlowMessage::set_allocated_rspvalue(::CustomerFlow::Interact
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
