@@ -3052,6 +3052,21 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     {
         strDisturbMode = itFind->second;
     }
+
+    std::string strPreventDisassembly;
+    itFind = pMsgInfoMap->find("prevent_disassembly");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPreventDisassembly = itFind->second;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
     
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
@@ -3067,7 +3082,8 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
         " and volume level is " << strVolumeLevel << " and version number is " << strVersionNum << " and channel num is " << strChannelNum <<
         " and coding type is " << strCodeType << " and pir alarm switch is " << strPirAlarmSwitch << " and doorbell switch is " << strDoorbellSwitch <<
         " and pir alarm level is " << strPirAlarmLevel << " and pir ineffective time is " << strPirInEffectiveTime << " and currenct wifi is " << strCurrentWifi <<
-        " and sub category is " << strSubCategory << " and distrub mode is " << strDisturbMode);
+        " and sub category is " << strSubCategory << " and distrub mode is " << strDisturbMode << " and prevent disassembly is " << strPreventDisassembly <<
+        " and extend is " << strExtend);
 
     DeviceProperty devpt;
     devpt.m_strChannelCount = strChannelcount;
@@ -3109,6 +3125,8 @@ bool HttpMsgHandler::DeviceSetPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsg
     devpt.m_strCurrentWifi = strCurrentWifi;
     devpt.m_strSubCategory = strSubCategory;
     devpt.m_strDisturbMode = strDisturbMode;
+    devpt.m_strPreventDisassembly = strPreventDisassembly;
+    devpt.m_strExtend = strExtend;
 
     if (!DeviceSetProperty(strSid, devpt))
     {
@@ -3864,8 +3882,9 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
 
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsNotifyServer;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsNotifyServer)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -3874,9 +3893,18 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
         }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["notifyserver"] = jsNotifyServer;
+            };
 
-        this_->WriteMsg(ResultInfoMap, writer, blResult);
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
     }
     BOOST_SCOPE_EXIT_END
 
@@ -3903,11 +3931,26 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
 
     std::string strAccessDomainName;
     std::string strLease;
-    if (!DeviceQueryAccessDomainName(strRemoteIP, strDevID, strAccessDomainName, strLease))
+    NotifyServer nts;
+    if (!DeviceQueryAccessDomainName(strRemoteIP, strDevID, strAccessDomainName, nts, strLease))
     {
         LOG_ERROR_RLD("Device query access domain name info handle failed and device id is " << strDevID << " and remote ip is " << strRemoteIP);
         return blResult;
     }
+
+    jsNotifyServer["address_best"] = nts.m_strAddressBest;
+
+    Json::Value jsAddressList;
+    unsigned int i = 0;
+    for (auto itBegin = nts.m_strAddressOthersList.begin(), itEnd = nts.m_strAddressOthersList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsAddressList[i] = *itBegin;
+    }
+    jsNotifyServer["address_others"] = jsAddressList;
+
+    Json::StyledWriter stylewriter;
+    const std::string &strBody = stylewriter.write(jsNotifyServer);
+    LOG_INFO_RLD("Device query notify server info is " << strBody);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4772,6 +4815,8 @@ bool HttpMsgHandler::QueryDevParamHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_alarm_level", devpt.m_strPirAlarmLevel));
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pir_ineffective_time", devpt.m_strPirIneffectiveTime));
         ResultInfoMap.insert(std::map<std::string, std::string>::value_type("disturb_mode", devpt.m_strDisturbMode));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("prevent_disassembly", devpt.m_strPreventDisassembly));
+        ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", devpt.m_strExtend));
 
         if (strQueryType == "all")
         {
@@ -7756,6 +7801,9 @@ bool HttpMsgHandler::DeviceSetProperty(const std::string &strSid, const DevicePr
         ModDevPtReq.m_doorbellParameter.m_strCurrentWifi = devpt.m_strCurrentWifi;
         ModDevPtReq.m_doorbellParameter.m_strSubCategory = devpt.m_strSubCategory;
         ModDevPtReq.m_doorbellParameter.m_strDisturbMode = devpt.m_strDisturbMode;
+        ModDevPtReq.m_doorbellParameter.m_strAntiTheftSwitch = devpt.m_strPreventDisassembly;
+        ModDevPtReq.m_doorbellParameter.m_strExtend = devpt.m_strExtend;
+
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModDevPtReq, strSerializeOutPut))
         {
@@ -8206,10 +8254,45 @@ bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, 
             return iRet = CommMsgHandler::FAILED;
         }
 
-        strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        //strAccessDomainName = QueryDomainRsp.m_strDomainName;
         strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
         iRet = QueryDomainRsp.m_iRetcode;
 
+        {
+            //////////////////////////////////////////////////////////////////////////
+            /* strAccessDomainName格式
+            {
+                "domainname": {
+                    "platform": "http: //47.91.151.24: 8888",
+                    "nodifyserver": {
+                        "address_best": "http: //47.91.151.24:7882",
+                        "address_others": [
+                        "http: //47.88.33.242:888",
+                        "http: //47.88.3.8:999"
+                        ]
+                    }
+                }
+            }
+            *
+            **/
+
+            //////////////////////////////////////////////////////////////////////////
+            Json::Reader reader;
+            Json::Value root;
+            if (!reader.parse(QueryDomainRsp.m_strDomainName, root))
+            {
+                LOG_ERROR_RLD("Value info parse failed, raw data is : " << QueryDomainRsp.m_strDomainName);
+                return iRet = CommMsgHandler::FAILED;
+            }
+
+            if (!root.isObject())
+            {
+                LOG_ERROR_RLD("Value info parse failed, raw data is : " << QueryDomainRsp.m_strDomainName);
+                return iRet = CommMsgHandler::FAILED;
+            }
+
+            strAccessDomainName = root["platform"].asString();
+        }
         
 
         LOG_INFO_RLD("Query user access domain and user name is " << strUserName << " and user ip is " << strIpAddress <<
@@ -8230,7 +8313,8 @@ bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, 
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease)
+bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, 
+    NotifyServer &nts, std::string &strLease)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -8263,14 +8347,63 @@ bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress
             return iRet = CommMsgHandler::FAILED;
         }
 
-        strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        //strAccessDomainName = QueryDomainRsp.m_strDomainName;
         strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
         iRet = QueryDomainRsp.m_iRetcode;
 
-        
 
+        {
+            //////////////////////////////////////////////////////////////////////////
+            /* strAccessDomainName格式
+             {
+             "domainname": {
+                     "platform": "http: //47.91.151.24: 8888",
+                     "nodifyserver": {
+                         "address_best": "http: //47.91.151.24:7882",
+                         "address_others": [
+                         "http: //47.88.33.242:888",
+                         "http: //47.88.3.8:999"
+                         ]
+                     }
+                 }
+             }
+             *
+             **/
+            
+            //////////////////////////////////////////////////////////////////////////
+            Json::Reader reader;
+            Json::Value root;
+            if (!reader.parse(QueryDomainRsp.m_strDomainName, root))
+            {
+                LOG_ERROR_RLD("Value info parse failed, raw data is : " << QueryDomainRsp.m_strDomainName);
+                return iRet = CommMsgHandler::FAILED;
+            }
+
+            if (!root.isObject())
+            {
+                LOG_ERROR_RLD("Value info parse failed, raw data is : " << QueryDomainRsp.m_strDomainName);
+                return iRet = CommMsgHandler::FAILED;
+            }
+
+            strAccessDomainName = root["platform"].asString();
+            nts.m_strAddressBest = root["nodifyserver"]["address_best"].asString();
+
+            auto &jsNotifyserver = root["nodifyserver"];
+            auto &jsValue = jsNotifyserver["address_others"];
+            if (jsValue.isNull() || !jsValue.isArray())
+            {
+                LOG_ERROR_RLD("Value info type is error, raw data is: " << QueryDomainRsp.m_strDomainName);
+                return iRet = CommMsgHandler::FAILED;
+            }
+            for (unsigned int i = 0; i < jsValue.size(); ++i)
+            {
+                auto &jsValueItem = jsValue[i];
+                nts.m_strAddressOthersList.push_back(jsValueItem.asString());
+            }
+        }
+        
         LOG_INFO_RLD("Query device access domain and device id is " << strDevID << " and device ip is " << strIpAddress <<
-            " and domain name is " << strAccessDomainName <<
+            " and domain name is " << strAccessDomainName << " and original domain info is " << QueryDomainRsp.m_strDomainName <<
             " and return code is " << QueryDomainRsp.m_iRetcode <<
             " and return msg is " << QueryDomainRsp.m_strRetMsg);
 
@@ -8831,6 +8964,8 @@ bool HttpMsgHandler::QueryDevParam(const std::string &strSid, const std::string 
             devpt.m_strPirAlarmLevel = QueryDevParamRsp.m_doorbellParameter.m_strPIRAlarmLevel;
             devpt.m_strPirIneffectiveTime = QueryDevParamRsp.m_doorbellParameter.m_strPIRIneffectiveTime;
             devpt.m_strDisturbMode = QueryDevParamRsp.m_doorbellParameter.m_strDisturbMode;
+            devpt.m_strPreventDisassembly = QueryDevParamRsp.m_doorbellParameter.m_strAntiTheftSwitch;
+            devpt.m_strExtend = QueryDevParamRsp.m_doorbellParameter.m_strExtend;
 
             if (strQueryType == "all")
             {

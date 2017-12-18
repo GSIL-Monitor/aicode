@@ -269,6 +269,12 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(ManagementAgent::CLUSTER_SHAKEHAND__ACTION, boost::bind(&ManagementAgent::ClusterAgentShakehandHandler, &ma, _1, _2));
     fcgimgr.SetMsgHandler(ManagementAgent::DELETE_CLUSTER_ACTION, boost::bind(&ManagementAgent::DeleteClusterAgentHandler, &ma, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::CreateDomainHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::RemoveDomainHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_DOMAIN, boost::bind(&PassengerFlowMsgHandler::ModifyDomainHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_DOMAIN, boost::bind(&PassengerFlowMsgHandler::QueryAllDomainHandler, &filehdr, _1, _2));
+
+
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::ADD_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::AddStoreHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DEL_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::DelStoreHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MOD_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::ModifyStoreHandler, &filehdr, _1, _2));

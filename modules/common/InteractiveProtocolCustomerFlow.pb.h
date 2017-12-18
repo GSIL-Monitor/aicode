@@ -33,6 +33,12 @@
 namespace CustomerFlow {
 namespace Interactive {
 namespace Message {
+class AddAreaReq;
+class AddAreaReqDefaultTypeInternal;
+extern AddAreaReqDefaultTypeInternal _AddAreaReq_default_instance_;
+class AddAreaRsp;
+class AddAreaRspDefaultTypeInternal;
+extern AddAreaRspDefaultTypeInternal _AddAreaRsp_default_instance_;
 class AddEntranceDeviceReq;
 class AddEntranceDeviceReqDefaultTypeInternal;
 extern AddEntranceDeviceReqDefaultTypeInternal _AddEntranceDeviceReq_default_instance_;
@@ -105,6 +111,15 @@ extern AddVIPCustomerReqDefaultTypeInternal _AddVIPCustomerReq_default_instance_
 class AddVIPCustomerRsp;
 class AddVIPCustomerRspDefaultTypeInternal;
 extern AddVIPCustomerRspDefaultTypeInternal _AddVIPCustomerRsp_default_instance_;
+class Area;
+class AreaDefaultTypeInternal;
+extern AreaDefaultTypeInternal _Area_default_instance_;
+class BindPushClientIDReq;
+class BindPushClientIDReqDefaultTypeInternal;
+extern BindPushClientIDReqDefaultTypeInternal _BindPushClientIDReq_default_instance_;
+class BindPushClientIDRsp;
+class BindPushClientIDRspDefaultTypeInternal;
+extern BindPushClientIDRspDefaultTypeInternal _BindPushClientIDRsp_default_instance_;
 class CustomerFlowMessage;
 class CustomerFlowMessageDefaultTypeInternal;
 extern CustomerFlowMessageDefaultTypeInternal _CustomerFlowMessage_default_instance_;
@@ -114,6 +129,12 @@ extern CustomerFlowPreHandleReqDefaultTypeInternal _CustomerFlowPreHandleReq_def
 class CustomerFlowPreHandleRsp;
 class CustomerFlowPreHandleRspDefaultTypeInternal;
 extern CustomerFlowPreHandleRspDefaultTypeInternal _CustomerFlowPreHandleRsp_default_instance_;
+class DeleteAreaReq;
+class DeleteAreaReqDefaultTypeInternal;
+extern DeleteAreaReqDefaultTypeInternal _DeleteAreaReq_default_instance_;
+class DeleteAreaRsp;
+class DeleteAreaRspDefaultTypeInternal;
+extern DeleteAreaRspDefaultTypeInternal _DeleteAreaRsp_default_instance_;
 class DeleteEntranceDeviceReq;
 class DeleteEntranceDeviceReqDefaultTypeInternal;
 extern DeleteEntranceDeviceReqDefaultTypeInternal _DeleteEntranceDeviceReq_default_instance_;
@@ -189,6 +210,9 @@ extern DeleteVIPCustomerRspDefaultTypeInternal _DeleteVIPCustomerRsp_default_ins
 class Entrance;
 class EntranceDefaultTypeInternal;
 extern EntranceDefaultTypeInternal _Entrance_default_instance_;
+class EntranceBrief;
+class EntranceBriefDefaultTypeInternal;
+extern EntranceBriefDefaultTypeInternal _EntranceBrief_default_instance_;
 class EvaluationItem;
 class EvaluationItemDefaultTypeInternal;
 extern EvaluationItemDefaultTypeInternal _EvaluationItem_default_instance_;
@@ -207,6 +231,12 @@ extern ImportPOSDataReqDefaultTypeInternal _ImportPOSDataReq_default_instance_;
 class ImportPOSDataRsp;
 class ImportPOSDataRspDefaultTypeInternal;
 extern ImportPOSDataRspDefaultTypeInternal _ImportPOSDataRsp_default_instance_;
+class ModifyAreaReq;
+class ModifyAreaReqDefaultTypeInternal;
+extern ModifyAreaReqDefaultTypeInternal _ModifyAreaReq_default_instance_;
+class ModifyAreaRsp;
+class ModifyAreaRspDefaultTypeInternal;
+extern ModifyAreaRspDefaultTypeInternal _ModifyAreaRsp_default_instance_;
 class ModifyEntranceReq;
 class ModifyEntranceReqDefaultTypeInternal;
 extern ModifyEntranceReqDefaultTypeInternal _ModifyEntranceReq_default_instance_;
@@ -273,6 +303,15 @@ extern ModifyVIPCustomerReqDefaultTypeInternal _ModifyVIPCustomerReq_default_ins
 class ModifyVIPCustomerRsp;
 class ModifyVIPCustomerRspDefaultTypeInternal;
 extern ModifyVIPCustomerRspDefaultTypeInternal _ModifyVIPCustomerRsp_default_instance_;
+class PatrolStoreEntrance;
+class PatrolStoreEntranceDefaultTypeInternal;
+extern PatrolStoreEntranceDefaultTypeInternal _PatrolStoreEntrance_default_instance_;
+class QueryAllAreaReq;
+class QueryAllAreaReqDefaultTypeInternal;
+extern QueryAllAreaReqDefaultTypeInternal _QueryAllAreaReq_default_instance_;
+class QueryAllAreaRsp;
+class QueryAllAreaRspDefaultTypeInternal;
+extern QueryAllAreaRspDefaultTypeInternal _QueryAllAreaRsp_default_instance_;
 class QueryAllEvaluationTemplateReq;
 class QueryAllEvaluationTemplateReqDefaultTypeInternal;
 extern QueryAllEvaluationTemplateReqDefaultTypeInternal _QueryAllEvaluationTemplateReq_default_instance_;
@@ -429,6 +468,12 @@ extern StoreDefaultTypeInternal _Store_default_instance_;
 class StoreEvaluation;
 class StoreEvaluationDefaultTypeInternal;
 extern StoreEvaluationDefaultTypeInternal _StoreEvaluation_default_instance_;
+class UnbindPushClientIDReq;
+class UnbindPushClientIDReqDefaultTypeInternal;
+extern UnbindPushClientIDReqDefaultTypeInternal _UnbindPushClientIDReq_default_instance_;
+class UnbindPushClientIDRsp;
+class UnbindPushClientIDRspDefaultTypeInternal;
+extern UnbindPushClientIDRspDefaultTypeInternal _UnbindPushClientIDRsp_default_instance_;
 class UserBrief;
 class UserBriefDefaultTypeInternal;
 extern UserBriefDefaultTypeInternal _UserBrief_default_instance_;
@@ -593,6 +638,18 @@ enum CustomerFlowMsgType {
   QueryRemotePatrolStoreInfoRsp_T = 18470,
   QueryAllRemotePatrolStoreReq_T = 18480,
   QueryAllRemotePatrolStoreRsp_T = 18490,
+  AddAreaReq_T = 19000,
+  AddAreaRsp_T = 19010,
+  DeleteAreaReq_T = 19020,
+  DeleteAreaRsp_T = 19030,
+  ModifyAreaReq_T = 19040,
+  ModifyAreaRsp_T = 19050,
+  QueryAllAreaReq_T = 19060,
+  QueryAllAreaRsp_T = 19070,
+  BindPushClientIDReq_T = 19100,
+  BindPushClientIDRsp_T = 19110,
+  UnbindPushClientIDReq_T = 19120,
+  UnbindPushClientIDRsp_T = 19130,
   ImportPOSDataReq_T = 20000,
   ImportPOSDataRsp_T = 20010,
   QueryCustomerFlowStatisticReq_T = 20900,
@@ -618,6 +675,149 @@ inline bool CustomerFlowMsgType_Parse(
     CustomerFlowMsgType_descriptor(), name, value);
 }
 // ===================================================================
+
+class Area : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Area) */ {
+ public:
+  Area();
+  virtual ~Area();
+
+  Area(const Area& from);
+
+  inline Area& operator=(const Area& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Area& default_instance();
+
+  static inline const Area* internal_default_instance() {
+    return reinterpret_cast<const Area*>(
+               &_Area_default_instance_);
+  }
+
+  void Swap(Area* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Area* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Area* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Area& from);
+  void MergeFrom(const Area& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Area* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAreaID = 1;
+  void clear_strareaid();
+  static const int kStrAreaIDFieldNumber = 1;
+  const ::std::string& strareaid() const;
+  void set_strareaid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strareaid(::std::string&& value);
+  #endif
+  void set_strareaid(const char* value);
+  void set_strareaid(const char* value, size_t size);
+  ::std::string* mutable_strareaid();
+  ::std::string* release_strareaid();
+  void set_allocated_strareaid(::std::string* strareaid);
+
+  // string strAreaName = 2;
+  void clear_strareaname();
+  static const int kStrAreaNameFieldNumber = 2;
+  const ::std::string& strareaname() const;
+  void set_strareaname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strareaname(::std::string&& value);
+  #endif
+  void set_strareaname(const char* value);
+  void set_strareaname(const char* value, size_t size);
+  ::std::string* mutable_strareaname();
+  ::std::string* release_strareaname();
+  void set_allocated_strareaname(::std::string* strareaname);
+
+  // string strCreateDate = 4;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 4;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // string strExtend = 5;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 5;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiState = 3;
+  void clear_uistate();
+  static const int kUiStateFieldNumber = 3;
+  ::google::protobuf::uint32 uistate() const;
+  void set_uistate(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Area)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strareaid_;
+  ::google::protobuf::internal::ArenaStringPtr strareaname_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uistate_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
 
 class Group : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Group) */ {
  public:
@@ -1020,9 +1220,23 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_straddress();
   void set_allocated_straddress(::std::string* straddress);
 
-  // string strCreateDate = 6;
+  // string strAreaID = 6;
+  void clear_strareaid();
+  static const int kStrAreaIDFieldNumber = 6;
+  const ::std::string& strareaid() const;
+  void set_strareaid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strareaid(::std::string&& value);
+  #endif
+  void set_strareaid(const char* value);
+  void set_strareaid(const char* value, size_t size);
+  ::std::string* mutable_strareaid();
+  ::std::string* release_strareaid();
+  void set_allocated_strareaid(::std::string* strareaid);
+
+  // string strCreateDate = 7;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 6;
+  static const int kStrCreateDateFieldNumber = 7;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1034,9 +1248,9 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // string strExtend = 7;
+  // string strExtend = 8;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 7;
+  static const int kStrExtendFieldNumber = 8;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -1048,11 +1262,17 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
-  // uint32 uiState = 8;
+  // uint32 uiState = 9;
   void clear_uistate();
-  static const int kUiStateFieldNumber = 8;
+  static const int kUiStateFieldNumber = 9;
   ::google::protobuf::uint32 uistate() const;
   void set_uistate(::google::protobuf::uint32 value);
+
+  // uint32 uiOpenState = 10;
+  void clear_uiopenstate();
+  static const int kUiOpenStateFieldNumber = 10;
+  ::google::protobuf::uint32 uiopenstate() const;
+  void set_uiopenstate(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Store)
  private:
@@ -1063,9 +1283,11 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::internal::ArenaStringPtr strstorename_;
   ::google::protobuf::internal::ArenaStringPtr strgoodscategory_;
   ::google::protobuf::internal::ArenaStringPtr straddress_;
+  ::google::protobuf::internal::ArenaStringPtr strareaid_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint32 uistate_;
+  ::google::protobuf::uint32 uiopenstate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -1520,9 +1742,9 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strremark();
   void set_allocated_strremark(::std::string* strremark);
 
-  // string strCreateDate = 11;
+  // string strCreateDate = 12;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 11;
+  static const int kStrCreateDateFieldNumber = 12;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -1534,9 +1756,9 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // string strExtend = 12;
+  // string strExtend = 13;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 12;
+  static const int kStrExtendFieldNumber = 13;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -1548,9 +1770,15 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
-  // uint32 uiState = 13;
+  // uint32 uiViewState = 11;
+  void clear_uiviewstate();
+  static const int kUiViewStateFieldNumber = 11;
+  ::google::protobuf::uint32 uiviewstate() const;
+  void set_uiviewstate(::google::protobuf::uint32 value);
+
+  // uint32 uiState = 14;
   void clear_uistate();
-  static const int kUiStateFieldNumber = 13;
+  static const int kUiStateFieldNumber = 14;
   ::google::protobuf::uint32 uistate() const;
   void set_uistate(::google::protobuf::uint32 value);
 
@@ -1571,6 +1799,7 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::internal::ArenaStringPtr strremark_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uiviewstate_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -1827,6 +2056,231 @@ class SmartGuardStore : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
+class EntranceBrief : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.EntranceBrief) */ {
+ public:
+  EntranceBrief();
+  virtual ~EntranceBrief();
+
+  EntranceBrief(const EntranceBrief& from);
+
+  inline EntranceBrief& operator=(const EntranceBrief& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EntranceBrief& default_instance();
+
+  static inline const EntranceBrief* internal_default_instance() {
+    return reinterpret_cast<const EntranceBrief*>(
+               &_EntranceBrief_default_instance_);
+  }
+
+  void Swap(EntranceBrief* other);
+
+  // implements Message ----------------------------------------------
+
+  inline EntranceBrief* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  EntranceBrief* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const EntranceBrief& from);
+  void MergeFrom(const EntranceBrief& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(EntranceBrief* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strEntranceID = 1;
+  void clear_strentranceid();
+  static const int kStrEntranceIDFieldNumber = 1;
+  const ::std::string& strentranceid() const;
+  void set_strentranceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strentranceid(::std::string&& value);
+  #endif
+  void set_strentranceid(const char* value);
+  void set_strentranceid(const char* value, size_t size);
+  ::std::string* mutable_strentranceid();
+  ::std::string* release_strentranceid();
+  void set_allocated_strentranceid(::std::string* strentranceid);
+
+  // string strEntranceName = 2;
+  void clear_strentrancename();
+  static const int kStrEntranceNameFieldNumber = 2;
+  const ::std::string& strentrancename() const;
+  void set_strentrancename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strentrancename(::std::string&& value);
+  #endif
+  void set_strentrancename(const char* value);
+  void set_strentrancename(const char* value, size_t size);
+  ::std::string* mutable_strentrancename();
+  ::std::string* release_strentrancename();
+  void set_allocated_strentrancename(::std::string* strentrancename);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.EntranceBrief)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strentranceid_;
+  ::google::protobuf::internal::ArenaStringPtr strentrancename_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PatrolStoreEntrance : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.PatrolStoreEntrance) */ {
+ public:
+  PatrolStoreEntrance();
+  virtual ~PatrolStoreEntrance();
+
+  PatrolStoreEntrance(const PatrolStoreEntrance& from);
+
+  inline PatrolStoreEntrance& operator=(const PatrolStoreEntrance& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PatrolStoreEntrance& default_instance();
+
+  static inline const PatrolStoreEntrance* internal_default_instance() {
+    return reinterpret_cast<const PatrolStoreEntrance*>(
+               &_PatrolStoreEntrance_default_instance_);
+  }
+
+  void Swap(PatrolStoreEntrance* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PatrolStoreEntrance* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PatrolStoreEntrance* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PatrolStoreEntrance& from);
+  void MergeFrom(const PatrolStoreEntrance& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PatrolStoreEntrance* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+  int entrance_size() const;
+  void clear_entrance();
+  static const int kEntranceFieldNumber = 3;
+  const ::CustomerFlow::Interactive::Message::EntranceBrief& entrance(int index) const;
+  ::CustomerFlow::Interactive::Message::EntranceBrief* mutable_entrance(int index);
+  ::CustomerFlow::Interactive::Message::EntranceBrief* add_entrance();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >*
+      mutable_entrance();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >&
+      entrance() const;
+
+  // string strStoreID = 1;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 1;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strStoreName = 2;
+  void clear_strstorename();
+  static const int kStrStoreNameFieldNumber = 2;
+  const ::std::string& strstorename() const;
+  void set_strstorename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstorename(::std::string&& value);
+  #endif
+  void set_strstorename(const char* value);
+  void set_strstorename(const char* value, size_t size);
+  ::std::string* mutable_strstorename();
+  ::std::string* release_strstorename();
+  void set_allocated_strstorename(::std::string* strstorename);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.PatrolStoreEntrance)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief > entrance_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strstorename_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.RegularPatrol) */ {
  public:
   RegularPatrol();
@@ -1894,26 +2348,22 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // repeated string strStoreID = 5;
-  int strstoreid_size() const;
-  void clear_strstoreid();
-  static const int kStrStoreIDFieldNumber = 5;
-  const ::std::string& strstoreid(int index) const;
-  ::std::string* mutable_strstoreid(int index);
-  void set_strstoreid(int index, const ::std::string& value);
-  void set_strstoreid(int index, const char* value);
-  void set_strstoreid(int index, const char* value, size_t size);
-  ::std::string* add_strstoreid();
-  void add_strstoreid(const ::std::string& value);
-  void add_strstoreid(const char* value);
-  void add_strstoreid(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& strstoreid() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strstoreid();
+  // repeated .CustomerFlow.Interactive.Message.PatrolStoreEntrance storeEntrance = 4;
+  int storeentrance_size() const;
+  void clear_storeentrance();
+  static const int kStoreEntranceFieldNumber = 4;
+  const ::CustomerFlow::Interactive::Message::PatrolStoreEntrance& storeentrance(int index) const;
+  ::CustomerFlow::Interactive::Message::PatrolStoreEntrance* mutable_storeentrance(int index);
+  ::CustomerFlow::Interactive::Message::PatrolStoreEntrance* add_storeentrance();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::PatrolStoreEntrance >*
+      mutable_storeentrance();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::PatrolStoreEntrance >&
+      storeentrance() const;
 
-  // repeated string strPatrolTime = 6;
+  // repeated string strPatrolTime = 5;
   int strpatroltime_size() const;
   void clear_strpatroltime();
-  static const int kStrPatrolTimeFieldNumber = 6;
+  static const int kStrPatrolTimeFieldNumber = 5;
   const ::std::string& strpatroltime(int index) const;
   ::std::string* mutable_strpatroltime(int index);
   void set_strpatroltime(int index, const ::std::string& value);
@@ -1925,6 +2375,22 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
   void add_strpatroltime(const char* value, size_t size);
   const ::google::protobuf::RepeatedPtrField< ::std::string>& strpatroltime() const;
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strpatroltime();
+
+  // repeated string strHandler = 6;
+  int strhandler_size() const;
+  void clear_strhandler();
+  static const int kStrHandlerFieldNumber = 6;
+  const ::std::string& strhandler(int index) const;
+  ::std::string* mutable_strhandler(int index);
+  void set_strhandler(int index, const ::std::string& value);
+  void set_strhandler(int index, const char* value);
+  void set_strhandler(int index, const char* value, size_t size);
+  ::std::string* add_strhandler();
+  void add_strhandler(const ::std::string& value);
+  void add_strhandler(const char* value);
+  void add_strhandler(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strhandler() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strhandler();
 
   // string strPlanID = 1;
   void clear_strplanid();
@@ -1968,20 +2434,6 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strenable();
   void set_allocated_strenable(::std::string* strenable);
 
-  // string strStoreInfo = 4;
-  void clear_strstoreinfo();
-  static const int kStrStoreInfoFieldNumber = 4;
-  const ::std::string& strstoreinfo() const;
-  void set_strstoreinfo(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strstoreinfo(::std::string&& value);
-  #endif
-  void set_strstoreinfo(const char* value);
-  void set_strstoreinfo(const char* value, size_t size);
-  ::std::string* mutable_strstoreinfo();
-  ::std::string* release_strstoreinfo();
-  void set_allocated_strstoreinfo(::std::string* strstoreinfo);
-
   // string strCreateDate = 8;
   void clear_strcreatedate();
   static const int kStrCreateDateFieldNumber = 8;
@@ -1996,6 +2448,20 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
+  // string strExtend = 9;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 9;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
   // uint32 uiState = 7;
   void clear_uistate();
   static const int kUiStateFieldNumber = 7;
@@ -2006,13 +2472,14 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> strstoreid_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::PatrolStoreEntrance > storeentrance_;
   ::google::protobuf::RepeatedPtrField< ::std::string> strpatroltime_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strhandler_;
   ::google::protobuf::internal::ArenaStringPtr strplanid_;
   ::google::protobuf::internal::ArenaStringPtr strplanname_;
   ::google::protobuf::internal::ArenaStringPtr strenable_;
-  ::google::protobuf::internal::ArenaStringPtr strstoreinfo_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -3584,6 +4051,1161 @@ class ShakehandRsp : public ::google::protobuf::Message /* @@protoc_insertion_po
   void set_allocated_strvalue(::std::string* strvalue);
 
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ShakehandRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddAreaReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddAreaReq) */ {
+ public:
+  AddAreaReq();
+  virtual ~AddAreaReq();
+
+  AddAreaReq(const AddAreaReq& from);
+
+  inline AddAreaReq& operator=(const AddAreaReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddAreaReq& default_instance();
+
+  static inline const AddAreaReq* internal_default_instance() {
+    return reinterpret_cast<const AddAreaReq*>(
+               &_AddAreaReq_default_instance_);
+  }
+
+  void Swap(AddAreaReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddAreaReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddAreaReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddAreaReq& from);
+  void MergeFrom(const AddAreaReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddAreaReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.Area areaInfo = 2;
+  bool has_areainfo() const;
+  void clear_areainfo();
+  static const int kAreaInfoFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Area& areainfo() const;
+  ::CustomerFlow::Interactive::Message::Area* mutable_areainfo();
+  ::CustomerFlow::Interactive::Message::Area* release_areainfo();
+  void set_allocated_areainfo(::CustomerFlow::Interactive::Message::Area* areainfo);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddAreaReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::Area* areainfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddAreaRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddAreaRsp) */ {
+ public:
+  AddAreaRsp();
+  virtual ~AddAreaRsp();
+
+  AddAreaRsp(const AddAreaRsp& from);
+
+  inline AddAreaRsp& operator=(const AddAreaRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddAreaRsp& default_instance();
+
+  static inline const AddAreaRsp* internal_default_instance() {
+    return reinterpret_cast<const AddAreaRsp*>(
+               &_AddAreaRsp_default_instance_);
+  }
+
+  void Swap(AddAreaRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddAreaRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddAreaRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddAreaRsp& from);
+  void MergeFrom(const AddAreaRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddAreaRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAreaID = 1;
+  void clear_strareaid();
+  static const int kStrAreaIDFieldNumber = 1;
+  const ::std::string& strareaid() const;
+  void set_strareaid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strareaid(::std::string&& value);
+  #endif
+  void set_strareaid(const char* value);
+  void set_strareaid(const char* value, size_t size);
+  ::std::string* mutable_strareaid();
+  ::std::string* release_strareaid();
+  void set_allocated_strareaid(::std::string* strareaid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddAreaRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strareaid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteAreaReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteAreaReq) */ {
+ public:
+  DeleteAreaReq();
+  virtual ~DeleteAreaReq();
+
+  DeleteAreaReq(const DeleteAreaReq& from);
+
+  inline DeleteAreaReq& operator=(const DeleteAreaReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteAreaReq& default_instance();
+
+  static inline const DeleteAreaReq* internal_default_instance() {
+    return reinterpret_cast<const DeleteAreaReq*>(
+               &_DeleteAreaReq_default_instance_);
+  }
+
+  void Swap(DeleteAreaReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteAreaReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteAreaReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteAreaReq& from);
+  void MergeFrom(const DeleteAreaReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteAreaReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strAreaID = 2;
+  void clear_strareaid();
+  static const int kStrAreaIDFieldNumber = 2;
+  const ::std::string& strareaid() const;
+  void set_strareaid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strareaid(::std::string&& value);
+  #endif
+  void set_strareaid(const char* value);
+  void set_strareaid(const char* value, size_t size);
+  ::std::string* mutable_strareaid();
+  ::std::string* release_strareaid();
+  void set_allocated_strareaid(::std::string* strareaid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteAreaReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strareaid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteAreaRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteAreaRsp) */ {
+ public:
+  DeleteAreaRsp();
+  virtual ~DeleteAreaRsp();
+
+  DeleteAreaRsp(const DeleteAreaRsp& from);
+
+  inline DeleteAreaRsp& operator=(const DeleteAreaRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteAreaRsp& default_instance();
+
+  static inline const DeleteAreaRsp* internal_default_instance() {
+    return reinterpret_cast<const DeleteAreaRsp*>(
+               &_DeleteAreaRsp_default_instance_);
+  }
+
+  void Swap(DeleteAreaRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteAreaRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteAreaRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteAreaRsp& from);
+  void MergeFrom(const DeleteAreaRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteAreaRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteAreaRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyAreaReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyAreaReq) */ {
+ public:
+  ModifyAreaReq();
+  virtual ~ModifyAreaReq();
+
+  ModifyAreaReq(const ModifyAreaReq& from);
+
+  inline ModifyAreaReq& operator=(const ModifyAreaReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyAreaReq& default_instance();
+
+  static inline const ModifyAreaReq* internal_default_instance() {
+    return reinterpret_cast<const ModifyAreaReq*>(
+               &_ModifyAreaReq_default_instance_);
+  }
+
+  void Swap(ModifyAreaReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyAreaReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyAreaReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyAreaReq& from);
+  void MergeFrom(const ModifyAreaReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyAreaReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.Area areaInfo = 2;
+  bool has_areainfo() const;
+  void clear_areainfo();
+  static const int kAreaInfoFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Area& areainfo() const;
+  ::CustomerFlow::Interactive::Message::Area* mutable_areainfo();
+  ::CustomerFlow::Interactive::Message::Area* release_areainfo();
+  void set_allocated_areainfo(::CustomerFlow::Interactive::Message::Area* areainfo);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyAreaReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::Area* areainfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyAreaRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyAreaRsp) */ {
+ public:
+  ModifyAreaRsp();
+  virtual ~ModifyAreaRsp();
+
+  ModifyAreaRsp(const ModifyAreaRsp& from);
+
+  inline ModifyAreaRsp& operator=(const ModifyAreaRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyAreaRsp& default_instance();
+
+  static inline const ModifyAreaRsp* internal_default_instance() {
+    return reinterpret_cast<const ModifyAreaRsp*>(
+               &_ModifyAreaRsp_default_instance_);
+  }
+
+  void Swap(ModifyAreaRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyAreaRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyAreaRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyAreaRsp& from);
+  void MergeFrom(const ModifyAreaRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyAreaRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyAreaRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllAreaReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllAreaReq) */ {
+ public:
+  QueryAllAreaReq();
+  virtual ~QueryAllAreaReq();
+
+  QueryAllAreaReq(const QueryAllAreaReq& from);
+
+  inline QueryAllAreaReq& operator=(const QueryAllAreaReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllAreaReq& default_instance();
+
+  static inline const QueryAllAreaReq* internal_default_instance() {
+    return reinterpret_cast<const QueryAllAreaReq*>(
+               &_QueryAllAreaReq_default_instance_);
+  }
+
+  void Swap(QueryAllAreaReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllAreaReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllAreaReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllAreaReq& from);
+  void MergeFrom(const QueryAllAreaReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllAreaReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllAreaReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllAreaRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllAreaRsp) */ {
+ public:
+  QueryAllAreaRsp();
+  virtual ~QueryAllAreaRsp();
+
+  QueryAllAreaRsp(const QueryAllAreaRsp& from);
+
+  inline QueryAllAreaRsp& operator=(const QueryAllAreaRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllAreaRsp& default_instance();
+
+  static inline const QueryAllAreaRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryAllAreaRsp*>(
+               &_QueryAllAreaRsp_default_instance_);
+  }
+
+  void Swap(QueryAllAreaRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllAreaRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllAreaRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllAreaRsp& from);
+  void MergeFrom(const QueryAllAreaRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllAreaRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.Area areaInfo = 1;
+  int areainfo_size() const;
+  void clear_areainfo();
+  static const int kAreaInfoFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::Area& areainfo(int index) const;
+  ::CustomerFlow::Interactive::Message::Area* mutable_areainfo(int index);
+  ::CustomerFlow::Interactive::Message::Area* add_areainfo();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Area >*
+      mutable_areainfo();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Area >&
+      areainfo() const;
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllAreaRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Area > areainfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class BindPushClientIDReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.BindPushClientIDReq) */ {
+ public:
+  BindPushClientIDReq();
+  virtual ~BindPushClientIDReq();
+
+  BindPushClientIDReq(const BindPushClientIDReq& from);
+
+  inline BindPushClientIDReq& operator=(const BindPushClientIDReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BindPushClientIDReq& default_instance();
+
+  static inline const BindPushClientIDReq* internal_default_instance() {
+    return reinterpret_cast<const BindPushClientIDReq*>(
+               &_BindPushClientIDReq_default_instance_);
+  }
+
+  void Swap(BindPushClientIDReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline BindPushClientIDReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  BindPushClientIDReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const BindPushClientIDReq& from);
+  void MergeFrom(const BindPushClientIDReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(BindPushClientIDReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strClientID = 2;
+  void clear_strclientid();
+  static const int kStrClientIDFieldNumber = 2;
+  const ::std::string& strclientid() const;
+  void set_strclientid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclientid(::std::string&& value);
+  #endif
+  void set_strclientid(const char* value);
+  void set_strclientid(const char* value, size_t size);
+  ::std::string* mutable_strclientid();
+  ::std::string* release_strclientid();
+  void set_allocated_strclientid(::std::string* strclientid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.BindPushClientIDReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strclientid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class BindPushClientIDRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.BindPushClientIDRsp) */ {
+ public:
+  BindPushClientIDRsp();
+  virtual ~BindPushClientIDRsp();
+
+  BindPushClientIDRsp(const BindPushClientIDRsp& from);
+
+  inline BindPushClientIDRsp& operator=(const BindPushClientIDRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BindPushClientIDRsp& default_instance();
+
+  static inline const BindPushClientIDRsp* internal_default_instance() {
+    return reinterpret_cast<const BindPushClientIDRsp*>(
+               &_BindPushClientIDRsp_default_instance_);
+  }
+
+  void Swap(BindPushClientIDRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline BindPushClientIDRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  BindPushClientIDRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const BindPushClientIDRsp& from);
+  void MergeFrom(const BindPushClientIDRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(BindPushClientIDRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.BindPushClientIDRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UnbindPushClientIDReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.UnbindPushClientIDReq) */ {
+ public:
+  UnbindPushClientIDReq();
+  virtual ~UnbindPushClientIDReq();
+
+  UnbindPushClientIDReq(const UnbindPushClientIDReq& from);
+
+  inline UnbindPushClientIDReq& operator=(const UnbindPushClientIDReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UnbindPushClientIDReq& default_instance();
+
+  static inline const UnbindPushClientIDReq* internal_default_instance() {
+    return reinterpret_cast<const UnbindPushClientIDReq*>(
+               &_UnbindPushClientIDReq_default_instance_);
+  }
+
+  void Swap(UnbindPushClientIDReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UnbindPushClientIDReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UnbindPushClientIDReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UnbindPushClientIDReq& from);
+  void MergeFrom(const UnbindPushClientIDReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UnbindPushClientIDReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strClientID = 2;
+  void clear_strclientid();
+  static const int kStrClientIDFieldNumber = 2;
+  const ::std::string& strclientid() const;
+  void set_strclientid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strclientid(::std::string&& value);
+  #endif
+  void set_strclientid(const char* value);
+  void set_strclientid(const char* value, size_t size);
+  ::std::string* mutable_strclientid();
+  ::std::string* release_strclientid();
+  void set_allocated_strclientid(::std::string* strclientid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.UnbindPushClientIDReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strclientid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UnbindPushClientIDRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp) */ {
+ public:
+  UnbindPushClientIDRsp();
+  virtual ~UnbindPushClientIDRsp();
+
+  UnbindPushClientIDRsp(const UnbindPushClientIDRsp& from);
+
+  inline UnbindPushClientIDRsp& operator=(const UnbindPushClientIDRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UnbindPushClientIDRsp& default_instance();
+
+  static inline const UnbindPushClientIDRsp* internal_default_instance() {
+    return reinterpret_cast<const UnbindPushClientIDRsp*>(
+               &_UnbindPushClientIDRsp_default_instance_);
+  }
+
+  void Swap(UnbindPushClientIDRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UnbindPushClientIDRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UnbindPushClientIDRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UnbindPushClientIDRsp& from);
+  void MergeFrom(const UnbindPushClientIDRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UnbindPushClientIDRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -7459,9 +9081,43 @@ class QueryAllEventReq : public ::google::protobuf::Message /* @@protoc_insertio
   ::std::string* release_struserid();
   void set_allocated_struserid(::std::string* struserid);
 
-  // uint32 uiBeginIndex = 2;
+  // string strBeginDate = 3;
+  void clear_strbegindate();
+  static const int kStrBeginDateFieldNumber = 3;
+  const ::std::string& strbegindate() const;
+  void set_strbegindate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strbegindate(::std::string&& value);
+  #endif
+  void set_strbegindate(const char* value);
+  void set_strbegindate(const char* value, size_t size);
+  ::std::string* mutable_strbegindate();
+  ::std::string* release_strbegindate();
+  void set_allocated_strbegindate(::std::string* strbegindate);
+
+  // string strEndDate = 4;
+  void clear_strenddate();
+  static const int kStrEndDateFieldNumber = 4;
+  const ::std::string& strenddate() const;
+  void set_strenddate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strenddate(::std::string&& value);
+  #endif
+  void set_strenddate(const char* value);
+  void set_strenddate(const char* value, size_t size);
+  ::std::string* mutable_strenddate();
+  ::std::string* release_strenddate();
+  void set_allocated_strenddate(::std::string* strenddate);
+
+  // uint32 uiProcessState = 2;
+  void clear_uiprocessstate();
+  static const int kUiProcessStateFieldNumber = 2;
+  ::google::protobuf::uint32 uiprocessstate() const;
+  void set_uiprocessstate(::google::protobuf::uint32 value);
+
+  // uint32 uiBeginIndex = 5;
   void clear_uibeginindex();
-  static const int kUiBeginIndexFieldNumber = 2;
+  static const int kUiBeginIndexFieldNumber = 5;
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
 
@@ -7470,6 +9126,9 @@ class QueryAllEventReq : public ::google::protobuf::Message /* @@protoc_insertio
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strbegindate_;
+  ::google::protobuf::internal::ArenaStringPtr strenddate_;
+  ::google::protobuf::uint32 uiprocessstate_;
   ::google::protobuf::uint32 uibeginindex_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -15884,6 +17543,60 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* release_queryallremotepatrolstorereq_value();
   void set_allocated_queryallremotepatrolstorereq_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value);
 
+  // .CustomerFlow.Interactive.Message.AddAreaReq AddAreaReq_Value = 1100;
+  bool has_addareareq_value() const;
+  void clear_addareareq_value();
+  static const int kAddAreaReqValueFieldNumber = 1100;
+  const ::CustomerFlow::Interactive::Message::AddAreaReq& addareareq_value() const;
+  ::CustomerFlow::Interactive::Message::AddAreaReq* mutable_addareareq_value();
+  ::CustomerFlow::Interactive::Message::AddAreaReq* release_addareareq_value();
+  void set_allocated_addareareq_value(::CustomerFlow::Interactive::Message::AddAreaReq* addareareq_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteAreaReq DeleteAreaReq_Value = 1110;
+  bool has_deleteareareq_value() const;
+  void clear_deleteareareq_value();
+  static const int kDeleteAreaReqValueFieldNumber = 1110;
+  const ::CustomerFlow::Interactive::Message::DeleteAreaReq& deleteareareq_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteAreaReq* mutable_deleteareareq_value();
+  ::CustomerFlow::Interactive::Message::DeleteAreaReq* release_deleteareareq_value();
+  void set_allocated_deleteareareq_value(::CustomerFlow::Interactive::Message::DeleteAreaReq* deleteareareq_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyAreaReq ModifyAreaReq_Value = 1120;
+  bool has_modifyareareq_value() const;
+  void clear_modifyareareq_value();
+  static const int kModifyAreaReqValueFieldNumber = 1120;
+  const ::CustomerFlow::Interactive::Message::ModifyAreaReq& modifyareareq_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyAreaReq* mutable_modifyareareq_value();
+  ::CustomerFlow::Interactive::Message::ModifyAreaReq* release_modifyareareq_value();
+  void set_allocated_modifyareareq_value(::CustomerFlow::Interactive::Message::ModifyAreaReq* modifyareareq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllAreaReq QueryAllAreaReq_Value = 1130;
+  bool has_queryallareareq_value() const;
+  void clear_queryallareareq_value();
+  static const int kQueryAllAreaReqValueFieldNumber = 1130;
+  const ::CustomerFlow::Interactive::Message::QueryAllAreaReq& queryallareareq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllAreaReq* mutable_queryallareareq_value();
+  ::CustomerFlow::Interactive::Message::QueryAllAreaReq* release_queryallareareq_value();
+  void set_allocated_queryallareareq_value(::CustomerFlow::Interactive::Message::QueryAllAreaReq* queryallareareq_value);
+
+  // .CustomerFlow.Interactive.Message.BindPushClientIDReq BindPushClientIDReq_Value = 1150;
+  bool has_bindpushclientidreq_value() const;
+  void clear_bindpushclientidreq_value();
+  static const int kBindPushClientIDReqValueFieldNumber = 1150;
+  const ::CustomerFlow::Interactive::Message::BindPushClientIDReq& bindpushclientidreq_value() const;
+  ::CustomerFlow::Interactive::Message::BindPushClientIDReq* mutable_bindpushclientidreq_value();
+  ::CustomerFlow::Interactive::Message::BindPushClientIDReq* release_bindpushclientidreq_value();
+  void set_allocated_bindpushclientidreq_value(::CustomerFlow::Interactive::Message::BindPushClientIDReq* bindpushclientidreq_value);
+
+  // .CustomerFlow.Interactive.Message.UnbindPushClientIDReq UnbindPushClientIDReq_Value = 1160;
+  bool has_unbindpushclientidreq_value() const;
+  void clear_unbindpushclientidreq_value();
+  static const int kUnbindPushClientIDReqValueFieldNumber = 1160;
+  const ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq& unbindpushclientidreq_value() const;
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* mutable_unbindpushclientidreq_value();
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* release_unbindpushclientidreq_value();
+  void set_allocated_unbindpushclientidreq_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* unbindpushclientidreq_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
   bool has_importposdatareq_value() const;
   void clear_importposdatareq_value();
@@ -15973,6 +17686,12 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreReq* modifyremotepatrolstorereq_value_;
   ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoReq* queryremotepatrolstoreinforeq_value_;
   ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreReq* queryallremotepatrolstorereq_value_;
+  ::CustomerFlow::Interactive::Message::AddAreaReq* addareareq_value_;
+  ::CustomerFlow::Interactive::Message::DeleteAreaReq* deleteareareq_value_;
+  ::CustomerFlow::Interactive::Message::ModifyAreaReq* modifyareareq_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllAreaReq* queryallareareq_value_;
+  ::CustomerFlow::Interactive::Message::BindPushClientIDReq* bindpushclientidreq_value_;
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* unbindpushclientidreq_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataReq* importposdatareq_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticReq* querycustomerflowstatisticreq_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* reportcustomerflowdatareq_value_;
@@ -16584,6 +18303,60 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* release_queryallremotepatrolstorersp_value();
   void set_allocated_queryallremotepatrolstorersp_value(::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value);
 
+  // .CustomerFlow.Interactive.Message.AddAreaRsp AddAreaRsp_Value = 1100;
+  bool has_addarearsp_value() const;
+  void clear_addarearsp_value();
+  static const int kAddAreaRspValueFieldNumber = 1100;
+  const ::CustomerFlow::Interactive::Message::AddAreaRsp& addarearsp_value() const;
+  ::CustomerFlow::Interactive::Message::AddAreaRsp* mutable_addarearsp_value();
+  ::CustomerFlow::Interactive::Message::AddAreaRsp* release_addarearsp_value();
+  void set_allocated_addarearsp_value(::CustomerFlow::Interactive::Message::AddAreaRsp* addarearsp_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteAreaRsp DeleteAreaRsp_Value = 1110;
+  bool has_deletearearsp_value() const;
+  void clear_deletearearsp_value();
+  static const int kDeleteAreaRspValueFieldNumber = 1110;
+  const ::CustomerFlow::Interactive::Message::DeleteAreaRsp& deletearearsp_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteAreaRsp* mutable_deletearearsp_value();
+  ::CustomerFlow::Interactive::Message::DeleteAreaRsp* release_deletearearsp_value();
+  void set_allocated_deletearearsp_value(::CustomerFlow::Interactive::Message::DeleteAreaRsp* deletearearsp_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyAreaRsp ModifyAreaRsp_Value = 1120;
+  bool has_modifyarearsp_value() const;
+  void clear_modifyarearsp_value();
+  static const int kModifyAreaRspValueFieldNumber = 1120;
+  const ::CustomerFlow::Interactive::Message::ModifyAreaRsp& modifyarearsp_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyAreaRsp* mutable_modifyarearsp_value();
+  ::CustomerFlow::Interactive::Message::ModifyAreaRsp* release_modifyarearsp_value();
+  void set_allocated_modifyarearsp_value(::CustomerFlow::Interactive::Message::ModifyAreaRsp* modifyarearsp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllAreaRsp QueryAllAreaRsp_Value = 1130;
+  bool has_queryallarearsp_value() const;
+  void clear_queryallarearsp_value();
+  static const int kQueryAllAreaRspValueFieldNumber = 1130;
+  const ::CustomerFlow::Interactive::Message::QueryAllAreaRsp& queryallarearsp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* mutable_queryallarearsp_value();
+  ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* release_queryallarearsp_value();
+  void set_allocated_queryallarearsp_value(::CustomerFlow::Interactive::Message::QueryAllAreaRsp* queryallarearsp_value);
+
+  // .CustomerFlow.Interactive.Message.BindPushClientIDRsp BindPushClientIDRsp_Value = 1150;
+  bool has_bindpushclientidrsp_value() const;
+  void clear_bindpushclientidrsp_value();
+  static const int kBindPushClientIDRspValueFieldNumber = 1150;
+  const ::CustomerFlow::Interactive::Message::BindPushClientIDRsp& bindpushclientidrsp_value() const;
+  ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* mutable_bindpushclientidrsp_value();
+  ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* release_bindpushclientidrsp_value();
+  void set_allocated_bindpushclientidrsp_value(::CustomerFlow::Interactive::Message::BindPushClientIDRsp* bindpushclientidrsp_value);
+
+  // .CustomerFlow.Interactive.Message.UnbindPushClientIDRsp UnbindPushClientIDRsp_Value = 1160;
+  bool has_unbindpushclientidrsp_value() const;
+  void clear_unbindpushclientidrsp_value();
+  static const int kUnbindPushClientIDRspValueFieldNumber = 1160;
+  const ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp& unbindpushclientidrsp_value() const;
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* mutable_unbindpushclientidrsp_value();
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* release_unbindpushclientidrsp_value();
+  void set_allocated_unbindpushclientidrsp_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* unbindpushclientidrsp_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
   bool has_importposdatarsp_value() const;
   void clear_importposdatarsp_value();
@@ -16680,6 +18453,12 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::ModifyRemotePatrolStoreRsp* modifyremotepatrolstorersp_value_;
   ::CustomerFlow::Interactive::Message::QueryRemotePatrolStoreInfoRsp* queryremotepatrolstoreinforsp_value_;
   ::CustomerFlow::Interactive::Message::QueryAllRemotePatrolStoreRsp* queryallremotepatrolstorersp_value_;
+  ::CustomerFlow::Interactive::Message::AddAreaRsp* addarearsp_value_;
+  ::CustomerFlow::Interactive::Message::DeleteAreaRsp* deletearearsp_value_;
+  ::CustomerFlow::Interactive::Message::ModifyAreaRsp* modifyarearsp_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* queryallarearsp_value_;
+  ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* bindpushclientidrsp_value_;
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* unbindpushclientidrsp_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataRsp* importposdatarsp_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticRsp* querycustomerflowstatisticrsp_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* reportcustomerflowdatarsp_value_;
@@ -16818,6 +18597,232 @@ class CustomerFlowMessage : public ::google::protobuf::Message /* @@protoc_inser
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
+// Area
+
+// string strAreaID = 1;
+inline void Area::clear_strareaid() {
+  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Area::strareaid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.strAreaID)
+  return strareaid_.GetNoArena();
+}
+inline void Area::set_strareaid(const ::std::string& value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.strAreaID)
+}
+#if LANG_CXX11
+inline void Area::set_strareaid(::std::string&& value) {
+  
+  strareaid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Area.strAreaID)
+}
+#endif
+inline void Area::set_strareaid(const char* value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Area.strAreaID)
+}
+inline void Area::set_strareaid(const char* value, size_t size) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Area.strAreaID)
+}
+inline ::std::string* Area::mutable_strareaid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Area.strAreaID)
+  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Area::release_strareaid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Area.strAreaID)
+  
+  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Area::set_allocated_strareaid(::std::string* strareaid) {
+  if (strareaid != NULL) {
+    
+  } else {
+    
+  }
+  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strAreaID)
+}
+
+// string strAreaName = 2;
+inline void Area::clear_strareaname() {
+  strareaname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Area::strareaname() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.strAreaName)
+  return strareaname_.GetNoArena();
+}
+inline void Area::set_strareaname(const ::std::string& value) {
+  
+  strareaname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.strAreaName)
+}
+#if LANG_CXX11
+inline void Area::set_strareaname(::std::string&& value) {
+  
+  strareaname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Area.strAreaName)
+}
+#endif
+inline void Area::set_strareaname(const char* value) {
+  
+  strareaname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Area.strAreaName)
+}
+inline void Area::set_strareaname(const char* value, size_t size) {
+  
+  strareaname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Area.strAreaName)
+}
+inline ::std::string* Area::mutable_strareaname() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Area.strAreaName)
+  return strareaname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Area::release_strareaname() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Area.strAreaName)
+  
+  return strareaname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Area::set_allocated_strareaname(::std::string* strareaname) {
+  if (strareaname != NULL) {
+    
+  } else {
+    
+  }
+  strareaname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaname);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strAreaName)
+}
+
+// uint32 uiState = 3;
+inline void Area::clear_uistate() {
+  uistate_ = 0u;
+}
+inline ::google::protobuf::uint32 Area::uistate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.uiState)
+  return uistate_;
+}
+inline void Area::set_uistate(::google::protobuf::uint32 value) {
+  
+  uistate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.uiState)
+}
+
+// string strCreateDate = 4;
+inline void Area::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Area::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void Area::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.strCreateDate)
+}
+#if LANG_CXX11
+inline void Area::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Area.strCreateDate)
+}
+#endif
+inline void Area::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Area.strCreateDate)
+}
+inline void Area::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Area.strCreateDate)
+}
+inline ::std::string* Area::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Area.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Area::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Area.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Area::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strCreateDate)
+}
+
+// string strExtend = 5;
+inline void Area::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Area::strextend() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void Area::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.strExtend)
+}
+#if LANG_CXX11
+inline void Area::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Area.strExtend)
+}
+#endif
+inline void Area::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Area.strExtend)
+}
+inline void Area::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Area.strExtend)
+}
+inline ::std::string* Area::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Area.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Area::release_strextend() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Area.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Area::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strExtend)
+}
+
+// -------------------------------------------------------------------
+
 // Group
 
 // string strGroupID = 1;
@@ -17447,7 +19452,59 @@ Store::entrance() const {
   return entrance_;
 }
 
-// string strCreateDate = 6;
+// string strAreaID = 6;
+inline void Store::clear_strareaid() {
+  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Store::strareaid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.strAreaID)
+  return strareaid_.GetNoArena();
+}
+inline void Store::set_strareaid(const ::std::string& value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Store.strAreaID)
+}
+#if LANG_CXX11
+inline void Store::set_strareaid(::std::string&& value) {
+  
+  strareaid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Store.strAreaID)
+}
+#endif
+inline void Store::set_strareaid(const char* value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Store.strAreaID)
+}
+inline void Store::set_strareaid(const char* value, size_t size) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Store.strAreaID)
+}
+inline ::std::string* Store::mutable_strareaid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Store.strAreaID)
+  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Store::release_strareaid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Store.strAreaID)
+  
+  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Store::set_allocated_strareaid(::std::string* strareaid) {
+  if (strareaid != NULL) {
+    
+  } else {
+    
+  }
+  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.strAreaID)
+}
+
+// string strCreateDate = 7;
 inline void Store::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17499,7 +19556,7 @@ inline void Store::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.strCreateDate)
 }
 
-// string strExtend = 7;
+// string strExtend = 8;
 inline void Store::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -17551,7 +19608,7 @@ inline void Store::set_allocated_strextend(::std::string* strextend) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.strExtend)
 }
 
-// uint32 uiState = 8;
+// uint32 uiState = 9;
 inline void Store::clear_uistate() {
   uistate_ = 0u;
 }
@@ -17563,6 +19620,20 @@ inline void Store::set_uistate(::google::protobuf::uint32 value) {
   
   uistate_ = value;
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Store.uiState)
+}
+
+// uint32 uiOpenState = 10;
+inline void Store::clear_uiopenstate() {
+  uiopenstate_ = 0u;
+}
+inline ::google::protobuf::uint32 Store::uiopenstate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.uiOpenState)
+  return uiopenstate_;
+}
+inline void Store::set_uiopenstate(::google::protobuf::uint32 value) {
+  
+  uiopenstate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Store.uiOpenState)
 }
 
 // -------------------------------------------------------------------
@@ -18390,7 +20461,21 @@ Event::mutable_strhandler() {
   return &strhandler_;
 }
 
-// string strCreateDate = 11;
+// uint32 uiViewState = 11;
+inline void Event::clear_uiviewstate() {
+  uiviewstate_ = 0u;
+}
+inline ::google::protobuf::uint32 Event::uiviewstate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Event.uiViewState)
+  return uiviewstate_;
+}
+inline void Event::set_uiviewstate(::google::protobuf::uint32 value) {
+  
+  uiviewstate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Event.uiViewState)
+}
+
+// string strCreateDate = 12;
 inline void Event::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18442,7 +20527,7 @@ inline void Event::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Event.strCreateDate)
 }
 
-// string strExtend = 12;
+// string strExtend = 13;
 inline void Event::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18494,7 +20579,7 @@ inline void Event::set_allocated_strextend(::std::string* strextend) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Event.strExtend)
 }
 
-// uint32 uiState = 13;
+// uint32 uiState = 14;
 inline void Event::clear_uistate() {
   uistate_ = 0u;
 }
@@ -19103,6 +21188,252 @@ inline void SmartGuardStore::set_allocated_strcreatedate(::std::string* strcreat
 
 // -------------------------------------------------------------------
 
+// EntranceBrief
+
+// string strEntranceID = 1;
+inline void EntranceBrief::clear_strentranceid() {
+  strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& EntranceBrief::strentranceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+  return strentranceid_.GetNoArena();
+}
+inline void EntranceBrief::set_strentranceid(const ::std::string& value) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+}
+#if LANG_CXX11
+inline void EntranceBrief::set_strentranceid(::std::string&& value) {
+  
+  strentranceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+}
+#endif
+inline void EntranceBrief::set_strentranceid(const char* value) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+}
+inline void EntranceBrief::set_strentranceid(const char* value, size_t size) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+}
+inline ::std::string* EntranceBrief::mutable_strentranceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+  return strentranceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* EntranceBrief::release_strentranceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+  
+  return strentranceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void EntranceBrief::set_allocated_strentranceid(::std::string* strentranceid) {
+  if (strentranceid != NULL) {
+    
+  } else {
+    
+  }
+  strentranceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentranceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
+}
+
+// string strEntranceName = 2;
+inline void EntranceBrief::clear_strentrancename() {
+  strentrancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& EntranceBrief::strentrancename() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+  return strentrancename_.GetNoArena();
+}
+inline void EntranceBrief::set_strentrancename(const ::std::string& value) {
+  
+  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+}
+#if LANG_CXX11
+inline void EntranceBrief::set_strentrancename(::std::string&& value) {
+  
+  strentrancename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+}
+#endif
+inline void EntranceBrief::set_strentrancename(const char* value) {
+  
+  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+}
+inline void EntranceBrief::set_strentrancename(const char* value, size_t size) {
+  
+  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+}
+inline ::std::string* EntranceBrief::mutable_strentrancename() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+  return strentrancename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* EntranceBrief::release_strentrancename() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+  
+  return strentrancename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void EntranceBrief::set_allocated_strentrancename(::std::string* strentrancename) {
+  if (strentrancename != NULL) {
+    
+  } else {
+    
+  }
+  strentrancename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentrancename);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
+}
+
+// -------------------------------------------------------------------
+
+// PatrolStoreEntrance
+
+// string strStoreID = 1;
+inline void PatrolStoreEntrance::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PatrolStoreEntrance::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void PatrolStoreEntrance::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+}
+#if LANG_CXX11
+inline void PatrolStoreEntrance::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+}
+#endif
+inline void PatrolStoreEntrance::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+}
+inline void PatrolStoreEntrance::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+}
+inline ::std::string* PatrolStoreEntrance::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PatrolStoreEntrance::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PatrolStoreEntrance::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreID)
+}
+
+// string strStoreName = 2;
+inline void PatrolStoreEntrance::clear_strstorename() {
+  strstorename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PatrolStoreEntrance::strstorename() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+  return strstorename_.GetNoArena();
+}
+inline void PatrolStoreEntrance::set_strstorename(const ::std::string& value) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+}
+#if LANG_CXX11
+inline void PatrolStoreEntrance::set_strstorename(::std::string&& value) {
+  
+  strstorename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+}
+#endif
+inline void PatrolStoreEntrance::set_strstorename(const char* value) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+}
+inline void PatrolStoreEntrance::set_strstorename(const char* value, size_t size) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+}
+inline ::std::string* PatrolStoreEntrance::mutable_strstorename() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+  return strstorename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PatrolStoreEntrance::release_strstorename() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+  
+  return strstorename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PatrolStoreEntrance::set_allocated_strstorename(::std::string* strstorename) {
+  if (strstorename != NULL) {
+    
+  } else {
+    
+  }
+  strstorename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstorename);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
+}
+
+// repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+inline int PatrolStoreEntrance::entrance_size() const {
+  return entrance_.size();
+}
+inline void PatrolStoreEntrance::clear_entrance() {
+  entrance_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::EntranceBrief& PatrolStoreEntrance::entrance(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
+  return entrance_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::mutable_entrance(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
+  return entrance_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::add_entrance() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
+  return entrance_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >*
+PatrolStoreEntrance::mutable_entrance() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
+  return &entrance_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >&
+PatrolStoreEntrance::entrance() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
+  return entrance_;
+}
+
+// -------------------------------------------------------------------
+
 // RegularPatrol
 
 // string strPlanID = 1;
@@ -19261,114 +21592,37 @@ inline void RegularPatrol::set_allocated_strenable(::std::string* strenable) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strEnable)
 }
 
-// string strStoreInfo = 4;
-inline void RegularPatrol::clear_strstoreinfo() {
-  strstoreinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated .CustomerFlow.Interactive.Message.PatrolStoreEntrance storeEntrance = 4;
+inline int RegularPatrol::storeentrance_size() const {
+  return storeentrance_.size();
 }
-inline const ::std::string& RegularPatrol::strstoreinfo() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
-  return strstoreinfo_.GetNoArena();
+inline void RegularPatrol::clear_storeentrance() {
+  storeentrance_.Clear();
 }
-inline void RegularPatrol::set_strstoreinfo(const ::std::string& value) {
-  
-  strstoreinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
+inline const ::CustomerFlow::Interactive::Message::PatrolStoreEntrance& RegularPatrol::storeentrance(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.storeEntrance)
+  return storeentrance_.Get(index);
 }
-#if LANG_CXX11
-inline void RegularPatrol::set_strstoreinfo(::std::string&& value) {
-  
-  strstoreinfo_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
+inline ::CustomerFlow::Interactive::Message::PatrolStoreEntrance* RegularPatrol::mutable_storeentrance(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.storeEntrance)
+  return storeentrance_.Mutable(index);
 }
-#endif
-inline void RegularPatrol::set_strstoreinfo(const char* value) {
-  
-  strstoreinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
+inline ::CustomerFlow::Interactive::Message::PatrolStoreEntrance* RegularPatrol::add_storeentrance() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.RegularPatrol.storeEntrance)
+  return storeentrance_.Add();
 }
-inline void RegularPatrol::set_strstoreinfo(const char* value, size_t size) {
-  
-  strstoreinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::PatrolStoreEntrance >*
+RegularPatrol::mutable_storeentrance() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RegularPatrol.storeEntrance)
+  return &storeentrance_;
 }
-inline ::std::string* RegularPatrol::mutable_strstoreinfo() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
-  return strstoreinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* RegularPatrol::release_strstoreinfo() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
-  
-  return strstoreinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void RegularPatrol::set_allocated_strstoreinfo(::std::string* strstoreinfo) {
-  if (strstoreinfo != NULL) {
-    
-  } else {
-    
-  }
-  strstoreinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreinfo);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strStoreInfo)
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::PatrolStoreEntrance >&
+RegularPatrol::storeentrance() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.RegularPatrol.storeEntrance)
+  return storeentrance_;
 }
 
-// repeated string strStoreID = 5;
-inline int RegularPatrol::strstoreid_size() const {
-  return strstoreid_.size();
-}
-inline void RegularPatrol::clear_strstoreid() {
-  strstoreid_.Clear();
-}
-inline const ::std::string& RegularPatrol::strstoreid(int index) const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  return strstoreid_.Get(index);
-}
-inline ::std::string* RegularPatrol::mutable_strstoreid(int index) {
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  return strstoreid_.Mutable(index);
-}
-inline void RegularPatrol::set_strstoreid(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  strstoreid_.Mutable(index)->assign(value);
-}
-inline void RegularPatrol::set_strstoreid(int index, const char* value) {
-  strstoreid_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-}
-inline void RegularPatrol::set_strstoreid(int index, const char* value, size_t size) {
-  strstoreid_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-}
-inline ::std::string* RegularPatrol::add_strstoreid() {
-  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  return strstoreid_.Add();
-}
-inline void RegularPatrol::add_strstoreid(const ::std::string& value) {
-  strstoreid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-}
-inline void RegularPatrol::add_strstoreid(const char* value) {
-  strstoreid_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-}
-inline void RegularPatrol::add_strstoreid(const char* value, size_t size) {
-  strstoreid_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-RegularPatrol::strstoreid() const {
-  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  return strstoreid_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-RegularPatrol::mutable_strstoreid() {
-  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RegularPatrol.strStoreID)
-  return &strstoreid_;
-}
-
-// repeated string strPatrolTime = 6;
+// repeated string strPatrolTime = 5;
 inline int RegularPatrol::strpatroltime_size() const {
   return strpatroltime_.size();
 }
@@ -19421,6 +21675,61 @@ inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 RegularPatrol::mutable_strpatroltime() {
   // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RegularPatrol.strPatrolTime)
   return &strpatroltime_;
+}
+
+// repeated string strHandler = 6;
+inline int RegularPatrol::strhandler_size() const {
+  return strhandler_.size();
+}
+inline void RegularPatrol::clear_strhandler() {
+  strhandler_.Clear();
+}
+inline const ::std::string& RegularPatrol::strhandler(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  return strhandler_.Get(index);
+}
+inline ::std::string* RegularPatrol::mutable_strhandler(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  return strhandler_.Mutable(index);
+}
+inline void RegularPatrol::set_strhandler(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  strhandler_.Mutable(index)->assign(value);
+}
+inline void RegularPatrol::set_strhandler(int index, const char* value) {
+  strhandler_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+}
+inline void RegularPatrol::set_strhandler(int index, const char* value, size_t size) {
+  strhandler_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+}
+inline ::std::string* RegularPatrol::add_strhandler() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  return strhandler_.Add();
+}
+inline void RegularPatrol::add_strhandler(const ::std::string& value) {
+  strhandler_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+}
+inline void RegularPatrol::add_strhandler(const char* value) {
+  strhandler_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+}
+inline void RegularPatrol::add_strhandler(const char* value, size_t size) {
+  strhandler_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RegularPatrol::strhandler() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  return strhandler_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+RegularPatrol::mutable_strhandler() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.RegularPatrol.strHandler)
+  return &strhandler_;
 }
 
 // uint32 uiState = 7;
@@ -19487,6 +21796,58 @@ inline void RegularPatrol::set_allocated_strcreatedate(::std::string* strcreated
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strCreateDate)
+}
+
+// string strExtend = 9;
+inline void RegularPatrol::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegularPatrol::strextend() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void RegularPatrol::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+}
+#if LANG_CXX11
+inline void RegularPatrol::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+}
+#endif
+inline void RegularPatrol::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+}
+inline void RegularPatrol::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+}
+inline ::std::string* RegularPatrol::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegularPatrol::release_strextend() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegularPatrol::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
 }
 
 // -------------------------------------------------------------------
@@ -21677,6 +24038,890 @@ inline void ShakehandRsp::set_allocated_strvalue(::std::string* strvalue) {
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ShakehandRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// AddAreaReq
+
+// string strUserID = 1;
+inline void AddAreaReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddAreaReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void AddAreaReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+}
+#if LANG_CXX11
+inline void AddAreaReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+}
+#endif
+inline void AddAreaReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+}
+inline void AddAreaReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+}
+inline ::std::string* AddAreaReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddAreaReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddAreaReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddAreaReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.Area areaInfo = 2;
+inline bool AddAreaReq::has_areainfo() const {
+  return this != internal_default_instance() && areainfo_ != NULL;
+}
+inline void AddAreaReq::clear_areainfo() {
+  if (GetArenaNoVirtual() == NULL && areainfo_ != NULL) delete areainfo_;
+  areainfo_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Area& AddAreaReq::areainfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddAreaReq.areaInfo)
+  return areainfo_ != NULL ? *areainfo_
+                         : *::CustomerFlow::Interactive::Message::Area::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Area* AddAreaReq::mutable_areainfo() {
+  
+  if (areainfo_ == NULL) {
+    areainfo_ = new ::CustomerFlow::Interactive::Message::Area;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddAreaReq.areaInfo)
+  return areainfo_;
+}
+inline ::CustomerFlow::Interactive::Message::Area* AddAreaReq::release_areainfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddAreaReq.areaInfo)
+  
+  ::CustomerFlow::Interactive::Message::Area* temp = areainfo_;
+  areainfo_ = NULL;
+  return temp;
+}
+inline void AddAreaReq::set_allocated_areainfo(::CustomerFlow::Interactive::Message::Area* areainfo) {
+  delete areainfo_;
+  areainfo_ = areainfo;
+  if (areainfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddAreaReq.areaInfo)
+}
+
+// -------------------------------------------------------------------
+
+// AddAreaRsp
+
+// string strAreaID = 1;
+inline void AddAreaRsp::clear_strareaid() {
+  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddAreaRsp::strareaid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+  return strareaid_.GetNoArena();
+}
+inline void AddAreaRsp::set_strareaid(const ::std::string& value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+}
+#if LANG_CXX11
+inline void AddAreaRsp::set_strareaid(::std::string&& value) {
+  
+  strareaid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+}
+#endif
+inline void AddAreaRsp::set_strareaid(const char* value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+}
+inline void AddAreaRsp::set_strareaid(const char* value, size_t size) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+}
+inline ::std::string* AddAreaRsp::mutable_strareaid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddAreaRsp::release_strareaid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+  
+  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddAreaRsp::set_allocated_strareaid(::std::string* strareaid) {
+  if (strareaid != NULL) {
+    
+  } else {
+    
+  }
+  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddAreaRsp.strAreaID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteAreaReq
+
+// string strUserID = 1;
+inline void DeleteAreaReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteAreaReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void DeleteAreaReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+}
+#if LANG_CXX11
+inline void DeleteAreaReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+}
+#endif
+inline void DeleteAreaReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+}
+inline void DeleteAreaReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+}
+inline ::std::string* DeleteAreaReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteAreaReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteAreaReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteAreaReq.strUserID)
+}
+
+// string strAreaID = 2;
+inline void DeleteAreaReq::clear_strareaid() {
+  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteAreaReq::strareaid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+  return strareaid_.GetNoArena();
+}
+inline void DeleteAreaReq::set_strareaid(const ::std::string& value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+}
+#if LANG_CXX11
+inline void DeleteAreaReq::set_strareaid(::std::string&& value) {
+  
+  strareaid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+}
+#endif
+inline void DeleteAreaReq::set_strareaid(const char* value) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+}
+inline void DeleteAreaReq::set_strareaid(const char* value, size_t size) {
+  
+  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+}
+inline ::std::string* DeleteAreaReq::mutable_strareaid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteAreaReq::release_strareaid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+  
+  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteAreaReq::set_allocated_strareaid(::std::string* strareaid) {
+  if (strareaid != NULL) {
+    
+  } else {
+    
+  }
+  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteAreaReq.strAreaID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteAreaRsp
+
+// string strValue = 1;
+inline void DeleteAreaRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteAreaRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteAreaRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+}
+#if LANG_CXX11
+inline void DeleteAreaRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+}
+#endif
+inline void DeleteAreaRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+}
+inline void DeleteAreaRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+}
+inline ::std::string* DeleteAreaRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteAreaRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteAreaRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteAreaRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyAreaReq
+
+// string strUserID = 1;
+inline void ModifyAreaReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyAreaReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void ModifyAreaReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+}
+#if LANG_CXX11
+inline void ModifyAreaReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+}
+#endif
+inline void ModifyAreaReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+}
+inline void ModifyAreaReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+}
+inline ::std::string* ModifyAreaReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyAreaReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyAreaReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyAreaReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.Area areaInfo = 2;
+inline bool ModifyAreaReq::has_areainfo() const {
+  return this != internal_default_instance() && areainfo_ != NULL;
+}
+inline void ModifyAreaReq::clear_areainfo() {
+  if (GetArenaNoVirtual() == NULL && areainfo_ != NULL) delete areainfo_;
+  areainfo_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Area& ModifyAreaReq::areainfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyAreaReq.areaInfo)
+  return areainfo_ != NULL ? *areainfo_
+                         : *::CustomerFlow::Interactive::Message::Area::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Area* ModifyAreaReq::mutable_areainfo() {
+  
+  if (areainfo_ == NULL) {
+    areainfo_ = new ::CustomerFlow::Interactive::Message::Area;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyAreaReq.areaInfo)
+  return areainfo_;
+}
+inline ::CustomerFlow::Interactive::Message::Area* ModifyAreaReq::release_areainfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyAreaReq.areaInfo)
+  
+  ::CustomerFlow::Interactive::Message::Area* temp = areainfo_;
+  areainfo_ = NULL;
+  return temp;
+}
+inline void ModifyAreaReq::set_allocated_areainfo(::CustomerFlow::Interactive::Message::Area* areainfo) {
+  delete areainfo_;
+  areainfo_ = areainfo;
+  if (areainfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyAreaReq.areaInfo)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyAreaRsp
+
+// string strValue = 1;
+inline void ModifyAreaRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyAreaRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyAreaRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+}
+#if LANG_CXX11
+inline void ModifyAreaRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+}
+#endif
+inline void ModifyAreaRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+}
+inline void ModifyAreaRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+}
+inline ::std::string* ModifyAreaRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyAreaRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyAreaRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyAreaRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllAreaReq
+
+// string strUserID = 1;
+inline void QueryAllAreaReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllAreaReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryAllAreaReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryAllAreaReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+}
+#endif
+inline void QueryAllAreaReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+}
+inline void QueryAllAreaReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+}
+inline ::std::string* QueryAllAreaReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllAreaReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllAreaReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllAreaReq.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllAreaRsp
+
+// repeated .CustomerFlow.Interactive.Message.Area areaInfo = 1;
+inline int QueryAllAreaRsp::areainfo_size() const {
+  return areainfo_.size();
+}
+inline void QueryAllAreaRsp::clear_areainfo() {
+  areainfo_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::Area& QueryAllAreaRsp::areainfo(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllAreaRsp.areaInfo)
+  return areainfo_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::Area* QueryAllAreaRsp::mutable_areainfo(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllAreaRsp.areaInfo)
+  return areainfo_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::Area* QueryAllAreaRsp::add_areainfo() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QueryAllAreaRsp.areaInfo)
+  return areainfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Area >*
+QueryAllAreaRsp::mutable_areainfo() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QueryAllAreaRsp.areaInfo)
+  return &areainfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Area >&
+QueryAllAreaRsp::areainfo() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllAreaRsp.areaInfo)
+  return areainfo_;
+}
+
+// -------------------------------------------------------------------
+
+// BindPushClientIDReq
+
+// string strUserID = 1;
+inline void BindPushClientIDReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& BindPushClientIDReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void BindPushClientIDReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+}
+#if LANG_CXX11
+inline void BindPushClientIDReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+}
+#endif
+inline void BindPushClientIDReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+}
+inline void BindPushClientIDReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+}
+inline ::std::string* BindPushClientIDReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* BindPushClientIDReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void BindPushClientIDReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.BindPushClientIDReq.strUserID)
+}
+
+// string strClientID = 2;
+inline void BindPushClientIDReq::clear_strclientid() {
+  strclientid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& BindPushClientIDReq::strclientid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+  return strclientid_.GetNoArena();
+}
+inline void BindPushClientIDReq::set_strclientid(const ::std::string& value) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+}
+#if LANG_CXX11
+inline void BindPushClientIDReq::set_strclientid(::std::string&& value) {
+  
+  strclientid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+}
+#endif
+inline void BindPushClientIDReq::set_strclientid(const char* value) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+}
+inline void BindPushClientIDReq::set_strclientid(const char* value, size_t size) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+}
+inline ::std::string* BindPushClientIDReq::mutable_strclientid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+  return strclientid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* BindPushClientIDReq::release_strclientid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+  
+  return strclientid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void BindPushClientIDReq::set_allocated_strclientid(::std::string* strclientid) {
+  if (strclientid != NULL) {
+    
+  } else {
+    
+  }
+  strclientid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclientid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.BindPushClientIDReq.strClientID)
+}
+
+// -------------------------------------------------------------------
+
+// BindPushClientIDRsp
+
+// string strValue = 1;
+inline void BindPushClientIDRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& BindPushClientIDRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void BindPushClientIDRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+}
+#if LANG_CXX11
+inline void BindPushClientIDRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+}
+#endif
+inline void BindPushClientIDRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+}
+inline void BindPushClientIDRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+}
+inline ::std::string* BindPushClientIDRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* BindPushClientIDRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void BindPushClientIDRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.BindPushClientIDRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// UnbindPushClientIDReq
+
+// string strUserID = 1;
+inline void UnbindPushClientIDReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UnbindPushClientIDReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void UnbindPushClientIDReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+}
+#if LANG_CXX11
+inline void UnbindPushClientIDReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+}
+#endif
+inline void UnbindPushClientIDReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+}
+inline void UnbindPushClientIDReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+}
+inline ::std::string* UnbindPushClientIDReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UnbindPushClientIDReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UnbindPushClientIDReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strUserID)
+}
+
+// string strClientID = 2;
+inline void UnbindPushClientIDReq::clear_strclientid() {
+  strclientid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UnbindPushClientIDReq::strclientid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+  return strclientid_.GetNoArena();
+}
+inline void UnbindPushClientIDReq::set_strclientid(const ::std::string& value) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+}
+#if LANG_CXX11
+inline void UnbindPushClientIDReq::set_strclientid(::std::string&& value) {
+  
+  strclientid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+}
+#endif
+inline void UnbindPushClientIDReq::set_strclientid(const char* value) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+}
+inline void UnbindPushClientIDReq::set_strclientid(const char* value, size_t size) {
+  
+  strclientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+}
+inline ::std::string* UnbindPushClientIDReq::mutable_strclientid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+  return strclientid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UnbindPushClientIDReq::release_strclientid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+  
+  return strclientid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UnbindPushClientIDReq::set_allocated_strclientid(::std::string* strclientid) {
+  if (strclientid != NULL) {
+    
+  } else {
+    
+  }
+  strclientid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strclientid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UnbindPushClientIDReq.strClientID)
+}
+
+// -------------------------------------------------------------------
+
+// UnbindPushClientIDRsp
+
+// string strValue = 1;
+inline void UnbindPushClientIDRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UnbindPushClientIDRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void UnbindPushClientIDRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+}
+#if LANG_CXX11
+inline void UnbindPushClientIDRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+}
+#endif
+inline void UnbindPushClientIDRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+}
+inline void UnbindPushClientIDRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+}
+inline ::std::string* UnbindPushClientIDRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UnbindPushClientIDRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UnbindPushClientIDRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UnbindPushClientIDRsp.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -24996,7 +28241,125 @@ inline void QueryAllEventReq::set_allocated_struserid(::std::string* struserid) 
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllEventReq.strUserID)
 }
 
-// uint32 uiBeginIndex = 2;
+// uint32 uiProcessState = 2;
+inline void QueryAllEventReq::clear_uiprocessstate() {
+  uiprocessstate_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllEventReq::uiprocessstate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllEventReq.uiProcessState)
+  return uiprocessstate_;
+}
+inline void QueryAllEventReq::set_uiprocessstate(::google::protobuf::uint32 value) {
+  
+  uiprocessstate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllEventReq.uiProcessState)
+}
+
+// string strBeginDate = 3;
+inline void QueryAllEventReq::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllEventReq::strbegindate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+inline void QueryAllEventReq::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+}
+#if LANG_CXX11
+inline void QueryAllEventReq::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+}
+#endif
+inline void QueryAllEventReq::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+}
+inline void QueryAllEventReq::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+}
+inline ::std::string* QueryAllEventReq::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllEventReq::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllEventReq::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllEventReq.strBeginDate)
+}
+
+// string strEndDate = 4;
+inline void QueryAllEventReq::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllEventReq::strenddate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+  return strenddate_.GetNoArena();
+}
+inline void QueryAllEventReq::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+}
+#if LANG_CXX11
+inline void QueryAllEventReq::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+}
+#endif
+inline void QueryAllEventReq::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+}
+inline void QueryAllEventReq::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+}
+inline ::std::string* QueryAllEventReq::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllEventReq::release_strenddate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllEventReq::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllEventReq.strEndDate)
+}
+
+// uint32 uiBeginIndex = 5;
 inline void QueryAllEventReq::clear_uibeginindex() {
   uibeginindex_ = 0u;
 }
@@ -33713,6 +37076,240 @@ inline void Request::set_allocated_queryallremotepatrolstorereq_value(::Customer
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllRemotePatrolStoreReq_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddAreaReq AddAreaReq_Value = 1100;
+inline bool Request::has_addareareq_value() const {
+  return this != internal_default_instance() && addareareq_value_ != NULL;
+}
+inline void Request::clear_addareareq_value() {
+  if (GetArenaNoVirtual() == NULL && addareareq_value_ != NULL) delete addareareq_value_;
+  addareareq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddAreaReq& Request::addareareq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.AddAreaReq_Value)
+  return addareareq_value_ != NULL ? *addareareq_value_
+                         : *::CustomerFlow::Interactive::Message::AddAreaReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddAreaReq* Request::mutable_addareareq_value() {
+  
+  if (addareareq_value_ == NULL) {
+    addareareq_value_ = new ::CustomerFlow::Interactive::Message::AddAreaReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.AddAreaReq_Value)
+  return addareareq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddAreaReq* Request::release_addareareq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.AddAreaReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddAreaReq* temp = addareareq_value_;
+  addareareq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_addareareq_value(::CustomerFlow::Interactive::Message::AddAreaReq* addareareq_value) {
+  delete addareareq_value_;
+  addareareq_value_ = addareareq_value;
+  if (addareareq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.AddAreaReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteAreaReq DeleteAreaReq_Value = 1110;
+inline bool Request::has_deleteareareq_value() const {
+  return this != internal_default_instance() && deleteareareq_value_ != NULL;
+}
+inline void Request::clear_deleteareareq_value() {
+  if (GetArenaNoVirtual() == NULL && deleteareareq_value_ != NULL) delete deleteareareq_value_;
+  deleteareareq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteAreaReq& Request::deleteareareq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.DeleteAreaReq_Value)
+  return deleteareareq_value_ != NULL ? *deleteareareq_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteAreaReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteAreaReq* Request::mutable_deleteareareq_value() {
+  
+  if (deleteareareq_value_ == NULL) {
+    deleteareareq_value_ = new ::CustomerFlow::Interactive::Message::DeleteAreaReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.DeleteAreaReq_Value)
+  return deleteareareq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteAreaReq* Request::release_deleteareareq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.DeleteAreaReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteAreaReq* temp = deleteareareq_value_;
+  deleteareareq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_deleteareareq_value(::CustomerFlow::Interactive::Message::DeleteAreaReq* deleteareareq_value) {
+  delete deleteareareq_value_;
+  deleteareareq_value_ = deleteareareq_value;
+  if (deleteareareq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.DeleteAreaReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyAreaReq ModifyAreaReq_Value = 1120;
+inline bool Request::has_modifyareareq_value() const {
+  return this != internal_default_instance() && modifyareareq_value_ != NULL;
+}
+inline void Request::clear_modifyareareq_value() {
+  if (GetArenaNoVirtual() == NULL && modifyareareq_value_ != NULL) delete modifyareareq_value_;
+  modifyareareq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyAreaReq& Request::modifyareareq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ModifyAreaReq_Value)
+  return modifyareareq_value_ != NULL ? *modifyareareq_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyAreaReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyAreaReq* Request::mutable_modifyareareq_value() {
+  
+  if (modifyareareq_value_ == NULL) {
+    modifyareareq_value_ = new ::CustomerFlow::Interactive::Message::ModifyAreaReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ModifyAreaReq_Value)
+  return modifyareareq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyAreaReq* Request::release_modifyareareq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ModifyAreaReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyAreaReq* temp = modifyareareq_value_;
+  modifyareareq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_modifyareareq_value(::CustomerFlow::Interactive::Message::ModifyAreaReq* modifyareareq_value) {
+  delete modifyareareq_value_;
+  modifyareareq_value_ = modifyareareq_value;
+  if (modifyareareq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ModifyAreaReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllAreaReq QueryAllAreaReq_Value = 1130;
+inline bool Request::has_queryallareareq_value() const {
+  return this != internal_default_instance() && queryallareareq_value_ != NULL;
+}
+inline void Request::clear_queryallareareq_value() {
+  if (GetArenaNoVirtual() == NULL && queryallareareq_value_ != NULL) delete queryallareareq_value_;
+  queryallareareq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllAreaReq& Request::queryallareareq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryAllAreaReq_Value)
+  return queryallareareq_value_ != NULL ? *queryallareareq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllAreaReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllAreaReq* Request::mutable_queryallareareq_value() {
+  
+  if (queryallareareq_value_ == NULL) {
+    queryallareareq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllAreaReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryAllAreaReq_Value)
+  return queryallareareq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllAreaReq* Request::release_queryallareareq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryAllAreaReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllAreaReq* temp = queryallareareq_value_;
+  queryallareareq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryallareareq_value(::CustomerFlow::Interactive::Message::QueryAllAreaReq* queryallareareq_value) {
+  delete queryallareareq_value_;
+  queryallareareq_value_ = queryallareareq_value;
+  if (queryallareareq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllAreaReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.BindPushClientIDReq BindPushClientIDReq_Value = 1150;
+inline bool Request::has_bindpushclientidreq_value() const {
+  return this != internal_default_instance() && bindpushclientidreq_value_ != NULL;
+}
+inline void Request::clear_bindpushclientidreq_value() {
+  if (GetArenaNoVirtual() == NULL && bindpushclientidreq_value_ != NULL) delete bindpushclientidreq_value_;
+  bindpushclientidreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::BindPushClientIDReq& Request::bindpushclientidreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.BindPushClientIDReq_Value)
+  return bindpushclientidreq_value_ != NULL ? *bindpushclientidreq_value_
+                         : *::CustomerFlow::Interactive::Message::BindPushClientIDReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::BindPushClientIDReq* Request::mutable_bindpushclientidreq_value() {
+  
+  if (bindpushclientidreq_value_ == NULL) {
+    bindpushclientidreq_value_ = new ::CustomerFlow::Interactive::Message::BindPushClientIDReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.BindPushClientIDReq_Value)
+  return bindpushclientidreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::BindPushClientIDReq* Request::release_bindpushclientidreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.BindPushClientIDReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::BindPushClientIDReq* temp = bindpushclientidreq_value_;
+  bindpushclientidreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_bindpushclientidreq_value(::CustomerFlow::Interactive::Message::BindPushClientIDReq* bindpushclientidreq_value) {
+  delete bindpushclientidreq_value_;
+  bindpushclientidreq_value_ = bindpushclientidreq_value;
+  if (bindpushclientidreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.BindPushClientIDReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.UnbindPushClientIDReq UnbindPushClientIDReq_Value = 1160;
+inline bool Request::has_unbindpushclientidreq_value() const {
+  return this != internal_default_instance() && unbindpushclientidreq_value_ != NULL;
+}
+inline void Request::clear_unbindpushclientidreq_value() {
+  if (GetArenaNoVirtual() == NULL && unbindpushclientidreq_value_ != NULL) delete unbindpushclientidreq_value_;
+  unbindpushclientidreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq& Request::unbindpushclientidreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.UnbindPushClientIDReq_Value)
+  return unbindpushclientidreq_value_ != NULL ? *unbindpushclientidreq_value_
+                         : *::CustomerFlow::Interactive::Message::UnbindPushClientIDReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* Request::mutable_unbindpushclientidreq_value() {
+  
+  if (unbindpushclientidreq_value_ == NULL) {
+    unbindpushclientidreq_value_ = new ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.UnbindPushClientIDReq_Value)
+  return unbindpushclientidreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* Request::release_unbindpushclientidreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.UnbindPushClientIDReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* temp = unbindpushclientidreq_value_;
+  unbindpushclientidreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_unbindpushclientidreq_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* unbindpushclientidreq_value) {
+  delete unbindpushclientidreq_value_;
+  unbindpushclientidreq_value_ = unbindpushclientidreq_value;
+  if (unbindpushclientidreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.UnbindPushClientIDReq_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
 inline bool Request::has_importposdatareq_value() const {
   return this != internal_default_instance() && importposdatareq_value_ != NULL;
@@ -36162,6 +39759,240 @@ inline void Response::set_allocated_queryallremotepatrolstorersp_value(::Custome
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllRemotePatrolStoreRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddAreaRsp AddAreaRsp_Value = 1100;
+inline bool Response::has_addarearsp_value() const {
+  return this != internal_default_instance() && addarearsp_value_ != NULL;
+}
+inline void Response::clear_addarearsp_value() {
+  if (GetArenaNoVirtual() == NULL && addarearsp_value_ != NULL) delete addarearsp_value_;
+  addarearsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddAreaRsp& Response::addarearsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.AddAreaRsp_Value)
+  return addarearsp_value_ != NULL ? *addarearsp_value_
+                         : *::CustomerFlow::Interactive::Message::AddAreaRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddAreaRsp* Response::mutable_addarearsp_value() {
+  
+  if (addarearsp_value_ == NULL) {
+    addarearsp_value_ = new ::CustomerFlow::Interactive::Message::AddAreaRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.AddAreaRsp_Value)
+  return addarearsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddAreaRsp* Response::release_addarearsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.AddAreaRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddAreaRsp* temp = addarearsp_value_;
+  addarearsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_addarearsp_value(::CustomerFlow::Interactive::Message::AddAreaRsp* addarearsp_value) {
+  delete addarearsp_value_;
+  addarearsp_value_ = addarearsp_value;
+  if (addarearsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.AddAreaRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteAreaRsp DeleteAreaRsp_Value = 1110;
+inline bool Response::has_deletearearsp_value() const {
+  return this != internal_default_instance() && deletearearsp_value_ != NULL;
+}
+inline void Response::clear_deletearearsp_value() {
+  if (GetArenaNoVirtual() == NULL && deletearearsp_value_ != NULL) delete deletearearsp_value_;
+  deletearearsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteAreaRsp& Response::deletearearsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.DeleteAreaRsp_Value)
+  return deletearearsp_value_ != NULL ? *deletearearsp_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteAreaRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteAreaRsp* Response::mutable_deletearearsp_value() {
+  
+  if (deletearearsp_value_ == NULL) {
+    deletearearsp_value_ = new ::CustomerFlow::Interactive::Message::DeleteAreaRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.DeleteAreaRsp_Value)
+  return deletearearsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteAreaRsp* Response::release_deletearearsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.DeleteAreaRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteAreaRsp* temp = deletearearsp_value_;
+  deletearearsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_deletearearsp_value(::CustomerFlow::Interactive::Message::DeleteAreaRsp* deletearearsp_value) {
+  delete deletearearsp_value_;
+  deletearearsp_value_ = deletearearsp_value;
+  if (deletearearsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.DeleteAreaRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyAreaRsp ModifyAreaRsp_Value = 1120;
+inline bool Response::has_modifyarearsp_value() const {
+  return this != internal_default_instance() && modifyarearsp_value_ != NULL;
+}
+inline void Response::clear_modifyarearsp_value() {
+  if (GetArenaNoVirtual() == NULL && modifyarearsp_value_ != NULL) delete modifyarearsp_value_;
+  modifyarearsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyAreaRsp& Response::modifyarearsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ModifyAreaRsp_Value)
+  return modifyarearsp_value_ != NULL ? *modifyarearsp_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyAreaRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyAreaRsp* Response::mutable_modifyarearsp_value() {
+  
+  if (modifyarearsp_value_ == NULL) {
+    modifyarearsp_value_ = new ::CustomerFlow::Interactive::Message::ModifyAreaRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ModifyAreaRsp_Value)
+  return modifyarearsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyAreaRsp* Response::release_modifyarearsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ModifyAreaRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyAreaRsp* temp = modifyarearsp_value_;
+  modifyarearsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_modifyarearsp_value(::CustomerFlow::Interactive::Message::ModifyAreaRsp* modifyarearsp_value) {
+  delete modifyarearsp_value_;
+  modifyarearsp_value_ = modifyarearsp_value;
+  if (modifyarearsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ModifyAreaRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllAreaRsp QueryAllAreaRsp_Value = 1130;
+inline bool Response::has_queryallarearsp_value() const {
+  return this != internal_default_instance() && queryallarearsp_value_ != NULL;
+}
+inline void Response::clear_queryallarearsp_value() {
+  if (GetArenaNoVirtual() == NULL && queryallarearsp_value_ != NULL) delete queryallarearsp_value_;
+  queryallarearsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllAreaRsp& Response::queryallarearsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryAllAreaRsp_Value)
+  return queryallarearsp_value_ != NULL ? *queryallarearsp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllAreaRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* Response::mutable_queryallarearsp_value() {
+  
+  if (queryallarearsp_value_ == NULL) {
+    queryallarearsp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllAreaRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryAllAreaRsp_Value)
+  return queryallarearsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* Response::release_queryallarearsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryAllAreaRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* temp = queryallarearsp_value_;
+  queryallarearsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryallarearsp_value(::CustomerFlow::Interactive::Message::QueryAllAreaRsp* queryallarearsp_value) {
+  delete queryallarearsp_value_;
+  queryallarearsp_value_ = queryallarearsp_value;
+  if (queryallarearsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllAreaRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.BindPushClientIDRsp BindPushClientIDRsp_Value = 1150;
+inline bool Response::has_bindpushclientidrsp_value() const {
+  return this != internal_default_instance() && bindpushclientidrsp_value_ != NULL;
+}
+inline void Response::clear_bindpushclientidrsp_value() {
+  if (GetArenaNoVirtual() == NULL && bindpushclientidrsp_value_ != NULL) delete bindpushclientidrsp_value_;
+  bindpushclientidrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::BindPushClientIDRsp& Response::bindpushclientidrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.BindPushClientIDRsp_Value)
+  return bindpushclientidrsp_value_ != NULL ? *bindpushclientidrsp_value_
+                         : *::CustomerFlow::Interactive::Message::BindPushClientIDRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* Response::mutable_bindpushclientidrsp_value() {
+  
+  if (bindpushclientidrsp_value_ == NULL) {
+    bindpushclientidrsp_value_ = new ::CustomerFlow::Interactive::Message::BindPushClientIDRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.BindPushClientIDRsp_Value)
+  return bindpushclientidrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* Response::release_bindpushclientidrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.BindPushClientIDRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* temp = bindpushclientidrsp_value_;
+  bindpushclientidrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_bindpushclientidrsp_value(::CustomerFlow::Interactive::Message::BindPushClientIDRsp* bindpushclientidrsp_value) {
+  delete bindpushclientidrsp_value_;
+  bindpushclientidrsp_value_ = bindpushclientidrsp_value;
+  if (bindpushclientidrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.BindPushClientIDRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.UnbindPushClientIDRsp UnbindPushClientIDRsp_Value = 1160;
+inline bool Response::has_unbindpushclientidrsp_value() const {
+  return this != internal_default_instance() && unbindpushclientidrsp_value_ != NULL;
+}
+inline void Response::clear_unbindpushclientidrsp_value() {
+  if (GetArenaNoVirtual() == NULL && unbindpushclientidrsp_value_ != NULL) delete unbindpushclientidrsp_value_;
+  unbindpushclientidrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp& Response::unbindpushclientidrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.UnbindPushClientIDRsp_Value)
+  return unbindpushclientidrsp_value_ != NULL ? *unbindpushclientidrsp_value_
+                         : *::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* Response::mutable_unbindpushclientidrsp_value() {
+  
+  if (unbindpushclientidrsp_value_ == NULL) {
+    unbindpushclientidrsp_value_ = new ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.UnbindPushClientIDRsp_Value)
+  return unbindpushclientidrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* Response::release_unbindpushclientidrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.UnbindPushClientIDRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* temp = unbindpushclientidrsp_value_;
+  unbindpushclientidrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_unbindpushclientidrsp_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* unbindpushclientidrsp_value) {
+  delete unbindpushclientidrsp_value_;
+  unbindpushclientidrsp_value_ = unbindpushclientidrsp_value;
+  if (unbindpushclientidrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.UnbindPushClientIDRsp_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
 inline bool Response::has_importposdatarsp_value() const {
   return this != internal_default_instance() && importposdatarsp_value_ != NULL;
@@ -36442,6 +40273,36 @@ inline void CustomerFlowMessage::set_allocated_rspvalue(::CustomerFlow::Interact
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

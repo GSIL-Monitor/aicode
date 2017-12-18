@@ -257,6 +257,8 @@ private:
         std::string m_strCurrentWifi;
         std::string m_strSubCategory;
         std::string m_strDisturbMode;
+        std::string m_strPreventDisassembly;
+        std::string m_strExtend;
     } DeviceProperty;
 
     typedef struct
@@ -323,6 +325,13 @@ private:
         unsigned int m_uiSpaceSizeUsed;
 
     } StorageInfo;
+
+    typedef struct
+    {
+        std::string m_strAddressBest;
+        std::list<std::string> m_strAddressOthersList;
+
+    } NotifyServer;
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
@@ -409,7 +418,7 @@ private:
 
     bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease);
 
-    bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, std::string &strLease);
+    bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, NotifyServer &nts, std::string &strLease);
 
     bool DeviceQueryUpdateService(const std::string &strSid, const std::string &strIpAddress, const std::string &strDevID, std::string &strUpdateAddress, std::string &strLease);
 

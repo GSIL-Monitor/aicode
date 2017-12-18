@@ -344,6 +344,8 @@ message DoorbellParameter                       //门铃参数
   string strCurrentWifi = 15;                   //当前WIFI
   string strSubCategory = 16;                   //门铃类别
   string strDisturbMode = 17;                   //免打扰模式
+  string strAntiTheftSwitch = 18;               //防盗开关
+  string strExtend = 19;
 }
 
 message DeviceEvent                             //设备事件

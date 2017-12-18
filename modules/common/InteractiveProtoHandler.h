@@ -339,6 +339,8 @@ public:
         std::string m_strCurrentWifi;
         std::string m_strSubCategory;
         std::string m_strDisturbMode;
+        std::string m_strAntiTheftSwitch;
+        std::string m_strExtend;
     };
 
     struct DeviceEvent

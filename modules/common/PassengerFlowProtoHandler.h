@@ -155,6 +155,20 @@ public:
         QueryAllRemotePatrolStoreReq_T = 18480,   //查询所有远程巡店记录
         QueryAllRemotePatrolStoreRsp_T = 18490,
 
+        AddAreaReq_T = 19000,                     //添加区域
+        AddAreaRsp_T = 19010,
+        DeleteAreaReq_T = 19020,                  //删除区域
+        DeleteAreaRsp_T = 19030,
+        ModifyAreaReq_T = 19040,                  //修改区域
+        ModifyAreaRsp_T = 19050,
+        QueryAllAreaReq_T = 19060,                //查询所有区域
+        QueryAllAreaRsp_T = 19070,
+
+        BindPushClientIDReq_T = 19100,            //用户上报推送参数
+        BindPushClientIDRsp_T = 19110,
+        UnbindPushClientIDReq_T = 19120,          //解绑推送Client ID
+        UnbindPushClientIDRsp_T = 19130,
+
         ImportPOSDataReq_T = 20000,               //录入POS数据
         ImportPOSDataRsp_T = 20010,
 
@@ -165,6 +179,15 @@ public:
 
         ReportCustomerFlowDataReq_T = 30000,      //设备上报客流数据
         ReportCustomerFlowDataRsp_T = 30010
+    };
+
+    struct Area                             //区域
+    {
+        std::string m_strAreaID;
+        std::string m_strAreaName;
+        unsigned int m_uiState;
+        std::string m_strCreateDate;
+        std::string m_strExtend;
     };
 
     struct Group                            //群组信息
@@ -189,6 +212,8 @@ public:
         std::string m_strGoodsCategory;
         std::string m_strAddress;
         std::list<Entrance> m_entranceList;
+        std::string m_strAreaID;
+        unsigned int m_uiOpenState;
         std::string m_strCreateDate;
         std::string m_strExtend;
         unsigned int m_uiState;
@@ -220,6 +245,7 @@ public:
         std::string m_strRemark;
         std::list<unsigned int> m_uiTypeList;
         std::list<std::string> m_strHandlerList;
+        unsigned int m_uiViewState;
         std::string m_strCreateDate;
         std::string m_strExtend;
         unsigned int m_uiState;
@@ -241,16 +267,30 @@ public:
         std::string m_strCreateDate;
     };
 
+    struct EntranceBrief                    //出入口简要信息
+    {
+        std::string m_strEntranceID;
+        std::string m_strEntranceName;
+    };
+
+    struct PatrolStoreEntrance              //巡店店铺出入口
+    {
+        std::string m_strStoreID;
+        std::string m_strStoreName;
+        std::list<EntranceBrief> m_entranceList;
+    };
+
     struct RegularPatrol                    //定时巡店
     {
         std::string m_strPlanID;
         std::string m_strPlanName;
         std::string m_strEnable;
-        std::string m_strStoreInfo;
-        std::list<std::string> m_strStoreIDList;
+        std::list<PatrolStoreEntrance> m_storeEntranceList;
         std::list<std::string> m_strPatrolTimeList;
+        std::list<std::string> m_strHandlerList;
         unsigned int m_uiState;
         std::string m_strCreateDate;
+        std::string m_strExtend;
     };
 
     struct UserBrief                        //用户简要信息 
@@ -382,6 +422,107 @@ public:
     };
 
     struct ShakehandRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddAreaReq : Request
+    {
+        std::string m_strUserID;
+        Area m_areaInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddAreaRsp : Response
+    {
+        std::string m_strAreaID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteAreaReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strAreaID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteAreaRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyAreaReq : Request
+    {
+        std::string m_strUserID;
+        Area m_areaInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyAreaRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllAreaReq : Request
+    {
+        std::string m_strUserID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllAreaRsp : Response
+    {
+        std::list<Area> m_areaList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct BindPushClientIDReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strClientID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct BindPushClientIDRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct UnbindPushClientIDReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strClientID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct UnbindPushClientIDRsp : Response
     {
         std::string m_strValue;
 
@@ -722,6 +863,9 @@ public:
     struct QueryAllEventReq : Request
     {
         std::string m_strUserID;
+        unsigned int m_uiProcessState;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
@@ -1437,6 +1581,36 @@ private:
     bool ShakehandReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool ShakehandRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool ShakehandRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool AddAreaReq_Serializer(const Request &req, std::string &strOutput);
+    bool AddAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool AddAreaRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool AddAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool DeleteAreaReq_Serializer(const Request &req, std::string &strOutput);
+    bool DeleteAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool DeleteAreaRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool DeleteAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool ModifyAreaReq_Serializer(const Request &req, std::string &strOutput);
+    bool ModifyAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ModifyAreaRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ModifyAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryAllAreaReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryAllAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryAllAreaRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryAllAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool BindPushClientIDReq_Serializer(const Request &req, std::string &strOutput);
+    bool BindPushClientIDReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool BindPushClientIDRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool BindPushClientIDRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool UnbindPushClientIDReq_Serializer(const Request &req, std::string &strOutput);
+    bool UnbindPushClientIDReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool UnbindPushClientIDRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool UnbindPushClientIDRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
     bool AddGroupReq_Serializer(const Request &req, std::string &strOutput);
     bool AddGroupReq_UnSerializer(const CustomerFlowMessage &message, Request &req);

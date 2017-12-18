@@ -19,6 +19,14 @@ const std::string PassengerFlowMsgHandler::SUCCESS_MSG = "Ok";
 const std::string PassengerFlowMsgHandler::FAILED_CODE = "-1";
 const std::string PassengerFlowMsgHandler::FAILED_MSG = "Inner failed";
 
+const std::string PassengerFlowMsgHandler::CREATE_DOMAIN("create_domain");
+
+const std::string PassengerFlowMsgHandler::REMOVE_DOMAIN("remove_domain");
+
+const std::string PassengerFlowMsgHandler::MODIFY_DOMAIN("modify_domain");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_DOMAIN("query_all_domain");
+
 const std::string PassengerFlowMsgHandler::REGISTER_USER_ACTION("register_user");
 
 
@@ -263,18 +271,41 @@ bool PassengerFlowMsgHandler::AddStoreHandler(boost::shared_ptr<MsgInfoMap> pMsg
     {
         strExtend = itFind->second;
     }
-    
+
+    itFind = pMsgInfoMap->find("domainid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Domain id not found.");
+        return blResult;
+    }
+    const std::string strDomainID = itFind->second;
+
+    std::string strOpenState = "1";
+    unsigned int uiOpenState = 1;
+    itFind = pMsgInfoMap->find("open_state");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOpenState = itFind->second;
+        if (!ValidType<unsigned int>(strOpenState, uiOpenState))
+        {
+            LOG_ERROR_RLD("Open state is error and input value is " << strOpenState);
+            return blResult;
+        }
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Add store info received and session id is " << strSid << " and user id is " << strUserID << " and store name is " << strStoreName 
-        << " and goods category is " << strGoodsCategory
-        << " and extend is " << strExtend << " and address is " << strAddress);
+        << " and goods category is " << strGoodsCategory << " and domain id is " << strDomainID
+        << " and extend is " << strExtend << " and address is " << strAddress << " and open state is " << uiOpenState);
 
     StoreInfo store;
     store.m_strAddress = strAddress;
     store.m_strExtend = strExtend;
     store.m_strGoodsCategory = strGoodsCategory;
     store.m_strStoreName = strStoreName;
+    store.m_strDomainID = strDomainID;
+    store.m_uiOpenState = uiOpenState;
 
     if (!AddStore(strSid, strUserID, store))
     {
@@ -429,11 +460,31 @@ bool PassengerFlowMsgHandler::ModifyStoreHandler(boost::shared_ptr<MsgInfoMap> p
         strExtend = itFind->second;
     }
 
+    std::string strDomainID;
+    itFind = pMsgInfoMap->find("domainid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDomainID = itFind->second;
+    }
+
+    std::string strOpenState = "1";
+    unsigned int uiOpenState = 1;
+    itFind = pMsgInfoMap->find("open_state");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOpenState = itFind->second;
+        if (!ValidType<unsigned int>(strOpenState, uiOpenState))
+        {
+            LOG_ERROR_RLD("Open state is error and input value is " << strOpenState);
+            return blResult;
+        }
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Modify store info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
-        << " and store name is " << strStoreName << " and goods category is " << strGoodsCategory
-        << " and extend is " << strExtend << " and address is " << strAddress);
+        << " and store name is " << strStoreName << " and goods category is " << strGoodsCategory << " and domain id is " << strDomainID
+        << " and extend is " << strExtend << " and address is " << strAddress << " and open state is " << uiOpenState);
 
     StoreInfo store;
     store.m_strAddress = strAddress;
@@ -441,6 +492,8 @@ bool PassengerFlowMsgHandler::ModifyStoreHandler(boost::shared_ptr<MsgInfoMap> p
     store.m_strGoodsCategory = strGoodsCategory;
     store.m_strStoreName = strStoreName;
     store.m_strStoreID = strStoreID;
+    store.m_strDomainID = strDomainID;
+    store.m_uiOpenState = uiOpenState;
 
     if (!ModifyStore(strSid, strUserID, store))
     {
@@ -564,6 +617,8 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("address", sinfo.m_strAddress));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("create_date", sinfo.m_strCreateDate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", sinfo.m_strExtend));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainid", sinfo.m_strDomainID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("open_state", boost::lexical_cast<std::string>(sinfo.m_uiOpenState)));
 
     blResult = true;
 
@@ -662,6 +717,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
         jsStore["store_id"] = itBegin->m_strStoreID;
         jsStore["store_name"] = itBegin->m_strStoreName;
         //jsStore["create_date"] = itBegin->m_strCreateDate;
+        jsStore["open_state"] = boost::lexical_cast<std::string>(itBegin->m_uiOpenState);
 
         jsStoreInfoList.append(jsStore);
 
@@ -1443,19 +1499,17 @@ bool PassengerFlowMsgHandler::ReportEventHandler(boost::shared_ptr<MsgInfoMap> p
         LOG_ERROR_RLD("Submit date is invalid and value is " << strSubmitDate);
         return blResult;
     }
-
+    
+    std::string strExpireDate;
     itFind = pMsgInfoMap->find("expire_date");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Expire date not found.");
-        return blResult;
-    }
-    const std::string strExpireDate = itFind->second;
-
-    if (!ValidDatetime(strExpireDate))
-    {
-        LOG_ERROR_RLD("Expire date is invalid and value is " << strExpireDate);
-        return blResult;
+        strExpireDate = itFind->second;
+        if (!ValidDatetime(strExpireDate))
+        {
+            LOG_ERROR_RLD("Expire date is invalid and value is " << strExpireDate);
+            return blResult;
+        }
     }
 
     itFind = pMsgInfoMap->find("event_type");
@@ -1488,14 +1542,13 @@ bool PassengerFlowMsgHandler::ReportEventHandler(boost::shared_ptr<MsgInfoMap> p
         return blResult;
     }
 
+    std::string strRemark;
     itFind = pMsgInfoMap->find("remark");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Remark not found.");
-        return blResult;
+        strRemark = itFind->second;
     }
-    const std::string strRemark = itFind->second;
-
+    
     EventInfo einfo;
     einfo.m_strDevID = strDevID;
     einfo.m_strEventHandlerList.swap(strEventHandlerList);
@@ -1716,13 +1769,25 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
         }
     }
 
-    itFind = pMsgInfoMap->find("remark");
-    if (pMsgInfoMap->end() == itFind)
+    std::string strViewState;
+    itFind = pMsgInfoMap->find("view_state");
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Remark not found.");
-        return blResult;
+        strViewState = itFind->second;
+        unsigned int uiViewState = 0;
+        if (!ValidType<unsigned int>(strViewState, uiViewState))
+        {
+            LOG_ERROR_RLD("View state value parse failed.");
+            return blResult;
+        }
     }
-    const std::string strRemark = itFind->second;
+
+    std::string strRemark;
+    itFind = pMsgInfoMap->find("remark");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strRemark = itFind->second;
+    }
 
     EventInfo einfo;
     //einfo.m_strDevID = strDevID;
@@ -1734,6 +1799,7 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
     einfo.m_strSubmitDate = strSubmitDate;
     einfo.m_strUserID = strUserID;
     einfo.m_strProcessState = strProcessState;
+    einfo.m_strViewState = strViewState;
 
     auto itBegin = strEventTypeList.begin();
     auto itEnd = strEventTypeList.end();
@@ -1876,7 +1942,8 @@ bool PassengerFlowMsgHandler::QueryEventHandler(boost::shared_ptr<MsgInfoMap> pM
     //ResultInfoMap.insert(std::map<std::string, std::string>::value_type("remark", einfo.m_strRemark));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", einfo.m_strUserID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", einfo.m_strDevID));
-        
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("view_state", einfo.m_strViewState));
+            
     blResult = true;
 
     return blResult;
@@ -1952,13 +2019,51 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
             return blResult;
         }
     }
+
+    std::string strProcessState;
+    itFind = pMsgInfoMap->find("process_state");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strProcessState = itFind->second;
+        unsigned int uiProcessState = 0;
+        if (!ValidType<unsigned int>(strProcessState, uiProcessState))
+        {
+            LOG_ERROR_RLD("Process state parse failed.");
+            return blResult;
+        }
+    }
+
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+        if (!ValidDatetime(strBeginDate))
+        {
+            LOG_ERROR_RLD("Begin date is invalid and value is " << strBeginDate);
+            return blResult;
+        }
+    }
+
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+        if (!ValidDatetime(strEndDate))
+        {
+            LOG_ERROR_RLD("End date is invalid and value is " << strEndDate);
+            return blResult;
+        }
+    }
     
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Query all event info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex);
+    LOG_INFO_RLD("Query all event info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex <<
+        " and process state is " << strProcessState << " and begin date is " << strBeginDate << " and end date is " << strEndDate);
 
     std::list<EventInfo> einfoList;    
-    if (!QueryAllEvent(strSid, strUserID, uiBeginIndex, einfoList))
+    if (!QueryAllEvent(strSid, strUserID, uiBeginIndex, strProcessState, strBeginDate, strEndDate, einfoList))
     {
         LOG_ERROR_RLD("Query all event handle failed");
         return blResult;
@@ -1986,7 +2091,8 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         jsEventInfo["remark"] = jsRemark;
         jsEventInfo["userid"] = itBegin->m_strUserID;
         jsEventInfo["deviceid"] = itBegin->m_strDevID;
-
+        jsEventInfo["view_state"] = itBegin->m_strViewState;
+        
         Json::Value jsEventTypeList;
         Json::Value jsEventHandlerList;
         
@@ -2635,7 +2741,7 @@ bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgIn
         this_->WriteMsg(ResultInfoMap, writer, blResult);
     }
     BOOST_SCOPE_EXIT_END
-
+    
     auto itFind = pMsgInfoMap->find("sid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -2674,18 +2780,18 @@ bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgIn
         return blResult;
     }
 
-    itFind = pMsgInfoMap->find("storeid");
+    itFind = pMsgInfoMap->find("entrance");
     if (pMsgInfoMap->end() == itFind)
     {
-        LOG_ERROR_RLD("Store id not found.");
+        LOG_ERROR_RLD("Entrance not found.");
         return blResult;
     }
-    const std::string strStoreID = itFind->second;
+    const std::string strEntrance = itFind->second;
 
-    std::list<std::string> strStoreIDList;
-    if (!GetValueList(strStoreID, strStoreIDList))
+    std::list<StoreAndEntranceInfo> saelist;
+    if (!GetEntrance(strEntrance, saelist))
     {
-        LOG_ERROR_RLD("Store id list parse failed");
+        LOG_ERROR_RLD("Entrance parse failed.");
         return blResult;
     }
 
@@ -2713,12 +2819,37 @@ bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgIn
         }
     }
 
+    itFind = pMsgInfoMap->find("handler");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Patrol handler not found.");
+        return blResult;
+    }
+
+    std::list<std::string> strPatrolHandlerList;
+    std::string strPatrolHandler;
+    strPatrolHandler = itFind->second;
+    if (!GetValueList(strPatrolHandler, strPatrolHandlerList))
+    {
+        LOG_ERROR_RLD("Patrol handler list parse failed.");
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
     Patrol pat;
     pat.m_strEnable = strEnable;
     pat.m_strPatrolName = strPatrolName;
     pat.m_strPatrolTimeList.swap(strPatrolTimeList);
-    pat.m_strStoreIDList.swap(strStoreIDList);
     pat.m_strUserID = strUserID;
+    pat.m_strPatrolHandlerList.swap(strPatrolHandlerList);
+    pat.m_strExtend = strExtend;
+    pat.m_SAEList.swap(saelist);
 
     if (!CreateRegularPatrol(strSid, pat))
     {
@@ -2729,7 +2860,7 @@ bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgIn
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
-        << " and patrol name is " << strPatrolName);
+        << " and patrol name is " << strPatrolName << " and extend is " << strExtend);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2872,15 +3003,15 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler(boost::shared_ptr<M
         }
     }
     
-    std::list<std::string> strStoreIDList;
-    std::string strStoreID;
-    itFind = pMsgInfoMap->find("storeid");
+    std::list<StoreAndEntranceInfo> saelist;
+    std::string strEntrance;
+    itFind = pMsgInfoMap->find("entrance");
     if (pMsgInfoMap->end() != itFind)
     {
-        strStoreID = itFind->second;
-        if (!GetValueList(strStoreID, strStoreIDList))
+        strEntrance = itFind->second;        
+        if (!GetEntrance(strEntrance, saelist))
         {
-            LOG_ERROR_RLD("Store id list parse failed");
+            LOG_ERROR_RLD("Entrance parse failed.");
             return blResult;
         }
     }
@@ -2906,14 +3037,36 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler(boost::shared_ptr<M
             }
         }
     }
+
+    std::list<std::string> strPatrolHandlerList;
+    std::string strPatrolHandler;
+    itFind = pMsgInfoMap->find("handler");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolHandler = itFind->second;
+        if (!GetValueList(strPatrolHandler, strPatrolHandlerList))
+        {
+            LOG_ERROR_RLD("Patrol handler list parse failed.");
+            return blResult;
+        }
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
     
     Patrol pat;
     pat.m_strEnable = strEnable;
     pat.m_strPatrolName = strPatrolName;
     pat.m_strPatrolTimeList.swap(strPatrolTimeList);
-    pat.m_strStoreIDList.swap(strStoreIDList);
     pat.m_strUserID = strUserID;
     pat.m_strPatrolID = strPatrolID;
+    pat.m_strPatrolHandlerList.swap(strPatrolHandlerList);
+    pat.m_strExtend = strExtend;
+    pat.m_SAEList.swap(saelist);
 
     if (!ModifyRegularPatrol(strSid, pat))
     {
@@ -2924,7 +3077,7 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler(boost::shared_ptr<M
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Modify regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
-        << " and patrol name is " << strPatrolName);
+        << " and patrol name is " << strPatrolName << " and extend is " << strExtend);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2942,8 +3095,9 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsStoreList;
     Json::Value jsPatrolTimeList;
+    Json::Value jsPatrolHandlerList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreList, &jsPatrolTimeList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreList, &jsPatrolTimeList, &jsPatrolHandlerList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -2962,6 +3116,7 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["store"] = jsStoreList;
                 (*pJsBody)["patrol_time"] = jsPatrolTimeList;
+                (*pJsBody)["handler"] = jsPatrolHandlerList;
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -3009,11 +3164,32 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
         jsPatrolTimeList[i] = *itBegin;
     }
 
-    Json::Reader reader;
-    if (!reader.parse(pat.m_strPatrolInfo, jsStoreList, false))
+    for (auto itBegin = pat.m_SAEList.begin(), itEnd = pat.m_SAEList.end(); itBegin != itEnd; ++itBegin)
     {
-        LOG_ERROR_RLD("Parsed failed and value is " << pat.m_strPatrolInfo);
-        return blResult;
+        Json::Value jsStoreInfo;
+        jsStoreInfo["store_id"] = itBegin->stinfo.m_strStoreID;
+        jsStoreInfo["store_name"] = itBegin->stinfo.m_strStoreName;
+        
+        
+        Json::Value jsEntranceInfoList;        
+        for (auto itB1 = itBegin->etinfolist.begin(), itE1 = itBegin->etinfolist.end(); itB1 != itE1; ++itB1)
+        {
+            Json::Value jsEntranceInfo;
+            jsEntranceInfo["entrance_id"] = itB1->m_strID;
+            jsEntranceInfo["entrance_name"] = itB1->m_strName;
+            jsEntranceInfoList.append(jsEntranceInfo);
+        }
+
+        jsStoreInfo["entrance"] = jsEntranceInfoList;
+
+        jsStoreList.append(jsStoreInfo);
+    }
+
+
+    i = 0;
+    for (auto itBegin = pat.m_strPatrolHandlerList.begin(), itEnd = pat.m_strPatrolHandlerList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsPatrolHandlerList[i] = *itBegin;
     }
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
@@ -3026,7 +3202,8 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_id", pat.m_strPatrolID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_name", pat.m_strPatrolName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("enable", pat.m_strEnable));
-
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", pat.m_strExtend));
+    
     blResult = true;
 
     return blResult;
@@ -3115,7 +3292,8 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlanHandler(boost::shared_ptr
         jsPlanInfo["plan_id"] = itBegin->m_strPatrolID;
         jsPlanInfo["plan_name"] = itBegin->m_strPatrolName;
         jsPlanInfo["enable"] = itBegin->m_strEnable;
-        
+        jsPlanInfo["extend"] = itBegin->m_strExtend;
+                
         Json::Value jsPatrolTimeList;
         unsigned int i = 0;
         for (auto itB = itBegin->m_strPatrolTimeList.begin(), itE = itBegin->m_strPatrolTimeList.end(); itB != itE; ++itB, ++i)
@@ -3124,13 +3302,24 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlanHandler(boost::shared_ptr
         }
 
         jsPlanInfo["patrol_time"] = jsPatrolTimeList;
-                
-        Json::Value jsStoreList;
-        Json::Reader reader;
-        if (!reader.parse(itBegin->m_strPatrolInfo, jsStoreList, false))
+
+        Json::Value jsPatrolHandlerList;
+        i = 0;
+        for (auto itB = itBegin->m_strPatrolHandlerList.begin(), itE = itBegin->m_strPatrolHandlerList.end(); itB != itE; ++itB, ++i)
         {
-            LOG_ERROR_RLD("Parsed failed and value is " << itBegin->m_strPatrolInfo);
-            return blResult;
+            jsPatrolHandlerList[i] = *itB;
+        }
+
+        jsPlanInfo["handler"] = jsPatrolHandlerList;
+                
+        Json::Value jsStoreList;        
+        for (auto itB = itBegin->m_SAEList.begin(), itE = itBegin->m_SAEList.end(); itB != itE; ++itB)
+        {
+            Json::Value jsStoreInfo;
+            jsStoreInfo["store_id"] = itB->stinfo.m_strStoreID;
+            jsStoreInfo["store_name"] = itB->stinfo.m_strStoreName;
+
+            jsStoreList.append(jsStoreInfo);
         }
 
         jsPlanInfo["store"] = jsStoreList;
@@ -5906,6 +6095,225 @@ bool PassengerFlowMsgHandler::UploadPassengerFlowHandler(boost::shared_ptr<MsgIn
 
 }
 
+bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddAreaReq AddAreaReq;
+        AddAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddAreaReq_T;
+        AddAreaReq.m_uiMsgSeq = 1;
+        AddAreaReq.m_strSID = strSid;
+
+        AddAreaReq.m_strUserID = strUserID;
+        AddAreaReq.m_areaInfo.m_strAreaName = dmi.m_strDomainName;
+        AddAreaReq.m_areaInfo.m_strExtend = dmi.m_strExtend;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddAreaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddAreaRsp AddAreaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddAreaRsp))
+        {
+            LOG_ERROR_RLD("Create domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        dmi.m_strDomainID = AddAreaRsp.m_strAreaID;
+
+        iRet = AddAreaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Create domain and domain id is " << dmi.m_strDomainID << " and return code is " << AddAreaRsp.m_iRetcode <<
+            " and return msg is " << AddAreaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::RemoveDomain(const std::string &strSid, const std::string &strUserID, const std::string &strDomainID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteAreaReq DelAreaReq;
+        DelAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteAreaReq_T;
+        DelAreaReq.m_uiMsgSeq = 1;
+        DelAreaReq.m_strSID = strSid;
+
+        DelAreaReq.m_strUserID = strUserID;
+        DelAreaReq.m_strAreaID = strDomainID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelAreaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteAreaRsp DelAreaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelAreaRsp))
+        {
+            LOG_ERROR_RLD("Remove domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelAreaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Remove domain and domain id is " << strDomainID << " and user id is " << strUserID << " and session id is " << strSid <<
+            " and return code is " << DelAreaRsp.m_iRetcode <<
+            " and return msg is " << DelAreaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyAreaReq ModifyAreaReq;
+        ModifyAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyAreaReq_T;
+        ModifyAreaReq.m_uiMsgSeq = 1;
+        ModifyAreaReq.m_strSID = strSid;
+
+        ModifyAreaReq.m_strUserID = strUserID;
+        ModifyAreaReq.m_areaInfo.m_strAreaName = dmi.m_strDomainName;
+        ModifyAreaReq.m_areaInfo.m_strExtend = dmi.m_strExtend;
+        ModifyAreaReq.m_areaInfo.m_strAreaID = dmi.m_strDomainID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyAreaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyAreaRsp ModifyAreaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyAreaRsp))
+        {
+            LOG_ERROR_RLD("Modify domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModifyAreaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify domain and domain id is " << dmi.m_strDomainID << " and return code is " << ModifyAreaRsp.m_iRetcode <<
+            " and return msg is " << ModifyAreaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllDomain(const std::string &strSid, const std::string &strUserID, std::list<DomainInfo> &dmilist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllAreaReq QueryAllAreaReq;
+        QueryAllAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllAreaReq_T;
+        QueryAllAreaReq.m_uiMsgSeq = 1;
+        QueryAllAreaReq.m_strSID = strSid;
+
+        QueryAllAreaReq.m_strUserID = strUserID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllAreaReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all domain req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllAreaRsp QueryAllAreaRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllAreaRsp))
+        {
+            LOG_ERROR_RLD("Query all domain rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        auto itBegin = QueryAllAreaRsp.m_areaList.begin();
+        auto itEnd = QueryAllAreaRsp.m_areaList.end();
+        while (itBegin != itEnd)
+        {
+            DomainInfo dmi;
+            dmi.m_strDomainID = itBegin->m_strAreaID;
+            dmi.m_strDomainName = itBegin->m_strAreaName;
+            dmi.m_strExtend = itBegin->m_strExtend;
+
+            dmilist.push_back(std::move(dmi));
+
+            ++itBegin;
+        }
+
+        iRet = QueryAllAreaRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all domain and return code is " << QueryAllAreaRsp.m_iRetcode <<
+            " and return msg is " << QueryAllAreaRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
 bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -5926,6 +6334,8 @@ bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::str
         AddStoreReq.m_storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
         AddStoreReq.m_storeInfo.m_strStoreName = store.m_strStoreName;
         AddStoreReq.m_storeInfo.m_uiState = 0;
+        AddStoreReq.m_storeInfo.m_strAreaID = store.m_strDomainID;
+        AddStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreReq, strSerializeOutPut))
@@ -6034,6 +6444,8 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
         ModStoreReq.m_storeInfo.m_strStoreName = store.m_strStoreName;
         ModStoreReq.m_storeInfo.m_uiState = 0;
         ModStoreReq.m_storeInfo.m_strStoreID = store.m_strStoreID;
+        ModStoreReq.m_storeInfo.m_strAreaID = store.m_strDomainID;
+        ModStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModStoreReq, strSerializeOutPut))
@@ -6113,6 +6525,8 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
         store.m_strGoodsCategory = QueryStoreRsp.m_storeInfo.m_strGoodsCategory;
         store.m_strStoreID = QueryStoreRsp.m_storeInfo.m_strStoreID;
         store.m_strStoreName = QueryStoreRsp.m_storeInfo.m_strStoreName;
+        store.m_strDomainID = QueryStoreRsp.m_storeInfo.m_strAreaID;
+        store.m_uiOpenState = QueryStoreRsp.m_storeInfo.m_uiOpenState;
 
         auto itBegin = QueryStoreRsp.m_storeInfo.m_entranceList.begin();
         auto itEnd = QueryStoreRsp.m_storeInfo.m_entranceList.end();
@@ -6197,9 +6611,10 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
             StoreInfo store;
             store.m_strStoreID = itBegin->m_strStoreID;
             store.m_strStoreName = itBegin->m_strStoreName;
+            store.m_uiOpenState = itBegin->m_uiOpenState;
 
             LOG_INFO_RLD("Query all store info received and store id is " << itBegin->m_strStoreID <<
-                " and store name is " << itBegin->m_strStoreName);
+                " and store name is " << itBegin->m_strStoreName << " and open state is " << itBegin->m_uiOpenState);
 
             storelist.push_back(std::move(store));
             ++itBegin;
@@ -6803,6 +7218,7 @@ bool PassengerFlowMsgHandler::ModifyEvent(const std::string &strSid, EventInfo &
         ModEventReq.m_eventInfo.m_strSubmitDate = eventinfo.m_strSubmitDate;
         ModEventReq.m_eventInfo.m_uiTypeList.swap(eventinfo.m_uiEventTypeList);
         ModEventReq.m_eventInfo.m_strProcessState = eventinfo.m_strProcessState;
+        ModEventReq.m_eventInfo.m_uiViewState = boost::lexical_cast<unsigned int>(eventinfo.m_strViewState);
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModEventReq, strSerializeOutPut))
@@ -6889,6 +7305,7 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
         eventinfo.m_strSubmitDate = QueryEventRsp.m_eventInfo.m_strSubmitDate;
         eventinfo.m_strUserID = QueryEventRsp.m_eventInfo.m_strUserID;
         eventinfo.m_uiEventTypeList.swap(QueryEventRsp.m_eventInfo.m_uiTypeList);
+        eventinfo.m_strViewState = boost::lexical_cast<std::string>(QueryEventRsp.m_eventInfo.m_uiViewState);
         
         iRet = QueryEventRsp.m_iRetcode;
 
@@ -6907,7 +7324,8 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<EventInfo> &eventinfoList)
+bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+    const std::string &strProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -6918,6 +7336,11 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
 
         QueryAllEventReq.m_strUserID = strUserID;
         QueryAllEventReq.m_uiBeginIndex = uiBeginIndex;
+
+        QueryAllEventReq.m_strBeginDate = strBeginDate;
+        QueryAllEventReq.m_uiProcessState = boost::lexical_cast<unsigned int>(strProcessState);
+        QueryAllEventReq.m_strEndDate = strEndDate;
+
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllEventReq, strSerializeOutPut))
@@ -6958,6 +7381,7 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
             eventinfo.m_strSubmitDate = itBegin->m_strSubmitDate;
             eventinfo.m_strUserID = itBegin->m_strUserID;
             eventinfo.m_uiEventTypeList.swap(itBegin->m_uiTypeList);
+            eventinfo.m_strViewState = boost::lexical_cast<std::string>(itBegin->m_uiViewState);
             
             eventinfoList.push_back(std::move(eventinfo));
 
@@ -7301,7 +7725,25 @@ bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Pat
         AddPatrolReq.m_regularPatrol.m_strEnable = pat.m_strEnable;
         AddPatrolReq.m_regularPatrol.m_strPatrolTimeList.swap(pat.m_strPatrolTimeList);
         AddPatrolReq.m_regularPatrol.m_strPlanName = pat.m_strPatrolName;
-        AddPatrolReq.m_regularPatrol.m_strStoreIDList.swap(pat.m_strStoreIDList);
+        AddPatrolReq.m_regularPatrol.m_strExtend = pat.m_strExtend;
+        AddPatrolReq.m_regularPatrol.m_strHandlerList.swap(pat.m_strPatrolHandlerList);
+
+        for (auto itBegin = pat.m_SAEList.begin(), itEnd = pat.m_SAEList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::PatrolStoreEntrance pse;
+            pse.m_strStoreID = itBegin->stinfo.m_strStoreID;
+            pse.m_strStoreName = itBegin->stinfo.m_strStoreName;
+
+            for (auto itB = itBegin->etinfolist.begin(), itE = itBegin->etinfolist.end(); itB != itE; ++itB)
+            {
+                PassengerFlowProtoHandler::EntranceBrief et;
+                et.m_strEntranceID = itB->m_strID;
+                et.m_strEntranceName = itB->m_strName;
+                pse.m_entranceList.push_back(std::move(et));
+            }
+
+            AddPatrolReq.m_regularPatrol.m_storeEntranceList.push_back(std::move(pse));
+        }
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddPatrolReq, strSerializeOutPut))
@@ -7410,7 +7852,25 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Pat
         ModPatrolReq.m_regularPatrol.m_strEnable = pat.m_strEnable;
         ModPatrolReq.m_regularPatrol.m_strPatrolTimeList.swap(pat.m_strPatrolTimeList);
         ModPatrolReq.m_regularPatrol.m_strPlanName = pat.m_strPatrolName;
-        ModPatrolReq.m_regularPatrol.m_strStoreIDList.swap(pat.m_strStoreIDList);
+        ModPatrolReq.m_regularPatrol.m_strExtend = pat.m_strExtend;
+        ModPatrolReq.m_regularPatrol.m_strHandlerList.swap(pat.m_strPatrolHandlerList);
+
+        for (auto itBegin = pat.m_SAEList.begin(), itEnd = pat.m_SAEList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::PatrolStoreEntrance pse;
+            pse.m_strStoreID = itBegin->stinfo.m_strStoreID;
+            pse.m_strStoreName = itBegin->stinfo.m_strStoreName;
+
+            for (auto itB = itBegin->etinfolist.begin(), itE = itBegin->etinfolist.end(); itB != itE; ++itB)
+            {
+                PassengerFlowProtoHandler::EntranceBrief et;
+                et.m_strEntranceID = itB->m_strID;
+                et.m_strEntranceName = itB->m_strName;
+                pse.m_entranceList.push_back(std::move(et));
+            }
+
+            ModPatrolReq.m_regularPatrol.m_storeEntranceList.push_back(std::move(pse));
+        }
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModPatrolReq, strSerializeOutPut))
@@ -7487,10 +7947,29 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, 
 
         pat.m_strEnable = QueryPatrolRsp.m_regularPatrol.m_strEnable;
         pat.m_strPatrolID = QueryPatrolRsp.m_regularPatrol.m_strPlanID;
-        pat.m_strPatrolInfo = QueryPatrolRsp.m_regularPatrol.m_strStoreInfo;
         pat.m_strPatrolName = QueryPatrolRsp.m_regularPatrol.m_strPlanName;
         pat.m_strPatrolTimeList.swap(QueryPatrolRsp.m_regularPatrol.m_strPatrolTimeList);
-        pat.m_strStoreIDList.swap(QueryPatrolRsp.m_regularPatrol.m_strStoreIDList);
+        pat.m_strExtend = QueryPatrolRsp.m_regularPatrol.m_strExtend;
+        pat.m_strPatrolHandlerList.swap(QueryPatrolRsp.m_regularPatrol.m_strHandlerList);
+
+        for (auto itBegin = QueryPatrolRsp.m_regularPatrol.m_storeEntranceList.begin(), itEnd = QueryPatrolRsp.m_regularPatrol.m_storeEntranceList.end();
+            itBegin != itEnd; ++itBegin)
+        {
+            StoreAndEntranceInfo sae;
+            sae.stinfo.m_strStoreID = itBegin->m_strStoreID;
+            sae.stinfo.m_strStoreName = itBegin->m_strStoreName;
+            
+            for (auto itB = itBegin->m_entranceList.begin(), itE = itBegin->m_entranceList.end(); itB != itE; ++itB)
+            {
+                EntranceInfo einfo;
+                einfo.m_strID = itB->m_strEntranceID;
+                einfo.m_strName = itB->m_strEntranceName;
+
+                sae.etinfolist.push_back(std::move(einfo));
+            }
+
+            pat.m_SAEList.push_back(std::move(sae));
+        }
         
         iRet = QueryPatrolRsp.m_iRetcode;
 
@@ -7550,11 +8029,30 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSi
         {
             Patrol patinfo;
             patinfo.m_strEnable = itBegin->m_strEnable;
-            patinfo.m_strPatrolID = itBegin->m_strPlanID;
-            patinfo.m_strPatrolInfo = itBegin->m_strStoreInfo;
+            patinfo.m_strPatrolID = itBegin->m_strPlanID;            
             patinfo.m_strPatrolName = itBegin->m_strPlanName;
             patinfo.m_strPatrolTimeList.swap(itBegin->m_strPatrolTimeList);
-            patinfo.m_strStoreIDList.swap(itBegin->m_strStoreIDList);
+            patinfo.m_strExtend = itBegin->m_strExtend;
+            patinfo.m_strPatrolHandlerList.swap(itBegin->m_strHandlerList);
+
+            for (auto itBegin2 = itBegin->m_storeEntranceList.begin(), itEnd2 = itBegin->m_storeEntranceList.end();
+                itBegin2 != itEnd2; ++itBegin2)
+            {
+                StoreAndEntranceInfo sae;
+                sae.stinfo.m_strStoreID = itBegin2->m_strStoreID;
+                sae.stinfo.m_strStoreName = itBegin2->m_strStoreName;
+
+                for (auto itB = itBegin2->m_entranceList.begin(), itE = itBegin2->m_entranceList.end(); itB != itE; ++itB)
+                {
+                    EntranceInfo einfo;
+                    einfo.m_strID = itB->m_strEntranceID;
+                    einfo.m_strName = itB->m_strEntranceName;
+
+                    sae.etinfolist.push_back(std::move(einfo));
+                }
+
+                patinfo.m_SAEList.push_back(std::move(sae));
+            }
             
             patlist.push_back(std::move(patinfo));
 
@@ -9229,6 +9727,316 @@ bool PassengerFlowMsgHandler::ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pM
     return true;
 }
 
+bool PassengerFlowMsgHandler::CreateDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store name not found.");
+        return blResult;
+    }
+    const std::string strDomainName = itFind->second;
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create domain info received and session id is " << strSid << " and user id is " << strUserID << " and domain name is " << strDomainName
+        << " and extend is " << strExtend);
+
+    DomainInfo dmi;
+    dmi.m_strDomainName = strDomainName;
+    dmi.m_strExtend = strExtend;
+
+    if (!CreateDomain(strSid, strUserID, dmi))
+    {
+        LOG_ERROR_RLD("Create domain handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainid", dmi.m_strDomainID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::RemoveDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("domainid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Domain id not found.");
+        return blResult;
+    }
+    const std::string strDomainID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Remove domain info received and session id is " << strSid << " and user id is " << strUserID << " and domain id is " << strDomainID);
+
+    if (!RemoveDomain(strSid, strUserID, strDomainID))
+    {
+        LOG_ERROR_RLD("Remove domain handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("domainid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Domain id not found.");
+        return blResult;
+    }
+    const std::string strDomainID = itFind->second;
+    
+    std::string strDomainName;
+    itFind = pMsgInfoMap->find("name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDomainName = itFind->second;
+    }
+    
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify domain info received and session id is " << strSid << " and user id is " << strUserID << " and domain name is " << strDomainName
+        << " and extend is " << strExtend);
+
+    DomainInfo dmi;
+    dmi.m_strDomainName = strDomainName;
+    dmi.m_strExtend = strExtend;
+    dmi.m_strDomainID = strDomainID;
+
+    if (!ModifyDomain(strSid, strUserID, dmi))
+    {
+        LOG_ERROR_RLD("Modify domain handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsDomainInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsDomainInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["domain_info"] = jsDomainInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all domain info received and session id is " << strSid << " and user id is " << strUserID);
+
+    std::list<DomainInfo> dmilist;
+
+    if (!QueryAllDomain(strSid, strUserID, dmilist))
+    {
+        LOG_ERROR_RLD("Query all domain handle failed");
+        return blResult;
+    }
+
+    auto itBegin = dmilist.begin();
+    auto itEnd = dmilist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsDmi;
+        jsDmi["domainid"] = itBegin->m_strDomainID;
+        jsDmi["name"] = itBegin->m_strDomainName;
+        jsDmi["extend"] = itBegin->m_strExtend;
+
+        jsDomainInfoList.append(jsDmi);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void PassengerFlowMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -9500,6 +10308,62 @@ bool PassengerFlowMsgHandler::ValidType(const std::string &strValue, T &ValueT)
     }
 
     return true;
+}
+
+bool PassengerFlowMsgHandler::GetEntrance(const std::string &strValue, std::list<StoreAndEntranceInfo> &saelist)
+{
+    bool blResult = false;
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strValue, root))
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+        
+    Json::Value::Members mem = root.getMemberNames();
+    for (auto itBegin = mem.begin(), itEnd = mem.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto &jsValue = root[*itBegin];
+        if (jsValue.isNull() || !jsValue.isArray())
+        {
+            LOG_ERROR_RLD("Value info type is error, raw data is: " << strValue);
+            return blResult;
+        }
+        StoreAndEntranceInfo sae;
+        sae.stinfo.m_strStoreID = *itBegin;
+
+        std::list<std::string> ValueList;
+        for (unsigned int i = 0; i < jsValue.size(); ++i)
+        {
+            auto jsValueItem = jsValue[i];
+            if (jsValueItem.isNull() || !jsValueItem.isString())
+            {
+                LOG_ERROR_RLD("Value info type is error, raw data is: " << strValue);
+                return blResult;
+            }
+
+            EntranceInfo einfo;
+            einfo.m_strID = jsValueItem.asString();
+            sae.etinfolist.emplace_back(einfo);
+
+            LOG_INFO_RLD("Value item is " << jsValueItem.asString());
+        }
+
+        saelist.push_back(std::move(sae));
+    }
+
+    blResult = true;
+
+    return blResult;
 }
 
 bool PassengerFlowMsgHandler::GetValueList(const std::string &strValue, std::list<std::string> &strValueList)

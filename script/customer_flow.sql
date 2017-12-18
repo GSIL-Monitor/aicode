@@ -36,6 +36,31 @@ use CustomerFlowDB;
 #    index index_ref2 (`user_id`)
 #) engine=innodb auto_increment=1 default charset=utf8 comment='设备信息表';
 
+drop table if exists `t_company_info`;
+create table `t_company_info` (
+    `id` varchar(36) not null,
+    `company_id` varchar(36) not null                comment '公司ID',
+    `company_name` varchar(256) not null             comment '公司名称',
+    `industry` varchar(256) not null                 comment '行业',
+    `address` varchar(512) not null                  comment '地址',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`company_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='公司信息表';
+
+drop table if exists `t_company_user_info`;
+create table `t_company_user_info` (
+    `id` varchar(36) not null,
+    `company_id` varchar(36) not null                comment '公司ID',
+    `user_id` varchar(36) not null                   comment '用户ID',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`company_id`),
+    index index_ref2 (`user_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='公司用户信息表';
+
 drop table if exists `t_group_info`;
 create table `t_group_info` (
     `id` varchar(36) not null,
@@ -52,10 +77,12 @@ drop table if exists `t_area_info`;
 create table `t_area_info` (
     `id` varchar(36) not null,
     `area_id` varchar(36) not null                   comment '区域ID',
-    `area_name` varchar(64) not null                 comment '区域名',
+    `area_name` varchar(256) not null                comment '区域名',
+    `company_id` varchar(36) not null                comment '公司ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
+    `extend` varchar(4000) default ''                comment '扩展',
     primary key (`id`),
     index index_ref1 (`area_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='区域信息表';
@@ -67,6 +94,8 @@ create table `t_store_info` (
     `store_name` varchar(64) not null                comment '店铺名',
     `goods_category` varchar(128) default ''         comment '经营品类',
     `address` varchar(256) default ''                comment '地址',
+    `area_id` varchar(36) default ''                 comment '区域ID',
+    `open_state` int default 1                       comment '营业状态',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -612,6 +641,18 @@ create table `t_patrol_plan_store_association` (
     index index_ref1 (`plan_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='定时巡店计划-店铺关联表';
 
+drop table if exists `t_patrol_plan_entrance_association`;
+create table `t_patrol_plan_entrance_association` (
+    `id` varchar(36) not null,
+    `plan_id` varchar(36) not null                   comment '计划ID',
+    `entrance_id` varchar(36) not null               comment '出入口ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`plan_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='定时巡店计划-出入口关联表';
+
 drop table if exists `t_regular_patrol_time`;
 create table `t_regular_patrol_time` (
     `id` varchar(36) not null,
@@ -635,6 +676,19 @@ create table `t_patrol_plan_entrance_association` (
     primary key (`id`),
     index index_ref1 (`plan_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='定时巡店计划-出入口关联表';
+
+drop table if exists `t_patrol_plan_user_association`;
+create table `t_patrol_plan_user_association` (
+    `id` varchar(36) not null,
+    `plan_id` varchar(36) not null                   comment '计划ID',
+    `user_id` varchar(36) not null                   comment '用户ID',
+    `user_role` varchar(32) not null                 comment '用户角色',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`plan_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='定时巡店计划-用户关联表';
 
 drop table if exists `t_smart_guard_store_plan`;
 create table `t_smart_guard_store_plan` (
@@ -798,6 +852,18 @@ create table `t_patrol_store_screenshot_association` (
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
     primary key (`id`),
-    index index_ref1 (`patrol_id`)   
-) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店截图关联表';
+    index index_ref1 (`patrol_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店-截图关联表';
+
+drop table if exists `t_user_client_id_association`;
+create table `t_user_client_id_association` (
+    `id` varchar(36) not null,
+    `user_id` varchar(36) not null                   comment '用户ID',
+    `client_id` varchar(36) not null                 comment '设备Client ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`user_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='用户-Client ID关联表';
 

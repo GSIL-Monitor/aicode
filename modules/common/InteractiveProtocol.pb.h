@@ -2622,6 +2622,34 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strdisturbmode();
   void set_allocated_strdisturbmode(::std::string* strdisturbmode);
 
+  // string strAntiTheftSwitch = 18;
+  void clear_strantitheftswitch();
+  static const int kStrAntiTheftSwitchFieldNumber = 18;
+  const ::std::string& strantitheftswitch() const;
+  void set_strantitheftswitch(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strantitheftswitch(::std::string&& value);
+  #endif
+  void set_strantitheftswitch(const char* value);
+  void set_strantitheftswitch(const char* value, size_t size);
+  ::std::string* mutable_strantitheftswitch();
+  ::std::string* release_strantitheftswitch();
+  void set_allocated_strantitheftswitch(::std::string* strantitheftswitch);
+
+  // string strExtend = 19;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 19;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.DoorbellParameter)
  private:
 
@@ -2643,6 +2671,8 @@ class DoorbellParameter : public ::google::protobuf::Message /* @@protoc_inserti
   ::google::protobuf::internal::ArenaStringPtr strcurrentwifi_;
   ::google::protobuf::internal::ArenaStringPtr strsubcategory_;
   ::google::protobuf::internal::ArenaStringPtr strdisturbmode_;
+  ::google::protobuf::internal::ArenaStringPtr strantitheftswitch_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -22807,6 +22837,110 @@ inline void DoorbellParameter::set_allocated_strdisturbmode(::std::string* strdi
   }
   strdisturbmode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdisturbmode);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strDisturbMode)
+}
+
+// string strAntiTheftSwitch = 18;
+inline void DoorbellParameter::clear_strantitheftswitch() {
+  strantitheftswitch_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strantitheftswitch() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+  return strantitheftswitch_.GetNoArena();
+}
+inline void DoorbellParameter::set_strantitheftswitch(const ::std::string& value) {
+  
+  strantitheftswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strantitheftswitch(::std::string&& value) {
+  
+  strantitheftswitch_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+}
+#endif
+inline void DoorbellParameter::set_strantitheftswitch(const char* value) {
+  
+  strantitheftswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+}
+inline void DoorbellParameter::set_strantitheftswitch(const char* value, size_t size) {
+  
+  strantitheftswitch_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+}
+inline ::std::string* DoorbellParameter::mutable_strantitheftswitch() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+  return strantitheftswitch_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strantitheftswitch() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+  
+  return strantitheftswitch_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strantitheftswitch(::std::string* strantitheftswitch) {
+  if (strantitheftswitch != NULL) {
+    
+  } else {
+    
+  }
+  strantitheftswitch_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strantitheftswitch);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strAntiTheftSwitch)
+}
+
+// string strExtend = 19;
+inline void DoorbellParameter::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DoorbellParameter::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DoorbellParameter.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void DoorbellParameter::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.DoorbellParameter.strExtend)
+}
+#if LANG_CXX11
+inline void DoorbellParameter::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.DoorbellParameter.strExtend)
+}
+#endif
+inline void DoorbellParameter::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DoorbellParameter.strExtend)
+}
+inline void DoorbellParameter::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DoorbellParameter.strExtend)
+}
+inline ::std::string* DoorbellParameter::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DoorbellParameter.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DoorbellParameter::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.DoorbellParameter.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DoorbellParameter::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DoorbellParameter.strExtend)
 }
 
 // -------------------------------------------------------------------

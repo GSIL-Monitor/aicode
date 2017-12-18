@@ -253,6 +253,7 @@ CREATE TABLE `t_device_parameter_doorbell` (
   `current_wifi` varchar(50) DEFAULT '',            #当前WIFI
   `sub_category` varchar(50) DEFAULT '',            #门铃类别
   `disturb_mode` varchar(50) DEFAULT '',            #免打扰模式
+  `anti_theft` varchar(50) DEFAULT '',              #防盗开关
   `otherproperty` varchar(1000) DEFAULT '',         #其他属性
   `createdate` datetime NOT NULL,
   `updatedate` datetime DEFAULT CURRENT_TIMESTAMP,

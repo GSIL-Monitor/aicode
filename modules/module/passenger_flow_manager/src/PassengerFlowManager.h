@@ -27,8 +27,8 @@ public:
 
     static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
 
-    static const char *READ_STATE;
-    static const char *UNREAD_STATE;
+    static const int UNREAD_STATE = 0;
+    static const int READ_STATE = 1;
 
     typedef struct _ParamInfo
     {
@@ -69,6 +69,18 @@ public:
     bool GetMsgType(const std::string &strMsg, int &iMsgType);
 
     bool PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool AddAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool BindPushClientIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool UnbindPushClientIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool AddStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
@@ -194,6 +206,25 @@ private:
 
     int TimePrecisionScale(const std::string &strDate, const unsigned int uiTimePrecision);
 
+    bool IsValidArea(const std::string &strUserID, const std::string &strAreaName);
+
+    bool QueryUserCompany(const std::string &strUserID, std::string &strCompanyID);
+
+    void AddArea(const std::string &strUserID, const std::string &strCompanyID, const PassengerFlowProtoHandler::Area &areaInfo);
+
+    void DeleteArea(const std::string &strAreaID);
+
+    void ModifyArea(const PassengerFlowProtoHandler::Area &areaInfo);
+
+    bool QueryAllArea(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Area> &areaList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    void BindPushClientID(const std::string &strUserID, const std::string &strCllientID);
+
+    void UnbindPushClientID(const std::string &strUserID, const std::string &strCllientID);
+
+    bool QueryPushParameter(const std::string &strUserID, std::list<std::string> &strClientIDList);
+
     bool IsValidStore(const std::string &strUserID, const std::string &strStoreName);
 
     void AddStore(const std::string &strUserID, const PassengerFlowProtoHandler::Store &storeInfo);
@@ -260,8 +291,16 @@ private:
 
     bool QueryEventRemark(const std::string &strEventID, std::string &strRemark);
 
-    bool QueryAllEvent(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Event> &eventList,
-        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+    bool QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QueryEventSub(const std::string &strSql, std::list<PassengerFlowProtoHandler::Event> &eventList);
 
     void AddSmartGuardStore(const std::string &strUserID, const std::string &strStoreID,
         const PassengerFlowProtoHandler::SmartGuardStore &smartGuardStore);
@@ -287,7 +326,9 @@ private:
 
     void AddRegularPatrol(const std::string &strUserID, const PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
 
-    void AddPatrolPlanStoreAssociation(const std::string &strPlanID, const std::string &strStoreID);
+    void AddPatrolPlanEntranceAssociation(const std::string &strPlanID, const std::string &strEntranceID);
+
+    void AddPatrolPlanUserAssociation(const std::string &strPlanID, const std::string &strUserID, const std::string &strRole);
 
     void AddRegularPatrolTime(const std::string &strPlanID, const std::string &strTime);
 
@@ -295,9 +336,13 @@ private:
 
     void ModifyRegularPatrol(const PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
 
-    void ModifyPatrolPlanStoreAssociation(const std::string &strPlanID, const std::list<std::string> &storeList);
+    void ModifyPatrolPlanEntranceAssociation(const std::string &strPlanID, const std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeList);
 
-    void DeletePatrolPlanStoreAssociation(const std::string &strPlanID);
+    void ModifyPatrolPlanUserAssociation(const std::string &strPlanID, const std::list<std::string> &strUserIDList);
+
+    void DeletePatrolPlanEntranceAssociation(const std::string &strPlanID);
+
+    void DeletePatrolPlanUserAssociation(const std::string &strPlanID);
 
     void ModifyRegularPatrolTime(const std::string &strPlanID, const std::list<std::string> &timeList);
 
@@ -305,7 +350,9 @@ private:
 
     bool QueryRegularPatrolInfo(const std::string &strPlanID, PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
 
-    bool QueryPatrolPlanStoreAssociation(const std::string &strPlanID, std::string &strStoreInfo);
+    bool QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList);
+
+    bool QueryPatrolPlanUserAssociation(const std::string &strPlanID, std::list<std::string> &strUserIDList);
 
     bool QueryRegularPatrolTime(const std::string &strPlanID, std::list<std::string> &strTimeList);
 

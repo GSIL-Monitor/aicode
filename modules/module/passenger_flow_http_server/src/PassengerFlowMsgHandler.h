@@ -22,6 +22,11 @@ class PassengerFlowProtoHandler;
 class PassengerFlowMsgHandler : public boost::noncopyable
 {
 public:
+    static const std::string CREATE_DOMAIN;
+    static const std::string REMOVE_DOMAIN;
+    static const std::string MODIFY_DOMAIN;
+    static const std::string QUERY_ALL_DOMAIN;
+
     static const std::string REGISTER_USER_ACTION;
     static const std::string ADD_STORE_ACTION;
     static const std::string DEL_STORE_ACTION;
@@ -107,6 +112,15 @@ public:
     ~PassengerFlowMsgHandler();
 
     bool ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool CreateDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     bool AddStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -233,6 +247,13 @@ public:
     
 private:
     
+    struct DomainInfo
+    {
+        std::string m_strDomainID;
+        std::string m_strDomainName;
+        std::string m_strExtend;
+    };
+
     struct StoreInfo
     {
         std::string m_strStoreID;
@@ -244,6 +265,8 @@ private:
         std::string m_strDelEntrance;
         std::string m_strExtend;
         std::string m_strCreateDate;
+        std::string m_strDomainID;
+        unsigned int m_uiOpenState;
     };
 
     struct EntranceInfo
@@ -276,6 +299,7 @@ private:
         unsigned int m_uiState;
         std::string m_strExtend;
         std::string m_strCreateDate;
+        std::string m_strViewState;
     };
 
     struct Plan 
@@ -293,15 +317,22 @@ private:
         std::string m_strEndTime2;
     };
 
+    typedef struct
+    {
+        StoreInfo stinfo;
+        std::list<EntranceInfo> etinfolist;
+    } StoreAndEntranceInfo;
+
     struct Patrol 
     {
         std::string m_strPatrolID;
         std::string m_strPatrolName;
-        std::string m_strUserID;
-        std::list<std::string> m_strStoreIDList;        
+        std::string m_strUserID;       
         std::string m_strEnable;
         std::list<std::string> m_strPatrolTimeList;
-        std::string m_strPatrolInfo;
+        std::list<std::string> m_strPatrolHandlerList;
+        std::list<StoreAndEntranceInfo> m_SAEList;
+        std::string m_strExtend;
     };
 
     struct VIP
@@ -379,6 +410,15 @@ private:
 
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
 
+    bool CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi);
+
+    bool RemoveDomain(const std::string &strSid, const std::string &strUserID, const std::string &strDomainID);
+
+    bool ModifyDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi);
+
+    bool QueryAllDomain(const std::string &strSid, const std::string &strUserID, std::list<DomainInfo> &dmilist);
+
+
     bool AddStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store);
 
     bool DelStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID);
@@ -420,7 +460,8 @@ private:
 
     bool QueryEvent(const std::string &strSid, EventInfo &eventinfo);
 
-    bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<EventInfo> &eventinfoList);
+    bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+        const std::string &strProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
 
 
     bool CreateGuardStorePlan(const std::string &strSid, Plan &plan);
@@ -503,6 +544,8 @@ private:
 
     template<typename T>
     bool ValidType(const std::string &strValue, T &ValueT);
+
+    bool GetEntrance(const std::string &strValue, std::list<StoreAndEntranceInfo> &saelist);
 
     bool GetValueList(const std::string &strValue, std::list<std::string> &strValueList);
 

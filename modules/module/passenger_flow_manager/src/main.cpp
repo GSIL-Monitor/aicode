@@ -360,6 +360,14 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgTypeParseHandler(boost::bind(&PassengerFlowManager::GetMsgType, &Umg, _1, _2));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddAreaReq_T, boost::bind(&PassengerFlowManager::AddAreaReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteAreaReq_T, boost::bind(&PassengerFlowManager::DeleteAreaReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyAreaReq_T, boost::bind(&PassengerFlowManager::ModifyAreaReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllAreaReq_T, boost::bind(&PassengerFlowManager::QueryAllAreaReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::BindPushClientIDReq_T, boost::bind(&PassengerFlowManager::BindPushClientIDReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::UnbindPushClientIDReq_T, boost::bind(&PassengerFlowManager::UnbindPushClientIDReq, &Umg, _1, _2, _3));
+
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreReq_T, boost::bind(&PassengerFlowManager::AddStoreReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreReq_T, boost::bind(&PassengerFlowManager::DeleteStoreReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreReq_T, boost::bind(&PassengerFlowManager::ModifyStoreReq, &Umg, _1, _2, _3));

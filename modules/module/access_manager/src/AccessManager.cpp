@@ -3506,6 +3506,8 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             rsp.m_doorbellParameter.m_strCurrentWifi = doorbellParameter.m_strCurrentWifi;
             rsp.m_doorbellParameter.m_strSubCategory = doorbellParameter.m_strSubCategory;
             rsp.m_doorbellParameter.m_strDisturbMode = doorbellParameter.m_strDisturbMode;
+            rsp.m_doorbellParameter.m_strAntiTheftSwitch = doorbellParameter.m_strAntiTheftSwitch;
+            rsp.m_doorbellParameter.m_strExtend = doorbellParameter.m_strExtend;
         }
 
         std::string strSerializeOutPut;
@@ -3534,6 +3536,8 @@ bool AccessManager::QueryDeviceParameterReqDevice(const std::string &strMsg, con
             " and current wifi is " << doorbellParameter.m_strCurrentWifi <<
             " and sub category is " << doorbellParameter.m_strSubCategory <<
             " and disturb mode is " << doorbellParameter.m_strDisturbMode <<
+            " and anti-theft switch is " << doorbellParameter.m_strAntiTheftSwitch <<
+            " and extend is " << doorbellParameter.m_strExtend <<
             " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -7472,6 +7476,22 @@ void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, 
         blModified = true;
     }
 
+    if (!doorbellParameter.m_strAntiTheftSwitch.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", anti_theft = '%s'", "*" == doorbellParameter.m_strAntiTheftSwitch ? "" : doorbellParameter.m_strAntiTheftSwitch.c_str());
+
+        blModified = true;
+    }
+
+    if (!doorbellParameter.m_strExtend.empty())
+    {
+        len = strlen(sql);
+        snprintf(sql + len, size - len, ", extend = '%s'", "*" == doorbellParameter.m_strExtend ? "" : doorbellParameter.m_strExtend.c_str());
+
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("UpdateDoorbellParameterToDB completed, there is no change");
@@ -7509,7 +7529,7 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
 {
     char sql[1024] = { 0 };
     const char *sqlfmt = "select doorbell_name, serial_number, doorbell_p2pid, battery_capacity, charging_state, wifi_signal, volume_level,"
-        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi, sub_category, disturb_mode"
+        " version_number, channel_number, coding_type, pir_alarm_swtich, doorbell_switch, pir_alarm_level, pir_ineffective_time, current_wifi, sub_category, disturb_mode, anti_theft, extend"
         " from t_device_parameter_doorbell where deviceid = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -7567,6 +7587,12 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
             break;
         case 16:
             doorbellParameter.m_strDisturbMode = strColumn;
+            break;
+        case 17:
+            doorbellParameter.m_strAntiTheftSwitch = strColumn;
+            break;
+        case 18:
+            doorbellParameter.m_strExtend = strColumn;
             Result = doorbellParameter;
             break;
 
@@ -7607,6 +7633,8 @@ bool AccessManager::QueryDoorbellParameterToDB(const std::string &strDeviceID, c
     doorbellParameter.m_strCurrentWifi = result.m_strCurrentWifi;
     doorbellParameter.m_strSubCategory = result.m_strSubCategory;
     doorbellParameter.m_strDisturbMode = result.m_strDisturbMode;
+    doorbellParameter.m_strAntiTheftSwitch = result.m_strAntiTheftSwitch;
+    doorbellParameter.m_strExtend = result.m_strExtend;
 
     return true;
 }

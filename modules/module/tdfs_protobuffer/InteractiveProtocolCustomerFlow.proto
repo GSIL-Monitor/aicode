@@ -168,6 +168,20 @@ enum CustomerFlowMsgType
     QueryAllRemotePatrolStoreReq_T = 18480;   //查询所有远程巡店记录
     QueryAllRemotePatrolStoreRsp_T = 18490;
 
+    AddAreaReq_T = 19000;                     //添加区域
+    AddAreaRsp_T = 19010;
+    DeleteAreaReq_T = 19020;                  //删除区域
+    DeleteAreaRsp_T = 19030;
+    ModifyAreaReq_T = 19040;                  //修改区域
+    ModifyAreaRsp_T = 19050;
+    QueryAllAreaReq_T = 19060;                //查询所有区域
+    QueryAllAreaRsp_T = 19070;
+
+    BindPushClientIDReq_T = 19100;            //绑定推送Client ID
+    BindPushClientIDRsp_T = 19110;
+    UnbindPushClientIDReq_T = 19120;          //解绑推送Client ID
+    UnbindPushClientIDRsp_T = 19130;
+
     ImportPOSDataReq_T = 20000;               //录入POS数据
     ImportPOSDataRsp_T = 20010;
 
@@ -178,6 +192,15 @@ enum CustomerFlowMsgType
 
     ReportCustomerFlowDataReq_T = 30000;      //设备上报客流数据
     ReportCustomerFlowDataRsp_T = 30010;
+}
+
+message Area                             //区域
+{
+    string strAreaID = 1;
+    string strAreaName = 2;
+    uint32 uiState = 3;
+    string strCreateDate = 4;
+    string strExtend = 5;
 }
 
 message Group                            //群组信息
@@ -203,9 +226,11 @@ message Store                            //店铺信息
     string strGoodsCategory = 3;
     string strAddress = 4;
     repeated Entrance entrance = 5;
-    string strCreateDate = 6;
-    string strExtend = 7;
-    uint32 uiState = 8;
+    string strAreaID = 6;
+    string strCreateDate = 7;
+    string strExtend = 8;
+    uint32 uiState = 9;
+    uint32 uiOpenState = 10; 
 }
 
 message UserGroupAssociation             //用户群组关联信息
@@ -234,9 +259,10 @@ message Event                            //事件信息
     string strRemark = 8;
     repeated uint32 uiType = 9;
     repeated string strHandler = 10;
-    string strCreateDate = 11;
-    string strExtend = 12;
-    uint32 uiState = 13;
+    uint32 uiViewState = 11;
+    string strCreateDate = 12;
+    string strExtend = 13;
+    uint32 uiState = 14;
 }
 
 message SmartGuardStore                  //智能看店计划
@@ -255,16 +281,30 @@ message SmartGuardStore                  //智能看店计划
     string strCreateDate = 12;
 }
 
+message EntranceBrief                    //出入口简要信息
+{
+    string strEntranceID = 1;
+    string strEntranceName = 2;
+}
+
+message PatrolStoreEntrance              //巡店店铺出入口
+{
+    string strStoreID = 1;
+    string strStoreName = 2;
+    repeated EntranceBrief entrance = 3;
+}
+
 message RegularPatrol                    //定时巡店
 {
     string strPlanID = 1;
     string strPlanName = 2;
     string strEnable = 3;
-    string strStoreInfo = 4;
-    repeated string strStoreID = 5;
-    repeated string strPatrolTime = 6;
+    repeated PatrolStoreEntrance storeEntrance = 4;
+    repeated string strPatrolTime = 5;
+    repeated string strHandler = 6;
     uint32 uiState = 7;
     string strCreateDate = 8;
+    string strExtend = 9;
 }
 
 message UserBrief                        //用户简要信息
@@ -362,6 +402,71 @@ message ShakehandReq                     //握手请求
 }
 
 message ShakehandRsp                     //握手响应
+{
+    string strValue = 1;
+}
+
+message AddAreaReq                       //添加区域请求
+{
+    string strUserID = 1;
+    Area areaInfo = 2;
+}
+
+message AddAreaRsp                       //添加区域响应
+{
+    string strAreaID = 1;
+}
+
+message DeleteAreaReq                    //删除区域请求
+{
+    string strUserID = 1;
+    string strAreaID = 2;
+}
+
+message DeleteAreaRsp                    //删除区域响应
+{
+    string strValue = 1;
+}
+
+message ModifyAreaReq                    //修改区域请求
+{
+    string strUserID = 1;
+    Area areaInfo = 2;
+}
+
+message ModifyAreaRsp                    //修改区域响应
+{
+    string strValue = 1;
+}
+
+message QueryAllAreaReq                  //查询所有区域请求
+{
+    string strUserID = 1;
+}
+
+message QueryAllAreaRsp                  //查询所有区域响应
+{
+    repeated Area areaInfo = 1;
+}
+
+message BindPushClientIDReq              //绑定推送Client ID请求
+{
+    string strUserID = 1;
+    string strClientID = 2;
+}
+
+message BindPushClientIDRsp              //绑定推送Client ID响应
+{
+    string strValue = 1;
+}
+
+message UnbindPushClientIDReq            //解绑推送Client ID请求
+{
+    string strUserID = 1;
+    string strClientID = 2;
+}
+
+message UnbindPushClientIDRsp            //解绑推送Client ID响应
 {
     string strValue = 1;
 }
@@ -585,7 +690,10 @@ message QueryEventInfoRsp                //查询事件信息响应
 message QueryAllEventReq                 //查询所有事件请求
 {
     string strUserID = 1;
-    uint32 uiBeginIndex = 2;
+    uint32 uiProcessState = 2;
+    string strBeginDate = 3;
+    string strEndDate = 4;
+    uint32 uiBeginIndex = 5;
 }
 
 message QueryAllEventRsp                 //查询所有事件响应
@@ -1115,6 +1223,14 @@ message Request
     QueryRemotePatrolStoreInfoReq QueryRemotePatrolStoreInfoReq_Value = 1030;  //查询远程巡店记录信息
     QueryAllRemotePatrolStoreReq QueryAllRemotePatrolStoreReq_Value = 1040;    //查询所有远程巡店记录
 
+    AddAreaReq AddAreaReq_Value = 1100;                                        //添加区域
+    DeleteAreaReq DeleteAreaReq_Value = 1110;                                  //删除区域
+    ModifyAreaReq ModifyAreaReq_Value = 1120;                                  //修改区域
+    QueryAllAreaReq QueryAllAreaReq_Value = 1130;                              //查询所有区域
+
+    BindPushClientIDReq BindPushClientIDReq_Value = 1150;                      //绑定推送Client ID
+    UnbindPushClientIDReq UnbindPushClientIDReq_Value = 1160;                  //解绑推送Client ID
+
     ImportPOSDataReq ImportPOSDataReq_Value = 2000;                            //录入POS数据
 
     QueryCustomerFlowStatisticReq QueryCustomerFlowStatisticReq_Value = 2900;  //查询客流统计
@@ -1200,6 +1316,14 @@ message Response
     ModifyRemotePatrolStoreRsp ModifyRemotePatrolStoreRsp_Value = 1020;        //修改远程巡店记录
     QueryRemotePatrolStoreInfoRsp QueryRemotePatrolStoreInfoRsp_Value = 1030;  //查询远程巡店记录信息
     QueryAllRemotePatrolStoreRsp QueryAllRemotePatrolStoreRsp_Value = 1040;    //查询所有远程巡店记录
+
+    AddAreaRsp AddAreaRsp_Value = 1100;                                        //添加区域
+    DeleteAreaRsp DeleteAreaRsp_Value = 1110;                                  //删除区域
+    ModifyAreaRsp ModifyAreaRsp_Value = 1120;                                  //修改区域
+    QueryAllAreaRsp QueryAllAreaRsp_Value = 1130;                              //查询所有区域
+
+    BindPushClientIDRsp BindPushClientIDRsp_Value = 1150;                      //绑定推送Client ID
+    UnbindPushClientIDRsp UnbindPushClientIDRsp_Value = 1160;                  //解绑推送Client ID
 
     ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;                            //录入POS数据
 

@@ -119,6 +119,8 @@ void SerializeStoreList(const std::list<PassengerFlowProtoHandler::Store> &store
         pDstStoreInfo->set_strstorename(itBegin->m_strStoreName);
         pDstStoreInfo->set_strgoodscategory(itBegin->m_strGoodsCategory);
         pDstStoreInfo->set_straddress(itBegin->m_strAddress);
+        pDstStoreInfo->set_strareaid(itBegin->m_strAreaID);
+        pDstStoreInfo->set_uiopenstate(itBegin->m_uiOpenState);
         pDstStoreInfo->set_strcreatedate(itBegin->m_strCreateDate);
         pDstStoreInfo->set_strextend(itBegin->m_strExtend);
         pDstStoreInfo->set_uistate(itBegin->m_uiState);
@@ -138,6 +140,8 @@ void UnSerializeStoreList(std::list<PassengerFlowProtoHandler::Store> &storeInfo
         storeInfo.m_strStoreName = srcStoreInfo.strstorename();
         storeInfo.m_strGoodsCategory = srcStoreInfo.strgoodscategory();
         storeInfo.m_strAddress = srcStoreInfo.straddress();
+        storeInfo.m_strAreaID = srcStoreInfo.strareaid();
+        storeInfo.m_uiOpenState = srcStoreInfo.uiopenstate();
         storeInfo.m_strCreateDate = srcStoreInfo.strcreatedate();
         storeInfo.m_strExtend = srcStoreInfo.strextend();
         storeInfo.m_uiState = srcStoreInfo.uistate();
@@ -145,6 +149,47 @@ void UnSerializeStoreList(std::list<PassengerFlowProtoHandler::Store> &storeInfo
         UnSerializeEntranceList(storeInfo.m_entranceList, srcStoreInfo.entrance());
 
         storeInfoList.push_back(std::move(storeInfo));
+    }
+}
+
+void SerializePatrolStoreEntranceList(const std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList,
+    ::google::protobuf::RepeatedPtrField<::CustomerFlow::Interactive::Message::PatrolStoreEntrance> *pDstStoreEntranceList)
+{
+    for (auto itBegin = storeEntranceList.begin(), itEnd = storeEntranceList.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto pDstPatrolStoreEntrance = pDstStoreEntranceList->Add();
+        pDstPatrolStoreEntrance->set_strstoreid(itBegin->m_strStoreID);
+        pDstPatrolStoreEntrance->set_strstorename(itBegin->m_strStoreName);
+
+        for (auto it = itBegin->m_entranceList.begin(), end = itBegin->m_entranceList.end(); it != end; ++it)
+        {
+            auto entrance = pDstPatrolStoreEntrance->add_entrance();
+            entrance->set_strentranceid(it->m_strEntranceID);
+            entrance->set_strentrancename(it->m_strEntranceName);
+        }
+    }
+}
+
+void UnSerializePatrolStoreEntranceList(std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList,
+    const ::google::protobuf::RepeatedPtrField<::CustomerFlow::Interactive::Message::PatrolStoreEntrance> &srcStoreEntranceList)
+{
+    for (int i = 0, sz = srcStoreEntranceList.size(); i < sz; ++i)
+    {
+        auto srcPatrolStoreEntrance = srcStoreEntranceList.Get(i);
+        PassengerFlowProtoHandler::PatrolStoreEntrance storeEntrance;
+        storeEntrance.m_strStoreID = srcPatrolStoreEntrance.strstoreid();
+        storeEntrance.m_strStoreName = srcPatrolStoreEntrance.strstorename();
+
+        for (int j = 0, sz2 = srcPatrolStoreEntrance.entrance_size(); j < sz2; ++j)
+        {
+            auto srcEntrance = srcPatrolStoreEntrance.entrance(j);
+            PassengerFlowProtoHandler::EntranceBrief entrance;
+            entrance.m_strEntranceID = srcEntrance.strentranceid();
+            entrance.m_strEntranceName = srcEntrance.strentrancename();
+            storeEntrance.m_entranceList.push_back(entrance);
+        }
+
+        storeEntranceList.push_back(std::move(storeEntrance));
     }
 }
 
@@ -304,6 +349,66 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::ShakehandRsp_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ShakehandRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ShakehandRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddAreaReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddAreaReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddAreaReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddAreaRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddAreaRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddAreaRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteAreaReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteAreaReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteAreaReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteAreaRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteAreaRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteAreaRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyAreaReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyAreaReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyAreaReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyAreaRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyAreaRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyAreaRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllAreaReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllAreaRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::BindPushClientIDReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::BindPushClientIDReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::BindPushClientIDReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::BindPushClientIDRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::BindPushClientIDRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::BindPushClientIDRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::UnbindPushClientIDReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::UnbindPushClientIDReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UnbindPushClientIDReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::UnbindPushClientIDRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::UnbindPushClientIDRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UnbindPushClientIDRsp_T, handler));
 
     /////////////////////////////////////////////////////
 
@@ -1011,6 +1116,126 @@ bool PassengerFlowProtoHandler::ShakehandRsp_Serializer(const Request &rsp, std:
 bool PassengerFlowProtoHandler::ShakehandRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<ShakehandRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::AddAreaReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<AddAreaReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<AddAreaReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::AddAreaRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<AddAreaRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<AddAreaRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::DeleteAreaReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<DeleteAreaReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<DeleteAreaReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::DeleteAreaRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteAreaRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<DeleteAreaRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::ModifyAreaReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ModifyAreaReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ModifyAreaReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ModifyAreaRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyAreaRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ModifyAreaRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryAllAreaReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllAreaReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryAllAreaReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryAllAreaRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllAreaRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryAllAreaRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::BindPushClientIDReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<BindPushClientIDReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::BindPushClientIDReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<BindPushClientIDReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::BindPushClientIDRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<BindPushClientIDRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::BindPushClientIDRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<BindPushClientIDRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::UnbindPushClientIDReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<UnbindPushClientIDReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::UnbindPushClientIDReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<UnbindPushClientIDReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::UnbindPushClientIDRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<UnbindPushClientIDRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::UnbindPushClientIDRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<UnbindPushClientIDRsp, Request>(message, rsp);
 }
 
 bool PassengerFlowProtoHandler::AddGroupReq_Serializer(const Request &req, std::string &strOutput)
@@ -2277,6 +2502,243 @@ void PassengerFlowProtoHandler::ShakehandRsp::UnSerializer(const CustomerFlowMes
     m_strValue = message.rspvalue().shakehandrsp_value().strvalue();
 }
 
+void PassengerFlowProtoHandler::AddAreaReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddAreaReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_addareareq_value();
+    req->set_struserid(m_strUserID);
+
+    auto area = req->mutable_areainfo();
+    area->set_strareaid(m_areaInfo.m_strAreaID);
+    area->set_strareaname(m_areaInfo.m_strAreaName);
+    area->set_strcreatedate(m_areaInfo.m_strCreateDate);
+    area->set_uistate(m_areaInfo.m_uiState);
+    area->set_strextend(m_areaInfo.m_strExtend);
+}
+
+void PassengerFlowProtoHandler::AddAreaReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().addareareq_value();
+    m_strUserID = req.struserid();
+
+    auto area = req.areainfo();
+    m_areaInfo.m_strAreaID = area.strareaid();
+    m_areaInfo.m_strAreaName = area.strareaname();
+    m_areaInfo.m_strCreateDate = area.strcreatedate();
+    m_areaInfo.m_uiState = area.uistate();
+    m_areaInfo.m_strExtend = area.strextend();
+}
+
+void PassengerFlowProtoHandler::AddAreaRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddAreaRsp_T);
+    message.mutable_rspvalue()->mutable_addarearsp_value()->set_strareaid(m_strAreaID);
+}
+
+void PassengerFlowProtoHandler::AddAreaRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    m_strAreaID = message.rspvalue().addarearsp_value().strareaid();
+}
+
+void PassengerFlowProtoHandler::DeleteAreaReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteAreaReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_deleteareareq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strareaid(m_strAreaID);
+}
+
+void PassengerFlowProtoHandler::DeleteAreaReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().deleteareareq_value();
+    m_strUserID = req.struserid();
+    m_strAreaID = req.strareaid();
+}
+
+void PassengerFlowProtoHandler::DeleteAreaRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteAreaRsp_T);
+
+    message.mutable_rspvalue()->mutable_deletearearsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::DeleteAreaRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().deletearearsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::ModifyAreaReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyAreaReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_modifyareareq_value();
+    req->set_struserid(m_strUserID);
+
+    auto area = req->mutable_areainfo();
+    area->set_strareaid(m_areaInfo.m_strAreaID);
+    area->set_strareaname(m_areaInfo.m_strAreaName);
+    area->set_strcreatedate(m_areaInfo.m_strCreateDate);
+    area->set_uistate(m_areaInfo.m_uiState);
+    area->set_strextend(m_areaInfo.m_strExtend);
+}
+
+void PassengerFlowProtoHandler::ModifyAreaReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().modifyareareq_value();
+    m_strUserID = req.struserid();
+
+    auto area = req.areainfo();
+    m_areaInfo.m_strAreaID = area.strareaid();
+    m_areaInfo.m_strAreaName = area.strareaname();
+    m_areaInfo.m_strCreateDate = area.strcreatedate();
+    m_areaInfo.m_uiState = area.uistate();
+    m_areaInfo.m_strExtend = area.strextend();
+}
+
+void PassengerFlowProtoHandler::ModifyAreaRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyAreaRsp_T);
+
+    message.mutable_rspvalue()->mutable_modifyarearsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::ModifyAreaRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().modifyarearsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::QueryAllAreaReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllAreaReq_T);
+
+    message.mutable_reqvalue()->mutable_queryallareareq_value()->set_struserid(m_strUserID);
+}
+
+void PassengerFlowProtoHandler::QueryAllAreaReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+
+    m_strUserID = message.reqvalue().queryallareareq_value().struserid();
+}
+
+void PassengerFlowProtoHandler::QueryAllAreaRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllAreaRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_queryallarearsp_value();
+    for (auto it = m_areaList.begin(), end = m_areaList.end(); it != end; ++it)
+    {
+        auto area = rsp->add_areainfo();
+        area->set_strareaid(it->m_strAreaID);
+        area->set_strareaname(it->m_strAreaName);
+        area->set_strcreatedate(it->m_strCreateDate);
+        area->set_uistate(it->m_uiState);
+        area->set_strextend(it->m_strExtend);
+    }
+}
+
+void PassengerFlowProtoHandler::QueryAllAreaRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    auto rsp = message.rspvalue().queryallarearsp_value();
+    for (int i = 0, sz = rsp.areainfo_size(); i < sz; ++i)
+    {
+        auto rspArea = rsp.areainfo(i);
+        Area area;
+        area.m_strAreaID = rspArea.strareaid();
+        area.m_strAreaName = rspArea.strareaname();
+        area.m_strCreateDate = rspArea.strcreatedate();
+        area.m_uiState = rspArea.uistate();
+        area.m_strExtend = rspArea.strextend();
+
+        m_areaList.push_back(area);
+    }
+}
+
+void PassengerFlowProtoHandler::BindPushClientIDReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::BindPushClientIDReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_bindpushclientidreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strclientid(m_strClientID);
+}
+
+void PassengerFlowProtoHandler::BindPushClientIDReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().bindpushclientidreq_value();
+    m_strUserID = req.struserid();
+    m_strClientID = req.strclientid();
+}
+
+void PassengerFlowProtoHandler::BindPushClientIDRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::BindPushClientIDRsp_T);
+
+    message.mutable_rspvalue()->mutable_bindpushclientidrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::BindPushClientIDRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().bindpushclientidrsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::UnbindPushClientIDReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UnbindPushClientIDReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_unbindpushclientidreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strclientid(m_strClientID);
+}
+
+void PassengerFlowProtoHandler::UnbindPushClientIDReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().unbindpushclientidreq_value();
+    m_strUserID = req.struserid();
+    m_strClientID = req.strclientid();
+}
+
+void PassengerFlowProtoHandler::UnbindPushClientIDRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UnbindPushClientIDRsp_T);
+
+    message.mutable_rspvalue()->mutable_unbindpushclientidrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::UnbindPushClientIDRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().unbindpushclientidrsp_value().strvalue();
+}
+
 void PassengerFlowProtoHandler::AddGroupReq::Serializer(CustomerFlowMessage &message) const
 {
     Request::Serializer(message);
@@ -2476,6 +2938,8 @@ void PassengerFlowProtoHandler::AddStoreReq::Serializer(CustomerFlowMessage &mes
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
+    store->set_strareaid(m_storeInfo.m_strAreaID);
+    store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
@@ -2493,6 +2957,8 @@ void PassengerFlowProtoHandler::AddStoreReq::UnSerializer(const CustomerFlowMess
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
+    m_storeInfo.m_strAreaID = store.strareaid();
+    m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
@@ -2558,6 +3024,8 @@ void PassengerFlowProtoHandler::ModifyStoreReq::Serializer(CustomerFlowMessage &
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
+    store->set_strareaid(m_storeInfo.m_strAreaID);
+    store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
@@ -2575,6 +3043,8 @@ void PassengerFlowProtoHandler::ModifyStoreReq::UnSerializer(const CustomerFlowM
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
+    m_storeInfo.m_strAreaID = store.strareaid();
+    m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
@@ -2623,6 +3093,8 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::Serializer(CustomerFlowMessag
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
+    store->set_strareaid(m_storeInfo.m_strAreaID);
+    store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
@@ -2637,6 +3109,8 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::UnSerializer(const CustomerFl
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
+    m_storeInfo.m_strAreaID = store.strareaid();
+    m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
@@ -2673,6 +3147,7 @@ void PassengerFlowProtoHandler::QueryAllStoreRsp::Serializer(CustomerFlowMessage
         auto store = rsp->add_storeinfo();
         store->set_strstoreid(it->m_strStoreID);
         store->set_strstorename(it->m_strStoreName);
+        store->set_uiopenstate(it->m_uiOpenState);
     }
 }
 
@@ -2686,6 +3161,7 @@ void PassengerFlowProtoHandler::QueryAllStoreRsp::UnSerializer(const CustomerFlo
         PassengerFlowProtoHandler::Store store;
         store.m_strStoreID = rspStore.strstoreid();
         store.m_strStoreName = rspStore.strstorename();
+        store.m_uiOpenState = rspStore.uiopenstate();
 
         m_storeList.push_back(store);
     }
@@ -2938,6 +3414,7 @@ void PassengerFlowProtoHandler::AddEventReq::Serializer(CustomerFlowMessage &mes
     event->set_strdeviceid(m_eventInfo.m_strDeviceID);
     event->set_strprocessstate(m_eventInfo.m_strProcessState);
     event->set_strremark(m_eventInfo.m_strRemark);
+    event->set_uiviewstate(m_eventInfo.m_uiViewState);
     event->set_strcreatedate(m_eventInfo.m_strCreateDate);
     event->set_strextend(m_eventInfo.m_strExtend);
     event->set_uistate(m_eventInfo.m_uiState);
@@ -2966,6 +3443,7 @@ void PassengerFlowProtoHandler::AddEventReq::UnSerializer(const CustomerFlowMess
     m_eventInfo.m_strDeviceID = event.strdeviceid();
     m_eventInfo.m_strProcessState = event.strprocessstate();
     m_eventInfo.m_strRemark = event.strremark();
+    m_eventInfo.m_uiViewState = event.uiviewstate();
     m_eventInfo.m_strCreateDate = event.strcreatedate();
     m_eventInfo.m_strExtend = event.strextend();
     m_eventInfo.m_uiState = event.uistate();
@@ -3046,6 +3524,7 @@ void PassengerFlowProtoHandler::ModifyEventReq::Serializer(CustomerFlowMessage &
     event->set_strdeviceid(m_eventInfo.m_strDeviceID);
     event->set_strprocessstate(m_eventInfo.m_strProcessState);
     event->set_strremark(m_eventInfo.m_strRemark);
+    event->set_uiviewstate(m_eventInfo.m_uiViewState);
     event->set_strcreatedate(m_eventInfo.m_strCreateDate);
     event->set_strextend(m_eventInfo.m_strExtend);
     event->set_uistate(m_eventInfo.m_uiState);
@@ -3076,6 +3555,7 @@ void PassengerFlowProtoHandler::ModifyEventReq::UnSerializer(const CustomerFlowM
     m_eventInfo.m_strDeviceID = event.strdeviceid();
     m_eventInfo.m_strProcessState = event.strprocessstate();
     m_eventInfo.m_strRemark = event.strremark();
+    m_eventInfo.m_uiViewState = event.uiviewstate();
     m_eventInfo.m_strCreateDate = event.strcreatedate();
     m_eventInfo.m_strExtend = event.strextend();
     m_eventInfo.m_uiState = event.uistate();
@@ -3139,6 +3619,7 @@ void PassengerFlowProtoHandler::QueryEventInfoRsp::Serializer(CustomerFlowMessag
     event->set_strdeviceid(m_eventInfo.m_strDeviceID);
     event->set_strprocessstate(m_eventInfo.m_strProcessState);
     event->set_strremark(m_eventInfo.m_strRemark);
+    event->set_uiviewstate(m_eventInfo.m_uiViewState);
     event->set_strcreatedate(m_eventInfo.m_strCreateDate);
     event->set_strextend(m_eventInfo.m_strExtend);
     event->set_uistate(m_eventInfo.m_uiState);
@@ -3166,6 +3647,7 @@ void PassengerFlowProtoHandler::QueryEventInfoRsp::UnSerializer(const CustomerFl
     m_eventInfo.m_strDeviceID = event.strdeviceid();
     m_eventInfo.m_strProcessState = event.strprocessstate();
     m_eventInfo.m_strRemark = event.strremark();
+    m_eventInfo.m_uiViewState = event.uiviewstate();
     m_eventInfo.m_strCreateDate = event.strcreatedate();
     m_eventInfo.m_strExtend = event.strextend();
     m_eventInfo.m_uiState = event.uistate();
@@ -3190,6 +3672,9 @@ void PassengerFlowProtoHandler::QueryAllEventReq::Serializer(CustomerFlowMessage
 
     auto req = message.mutable_reqvalue()->mutable_queryalleventreq_value();
     req->set_struserid(m_strUserID);
+    req->set_uiprocessstate(m_uiProcessState);
+    req->set_strbegindate(m_strBeginDate);
+    req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
 }
 
@@ -3199,6 +3684,9 @@ void PassengerFlowProtoHandler::QueryAllEventReq::UnSerializer(const CustomerFlo
 
     auto req = message.reqvalue().queryalleventreq_value();
     m_strUserID = req.struserid();
+    m_uiProcessState = req.uiprocessstate();
+    m_strBeginDate = req.strbegindate();
+    m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
 }
 
@@ -3219,6 +3707,7 @@ void PassengerFlowProtoHandler::QueryAllEventRsp::Serializer(CustomerFlowMessage
         event->set_strdeviceid(it->m_strDeviceID);
         event->set_strprocessstate(it->m_strProcessState);
         event->set_strremark(it->m_strRemark);
+        event->set_uiviewstate(it->m_uiViewState);
         event->set_strcreatedate(it->m_strCreateDate);
         event->set_strextend(it->m_strExtend);
         event->set_uistate(it->m_uiState);
@@ -3251,6 +3740,7 @@ void PassengerFlowProtoHandler::QueryAllEventRsp::UnSerializer(const CustomerFlo
         event.m_strDeviceID = rspEvent.strdeviceid();
         event.m_strProcessState = rspEvent.strprocessstate();
         event.m_strRemark = rspEvent.strremark();
+        event.m_uiViewState = rspEvent.uiviewstate();
         event.m_strCreateDate = rspEvent.strcreatedate();
         event.m_strExtend = rspEvent.strextend();
         event.m_uiState = rspEvent.uistate();
@@ -3589,19 +4079,21 @@ void PassengerFlowProtoHandler::AddRegularPatrolReq::Serializer(CustomerFlowMess
     regularPatrol->set_strplanid(m_regularPatrol.m_strPlanID);
     regularPatrol->set_strplanname(m_regularPatrol.m_strPlanName);
     regularPatrol->set_strenable(m_regularPatrol.m_strEnable);
-    regularPatrol->set_strstoreinfo(m_regularPatrol.m_strStoreInfo);
     regularPatrol->set_strcreatedate(m_regularPatrol.m_strCreateDate);
     regularPatrol->set_uistate(m_regularPatrol.m_uiState);
-
-    for (auto it = m_regularPatrol.m_strStoreIDList.begin(), end = m_regularPatrol.m_strStoreIDList.end(); it != end; ++it)
-    {
-        regularPatrol->add_strstoreid(*it);
-    }
+    regularPatrol->set_strextend(m_regularPatrol.m_strExtend);
 
     for (auto it = m_regularPatrol.m_strPatrolTimeList.begin(), end = m_regularPatrol.m_strPatrolTimeList.end(); it != end; ++it)
     {
         regularPatrol->add_strpatroltime(*it);
     }
+
+    for (auto it = m_regularPatrol.m_strHandlerList.begin(), end = m_regularPatrol.m_strHandlerList.end(); it != end; ++it)
+    {
+        regularPatrol->add_strhandler(*it);
+    }
+
+    SerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol->mutable_storeentrance());
 }
 
 void PassengerFlowProtoHandler::AddRegularPatrolReq::UnSerializer(const CustomerFlowMessage &message)
@@ -3614,19 +4106,21 @@ void PassengerFlowProtoHandler::AddRegularPatrolReq::UnSerializer(const Customer
     m_regularPatrol.m_strPlanID = regularPatrol.strplanid();
     m_regularPatrol.m_strPlanName = regularPatrol.strplanname();
     m_regularPatrol.m_strEnable = regularPatrol.strenable();
-    m_regularPatrol.m_strStoreInfo = regularPatrol.strstoreinfo();
     m_regularPatrol.m_strCreateDate = regularPatrol.strcreatedate();
     m_regularPatrol.m_uiState = regularPatrol.uistate();
-
-    for (int i = 0, sz = regularPatrol.strstoreid_size(); i < sz; ++i)
-    {
-        m_regularPatrol.m_strStoreIDList.push_back(regularPatrol.strstoreid(i));
-    }
+    m_regularPatrol.m_strExtend = regularPatrol.strextend();
 
     for (int i = 0, sz = regularPatrol.strpatroltime_size(); i < sz; ++i)
     {
         m_regularPatrol.m_strPatrolTimeList.push_back(regularPatrol.strpatroltime(i));
     }
+
+    for (int i = 0, sz = regularPatrol.strhandler_size(); i < sz; ++i)
+    {
+        m_regularPatrol.m_strHandlerList.push_back(regularPatrol.strhandler(i));
+    }
+
+    UnSerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol.storeentrance());
 }
 
 void PassengerFlowProtoHandler::AddRegularPatrolRsp::Serializer(CustomerFlowMessage &message) const
@@ -3687,19 +4181,21 @@ void PassengerFlowProtoHandler::ModifyRegularPatrolReq::Serializer(CustomerFlowM
     regularPatrol->set_strplanid(m_regularPatrol.m_strPlanID);
     regularPatrol->set_strplanname(m_regularPatrol.m_strPlanName);
     regularPatrol->set_strenable(m_regularPatrol.m_strEnable);
-    regularPatrol->set_strstoreinfo(m_regularPatrol.m_strStoreInfo);
     regularPatrol->set_strcreatedate(m_regularPatrol.m_strCreateDate);
     regularPatrol->set_uistate(m_regularPatrol.m_uiState);
-
-    for (auto it = m_regularPatrol.m_strStoreIDList.begin(), end = m_regularPatrol.m_strStoreIDList.end(); it != end; ++it)
-    {
-        regularPatrol->add_strstoreid(*it);
-    }
+    regularPatrol->set_strextend(m_regularPatrol.m_strExtend);
 
     for (auto it = m_regularPatrol.m_strPatrolTimeList.begin(), end = m_regularPatrol.m_strPatrolTimeList.end(); it != end; ++it)
     {
         regularPatrol->add_strpatroltime(*it);
     }
+
+    for (auto it = m_regularPatrol.m_strHandlerList.begin(), end = m_regularPatrol.m_strHandlerList.end(); it != end; ++it)
+    {
+        regularPatrol->add_strhandler(*it);
+    }
+
+    SerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol->mutable_storeentrance());
 }
 
 void PassengerFlowProtoHandler::ModifyRegularPatrolReq::UnSerializer(const CustomerFlowMessage &message)
@@ -3712,19 +4208,21 @@ void PassengerFlowProtoHandler::ModifyRegularPatrolReq::UnSerializer(const Custo
     m_regularPatrol.m_strPlanID = regularPatrol.strplanid();
     m_regularPatrol.m_strPlanName = regularPatrol.strplanname();
     m_regularPatrol.m_strEnable = regularPatrol.strenable();
-    m_regularPatrol.m_strStoreInfo = regularPatrol.strstoreinfo();
     m_regularPatrol.m_strCreateDate = regularPatrol.strcreatedate();
     m_regularPatrol.m_uiState = regularPatrol.uistate();
-
-    for (int i = 0, sz = regularPatrol.strstoreid_size(); i < sz; ++i)
-    {
-        m_regularPatrol.m_strStoreIDList.push_back(regularPatrol.strstoreid(i));
-    }
+    m_regularPatrol.m_strExtend = regularPatrol.strextend();
 
     for (int i = 0, sz = regularPatrol.strpatroltime_size(); i < sz; ++i)
     {
         m_regularPatrol.m_strPatrolTimeList.push_back(regularPatrol.strpatroltime(i));
     }
+
+    for (int i = 0, sz = regularPatrol.strhandler_size(); i < sz; ++i)
+    {
+        m_regularPatrol.m_strHandlerList.push_back(regularPatrol.strhandler(i));
+    }
+
+    UnSerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol.storeentrance());
 }
 
 void PassengerFlowProtoHandler::ModifyRegularPatrolRsp::Serializer(CustomerFlowMessage &message) const
@@ -3768,19 +4266,21 @@ void PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp::Serializer(CustomerFl
     regularPatrol->set_strplanid(m_regularPatrol.m_strPlanID);
     regularPatrol->set_strplanname(m_regularPatrol.m_strPlanName);
     regularPatrol->set_strenable(m_regularPatrol.m_strEnable);
-    regularPatrol->set_strstoreinfo(m_regularPatrol.m_strStoreInfo);
     regularPatrol->set_strcreatedate(m_regularPatrol.m_strCreateDate);
     regularPatrol->set_uistate(m_regularPatrol.m_uiState);
-
-    for (auto it = m_regularPatrol.m_strStoreIDList.begin(), end = m_regularPatrol.m_strStoreIDList.end(); it != end; ++it)
-    {
-        regularPatrol->add_strstoreid(*it);
-    }
+    regularPatrol->set_strextend(m_regularPatrol.m_strExtend);
 
     for (auto it = m_regularPatrol.m_strPatrolTimeList.begin(), end = m_regularPatrol.m_strPatrolTimeList.end(); it != end; ++it)
     {
         regularPatrol->add_strpatroltime(*it);
     }
+
+    for (auto it = m_regularPatrol.m_strHandlerList.begin(), end = m_regularPatrol.m_strHandlerList.end(); it != end; ++it)
+    {
+        regularPatrol->add_strhandler(*it);
+    }
+
+    SerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol->mutable_storeentrance());
 }
 
 void PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp::UnSerializer(const CustomerFlowMessage &message)
@@ -3790,19 +4290,21 @@ void PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp::UnSerializer(const Cu
     m_regularPatrol.m_strPlanID = regularPatrol.strplanid();
     m_regularPatrol.m_strPlanName = regularPatrol.strplanname();
     m_regularPatrol.m_strEnable = regularPatrol.strenable();
-    m_regularPatrol.m_strStoreInfo = regularPatrol.strstoreinfo();
     m_regularPatrol.m_strCreateDate = regularPatrol.strcreatedate();
     m_regularPatrol.m_uiState = regularPatrol.uistate();
-
-    for (int i = 0, sz = regularPatrol.strstoreid_size(); i < sz; ++i)
-    {
-        m_regularPatrol.m_strStoreIDList.push_back(regularPatrol.strstoreid(i));
-    }
+    m_regularPatrol.m_strExtend = regularPatrol.strextend();
 
     for (int i = 0, sz = regularPatrol.strpatroltime_size(); i < sz; ++i)
     {
         m_regularPatrol.m_strPatrolTimeList.push_back(regularPatrol.strpatroltime(i));
     }
+
+    for (int i = 0, sz = regularPatrol.strhandler_size(); i < sz; ++i)
+    {
+        m_regularPatrol.m_strHandlerList.push_back(regularPatrol.strhandler(i));
+    }
+
+    UnSerializePatrolStoreEntranceList(m_regularPatrol.m_storeEntranceList, regularPatrol.storeentrance());
 }
 
 void PassengerFlowProtoHandler::QueryAllRegularPatrolReq::Serializer(CustomerFlowMessage &message) const
@@ -3838,19 +4340,21 @@ void PassengerFlowProtoHandler::QueryAllRegularPatrolRsp::Serializer(CustomerFlo
         regularPatrol->set_strplanid(it->m_strPlanID);
         regularPatrol->set_strplanname(it->m_strPlanName);
         regularPatrol->set_strenable(it->m_strEnable);
-        regularPatrol->set_strstoreinfo(it->m_strStoreInfo);
         regularPatrol->set_strcreatedate(it->m_strCreateDate);
         regularPatrol->set_uistate(it->m_uiState);
+        regularPatrol->set_strextend(it->m_strExtend);
 
-        for (auto entrance = it->m_strStoreIDList.begin(), end = it->m_strStoreIDList.end(); entrance != end; ++entrance)
+        for (auto time = it->m_strPatrolTimeList.begin(), end = it->m_strPatrolTimeList.end(); time != end; ++time)
         {
-            regularPatrol->add_strstoreid(*entrance);
+            regularPatrol->add_strpatroltime(*time);
         }
 
-        for (auto entrance = it->m_strPatrolTimeList.begin(), end = it->m_strPatrolTimeList.end(); entrance != end; ++entrance)
+        for (auto handler = it->m_strHandlerList.begin(), end = it->m_strHandlerList.end(); handler != end; ++handler)
         {
-            regularPatrol->add_strpatroltime(*entrance);
+            regularPatrol->add_strhandler(*handler);
         }
+
+        SerializePatrolStoreEntranceList(it->m_storeEntranceList, regularPatrol->mutable_storeentrance());
     }
 }
 
@@ -3865,19 +4369,21 @@ void PassengerFlowProtoHandler::QueryAllRegularPatrolRsp::UnSerializer(const Cus
         regularPatrol.m_strPlanID = rspRegularPatrol.strplanid();
         regularPatrol.m_strPlanName = rspRegularPatrol.strplanname();
         regularPatrol.m_strEnable = rspRegularPatrol.strenable();
-        regularPatrol.m_strStoreInfo = rspRegularPatrol.strstoreinfo();
         regularPatrol.m_strCreateDate = rspRegularPatrol.strcreatedate();
         regularPatrol.m_uiState = rspRegularPatrol.uistate();
-
-        for (int i = 0, sz = rspRegularPatrol.strstoreid_size(); i < sz; ++i)
-        {
-            regularPatrol.m_strStoreIDList.push_back(rspRegularPatrol.strstoreid(i));
-        }
+        regularPatrol.m_strExtend = rspRegularPatrol.strextend();
 
         for (int i = 0, sz = rspRegularPatrol.strpatroltime_size(); i < sz; ++i)
         {
             regularPatrol.m_strPatrolTimeList.push_back(rspRegularPatrol.strpatroltime(i));
         }
+
+        for (int i = 0, sz = rspRegularPatrol.strhandler_size(); i < sz; ++i)
+        {
+            regularPatrol.m_strHandlerList.push_back(rspRegularPatrol.strhandler(i));
+        }
+
+        UnSerializePatrolStoreEntranceList(regularPatrol.m_storeEntranceList, rspRegularPatrol.storeentrance());
 
         m_planList.push_back(regularPatrol);
     }
