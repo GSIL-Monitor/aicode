@@ -18,3 +18,6 @@ do
         echo "end clean $1"  
     fi  
 done
+
+#[root@iZrj9d3k592pvkazrcdxjiZ log]# ps -ef | grep clean_log.sh 
+#root      3286     1  0 May19 ?        08:20:48 /bin/bash ./clean_log.sh /root/IOTC_Server/log/mt/ANN_AA11_0001_0001_5 500

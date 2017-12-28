@@ -45,6 +45,8 @@ public:
     static const int DEVICE_NOT_ADDED_BY_USER;           //设备尚未被用户添加
 
     //其他错误代码
+    static const int SESSION_TIMEOUT;                    //会话超时
+    static const int NO_ACCESS_PERMISSION;               //没有访问权限
     static const int INPUT_PARAMETER_TOO_MUCH;           //输入参数过多
     static const int INPUT_PARAMETER_TOO_LESS;           //输入参数不足
 

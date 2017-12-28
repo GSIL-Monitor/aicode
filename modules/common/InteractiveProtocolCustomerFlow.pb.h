@@ -210,9 +210,6 @@ extern DeleteVIPCustomerRspDefaultTypeInternal _DeleteVIPCustomerRsp_default_ins
 class Entrance;
 class EntranceDefaultTypeInternal;
 extern EntranceDefaultTypeInternal _Entrance_default_instance_;
-class EntranceBrief;
-class EntranceBriefDefaultTypeInternal;
-extern EntranceBriefDefaultTypeInternal _EntranceBrief_default_instance_;
 class EvaluationItem;
 class EvaluationItemDefaultTypeInternal;
 extern EvaluationItemDefaultTypeInternal _EvaluationItem_default_instance_;
@@ -1220,20 +1217,6 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_straddress();
   void set_allocated_straddress(::std::string* straddress);
 
-  // string strAreaID = 6;
-  void clear_strareaid();
-  static const int kStrAreaIDFieldNumber = 6;
-  const ::std::string& strareaid() const;
-  void set_strareaid(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strareaid(::std::string&& value);
-  #endif
-  void set_strareaid(const char* value);
-  void set_strareaid(const char* value, size_t size);
-  ::std::string* mutable_strareaid();
-  ::std::string* release_strareaid();
-  void set_allocated_strareaid(::std::string* strareaid);
-
   // string strCreateDate = 7;
   void clear_strcreatedate();
   static const int kStrCreateDateFieldNumber = 7;
@@ -1262,6 +1245,15 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
+  // .CustomerFlow.Interactive.Message.Area area = 6;
+  bool has_area() const;
+  void clear_area();
+  static const int kAreaFieldNumber = 6;
+  const ::CustomerFlow::Interactive::Message::Area& area() const;
+  ::CustomerFlow::Interactive::Message::Area* mutable_area();
+  ::CustomerFlow::Interactive::Message::Area* release_area();
+  void set_allocated_area(::CustomerFlow::Interactive::Message::Area* area);
+
   // uint32 uiState = 9;
   void clear_uistate();
   static const int kUiStateFieldNumber = 9;
@@ -1283,9 +1275,9 @@ class Store : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::internal::ArenaStringPtr strstorename_;
   ::google::protobuf::internal::ArenaStringPtr strgoodscategory_;
   ::google::protobuf::internal::ArenaStringPtr straddress_;
-  ::google::protobuf::internal::ArenaStringPtr strareaid_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::CustomerFlow::Interactive::Message::Area* area_;
   ::google::protobuf::uint32 uistate_;
   ::google::protobuf::uint32 uiopenstate_;
   mutable int _cached_size_;
@@ -2056,112 +2048,6 @@ class SmartGuardStore : public ::google::protobuf::Message /* @@protoc_insertion
 };
 // -------------------------------------------------------------------
 
-class EntranceBrief : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.EntranceBrief) */ {
- public:
-  EntranceBrief();
-  virtual ~EntranceBrief();
-
-  EntranceBrief(const EntranceBrief& from);
-
-  inline EntranceBrief& operator=(const EntranceBrief& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const EntranceBrief& default_instance();
-
-  static inline const EntranceBrief* internal_default_instance() {
-    return reinterpret_cast<const EntranceBrief*>(
-               &_EntranceBrief_default_instance_);
-  }
-
-  void Swap(EntranceBrief* other);
-
-  // implements Message ----------------------------------------------
-
-  inline EntranceBrief* New() const PROTOBUF_FINAL { return New(NULL); }
-
-  EntranceBrief* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
-  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const EntranceBrief& from);
-  void MergeFrom(const EntranceBrief& from);
-  void Clear() PROTOBUF_FINAL;
-  bool IsInitialized() const PROTOBUF_FINAL;
-
-  size_t ByteSizeLong() const PROTOBUF_FINAL;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
-      const PROTOBUF_FINAL {
-    return InternalSerializeWithCachedSizesToArray(
-        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
-  }
-  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(EntranceBrief* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string strEntranceID = 1;
-  void clear_strentranceid();
-  static const int kStrEntranceIDFieldNumber = 1;
-  const ::std::string& strentranceid() const;
-  void set_strentranceid(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strentranceid(::std::string&& value);
-  #endif
-  void set_strentranceid(const char* value);
-  void set_strentranceid(const char* value, size_t size);
-  ::std::string* mutable_strentranceid();
-  ::std::string* release_strentranceid();
-  void set_allocated_strentranceid(::std::string* strentranceid);
-
-  // string strEntranceName = 2;
-  void clear_strentrancename();
-  static const int kStrEntranceNameFieldNumber = 2;
-  const ::std::string& strentrancename() const;
-  void set_strentrancename(const ::std::string& value);
-  #if LANG_CXX11
-  void set_strentrancename(::std::string&& value);
-  #endif
-  void set_strentrancename(const char* value);
-  void set_strentrancename(const char* value, size_t size);
-  ::std::string* mutable_strentrancename();
-  ::std::string* release_strentrancename();
-  void set_allocated_strentrancename(::std::string* strentrancename);
-
-  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.EntranceBrief)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr strentranceid_;
-  ::google::protobuf::internal::ArenaStringPtr strentrancename_;
-  mutable int _cached_size_;
-  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
 class PatrolStoreEntrance : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.PatrolStoreEntrance) */ {
  public:
   PatrolStoreEntrance();
@@ -2229,16 +2115,16 @@ class PatrolStoreEntrance : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
-  // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+  // repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
   int entrance_size() const;
   void clear_entrance();
   static const int kEntranceFieldNumber = 3;
-  const ::CustomerFlow::Interactive::Message::EntranceBrief& entrance(int index) const;
-  ::CustomerFlow::Interactive::Message::EntranceBrief* mutable_entrance(int index);
-  ::CustomerFlow::Interactive::Message::EntranceBrief* add_entrance();
-  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >*
+  const ::CustomerFlow::Interactive::Message::Entrance& entrance(int index) const;
+  ::CustomerFlow::Interactive::Message::Entrance* mutable_entrance(int index);
+  ::CustomerFlow::Interactive::Message::Entrance* add_entrance();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >*
       mutable_entrance();
-  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >&
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >&
       entrance() const;
 
   // string strStoreID = 1;
@@ -2273,7 +2159,7 @@ class PatrolStoreEntrance : public ::google::protobuf::Message /* @@protoc_inser
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief > entrance_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance > entrance_;
   ::google::protobuf::internal::ArenaStringPtr strstoreid_;
   ::google::protobuf::internal::ArenaStringPtr strstorename_;
   mutable int _cached_size_;
@@ -19452,56 +19338,43 @@ Store::entrance() const {
   return entrance_;
 }
 
-// string strAreaID = 6;
-inline void Store::clear_strareaid() {
-  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .CustomerFlow.Interactive.Message.Area area = 6;
+inline bool Store::has_area() const {
+  return this != internal_default_instance() && area_ != NULL;
 }
-inline const ::std::string& Store::strareaid() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.strAreaID)
-  return strareaid_.GetNoArena();
+inline void Store::clear_area() {
+  if (GetArenaNoVirtual() == NULL && area_ != NULL) delete area_;
+  area_ = NULL;
 }
-inline void Store::set_strareaid(const ::std::string& value) {
+inline const ::CustomerFlow::Interactive::Message::Area& Store::area() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.area)
+  return area_ != NULL ? *area_
+                         : *::CustomerFlow::Interactive::Message::Area::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Area* Store::mutable_area() {
   
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Store.strAreaID)
+  if (area_ == NULL) {
+    area_ = new ::CustomerFlow::Interactive::Message::Area;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Store.area)
+  return area_;
 }
-#if LANG_CXX11
-inline void Store::set_strareaid(::std::string&& value) {
+inline ::CustomerFlow::Interactive::Message::Area* Store::release_area() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Store.area)
   
-  strareaid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Store.strAreaID)
+  ::CustomerFlow::Interactive::Message::Area* temp = area_;
+  area_ = NULL;
+  return temp;
 }
-#endif
-inline void Store::set_strareaid(const char* value) {
-  
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Store.strAreaID)
-}
-inline void Store::set_strareaid(const char* value, size_t size) {
-  
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Store.strAreaID)
-}
-inline ::std::string* Store::mutable_strareaid() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Store.strAreaID)
-  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Store::release_strareaid() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Store.strAreaID)
-  
-  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Store::set_allocated_strareaid(::std::string* strareaid) {
-  if (strareaid != NULL) {
+inline void Store::set_allocated_area(::CustomerFlow::Interactive::Message::Area* area) {
+  delete area_;
+  area_ = area;
+  if (area) {
     
   } else {
     
   }
-  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.strAreaID)
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.area)
 }
 
 // string strCreateDate = 7;
@@ -21188,114 +21061,6 @@ inline void SmartGuardStore::set_allocated_strcreatedate(::std::string* strcreat
 
 // -------------------------------------------------------------------
 
-// EntranceBrief
-
-// string strEntranceID = 1;
-inline void EntranceBrief::clear_strentranceid() {
-  strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& EntranceBrief::strentranceid() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  return strentranceid_.GetNoArena();
-}
-inline void EntranceBrief::set_strentranceid(const ::std::string& value) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-#if LANG_CXX11
-inline void EntranceBrief::set_strentranceid(::std::string&& value) {
-  
-  strentranceid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-#endif
-inline void EntranceBrief::set_strentranceid(const char* value) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-inline void EntranceBrief::set_strentranceid(const char* value, size_t size) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-inline ::std::string* EntranceBrief::mutable_strentranceid() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  return strentranceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* EntranceBrief::release_strentranceid() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  
-  return strentranceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void EntranceBrief::set_allocated_strentranceid(::std::string* strentranceid) {
-  if (strentranceid != NULL) {
-    
-  } else {
-    
-  }
-  strentranceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentranceid);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-
-// string strEntranceName = 2;
-inline void EntranceBrief::clear_strentrancename() {
-  strentrancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& EntranceBrief::strentrancename() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  return strentrancename_.GetNoArena();
-}
-inline void EntranceBrief::set_strentrancename(const ::std::string& value) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-#if LANG_CXX11
-inline void EntranceBrief::set_strentrancename(::std::string&& value) {
-  
-  strentrancename_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-#endif
-inline void EntranceBrief::set_strentrancename(const char* value) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-inline void EntranceBrief::set_strentrancename(const char* value, size_t size) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-inline ::std::string* EntranceBrief::mutable_strentrancename() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  return strentrancename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* EntranceBrief::release_strentrancename() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  
-  return strentrancename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void EntranceBrief::set_allocated_strentrancename(::std::string* strentrancename) {
-  if (strentrancename != NULL) {
-    
-  } else {
-    
-  }
-  strentrancename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentrancename);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-
-// -------------------------------------------------------------------
-
 // PatrolStoreEntrance
 
 // string strStoreID = 1;
@@ -21402,31 +21167,31 @@ inline void PatrolStoreEntrance::set_allocated_strstorename(::std::string* strst
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
 }
 
-// repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+// repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
 inline int PatrolStoreEntrance::entrance_size() const {
   return entrance_.size();
 }
 inline void PatrolStoreEntrance::clear_entrance() {
   entrance_.Clear();
 }
-inline const ::CustomerFlow::Interactive::Message::EntranceBrief& PatrolStoreEntrance::entrance(int index) const {
+inline const ::CustomerFlow::Interactive::Message::Entrance& PatrolStoreEntrance::entrance(int index) const {
   // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Get(index);
 }
-inline ::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::mutable_entrance(int index) {
+inline ::CustomerFlow::Interactive::Message::Entrance* PatrolStoreEntrance::mutable_entrance(int index) {
   // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Mutable(index);
 }
-inline ::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::add_entrance() {
+inline ::CustomerFlow::Interactive::Message::Entrance* PatrolStoreEntrance::add_entrance() {
   // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >*
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >*
 PatrolStoreEntrance::mutable_entrance() {
   // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return &entrance_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >&
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >&
 PatrolStoreEntrance::entrance() const {
   // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_;
@@ -40273,8 +40038,6 @@ inline void CustomerFlowMessage::set_allocated_rspvalue(::CustomerFlow::Interact
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

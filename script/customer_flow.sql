@@ -571,7 +571,7 @@ create table `t_customer_flow_statistic_monthly` (
 drop table if exists `t_role_info`;
 create table `t_role_info` (
     `id` varchar(36) not null,
-    `role_id`varchar(36) not null                    comment '角色ID',
+    `role_id` varchar(36) not null                   comment '角色ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -582,7 +582,7 @@ create table `t_role_info` (
 drop table if exists `t_menu_info`;
 create table `t_menu_info` (
     `id` varchar(36) not null,
-    `menu_id`varchar(36) not null                    comment '菜单ID',
+    `menu_id` int not null                           comment '菜单ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -607,6 +607,7 @@ create table `t_role_menu_association` (
     `id` varchar(36) not null,
     `role_id` varchar(36) not null                   comment '角色ID',
     `menu_id` varchar(36) not null                   comment '菜单ID',
+    `access_permission` varchar(16) not null         comment '访问权限，allow-允许访问，disallow-不允许访问',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',

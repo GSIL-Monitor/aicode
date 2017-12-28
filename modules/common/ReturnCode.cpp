@@ -35,6 +35,8 @@ const int ReturnInfo::DEVICE_NOT_ADDED_BY_USER = 2003;             //…Ë±∏…–Œ¥±ª”
 const int ReturnInfo::DEVICEID_NOT_EXISTED_DEV = 2998;             //…Ë±∏ID≤ª¥Ê‘⁄
 const int ReturnInfo::PASSWORD_INVALID_DEV = 2999;                 //…Ë±∏√‹¬Î≤ª’˝»∑
 
+const int ReturnInfo::SESSION_TIMEOUT = 996;                       //ª·ª∞≥¨ ±
+const int ReturnInfo::NO_ACCESS_PERMISSION = 997;                  //√ª”–∑√Œ »®œﬁ
 const int ReturnInfo::INPUT_PARAMETER_TOO_MUCH = 998;              // ‰»Î≤Œ ˝π˝∂‡
 const int ReturnInfo::INPUT_PARAMETER_TOO_LESS = 999;              // ‰»Î≤Œ ˝≤ª◊„
 

@@ -35,7 +35,7 @@ const std::string FCGIManager::HTTP_RANGE = "HTTP_RANGE";
 
 const std::string FCGIManager::REMOTE_ADDR = "REMOTE_ADDR";
 
-const unsigned int FCGIManager::CGI_READ_BUFFER_SIZE = 1024;
+const unsigned int FCGIManager::CGI_READ_BUFFER_SIZE = 4096;
 
 FCGIManager::FCGIManager(const unsigned int uiRunTdNum) : m_uiTdNum(uiRunTdNum), m_MsgLoopRunner(uiRunTdNum), m_MsgHandleRunner(uiRunTdNum)
 {

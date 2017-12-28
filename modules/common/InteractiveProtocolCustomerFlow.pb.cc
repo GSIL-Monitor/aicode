@@ -36,8 +36,6 @@ class EventDefaultTypeInternal : public ::google::protobuf::internal::Explicitly
 } _Event_default_instance_;
 class SmartGuardStoreDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<SmartGuardStore> {
 } _SmartGuardStore_default_instance_;
-class EntranceBriefDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<EntranceBrief> {
-} _EntranceBrief_default_instance_;
 class PatrolStoreEntranceDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<PatrolStoreEntrance> {
 } _PatrolStoreEntrance_default_instance_;
 class RegularPatrolDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<RegularPatrol> {
@@ -338,7 +336,7 @@ namespace protobuf_InteractiveProtocolCustomerFlow_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[156];
+::google::protobuf::Metadata file_level_metadata[155];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -378,7 +376,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, strgoodscategory_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, straddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, entrance_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, strareaid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, area_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, strextend_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, uistate_),
@@ -431,12 +429,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SmartGuardStore, strendtime2_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SmartGuardStore, uistate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SmartGuardStore, strcreatedate_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EntranceBrief, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EntranceBrief, strentranceid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EntranceBrief, strentrancename_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PatrolStoreEntrance, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1460,154 +1452,153 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 46, -1, sizeof(UserStoreAssociation)},
   { 53, -1, sizeof(Event)},
   { 71, -1, sizeof(SmartGuardStore)},
-  { 87, -1, sizeof(EntranceBrief)},
-  { 93, -1, sizeof(PatrolStoreEntrance)},
-  { 100, -1, sizeof(RegularPatrol)},
-  { 113, -1, sizeof(UserBrief)},
-  { 120, -1, sizeof(VIPConsumeHistory)},
-  { 131, -1, sizeof(VIPCustomer)},
-  { 144, -1, sizeof(EvaluationItem)},
-  { 152, -1, sizeof(EvaluationItemScore)},
-  { 159, -1, sizeof(StoreEvaluation)},
-  { 171, -1, sizeof(RemotePatrolStore)},
-  { 184, -1, sizeof(RawCustomerFlow)},
-  { 192, -1, sizeof(CustomerFlowPreHandleReq)},
-  { 197, -1, sizeof(CustomerFlowPreHandleRsp)},
-  { 202, -1, sizeof(ShakehandReq)},
-  { 207, -1, sizeof(ShakehandRsp)},
-  { 212, -1, sizeof(AddAreaReq)},
-  { 218, -1, sizeof(AddAreaRsp)},
-  { 223, -1, sizeof(DeleteAreaReq)},
-  { 229, -1, sizeof(DeleteAreaRsp)},
-  { 234, -1, sizeof(ModifyAreaReq)},
-  { 240, -1, sizeof(ModifyAreaRsp)},
-  { 245, -1, sizeof(QueryAllAreaReq)},
-  { 250, -1, sizeof(QueryAllAreaRsp)},
-  { 255, -1, sizeof(BindPushClientIDReq)},
-  { 261, -1, sizeof(BindPushClientIDRsp)},
-  { 266, -1, sizeof(UnbindPushClientIDReq)},
-  { 272, -1, sizeof(UnbindPushClientIDRsp)},
-  { 277, -1, sizeof(AddGroupReq)},
-  { 283, -1, sizeof(AddGroupRsp)},
-  { 288, -1, sizeof(DeleteGroupReq)},
-  { 294, -1, sizeof(DeleteGroupRsp)},
-  { 299, -1, sizeof(ModifyGroupReq)},
-  { 305, -1, sizeof(ModifyGroupRsp)},
-  { 310, -1, sizeof(QueryGroupInfoReq)},
-  { 316, -1, sizeof(QueryGroupInfoRsp)},
-  { 321, -1, sizeof(QueryAllGroupReq)},
-  { 326, -1, sizeof(QueryAllGroupRsp)},
-  { 331, -1, sizeof(AddStoreReq)},
-  { 337, -1, sizeof(AddStoreRsp)},
-  { 342, -1, sizeof(DeleteStoreReq)},
-  { 348, -1, sizeof(DeleteStoreRsp)},
-  { 353, -1, sizeof(ModifyStoreReq)},
-  { 359, -1, sizeof(ModifyStoreRsp)},
-  { 364, -1, sizeof(QueryStoreInfoReq)},
-  { 370, -1, sizeof(QueryStoreInfoRsp)},
-  { 375, -1, sizeof(QueryAllStoreReq)},
-  { 381, -1, sizeof(QueryAllStoreRsp)},
-  { 386, -1, sizeof(AddEntranceReq)},
-  { 393, -1, sizeof(AddEntranceRsp)},
-  { 398, -1, sizeof(DeleteEntranceReq)},
-  { 405, -1, sizeof(DeleteEntranceRsp)},
-  { 410, -1, sizeof(ModifyEntranceReq)},
-  { 419, -1, sizeof(ModifyEntranceRsp)},
-  { 424, -1, sizeof(AddEntranceDeviceReq)},
-  { 432, -1, sizeof(AddEntranceDeviceRsp)},
-  { 437, -1, sizeof(DeleteEntranceDeviceReq)},
-  { 445, -1, sizeof(DeleteEntranceDeviceRsp)},
-  { 450, -1, sizeof(AddEventReq)},
-  { 455, -1, sizeof(AddEventRsp)},
-  { 460, -1, sizeof(DeleteEventReq)},
-  { 466, -1, sizeof(DeleteEventRsp)},
-  { 471, -1, sizeof(ModifyEventReq)},
-  { 477, -1, sizeof(ModifyEventRsp)},
-  { 482, -1, sizeof(QueryEventInfoReq)},
-  { 488, -1, sizeof(QueryEventInfoRsp)},
-  { 493, -1, sizeof(QueryAllEventReq)},
-  { 502, -1, sizeof(QueryAllEventRsp)},
-  { 507, -1, sizeof(AddSmartGuardStoreReq)},
-  { 513, -1, sizeof(AddSmartGuardStoreRsp)},
-  { 518, -1, sizeof(DeleteSmartGuardStoreReq)},
-  { 524, -1, sizeof(DeleteSmartGuardStoreRsp)},
-  { 529, -1, sizeof(ModifySmartGuardStoreReq)},
-  { 535, -1, sizeof(ModifySmartGuardStoreRsp)},
-  { 540, -1, sizeof(QuerySmartGuardStoreInfoReq)},
-  { 546, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
-  { 551, -1, sizeof(QueryAllSmartGuardStoreReq)},
-  { 558, -1, sizeof(QueryAllSmartGuardStoreRsp)},
-  { 563, -1, sizeof(AddRegularPatrolReq)},
-  { 569, -1, sizeof(AddRegularPatrolRsp)},
-  { 574, -1, sizeof(DeleteRegularPatrolReq)},
-  { 580, -1, sizeof(DeleteRegularPatrolRsp)},
-  { 585, -1, sizeof(ModifyRegularPatrolReq)},
-  { 591, -1, sizeof(ModifyRegularPatrolRsp)},
-  { 596, -1, sizeof(QueryRegularPatrolInfoReq)},
-  { 602, -1, sizeof(QueryRegularPatrolInfoRsp)},
-  { 607, -1, sizeof(QueryAllRegularPatrolReq)},
-  { 614, -1, sizeof(QueryAllRegularPatrolRsp)},
-  { 619, -1, sizeof(UserJoinStoreReq)},
-  { 626, -1, sizeof(UserJoinStoreRsp)},
-  { 631, -1, sizeof(UserQuitStoreReq)},
-  { 638, -1, sizeof(UserQuitStoreRsp)},
-  { 643, -1, sizeof(QueryStoreAllUserReq)},
-  { 649, -1, sizeof(QueryStoreAllUserRsp)},
-  { 654, -1, sizeof(AddVIPCustomerReq)},
-  { 660, -1, sizeof(AddVIPCustomerRsp)},
-  { 665, -1, sizeof(DeleteVIPCustomerReq)},
-  { 671, -1, sizeof(DeleteVIPCustomerRsp)},
-  { 676, -1, sizeof(ModifyVIPCustomerReq)},
-  { 682, -1, sizeof(ModifyVIPCustomerRsp)},
-  { 687, -1, sizeof(QueryVIPCustomerInfoReq)},
-  { 693, -1, sizeof(QueryVIPCustomerInfoRsp)},
-  { 698, -1, sizeof(QueryAllVIPCustomerReq)},
-  { 704, -1, sizeof(QueryAllVIPCustomerRsp)},
-  { 709, -1, sizeof(AddVIPConsumeHistoryReq)},
-  { 715, -1, sizeof(AddVIPConsumeHistoryRsp)},
-  { 720, -1, sizeof(DeleteVIPConsumeHistoryReq)},
-  { 726, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
-  { 731, -1, sizeof(ModifyVIPConsumeHistoryReq)},
-  { 737, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
-  { 742, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
-  { 749, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
-  { 754, -1, sizeof(AddEvaluationTemplateReq)},
-  { 760, -1, sizeof(AddEvaluationTemplateRsp)},
-  { 765, -1, sizeof(DeleteEvaluationTemplateReq)},
-  { 771, -1, sizeof(DeleteEvaluationTemplateRsp)},
-  { 776, -1, sizeof(ModifyEvaluationTemplateReq)},
-  { 782, -1, sizeof(ModifyEvaluationTemplateRsp)},
-  { 787, -1, sizeof(QueryAllEvaluationTemplateReq)},
-  { 792, -1, sizeof(QueryAllEvaluationTemplateRsp)},
-  { 797, -1, sizeof(AddStoreEvaluationReq)},
-  { 802, -1, sizeof(AddStoreEvaluationRsp)},
-  { 807, -1, sizeof(DeleteStoreEvaluationReq)},
-  { 813, -1, sizeof(DeleteStoreEvaluationRsp)},
-  { 818, -1, sizeof(ModifyStoreEvaluationReq)},
-  { 824, -1, sizeof(ModifyStoreEvaluationRsp)},
-  { 829, -1, sizeof(QueryStoreEvaluationInfoReq)},
-  { 836, -1, sizeof(QueryStoreEvaluationInfoRsp)},
-  { 841, -1, sizeof(QueryAllStoreEvaluationReq)},
-  { 850, -1, sizeof(QueryAllStoreEvaluationRsp)},
-  { 855, -1, sizeof(AddRemotePatrolStoreReq)},
-  { 860, -1, sizeof(AddRemotePatrolStoreRsp)},
-  { 865, -1, sizeof(DeleteRemotePatrolStoreReq)},
-  { 871, -1, sizeof(DeleteRemotePatrolStoreRsp)},
-  { 876, -1, sizeof(ModifyRemotePatrolStoreReq)},
-  { 882, -1, sizeof(ModifyRemotePatrolStoreRsp)},
-  { 887, -1, sizeof(QueryRemotePatrolStoreInfoReq)},
-  { 893, -1, sizeof(QueryRemotePatrolStoreInfoRsp)},
-  { 898, -1, sizeof(QueryAllRemotePatrolStoreReq)},
-  { 907, -1, sizeof(QueryAllRemotePatrolStoreRsp)},
-  { 912, -1, sizeof(ImportPOSDataReq)},
-  { 922, -1, sizeof(ImportPOSDataRsp)},
-  { 927, -1, sizeof(QueryCustomerFlowStatisticReq)},
-  { 936, -1, sizeof(QueryCustomerFlowStatisticRsp)},
-  { 941, -1, sizeof(ReportCustomerFlowDataReq)},
-  { 947, -1, sizeof(ReportCustomerFlowDataRsp)},
-  { 952, -1, sizeof(Request)},
-  { 1023, -1, sizeof(Response)},
-  { 1096, -1, sizeof(CustomerFlowMessage)},
+  { 87, -1, sizeof(PatrolStoreEntrance)},
+  { 94, -1, sizeof(RegularPatrol)},
+  { 107, -1, sizeof(UserBrief)},
+  { 114, -1, sizeof(VIPConsumeHistory)},
+  { 125, -1, sizeof(VIPCustomer)},
+  { 138, -1, sizeof(EvaluationItem)},
+  { 146, -1, sizeof(EvaluationItemScore)},
+  { 153, -1, sizeof(StoreEvaluation)},
+  { 165, -1, sizeof(RemotePatrolStore)},
+  { 178, -1, sizeof(RawCustomerFlow)},
+  { 186, -1, sizeof(CustomerFlowPreHandleReq)},
+  { 191, -1, sizeof(CustomerFlowPreHandleRsp)},
+  { 196, -1, sizeof(ShakehandReq)},
+  { 201, -1, sizeof(ShakehandRsp)},
+  { 206, -1, sizeof(AddAreaReq)},
+  { 212, -1, sizeof(AddAreaRsp)},
+  { 217, -1, sizeof(DeleteAreaReq)},
+  { 223, -1, sizeof(DeleteAreaRsp)},
+  { 228, -1, sizeof(ModifyAreaReq)},
+  { 234, -1, sizeof(ModifyAreaRsp)},
+  { 239, -1, sizeof(QueryAllAreaReq)},
+  { 244, -1, sizeof(QueryAllAreaRsp)},
+  { 249, -1, sizeof(BindPushClientIDReq)},
+  { 255, -1, sizeof(BindPushClientIDRsp)},
+  { 260, -1, sizeof(UnbindPushClientIDReq)},
+  { 266, -1, sizeof(UnbindPushClientIDRsp)},
+  { 271, -1, sizeof(AddGroupReq)},
+  { 277, -1, sizeof(AddGroupRsp)},
+  { 282, -1, sizeof(DeleteGroupReq)},
+  { 288, -1, sizeof(DeleteGroupRsp)},
+  { 293, -1, sizeof(ModifyGroupReq)},
+  { 299, -1, sizeof(ModifyGroupRsp)},
+  { 304, -1, sizeof(QueryGroupInfoReq)},
+  { 310, -1, sizeof(QueryGroupInfoRsp)},
+  { 315, -1, sizeof(QueryAllGroupReq)},
+  { 320, -1, sizeof(QueryAllGroupRsp)},
+  { 325, -1, sizeof(AddStoreReq)},
+  { 331, -1, sizeof(AddStoreRsp)},
+  { 336, -1, sizeof(DeleteStoreReq)},
+  { 342, -1, sizeof(DeleteStoreRsp)},
+  { 347, -1, sizeof(ModifyStoreReq)},
+  { 353, -1, sizeof(ModifyStoreRsp)},
+  { 358, -1, sizeof(QueryStoreInfoReq)},
+  { 364, -1, sizeof(QueryStoreInfoRsp)},
+  { 369, -1, sizeof(QueryAllStoreReq)},
+  { 375, -1, sizeof(QueryAllStoreRsp)},
+  { 380, -1, sizeof(AddEntranceReq)},
+  { 387, -1, sizeof(AddEntranceRsp)},
+  { 392, -1, sizeof(DeleteEntranceReq)},
+  { 399, -1, sizeof(DeleteEntranceRsp)},
+  { 404, -1, sizeof(ModifyEntranceReq)},
+  { 413, -1, sizeof(ModifyEntranceRsp)},
+  { 418, -1, sizeof(AddEntranceDeviceReq)},
+  { 426, -1, sizeof(AddEntranceDeviceRsp)},
+  { 431, -1, sizeof(DeleteEntranceDeviceReq)},
+  { 439, -1, sizeof(DeleteEntranceDeviceRsp)},
+  { 444, -1, sizeof(AddEventReq)},
+  { 449, -1, sizeof(AddEventRsp)},
+  { 454, -1, sizeof(DeleteEventReq)},
+  { 460, -1, sizeof(DeleteEventRsp)},
+  { 465, -1, sizeof(ModifyEventReq)},
+  { 471, -1, sizeof(ModifyEventRsp)},
+  { 476, -1, sizeof(QueryEventInfoReq)},
+  { 482, -1, sizeof(QueryEventInfoRsp)},
+  { 487, -1, sizeof(QueryAllEventReq)},
+  { 496, -1, sizeof(QueryAllEventRsp)},
+  { 501, -1, sizeof(AddSmartGuardStoreReq)},
+  { 507, -1, sizeof(AddSmartGuardStoreRsp)},
+  { 512, -1, sizeof(DeleteSmartGuardStoreReq)},
+  { 518, -1, sizeof(DeleteSmartGuardStoreRsp)},
+  { 523, -1, sizeof(ModifySmartGuardStoreReq)},
+  { 529, -1, sizeof(ModifySmartGuardStoreRsp)},
+  { 534, -1, sizeof(QuerySmartGuardStoreInfoReq)},
+  { 540, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
+  { 545, -1, sizeof(QueryAllSmartGuardStoreReq)},
+  { 552, -1, sizeof(QueryAllSmartGuardStoreRsp)},
+  { 557, -1, sizeof(AddRegularPatrolReq)},
+  { 563, -1, sizeof(AddRegularPatrolRsp)},
+  { 568, -1, sizeof(DeleteRegularPatrolReq)},
+  { 574, -1, sizeof(DeleteRegularPatrolRsp)},
+  { 579, -1, sizeof(ModifyRegularPatrolReq)},
+  { 585, -1, sizeof(ModifyRegularPatrolRsp)},
+  { 590, -1, sizeof(QueryRegularPatrolInfoReq)},
+  { 596, -1, sizeof(QueryRegularPatrolInfoRsp)},
+  { 601, -1, sizeof(QueryAllRegularPatrolReq)},
+  { 608, -1, sizeof(QueryAllRegularPatrolRsp)},
+  { 613, -1, sizeof(UserJoinStoreReq)},
+  { 620, -1, sizeof(UserJoinStoreRsp)},
+  { 625, -1, sizeof(UserQuitStoreReq)},
+  { 632, -1, sizeof(UserQuitStoreRsp)},
+  { 637, -1, sizeof(QueryStoreAllUserReq)},
+  { 643, -1, sizeof(QueryStoreAllUserRsp)},
+  { 648, -1, sizeof(AddVIPCustomerReq)},
+  { 654, -1, sizeof(AddVIPCustomerRsp)},
+  { 659, -1, sizeof(DeleteVIPCustomerReq)},
+  { 665, -1, sizeof(DeleteVIPCustomerRsp)},
+  { 670, -1, sizeof(ModifyVIPCustomerReq)},
+  { 676, -1, sizeof(ModifyVIPCustomerRsp)},
+  { 681, -1, sizeof(QueryVIPCustomerInfoReq)},
+  { 687, -1, sizeof(QueryVIPCustomerInfoRsp)},
+  { 692, -1, sizeof(QueryAllVIPCustomerReq)},
+  { 698, -1, sizeof(QueryAllVIPCustomerRsp)},
+  { 703, -1, sizeof(AddVIPConsumeHistoryReq)},
+  { 709, -1, sizeof(AddVIPConsumeHistoryRsp)},
+  { 714, -1, sizeof(DeleteVIPConsumeHistoryReq)},
+  { 720, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
+  { 725, -1, sizeof(ModifyVIPConsumeHistoryReq)},
+  { 731, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
+  { 736, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
+  { 743, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
+  { 748, -1, sizeof(AddEvaluationTemplateReq)},
+  { 754, -1, sizeof(AddEvaluationTemplateRsp)},
+  { 759, -1, sizeof(DeleteEvaluationTemplateReq)},
+  { 765, -1, sizeof(DeleteEvaluationTemplateRsp)},
+  { 770, -1, sizeof(ModifyEvaluationTemplateReq)},
+  { 776, -1, sizeof(ModifyEvaluationTemplateRsp)},
+  { 781, -1, sizeof(QueryAllEvaluationTemplateReq)},
+  { 786, -1, sizeof(QueryAllEvaluationTemplateRsp)},
+  { 791, -1, sizeof(AddStoreEvaluationReq)},
+  { 796, -1, sizeof(AddStoreEvaluationRsp)},
+  { 801, -1, sizeof(DeleteStoreEvaluationReq)},
+  { 807, -1, sizeof(DeleteStoreEvaluationRsp)},
+  { 812, -1, sizeof(ModifyStoreEvaluationReq)},
+  { 818, -1, sizeof(ModifyStoreEvaluationRsp)},
+  { 823, -1, sizeof(QueryStoreEvaluationInfoReq)},
+  { 830, -1, sizeof(QueryStoreEvaluationInfoRsp)},
+  { 835, -1, sizeof(QueryAllStoreEvaluationReq)},
+  { 844, -1, sizeof(QueryAllStoreEvaluationRsp)},
+  { 849, -1, sizeof(AddRemotePatrolStoreReq)},
+  { 854, -1, sizeof(AddRemotePatrolStoreRsp)},
+  { 859, -1, sizeof(DeleteRemotePatrolStoreReq)},
+  { 865, -1, sizeof(DeleteRemotePatrolStoreRsp)},
+  { 870, -1, sizeof(ModifyRemotePatrolStoreReq)},
+  { 876, -1, sizeof(ModifyRemotePatrolStoreRsp)},
+  { 881, -1, sizeof(QueryRemotePatrolStoreInfoReq)},
+  { 887, -1, sizeof(QueryRemotePatrolStoreInfoRsp)},
+  { 892, -1, sizeof(QueryAllRemotePatrolStoreReq)},
+  { 901, -1, sizeof(QueryAllRemotePatrolStoreRsp)},
+  { 906, -1, sizeof(ImportPOSDataReq)},
+  { 916, -1, sizeof(ImportPOSDataRsp)},
+  { 921, -1, sizeof(QueryCustomerFlowStatisticReq)},
+  { 930, -1, sizeof(QueryCustomerFlowStatisticRsp)},
+  { 935, -1, sizeof(ReportCustomerFlowDataReq)},
+  { 941, -1, sizeof(ReportCustomerFlowDataRsp)},
+  { 946, -1, sizeof(Request)},
+  { 1017, -1, sizeof(Response)},
+  { 1090, -1, sizeof(CustomerFlowMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1619,7 +1610,6 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_UserStoreAssociation_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Event_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_SmartGuardStore_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_EntranceBrief_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_PatrolStoreEntrance_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RegularPatrol_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_UserBrief_default_instance_),
@@ -1787,7 +1777,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 156);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 155);
 }
 
 }  // namespace
@@ -1809,302 +1799,300 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[6].reflection;
   _SmartGuardStore_default_instance_.Shutdown();
   delete file_level_metadata[7].reflection;
-  _EntranceBrief_default_instance_.Shutdown();
-  delete file_level_metadata[8].reflection;
   _PatrolStoreEntrance_default_instance_.Shutdown();
-  delete file_level_metadata[9].reflection;
+  delete file_level_metadata[8].reflection;
   _RegularPatrol_default_instance_.Shutdown();
-  delete file_level_metadata[10].reflection;
+  delete file_level_metadata[9].reflection;
   _UserBrief_default_instance_.Shutdown();
-  delete file_level_metadata[11].reflection;
+  delete file_level_metadata[10].reflection;
   _VIPConsumeHistory_default_instance_.Shutdown();
-  delete file_level_metadata[12].reflection;
+  delete file_level_metadata[11].reflection;
   _VIPCustomer_default_instance_.Shutdown();
-  delete file_level_metadata[13].reflection;
+  delete file_level_metadata[12].reflection;
   _EvaluationItem_default_instance_.Shutdown();
-  delete file_level_metadata[14].reflection;
+  delete file_level_metadata[13].reflection;
   _EvaluationItemScore_default_instance_.Shutdown();
-  delete file_level_metadata[15].reflection;
+  delete file_level_metadata[14].reflection;
   _StoreEvaluation_default_instance_.Shutdown();
-  delete file_level_metadata[16].reflection;
+  delete file_level_metadata[15].reflection;
   _RemotePatrolStore_default_instance_.Shutdown();
-  delete file_level_metadata[17].reflection;
+  delete file_level_metadata[16].reflection;
   _RawCustomerFlow_default_instance_.Shutdown();
-  delete file_level_metadata[18].reflection;
+  delete file_level_metadata[17].reflection;
   _CustomerFlowPreHandleReq_default_instance_.Shutdown();
-  delete file_level_metadata[19].reflection;
+  delete file_level_metadata[18].reflection;
   _CustomerFlowPreHandleRsp_default_instance_.Shutdown();
-  delete file_level_metadata[20].reflection;
+  delete file_level_metadata[19].reflection;
   _ShakehandReq_default_instance_.Shutdown();
-  delete file_level_metadata[21].reflection;
+  delete file_level_metadata[20].reflection;
   _ShakehandRsp_default_instance_.Shutdown();
-  delete file_level_metadata[22].reflection;
+  delete file_level_metadata[21].reflection;
   _AddAreaReq_default_instance_.Shutdown();
-  delete file_level_metadata[23].reflection;
+  delete file_level_metadata[22].reflection;
   _AddAreaRsp_default_instance_.Shutdown();
-  delete file_level_metadata[24].reflection;
+  delete file_level_metadata[23].reflection;
   _DeleteAreaReq_default_instance_.Shutdown();
-  delete file_level_metadata[25].reflection;
+  delete file_level_metadata[24].reflection;
   _DeleteAreaRsp_default_instance_.Shutdown();
-  delete file_level_metadata[26].reflection;
+  delete file_level_metadata[25].reflection;
   _ModifyAreaReq_default_instance_.Shutdown();
-  delete file_level_metadata[27].reflection;
+  delete file_level_metadata[26].reflection;
   _ModifyAreaRsp_default_instance_.Shutdown();
-  delete file_level_metadata[28].reflection;
+  delete file_level_metadata[27].reflection;
   _QueryAllAreaReq_default_instance_.Shutdown();
-  delete file_level_metadata[29].reflection;
+  delete file_level_metadata[28].reflection;
   _QueryAllAreaRsp_default_instance_.Shutdown();
-  delete file_level_metadata[30].reflection;
+  delete file_level_metadata[29].reflection;
   _BindPushClientIDReq_default_instance_.Shutdown();
-  delete file_level_metadata[31].reflection;
+  delete file_level_metadata[30].reflection;
   _BindPushClientIDRsp_default_instance_.Shutdown();
-  delete file_level_metadata[32].reflection;
+  delete file_level_metadata[31].reflection;
   _UnbindPushClientIDReq_default_instance_.Shutdown();
-  delete file_level_metadata[33].reflection;
+  delete file_level_metadata[32].reflection;
   _UnbindPushClientIDRsp_default_instance_.Shutdown();
-  delete file_level_metadata[34].reflection;
+  delete file_level_metadata[33].reflection;
   _AddGroupReq_default_instance_.Shutdown();
-  delete file_level_metadata[35].reflection;
+  delete file_level_metadata[34].reflection;
   _AddGroupRsp_default_instance_.Shutdown();
-  delete file_level_metadata[36].reflection;
+  delete file_level_metadata[35].reflection;
   _DeleteGroupReq_default_instance_.Shutdown();
-  delete file_level_metadata[37].reflection;
+  delete file_level_metadata[36].reflection;
   _DeleteGroupRsp_default_instance_.Shutdown();
-  delete file_level_metadata[38].reflection;
+  delete file_level_metadata[37].reflection;
   _ModifyGroupReq_default_instance_.Shutdown();
-  delete file_level_metadata[39].reflection;
+  delete file_level_metadata[38].reflection;
   _ModifyGroupRsp_default_instance_.Shutdown();
-  delete file_level_metadata[40].reflection;
+  delete file_level_metadata[39].reflection;
   _QueryGroupInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[41].reflection;
+  delete file_level_metadata[40].reflection;
   _QueryGroupInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[42].reflection;
+  delete file_level_metadata[41].reflection;
   _QueryAllGroupReq_default_instance_.Shutdown();
-  delete file_level_metadata[43].reflection;
+  delete file_level_metadata[42].reflection;
   _QueryAllGroupRsp_default_instance_.Shutdown();
-  delete file_level_metadata[44].reflection;
+  delete file_level_metadata[43].reflection;
   _AddStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[45].reflection;
+  delete file_level_metadata[44].reflection;
   _AddStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[46].reflection;
+  delete file_level_metadata[45].reflection;
   _DeleteStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[47].reflection;
+  delete file_level_metadata[46].reflection;
   _DeleteStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[48].reflection;
+  delete file_level_metadata[47].reflection;
   _ModifyStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[49].reflection;
+  delete file_level_metadata[48].reflection;
   _ModifyStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[50].reflection;
+  delete file_level_metadata[49].reflection;
   _QueryStoreInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[51].reflection;
+  delete file_level_metadata[50].reflection;
   _QueryStoreInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[52].reflection;
+  delete file_level_metadata[51].reflection;
   _QueryAllStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[53].reflection;
+  delete file_level_metadata[52].reflection;
   _QueryAllStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[54].reflection;
+  delete file_level_metadata[53].reflection;
   _AddEntranceReq_default_instance_.Shutdown();
-  delete file_level_metadata[55].reflection;
+  delete file_level_metadata[54].reflection;
   _AddEntranceRsp_default_instance_.Shutdown();
-  delete file_level_metadata[56].reflection;
+  delete file_level_metadata[55].reflection;
   _DeleteEntranceReq_default_instance_.Shutdown();
-  delete file_level_metadata[57].reflection;
+  delete file_level_metadata[56].reflection;
   _DeleteEntranceRsp_default_instance_.Shutdown();
-  delete file_level_metadata[58].reflection;
+  delete file_level_metadata[57].reflection;
   _ModifyEntranceReq_default_instance_.Shutdown();
-  delete file_level_metadata[59].reflection;
+  delete file_level_metadata[58].reflection;
   _ModifyEntranceRsp_default_instance_.Shutdown();
-  delete file_level_metadata[60].reflection;
+  delete file_level_metadata[59].reflection;
   _AddEntranceDeviceReq_default_instance_.Shutdown();
-  delete file_level_metadata[61].reflection;
+  delete file_level_metadata[60].reflection;
   _AddEntranceDeviceRsp_default_instance_.Shutdown();
-  delete file_level_metadata[62].reflection;
+  delete file_level_metadata[61].reflection;
   _DeleteEntranceDeviceReq_default_instance_.Shutdown();
-  delete file_level_metadata[63].reflection;
+  delete file_level_metadata[62].reflection;
   _DeleteEntranceDeviceRsp_default_instance_.Shutdown();
-  delete file_level_metadata[64].reflection;
+  delete file_level_metadata[63].reflection;
   _AddEventReq_default_instance_.Shutdown();
-  delete file_level_metadata[65].reflection;
+  delete file_level_metadata[64].reflection;
   _AddEventRsp_default_instance_.Shutdown();
-  delete file_level_metadata[66].reflection;
+  delete file_level_metadata[65].reflection;
   _DeleteEventReq_default_instance_.Shutdown();
-  delete file_level_metadata[67].reflection;
+  delete file_level_metadata[66].reflection;
   _DeleteEventRsp_default_instance_.Shutdown();
-  delete file_level_metadata[68].reflection;
+  delete file_level_metadata[67].reflection;
   _ModifyEventReq_default_instance_.Shutdown();
-  delete file_level_metadata[69].reflection;
+  delete file_level_metadata[68].reflection;
   _ModifyEventRsp_default_instance_.Shutdown();
-  delete file_level_metadata[70].reflection;
+  delete file_level_metadata[69].reflection;
   _QueryEventInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[71].reflection;
+  delete file_level_metadata[70].reflection;
   _QueryEventInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[72].reflection;
+  delete file_level_metadata[71].reflection;
   _QueryAllEventReq_default_instance_.Shutdown();
-  delete file_level_metadata[73].reflection;
+  delete file_level_metadata[72].reflection;
   _QueryAllEventRsp_default_instance_.Shutdown();
-  delete file_level_metadata[74].reflection;
+  delete file_level_metadata[73].reflection;
   _AddSmartGuardStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[75].reflection;
+  delete file_level_metadata[74].reflection;
   _AddSmartGuardStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[76].reflection;
+  delete file_level_metadata[75].reflection;
   _DeleteSmartGuardStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[77].reflection;
+  delete file_level_metadata[76].reflection;
   _DeleteSmartGuardStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[78].reflection;
+  delete file_level_metadata[77].reflection;
   _ModifySmartGuardStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[79].reflection;
+  delete file_level_metadata[78].reflection;
   _ModifySmartGuardStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[80].reflection;
+  delete file_level_metadata[79].reflection;
   _QuerySmartGuardStoreInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[81].reflection;
+  delete file_level_metadata[80].reflection;
   _QuerySmartGuardStoreInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[82].reflection;
+  delete file_level_metadata[81].reflection;
   _QueryAllSmartGuardStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[83].reflection;
+  delete file_level_metadata[82].reflection;
   _QueryAllSmartGuardStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[84].reflection;
+  delete file_level_metadata[83].reflection;
   _AddRegularPatrolReq_default_instance_.Shutdown();
-  delete file_level_metadata[85].reflection;
+  delete file_level_metadata[84].reflection;
   _AddRegularPatrolRsp_default_instance_.Shutdown();
-  delete file_level_metadata[86].reflection;
+  delete file_level_metadata[85].reflection;
   _DeleteRegularPatrolReq_default_instance_.Shutdown();
-  delete file_level_metadata[87].reflection;
+  delete file_level_metadata[86].reflection;
   _DeleteRegularPatrolRsp_default_instance_.Shutdown();
-  delete file_level_metadata[88].reflection;
+  delete file_level_metadata[87].reflection;
   _ModifyRegularPatrolReq_default_instance_.Shutdown();
-  delete file_level_metadata[89].reflection;
+  delete file_level_metadata[88].reflection;
   _ModifyRegularPatrolRsp_default_instance_.Shutdown();
-  delete file_level_metadata[90].reflection;
+  delete file_level_metadata[89].reflection;
   _QueryRegularPatrolInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[91].reflection;
+  delete file_level_metadata[90].reflection;
   _QueryRegularPatrolInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[92].reflection;
+  delete file_level_metadata[91].reflection;
   _QueryAllRegularPatrolReq_default_instance_.Shutdown();
-  delete file_level_metadata[93].reflection;
+  delete file_level_metadata[92].reflection;
   _QueryAllRegularPatrolRsp_default_instance_.Shutdown();
-  delete file_level_metadata[94].reflection;
+  delete file_level_metadata[93].reflection;
   _UserJoinStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[95].reflection;
+  delete file_level_metadata[94].reflection;
   _UserJoinStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[96].reflection;
+  delete file_level_metadata[95].reflection;
   _UserQuitStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[97].reflection;
+  delete file_level_metadata[96].reflection;
   _UserQuitStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[98].reflection;
+  delete file_level_metadata[97].reflection;
   _QueryStoreAllUserReq_default_instance_.Shutdown();
-  delete file_level_metadata[99].reflection;
+  delete file_level_metadata[98].reflection;
   _QueryStoreAllUserRsp_default_instance_.Shutdown();
-  delete file_level_metadata[100].reflection;
+  delete file_level_metadata[99].reflection;
   _AddVIPCustomerReq_default_instance_.Shutdown();
-  delete file_level_metadata[101].reflection;
+  delete file_level_metadata[100].reflection;
   _AddVIPCustomerRsp_default_instance_.Shutdown();
-  delete file_level_metadata[102].reflection;
+  delete file_level_metadata[101].reflection;
   _DeleteVIPCustomerReq_default_instance_.Shutdown();
-  delete file_level_metadata[103].reflection;
+  delete file_level_metadata[102].reflection;
   _DeleteVIPCustomerRsp_default_instance_.Shutdown();
-  delete file_level_metadata[104].reflection;
+  delete file_level_metadata[103].reflection;
   _ModifyVIPCustomerReq_default_instance_.Shutdown();
-  delete file_level_metadata[105].reflection;
+  delete file_level_metadata[104].reflection;
   _ModifyVIPCustomerRsp_default_instance_.Shutdown();
-  delete file_level_metadata[106].reflection;
+  delete file_level_metadata[105].reflection;
   _QueryVIPCustomerInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[107].reflection;
+  delete file_level_metadata[106].reflection;
   _QueryVIPCustomerInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[108].reflection;
+  delete file_level_metadata[107].reflection;
   _QueryAllVIPCustomerReq_default_instance_.Shutdown();
-  delete file_level_metadata[109].reflection;
+  delete file_level_metadata[108].reflection;
   _QueryAllVIPCustomerRsp_default_instance_.Shutdown();
-  delete file_level_metadata[110].reflection;
+  delete file_level_metadata[109].reflection;
   _AddVIPConsumeHistoryReq_default_instance_.Shutdown();
-  delete file_level_metadata[111].reflection;
+  delete file_level_metadata[110].reflection;
   _AddVIPConsumeHistoryRsp_default_instance_.Shutdown();
-  delete file_level_metadata[112].reflection;
+  delete file_level_metadata[111].reflection;
   _DeleteVIPConsumeHistoryReq_default_instance_.Shutdown();
-  delete file_level_metadata[113].reflection;
+  delete file_level_metadata[112].reflection;
   _DeleteVIPConsumeHistoryRsp_default_instance_.Shutdown();
-  delete file_level_metadata[114].reflection;
+  delete file_level_metadata[113].reflection;
   _ModifyVIPConsumeHistoryReq_default_instance_.Shutdown();
-  delete file_level_metadata[115].reflection;
+  delete file_level_metadata[114].reflection;
   _ModifyVIPConsumeHistoryRsp_default_instance_.Shutdown();
-  delete file_level_metadata[116].reflection;
+  delete file_level_metadata[115].reflection;
   _QueryAllVIPConsumeHistoryReq_default_instance_.Shutdown();
-  delete file_level_metadata[117].reflection;
+  delete file_level_metadata[116].reflection;
   _QueryAllVIPConsumeHistoryRsp_default_instance_.Shutdown();
-  delete file_level_metadata[118].reflection;
+  delete file_level_metadata[117].reflection;
   _AddEvaluationTemplateReq_default_instance_.Shutdown();
-  delete file_level_metadata[119].reflection;
+  delete file_level_metadata[118].reflection;
   _AddEvaluationTemplateRsp_default_instance_.Shutdown();
-  delete file_level_metadata[120].reflection;
+  delete file_level_metadata[119].reflection;
   _DeleteEvaluationTemplateReq_default_instance_.Shutdown();
-  delete file_level_metadata[121].reflection;
+  delete file_level_metadata[120].reflection;
   _DeleteEvaluationTemplateRsp_default_instance_.Shutdown();
-  delete file_level_metadata[122].reflection;
+  delete file_level_metadata[121].reflection;
   _ModifyEvaluationTemplateReq_default_instance_.Shutdown();
-  delete file_level_metadata[123].reflection;
+  delete file_level_metadata[122].reflection;
   _ModifyEvaluationTemplateRsp_default_instance_.Shutdown();
-  delete file_level_metadata[124].reflection;
+  delete file_level_metadata[123].reflection;
   _QueryAllEvaluationTemplateReq_default_instance_.Shutdown();
-  delete file_level_metadata[125].reflection;
+  delete file_level_metadata[124].reflection;
   _QueryAllEvaluationTemplateRsp_default_instance_.Shutdown();
-  delete file_level_metadata[126].reflection;
+  delete file_level_metadata[125].reflection;
   _AddStoreEvaluationReq_default_instance_.Shutdown();
-  delete file_level_metadata[127].reflection;
+  delete file_level_metadata[126].reflection;
   _AddStoreEvaluationRsp_default_instance_.Shutdown();
-  delete file_level_metadata[128].reflection;
+  delete file_level_metadata[127].reflection;
   _DeleteStoreEvaluationReq_default_instance_.Shutdown();
-  delete file_level_metadata[129].reflection;
+  delete file_level_metadata[128].reflection;
   _DeleteStoreEvaluationRsp_default_instance_.Shutdown();
-  delete file_level_metadata[130].reflection;
+  delete file_level_metadata[129].reflection;
   _ModifyStoreEvaluationReq_default_instance_.Shutdown();
-  delete file_level_metadata[131].reflection;
+  delete file_level_metadata[130].reflection;
   _ModifyStoreEvaluationRsp_default_instance_.Shutdown();
-  delete file_level_metadata[132].reflection;
+  delete file_level_metadata[131].reflection;
   _QueryStoreEvaluationInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[133].reflection;
+  delete file_level_metadata[132].reflection;
   _QueryStoreEvaluationInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[134].reflection;
+  delete file_level_metadata[133].reflection;
   _QueryAllStoreEvaluationReq_default_instance_.Shutdown();
-  delete file_level_metadata[135].reflection;
+  delete file_level_metadata[134].reflection;
   _QueryAllStoreEvaluationRsp_default_instance_.Shutdown();
-  delete file_level_metadata[136].reflection;
+  delete file_level_metadata[135].reflection;
   _AddRemotePatrolStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[137].reflection;
+  delete file_level_metadata[136].reflection;
   _AddRemotePatrolStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[138].reflection;
+  delete file_level_metadata[137].reflection;
   _DeleteRemotePatrolStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[139].reflection;
+  delete file_level_metadata[138].reflection;
   _DeleteRemotePatrolStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[140].reflection;
+  delete file_level_metadata[139].reflection;
   _ModifyRemotePatrolStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[141].reflection;
+  delete file_level_metadata[140].reflection;
   _ModifyRemotePatrolStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[142].reflection;
+  delete file_level_metadata[141].reflection;
   _QueryRemotePatrolStoreInfoReq_default_instance_.Shutdown();
-  delete file_level_metadata[143].reflection;
+  delete file_level_metadata[142].reflection;
   _QueryRemotePatrolStoreInfoRsp_default_instance_.Shutdown();
-  delete file_level_metadata[144].reflection;
+  delete file_level_metadata[143].reflection;
   _QueryAllRemotePatrolStoreReq_default_instance_.Shutdown();
-  delete file_level_metadata[145].reflection;
+  delete file_level_metadata[144].reflection;
   _QueryAllRemotePatrolStoreRsp_default_instance_.Shutdown();
-  delete file_level_metadata[146].reflection;
+  delete file_level_metadata[145].reflection;
   _ImportPOSDataReq_default_instance_.Shutdown();
-  delete file_level_metadata[147].reflection;
+  delete file_level_metadata[146].reflection;
   _ImportPOSDataRsp_default_instance_.Shutdown();
-  delete file_level_metadata[148].reflection;
+  delete file_level_metadata[147].reflection;
   _QueryCustomerFlowStatisticReq_default_instance_.Shutdown();
-  delete file_level_metadata[149].reflection;
+  delete file_level_metadata[148].reflection;
   _QueryCustomerFlowStatisticRsp_default_instance_.Shutdown();
-  delete file_level_metadata[150].reflection;
+  delete file_level_metadata[149].reflection;
   _ReportCustomerFlowDataReq_default_instance_.Shutdown();
-  delete file_level_metadata[151].reflection;
+  delete file_level_metadata[150].reflection;
   _ReportCustomerFlowDataRsp_default_instance_.Shutdown();
-  delete file_level_metadata[152].reflection;
+  delete file_level_metadata[151].reflection;
   _Request_default_instance_.Shutdown();
-  delete file_level_metadata[153].reflection;
+  delete file_level_metadata[152].reflection;
   _Response_default_instance_.Shutdown();
-  delete file_level_metadata[154].reflection;
+  delete file_level_metadata[153].reflection;
   _CustomerFlowMessage_default_instance_.Shutdown();
-  delete file_level_metadata[155].reflection;
+  delete file_level_metadata[154].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -2119,7 +2107,6 @@ void TableStruct::InitDefaultsImpl() {
   _UserStoreAssociation_default_instance_.DefaultConstruct();
   _Event_default_instance_.DefaultConstruct();
   _SmartGuardStore_default_instance_.DefaultConstruct();
-  _EntranceBrief_default_instance_.DefaultConstruct();
   _PatrolStoreEntrance_default_instance_.DefaultConstruct();
   _RegularPatrol_default_instance_.DefaultConstruct();
   _UserBrief_default_instance_.DefaultConstruct();
@@ -2267,6 +2254,8 @@ void TableStruct::InitDefaultsImpl() {
   _Request_default_instance_.DefaultConstruct();
   _Response_default_instance_.DefaultConstruct();
   _CustomerFlowMessage_default_instance_.DefaultConstruct();
+  _Store_default_instance_.get_mutable()->area_ = const_cast< ::CustomerFlow::Interactive::Message::Area*>(
+      ::CustomerFlow::Interactive::Message::Area::internal_default_instance());
   _EvaluationItemScore_default_instance_.get_mutable()->evaluationitem_ = const_cast< ::CustomerFlow::Interactive::Message::EvaluationItem*>(
       ::CustomerFlow::Interactive::Message::EvaluationItem::internal_default_instance());
   _AddAreaReq_default_instance_.get_mutable()->areainfo_ = const_cast< ::CustomerFlow::Interactive::Message::Area*>(
@@ -2623,747 +2612,747 @@ void AddDescriptorsImpl() {
       "eateDate\030\003 \001(\t\022\021\n\tstrExtend\030\004 \001(\t\022\017\n\007uiS"
       "tate\030\005 \001(\r\"O\n\010Entrance\022\025\n\rstrEntranceID\030"
       "\001 \001(\t\022\027\n\017strEntranceName\030\002 \001(\t\022\023\n\013strDev"
-      "iceID\030\003 \003(\t\"\200\002\n\005Store\022\022\n\nstrStoreID\030\001 \001("
+      "iceID\030\003 \003(\t\"\243\002\n\005Store\022\022\n\nstrStoreID\030\001 \001("
       "\t\022\024\n\014strStoreName\030\002 \001(\t\022\030\n\020strGoodsCateg"
       "ory\030\003 \001(\t\022\022\n\nstrAddress\030\004 \001(\t\022<\n\010entranc"
       "e\030\005 \003(\0132*.CustomerFlow.Interactive.Messa"
-      "ge.Entrance\022\021\n\tstrAreaID\030\006 \001(\t\022\025\n\rstrCre"
-      "ateDate\030\007 \001(\t\022\021\n\tstrExtend\030\010 \001(\t\022\017\n\007uiSt"
-      "ate\030\t \001(\r\022\023\n\013uiOpenState\030\n \001(\r\"R\n\024UserGr"
-      "oupAssociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstr"
-      "GroupID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"R\n\024Us"
-      "erStoreAssociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
-      "\nstrStoreID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"\244"
-      "\002\n\005Event\022\022\n\nstrEventID\030\001 \001(\t\022\021\n\tstrSourc"
-      "e\030\002 \001(\t\022\025\n\rstrSubmitDate\030\003 \001(\t\022\025\n\rstrExp"
-      "ireDate\030\004 \001(\t\022\021\n\tstrUserID\030\005 \001(\t\022\023\n\013strD"
-      "eviceID\030\006 \001(\t\022\027\n\017strProcessState\030\007 \001(\t\022\021"
-      "\n\tstrRemark\030\010 \001(\t\022\016\n\006uiType\030\t \003(\r\022\022\n\nstr"
-      "Handler\030\n \003(\t\022\023\n\013uiViewState\030\013 \001(\r\022\025\n\rst"
-      "rCreateDate\030\014 \001(\t\022\021\n\tstrExtend\030\r \001(\t\022\017\n\007"
-      "uiState\030\016 \001(\r\"\213\002\n\017SmartGuardStore\022\021\n\tstr"
-      "PlanID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strS"
-      "toreName\030\003 \001(\t\022\023\n\013strPlanName\030\004 \001(\t\022\025\n\rs"
-      "trEntranceID\030\005 \003(\t\022\021\n\tstrEnable\030\006 \001(\t\022\024\n"
-      "\014strBeginTime\030\007 \001(\t\022\022\n\nstrEndTime\030\010 \001(\t\022"
-      "\025\n\rstrBeginTime2\030\t \001(\t\022\023\n\013strEndTime2\030\n "
-      "\001(\t\022\017\n\007uiState\030\013 \001(\r\022\025\n\rstrCreateDate\030\014 "
-      "\001(\t\"\?\n\rEntranceBrief\022\025\n\rstrEntranceID\030\001 "
-      "\001(\t\022\027\n\017strEntranceName\030\002 \001(\t\"\202\001\n\023PatrolS"
-      "toreEntrance\022\022\n\nstrStoreID\030\001 \001(\t\022\024\n\014strS"
-      "toreName\030\002 \001(\t\022A\n\010entrance\030\003 \003(\0132/.Custo"
-      "merFlow.Interactive.Message.EntranceBrie"
-      "f\"\376\001\n\rRegularPatrol\022\021\n\tstrPlanID\030\001 \001(\t\022\023"
-      "\n\013strPlanName\030\002 \001(\t\022\021\n\tstrEnable\030\003 \001(\t\022L"
-      "\n\rstoreEntrance\030\004 \003(\01325.CustomerFlow.Int"
-      "eractive.Message.PatrolStoreEntrance\022\025\n\r"
-      "strPatrolTime\030\005 \003(\t\022\022\n\nstrHandler\030\006 \003(\t\022"
-      "\017\n\007uiState\030\007 \001(\r\022\025\n\rstrCreateDate\030\010 \001(\t\022"
-      "\021\n\tstrExtend\030\t \001(\t\"D\n\tUserBrief\022\021\n\tstrUs"
-      "erID\030\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\017\n\007strRo"
-      "le\030\003 \001(\t\"\255\001\n\021VIPConsumeHistory\022\024\n\014strCon"
-      "sumeID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014strGoo"
-      "dsName\030\003 \001(\t\022\025\n\ruiGoodsNumber\030\004 \001(\r\022\023\n\013s"
-      "trSalesman\030\005 \001(\t\022\026\n\016dConsumeAmount\030\006 \001(\001"
-      "\022\026\n\016strConsumeDate\030\007 \001(\t\"\207\002\n\013VIPCustomer"
-      "\022\020\n\010strVIPID\030\001 \001(\t\022\031\n\021strProfilePicture\030"
-      "\002 \001(\t\022\022\n\nstrVIPName\030\003 \001(\t\022\024\n\014strCellphon"
-      "e\030\004 \001(\t\022\024\n\014strVisitDate\030\005 \001(\t\022\024\n\014uiVisit"
-      "Times\030\006 \001(\r\022\027\n\017strRegisterDate\030\007 \001(\t\022K\n\016"
-      "consumeHistory\030\010 \003(\01323.CustomerFlow.Inte"
-      "ractive.Message.VIPConsumeHistory\022\017\n\007uiS"
-      "tate\030\t \001(\r\"e\n\016EvaluationItem\022\021\n\tstrItemI"
-      "D\030\001 \001(\t\022\023\n\013strItemName\030\002 \001(\t\022\026\n\016strDescr"
-      "iption\030\003 \001(\t\022\023\n\013dTotalPoint\030\004 \001(\001\"\207\001\n\023Ev"
-      "aluationItemScore\022H\n\016evaluationItem\030\001 \001("
+      "ge.Entrance\0224\n\004area\030\006 \001(\0132&.CustomerFlow"
+      ".Interactive.Message.Area\022\025\n\rstrCreateDa"
+      "te\030\007 \001(\t\022\021\n\tstrExtend\030\010 \001(\t\022\017\n\007uiState\030\t"
+      " \001(\r\022\023\n\013uiOpenState\030\n \001(\r\"R\n\024UserGroupAs"
+      "sociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroup"
+      "ID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"R\n\024UserSto"
+      "reAssociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrS"
+      "toreID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"\244\002\n\005Ev"
+      "ent\022\022\n\nstrEventID\030\001 \001(\t\022\021\n\tstrSource\030\002 \001"
+      "(\t\022\025\n\rstrSubmitDate\030\003 \001(\t\022\025\n\rstrExpireDa"
+      "te\030\004 \001(\t\022\021\n\tstrUserID\030\005 \001(\t\022\023\n\013strDevice"
+      "ID\030\006 \001(\t\022\027\n\017strProcessState\030\007 \001(\t\022\021\n\tstr"
+      "Remark\030\010 \001(\t\022\016\n\006uiType\030\t \003(\r\022\022\n\nstrHandl"
+      "er\030\n \003(\t\022\023\n\013uiViewState\030\013 \001(\r\022\025\n\rstrCrea"
+      "teDate\030\014 \001(\t\022\021\n\tstrExtend\030\r \001(\t\022\017\n\007uiSta"
+      "te\030\016 \001(\r\"\213\002\n\017SmartGuardStore\022\021\n\tstrPlanI"
+      "D\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strStoreN"
+      "ame\030\003 \001(\t\022\023\n\013strPlanName\030\004 \001(\t\022\025\n\rstrEnt"
+      "ranceID\030\005 \003(\t\022\021\n\tstrEnable\030\006 \001(\t\022\024\n\014strB"
+      "eginTime\030\007 \001(\t\022\022\n\nstrEndTime\030\010 \001(\t\022\025\n\rst"
+      "rBeginTime2\030\t \001(\t\022\023\n\013strEndTime2\030\n \001(\t\022\017"
+      "\n\007uiState\030\013 \001(\r\022\025\n\rstrCreateDate\030\014 \001(\t\"}"
+      "\n\023PatrolStoreEntrance\022\022\n\nstrStoreID\030\001 \001("
+      "\t\022\024\n\014strStoreName\030\002 \001(\t\022<\n\010entrance\030\003 \003("
+      "\0132*.CustomerFlow.Interactive.Message.Ent"
+      "rance\"\376\001\n\rRegularPatrol\022\021\n\tstrPlanID\030\001 \001"
+      "(\t\022\023\n\013strPlanName\030\002 \001(\t\022\021\n\tstrEnable\030\003 \001"
+      "(\t\022L\n\rstoreEntrance\030\004 \003(\01325.CustomerFlow"
+      ".Interactive.Message.PatrolStoreEntrance"
+      "\022\025\n\rstrPatrolTime\030\005 \003(\t\022\022\n\nstrHandler\030\006 "
+      "\003(\t\022\017\n\007uiState\030\007 \001(\r\022\025\n\rstrCreateDate\030\010 "
+      "\001(\t\022\021\n\tstrExtend\030\t \001(\t\"D\n\tUserBrief\022\021\n\ts"
+      "trUserID\030\001 \001(\t\022\023\n\013strUserName\030\002 \001(\t\022\017\n\007s"
+      "trRole\030\003 \001(\t\"\255\001\n\021VIPConsumeHistory\022\024\n\014st"
+      "rConsumeID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014st"
+      "rGoodsName\030\003 \001(\t\022\025\n\ruiGoodsNumber\030\004 \001(\r\022"
+      "\023\n\013strSalesman\030\005 \001(\t\022\026\n\016dConsumeAmount\030\006"
+      " \001(\001\022\026\n\016strConsumeDate\030\007 \001(\t\"\207\002\n\013VIPCust"
+      "omer\022\020\n\010strVIPID\030\001 \001(\t\022\031\n\021strProfilePict"
+      "ure\030\002 \001(\t\022\022\n\nstrVIPName\030\003 \001(\t\022\024\n\014strCell"
+      "phone\030\004 \001(\t\022\024\n\014strVisitDate\030\005 \001(\t\022\024\n\014uiV"
+      "isitTimes\030\006 \001(\r\022\027\n\017strRegisterDate\030\007 \001(\t"
+      "\022K\n\016consumeHistory\030\010 \003(\01323.CustomerFlow."
+      "Interactive.Message.VIPConsumeHistory\022\017\n"
+      "\007uiState\030\t \001(\r\"e\n\016EvaluationItem\022\021\n\tstrI"
+      "temID\030\001 \001(\t\022\023\n\013strItemName\030\002 \001(\t\022\026\n\016strD"
+      "escription\030\003 \001(\t\022\023\n\013dTotalPoint\030\004 \001(\001\"\207\001"
+      "\n\023EvaluationItemScore\022H\n\016evaluationItem\030"
+      "\001 \001(\01320.CustomerFlow.Interactive.Message"
+      ".EvaluationItem\022\016\n\006dScore\030\002 \001(\001\022\026\n\016strDe"
+      "scription\030\003 \001(\t\"\374\001\n\017StoreEvaluation\022\027\n\017s"
+      "trEvaluationID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t"
+      "\022\027\n\017strUserIDCreate\030\003 \001(\t\022\026\n\016strUserIDCh"
+      "eck\030\004 \001(\t\022\023\n\013dTotalScore\030\005 \001(\001\022\025\n\ruiChec"
+      "kStatus\030\006 \001(\r\022H\n\titemScore\030\007 \003(\01325.Custo"
+      "merFlow.Interactive.Message.EvaluationIt"
+      "emScore\022\025\n\rstrCreateDate\030\010 \001(\t\"\334\001\n\021Remot"
+      "ePatrolStore\022\023\n\013strPatrolID\030\001 \001(\t\022\021\n\tstr"
+      "UserID\030\002 \001(\t\022\023\n\013strDeviceID\030\003 \001(\t\022\022\n\nstr"
+      "StoreID\030\004 \001(\t\022\025\n\rstrPatrolDate\030\005 \001(\t\022\030\n\020"
+      "strPatrolPicture\030\006 \003(\t\022\026\n\016uiPatrolResult"
+      "\030\007 \001(\r\022\026\n\016strDescription\030\010 \001(\t\022\025\n\rstrCre"
+      "ateDate\030\t \001(\t\"j\n\017RawCustomerFlow\022\025\n\ruiEn"
+      "terNumber\030\001 \001(\r\022\025\n\ruiLeaveNumber\030\002 \001(\r\022\024"
+      "\n\014uiStayNumber\030\003 \001(\r\022\023\n\013strDataTime\030\004 \001("
+      "\t\",\n\030CustomerFlowPreHandleReq\022\020\n\010strValu"
+      "e\030\001 \001(\t\",\n\030CustomerFlowPreHandleRsp\022\020\n\010s"
+      "trValue\030\001 \001(\t\"\035\n\014ShakehandReq\022\r\n\005strID\030\001"
+      " \001(\t\" \n\014ShakehandRsp\022\020\n\010strValue\030\001 \001(\t\"Y"
+      "\n\nAddAreaReq\022\021\n\tstrUserID\030\001 \001(\t\0228\n\010areaI"
+      "nfo\030\002 \001(\0132&.CustomerFlow.Interactive.Mes"
+      "sage.Area\"\037\n\nAddAreaRsp\022\021\n\tstrAreaID\030\001 \001"
+      "(\t\"5\n\rDeleteAreaReq\022\021\n\tstrUserID\030\001 \001(\t\022\021"
+      "\n\tstrAreaID\030\002 \001(\t\"!\n\rDeleteAreaRsp\022\020\n\010st"
+      "rValue\030\001 \001(\t\"\\\n\rModifyAreaReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\0228\n\010areaInfo\030\002 \001(\0132&.CustomerFlo"
+      "w.Interactive.Message.Area\"!\n\rModifyArea"
+      "Rsp\022\020\n\010strValue\030\001 \001(\t\"$\n\017QueryAllAreaReq"
+      "\022\021\n\tstrUserID\030\001 \001(\t\"K\n\017QueryAllAreaRsp\0228"
+      "\n\010areaInfo\030\001 \003(\0132&.CustomerFlow.Interact"
+      "ive.Message.Area\"=\n\023BindPushClientIDReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strClientID\030\002 \001(\t\""
+      "\'\n\023BindPushClientIDRsp\022\020\n\010strValue\030\001 \001(\t"
+      "\"\?\n\025UnbindPushClientIDReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\023\n\013strClientID\030\002 \001(\t\")\n\025UnbindPushC"
+      "lientIDRsp\022\020\n\010strValue\030\001 \001(\t\"\\\n\013AddGroup"
+      "Req\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupInfo\030\002 \001("
+      "\0132\'.CustomerFlow.Interactive.Message.Gro"
+      "up\"!\n\013AddGroupRsp\022\022\n\nstrGroupID\030\001 \001(\t\"7\n"
+      "\016DeleteGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nst"
+      "rGroupID\030\002 \001(\t\"\"\n\016DeleteGroupRsp\022\020\n\010strV"
+      "alue\030\001 \001(\t\"_\n\016ModifyGroupReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.CustomerFlo"
+      "w.Interactive.Message.Group\"\"\n\016ModifyGro"
+      "upRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryGroupInf"
+      "oReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroupID\030\002 "
+      "\001(\t\"O\n\021QueryGroupInfoRsp\022:\n\tgroupInfo\030\001 "
+      "\001(\0132\'.CustomerFlow.Interactive.Message.G"
+      "roup\"%\n\020QueryAllGroupReq\022\021\n\tstrUserID\030\001 "
+      "\001(\t\"N\n\020QueryAllGroupRsp\022:\n\tgroupInfo\030\001 \003"
+      "(\0132\'.CustomerFlow.Interactive.Message.Gr"
+      "oup\"\\\n\013AddStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n"
+      "\tstoreInfo\030\002 \001(\0132\'.CustomerFlow.Interact"
+      "ive.Message.Store\"!\n\013AddStoreRsp\022\022\n\nstrS"
+      "toreID\030\001 \001(\t\"7\n\016DeleteStoreReq\022\021\n\tstrUse"
+      "rID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"\"\n\016DeleteS"
+      "toreRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016ModifyStore"
+      "Req\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo\030\002 \001("
+      "\0132\'.CustomerFlow.Interactive.Message.Sto"
+      "re\"\"\n\016ModifyStoreRsp\022\020\n\010strValue\030\001 \001(\t\":"
+      "\n\021QueryStoreInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022"
+      "\n\nstrStoreID\030\002 \001(\t\"O\n\021QueryStoreInfoRsp\022"
+      ":\n\tstoreInfo\030\001 \001(\0132\'.CustomerFlow.Intera"
+      "ctive.Message.Store\";\n\020QueryAllStoreReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r"
+      "\"N\n\020QueryAllStoreRsp\022:\n\tstoreInfo\030\001 \003(\0132"
+      "\'.CustomerFlow.Interactive.Message.Store"
+      "\"y\n\016AddEntranceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
+      "\nstrStoreID\030\002 \001(\t\022@\n\014entranceInfo\030\003 \001(\0132"
+      "*.CustomerFlow.Interactive.Message.Entra"
+      "nce\"\'\n\016AddEntranceRsp\022\025\n\rstrEntranceID\030\001"
+      " \001(\t\"Q\n\021DeleteEntranceReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntranceI"
+      "D\030\003 \001(\t\"%\n\021DeleteEntranceRsp\022\020\n\010strValue"
+      "\030\001 \001(\t\"\262\001\n\021ModifyEntranceReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014entranceI"
+      "nfo\030\003 \001(\0132*.CustomerFlow.Interactive.Mes"
+      "sage.Entrance\022\030\n\020strAddedDeviceID\030\004 \003(\t\022"
+      "\032\n\022strDeletedDeviceID\030\005 \003(\t\"%\n\021ModifyEnt"
+      "ranceRsp\022\020\n\010strValue\030\001 \001(\t\"i\n\024AddEntranc"
+      "eDeviceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStor"
+      "eID\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strD"
+      "eviceID\030\004 \001(\t\"(\n\024AddEntranceDeviceRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"l\n\027DeleteEntranceDeviceR"
+      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001("
+      "\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strDeviceID\030"
+      "\004 \001(\t\"+\n\027DeleteEntranceDeviceRsp\022\020\n\010strV"
+      "alue\030\001 \001(\t\"I\n\013AddEventReq\022:\n\teventInfo\030\001"
+      " \001(\0132\'.CustomerFlow.Interactive.Message."
+      "Event\"!\n\013AddEventRsp\022\022\n\nstrEventID\030\001 \001(\t"
+      "\"7\n\016DeleteEventReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
+      "\nstrEventID\030\002 \001(\t\"\"\n\016DeleteEventRsp\022\020\n\010s"
+      "trValue\030\001 \001(\t\"_\n\016ModifyEventReq\022\021\n\tstrUs"
+      "erID\030\001 \001(\t\022:\n\teventInfo\030\002 \001(\0132\'.Customer"
+      "Flow.Interactive.Message.Event\"\"\n\016Modify"
+      "EventRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryEvent"
+      "InfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrEventID"
+      "\030\002 \001(\t\"O\n\021QueryEventInfoRsp\022:\n\teventInfo"
+      "\030\001 \001(\0132\'.CustomerFlow.Interactive.Messag"
+      "e.Event\"}\n\020QueryAllEventReq\022\021\n\tstrUserID"
+      "\030\001 \001(\t\022\026\n\016uiProcessState\030\002 \001(\r\022\024\n\014strBeg"
+      "inDate\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBe"
+      "ginIndex\030\005 \001(\r\"N\n\020QueryAllEventRsp\022:\n\tev"
+      "entInfo\030\001 \003(\0132\'.CustomerFlow.Interactive"
+      ".Message.Event\"v\n\025AddSmartGuardStoreReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 "
+      "\001(\01321.CustomerFlow.Interactive.Message.S"
+      "martGuardStore\"*\n\025AddSmartGuardStoreRsp\022"
+      "\021\n\tstrPlanID\030\001 \001(\t\"@\n\030DeleteSmartGuardSt"
+      "oreReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002"
+      " \001(\t\",\n\030DeleteSmartGuardStoreRsp\022\020\n\010strV"
+      "alue\030\001 \001(\t\"y\n\030ModifySmartGuardStoreReq\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001"
+      "(\01321.CustomerFlow.Interactive.Message.Sm"
+      "artGuardStore\",\n\030ModifySmartGuardStoreRs"
+      "p\022\020\n\010strValue\030\001 \001(\t\"C\n\033QuerySmartGuardSt"
+      "oreInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlan"
+      "ID\030\002 \001(\t\"i\n\033QuerySmartGuardStoreInfoRsp\022"
+      "J\n\017smartGuardStore\030\001 \001(\01321.CustomerFlow."
+      "Interactive.Message.SmartGuardStore\"Z\n\032Q"
+      "ueryAllSmartGuardStoreReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiBeginInde"
+      "x\030\003 \001(\r\"h\n\032QueryAllSmartGuardStoreRsp\022J\n"
+      "\017smartGuardStore\030\001 \003(\01321.CustomerFlow.In"
+      "teractive.Message.SmartGuardStore\"p\n\023Add"
+      "RegularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rr"
+      "egularPatrol\030\002 \001(\0132/.CustomerFlow.Intera"
+      "ctive.Message.RegularPatrol\"(\n\023AddRegula"
+      "rPatrolRsp\022\021\n\tstrPlanID\030\001 \001(\t\">\n\026DeleteR"
+      "egularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tst"
+      "rPlanID\030\002 \001(\t\"*\n\026DeleteRegularPatrolRsp\022"
+      "\020\n\010strValue\030\001 \001(\t\"s\n\026ModifyRegularPatrol"
+      "Req\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rregularPatrol\030"
+      "\002 \001(\0132/.CustomerFlow.Interactive.Message"
+      ".RegularPatrol\"*\n\026ModifyRegularPatrolRsp"
+      "\022\020\n\010strValue\030\001 \001(\t\"A\n\031QueryRegularPatrol"
+      "InfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030"
+      "\002 \001(\t\"c\n\031QueryRegularPatrolInfoRsp\022F\n\rre"
+      "gularPatrol\030\001 \001(\0132/.CustomerFlow.Interac"
+      "tive.Message.RegularPatrol\"X\n\030QueryAllRe"
+      "gularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013str"
+      "DeviceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"b\n\030"
+      "QueryAllRegularPatrolRsp\022F\n\rregularPatro"
+      "l\030\001 \003(\0132/.CustomerFlow.Interactive.Messa"
+      "ge.RegularPatrol\"J\n\020UserJoinStoreReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\017\n\007s"
+      "trRole\030\003 \001(\t\"$\n\020UserJoinStoreRsp\022\020\n\010strV"
+      "alue\030\001 \001(\t\"U\n\020UserQuitStoreReq\022\032\n\022strAdm"
+      "inistratorID\030\001 \001(\t\022\021\n\tstrUserID\030\002 \001(\t\022\022\n"
+      "\nstrStoreID\030\003 \001(\t\"$\n\020UserQuitStoreRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"=\n\024QueryStoreAllUserReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"Q"
+      "\n\024QueryStoreAllUserRsp\0229\n\004user\030\001 \003(\0132+.C"
+      "ustomerFlow.Interactive.Message.UserBrie"
+      "f\"k\n\021AddVIPCustomerReq\022\021\n\tstrUserID\030\001 \001("
+      "\t\022C\n\014customerInfo\030\002 \001(\0132-.CustomerFlow.I"
+      "nteractive.Message.VIPCustomer\"%\n\021AddVIP"
+      "CustomerRsp\022\020\n\010strVIPID\030\001 \001(\t\";\n\024DeleteV"
+      "IPCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strV"
+      "IPID\030\002 \001(\t\"(\n\024DeleteVIPCustomerRsp\022\020\n\010st"
+      "rValue\030\001 \001(\t\"n\n\024ModifyVIPCustomerReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001(\0132-."
+      "CustomerFlow.Interactive.Message.VIPCust"
+      "omer\"(\n\024ModifyVIPCustomerRsp\022\020\n\010strValue"
+      "\030\001 \001(\t\">\n\027QueryVIPCustomerInfoReq\022\021\n\tstr"
+      "UserID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"^\n\027QueryV"
+      "IPCustomerInfoRsp\022C\n\014customerInfo\030\001 \001(\0132"
+      "-.CustomerFlow.Interactive.Message.VIPCu"
+      "stomer\"A\n\026QueryAllVIPCustomerReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"Y\n\026Que"
+      "ryAllVIPCustomerRsp\022\?\n\010customer\030\001 \003(\0132-."
+      "CustomerFlow.Interactive.Message.VIPCust"
+      "omer\"y\n\027AddVIPConsumeHistoryReq\022\021\n\tstrUs"
+      "erID\030\001 \001(\t\022K\n\016consumeHistory\030\002 \001(\01323.Cus"
+      "tomerFlow.Interactive.Message.VIPConsume"
+      "History\"/\n\027AddVIPConsumeHistoryRsp\022\024\n\014st"
+      "rConsumeID\030\001 \001(\t\"E\n\032DeleteVIPConsumeHist"
+      "oryReq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014strConsumeI"
+      "D\030\002 \001(\t\".\n\032DeleteVIPConsumeHistoryRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"|\n\032ModifyVIPConsumeHisto"
+      "ryReq\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consumeHisto"
+      "ry\030\002 \001(\01323.CustomerFlow.Interactive.Mess"
+      "age.VIPConsumeHistory\".\n\032ModifyVIPConsum"
+      "eHistoryRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\034QueryAl"
+      "lVIPConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001(\t"
+      "\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r"
+      "\"k\n\034QueryAllVIPConsumeHistoryRsp\022K\n\016cons"
+      "umeHistory\030\001 \003(\01323.CustomerFlow.Interact"
+      "ive.Message.VIPConsumeHistory\"w\n\030AddEval"
+      "uationTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016"
+      "evaluationItem\030\002 \001(\01320.CustomerFlow.Inte"
+      "ractive.Message.EvaluationItem\"3\n\030AddEva"
+      "luationTemplateRsp\022\027\n\017strEvaluationID\030\001 "
+      "\001(\t\"I\n\033DeleteEvaluationTemplateReq\022\021\n\tst"
+      "rUserID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\"/"
+      "\n\033DeleteEvaluationTemplateRsp\022\020\n\010strValu"
+      "e\030\001 \001(\t\"z\n\033ModifyEvaluationTemplateReq\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001("
       "\01320.CustomerFlow.Interactive.Message.Eva"
-      "luationItem\022\016\n\006dScore\030\002 \001(\001\022\026\n\016strDescri"
-      "ption\030\003 \001(\t\"\374\001\n\017StoreEvaluation\022\027\n\017strEv"
-      "aluationID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\027\n\017"
-      "strUserIDCreate\030\003 \001(\t\022\026\n\016strUserIDCheck\030"
-      "\004 \001(\t\022\023\n\013dTotalScore\030\005 \001(\001\022\025\n\ruiCheckSta"
-      "tus\030\006 \001(\r\022H\n\titemScore\030\007 \003(\01325.CustomerF"
-      "low.Interactive.Message.EvaluationItemSc"
-      "ore\022\025\n\rstrCreateDate\030\010 \001(\t\"\334\001\n\021RemotePat"
-      "rolStore\022\023\n\013strPatrolID\030\001 \001(\t\022\021\n\tstrUser"
-      "ID\030\002 \001(\t\022\023\n\013strDeviceID\030\003 \001(\t\022\022\n\nstrStor"
-      "eID\030\004 \001(\t\022\025\n\rstrPatrolDate\030\005 \001(\t\022\030\n\020strP"
-      "atrolPicture\030\006 \003(\t\022\026\n\016uiPatrolResult\030\007 \001"
-      "(\r\022\026\n\016strDescription\030\010 \001(\t\022\025\n\rstrCreateD"
-      "ate\030\t \001(\t\"j\n\017RawCustomerFlow\022\025\n\ruiEnterN"
-      "umber\030\001 \001(\r\022\025\n\ruiLeaveNumber\030\002 \001(\r\022\024\n\014ui"
-      "StayNumber\030\003 \001(\r\022\023\n\013strDataTime\030\004 \001(\t\",\n"
-      "\030CustomerFlowPreHandleReq\022\020\n\010strValue\030\001 "
-      "\001(\t\",\n\030CustomerFlowPreHandleRsp\022\020\n\010strVa"
-      "lue\030\001 \001(\t\"\035\n\014ShakehandReq\022\r\n\005strID\030\001 \001(\t"
-      "\" \n\014ShakehandRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\nAd"
-      "dAreaReq\022\021\n\tstrUserID\030\001 \001(\t\0228\n\010areaInfo\030"
-      "\002 \001(\0132&.CustomerFlow.Interactive.Message"
-      ".Area\"\037\n\nAddAreaRsp\022\021\n\tstrAreaID\030\001 \001(\t\"5"
-      "\n\rDeleteAreaReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tst"
-      "rAreaID\030\002 \001(\t\"!\n\rDeleteAreaRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"\\\n\rModifyAreaReq\022\021\n\tstrUserID\030\001"
-      " \001(\t\0228\n\010areaInfo\030\002 \001(\0132&.CustomerFlow.In"
-      "teractive.Message.Area\"!\n\rModifyAreaRsp\022"
-      "\020\n\010strValue\030\001 \001(\t\"$\n\017QueryAllAreaReq\022\021\n\t"
-      "strUserID\030\001 \001(\t\"K\n\017QueryAllAreaRsp\0228\n\010ar"
-      "eaInfo\030\001 \003(\0132&.CustomerFlow.Interactive."
-      "Message.Area\"=\n\023BindPushClientIDReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022\023\n\013strClientID\030\002 \001(\t\"\'\n\023B"
-      "indPushClientIDRsp\022\020\n\010strValue\030\001 \001(\t\"\?\n\025"
-      "UnbindPushClientIDReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\023\n\013strClientID\030\002 \001(\t\")\n\025UnbindPushClien"
-      "tIDRsp\022\020\n\010strValue\030\001 \001(\t\"\\\n\013AddGroupReq\022"
-      "\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'."
-      "CustomerFlow.Interactive.Message.Group\"!"
-      "\n\013AddGroupRsp\022\022\n\nstrGroupID\030\001 \001(\t\"7\n\016Del"
-      "eteGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGro"
-      "upID\030\002 \001(\t\"\"\n\016DeleteGroupRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"_\n\016ModifyGroupReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.CustomerFlow.In"
-      "teractive.Message.Group\"\"\n\016ModifyGroupRs"
-      "p\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryGroupInfoReq"
-      "\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\""
-      "O\n\021QueryGroupInfoRsp\022:\n\tgroupInfo\030\001 \001(\0132"
-      "\'.CustomerFlow.Interactive.Message.Group"
-      "\"%\n\020QueryAllGroupReq\022\021\n\tstrUserID\030\001 \001(\t\""
-      "N\n\020QueryAllGroupRsp\022:\n\tgroupInfo\030\001 \003(\0132\'"
-      ".CustomerFlow.Interactive.Message.Group\""
-      "\\\n\013AddStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tsto"
-      "reInfo\030\002 \001(\0132\'.CustomerFlow.Interactive."
-      "Message.Store\"!\n\013AddStoreRsp\022\022\n\nstrStore"
-      "ID\030\001 \001(\t\"7\n\016DeleteStoreReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"\"\n\016DeleteStore"
-      "Rsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016ModifyStoreReq\022"
-      "\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo\030\002 \001(\0132\'."
-      "CustomerFlow.Interactive.Message.Store\"\""
-      "\n\016ModifyStoreRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021Qu"
-      "eryStoreInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nst"
-      "rStoreID\030\002 \001(\t\"O\n\021QueryStoreInfoRsp\022:\n\ts"
-      "toreInfo\030\001 \001(\0132\'.CustomerFlow.Interactiv"
-      "e.Message.Store\";\n\020QueryAllStoreReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"N\n\020"
-      "QueryAllStoreRsp\022:\n\tstoreInfo\030\001 \003(\0132\'.Cu"
-      "stomerFlow.Interactive.Message.Store\"y\n\016"
-      "AddEntranceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstr"
-      "StoreID\030\002 \001(\t\022@\n\014entranceInfo\030\003 \001(\0132*.Cu"
-      "stomerFlow.Interactive.Message.Entrance\""
-      "\'\n\016AddEntranceRsp\022\025\n\rstrEntranceID\030\001 \001(\t"
-      "\"Q\n\021DeleteEntranceReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 "
-      "\001(\t\"%\n\021DeleteEntranceRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\"\262\001\n\021ModifyEntranceReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014entranceInfo\030"
-      "\003 \001(\0132*.CustomerFlow.Interactive.Message"
-      ".Entrance\022\030\n\020strAddedDeviceID\030\004 \003(\t\022\032\n\022s"
-      "trDeletedDeviceID\030\005 \003(\t\"%\n\021ModifyEntranc"
-      "eRsp\022\020\n\010strValue\030\001 \001(\t\"i\n\024AddEntranceDev"
-      "iceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
-      "\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strDevic"
-      "eID\030\004 \001(\t\"(\n\024AddEntranceDeviceRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"l\n\027DeleteEntranceDeviceReq\022\021"
-      "\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n"
-      "\rstrEntranceID\030\003 \001(\t\022\023\n\013strDeviceID\030\004 \001("
-      "\t\"+\n\027DeleteEntranceDeviceRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"I\n\013AddEventReq\022:\n\teventInfo\030\001 \001(\013"
-      "2\'.CustomerFlow.Interactive.Message.Even"
-      "t\"!\n\013AddEventRsp\022\022\n\nstrEventID\030\001 \001(\t\"7\n\016"
-      "DeleteEventReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstr"
-      "EventID\030\002 \001(\t\"\"\n\016DeleteEventRsp\022\020\n\010strVa"
-      "lue\030\001 \001(\t\"_\n\016ModifyEventReq\022\021\n\tstrUserID"
-      "\030\001 \001(\t\022:\n\teventInfo\030\002 \001(\0132\'.CustomerFlow"
-      ".Interactive.Message.Event\"\"\n\016ModifyEven"
-      "tRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryEventInfo"
-      "Req\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrEventID\030\002 \001"
-      "(\t\"O\n\021QueryEventInfoRsp\022:\n\teventInfo\030\001 \001"
-      "(\0132\'.CustomerFlow.Interactive.Message.Ev"
-      "ent\"}\n\020QueryAllEventReq\022\021\n\tstrUserID\030\001 \001"
-      "(\t\022\026\n\016uiProcessState\030\002 \001(\r\022\024\n\014strBeginDa"
-      "te\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBeginI"
-      "ndex\030\005 \001(\r\"N\n\020QueryAllEventRsp\022:\n\teventI"
-      "nfo\030\001 \003(\0132\'.CustomerFlow.Interactive.Mes"
-      "sage.Event\"v\n\025AddSmartGuardStoreReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001(\0132"
-      "1.CustomerFlow.Interactive.Message.Smart"
-      "GuardStore\"*\n\025AddSmartGuardStoreRsp\022\021\n\ts"
-      "trPlanID\030\001 \001(\t\"@\n\030DeleteSmartGuardStoreR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t"
-      "\",\n\030DeleteSmartGuardStoreRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"y\n\030ModifySmartGuardStoreReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001(\01321"
-      ".CustomerFlow.Interactive.Message.SmartG"
-      "uardStore\",\n\030ModifySmartGuardStoreRsp\022\020\n"
-      "\010strValue\030\001 \001(\t\"C\n\033QuerySmartGuardStoreI"
-      "nfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002"
-      " \001(\t\"i\n\033QuerySmartGuardStoreInfoRsp\022J\n\017s"
-      "martGuardStore\030\001 \001(\01321.CustomerFlow.Inte"
-      "ractive.Message.SmartGuardStore\"Z\n\032Query"
-      "AllSmartGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 "
-      "\001(\r\"h\n\032QueryAllSmartGuardStoreRsp\022J\n\017sma"
-      "rtGuardStore\030\001 \003(\01321.CustomerFlow.Intera"
-      "ctive.Message.SmartGuardStore\"p\n\023AddRegu"
-      "larPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rregul"
-      "arPatrol\030\002 \001(\0132/.CustomerFlow.Interactiv"
-      "e.Message.RegularPatrol\"(\n\023AddRegularPat"
-      "rolRsp\022\021\n\tstrPlanID\030\001 \001(\t\">\n\026DeleteRegul"
-      "arPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPla"
-      "nID\030\002 \001(\t\"*\n\026DeleteRegularPatrolRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"s\n\026ModifyRegularPatrolReq\022"
-      "\021\n\tstrUserID\030\001 \001(\t\022F\n\rregularPatrol\030\002 \001("
-      "\0132/.CustomerFlow.Interactive.Message.Reg"
-      "ularPatrol\"*\n\026ModifyRegularPatrolRsp\022\020\n\010"
-      "strValue\030\001 \001(\t\"A\n\031QueryRegularPatrolInfo"
-      "Req\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001("
-      "\t\"c\n\031QueryRegularPatrolInfoRsp\022F\n\rregula"
-      "rPatrol\030\001 \001(\0132/.CustomerFlow.Interactive"
-      ".Message.RegularPatrol\"X\n\030QueryAllRegula"
-      "rPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strDevi"
-      "ceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"b\n\030Quer"
-      "yAllRegularPatrolRsp\022F\n\rregularPatrol\030\001 "
-      "\003(\0132/.CustomerFlow.Interactive.Message.R"
-      "egularPatrol\"J\n\020UserJoinStoreReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\017\n\007strRo"
-      "le\030\003 \001(\t\"$\n\020UserJoinStoreRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\"U\n\020UserQuitStoreReq\022\032\n\022strAdminis"
-      "tratorID\030\001 \001(\t\022\021\n\tstrUserID\030\002 \001(\t\022\022\n\nstr"
-      "StoreID\030\003 \001(\t\"$\n\020UserQuitStoreRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"=\n\024QueryStoreAllUserReq\022\021\n\ts"
-      "trUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"Q\n\024Qu"
-      "eryStoreAllUserRsp\0229\n\004user\030\001 \003(\0132+.Custo"
-      "merFlow.Interactive.Message.UserBrief\"k\n"
-      "\021AddVIPCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022C\n"
-      "\014customerInfo\030\002 \001(\0132-.CustomerFlow.Inter"
-      "active.Message.VIPCustomer\"%\n\021AddVIPCust"
-      "omerRsp\022\020\n\010strVIPID\030\001 \001(\t\";\n\024DeleteVIPCu"
-      "stomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID"
-      "\030\002 \001(\t\"(\n\024DeleteVIPCustomerRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"n\n\024ModifyVIPCustomerReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001(\0132-.Cust"
-      "omerFlow.Interactive.Message.VIPCustomer"
-      "\"(\n\024ModifyVIPCustomerRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\">\n\027QueryVIPCustomerInfoReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"^\n\027QueryVIPCu"
-      "stomerInfoRsp\022C\n\014customerInfo\030\001 \001(\0132-.Cu"
-      "stomerFlow.Interactive.Message.VIPCustom"
-      "er\"A\n\026QueryAllVIPCustomerReq\022\021\n\tstrUserI"
-      "D\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"Y\n\026QueryAl"
-      "lVIPCustomerRsp\022\?\n\010customer\030\001 \003(\0132-.Cust"
-      "omerFlow.Interactive.Message.VIPCustomer"
-      "\"y\n\027AddVIPConsumeHistoryReq\022\021\n\tstrUserID"
-      "\030\001 \001(\t\022K\n\016consumeHistory\030\002 \001(\01323.Custome"
-      "rFlow.Interactive.Message.VIPConsumeHist"
-      "ory\"/\n\027AddVIPConsumeHistoryRsp\022\024\n\014strCon"
-      "sumeID\030\001 \001(\t\"E\n\032DeleteVIPConsumeHistoryR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014strConsumeID\030\002 "
-      "\001(\t\".\n\032DeleteVIPConsumeHistoryRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"|\n\032ModifyVIPConsumeHistoryRe"
-      "q\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consumeHistory\030\002"
-      " \001(\01323.CustomerFlow.Interactive.Message."
-      "VIPConsumeHistory\".\n\032ModifyVIPConsumeHis"
-      "toryRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\034QueryAllVIP"
-      "ConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
-      "strVIPID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"k\n\034"
-      "QueryAllVIPConsumeHistoryRsp\022K\n\016consumeH"
-      "istory\030\001 \003(\01323.CustomerFlow.Interactive."
-      "Message.VIPConsumeHistory\"w\n\030AddEvaluati"
-      "onTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016eval"
-      "uationItem\030\002 \001(\01320.CustomerFlow.Interact"
-      "ive.Message.EvaluationItem\"3\n\030AddEvaluat"
-      "ionTemplateRsp\022\027\n\017strEvaluationID\030\001 \001(\t\""
-      "I\n\033DeleteEvaluationTemplateReq\022\021\n\tstrUse"
-      "rID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\"/\n\033De"
-      "leteEvaluationTemplateRsp\022\020\n\010strValue\030\001 "
-      "\001(\t\"z\n\033ModifyEvaluationTemplateReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001(\01320."
-      "CustomerFlow.Interactive.Message.Evaluat"
-      "ionItem\"/\n\033ModifyEvaluationTemplateRsp\022\020"
-      "\n\010strValue\030\001 \001(\t\"2\n\035QueryAllEvaluationTe"
-      "mplateReq\022\021\n\tstrUserID\030\001 \001(\t\"i\n\035QueryAll"
-      "EvaluationTemplateRsp\022H\n\016evaluationItem\030"
-      "\001 \003(\01320.CustomerFlow.Interactive.Message"
-      ".EvaluationItem\"c\n\025AddStoreEvaluationReq"
-      "\022J\n\017storeEvaluation\030\001 \001(\01321.CustomerFlow"
-      ".Interactive.Message.StoreEvaluation\"0\n\025"
-      "AddStoreEvaluationRsp\022\027\n\017strEvaluationID"
-      "\030\001 \001(\t\"F\n\030DeleteStoreEvaluationReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\","
-      "\n\030DeleteStoreEvaluationRsp\022\020\n\010strValue\030\001"
-      " \001(\t\"y\n\030ModifyStoreEvaluationReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022J\n\017storeEvaluation\030\002 \001(\01321.C"
-      "ustomerFlow.Interactive.Message.StoreEva"
-      "luation\",\n\030ModifyStoreEvaluationRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"]\n\033QueryStoreEvaluationInf"
-      "oReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 "
-      "\001(\t\022\027\n\017strEvaluationID\030\003 \001(\t\"i\n\033QuerySto"
-      "reEvaluationInfoRsp\022J\n\017storeEvaluation\030\001"
+      "luationItem\"/\n\033ModifyEvaluationTemplateR"
+      "sp\022\020\n\010strValue\030\001 \001(\t\"2\n\035QueryAllEvaluati"
+      "onTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\"i\n\035Quer"
+      "yAllEvaluationTemplateRsp\022H\n\016evaluationI"
+      "tem\030\001 \003(\01320.CustomerFlow.Interactive.Mes"
+      "sage.EvaluationItem\"c\n\025AddStoreEvaluatio"
+      "nReq\022J\n\017storeEvaluation\030\001 \001(\01321.Customer"
+      "Flow.Interactive.Message.StoreEvaluation"
+      "\"0\n\025AddStoreEvaluationRsp\022\027\n\017strEvaluati"
+      "onID\030\001 \001(\t\"F\n\030DeleteStoreEvaluationReq\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001"
+      "(\t\",\n\030DeleteStoreEvaluationRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"y\n\030ModifyStoreEvaluationReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022J\n\017storeEvaluation\030\002 \001(\013"
+      "21.CustomerFlow.Interactive.Message.Stor"
+      "eEvaluation\",\n\030ModifyStoreEvaluationRsp\022"
+      "\020\n\010strValue\030\001 \001(\t\"]\n\033QueryStoreEvaluatio"
+      "nInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreI"
+      "D\030\002 \001(\t\022\027\n\017strEvaluationID\030\003 \001(\t\"i\n\033Quer"
+      "yStoreEvaluationInfoRsp\022J\n\017storeEvaluati"
+      "on\030\001 \001(\01321.CustomerFlow.Interactive.Mess"
+      "age.StoreEvaluation\"\203\001\n\032QueryAllStoreEva"
+      "luationReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStor"
+      "eID\030\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEn"
+      "dDate\030\004 \001(\t\022\024\n\014uiBeginIndex\030\005 \001(\r\"h\n\032Que"
+      "ryAllStoreEvaluationRsp\022J\n\017storeEvaluati"
+      "on\030\001 \003(\01321.CustomerFlow.Interactive.Mess"
+      "age.StoreEvaluation\"c\n\027AddRemotePatrolSt"
+      "oreReq\022H\n\013patrolStore\030\001 \001(\01323.CustomerFl"
+      "ow.Interactive.Message.RemotePatrolStore"
+      "\".\n\027AddRemotePatrolStoreRsp\022\023\n\013strPatrol"
+      "ID\030\001 \001(\t\"D\n\032DeleteRemotePatrolStoreReq\022\021"
+      "\n\tstrUserID\030\001 \001(\t\022\023\n\013strPatrolID\030\002 \001(\t\"."
+      "\n\032DeleteRemotePatrolStoreRsp\022\020\n\010strValue"
+      "\030\001 \001(\t\"y\n\032ModifyRemotePatrolStoreReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022H\n\013patrolStore\030\002 \001(\01323.C"
+      "ustomerFlow.Interactive.Message.RemotePa"
+      "trolStore\".\n\032ModifyRemotePatrolStoreRsp\022"
+      "\020\n\010strValue\030\001 \001(\t\"G\n\035QueryRemotePatrolSt"
+      "oreInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strPatr"
+      "olID\030\002 \001(\t\"i\n\035QueryRemotePatrolStoreInfo"
+      "Rsp\022H\n\013patrolStore\030\001 \001(\01323.CustomerFlow."
+      "Interactive.Message.RemotePatrolStore\"\205\001"
+      "\n\034QueryAllRemotePatrolStoreReq\022\021\n\tstrUse"
+      "rID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBegi"
+      "nDate\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBeg"
+      "inIndex\030\005 \001(\r\"h\n\034QueryAllRemotePatrolSto"
+      "reRsp\022H\n\013patrolStore\030\001 \003(\01323.CustomerFlo"
+      "w.Interactive.Message.RemotePatrolStore\""
+      "\221\001\n\020ImportPOSDataReq\022\021\n\tstrUserID\030\001 \001(\t\022"
+      "\022\n\nstrStoreID\030\002 \001(\t\022\025\n\ruiOrderAmount\030\003 \001"
+      "(\r\022\025\n\ruiGoodsAmount\030\004 \001(\r\022\023\n\013dDealAmount"
+      "\030\005 \001(\001\022\023\n\013strDealDate\030\006 \001(\t\"$\n\020ImportPOS"
+      "DataRsp\022\020\n\010strValue\030\001 \001(\t\"\211\001\n\035QueryCusto"
+      "merFlowStatisticReq\022\021\n\tstrUserID\030\001 \001(\t\022\022"
+      "\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t"
+      "\022\022\n\nstrEndDate\030\004 \001(\t\022\027\n\017uiTimePrecision\030"
+      "\005 \001(\r\"5\n\035QueryCustomerFlowStatisticRsp\022\024"
+      "\n\014strChartData\030\001 \001(\t\"y\n\031ReportCustomerFl"
+      "owDataReq\022\023\n\013strDeviceID\030\001 \001(\t\022G\n\014custom"
+      "erFlow\030\002 \003(\01321.CustomerFlow.Interactive."
+      "Message.RawCustomerFlow\"-\n\031ReportCustome"
+      "rFlowDataRsp\022\020\n\010strValue\030\001 \001(\t\"\3730\n\007Reque"
+      "st\022b\n\036CustomerFlowPreHandleReq_Value\030\n \001"
+      "(\0132:.CustomerFlow.Interactive.Message.Cu"
+      "stomerFlowPreHandleReq\022J\n\022ShakehandReq_V"
+      "alue\0302 \001(\0132..CustomerFlow.Interactive.Me"
+      "ssage.ShakehandReq\022H\n\021AddGroupReq_Value\030"
+      "d \001(\0132-.CustomerFlow.Interactive.Message"
+      ".AddGroupReq\022N\n\024DeleteGroupReq_Value\030n \001"
+      "(\01320.CustomerFlow.Interactive.Message.De"
+      "leteGroupReq\022N\n\024ModifyGroupReq_Value\030x \001"
+      "(\01320.CustomerFlow.Interactive.Message.Mo"
+      "difyGroupReq\022U\n\027QueryGroupInfoReq_Value\030"
+      "\202\001 \001(\01323.CustomerFlow.Interactive.Messag"
+      "e.QueryGroupInfoReq\022S\n\026QueryAllGroupReq_"
+      "Value\030\214\001 \001(\01322.CustomerFlow.Interactive."
+      "Message.QueryAllGroupReq\022I\n\021AddStoreReq_"
+      "Value\030\226\001 \001(\0132-.CustomerFlow.Interactive."
+      "Message.AddStoreReq\022O\n\024DeleteStoreReq_Va"
+      "lue\030\240\001 \001(\01320.CustomerFlow.Interactive.Me"
+      "ssage.DeleteStoreReq\022O\n\024ModifyStoreReq_V"
+      "alue\030\252\001 \001(\01320.CustomerFlow.Interactive.M"
+      "essage.ModifyStoreReq\022U\n\027QueryStoreInfoR"
+      "eq_Value\030\264\001 \001(\01323.CustomerFlow.Interacti"
+      "ve.Message.QueryStoreInfoReq\022S\n\026QueryAll"
+      "StoreReq_Value\030\276\001 \001(\01322.CustomerFlow.Int"
+      "eractive.Message.QueryAllStoreReq\022O\n\024Add"
+      "EntranceReq_Value\030\310\001 \001(\01320.CustomerFlow."
+      "Interactive.Message.AddEntranceReq\022U\n\027De"
+      "leteEntranceReq_Value\030\322\001 \001(\01323.CustomerF"
+      "low.Interactive.Message.DeleteEntranceRe"
+      "q\022U\n\027ModifyEntranceReq_Value\030\334\001 \001(\01323.Cu"
+      "stomerFlow.Interactive.Message.ModifyEnt"
+      "ranceReq\022[\n\032AddEntranceDeviceReq_Value\030\346"
+      "\001 \001(\01326.CustomerFlow.Interactive.Message"
+      ".AddEntranceDeviceReq\022a\n\035DeleteEntranceD"
+      "eviceReq_Value\030\360\001 \001(\01329.CustomerFlow.Int"
+      "eractive.Message.DeleteEntranceDeviceReq"
+      "\022I\n\021AddEventReq_Value\030\254\002 \001(\0132-.CustomerF"
+      "low.Interactive.Message.AddEventReq\022O\n\024D"
+      "eleteEventReq_Value\030\266\002 \001(\01320.CustomerFlo"
+      "w.Interactive.Message.DeleteEventReq\022O\n\024"
+      "ModifyEventReq_Value\030\300\002 \001(\01320.CustomerFl"
+      "ow.Interactive.Message.ModifyEventReq\022U\n"
+      "\027QueryEventInfoReq_Value\030\312\002 \001(\01323.Custom"
+      "erFlow.Interactive.Message.QueryEventInf"
+      "oReq\022S\n\026QueryAllEventReq_Value\030\324\002 \001(\01322."
+      "CustomerFlow.Interactive.Message.QueryAl"
+      "lEventReq\022]\n\033AddSmartGuardStoreReq_Value"
+      "\030\336\002 \001(\01327.CustomerFlow.Interactive.Messa"
+      "ge.AddSmartGuardStoreReq\022c\n\036DeleteSmartG"
+      "uardStoreReq_Value\030\350\002 \001(\0132:.CustomerFlow"
+      ".Interactive.Message.DeleteSmartGuardSto"
+      "reReq\022c\n\036ModifySmartGuardStoreReq_Value\030"
+      "\362\002 \001(\0132:.CustomerFlow.Interactive.Messag"
+      "e.ModifySmartGuardStoreReq\022i\n!QuerySmart"
+      "GuardStoreInfoReq_Value\030\374\002 \001(\0132=.Custome"
+      "rFlow.Interactive.Message.QuerySmartGuar"
+      "dStoreInfoReq\022g\n QueryAllSmartGuardStore"
+      "Req_Value\030\206\003 \001(\0132<.CustomerFlow.Interact"
+      "ive.Message.QueryAllSmartGuardStoreReq\022Y"
+      "\n\031AddRegularPatrolReq_Value\030\220\003 \001(\01325.Cus"
+      "tomerFlow.Interactive.Message.AddRegular"
+      "PatrolReq\022_\n\034DeleteRegularPatrolReq_Valu"
+      "e\030\232\003 \001(\01328.CustomerFlow.Interactive.Mess"
+      "age.DeleteRegularPatrolReq\022_\n\034ModifyRegu"
+      "larPatrolReq_Value\030\244\003 \001(\01328.CustomerFlow"
+      ".Interactive.Message.ModifyRegularPatrol"
+      "Req\022e\n\037QueryRegularPatrolInfoReq_Value\030\256"
+      "\003 \001(\0132;.CustomerFlow.Interactive.Message"
+      ".QueryRegularPatrolInfoReq\022c\n\036QueryAllRe"
+      "gularPatrolReq_Value\030\270\003 \001(\0132:.CustomerFl"
+      "ow.Interactive.Message.QueryAllRegularPa"
+      "trolReq\022S\n\026UserJoinStoreReq_Value\030\364\003 \001(\013"
+      "22.CustomerFlow.Interactive.Message.User"
+      "JoinStoreReq\022S\n\026UserQuitStoreReq_Value\030\376"
+      "\003 \001(\01322.CustomerFlow.Interactive.Message"
+      ".UserQuitStoreReq\022[\n\032QueryStoreAllUserRe"
+      "q_Value\030\210\004 \001(\01326.CustomerFlow.Interactiv"
+      "e.Message.QueryStoreAllUserReq\022U\n\027AddVIP"
+      "CustomerReq_Value\030\240\006 \001(\01323.CustomerFlow."
+      "Interactive.Message.AddVIPCustomerReq\022[\n"
+      "\032DeleteVIPCustomerReq_Value\030\252\006 \001(\01326.Cus"
+      "tomerFlow.Interactive.Message.DeleteVIPC"
+      "ustomerReq\022[\n\032ModifyVIPCustomerReq_Value"
+      "\030\264\006 \001(\01326.CustomerFlow.Interactive.Messa"
+      "ge.ModifyVIPCustomerReq\022a\n\035QueryVIPCusto"
+      "merInfoReq_Value\030\276\006 \001(\01329.CustomerFlow.I"
+      "nteractive.Message.QueryVIPCustomerInfoR"
+      "eq\022_\n\034QueryAllVIPCustomerReq_Value\030\310\006 \001("
+      "\01328.CustomerFlow.Interactive.Message.Que"
+      "ryAllVIPCustomerReq\022a\n\035AddVIPConsumeHist"
+      "oryReq_Value\030\322\006 \001(\01329.CustomerFlow.Inter"
+      "active.Message.AddVIPConsumeHistoryReq\022g"
+      "\n DeleteVIPConsumeHistoryReq_Value\030\334\006 \001("
+      "\0132<.CustomerFlow.Interactive.Message.Del"
+      "eteVIPConsumeHistoryReq\022g\n ModifyVIPCons"
+      "umeHistoryReq_Value\030\346\006 \001(\0132<.CustomerFlo"
+      "w.Interactive.Message.ModifyVIPConsumeHi"
+      "storyReq\022k\n\"QueryAllVIPConsumeHistoryReq"
+      "_Value\030\360\006 \001(\0132>.CustomerFlow.Interactive"
+      ".Message.QueryAllVIPConsumeHistoryReq\022c\n"
+      "\036AddEvaluationTemplateReq_Value\030\204\007 \001(\0132:"
+      ".CustomerFlow.Interactive.Message.AddEva"
+      "luationTemplateReq\022i\n!DeleteEvaluationTe"
+      "mplateReq_Value\030\216\007 \001(\0132=.CustomerFlow.In"
+      "teractive.Message.DeleteEvaluationTempla"
+      "teReq\022i\n!ModifyEvaluationTemplateReq_Val"
+      "ue\030\230\007 \001(\0132=.CustomerFlow.Interactive.Mes"
+      "sage.ModifyEvaluationTemplateReq\022m\n#Quer"
+      "yAllEvaluationTemplateReq_Value\030\242\007 \001(\0132\?"
+      ".CustomerFlow.Interactive.Message.QueryA"
+      "llEvaluationTemplateReq\022]\n\033AddStoreEvalu"
+      "ationReq_Value\030\266\007 \001(\01327.CustomerFlow.Int"
+      "eractive.Message.AddStoreEvaluationReq\022c"
+      "\n\036DeleteStoreEvaluationReq_Value\030\300\007 \001(\0132"
+      ":.CustomerFlow.Interactive.Message.Delet"
+      "eStoreEvaluationReq\022c\n\036ModifyStoreEvalua"
+      "tionReq_Value\030\312\007 \001(\0132:.CustomerFlow.Inte"
+      "ractive.Message.ModifyStoreEvaluationReq"
+      "\022i\n!QueryStoreEvaluationInfoReq_Value\030\324\007"
+      " \001(\0132=.CustomerFlow.Interactive.Message."
+      "QueryStoreEvaluationInfoReq\022g\n QueryAllS"
+      "toreEvaluationReq_Value\030\336\007 \001(\0132<.Custome"
+      "rFlow.Interactive.Message.QueryAllStoreE"
+      "valuationReq\022a\n\035AddRemotePatrolStoreReq_"
+      "Value\030\350\007 \001(\01329.CustomerFlow.Interactive."
+      "Message.AddRemotePatrolStoreReq\022g\n Delet"
+      "eRemotePatrolStoreReq_Value\030\362\007 \001(\0132<.Cus"
+      "tomerFlow.Interactive.Message.DeleteRemo"
+      "tePatrolStoreReq\022g\n ModifyRemotePatrolSt"
+      "oreReq_Value\030\374\007 \001(\0132<.CustomerFlow.Inter"
+      "active.Message.ModifyRemotePatrolStoreRe"
+      "q\022m\n#QueryRemotePatrolStoreInfoReq_Value"
+      "\030\206\010 \001(\0132\?.CustomerFlow.Interactive.Messa"
+      "ge.QueryRemotePatrolStoreInfoReq\022k\n\"Quer"
+      "yAllRemotePatrolStoreReq_Value\030\220\010 \001(\0132>."
+      "CustomerFlow.Interactive.Message.QueryAl"
+      "lRemotePatrolStoreReq\022G\n\020AddAreaReq_Valu"
+      "e\030\314\010 \001(\0132,.CustomerFlow.Interactive.Mess"
+      "age.AddAreaReq\022M\n\023DeleteAreaReq_Value\030\326\010"
+      " \001(\0132/.CustomerFlow.Interactive.Message."
+      "DeleteAreaReq\022M\n\023ModifyAreaReq_Value\030\340\010 "
+      "\001(\0132/.CustomerFlow.Interactive.Message.M"
+      "odifyAreaReq\022Q\n\025QueryAllAreaReq_Value\030\352\010"
       " \001(\01321.CustomerFlow.Interactive.Message."
-      "StoreEvaluation\"\203\001\n\032QueryAllStoreEvaluat"
-      "ionReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
-      "\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEndDat"
-      "e\030\004 \001(\t\022\024\n\014uiBeginIndex\030\005 \001(\r\"h\n\032QueryAl"
-      "lStoreEvaluationRsp\022J\n\017storeEvaluation\030\001"
-      " \003(\01321.CustomerFlow.Interactive.Message."
-      "StoreEvaluation\"c\n\027AddRemotePatrolStoreR"
-      "eq\022H\n\013patrolStore\030\001 \001(\01323.CustomerFlow.I"
-      "nteractive.Message.RemotePatrolStore\".\n\027"
-      "AddRemotePatrolStoreRsp\022\023\n\013strPatrolID\030\001"
-      " \001(\t\"D\n\032DeleteRemotePatrolStoreReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022\023\n\013strPatrolID\030\002 \001(\t\".\n\032De"
-      "leteRemotePatrolStoreRsp\022\020\n\010strValue\030\001 \001"
-      "(\t\"y\n\032ModifyRemotePatrolStoreReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022H\n\013patrolStore\030\002 \001(\01323.Custo"
-      "merFlow.Interactive.Message.RemotePatrol"
-      "Store\".\n\032ModifyRemotePatrolStoreRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"G\n\035QueryRemotePatrolStoreI"
-      "nfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strPatrolID"
-      "\030\002 \001(\t\"i\n\035QueryRemotePatrolStoreInfoRsp\022"
-      "H\n\013patrolStore\030\001 \001(\01323.CustomerFlow.Inte"
-      "ractive.Message.RemotePatrolStore\"\205\001\n\034Qu"
-      "eryAllRemotePatrolStoreReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBeginDat"
-      "e\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBeginIn"
-      "dex\030\005 \001(\r\"h\n\034QueryAllRemotePatrolStoreRs"
-      "p\022H\n\013patrolStore\030\001 \003(\01323.CustomerFlow.In"
-      "teractive.Message.RemotePatrolStore\"\221\001\n\020"
-      "ImportPOSDataReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\ns"
-      "trStoreID\030\002 \001(\t\022\025\n\ruiOrderAmount\030\003 \001(\r\022\025"
-      "\n\ruiGoodsAmount\030\004 \001(\r\022\023\n\013dDealAmount\030\005 \001"
-      "(\001\022\023\n\013strDealDate\030\006 \001(\t\"$\n\020ImportPOSData"
-      "Rsp\022\020\n\010strValue\030\001 \001(\t\"\211\001\n\035QueryCustomerF"
-      "lowStatisticReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nst"
-      "rStoreID\030\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\n"
-      "strEndDate\030\004 \001(\t\022\027\n\017uiTimePrecision\030\005 \001("
-      "\r\"5\n\035QueryCustomerFlowStatisticRsp\022\024\n\014st"
-      "rChartData\030\001 \001(\t\"y\n\031ReportCustomerFlowDa"
-      "taReq\022\023\n\013strDeviceID\030\001 \001(\t\022G\n\014customerFl"
-      "ow\030\002 \003(\01321.CustomerFlow.Interactive.Mess"
-      "age.RawCustomerFlow\"-\n\031ReportCustomerFlo"
-      "wDataRsp\022\020\n\010strValue\030\001 \001(\t\"\3730\n\007Request\022b"
-      "\n\036CustomerFlowPreHandleReq_Value\030\n \001(\0132:"
-      ".CustomerFlow.Interactive.Message.Custom"
-      "erFlowPreHandleReq\022J\n\022ShakehandReq_Value"
-      "\0302 \001(\0132..CustomerFlow.Interactive.Messag"
-      "e.ShakehandReq\022H\n\021AddGroupReq_Value\030d \001("
-      "\0132-.CustomerFlow.Interactive.Message.Add"
-      "GroupReq\022N\n\024DeleteGroupReq_Value\030n \001(\01320"
+      "QueryAllAreaReq\022Y\n\031BindPushClientIDReq_V"
+      "alue\030\376\010 \001(\01325.CustomerFlow.Interactive.M"
+      "essage.BindPushClientIDReq\022]\n\033UnbindPush"
+      "ClientIDReq_Value\030\210\t \001(\01327.CustomerFlow."
+      "Interactive.Message.UnbindPushClientIDRe"
+      "q\022S\n\026ImportPOSDataReq_Value\030\320\017 \001(\01322.Cus"
+      "tomerFlow.Interactive.Message.ImportPOSD"
+      "ataReq\022m\n#QueryCustomerFlowStatisticReq_"
+      "Value\030\324\026 \001(\0132\?.CustomerFlow.Interactive."
+      "Message.QueryCustomerFlowStatisticReq\022e\n"
+      "\037ReportCustomerFlowDataReq_Value\030\270\027 \001(\0132"
+      ";.CustomerFlow.Interactive.Message.Repor"
+      "tCustomerFlowDataReq\"\2411\n\010Response\022\020\n\010iRe"
+      "tcode\030\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022b\n\036Custom"
+      "erFlowPreHandleRsp_Value\030\n \001(\0132:.Custome"
+      "rFlow.Interactive.Message.CustomerFlowPr"
+      "eHandleRsp\022J\n\022ShakehandRsp_Value\0302 \001(\0132."
+      ".CustomerFlow.Interactive.Message.Shakeh"
+      "andRsp\022H\n\021AddGroupRsp_Value\030d \001(\0132-.Cust"
+      "omerFlow.Interactive.Message.AddGroupRsp"
+      "\022N\n\024DeleteGroupRsp_Value\030n \001(\01320.Custome"
+      "rFlow.Interactive.Message.DeleteGroupRsp"
+      "\022N\n\024ModifyGroupRsp_Value\030x \001(\01320.Custome"
+      "rFlow.Interactive.Message.ModifyGroupRsp"
+      "\022U\n\027QueryGroupInfoRsp_Value\030\202\001 \001(\01323.Cus"
+      "tomerFlow.Interactive.Message.QueryGroup"
+      "InfoRsp\022S\n\026QueryAllGroupRsp_Value\030\214\001 \001(\013"
+      "22.CustomerFlow.Interactive.Message.Quer"
+      "yAllGroupRsp\022I\n\021AddStoreRsp_Value\030\226\001 \001(\013"
+      "2-.CustomerFlow.Interactive.Message.AddS"
+      "toreRsp\022O\n\024DeleteStoreRsp_Value\030\240\001 \001(\01320"
       ".CustomerFlow.Interactive.Message.Delete"
-      "GroupReq\022N\n\024ModifyGroupReq_Value\030x \001(\01320"
-      ".CustomerFlow.Interactive.Message.Modify"
-      "GroupReq\022U\n\027QueryGroupInfoReq_Value\030\202\001 \001"
-      "(\01323.CustomerFlow.Interactive.Message.Qu"
-      "eryGroupInfoReq\022S\n\026QueryAllGroupReq_Valu"
-      "e\030\214\001 \001(\01322.CustomerFlow.Interactive.Mess"
-      "age.QueryAllGroupReq\022I\n\021AddStoreReq_Valu"
-      "e\030\226\001 \001(\0132-.CustomerFlow.Interactive.Mess"
-      "age.AddStoreReq\022O\n\024DeleteStoreReq_Value\030"
-      "\240\001 \001(\01320.CustomerFlow.Interactive.Messag"
-      "e.DeleteStoreReq\022O\n\024ModifyStoreReq_Value"
-      "\030\252\001 \001(\01320.CustomerFlow.Interactive.Messa"
-      "ge.ModifyStoreReq\022U\n\027QueryStoreInfoReq_V"
-      "alue\030\264\001 \001(\01323.CustomerFlow.Interactive.M"
-      "essage.QueryStoreInfoReq\022S\n\026QueryAllStor"
-      "eReq_Value\030\276\001 \001(\01322.CustomerFlow.Interac"
-      "tive.Message.QueryAllStoreReq\022O\n\024AddEntr"
-      "anceReq_Value\030\310\001 \001(\01320.CustomerFlow.Inte"
-      "ractive.Message.AddEntranceReq\022U\n\027Delete"
-      "EntranceReq_Value\030\322\001 \001(\01323.CustomerFlow."
-      "Interactive.Message.DeleteEntranceReq\022U\n"
-      "\027ModifyEntranceReq_Value\030\334\001 \001(\01323.Custom"
-      "erFlow.Interactive.Message.ModifyEntranc"
-      "eReq\022[\n\032AddEntranceDeviceReq_Value\030\346\001 \001("
-      "\01326.CustomerFlow.Interactive.Message.Add"
-      "EntranceDeviceReq\022a\n\035DeleteEntranceDevic"
-      "eReq_Value\030\360\001 \001(\01329.CustomerFlow.Interac"
-      "tive.Message.DeleteEntranceDeviceReq\022I\n\021"
-      "AddEventReq_Value\030\254\002 \001(\0132-.CustomerFlow."
-      "Interactive.Message.AddEventReq\022O\n\024Delet"
-      "eEventReq_Value\030\266\002 \001(\01320.CustomerFlow.In"
-      "teractive.Message.DeleteEventReq\022O\n\024Modi"
-      "fyEventReq_Value\030\300\002 \001(\01320.CustomerFlow.I"
-      "nteractive.Message.ModifyEventReq\022U\n\027Que"
-      "ryEventInfoReq_Value\030\312\002 \001(\01323.CustomerFl"
-      "ow.Interactive.Message.QueryEventInfoReq"
-      "\022S\n\026QueryAllEventReq_Value\030\324\002 \001(\01322.Cust"
-      "omerFlow.Interactive.Message.QueryAllEve"
-      "ntReq\022]\n\033AddSmartGuardStoreReq_Value\030\336\002 "
-      "\001(\01327.CustomerFlow.Interactive.Message.A"
-      "ddSmartGuardStoreReq\022c\n\036DeleteSmartGuard"
-      "StoreReq_Value\030\350\002 \001(\0132:.CustomerFlow.Int"
-      "eractive.Message.DeleteSmartGuardStoreRe"
-      "q\022c\n\036ModifySmartGuardStoreReq_Value\030\362\002 \001"
-      "(\0132:.CustomerFlow.Interactive.Message.Mo"
-      "difySmartGuardStoreReq\022i\n!QuerySmartGuar"
-      "dStoreInfoReq_Value\030\374\002 \001(\0132=.CustomerFlo"
-      "w.Interactive.Message.QuerySmartGuardSto"
-      "reInfoReq\022g\n QueryAllSmartGuardStoreReq_"
-      "Value\030\206\003 \001(\0132<.CustomerFlow.Interactive."
-      "Message.QueryAllSmartGuardStoreReq\022Y\n\031Ad"
-      "dRegularPatrolReq_Value\030\220\003 \001(\01325.Custome"
-      "rFlow.Interactive.Message.AddRegularPatr"
-      "olReq\022_\n\034DeleteRegularPatrolReq_Value\030\232\003"
-      " \001(\01328.CustomerFlow.Interactive.Message."
-      "DeleteRegularPatrolReq\022_\n\034ModifyRegularP"
-      "atrolReq_Value\030\244\003 \001(\01328.CustomerFlow.Int"
-      "eractive.Message.ModifyRegularPatrolReq\022"
-      "e\n\037QueryRegularPatrolInfoReq_Value\030\256\003 \001("
-      "\0132;.CustomerFlow.Interactive.Message.Que"
-      "ryRegularPatrolInfoReq\022c\n\036QueryAllRegula"
-      "rPatrolReq_Value\030\270\003 \001(\0132:.CustomerFlow.I"
-      "nteractive.Message.QueryAllRegularPatrol"
-      "Req\022S\n\026UserJoinStoreReq_Value\030\364\003 \001(\01322.C"
-      "ustomerFlow.Interactive.Message.UserJoin"
-      "StoreReq\022S\n\026UserQuitStoreReq_Value\030\376\003 \001("
-      "\01322.CustomerFlow.Interactive.Message.Use"
-      "rQuitStoreReq\022[\n\032QueryStoreAllUserReq_Va"
-      "lue\030\210\004 \001(\01326.CustomerFlow.Interactive.Me"
-      "ssage.QueryStoreAllUserReq\022U\n\027AddVIPCust"
-      "omerReq_Value\030\240\006 \001(\01323.CustomerFlow.Inte"
-      "ractive.Message.AddVIPCustomerReq\022[\n\032Del"
-      "eteVIPCustomerReq_Value\030\252\006 \001(\01326.Custome"
-      "rFlow.Interactive.Message.DeleteVIPCusto"
-      "merReq\022[\n\032ModifyVIPCustomerReq_Value\030\264\006 "
-      "\001(\01326.CustomerFlow.Interactive.Message.M"
-      "odifyVIPCustomerReq\022a\n\035QueryVIPCustomerI"
-      "nfoReq_Value\030\276\006 \001(\01329.CustomerFlow.Inter"
-      "active.Message.QueryVIPCustomerInfoReq\022_"
-      "\n\034QueryAllVIPCustomerReq_Value\030\310\006 \001(\01328."
-      "CustomerFlow.Interactive.Message.QueryAl"
-      "lVIPCustomerReq\022a\n\035AddVIPConsumeHistoryR"
-      "eq_Value\030\322\006 \001(\01329.CustomerFlow.Interacti"
-      "ve.Message.AddVIPConsumeHistoryReq\022g\n De"
-      "leteVIPConsumeHistoryReq_Value\030\334\006 \001(\0132<."
-      "CustomerFlow.Interactive.Message.DeleteV"
-      "IPConsumeHistoryReq\022g\n ModifyVIPConsumeH"
-      "istoryReq_Value\030\346\006 \001(\0132<.CustomerFlow.In"
-      "teractive.Message.ModifyVIPConsumeHistor"
-      "yReq\022k\n\"QueryAllVIPConsumeHistoryReq_Val"
-      "ue\030\360\006 \001(\0132>.CustomerFlow.Interactive.Mes"
-      "sage.QueryAllVIPConsumeHistoryReq\022c\n\036Add"
-      "EvaluationTemplateReq_Value\030\204\007 \001(\0132:.Cus"
-      "tomerFlow.Interactive.Message.AddEvaluat"
-      "ionTemplateReq\022i\n!DeleteEvaluationTempla"
-      "teReq_Value\030\216\007 \001(\0132=.CustomerFlow.Intera"
-      "ctive.Message.DeleteEvaluationTemplateRe"
-      "q\022i\n!ModifyEvaluationTemplateReq_Value\030\230"
-      "\007 \001(\0132=.CustomerFlow.Interactive.Message"
-      ".ModifyEvaluationTemplateReq\022m\n#QueryAll"
-      "EvaluationTemplateReq_Value\030\242\007 \001(\0132\?.Cus"
-      "tomerFlow.Interactive.Message.QueryAllEv"
-      "aluationTemplateReq\022]\n\033AddStoreEvaluatio"
-      "nReq_Value\030\266\007 \001(\01327.CustomerFlow.Interac"
-      "tive.Message.AddStoreEvaluationReq\022c\n\036De"
-      "leteStoreEvaluationReq_Value\030\300\007 \001(\0132:.Cu"
-      "stomerFlow.Interactive.Message.DeleteSto"
-      "reEvaluationReq\022c\n\036ModifyStoreEvaluation"
-      "Req_Value\030\312\007 \001(\0132:.CustomerFlow.Interact"
-      "ive.Message.ModifyStoreEvaluationReq\022i\n!"
-      "QueryStoreEvaluationInfoReq_Value\030\324\007 \001(\013"
-      "2=.CustomerFlow.Interactive.Message.Quer"
-      "yStoreEvaluationInfoReq\022g\n QueryAllStore"
-      "EvaluationReq_Value\030\336\007 \001(\0132<.CustomerFlo"
-      "w.Interactive.Message.QueryAllStoreEvalu"
-      "ationReq\022a\n\035AddRemotePatrolStoreReq_Valu"
-      "e\030\350\007 \001(\01329.CustomerFlow.Interactive.Mess"
-      "age.AddRemotePatrolStoreReq\022g\n DeleteRem"
-      "otePatrolStoreReq_Value\030\362\007 \001(\0132<.Custome"
-      "rFlow.Interactive.Message.DeleteRemotePa"
-      "trolStoreReq\022g\n ModifyRemotePatrolStoreR"
-      "eq_Value\030\374\007 \001(\0132<.CustomerFlow.Interacti"
-      "ve.Message.ModifyRemotePatrolStoreReq\022m\n"
-      "#QueryRemotePatrolStoreInfoReq_Value\030\206\010 "
-      "\001(\0132\?.CustomerFlow.Interactive.Message.Q"
-      "ueryRemotePatrolStoreInfoReq\022k\n\"QueryAll"
-      "RemotePatrolStoreReq_Value\030\220\010 \001(\0132>.Cust"
-      "omerFlow.Interactive.Message.QueryAllRem"
-      "otePatrolStoreReq\022G\n\020AddAreaReq_Value\030\314\010"
-      " \001(\0132,.CustomerFlow.Interactive.Message."
-      "AddAreaReq\022M\n\023DeleteAreaReq_Value\030\326\010 \001(\013"
-      "2/.CustomerFlow.Interactive.Message.Dele"
-      "teAreaReq\022M\n\023ModifyAreaReq_Value\030\340\010 \001(\0132"
-      "/.CustomerFlow.Interactive.Message.Modif"
-      "yAreaReq\022Q\n\025QueryAllAreaReq_Value\030\352\010 \001(\013"
-      "21.CustomerFlow.Interactive.Message.Quer"
-      "yAllAreaReq\022Y\n\031BindPushClientIDReq_Value"
-      "\030\376\010 \001(\01325.CustomerFlow.Interactive.Messa"
-      "ge.BindPushClientIDReq\022]\n\033UnbindPushClie"
-      "ntIDReq_Value\030\210\t \001(\01327.CustomerFlow.Inte"
-      "ractive.Message.UnbindPushClientIDReq\022S\n"
-      "\026ImportPOSDataReq_Value\030\320\017 \001(\01322.Custome"
-      "rFlow.Interactive.Message.ImportPOSDataR"
-      "eq\022m\n#QueryCustomerFlowStatisticReq_Valu"
-      "e\030\324\026 \001(\0132\?.CustomerFlow.Interactive.Mess"
-      "age.QueryCustomerFlowStatisticReq\022e\n\037Rep"
-      "ortCustomerFlowDataReq_Value\030\270\027 \001(\0132;.Cu"
-      "stomerFlow.Interactive.Message.ReportCus"
-      "tomerFlowDataReq\"\2411\n\010Response\022\020\n\010iRetcod"
-      "e\030\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022b\n\036CustomerFl"
-      "owPreHandleRsp_Value\030\n \001(\0132:.CustomerFlo"
-      "w.Interactive.Message.CustomerFlowPreHan"
-      "dleRsp\022J\n\022ShakehandRsp_Value\0302 \001(\0132..Cus"
-      "tomerFlow.Interactive.Message.ShakehandR"
-      "sp\022H\n\021AddGroupRsp_Value\030d \001(\0132-.Customer"
-      "Flow.Interactive.Message.AddGroupRsp\022N\n\024"
-      "DeleteGroupRsp_Value\030n \001(\01320.CustomerFlo"
-      "w.Interactive.Message.DeleteGroupRsp\022N\n\024"
-      "ModifyGroupRsp_Value\030x \001(\01320.CustomerFlo"
-      "w.Interactive.Message.ModifyGroupRsp\022U\n\027"
-      "QueryGroupInfoRsp_Value\030\202\001 \001(\01323.Custome"
-      "rFlow.Interactive.Message.QueryGroupInfo"
-      "Rsp\022S\n\026QueryAllGroupRsp_Value\030\214\001 \001(\01322.C"
-      "ustomerFlow.Interactive.Message.QueryAll"
-      "GroupRsp\022I\n\021AddStoreRsp_Value\030\226\001 \001(\0132-.C"
-      "ustomerFlow.Interactive.Message.AddStore"
-      "Rsp\022O\n\024DeleteStoreRsp_Value\030\240\001 \001(\01320.Cus"
-      "tomerFlow.Interactive.Message.DeleteStor"
-      "eRsp\022O\n\024ModifyStoreRsp_Value\030\252\001 \001(\01320.Cu"
-      "stomerFlow.Interactive.Message.ModifySto"
-      "reRsp\022U\n\027QueryStoreInfoRsp_Value\030\264\001 \001(\0132"
-      "3.CustomerFlow.Interactive.Message.Query"
-      "StoreInfoRsp\022S\n\026QueryAllStoreRsp_Value\030\276"
-      "\001 \001(\01322.CustomerFlow.Interactive.Message"
-      ".QueryAllStoreRsp\022O\n\024AddEntranceRsp_Valu"
-      "e\030\310\001 \001(\01320.CustomerFlow.Interactive.Mess"
-      "age.AddEntranceRsp\022U\n\027DeleteEntranceRsp_"
-      "Value\030\322\001 \001(\01323.CustomerFlow.Interactive."
-      "Message.DeleteEntranceRsp\022U\n\027ModifyEntra"
-      "nceRsp_Value\030\334\001 \001(\01323.CustomerFlow.Inter"
-      "active.Message.ModifyEntranceRsp\022[\n\032AddE"
-      "ntranceDeviceRsp_Value\030\346\001 \001(\01326.Customer"
-      "Flow.Interactive.Message.AddEntranceDevi"
-      "ceRsp\022a\n\035DeleteEntranceDeviceRsp_Value\030\360"
-      "\001 \001(\01329.CustomerFlow.Interactive.Message"
-      ".DeleteEntranceDeviceRsp\022I\n\021AddEventRsp_"
-      "Value\030\254\002 \001(\0132-.CustomerFlow.Interactive."
-      "Message.AddEventRsp\022O\n\024DeleteEventRsp_Va"
-      "lue\030\266\002 \001(\01320.CustomerFlow.Interactive.Me"
-      "ssage.DeleteEventRsp\022O\n\024ModifyEventRsp_V"
-      "alue\030\300\002 \001(\01320.CustomerFlow.Interactive.M"
-      "essage.ModifyEventRsp\022U\n\027QueryEventInfoR"
-      "sp_Value\030\312\002 \001(\01323.CustomerFlow.Interacti"
-      "ve.Message.QueryEventInfoRsp\022S\n\026QueryAll"
-      "EventRsp_Value\030\324\002 \001(\01322.CustomerFlow.Int"
-      "eractive.Message.QueryAllEventRsp\022]\n\033Add"
-      "SmartGuardStoreRsp_Value\030\336\002 \001(\01327.Custom"
-      "erFlow.Interactive.Message.AddSmartGuard"
-      "StoreRsp\022c\n\036DeleteSmartGuardStoreRsp_Val"
-      "ue\030\350\002 \001(\0132:.CustomerFlow.Interactive.Mes"
-      "sage.DeleteSmartGuardStoreRsp\022c\n\036ModifyS"
-      "martGuardStoreRsp_Value\030\362\002 \001(\0132:.Custome"
-      "rFlow.Interactive.Message.ModifySmartGua"
-      "rdStoreRsp\022i\n!QuerySmartGuardStoreInfoRs"
-      "p_Value\030\374\002 \001(\0132=.CustomerFlow.Interactiv"
-      "e.Message.QuerySmartGuardStoreInfoRsp\022g\n"
-      " QueryAllSmartGuardStoreRsp_Value\030\206\003 \001(\013"
-      "2<.CustomerFlow.Interactive.Message.Quer"
-      "yAllSmartGuardStoreRsp\022Y\n\031AddRegularPatr"
-      "olRsp_Value\030\220\003 \001(\01325.CustomerFlow.Intera"
-      "ctive.Message.AddRegularPatrolRsp\022_\n\034Del"
-      "eteRegularPatrolRsp_Value\030\232\003 \001(\01328.Custo"
-      "merFlow.Interactive.Message.DeleteRegula"
-      "rPatrolRsp\022_\n\034ModifyRegularPatrolRsp_Val"
-      "ue\030\244\003 \001(\01328.CustomerFlow.Interactive.Mes"
-      "sage.ModifyRegularPatrolRsp\022e\n\037QueryRegu"
-      "larPatrolInfoRsp_Value\030\256\003 \001(\0132;.Customer"
-      "Flow.Interactive.Message.QueryRegularPat"
-      "rolInfoRsp\022c\n\036QueryAllRegularPatrolRsp_V"
-      "alue\030\270\003 \001(\0132:.CustomerFlow.Interactive.M"
-      "essage.QueryAllRegularPatrolRsp\022S\n\026UserJ"
-      "oinStoreRsp_Value\030\364\003 \001(\01322.CustomerFlow."
-      "Interactive.Message.UserJoinStoreRsp\022S\n\026"
-      "UserQuitStoreRsp_Value\030\376\003 \001(\01322.Customer"
-      "Flow.Interactive.Message.UserQuitStoreRs"
-      "p\022[\n\032QueryStoreAllUserRsp_Value\030\210\004 \001(\01326"
-      ".CustomerFlow.Interactive.Message.QueryS"
-      "toreAllUserRsp\022U\n\027AddVIPCustomerRsp_Valu"
-      "e\030\240\006 \001(\01323.CustomerFlow.Interactive.Mess"
-      "age.AddVIPCustomerRsp\022[\n\032DeleteVIPCustom"
-      "erRsp_Value\030\252\006 \001(\01326.CustomerFlow.Intera"
-      "ctive.Message.DeleteVIPCustomerRsp\022[\n\032Mo"
-      "difyVIPCustomerRsp_Value\030\264\006 \001(\01326.Custom"
-      "erFlow.Interactive.Message.ModifyVIPCust"
-      "omerRsp\022a\n\035QueryVIPCustomerInfoRsp_Value"
-      "\030\276\006 \001(\01329.CustomerFlow.Interactive.Messa"
-      "ge.QueryVIPCustomerInfoRsp\022_\n\034QueryAllVI"
-      "PCustomerRsp_Value\030\310\006 \001(\01328.CustomerFlow"
-      ".Interactive.Message.QueryAllVIPCustomer"
-      "Rsp\022a\n\035AddVIPConsumeHistoryRsp_Value\030\322\006 "
-      "\001(\01329.CustomerFlow.Interactive.Message.A"
-      "ddVIPConsumeHistoryRsp\022g\n DeleteVIPConsu"
-      "meHistoryRsp_Value\030\334\006 \001(\0132<.CustomerFlow"
-      ".Interactive.Message.DeleteVIPConsumeHis"
-      "toryRsp\022g\n ModifyVIPConsumeHistoryRsp_Va"
-      "lue\030\346\006 \001(\0132<.CustomerFlow.Interactive.Me"
-      "ssage.ModifyVIPConsumeHistoryRsp\022k\n\"Quer"
-      "yAllVIPConsumeHistoryRsp_Value\030\360\006 \001(\0132>."
-      "CustomerFlow.Interactive.Message.QueryAl"
-      "lVIPConsumeHistoryRsp\022c\n\036AddEvaluationTe"
-      "mplateRsp_Value\030\204\007 \001(\0132:.CustomerFlow.In"
-      "teractive.Message.AddEvaluationTemplateR"
-      "sp\022i\n!DeleteEvaluationTemplateRsp_Value\030"
-      "\216\007 \001(\0132=.CustomerFlow.Interactive.Messag"
-      "e.DeleteEvaluationTemplateRsp\022i\n!ModifyE"
-      "valuationTemplateRsp_Value\030\230\007 \001(\0132=.Cust"
-      "omerFlow.Interactive.Message.ModifyEvalu"
-      "ationTemplateRsp\022m\n#QueryAllEvaluationTe"
-      "mplateRsp_Value\030\242\007 \001(\0132\?.CustomerFlow.In"
-      "teractive.Message.QueryAllEvaluationTemp"
-      "lateRsp\022]\n\033AddStoreEvaluationRsp_Value\030\266"
-      "\007 \001(\01327.CustomerFlow.Interactive.Message"
-      ".AddStoreEvaluationRsp\022c\n\036DeleteStoreEva"
-      "luationRsp_Value\030\300\007 \001(\0132:.CustomerFlow.I"
-      "nteractive.Message.DeleteStoreEvaluation"
-      "Rsp\022c\n\036ModifyStoreEvaluationRsp_Value\030\312\007"
-      " \001(\0132:.CustomerFlow.Interactive.Message."
-      "ModifyStoreEvaluationRsp\022i\n!QueryStoreEv"
-      "aluationInfoRsp_Value\030\324\007 \001(\0132=.CustomerF"
-      "low.Interactive.Message.QueryStoreEvalua"
-      "tionInfoRsp\022g\n QueryAllStoreEvaluationRs"
-      "p_Value\030\336\007 \001(\0132<.CustomerFlow.Interactiv"
-      "e.Message.QueryAllStoreEvaluationRsp\022a\n\035"
-      "AddRemotePatrolStoreRsp_Value\030\350\007 \001(\01329.C"
-      "ustomerFlow.Interactive.Message.AddRemot"
-      "ePatrolStoreRsp\022g\n DeleteRemotePatrolSto"
-      "reRsp_Value\030\362\007 \001(\0132<.CustomerFlow.Intera"
-      "ctive.Message.DeleteRemotePatrolStoreRsp"
-      "\022g\n ModifyRemotePatrolStoreRsp_Value\030\374\007 "
-      "\001(\0132<.CustomerFlow.Interactive.Message.M"
-      "odifyRemotePatrolStoreRsp\022m\n#QueryRemote"
-      "PatrolStoreInfoRsp_Value\030\206\010 \001(\0132\?.Custom"
-      "erFlow.Interactive.Message.QueryRemotePa"
-      "trolStoreInfoRsp\022k\n\"QueryAllRemotePatrol"
-      "StoreRsp_Value\030\220\010 \001(\0132>.CustomerFlow.Int"
-      "eractive.Message.QueryAllRemotePatrolSto"
-      "reRsp\022G\n\020AddAreaRsp_Value\030\314\010 \001(\0132,.Custo"
-      "merFlow.Interactive.Message.AddAreaRsp\022M"
-      "\n\023DeleteAreaRsp_Value\030\326\010 \001(\0132/.CustomerF"
-      "low.Interactive.Message.DeleteAreaRsp\022M\n"
-      "\023ModifyAreaRsp_Value\030\340\010 \001(\0132/.CustomerFl"
-      "ow.Interactive.Message.ModifyAreaRsp\022Q\n\025"
-      "QueryAllAreaRsp_Value\030\352\010 \001(\01321.CustomerF"
-      "low.Interactive.Message.QueryAllAreaRsp\022"
-      "Y\n\031BindPushClientIDRsp_Value\030\376\010 \001(\01325.Cu"
-      "stomerFlow.Interactive.Message.BindPushC"
-      "lientIDRsp\022]\n\033UnbindPushClientIDRsp_Valu"
-      "e\030\210\t \001(\01327.CustomerFlow.Interactive.Mess"
-      "age.UnbindPushClientIDRsp\022S\n\026ImportPOSDa"
-      "taRsp_Value\030\320\017 \001(\01322.CustomerFlow.Intera"
-      "ctive.Message.ImportPOSDataRsp\022m\n#QueryC"
-      "ustomerFlowStatisticRsp_Value\030\324\026 \001(\0132\?.C"
-      "ustomerFlow.Interactive.Message.QueryCus"
-      "tomerFlowStatisticRsp\022e\n\037ReportCustomerF"
-      "lowDataRsp_Value\030\270\027 \001(\0132;.CustomerFlow.I"
-      "nteractive.Message.ReportCustomerFlowDat"
-      "aRsp\"\367\001\n\023CustomerFlowMessage\022C\n\004type\030\001 \001"
-      "(\01625.CustomerFlow.Interactive.Message.Cu"
-      "stomerFlowMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006s"
-      "trSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\0132).Customer"
-      "Flow.Interactive.Message.Request\022<\n\010rspV"
-      "alue\030\005 \001(\0132*.CustomerFlow.Interactive.Me"
-      "ssage.Response*\257\037\n\023CustomerFlowMsgType\022\n"
-      "\n\006Init_T\020\000\022\037\n\032CustomerFlowPreHandleReq_T"
-      "\020\250F\022\037\n\032CustomerFlowPreHandleRsp_T\020\262F\022\023\n\016"
-      "ShakehandReq_T\020\214G\022\023\n\016ShakehandRsp_T\020\226G\022\022"
-      "\n\rAddGroupReq_T\020\220N\022\022\n\rAddGroupRsp_T\020\232N\022\025"
-      "\n\020DeleteGroupReq_T\020\244N\022\025\n\020DeleteGroupRsp_"
-      "T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025\n\020ModifyGro"
-      "upRsp_T\020\302N\022\030\n\023QueryGroupInfoReq_T\020\314N\022\030\n\023"
-      "QueryGroupInfoRsp_T\020\326N\022\027\n\022QueryAllGroupR"
-      "eq_T\020\340N\022\027\n\022QueryAllGroupRsp_T\020\352N\022\022\n\rAddS"
-      "toreReq_T\020\364N\022\022\n\rAddStoreRsp_T\020\376N\022\025\n\020Dele"
-      "teStoreReq_T\020\210O\022\025\n\020DeleteStoreRsp_T\020\222O\022\025"
-      "\n\020ModifyStoreReq_T\020\234O\022\025\n\020ModifyStoreRsp_"
-      "T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260O\022\030\n\023QueryS"
-      "toreInfoRsp_T\020\272O\022\027\n\022QueryAllStoreReq_T\020\304"
-      "O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n\020AddEntranc"
-      "eReq_T\020\330O\022\025\n\020AddEntranceRsp_T\020\342O\022\030\n\023Dele"
-      "teEntranceReq_T\020\354O\022\030\n\023DeleteEntranceRsp_"
-      "T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200P\022\030\n\023Modify"
-      "EntranceRsp_T\020\212P\022\033\n\026AddEntranceDeviceReq"
-      "_T\020\224P\022\033\n\026AddEntranceDeviceRsp_T\020\236P\022\036\n\031De"
-      "leteEntranceDeviceReq_T\020\250P\022\036\n\031DeleteEntr"
-      "anceDeviceRsp_T\020\262P\022\022\n\rAddEventReq_T\020\344P\022\022"
-      "\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteEventReq_T\020\370"
-      "P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020ModifyEventR"
-      "eq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226Q\022\030\n\023QueryE"
-      "ventInfoReq_T\020\240Q\022\030\n\023QueryEventInfoRsp_T\020"
-      "\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027\n\022QueryAllE"
-      "ventRsp_T\020\276Q\022\034\n\027AddSmartGuardStoreReq_T\020"
-      "\310Q\022\034\n\027AddSmartGuardStoreRsp_T\020\322Q\022\037\n\032Dele"
-      "teSmartGuardStoreReq_T\020\334Q\022\037\n\032DeleteSmart"
-      "GuardStoreRsp_T\020\346Q\022\037\n\032ModifySmartGuardSt"
-      "oreReq_T\020\360Q\022\037\n\032ModifySmartGuardStoreRsp_"
-      "T\020\372Q\022\"\n\035QuerySmartGuardStoreInfoReq_T\020\204R"
-      "\022\"\n\035QuerySmartGuardStoreInfoRsp_T\020\216R\022!\n\034"
-      "QueryAllSmartGuardStoreReq_T\020\230R\022!\n\034Query"
-      "AllSmartGuardStoreRsp_T\020\242R\022\032\n\025AddRegular"
-      "PatrolReq_T\020\254R\022\032\n\025AddRegularPatrolRsp_T\020"
-      "\266R\022\035\n\030DeleteRegularPatrolReq_T\020\300R\022\035\n\030Del"
-      "eteRegularPatrolRsp_T\020\312R\022\035\n\030ModifyRegula"
-      "rPatrolReq_T\020\324R\022\035\n\030ModifyRegularPatrolRs"
-      "p_T\020\336R\022 \n\033QueryRegularPatrolInfoReq_T\020\350R"
-      "\022 \n\033QueryRegularPatrolInfoRsp_T\020\362R\022\037\n\032Qu"
-      "eryAllRegularPatrolReq_T\020\374R\022\037\n\032QueryAllR"
-      "egularPatrolRsp_T\020\206S\022\027\n\022UserJoinStoreReq"
-      "_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326S\022\027\n\022UserQu"
-      "itStoreReq_T\020\340S\022\027\n\022UserQuitStoreRsp_T\020\352S"
-      "\022\033\n\026QueryStoreAllUserReq_T\020\364S\022\033\n\026QuerySt"
-      "oreAllUserRsp_T\020\376S\022\031\n\023AddVIPCustomerReq_"
-      "T\020\320\214\001\022\031\n\023AddVIPCustomerRsp_T\020\332\214\001\022\034\n\026Dele"
-      "teVIPCustomerReq_T\020\344\214\001\022\034\n\026DeleteVIPCusto"
-      "merRsp_T\020\356\214\001\022\034\n\026ModifyVIPCustomerReq_T\020\370"
-      "\214\001\022\034\n\026ModifyVIPCustomerRsp_T\020\202\215\001\022\037\n\031Quer"
-      "yVIPCustomerInfoReq_T\020\214\215\001\022\037\n\031QueryVIPCus"
-      "tomerInfoRsp_T\020\226\215\001\022\036\n\030QueryAllVIPCustome"
-      "rReq_T\020\240\215\001\022\036\n\030QueryAllVIPCustomerRsp_T\020\252"
-      "\215\001\022\037\n\031AddVIPConsumeHistoryReq_T\020\264\215\001\022\037\n\031A"
-      "ddVIPConsumeHistoryRsp_T\020\276\215\001\022\"\n\034DeleteVI"
-      "PConsumeHistoryReq_T\020\310\215\001\022\"\n\034DeleteVIPCon"
-      "sumeHistoryRsp_T\020\322\215\001\022\"\n\034ModifyVIPConsume"
-      "HistoryReq_T\020\334\215\001\022\"\n\034ModifyVIPConsumeHist"
-      "oryRsp_T\020\346\215\001\022$\n\036QueryAllVIPConsumeHistor"
-      "yReq_T\020\360\215\001\022$\n\036QueryAllVIPConsumeHistoryR"
-      "sp_T\020\372\215\001\022 \n\032AddEvaluationTemplateReq_T\020\230"
-      "\216\001\022 \n\032AddEvaluationTemplateRsp_T\020\242\216\001\022#\n\035"
-      "DeleteEvaluationTemplateReq_T\020\254\216\001\022#\n\035Del"
-      "eteEvaluationTemplateRsp_T\020\266\216\001\022#\n\035Modify"
-      "EvaluationTemplateReq_T\020\300\216\001\022#\n\035ModifyEva"
-      "luationTemplateRsp_T\020\312\216\001\022%\n\037QueryAllEval"
-      "uationTemplateReq_T\020\324\216\001\022%\n\037QueryAllEvalu"
-      "ationTemplateRsp_T\020\336\216\001\022\035\n\027AddStoreEvalua"
-      "tionReq_T\020\374\216\001\022\035\n\027AddStoreEvaluationRsp_T"
-      "\020\206\217\001\022 \n\032DeleteStoreEvaluationReq_T\020\220\217\001\022 "
-      "\n\032DeleteStoreEvaluationRsp_T\020\232\217\001\022 \n\032Modi"
-      "fyStoreEvaluationReq_T\020\244\217\001\022 \n\032ModifyStor"
-      "eEvaluationRsp_T\020\256\217\001\022#\n\035QueryStoreEvalua"
-      "tionInfoReq_T\020\270\217\001\022#\n\035QueryStoreEvaluatio"
-      "nInfoRsp_T\020\302\217\001\022\"\n\034QueryAllStoreEvaluatio"
-      "nReq_T\020\314\217\001\022\"\n\034QueryAllStoreEvaluationRsp"
-      "_T\020\326\217\001\022\037\n\031AddRemotePatrolStoreReq_T\020\340\217\001\022"
-      "\037\n\031AddRemotePatrolStoreRsp_T\020\352\217\001\022\"\n\034Dele"
-      "teRemotePatrolStoreReq_T\020\364\217\001\022\"\n\034DeleteRe"
-      "motePatrolStoreRsp_T\020\376\217\001\022\"\n\034ModifyRemote"
-      "PatrolStoreReq_T\020\210\220\001\022\"\n\034ModifyRemotePatr"
-      "olStoreRsp_T\020\222\220\001\022%\n\037QueryRemotePatrolSto"
-      "reInfoReq_T\020\234\220\001\022%\n\037QueryRemotePatrolStor"
-      "eInfoRsp_T\020\246\220\001\022$\n\036QueryAllRemotePatrolSt"
-      "oreReq_T\020\260\220\001\022$\n\036QueryAllRemotePatrolStor"
-      "eRsp_T\020\272\220\001\022\022\n\014AddAreaReq_T\020\270\224\001\022\022\n\014AddAre"
-      "aRsp_T\020\302\224\001\022\025\n\017DeleteAreaReq_T\020\314\224\001\022\025\n\017Del"
-      "eteAreaRsp_T\020\326\224\001\022\025\n\017ModifyAreaReq_T\020\340\224\001\022"
-      "\025\n\017ModifyAreaRsp_T\020\352\224\001\022\027\n\021QueryAllAreaRe"
-      "q_T\020\364\224\001\022\027\n\021QueryAllAreaRsp_T\020\376\224\001\022\033\n\025Bind"
-      "PushClientIDReq_T\020\234\225\001\022\033\n\025BindPushClientI"
-      "DRsp_T\020\246\225\001\022\035\n\027UnbindPushClientIDReq_T\020\260\225"
-      "\001\022\035\n\027UnbindPushClientIDRsp_T\020\272\225\001\022\030\n\022Impo"
-      "rtPOSDataReq_T\020\240\234\001\022\030\n\022ImportPOSDataRsp_T"
-      "\020\252\234\001\022%\n\037QueryCustomerFlowStatisticReq_T\020"
-      "\244\243\001\022%\n\037QueryCustomerFlowStatisticRsp_T\020\256"
-      "\243\001\022!\n\033ReportCustomerFlowDataReq_T\020\260\352\001\022!\n"
-      "\033ReportCustomerFlowDataRsp_T\020\272\352\001b\006proto3"
+      "StoreRsp\022O\n\024ModifyStoreRsp_Value\030\252\001 \001(\0132"
+      "0.CustomerFlow.Interactive.Message.Modif"
+      "yStoreRsp\022U\n\027QueryStoreInfoRsp_Value\030\264\001 "
+      "\001(\01323.CustomerFlow.Interactive.Message.Q"
+      "ueryStoreInfoRsp\022S\n\026QueryAllStoreRsp_Val"
+      "ue\030\276\001 \001(\01322.CustomerFlow.Interactive.Mes"
+      "sage.QueryAllStoreRsp\022O\n\024AddEntranceRsp_"
+      "Value\030\310\001 \001(\01320.CustomerFlow.Interactive."
+      "Message.AddEntranceRsp\022U\n\027DeleteEntrance"
+      "Rsp_Value\030\322\001 \001(\01323.CustomerFlow.Interact"
+      "ive.Message.DeleteEntranceRsp\022U\n\027ModifyE"
+      "ntranceRsp_Value\030\334\001 \001(\01323.CustomerFlow.I"
+      "nteractive.Message.ModifyEntranceRsp\022[\n\032"
+      "AddEntranceDeviceRsp_Value\030\346\001 \001(\01326.Cust"
+      "omerFlow.Interactive.Message.AddEntrance"
+      "DeviceRsp\022a\n\035DeleteEntranceDeviceRsp_Val"
+      "ue\030\360\001 \001(\01329.CustomerFlow.Interactive.Mes"
+      "sage.DeleteEntranceDeviceRsp\022I\n\021AddEvent"
+      "Rsp_Value\030\254\002 \001(\0132-.CustomerFlow.Interact"
+      "ive.Message.AddEventRsp\022O\n\024DeleteEventRs"
+      "p_Value\030\266\002 \001(\01320.CustomerFlow.Interactiv"
+      "e.Message.DeleteEventRsp\022O\n\024ModifyEventR"
+      "sp_Value\030\300\002 \001(\01320.CustomerFlow.Interacti"
+      "ve.Message.ModifyEventRsp\022U\n\027QueryEventI"
+      "nfoRsp_Value\030\312\002 \001(\01323.CustomerFlow.Inter"
+      "active.Message.QueryEventInfoRsp\022S\n\026Quer"
+      "yAllEventRsp_Value\030\324\002 \001(\01322.CustomerFlow"
+      ".Interactive.Message.QueryAllEventRsp\022]\n"
+      "\033AddSmartGuardStoreRsp_Value\030\336\002 \001(\01327.Cu"
+      "stomerFlow.Interactive.Message.AddSmartG"
+      "uardStoreRsp\022c\n\036DeleteSmartGuardStoreRsp"
+      "_Value\030\350\002 \001(\0132:.CustomerFlow.Interactive"
+      ".Message.DeleteSmartGuardStoreRsp\022c\n\036Mod"
+      "ifySmartGuardStoreRsp_Value\030\362\002 \001(\0132:.Cus"
+      "tomerFlow.Interactive.Message.ModifySmar"
+      "tGuardStoreRsp\022i\n!QuerySmartGuardStoreIn"
+      "foRsp_Value\030\374\002 \001(\0132=.CustomerFlow.Intera"
+      "ctive.Message.QuerySmartGuardStoreInfoRs"
+      "p\022g\n QueryAllSmartGuardStoreRsp_Value\030\206\003"
+      " \001(\0132<.CustomerFlow.Interactive.Message."
+      "QueryAllSmartGuardStoreRsp\022Y\n\031AddRegular"
+      "PatrolRsp_Value\030\220\003 \001(\01325.CustomerFlow.In"
+      "teractive.Message.AddRegularPatrolRsp\022_\n"
+      "\034DeleteRegularPatrolRsp_Value\030\232\003 \001(\01328.C"
+      "ustomerFlow.Interactive.Message.DeleteRe"
+      "gularPatrolRsp\022_\n\034ModifyRegularPatrolRsp"
+      "_Value\030\244\003 \001(\01328.CustomerFlow.Interactive"
+      ".Message.ModifyRegularPatrolRsp\022e\n\037Query"
+      "RegularPatrolInfoRsp_Value\030\256\003 \001(\0132;.Cust"
+      "omerFlow.Interactive.Message.QueryRegula"
+      "rPatrolInfoRsp\022c\n\036QueryAllRegularPatrolR"
+      "sp_Value\030\270\003 \001(\0132:.CustomerFlow.Interacti"
+      "ve.Message.QueryAllRegularPatrolRsp\022S\n\026U"
+      "serJoinStoreRsp_Value\030\364\003 \001(\01322.CustomerF"
+      "low.Interactive.Message.UserJoinStoreRsp"
+      "\022S\n\026UserQuitStoreRsp_Value\030\376\003 \001(\01322.Cust"
+      "omerFlow.Interactive.Message.UserQuitSto"
+      "reRsp\022[\n\032QueryStoreAllUserRsp_Value\030\210\004 \001"
+      "(\01326.CustomerFlow.Interactive.Message.Qu"
+      "eryStoreAllUserRsp\022U\n\027AddVIPCustomerRsp_"
+      "Value\030\240\006 \001(\01323.CustomerFlow.Interactive."
+      "Message.AddVIPCustomerRsp\022[\n\032DeleteVIPCu"
+      "stomerRsp_Value\030\252\006 \001(\01326.CustomerFlow.In"
+      "teractive.Message.DeleteVIPCustomerRsp\022["
+      "\n\032ModifyVIPCustomerRsp_Value\030\264\006 \001(\01326.Cu"
+      "stomerFlow.Interactive.Message.ModifyVIP"
+      "CustomerRsp\022a\n\035QueryVIPCustomerInfoRsp_V"
+      "alue\030\276\006 \001(\01329.CustomerFlow.Interactive.M"
+      "essage.QueryVIPCustomerInfoRsp\022_\n\034QueryA"
+      "llVIPCustomerRsp_Value\030\310\006 \001(\01328.Customer"
+      "Flow.Interactive.Message.QueryAllVIPCust"
+      "omerRsp\022a\n\035AddVIPConsumeHistoryRsp_Value"
+      "\030\322\006 \001(\01329.CustomerFlow.Interactive.Messa"
+      "ge.AddVIPConsumeHistoryRsp\022g\n DeleteVIPC"
+      "onsumeHistoryRsp_Value\030\334\006 \001(\0132<.Customer"
+      "Flow.Interactive.Message.DeleteVIPConsum"
+      "eHistoryRsp\022g\n ModifyVIPConsumeHistoryRs"
+      "p_Value\030\346\006 \001(\0132<.CustomerFlow.Interactiv"
+      "e.Message.ModifyVIPConsumeHistoryRsp\022k\n\""
+      "QueryAllVIPConsumeHistoryRsp_Value\030\360\006 \001("
+      "\0132>.CustomerFlow.Interactive.Message.Que"
+      "ryAllVIPConsumeHistoryRsp\022c\n\036AddEvaluati"
+      "onTemplateRsp_Value\030\204\007 \001(\0132:.CustomerFlo"
+      "w.Interactive.Message.AddEvaluationTempl"
+      "ateRsp\022i\n!DeleteEvaluationTemplateRsp_Va"
+      "lue\030\216\007 \001(\0132=.CustomerFlow.Interactive.Me"
+      "ssage.DeleteEvaluationTemplateRsp\022i\n!Mod"
+      "ifyEvaluationTemplateRsp_Value\030\230\007 \001(\0132=."
+      "CustomerFlow.Interactive.Message.ModifyE"
+      "valuationTemplateRsp\022m\n#QueryAllEvaluati"
+      "onTemplateRsp_Value\030\242\007 \001(\0132\?.CustomerFlo"
+      "w.Interactive.Message.QueryAllEvaluation"
+      "TemplateRsp\022]\n\033AddStoreEvaluationRsp_Val"
+      "ue\030\266\007 \001(\01327.CustomerFlow.Interactive.Mes"
+      "sage.AddStoreEvaluationRsp\022c\n\036DeleteStor"
+      "eEvaluationRsp_Value\030\300\007 \001(\0132:.CustomerFl"
+      "ow.Interactive.Message.DeleteStoreEvalua"
+      "tionRsp\022c\n\036ModifyStoreEvaluationRsp_Valu"
+      "e\030\312\007 \001(\0132:.CustomerFlow.Interactive.Mess"
+      "age.ModifyStoreEvaluationRsp\022i\n!QuerySto"
+      "reEvaluationInfoRsp_Value\030\324\007 \001(\0132=.Custo"
+      "merFlow.Interactive.Message.QueryStoreEv"
+      "aluationInfoRsp\022g\n QueryAllStoreEvaluati"
+      "onRsp_Value\030\336\007 \001(\0132<.CustomerFlow.Intera"
+      "ctive.Message.QueryAllStoreEvaluationRsp"
+      "\022a\n\035AddRemotePatrolStoreRsp_Value\030\350\007 \001(\013"
+      "29.CustomerFlow.Interactive.Message.AddR"
+      "emotePatrolStoreRsp\022g\n DeleteRemotePatro"
+      "lStoreRsp_Value\030\362\007 \001(\0132<.CustomerFlow.In"
+      "teractive.Message.DeleteRemotePatrolStor"
+      "eRsp\022g\n ModifyRemotePatrolStoreRsp_Value"
+      "\030\374\007 \001(\0132<.CustomerFlow.Interactive.Messa"
+      "ge.ModifyRemotePatrolStoreRsp\022m\n#QueryRe"
+      "motePatrolStoreInfoRsp_Value\030\206\010 \001(\0132\?.Cu"
+      "stomerFlow.Interactive.Message.QueryRemo"
+      "tePatrolStoreInfoRsp\022k\n\"QueryAllRemotePa"
+      "trolStoreRsp_Value\030\220\010 \001(\0132>.CustomerFlow"
+      ".Interactive.Message.QueryAllRemotePatro"
+      "lStoreRsp\022G\n\020AddAreaRsp_Value\030\314\010 \001(\0132,.C"
+      "ustomerFlow.Interactive.Message.AddAreaR"
+      "sp\022M\n\023DeleteAreaRsp_Value\030\326\010 \001(\0132/.Custo"
+      "merFlow.Interactive.Message.DeleteAreaRs"
+      "p\022M\n\023ModifyAreaRsp_Value\030\340\010 \001(\0132/.Custom"
+      "erFlow.Interactive.Message.ModifyAreaRsp"
+      "\022Q\n\025QueryAllAreaRsp_Value\030\352\010 \001(\01321.Custo"
+      "merFlow.Interactive.Message.QueryAllArea"
+      "Rsp\022Y\n\031BindPushClientIDRsp_Value\030\376\010 \001(\0132"
+      "5.CustomerFlow.Interactive.Message.BindP"
+      "ushClientIDRsp\022]\n\033UnbindPushClientIDRsp_"
+      "Value\030\210\t \001(\01327.CustomerFlow.Interactive."
+      "Message.UnbindPushClientIDRsp\022S\n\026ImportP"
+      "OSDataRsp_Value\030\320\017 \001(\01322.CustomerFlow.In"
+      "teractive.Message.ImportPOSDataRsp\022m\n#Qu"
+      "eryCustomerFlowStatisticRsp_Value\030\324\026 \001(\013"
+      "2\?.CustomerFlow.Interactive.Message.Quer"
+      "yCustomerFlowStatisticRsp\022e\n\037ReportCusto"
+      "merFlowDataRsp_Value\030\270\027 \001(\0132;.CustomerFl"
+      "ow.Interactive.Message.ReportCustomerFlo"
+      "wDataRsp\"\367\001\n\023CustomerFlowMessage\022C\n\004type"
+      "\030\001 \001(\01625.CustomerFlow.Interactive.Messag"
+      "e.CustomerFlowMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022"
+      "\016\n\006strSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\0132).Cust"
+      "omerFlow.Interactive.Message.Request\022<\n\010"
+      "rspValue\030\005 \001(\0132*.CustomerFlow.Interactiv"
+      "e.Message.Response*\257\037\n\023CustomerFlowMsgTy"
+      "pe\022\n\n\006Init_T\020\000\022\037\n\032CustomerFlowPreHandleR"
+      "eq_T\020\250F\022\037\n\032CustomerFlowPreHandleRsp_T\020\262F"
+      "\022\023\n\016ShakehandReq_T\020\214G\022\023\n\016ShakehandRsp_T\020"
+      "\226G\022\022\n\rAddGroupReq_T\020\220N\022\022\n\rAddGroupRsp_T\020"
+      "\232N\022\025\n\020DeleteGroupReq_T\020\244N\022\025\n\020DeleteGroup"
+      "Rsp_T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025\n\020Modif"
+      "yGroupRsp_T\020\302N\022\030\n\023QueryGroupInfoReq_T\020\314N"
+      "\022\030\n\023QueryGroupInfoRsp_T\020\326N\022\027\n\022QueryAllGr"
+      "oupReq_T\020\340N\022\027\n\022QueryAllGroupRsp_T\020\352N\022\022\n\r"
+      "AddStoreReq_T\020\364N\022\022\n\rAddStoreRsp_T\020\376N\022\025\n\020"
+      "DeleteStoreReq_T\020\210O\022\025\n\020DeleteStoreRsp_T\020"
+      "\222O\022\025\n\020ModifyStoreReq_T\020\234O\022\025\n\020ModifyStore"
+      "Rsp_T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260O\022\030\n\023Qu"
+      "eryStoreInfoRsp_T\020\272O\022\027\n\022QueryAllStoreReq"
+      "_T\020\304O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n\020AddEnt"
+      "ranceReq_T\020\330O\022\025\n\020AddEntranceRsp_T\020\342O\022\030\n\023"
+      "DeleteEntranceReq_T\020\354O\022\030\n\023DeleteEntrance"
+      "Rsp_T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200P\022\030\n\023Mo"
+      "difyEntranceRsp_T\020\212P\022\033\n\026AddEntranceDevic"
+      "eReq_T\020\224P\022\033\n\026AddEntranceDeviceRsp_T\020\236P\022\036"
+      "\n\031DeleteEntranceDeviceReq_T\020\250P\022\036\n\031Delete"
+      "EntranceDeviceRsp_T\020\262P\022\022\n\rAddEventReq_T\020"
+      "\344P\022\022\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteEventReq"
+      "_T\020\370P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020ModifyEv"
+      "entReq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226Q\022\030\n\023Qu"
+      "eryEventInfoReq_T\020\240Q\022\030\n\023QueryEventInfoRs"
+      "p_T\020\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027\n\022Query"
+      "AllEventRsp_T\020\276Q\022\034\n\027AddSmartGuardStoreRe"
+      "q_T\020\310Q\022\034\n\027AddSmartGuardStoreRsp_T\020\322Q\022\037\n\032"
+      "DeleteSmartGuardStoreReq_T\020\334Q\022\037\n\032DeleteS"
+      "martGuardStoreRsp_T\020\346Q\022\037\n\032ModifySmartGua"
+      "rdStoreReq_T\020\360Q\022\037\n\032ModifySmartGuardStore"
+      "Rsp_T\020\372Q\022\"\n\035QuerySmartGuardStoreInfoReq_"
+      "T\020\204R\022\"\n\035QuerySmartGuardStoreInfoRsp_T\020\216R"
+      "\022!\n\034QueryAllSmartGuardStoreReq_T\020\230R\022!\n\034Q"
+      "ueryAllSmartGuardStoreRsp_T\020\242R\022\032\n\025AddReg"
+      "ularPatrolReq_T\020\254R\022\032\n\025AddRegularPatrolRs"
+      "p_T\020\266R\022\035\n\030DeleteRegularPatrolReq_T\020\300R\022\035\n"
+      "\030DeleteRegularPatrolRsp_T\020\312R\022\035\n\030ModifyRe"
+      "gularPatrolReq_T\020\324R\022\035\n\030ModifyRegularPatr"
+      "olRsp_T\020\336R\022 \n\033QueryRegularPatrolInfoReq_"
+      "T\020\350R\022 \n\033QueryRegularPatrolInfoRsp_T\020\362R\022\037"
+      "\n\032QueryAllRegularPatrolReq_T\020\374R\022\037\n\032Query"
+      "AllRegularPatrolRsp_T\020\206S\022\027\n\022UserJoinStor"
+      "eReq_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326S\022\027\n\022Us"
+      "erQuitStoreReq_T\020\340S\022\027\n\022UserQuitStoreRsp_"
+      "T\020\352S\022\033\n\026QueryStoreAllUserReq_T\020\364S\022\033\n\026Que"
+      "ryStoreAllUserRsp_T\020\376S\022\031\n\023AddVIPCustomer"
+      "Req_T\020\320\214\001\022\031\n\023AddVIPCustomerRsp_T\020\332\214\001\022\034\n\026"
+      "DeleteVIPCustomerReq_T\020\344\214\001\022\034\n\026DeleteVIPC"
+      "ustomerRsp_T\020\356\214\001\022\034\n\026ModifyVIPCustomerReq"
+      "_T\020\370\214\001\022\034\n\026ModifyVIPCustomerRsp_T\020\202\215\001\022\037\n\031"
+      "QueryVIPCustomerInfoReq_T\020\214\215\001\022\037\n\031QueryVI"
+      "PCustomerInfoRsp_T\020\226\215\001\022\036\n\030QueryAllVIPCus"
+      "tomerReq_T\020\240\215\001\022\036\n\030QueryAllVIPCustomerRsp"
+      "_T\020\252\215\001\022\037\n\031AddVIPConsumeHistoryReq_T\020\264\215\001\022"
+      "\037\n\031AddVIPConsumeHistoryRsp_T\020\276\215\001\022\"\n\034Dele"
+      "teVIPConsumeHistoryReq_T\020\310\215\001\022\"\n\034DeleteVI"
+      "PConsumeHistoryRsp_T\020\322\215\001\022\"\n\034ModifyVIPCon"
+      "sumeHistoryReq_T\020\334\215\001\022\"\n\034ModifyVIPConsume"
+      "HistoryRsp_T\020\346\215\001\022$\n\036QueryAllVIPConsumeHi"
+      "storyReq_T\020\360\215\001\022$\n\036QueryAllVIPConsumeHist"
+      "oryRsp_T\020\372\215\001\022 \n\032AddEvaluationTemplateReq"
+      "_T\020\230\216\001\022 \n\032AddEvaluationTemplateRsp_T\020\242\216\001"
+      "\022#\n\035DeleteEvaluationTemplateReq_T\020\254\216\001\022#\n"
+      "\035DeleteEvaluationTemplateRsp_T\020\266\216\001\022#\n\035Mo"
+      "difyEvaluationTemplateReq_T\020\300\216\001\022#\n\035Modif"
+      "yEvaluationTemplateRsp_T\020\312\216\001\022%\n\037QueryAll"
+      "EvaluationTemplateReq_T\020\324\216\001\022%\n\037QueryAllE"
+      "valuationTemplateRsp_T\020\336\216\001\022\035\n\027AddStoreEv"
+      "aluationReq_T\020\374\216\001\022\035\n\027AddStoreEvaluationR"
+      "sp_T\020\206\217\001\022 \n\032DeleteStoreEvaluationReq_T\020\220"
+      "\217\001\022 \n\032DeleteStoreEvaluationRsp_T\020\232\217\001\022 \n\032"
+      "ModifyStoreEvaluationReq_T\020\244\217\001\022 \n\032Modify"
+      "StoreEvaluationRsp_T\020\256\217\001\022#\n\035QueryStoreEv"
+      "aluationInfoReq_T\020\270\217\001\022#\n\035QueryStoreEvalu"
+      "ationInfoRsp_T\020\302\217\001\022\"\n\034QueryAllStoreEvalu"
+      "ationReq_T\020\314\217\001\022\"\n\034QueryAllStoreEvaluatio"
+      "nRsp_T\020\326\217\001\022\037\n\031AddRemotePatrolStoreReq_T\020"
+      "\340\217\001\022\037\n\031AddRemotePatrolStoreRsp_T\020\352\217\001\022\"\n\034"
+      "DeleteRemotePatrolStoreReq_T\020\364\217\001\022\"\n\034Dele"
+      "teRemotePatrolStoreRsp_T\020\376\217\001\022\"\n\034ModifyRe"
+      "motePatrolStoreReq_T\020\210\220\001\022\"\n\034ModifyRemote"
+      "PatrolStoreRsp_T\020\222\220\001\022%\n\037QueryRemotePatro"
+      "lStoreInfoReq_T\020\234\220\001\022%\n\037QueryRemotePatrol"
+      "StoreInfoRsp_T\020\246\220\001\022$\n\036QueryAllRemotePatr"
+      "olStoreReq_T\020\260\220\001\022$\n\036QueryAllRemotePatrol"
+      "StoreRsp_T\020\272\220\001\022\022\n\014AddAreaReq_T\020\270\224\001\022\022\n\014Ad"
+      "dAreaRsp_T\020\302\224\001\022\025\n\017DeleteAreaReq_T\020\314\224\001\022\025\n"
+      "\017DeleteAreaRsp_T\020\326\224\001\022\025\n\017ModifyAreaReq_T\020"
+      "\340\224\001\022\025\n\017ModifyAreaRsp_T\020\352\224\001\022\027\n\021QueryAllAr"
+      "eaReq_T\020\364\224\001\022\027\n\021QueryAllAreaRsp_T\020\376\224\001\022\033\n\025"
+      "BindPushClientIDReq_T\020\234\225\001\022\033\n\025BindPushCli"
+      "entIDRsp_T\020\246\225\001\022\035\n\027UnbindPushClientIDReq_"
+      "T\020\260\225\001\022\035\n\027UnbindPushClientIDRsp_T\020\272\225\001\022\030\n\022"
+      "ImportPOSDataReq_T\020\240\234\001\022\030\n\022ImportPOSDataR"
+      "sp_T\020\252\234\001\022%\n\037QueryCustomerFlowStatisticRe"
+      "q_T\020\244\243\001\022%\n\037QueryCustomerFlowStatisticRsp"
+      "_T\020\256\243\001\022!\n\033ReportCustomerFlowDataReq_T\020\260\352"
+      "\001\022!\n\033ReportCustomerFlowDataRsp_T\020\272\352\001b\006pr"
+      "oto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 29880);
+      descriptor, 29844);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolCustomerFlow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -5345,7 +5334,7 @@ const int Store::kStrStoreNameFieldNumber;
 const int Store::kStrGoodsCategoryFieldNumber;
 const int Store::kStrAddressFieldNumber;
 const int Store::kEntranceFieldNumber;
-const int Store::kStrAreaIDFieldNumber;
+const int Store::kAreaFieldNumber;
 const int Store::kStrCreateDateFieldNumber;
 const int Store::kStrExtendFieldNumber;
 const int Store::kUiStateFieldNumber;
@@ -5382,10 +5371,6 @@ Store::Store(const Store& from)
   if (from.straddress().size() > 0) {
     straddress_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straddress_);
   }
-  strareaid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.strareaid().size() > 0) {
-    strareaid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strareaid_);
-  }
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.strcreatedate().size() > 0) {
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
@@ -5393,6 +5378,11 @@ Store::Store(const Store& from)
   strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.strextend().size() > 0) {
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
+  if (from.has_area()) {
+    area_ = new ::CustomerFlow::Interactive::Message::Area(*from.area_);
+  } else {
+    area_ = NULL;
   }
   ::memcpy(&uistate_, &from.uistate_,
     reinterpret_cast<char*>(&uiopenstate_) -
@@ -5405,11 +5395,10 @@ void Store::SharedCtor() {
   strstorename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strgoodscategory_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   straddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strareaid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&uistate_, 0, reinterpret_cast<char*>(&uiopenstate_) -
-    reinterpret_cast<char*>(&uistate_) + sizeof(uiopenstate_));
+  ::memset(&area_, 0, reinterpret_cast<char*>(&uiopenstate_) -
+    reinterpret_cast<char*>(&area_) + sizeof(uiopenstate_));
   _cached_size_ = 0;
 }
 
@@ -5423,9 +5412,11 @@ void Store::SharedDtor() {
   strstorename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strgoodscategory_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   straddress_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strareaid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete area_;
+  }
 }
 
 void Store::SetCachedSize(int size) const {
@@ -5458,9 +5449,12 @@ void Store::Clear() {
   strstorename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strgoodscategory_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   straddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && area_ != NULL) {
+    delete area_;
+  }
+  area_ = NULL;
   ::memset(&uistate_, 0, reinterpret_cast<char*>(&uiopenstate_) -
     reinterpret_cast<char*>(&uistate_) + sizeof(uiopenstate_));
 }
@@ -5548,15 +5542,11 @@ bool Store::MergePartialFromCodedStream(
         break;
       }
 
-      // string strAreaID = 6;
+      // .CustomerFlow.Interactive.Message.Area area = 6;
       case 6: {
         if (tag == 50u) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_strareaid()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->strareaid().data(), this->strareaid().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CustomerFlow.Interactive.Message.Store.strAreaID"));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_area()));
         } else {
           goto handle_unusual;
         }
@@ -5689,14 +5679,10 @@ void Store::SerializeWithCachedSizes(
       5, this->entrance(i), output);
   }
 
-  // string strAreaID = 6;
-  if (this->strareaid().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strareaid().data(), this->strareaid().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.Store.strAreaID");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->strareaid(), output);
+  // .CustomerFlow.Interactive.Message.Area area = 6;
+  if (this->has_area()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, *this->area_, output);
   }
 
   // string strCreateDate = 7;
@@ -5787,15 +5773,11 @@ void Store::SerializeWithCachedSizes(
         5, this->entrance(i), false, target);
   }
 
-  // string strAreaID = 6;
-  if (this->strareaid().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strareaid().data(), this->strareaid().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.Store.strAreaID");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->strareaid(), target);
+  // .CustomerFlow.Interactive.Message.Area area = 6;
+  if (this->has_area()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        6, *this->area_, false, target);
   }
 
   // string strCreateDate = 7;
@@ -5877,13 +5859,6 @@ size_t Store::ByteSizeLong() const {
         this->straddress());
   }
 
-  // string strAreaID = 6;
-  if (this->strareaid().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->strareaid());
-  }
-
   // string strCreateDate = 7;
   if (this->strcreatedate().size() > 0) {
     total_size += 1 +
@@ -5896,6 +5871,13 @@ size_t Store::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strextend());
+  }
+
+  // .CustomerFlow.Interactive.Message.Area area = 6;
+  if (this->has_area()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->area_);
   }
 
   // uint32 uiState = 9;
@@ -5955,10 +5937,6 @@ void Store::MergeFrom(const Store& from) {
 
     straddress_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straddress_);
   }
-  if (from.strareaid().size() > 0) {
-
-    strareaid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strareaid_);
-  }
   if (from.strcreatedate().size() > 0) {
 
     strcreatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strcreatedate_);
@@ -5966,6 +5944,9 @@ void Store::MergeFrom(const Store& from) {
   if (from.strextend().size() > 0) {
 
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
+  if (from.has_area()) {
+    mutable_area()->::CustomerFlow::Interactive::Message::Area::MergeFrom(from.area());
   }
   if (from.uistate() != 0) {
     set_uistate(from.uistate());
@@ -6003,9 +5984,9 @@ void Store::InternalSwap(Store* other) {
   strstorename_.Swap(&other->strstorename_);
   strgoodscategory_.Swap(&other->strgoodscategory_);
   straddress_.Swap(&other->straddress_);
-  strareaid_.Swap(&other->strareaid_);
   strcreatedate_.Swap(&other->strcreatedate_);
   strextend_.Swap(&other->strextend_);
+  std::swap(area_, other->area_);
   std::swap(uistate_, other->uistate_);
   std::swap(uiopenstate_, other->uiopenstate_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -6257,56 +6238,43 @@ Store::entrance() const {
   return entrance_;
 }
 
-// string strAreaID = 6;
-void Store::clear_strareaid() {
-  strareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// .CustomerFlow.Interactive.Message.Area area = 6;
+bool Store::has_area() const {
+  return this != internal_default_instance() && area_ != NULL;
 }
-const ::std::string& Store::strareaid() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.strAreaID)
-  return strareaid_.GetNoArena();
+void Store::clear_area() {
+  if (GetArenaNoVirtual() == NULL && area_ != NULL) delete area_;
+  area_ = NULL;
 }
-void Store::set_strareaid(const ::std::string& value) {
+const ::CustomerFlow::Interactive::Message::Area& Store::area() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Store.area)
+  return area_ != NULL ? *area_
+                         : *::CustomerFlow::Interactive::Message::Area::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::Area* Store::mutable_area() {
   
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Store.strAreaID)
+  if (area_ == NULL) {
+    area_ = new ::CustomerFlow::Interactive::Message::Area;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Store.area)
+  return area_;
 }
-#if LANG_CXX11
-void Store::set_strareaid(::std::string&& value) {
+::CustomerFlow::Interactive::Message::Area* Store::release_area() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Store.area)
   
-  strareaid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Store.strAreaID)
+  ::CustomerFlow::Interactive::Message::Area* temp = area_;
+  area_ = NULL;
+  return temp;
 }
-#endif
-void Store::set_strareaid(const char* value) {
-  
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Store.strAreaID)
-}
-void Store::set_strareaid(const char* value, size_t size) {
-  
-  strareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Store.strAreaID)
-}
-::std::string* Store::mutable_strareaid() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Store.strAreaID)
-  return strareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* Store::release_strareaid() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Store.strAreaID)
-  
-  return strareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void Store::set_allocated_strareaid(::std::string* strareaid) {
-  if (strareaid != NULL) {
+void Store::set_allocated_area(::CustomerFlow::Interactive::Message::Area* area) {
+  delete area_;
+  area_ = area;
+  if (area) {
     
   } else {
     
   }
-  strareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strareaid);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.strAreaID)
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Store.area)
 }
 
 // string strCreateDate = 7;
@@ -10401,395 +10369,6 @@ void SmartGuardStore::set_allocated_strcreatedate(::std::string* strcreatedate) 
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int EntranceBrief::kStrEntranceIDFieldNumber;
-const int EntranceBrief::kStrEntranceNameFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-EntranceBrief::EntranceBrief()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
-  }
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.EntranceBrief)
-}
-EntranceBrief::EntranceBrief(const EntranceBrief& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      _cached_size_(0) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  strentranceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.strentranceid().size() > 0) {
-    strentranceid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentranceid_);
-  }
-  strentrancename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.strentrancename().size() > 0) {
-    strentrancename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentrancename_);
-  }
-  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.EntranceBrief)
-}
-
-void EntranceBrief::SharedCtor() {
-  strentranceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strentrancename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _cached_size_ = 0;
-}
-
-EntranceBrief::~EntranceBrief() {
-  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.EntranceBrief)
-  SharedDtor();
-}
-
-void EntranceBrief::SharedDtor() {
-  strentranceid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strentrancename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-void EntranceBrief::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* EntranceBrief::descriptor() {
-  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[8].descriptor;
-}
-
-const EntranceBrief& EntranceBrief::default_instance() {
-  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
-  return *internal_default_instance();
-}
-
-EntranceBrief* EntranceBrief::New(::google::protobuf::Arena* arena) const {
-  EntranceBrief* n = new EntranceBrief;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
-
-void EntranceBrief::Clear() {
-// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strentrancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-bool EntranceBrief::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string strEntranceID = 1;
-      case 1: {
-        if (tag == 10u) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_strentranceid()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->strentranceid().data(), this->strentranceid().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string strEntranceName = 2;
-      case 2: {
-        if (tag == 18u) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_strentrancename()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->strentrancename().data(), this->strentrancename().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.EntranceBrief)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.EntranceBrief)
-  return false;
-#undef DO_
-}
-
-void EntranceBrief::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  // string strEntranceID = 1;
-  if (this->strentranceid().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strentranceid().data(), this->strentranceid().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->strentranceid(), output);
-  }
-
-  // string strEntranceName = 2;
-  if (this->strentrancename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strentrancename().data(), this->strentrancename().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->strentrancename(), output);
-  }
-
-  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.EntranceBrief)
-}
-
-::google::protobuf::uint8* EntranceBrief::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  // string strEntranceID = 1;
-  if (this->strentranceid().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strentranceid().data(), this->strentranceid().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->strentranceid(), target);
-  }
-
-  // string strEntranceName = 2;
-  if (this->strentrancename().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->strentrancename().data(), this->strentrancename().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->strentrancename(), target);
-  }
-
-  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.EntranceBrief)
-  return target;
-}
-
-size_t EntranceBrief::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  size_t total_size = 0;
-
-  // string strEntranceID = 1;
-  if (this->strentranceid().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->strentranceid());
-  }
-
-  // string strEntranceName = 2;
-  if (this->strentrancename().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->strentrancename());
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = cached_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void EntranceBrief::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  GOOGLE_DCHECK_NE(&from, this);
-  const EntranceBrief* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const EntranceBrief>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.EntranceBrief)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.EntranceBrief)
-    MergeFrom(*source);
-  }
-}
-
-void EntranceBrief::MergeFrom(const EntranceBrief& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.strentranceid().size() > 0) {
-
-    strentranceid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentranceid_);
-  }
-  if (from.strentrancename().size() > 0) {
-
-    strentrancename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentrancename_);
-  }
-}
-
-void EntranceBrief::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void EntranceBrief::CopyFrom(const EntranceBrief& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.EntranceBrief)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool EntranceBrief::IsInitialized() const {
-  return true;
-}
-
-void EntranceBrief::Swap(EntranceBrief* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void EntranceBrief::InternalSwap(EntranceBrief* other) {
-  strentranceid_.Swap(&other->strentranceid_);
-  strentrancename_.Swap(&other->strentrancename_);
-  std::swap(_cached_size_, other->_cached_size_);
-}
-
-::google::protobuf::Metadata EntranceBrief::GetMetadata() const {
-  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[8];
-}
-
-#if PROTOBUF_INLINE_NOT_IN_HEADERS
-// EntranceBrief
-
-// string strEntranceID = 1;
-void EntranceBrief::clear_strentranceid() {
-  strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-const ::std::string& EntranceBrief::strentranceid() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  return strentranceid_.GetNoArena();
-}
-void EntranceBrief::set_strentranceid(const ::std::string& value) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-#if LANG_CXX11
-void EntranceBrief::set_strentranceid(::std::string&& value) {
-  
-  strentranceid_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-#endif
-void EntranceBrief::set_strentranceid(const char* value) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-void EntranceBrief::set_strentranceid(const char* value, size_t size) {
-  
-  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-::std::string* EntranceBrief::mutable_strentranceid() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  return strentranceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* EntranceBrief::release_strentranceid() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-  
-  return strentranceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void EntranceBrief::set_allocated_strentranceid(::std::string* strentranceid) {
-  if (strentranceid != NULL) {
-    
-  } else {
-    
-  }
-  strentranceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentranceid);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceID)
-}
-
-// string strEntranceName = 2;
-void EntranceBrief::clear_strentrancename() {
-  strentrancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-const ::std::string& EntranceBrief::strentrancename() const {
-  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  return strentrancename_.GetNoArena();
-}
-void EntranceBrief::set_strentrancename(const ::std::string& value) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-#if LANG_CXX11
-void EntranceBrief::set_strentrancename(::std::string&& value) {
-  
-  strentrancename_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-#endif
-void EntranceBrief::set_strentrancename(const char* value) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-void EntranceBrief::set_strentrancename(const char* value, size_t size) {
-  
-  strentrancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-::std::string* EntranceBrief::mutable_strentrancename() {
-  
-  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  return strentrancename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-::std::string* EntranceBrief::release_strentrancename() {
-  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-  
-  return strentrancename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-void EntranceBrief::set_allocated_strentrancename(::std::string* strentrancename) {
-  if (strentrancename != NULL) {
-    
-  } else {
-    
-  }
-  strentrancename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentrancename);
-  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EntranceBrief.strEntranceName)
-}
-
-#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
-
-// ===================================================================
-
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PatrolStoreEntrance::kStrStoreIDFieldNumber;
 const int PatrolStoreEntrance::kStrStoreNameFieldNumber;
 const int PatrolStoreEntrance::kEntranceFieldNumber;
@@ -10843,7 +10422,7 @@ void PatrolStoreEntrance::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* PatrolStoreEntrance::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[9].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[8].descriptor;
 }
 
 const PatrolStoreEntrance& PatrolStoreEntrance::default_instance() {
@@ -10906,7 +10485,7 @@ bool PatrolStoreEntrance::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+      // repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
       case 3: {
         if (tag == 26u) {
           DO_(input->IncrementRecursionDepth());
@@ -10963,7 +10542,7 @@ void PatrolStoreEntrance::SerializeWithCachedSizes(
       2, this->strstorename(), output);
   }
 
-  // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+  // repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
   for (unsigned int i = 0, n = this->entrance_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->entrance(i), output);
@@ -10998,7 +10577,7 @@ void PatrolStoreEntrance::SerializeWithCachedSizes(
         2, this->strstorename(), target);
   }
 
-  // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+  // repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
   for (unsigned int i = 0, n = this->entrance_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
@@ -11013,7 +10592,7 @@ size_t PatrolStoreEntrance::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.PatrolStoreEntrance)
   size_t total_size = 0;
 
-  // repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+  // repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
   {
     unsigned int count = this->entrance_size();
     total_size += 1UL * count;
@@ -11106,7 +10685,7 @@ void PatrolStoreEntrance::InternalSwap(PatrolStoreEntrance* other) {
 
 ::google::protobuf::Metadata PatrolStoreEntrance::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[9];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[8];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11216,31 +10795,31 @@ void PatrolStoreEntrance::set_allocated_strstorename(::std::string* strstorename
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.PatrolStoreEntrance.strStoreName)
 }
 
-// repeated .CustomerFlow.Interactive.Message.EntranceBrief entrance = 3;
+// repeated .CustomerFlow.Interactive.Message.Entrance entrance = 3;
 int PatrolStoreEntrance::entrance_size() const {
   return entrance_.size();
 }
 void PatrolStoreEntrance::clear_entrance() {
   entrance_.Clear();
 }
-const ::CustomerFlow::Interactive::Message::EntranceBrief& PatrolStoreEntrance::entrance(int index) const {
+const ::CustomerFlow::Interactive::Message::Entrance& PatrolStoreEntrance::entrance(int index) const {
   // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Get(index);
 }
-::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::mutable_entrance(int index) {
+::CustomerFlow::Interactive::Message::Entrance* PatrolStoreEntrance::mutable_entrance(int index) {
   // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Mutable(index);
 }
-::CustomerFlow::Interactive::Message::EntranceBrief* PatrolStoreEntrance::add_entrance() {
+::CustomerFlow::Interactive::Message::Entrance* PatrolStoreEntrance::add_entrance() {
   // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_.Add();
 }
-::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >*
+::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >*
 PatrolStoreEntrance::mutable_entrance() {
   // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return &entrance_;
 }
-const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EntranceBrief >&
+const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Entrance >&
 PatrolStoreEntrance::entrance() const {
   // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.PatrolStoreEntrance.entrance)
   return entrance_;
@@ -11332,7 +10911,7 @@ void RegularPatrol::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RegularPatrol::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[10].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[9].descriptor;
 }
 
 const RegularPatrol& RegularPatrol::default_instance() {
@@ -11871,7 +11450,7 @@ void RegularPatrol::InternalSwap(RegularPatrol* other) {
 
 ::google::protobuf::Metadata RegularPatrol::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[10];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[9];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12354,7 +11933,7 @@ void UserBrief::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserBrief::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[11].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[10].descriptor;
 }
 
 const UserBrief& UserBrief::default_instance() {
@@ -12626,7 +12205,7 @@ void UserBrief::InternalSwap(UserBrief* other) {
 
 ::google::protobuf::Metadata UserBrief::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[11];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[10];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12872,7 +12451,7 @@ void VIPConsumeHistory::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* VIPConsumeHistory::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[12].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[11].descriptor;
 }
 
 const VIPConsumeHistory& VIPConsumeHistory::default_instance() {
@@ -13310,7 +12889,7 @@ void VIPConsumeHistory::InternalSwap(VIPConsumeHistory* other) {
 
 ::google::protobuf::Metadata VIPConsumeHistory::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[12];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[11];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -13697,7 +13276,7 @@ void VIPCustomer::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* VIPCustomer::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[13].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[12].descriptor;
 }
 
 const VIPCustomer& VIPCustomer::default_instance() {
@@ -14226,7 +13805,7 @@ void VIPCustomer::InternalSwap(VIPCustomer* other) {
 
 ::google::protobuf::Metadata VIPCustomer::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[13];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[12];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14668,7 +14247,7 @@ void EvaluationItem::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* EvaluationItem::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[13].descriptor;
 }
 
 const EvaluationItem& EvaluationItem::default_instance() {
@@ -14973,7 +14552,7 @@ void EvaluationItem::InternalSwap(EvaluationItem* other) {
 
 ::google::protobuf::Metadata EvaluationItem::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[13];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15211,7 +14790,7 @@ void EvaluationItemScore::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* EvaluationItemScore::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14].descriptor;
 }
 
 const EvaluationItemScore& EvaluationItemScore::default_instance() {
@@ -15457,7 +15036,7 @@ void EvaluationItemScore::InternalSwap(EvaluationItemScore* other) {
 
 ::google::protobuf::Metadata EvaluationItemScore::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[14];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15654,7 +15233,7 @@ void StoreEvaluation::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* StoreEvaluation::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15].descriptor;
 }
 
 const StoreEvaluation& StoreEvaluation::default_instance() {
@@ -16132,7 +15711,7 @@ void StoreEvaluation::InternalSwap(StoreEvaluation* other) {
 
 ::google::protobuf::Metadata StoreEvaluation::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[15];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -16552,7 +16131,7 @@ void RemotePatrolStore::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RemotePatrolStore::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16].descriptor;
 }
 
 const RemotePatrolStore& RemotePatrolStore::default_instance() {
@@ -17102,7 +16681,7 @@ void RemotePatrolStore::InternalSwap(RemotePatrolStore* other) {
 
 ::google::protobuf::Metadata RemotePatrolStore::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[16];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -17598,7 +17177,7 @@ void RawCustomerFlow::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* RawCustomerFlow::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17].descriptor;
 }
 
 const RawCustomerFlow& RawCustomerFlow::default_instance() {
@@ -17876,7 +17455,7 @@ void RawCustomerFlow::InternalSwap(RawCustomerFlow* other) {
 
 ::google::protobuf::Metadata RawCustomerFlow::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[17];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18025,7 +17604,7 @@ void CustomerFlowPreHandleReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowPreHandleReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18].descriptor;
 }
 
 const CustomerFlowPreHandleReq& CustomerFlowPreHandleReq::default_instance() {
@@ -18199,7 +17778,7 @@ void CustomerFlowPreHandleReq::InternalSwap(CustomerFlowPreHandleReq* other) {
 
 ::google::protobuf::Metadata CustomerFlowPreHandleReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[18];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18306,7 +17885,7 @@ void CustomerFlowPreHandleRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowPreHandleRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19].descriptor;
 }
 
 const CustomerFlowPreHandleRsp& CustomerFlowPreHandleRsp::default_instance() {
@@ -18480,7 +18059,7 @@ void CustomerFlowPreHandleRsp::InternalSwap(CustomerFlowPreHandleRsp* other) {
 
 ::google::protobuf::Metadata CustomerFlowPreHandleRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[19];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18587,7 +18166,7 @@ void ShakehandReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20].descriptor;
 }
 
 const ShakehandReq& ShakehandReq::default_instance() {
@@ -18761,7 +18340,7 @@ void ShakehandReq::InternalSwap(ShakehandReq* other) {
 
 ::google::protobuf::Metadata ShakehandReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[20];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -18868,7 +18447,7 @@ void ShakehandRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ShakehandRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21].descriptor;
 }
 
 const ShakehandRsp& ShakehandRsp::default_instance() {
@@ -19042,7 +18621,7 @@ void ShakehandRsp::InternalSwap(ShakehandRsp* other) {
 
 ::google::protobuf::Metadata ShakehandRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[21];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19159,7 +18738,7 @@ void AddAreaReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddAreaReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22].descriptor;
 }
 
 const AddAreaReq& AddAreaReq::default_instance() {
@@ -19372,7 +18951,7 @@ void AddAreaReq::InternalSwap(AddAreaReq* other) {
 
 ::google::protobuf::Metadata AddAreaReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[22];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19518,7 +19097,7 @@ void AddAreaRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddAreaRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23].descriptor;
 }
 
 const AddAreaRsp& AddAreaRsp::default_instance() {
@@ -19692,7 +19271,7 @@ void AddAreaRsp::InternalSwap(AddAreaRsp* other) {
 
 ::google::protobuf::Metadata AddAreaRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[23];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -19806,7 +19385,7 @@ void DeleteAreaReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteAreaReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24].descriptor;
 }
 
 const DeleteAreaReq& DeleteAreaReq::default_instance() {
@@ -20029,7 +19608,7 @@ void DeleteAreaReq::InternalSwap(DeleteAreaReq* other) {
 
 ::google::protobuf::Metadata DeleteAreaReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[24];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20188,7 +19767,7 @@ void DeleteAreaRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteAreaRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25].descriptor;
 }
 
 const DeleteAreaRsp& DeleteAreaRsp::default_instance() {
@@ -20362,7 +19941,7 @@ void DeleteAreaRsp::InternalSwap(DeleteAreaRsp* other) {
 
 ::google::protobuf::Metadata DeleteAreaRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[25];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20479,7 +20058,7 @@ void ModifyAreaReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyAreaReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26].descriptor;
 }
 
 const ModifyAreaReq& ModifyAreaReq::default_instance() {
@@ -20692,7 +20271,7 @@ void ModifyAreaReq::InternalSwap(ModifyAreaReq* other) {
 
 ::google::protobuf::Metadata ModifyAreaReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[26];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20838,7 +20417,7 @@ void ModifyAreaRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyAreaRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27].descriptor;
 }
 
 const ModifyAreaRsp& ModifyAreaRsp::default_instance() {
@@ -21012,7 +20591,7 @@ void ModifyAreaRsp::InternalSwap(ModifyAreaRsp* other) {
 
 ::google::protobuf::Metadata ModifyAreaRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[27];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21119,7 +20698,7 @@ void QueryAllAreaReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllAreaReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28].descriptor;
 }
 
 const QueryAllAreaReq& QueryAllAreaReq::default_instance() {
@@ -21293,7 +20872,7 @@ void QueryAllAreaReq::InternalSwap(QueryAllAreaReq* other) {
 
 ::google::protobuf::Metadata QueryAllAreaReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[28];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21395,7 +20974,7 @@ void QueryAllAreaRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllAreaRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29].descriptor;
 }
 
 const QueryAllAreaRsp& QueryAllAreaRsp::default_instance() {
@@ -21560,7 +21139,7 @@ void QueryAllAreaRsp::InternalSwap(QueryAllAreaRsp* other) {
 
 ::google::protobuf::Metadata QueryAllAreaRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[29];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -21652,7 +21231,7 @@ void BindPushClientIDReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BindPushClientIDReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30].descriptor;
 }
 
 const BindPushClientIDReq& BindPushClientIDReq::default_instance() {
@@ -21875,7 +21454,7 @@ void BindPushClientIDReq::InternalSwap(BindPushClientIDReq* other) {
 
 ::google::protobuf::Metadata BindPushClientIDReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[30];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22034,7 +21613,7 @@ void BindPushClientIDRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BindPushClientIDRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31].descriptor;
 }
 
 const BindPushClientIDRsp& BindPushClientIDRsp::default_instance() {
@@ -22208,7 +21787,7 @@ void BindPushClientIDRsp::InternalSwap(BindPushClientIDRsp* other) {
 
 ::google::protobuf::Metadata BindPushClientIDRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[31];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22322,7 +21901,7 @@ void UnbindPushClientIDReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UnbindPushClientIDReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32].descriptor;
 }
 
 const UnbindPushClientIDReq& UnbindPushClientIDReq::default_instance() {
@@ -22545,7 +22124,7 @@ void UnbindPushClientIDReq::InternalSwap(UnbindPushClientIDReq* other) {
 
 ::google::protobuf::Metadata UnbindPushClientIDReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[32];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22704,7 +22283,7 @@ void UnbindPushClientIDRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UnbindPushClientIDRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33].descriptor;
 }
 
 const UnbindPushClientIDRsp& UnbindPushClientIDRsp::default_instance() {
@@ -22878,7 +22457,7 @@ void UnbindPushClientIDRsp::InternalSwap(UnbindPushClientIDRsp* other) {
 
 ::google::protobuf::Metadata UnbindPushClientIDRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[33];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -22995,7 +22574,7 @@ void AddGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34].descriptor;
 }
 
 const AddGroupReq& AddGroupReq::default_instance() {
@@ -23208,7 +22787,7 @@ void AddGroupReq::InternalSwap(AddGroupReq* other) {
 
 ::google::protobuf::Metadata AddGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[34];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23354,7 +22933,7 @@ void AddGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35].descriptor;
 }
 
 const AddGroupRsp& AddGroupRsp::default_instance() {
@@ -23528,7 +23107,7 @@ void AddGroupRsp::InternalSwap(AddGroupRsp* other) {
 
 ::google::protobuf::Metadata AddGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[35];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -23642,7 +23221,7 @@ void DeleteGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36].descriptor;
 }
 
 const DeleteGroupReq& DeleteGroupReq::default_instance() {
@@ -23865,7 +23444,7 @@ void DeleteGroupReq::InternalSwap(DeleteGroupReq* other) {
 
 ::google::protobuf::Metadata DeleteGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[36];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24024,7 +23603,7 @@ void DeleteGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37].descriptor;
 }
 
 const DeleteGroupRsp& DeleteGroupRsp::default_instance() {
@@ -24198,7 +23777,7 @@ void DeleteGroupRsp::InternalSwap(DeleteGroupRsp* other) {
 
 ::google::protobuf::Metadata DeleteGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[37];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24315,7 +23894,7 @@ void ModifyGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38].descriptor;
 }
 
 const ModifyGroupReq& ModifyGroupReq::default_instance() {
@@ -24528,7 +24107,7 @@ void ModifyGroupReq::InternalSwap(ModifyGroupReq* other) {
 
 ::google::protobuf::Metadata ModifyGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[38];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24674,7 +24253,7 @@ void ModifyGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39].descriptor;
 }
 
 const ModifyGroupRsp& ModifyGroupRsp::default_instance() {
@@ -24848,7 +24427,7 @@ void ModifyGroupRsp::InternalSwap(ModifyGroupRsp* other) {
 
 ::google::protobuf::Metadata ModifyGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[39];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -24962,7 +24541,7 @@ void QueryGroupInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryGroupInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40].descriptor;
 }
 
 const QueryGroupInfoReq& QueryGroupInfoReq::default_instance() {
@@ -25185,7 +24764,7 @@ void QueryGroupInfoReq::InternalSwap(QueryGroupInfoReq* other) {
 
 ::google::protobuf::Metadata QueryGroupInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[40];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25347,7 +24926,7 @@ void QueryGroupInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryGroupInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41].descriptor;
 }
 
 const QueryGroupInfoRsp& QueryGroupInfoRsp::default_instance() {
@@ -25511,7 +25090,7 @@ void QueryGroupInfoRsp::InternalSwap(QueryGroupInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryGroupInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[41];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25605,7 +25184,7 @@ void QueryAllGroupReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllGroupReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42].descriptor;
 }
 
 const QueryAllGroupReq& QueryAllGroupReq::default_instance() {
@@ -25779,7 +25358,7 @@ void QueryAllGroupReq::InternalSwap(QueryAllGroupReq* other) {
 
 ::google::protobuf::Metadata QueryAllGroupReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[42];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -25881,7 +25460,7 @@ void QueryAllGroupRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllGroupRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43].descriptor;
 }
 
 const QueryAllGroupRsp& QueryAllGroupRsp::default_instance() {
@@ -26046,7 +25625,7 @@ void QueryAllGroupRsp::InternalSwap(QueryAllGroupRsp* other) {
 
 ::google::protobuf::Metadata QueryAllGroupRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[43];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26141,7 +25720,7 @@ void AddStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44].descriptor;
 }
 
 const AddStoreReq& AddStoreReq::default_instance() {
@@ -26354,7 +25933,7 @@ void AddStoreReq::InternalSwap(AddStoreReq* other) {
 
 ::google::protobuf::Metadata AddStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[44];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26500,7 +26079,7 @@ void AddStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45].descriptor;
 }
 
 const AddStoreRsp& AddStoreRsp::default_instance() {
@@ -26674,7 +26253,7 @@ void AddStoreRsp::InternalSwap(AddStoreRsp* other) {
 
 ::google::protobuf::Metadata AddStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[45];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -26788,7 +26367,7 @@ void DeleteStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46].descriptor;
 }
 
 const DeleteStoreReq& DeleteStoreReq::default_instance() {
@@ -27011,7 +26590,7 @@ void DeleteStoreReq::InternalSwap(DeleteStoreReq* other) {
 
 ::google::protobuf::Metadata DeleteStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[46];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27170,7 +26749,7 @@ void DeleteStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47].descriptor;
 }
 
 const DeleteStoreRsp& DeleteStoreRsp::default_instance() {
@@ -27344,7 +26923,7 @@ void DeleteStoreRsp::InternalSwap(DeleteStoreRsp* other) {
 
 ::google::protobuf::Metadata DeleteStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[47];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27461,7 +27040,7 @@ void ModifyStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48].descriptor;
 }
 
 const ModifyStoreReq& ModifyStoreReq::default_instance() {
@@ -27674,7 +27253,7 @@ void ModifyStoreReq::InternalSwap(ModifyStoreReq* other) {
 
 ::google::protobuf::Metadata ModifyStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[48];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -27820,7 +27399,7 @@ void ModifyStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49].descriptor;
 }
 
 const ModifyStoreRsp& ModifyStoreRsp::default_instance() {
@@ -27994,7 +27573,7 @@ void ModifyStoreRsp::InternalSwap(ModifyStoreRsp* other) {
 
 ::google::protobuf::Metadata ModifyStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[49];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28108,7 +27687,7 @@ void QueryStoreInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50].descriptor;
 }
 
 const QueryStoreInfoReq& QueryStoreInfoReq::default_instance() {
@@ -28331,7 +27910,7 @@ void QueryStoreInfoReq::InternalSwap(QueryStoreInfoReq* other) {
 
 ::google::protobuf::Metadata QueryStoreInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[50];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28493,7 +28072,7 @@ void QueryStoreInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51].descriptor;
 }
 
 const QueryStoreInfoRsp& QueryStoreInfoRsp::default_instance() {
@@ -28657,7 +28236,7 @@ void QueryStoreInfoRsp::InternalSwap(QueryStoreInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryStoreInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[51];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -28754,7 +28333,7 @@ void QueryAllStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52].descriptor;
 }
 
 const QueryAllStoreReq& QueryAllStoreReq::default_instance() {
@@ -28963,7 +28542,7 @@ void QueryAllStoreReq::InternalSwap(QueryAllStoreReq* other) {
 
 ::google::protobuf::Metadata QueryAllStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[52];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29079,7 +28658,7 @@ void QueryAllStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53].descriptor;
 }
 
 const QueryAllStoreRsp& QueryAllStoreRsp::default_instance() {
@@ -29244,7 +28823,7 @@ void QueryAllStoreRsp::InternalSwap(QueryAllStoreRsp* other) {
 
 ::google::protobuf::Metadata QueryAllStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[53];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29346,7 +28925,7 @@ void AddEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54].descriptor;
 }
 
 const AddEntranceReq& AddEntranceReq::default_instance() {
@@ -29608,7 +29187,7 @@ void AddEntranceReq::InternalSwap(AddEntranceReq* other) {
 
 ::google::protobuf::Metadata AddEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[54];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -29806,7 +29385,7 @@ void AddEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55].descriptor;
 }
 
 const AddEntranceRsp& AddEntranceRsp::default_instance() {
@@ -29980,7 +29559,7 @@ void AddEntranceRsp::InternalSwap(AddEntranceRsp* other) {
 
 ::google::protobuf::Metadata AddEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[55];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30101,7 +29680,7 @@ void DeleteEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56].descriptor;
 }
 
 const DeleteEntranceReq& DeleteEntranceReq::default_instance() {
@@ -30373,7 +29952,7 @@ void DeleteEntranceReq::InternalSwap(DeleteEntranceReq* other) {
 
 ::google::protobuf::Metadata DeleteEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[56];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30584,7 +30163,7 @@ void DeleteEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57].descriptor;
 }
 
 const DeleteEntranceRsp& DeleteEntranceRsp::default_instance() {
@@ -30758,7 +30337,7 @@ void DeleteEntranceRsp::InternalSwap(DeleteEntranceRsp* other) {
 
 ::google::protobuf::Metadata DeleteEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[57];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -30886,7 +30465,7 @@ void ModifyEntranceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEntranceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58].descriptor;
 }
 
 const ModifyEntranceReq& ModifyEntranceReq::default_instance() {
@@ -31242,7 +30821,7 @@ void ModifyEntranceReq::InternalSwap(ModifyEntranceReq* other) {
 
 ::google::protobuf::Metadata ModifyEntranceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[58];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31550,7 +31129,7 @@ void ModifyEntranceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEntranceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59].descriptor;
 }
 
 const ModifyEntranceRsp& ModifyEntranceRsp::default_instance() {
@@ -31724,7 +31303,7 @@ void ModifyEntranceRsp::InternalSwap(ModifyEntranceRsp* other) {
 
 ::google::protobuf::Metadata ModifyEntranceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[59];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -31852,7 +31431,7 @@ void AddEntranceDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceDeviceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60].descriptor;
 }
 
 const AddEntranceDeviceReq& AddEntranceDeviceReq::default_instance() {
@@ -32173,7 +31752,7 @@ void AddEntranceDeviceReq::InternalSwap(AddEntranceDeviceReq* other) {
 
 ::google::protobuf::Metadata AddEntranceDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[60];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32436,7 +32015,7 @@ void AddEntranceDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEntranceDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61].descriptor;
 }
 
 const AddEntranceDeviceRsp& AddEntranceDeviceRsp::default_instance() {
@@ -32610,7 +32189,7 @@ void AddEntranceDeviceRsp::InternalSwap(AddEntranceDeviceRsp* other) {
 
 ::google::protobuf::Metadata AddEntranceDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[61];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32738,7 +32317,7 @@ void DeleteEntranceDeviceReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceDeviceReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62].descriptor;
 }
 
 const DeleteEntranceDeviceReq& DeleteEntranceDeviceReq::default_instance() {
@@ -33059,7 +32638,7 @@ void DeleteEntranceDeviceReq::InternalSwap(DeleteEntranceDeviceReq* other) {
 
 ::google::protobuf::Metadata DeleteEntranceDeviceReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[62];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33322,7 +32901,7 @@ void DeleteEntranceDeviceRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEntranceDeviceRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63].descriptor;
 }
 
 const DeleteEntranceDeviceRsp& DeleteEntranceDeviceRsp::default_instance() {
@@ -33496,7 +33075,7 @@ void DeleteEntranceDeviceRsp::InternalSwap(DeleteEntranceDeviceRsp* other) {
 
 ::google::protobuf::Metadata DeleteEntranceDeviceRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[63];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33606,7 +33185,7 @@ void AddEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64].descriptor;
 }
 
 const AddEventReq& AddEventReq::default_instance() {
@@ -33770,7 +33349,7 @@ void AddEventReq::InternalSwap(AddEventReq* other) {
 
 ::google::protobuf::Metadata AddEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[64];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -33864,7 +33443,7 @@ void AddEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65].descriptor;
 }
 
 const AddEventRsp& AddEventRsp::default_instance() {
@@ -34038,7 +33617,7 @@ void AddEventRsp::InternalSwap(AddEventRsp* other) {
 
 ::google::protobuf::Metadata AddEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[65];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34152,7 +33731,7 @@ void DeleteEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66].descriptor;
 }
 
 const DeleteEventReq& DeleteEventReq::default_instance() {
@@ -34375,7 +33954,7 @@ void DeleteEventReq::InternalSwap(DeleteEventReq* other) {
 
 ::google::protobuf::Metadata DeleteEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[66];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34534,7 +34113,7 @@ void DeleteEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67].descriptor;
 }
 
 const DeleteEventRsp& DeleteEventRsp::default_instance() {
@@ -34708,7 +34287,7 @@ void DeleteEventRsp::InternalSwap(DeleteEventRsp* other) {
 
 ::google::protobuf::Metadata DeleteEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[67];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -34825,7 +34404,7 @@ void ModifyEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68].descriptor;
 }
 
 const ModifyEventReq& ModifyEventReq::default_instance() {
@@ -35038,7 +34617,7 @@ void ModifyEventReq::InternalSwap(ModifyEventReq* other) {
 
 ::google::protobuf::Metadata ModifyEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[68];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35184,7 +34763,7 @@ void ModifyEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69].descriptor;
 }
 
 const ModifyEventRsp& ModifyEventRsp::default_instance() {
@@ -35358,7 +34937,7 @@ void ModifyEventRsp::InternalSwap(ModifyEventRsp* other) {
 
 ::google::protobuf::Metadata ModifyEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[69];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35472,7 +35051,7 @@ void QueryEventInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryEventInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70].descriptor;
 }
 
 const QueryEventInfoReq& QueryEventInfoReq::default_instance() {
@@ -35695,7 +35274,7 @@ void QueryEventInfoReq::InternalSwap(QueryEventInfoReq* other) {
 
 ::google::protobuf::Metadata QueryEventInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[70];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -35857,7 +35436,7 @@ void QueryEventInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryEventInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71].descriptor;
 }
 
 const QueryEventInfoRsp& QueryEventInfoRsp::default_instance() {
@@ -36021,7 +35600,7 @@ void QueryEventInfoRsp::InternalSwap(QueryEventInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryEventInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[71];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36136,7 +35715,7 @@ void QueryAllEventReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEventReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72].descriptor;
 }
 
 const QueryAllEventReq& QueryAllEventReq::default_instance() {
@@ -36478,7 +36057,7 @@ void QueryAllEventReq::InternalSwap(QueryAllEventReq* other) {
 
 ::google::protobuf::Metadata QueryAllEventReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[72];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36712,7 +36291,7 @@ void QueryAllEventRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEventRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73].descriptor;
 }
 
 const QueryAllEventRsp& QueryAllEventRsp::default_instance() {
@@ -36877,7 +36456,7 @@ void QueryAllEventRsp::InternalSwap(QueryAllEventRsp* other) {
 
 ::google::protobuf::Metadata QueryAllEventRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[73];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -36972,7 +36551,7 @@ void AddSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74].descriptor;
 }
 
 const AddSmartGuardStoreReq& AddSmartGuardStoreReq::default_instance() {
@@ -37185,7 +36764,7 @@ void AddSmartGuardStoreReq::InternalSwap(AddSmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata AddSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[74];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37331,7 +36910,7 @@ void AddSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75].descriptor;
 }
 
 const AddSmartGuardStoreRsp& AddSmartGuardStoreRsp::default_instance() {
@@ -37505,7 +37084,7 @@ void AddSmartGuardStoreRsp::InternalSwap(AddSmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata AddSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[75];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -37619,7 +37198,7 @@ void DeleteSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76].descriptor;
 }
 
 const DeleteSmartGuardStoreReq& DeleteSmartGuardStoreReq::default_instance() {
@@ -37842,7 +37421,7 @@ void DeleteSmartGuardStoreReq::InternalSwap(DeleteSmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata DeleteSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[76];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38001,7 +37580,7 @@ void DeleteSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77].descriptor;
 }
 
 const DeleteSmartGuardStoreRsp& DeleteSmartGuardStoreRsp::default_instance() {
@@ -38175,7 +37754,7 @@ void DeleteSmartGuardStoreRsp::InternalSwap(DeleteSmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata DeleteSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[77];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38292,7 +37871,7 @@ void ModifySmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifySmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78].descriptor;
 }
 
 const ModifySmartGuardStoreReq& ModifySmartGuardStoreReq::default_instance() {
@@ -38505,7 +38084,7 @@ void ModifySmartGuardStoreReq::InternalSwap(ModifySmartGuardStoreReq* other) {
 
 ::google::protobuf::Metadata ModifySmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[78];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38651,7 +38230,7 @@ void ModifySmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifySmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79].descriptor;
 }
 
 const ModifySmartGuardStoreRsp& ModifySmartGuardStoreRsp::default_instance() {
@@ -38825,7 +38404,7 @@ void ModifySmartGuardStoreRsp::InternalSwap(ModifySmartGuardStoreRsp* other) {
 
 ::google::protobuf::Metadata ModifySmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[79];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -38939,7 +38518,7 @@ void QuerySmartGuardStoreInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QuerySmartGuardStoreInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80].descriptor;
 }
 
 const QuerySmartGuardStoreInfoReq& QuerySmartGuardStoreInfoReq::default_instance() {
@@ -39162,7 +38741,7 @@ void QuerySmartGuardStoreInfoReq::InternalSwap(QuerySmartGuardStoreInfoReq* othe
 
 ::google::protobuf::Metadata QuerySmartGuardStoreInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[80];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -39324,7 +38903,7 @@ void QuerySmartGuardStoreInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QuerySmartGuardStoreInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81].descriptor;
 }
 
 const QuerySmartGuardStoreInfoRsp& QuerySmartGuardStoreInfoRsp::default_instance() {
@@ -39488,7 +39067,7 @@ void QuerySmartGuardStoreInfoRsp::InternalSwap(QuerySmartGuardStoreInfoRsp* othe
 
 ::google::protobuf::Metadata QuerySmartGuardStoreInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[81];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -39592,7 +39171,7 @@ void QueryAllSmartGuardStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllSmartGuardStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82].descriptor;
 }
 
 const QueryAllSmartGuardStoreReq& QueryAllSmartGuardStoreReq::default_instance() {
@@ -39850,7 +39429,7 @@ void QueryAllSmartGuardStoreReq::InternalSwap(QueryAllSmartGuardStoreReq* other)
 
 ::google::protobuf::Metadata QueryAllSmartGuardStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[82];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40018,7 +39597,7 @@ void QueryAllSmartGuardStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllSmartGuardStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83].descriptor;
 }
 
 const QueryAllSmartGuardStoreRsp& QueryAllSmartGuardStoreRsp::default_instance() {
@@ -40183,7 +39762,7 @@ void QueryAllSmartGuardStoreRsp::InternalSwap(QueryAllSmartGuardStoreRsp* other)
 
 ::google::protobuf::Metadata QueryAllSmartGuardStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[83];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40278,7 +39857,7 @@ void AddRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84].descriptor;
 }
 
 const AddRegularPatrolReq& AddRegularPatrolReq::default_instance() {
@@ -40491,7 +40070,7 @@ void AddRegularPatrolReq::InternalSwap(AddRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata AddRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[84];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40637,7 +40216,7 @@ void AddRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85].descriptor;
 }
 
 const AddRegularPatrolRsp& AddRegularPatrolRsp::default_instance() {
@@ -40811,7 +40390,7 @@ void AddRegularPatrolRsp::InternalSwap(AddRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata AddRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[85];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -40925,7 +40504,7 @@ void DeleteRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86].descriptor;
 }
 
 const DeleteRegularPatrolReq& DeleteRegularPatrolReq::default_instance() {
@@ -41148,7 +40727,7 @@ void DeleteRegularPatrolReq::InternalSwap(DeleteRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata DeleteRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[86];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41307,7 +40886,7 @@ void DeleteRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87].descriptor;
 }
 
 const DeleteRegularPatrolRsp& DeleteRegularPatrolRsp::default_instance() {
@@ -41481,7 +41060,7 @@ void DeleteRegularPatrolRsp::InternalSwap(DeleteRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata DeleteRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[87];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41598,7 +41177,7 @@ void ModifyRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88].descriptor;
 }
 
 const ModifyRegularPatrolReq& ModifyRegularPatrolReq::default_instance() {
@@ -41811,7 +41390,7 @@ void ModifyRegularPatrolReq::InternalSwap(ModifyRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata ModifyRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[88];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -41957,7 +41536,7 @@ void ModifyRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89].descriptor;
 }
 
 const ModifyRegularPatrolRsp& ModifyRegularPatrolRsp::default_instance() {
@@ -42131,7 +41710,7 @@ void ModifyRegularPatrolRsp::InternalSwap(ModifyRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata ModifyRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[89];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42245,7 +41824,7 @@ void QueryRegularPatrolInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRegularPatrolInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90].descriptor;
 }
 
 const QueryRegularPatrolInfoReq& QueryRegularPatrolInfoReq::default_instance() {
@@ -42468,7 +42047,7 @@ void QueryRegularPatrolInfoReq::InternalSwap(QueryRegularPatrolInfoReq* other) {
 
 ::google::protobuf::Metadata QueryRegularPatrolInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[90];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42630,7 +42209,7 @@ void QueryRegularPatrolInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRegularPatrolInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91].descriptor;
 }
 
 const QueryRegularPatrolInfoRsp& QueryRegularPatrolInfoRsp::default_instance() {
@@ -42794,7 +42373,7 @@ void QueryRegularPatrolInfoRsp::InternalSwap(QueryRegularPatrolInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryRegularPatrolInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[91];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -42898,7 +42477,7 @@ void QueryAllRegularPatrolReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRegularPatrolReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92].descriptor;
 }
 
 const QueryAllRegularPatrolReq& QueryAllRegularPatrolReq::default_instance() {
@@ -43156,7 +42735,7 @@ void QueryAllRegularPatrolReq::InternalSwap(QueryAllRegularPatrolReq* other) {
 
 ::google::protobuf::Metadata QueryAllRegularPatrolReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[92];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -43324,7 +42903,7 @@ void QueryAllRegularPatrolRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRegularPatrolRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93].descriptor;
 }
 
 const QueryAllRegularPatrolRsp& QueryAllRegularPatrolRsp::default_instance() {
@@ -43489,7 +43068,7 @@ void QueryAllRegularPatrolRsp::InternalSwap(QueryAllRegularPatrolRsp* other) {
 
 ::google::protobuf::Metadata QueryAllRegularPatrolRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[93];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -43588,7 +43167,7 @@ void UserJoinStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserJoinStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94].descriptor;
 }
 
 const UserJoinStoreReq& UserJoinStoreReq::default_instance() {
@@ -43860,7 +43439,7 @@ void UserJoinStoreReq::InternalSwap(UserJoinStoreReq* other) {
 
 ::google::protobuf::Metadata UserJoinStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[94];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44071,7 +43650,7 @@ void UserJoinStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserJoinStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95].descriptor;
 }
 
 const UserJoinStoreRsp& UserJoinStoreRsp::default_instance() {
@@ -44245,7 +43824,7 @@ void UserJoinStoreRsp::InternalSwap(UserJoinStoreRsp* other) {
 
 ::google::protobuf::Metadata UserJoinStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[95];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44366,7 +43945,7 @@ void UserQuitStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserQuitStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96].descriptor;
 }
 
 const UserQuitStoreReq& UserQuitStoreReq::default_instance() {
@@ -44638,7 +44217,7 @@ void UserQuitStoreReq::InternalSwap(UserQuitStoreReq* other) {
 
 ::google::protobuf::Metadata UserQuitStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[96];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -44849,7 +44428,7 @@ void UserQuitStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* UserQuitStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97].descriptor;
 }
 
 const UserQuitStoreRsp& UserQuitStoreRsp::default_instance() {
@@ -45023,7 +44602,7 @@ void UserQuitStoreRsp::InternalSwap(UserQuitStoreRsp* other) {
 
 ::google::protobuf::Metadata UserQuitStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[97];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45137,7 +44716,7 @@ void QueryStoreAllUserReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreAllUserReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98].descriptor;
 }
 
 const QueryStoreAllUserReq& QueryStoreAllUserReq::default_instance() {
@@ -45360,7 +44939,7 @@ void QueryStoreAllUserReq::InternalSwap(QueryStoreAllUserReq* other) {
 
 ::google::protobuf::Metadata QueryStoreAllUserReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[98];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45514,7 +45093,7 @@ void QueryStoreAllUserRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreAllUserRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99].descriptor;
 }
 
 const QueryStoreAllUserRsp& QueryStoreAllUserRsp::default_instance() {
@@ -45679,7 +45258,7 @@ void QueryStoreAllUserRsp::InternalSwap(QueryStoreAllUserRsp* other) {
 
 ::google::protobuf::Metadata QueryStoreAllUserRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[99];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -45774,7 +45353,7 @@ void AddVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100].descriptor;
 }
 
 const AddVIPCustomerReq& AddVIPCustomerReq::default_instance() {
@@ -45987,7 +45566,7 @@ void AddVIPCustomerReq::InternalSwap(AddVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata AddVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[100];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46133,7 +45712,7 @@ void AddVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101].descriptor;
 }
 
 const AddVIPCustomerRsp& AddVIPCustomerRsp::default_instance() {
@@ -46307,7 +45886,7 @@ void AddVIPCustomerRsp::InternalSwap(AddVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata AddVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[101];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46421,7 +46000,7 @@ void DeleteVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102].descriptor;
 }
 
 const DeleteVIPCustomerReq& DeleteVIPCustomerReq::default_instance() {
@@ -46644,7 +46223,7 @@ void DeleteVIPCustomerReq::InternalSwap(DeleteVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata DeleteVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[102];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -46803,7 +46382,7 @@ void DeleteVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103].descriptor;
 }
 
 const DeleteVIPCustomerRsp& DeleteVIPCustomerRsp::default_instance() {
@@ -46977,7 +46556,7 @@ void DeleteVIPCustomerRsp::InternalSwap(DeleteVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata DeleteVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[103];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47094,7 +46673,7 @@ void ModifyVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104].descriptor;
 }
 
 const ModifyVIPCustomerReq& ModifyVIPCustomerReq::default_instance() {
@@ -47307,7 +46886,7 @@ void ModifyVIPCustomerReq::InternalSwap(ModifyVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata ModifyVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[104];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47453,7 +47032,7 @@ void ModifyVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105].descriptor;
 }
 
 const ModifyVIPCustomerRsp& ModifyVIPCustomerRsp::default_instance() {
@@ -47627,7 +47206,7 @@ void ModifyVIPCustomerRsp::InternalSwap(ModifyVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata ModifyVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[105];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -47741,7 +47320,7 @@ void QueryVIPCustomerInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryVIPCustomerInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106].descriptor;
 }
 
 const QueryVIPCustomerInfoReq& QueryVIPCustomerInfoReq::default_instance() {
@@ -47964,7 +47543,7 @@ void QueryVIPCustomerInfoReq::InternalSwap(QueryVIPCustomerInfoReq* other) {
 
 ::google::protobuf::Metadata QueryVIPCustomerInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[106];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48126,7 +47705,7 @@ void QueryVIPCustomerInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryVIPCustomerInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107].descriptor;
 }
 
 const QueryVIPCustomerInfoRsp& QueryVIPCustomerInfoRsp::default_instance() {
@@ -48290,7 +47869,7 @@ void QueryVIPCustomerInfoRsp::InternalSwap(QueryVIPCustomerInfoRsp* other) {
 
 ::google::protobuf::Metadata QueryVIPCustomerInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[107];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48387,7 +47966,7 @@ void QueryAllVIPCustomerReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPCustomerReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108].descriptor;
 }
 
 const QueryAllVIPCustomerReq& QueryAllVIPCustomerReq::default_instance() {
@@ -48596,7 +48175,7 @@ void QueryAllVIPCustomerReq::InternalSwap(QueryAllVIPCustomerReq* other) {
 
 ::google::protobuf::Metadata QueryAllVIPCustomerReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[108];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48712,7 +48291,7 @@ void QueryAllVIPCustomerRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPCustomerRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109].descriptor;
 }
 
 const QueryAllVIPCustomerRsp& QueryAllVIPCustomerRsp::default_instance() {
@@ -48877,7 +48456,7 @@ void QueryAllVIPCustomerRsp::InternalSwap(QueryAllVIPCustomerRsp* other) {
 
 ::google::protobuf::Metadata QueryAllVIPCustomerRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[109];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -48972,7 +48551,7 @@ void AddVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110].descriptor;
 }
 
 const AddVIPConsumeHistoryReq& AddVIPConsumeHistoryReq::default_instance() {
@@ -49185,7 +48764,7 @@ void AddVIPConsumeHistoryReq::InternalSwap(AddVIPConsumeHistoryReq* other) {
 
 ::google::protobuf::Metadata AddVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[110];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -49331,7 +48910,7 @@ void AddVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111].descriptor;
 }
 
 const AddVIPConsumeHistoryRsp& AddVIPConsumeHistoryRsp::default_instance() {
@@ -49505,7 +49084,7 @@ void AddVIPConsumeHistoryRsp::InternalSwap(AddVIPConsumeHistoryRsp* other) {
 
 ::google::protobuf::Metadata AddVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[111];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -49619,7 +49198,7 @@ void DeleteVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112].descriptor;
 }
 
 const DeleteVIPConsumeHistoryReq& DeleteVIPConsumeHistoryReq::default_instance() {
@@ -49842,7 +49421,7 @@ void DeleteVIPConsumeHistoryReq::InternalSwap(DeleteVIPConsumeHistoryReq* other)
 
 ::google::protobuf::Metadata DeleteVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[112];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50001,7 +49580,7 @@ void DeleteVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113].descriptor;
 }
 
 const DeleteVIPConsumeHistoryRsp& DeleteVIPConsumeHistoryRsp::default_instance() {
@@ -50175,7 +49754,7 @@ void DeleteVIPConsumeHistoryRsp::InternalSwap(DeleteVIPConsumeHistoryRsp* other)
 
 ::google::protobuf::Metadata DeleteVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[113];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50292,7 +49871,7 @@ void ModifyVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114].descriptor;
 }
 
 const ModifyVIPConsumeHistoryReq& ModifyVIPConsumeHistoryReq::default_instance() {
@@ -50505,7 +50084,7 @@ void ModifyVIPConsumeHistoryReq::InternalSwap(ModifyVIPConsumeHistoryReq* other)
 
 ::google::protobuf::Metadata ModifyVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[114];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50651,7 +50230,7 @@ void ModifyVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115].descriptor;
 }
 
 const ModifyVIPConsumeHistoryRsp& ModifyVIPConsumeHistoryRsp::default_instance() {
@@ -50825,7 +50404,7 @@ void ModifyVIPConsumeHistoryRsp::InternalSwap(ModifyVIPConsumeHistoryRsp* other)
 
 ::google::protobuf::Metadata ModifyVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[115];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -50942,7 +50521,7 @@ void QueryAllVIPConsumeHistoryReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPConsumeHistoryReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116].descriptor;
 }
 
 const QueryAllVIPConsumeHistoryReq& QueryAllVIPConsumeHistoryReq::default_instance() {
@@ -51200,7 +50779,7 @@ void QueryAllVIPConsumeHistoryReq::InternalSwap(QueryAllVIPConsumeHistoryReq* ot
 
 ::google::protobuf::Metadata QueryAllVIPConsumeHistoryReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[116];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51368,7 +50947,7 @@ void QueryAllVIPConsumeHistoryRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllVIPConsumeHistoryRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117].descriptor;
 }
 
 const QueryAllVIPConsumeHistoryRsp& QueryAllVIPConsumeHistoryRsp::default_instance() {
@@ -51533,7 +51112,7 @@ void QueryAllVIPConsumeHistoryRsp::InternalSwap(QueryAllVIPConsumeHistoryRsp* ot
 
 ::google::protobuf::Metadata QueryAllVIPConsumeHistoryRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[117];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51628,7 +51207,7 @@ void AddEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118].descriptor;
 }
 
 const AddEvaluationTemplateReq& AddEvaluationTemplateReq::default_instance() {
@@ -51841,7 +51420,7 @@ void AddEvaluationTemplateReq::InternalSwap(AddEvaluationTemplateReq* other) {
 
 ::google::protobuf::Metadata AddEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[118];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -51987,7 +51566,7 @@ void AddEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119].descriptor;
 }
 
 const AddEvaluationTemplateRsp& AddEvaluationTemplateRsp::default_instance() {
@@ -52161,7 +51740,7 @@ void AddEvaluationTemplateRsp::InternalSwap(AddEvaluationTemplateRsp* other) {
 
 ::google::protobuf::Metadata AddEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[119];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -52275,7 +51854,7 @@ void DeleteEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120].descriptor;
 }
 
 const DeleteEvaluationTemplateReq& DeleteEvaluationTemplateReq::default_instance() {
@@ -52498,7 +52077,7 @@ void DeleteEvaluationTemplateReq::InternalSwap(DeleteEvaluationTemplateReq* othe
 
 ::google::protobuf::Metadata DeleteEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[120];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -52657,7 +52236,7 @@ void DeleteEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121].descriptor;
 }
 
 const DeleteEvaluationTemplateRsp& DeleteEvaluationTemplateRsp::default_instance() {
@@ -52831,7 +52410,7 @@ void DeleteEvaluationTemplateRsp::InternalSwap(DeleteEvaluationTemplateRsp* othe
 
 ::google::protobuf::Metadata DeleteEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[121];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -52948,7 +52527,7 @@ void ModifyEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122].descriptor;
 }
 
 const ModifyEvaluationTemplateReq& ModifyEvaluationTemplateReq::default_instance() {
@@ -53161,7 +52740,7 @@ void ModifyEvaluationTemplateReq::InternalSwap(ModifyEvaluationTemplateReq* othe
 
 ::google::protobuf::Metadata ModifyEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[122];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -53307,7 +52886,7 @@ void ModifyEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123].descriptor;
 }
 
 const ModifyEvaluationTemplateRsp& ModifyEvaluationTemplateRsp::default_instance() {
@@ -53481,7 +53060,7 @@ void ModifyEvaluationTemplateRsp::InternalSwap(ModifyEvaluationTemplateRsp* othe
 
 ::google::protobuf::Metadata ModifyEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[123];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -53588,7 +53167,7 @@ void QueryAllEvaluationTemplateReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEvaluationTemplateReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124].descriptor;
 }
 
 const QueryAllEvaluationTemplateReq& QueryAllEvaluationTemplateReq::default_instance() {
@@ -53762,7 +53341,7 @@ void QueryAllEvaluationTemplateReq::InternalSwap(QueryAllEvaluationTemplateReq* 
 
 ::google::protobuf::Metadata QueryAllEvaluationTemplateReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[124];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -53864,7 +53443,7 @@ void QueryAllEvaluationTemplateRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllEvaluationTemplateRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125].descriptor;
 }
 
 const QueryAllEvaluationTemplateRsp& QueryAllEvaluationTemplateRsp::default_instance() {
@@ -54029,7 +53608,7 @@ void QueryAllEvaluationTemplateRsp::InternalSwap(QueryAllEvaluationTemplateRsp* 
 
 ::google::protobuf::Metadata QueryAllEvaluationTemplateRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[125];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -54117,7 +53696,7 @@ void AddStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126].descriptor;
 }
 
 const AddStoreEvaluationReq& AddStoreEvaluationReq::default_instance() {
@@ -54281,7 +53860,7 @@ void AddStoreEvaluationReq::InternalSwap(AddStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata AddStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[126];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -54375,7 +53954,7 @@ void AddStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127].descriptor;
 }
 
 const AddStoreEvaluationRsp& AddStoreEvaluationRsp::default_instance() {
@@ -54549,7 +54128,7 @@ void AddStoreEvaluationRsp::InternalSwap(AddStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata AddStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[127];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -54663,7 +54242,7 @@ void DeleteStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128].descriptor;
 }
 
 const DeleteStoreEvaluationReq& DeleteStoreEvaluationReq::default_instance() {
@@ -54886,7 +54465,7 @@ void DeleteStoreEvaluationReq::InternalSwap(DeleteStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata DeleteStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[128];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -55045,7 +54624,7 @@ void DeleteStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129].descriptor;
 }
 
 const DeleteStoreEvaluationRsp& DeleteStoreEvaluationRsp::default_instance() {
@@ -55219,7 +54798,7 @@ void DeleteStoreEvaluationRsp::InternalSwap(DeleteStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata DeleteStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[129];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -55336,7 +54915,7 @@ void ModifyStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130].descriptor;
 }
 
 const ModifyStoreEvaluationReq& ModifyStoreEvaluationReq::default_instance() {
@@ -55549,7 +55128,7 @@ void ModifyStoreEvaluationReq::InternalSwap(ModifyStoreEvaluationReq* other) {
 
 ::google::protobuf::Metadata ModifyStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[130];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -55695,7 +55274,7 @@ void ModifyStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131].descriptor;
 }
 
 const ModifyStoreEvaluationRsp& ModifyStoreEvaluationRsp::default_instance() {
@@ -55869,7 +55448,7 @@ void ModifyStoreEvaluationRsp::InternalSwap(ModifyStoreEvaluationRsp* other) {
 
 ::google::protobuf::Metadata ModifyStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[131];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -55990,7 +55569,7 @@ void QueryStoreEvaluationInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreEvaluationInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132].descriptor;
 }
 
 const QueryStoreEvaluationInfoReq& QueryStoreEvaluationInfoReq::default_instance() {
@@ -56262,7 +55841,7 @@ void QueryStoreEvaluationInfoReq::InternalSwap(QueryStoreEvaluationInfoReq* othe
 
 ::google::protobuf::Metadata QueryStoreEvaluationInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[132];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -56476,7 +56055,7 @@ void QueryStoreEvaluationInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryStoreEvaluationInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133].descriptor;
 }
 
 const QueryStoreEvaluationInfoRsp& QueryStoreEvaluationInfoRsp::default_instance() {
@@ -56640,7 +56219,7 @@ void QueryStoreEvaluationInfoRsp::InternalSwap(QueryStoreEvaluationInfoRsp* othe
 
 ::google::protobuf::Metadata QueryStoreEvaluationInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[133];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -56758,7 +56337,7 @@ void QueryAllStoreEvaluationReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreEvaluationReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134].descriptor;
 }
 
 const QueryAllStoreEvaluationReq& QueryAllStoreEvaluationReq::default_instance() {
@@ -57114,7 +56693,7 @@ void QueryAllStoreEvaluationReq::InternalSwap(QueryAllStoreEvaluationReq* other)
 
 ::google::protobuf::Metadata QueryAllStoreEvaluationReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[134];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -57386,7 +56965,7 @@ void QueryAllStoreEvaluationRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllStoreEvaluationRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135].descriptor;
 }
 
 const QueryAllStoreEvaluationRsp& QueryAllStoreEvaluationRsp::default_instance() {
@@ -57551,7 +57130,7 @@ void QueryAllStoreEvaluationRsp::InternalSwap(QueryAllStoreEvaluationRsp* other)
 
 ::google::protobuf::Metadata QueryAllStoreEvaluationRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[135];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -57639,7 +57218,7 @@ void AddRemotePatrolStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRemotePatrolStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136].descriptor;
 }
 
 const AddRemotePatrolStoreReq& AddRemotePatrolStoreReq::default_instance() {
@@ -57803,7 +57382,7 @@ void AddRemotePatrolStoreReq::InternalSwap(AddRemotePatrolStoreReq* other) {
 
 ::google::protobuf::Metadata AddRemotePatrolStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[136];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -57897,7 +57476,7 @@ void AddRemotePatrolStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddRemotePatrolStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137].descriptor;
 }
 
 const AddRemotePatrolStoreRsp& AddRemotePatrolStoreRsp::default_instance() {
@@ -58071,7 +57650,7 @@ void AddRemotePatrolStoreRsp::InternalSwap(AddRemotePatrolStoreRsp* other) {
 
 ::google::protobuf::Metadata AddRemotePatrolStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[137];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -58185,7 +57764,7 @@ void DeleteRemotePatrolStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRemotePatrolStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138].descriptor;
 }
 
 const DeleteRemotePatrolStoreReq& DeleteRemotePatrolStoreReq::default_instance() {
@@ -58408,7 +57987,7 @@ void DeleteRemotePatrolStoreReq::InternalSwap(DeleteRemotePatrolStoreReq* other)
 
 ::google::protobuf::Metadata DeleteRemotePatrolStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[138];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -58567,7 +58146,7 @@ void DeleteRemotePatrolStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteRemotePatrolStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139].descriptor;
 }
 
 const DeleteRemotePatrolStoreRsp& DeleteRemotePatrolStoreRsp::default_instance() {
@@ -58741,7 +58320,7 @@ void DeleteRemotePatrolStoreRsp::InternalSwap(DeleteRemotePatrolStoreRsp* other)
 
 ::google::protobuf::Metadata DeleteRemotePatrolStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[139];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -58858,7 +58437,7 @@ void ModifyRemotePatrolStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRemotePatrolStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[141].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140].descriptor;
 }
 
 const ModifyRemotePatrolStoreReq& ModifyRemotePatrolStoreReq::default_instance() {
@@ -59071,7 +58650,7 @@ void ModifyRemotePatrolStoreReq::InternalSwap(ModifyRemotePatrolStoreReq* other)
 
 ::google::protobuf::Metadata ModifyRemotePatrolStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[141];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[140];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -59217,7 +58796,7 @@ void ModifyRemotePatrolStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyRemotePatrolStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[142].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[141].descriptor;
 }
 
 const ModifyRemotePatrolStoreRsp& ModifyRemotePatrolStoreRsp::default_instance() {
@@ -59391,7 +58970,7 @@ void ModifyRemotePatrolStoreRsp::InternalSwap(ModifyRemotePatrolStoreRsp* other)
 
 ::google::protobuf::Metadata ModifyRemotePatrolStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[142];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[141];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -59505,7 +59084,7 @@ void QueryRemotePatrolStoreInfoReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRemotePatrolStoreInfoReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[143].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[142].descriptor;
 }
 
 const QueryRemotePatrolStoreInfoReq& QueryRemotePatrolStoreInfoReq::default_instance() {
@@ -59728,7 +59307,7 @@ void QueryRemotePatrolStoreInfoReq::InternalSwap(QueryRemotePatrolStoreInfoReq* 
 
 ::google::protobuf::Metadata QueryRemotePatrolStoreInfoReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[143];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[142];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -59890,7 +59469,7 @@ void QueryRemotePatrolStoreInfoRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryRemotePatrolStoreInfoRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[144].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[143].descriptor;
 }
 
 const QueryRemotePatrolStoreInfoRsp& QueryRemotePatrolStoreInfoRsp::default_instance() {
@@ -60054,7 +59633,7 @@ void QueryRemotePatrolStoreInfoRsp::InternalSwap(QueryRemotePatrolStoreInfoRsp* 
 
 ::google::protobuf::Metadata QueryRemotePatrolStoreInfoRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[144];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[143];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -60172,7 +59751,7 @@ void QueryAllRemotePatrolStoreReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRemotePatrolStoreReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[145].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[144].descriptor;
 }
 
 const QueryAllRemotePatrolStoreReq& QueryAllRemotePatrolStoreReq::default_instance() {
@@ -60528,7 +60107,7 @@ void QueryAllRemotePatrolStoreReq::InternalSwap(QueryAllRemotePatrolStoreReq* ot
 
 ::google::protobuf::Metadata QueryAllRemotePatrolStoreReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[145];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[144];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -60800,7 +60379,7 @@ void QueryAllRemotePatrolStoreRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllRemotePatrolStoreRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[146].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[145].descriptor;
 }
 
 const QueryAllRemotePatrolStoreRsp& QueryAllRemotePatrolStoreRsp::default_instance() {
@@ -60965,7 +60544,7 @@ void QueryAllRemotePatrolStoreRsp::InternalSwap(QueryAllRemotePatrolStoreRsp* ot
 
 ::google::protobuf::Metadata QueryAllRemotePatrolStoreRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[146];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[145];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -61072,7 +60651,7 @@ void ImportPOSDataReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImportPOSDataReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[147].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[146].descriptor;
 }
 
 const ImportPOSDataReq& ImportPOSDataReq::default_instance() {
@@ -61446,7 +61025,7 @@ void ImportPOSDataReq::InternalSwap(ImportPOSDataReq* other) {
 
 ::google::protobuf::Metadata ImportPOSDataReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[147];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[146];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -61699,7 +61278,7 @@ void ImportPOSDataRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ImportPOSDataRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[148].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[147].descriptor;
 }
 
 const ImportPOSDataRsp& ImportPOSDataRsp::default_instance() {
@@ -61873,7 +61452,7 @@ void ImportPOSDataRsp::InternalSwap(ImportPOSDataRsp* other) {
 
 ::google::protobuf::Metadata ImportPOSDataRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[148];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[147];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -62004,7 +61583,7 @@ void QueryCustomerFlowStatisticReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryCustomerFlowStatisticReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[149].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[148].descriptor;
 }
 
 const QueryCustomerFlowStatisticReq& QueryCustomerFlowStatisticReq::default_instance() {
@@ -62360,7 +61939,7 @@ void QueryCustomerFlowStatisticReq::InternalSwap(QueryCustomerFlowStatisticReq* 
 
 ::google::protobuf::Metadata QueryCustomerFlowStatisticReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[149];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[148];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -62637,7 +62216,7 @@ void QueryCustomerFlowStatisticRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryCustomerFlowStatisticRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[150].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[149].descriptor;
 }
 
 const QueryCustomerFlowStatisticRsp& QueryCustomerFlowStatisticRsp::default_instance() {
@@ -62811,7 +62390,7 @@ void QueryCustomerFlowStatisticRsp::InternalSwap(QueryCustomerFlowStatisticRsp* 
 
 ::google::protobuf::Metadata QueryCustomerFlowStatisticRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[150];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[149];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -62920,7 +62499,7 @@ void ReportCustomerFlowDataReq::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ReportCustomerFlowDataReq::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[151].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[150].descriptor;
 }
 
 const ReportCustomerFlowDataReq& ReportCustomerFlowDataReq::default_instance() {
@@ -63134,7 +62713,7 @@ void ReportCustomerFlowDataReq::InternalSwap(ReportCustomerFlowDataReq* other) {
 
 ::google::protobuf::Metadata ReportCustomerFlowDataReq::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[151];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[150];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -63271,7 +62850,7 @@ void ReportCustomerFlowDataRsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ReportCustomerFlowDataRsp::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[152].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[151].descriptor;
 }
 
 const ReportCustomerFlowDataRsp& ReportCustomerFlowDataRsp::default_instance() {
@@ -63445,7 +63024,7 @@ void ReportCustomerFlowDataRsp::InternalSwap(ReportCustomerFlowDataRsp* other) {
 
 ::google::protobuf::Metadata ReportCustomerFlowDataRsp::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[152];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[151];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -64150,7 +63729,7 @@ void Request::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Request::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[153].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[152].descriptor;
 }
 
 const Request& Request::default_instance() {
@@ -66888,7 +66467,7 @@ void Request::InternalSwap(Request* other) {
 
 ::google::protobuf::Metadata Request::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[153];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[152];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -70163,7 +69742,7 @@ void Response::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Response::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[154].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[153].descriptor;
 }
 
 const Response& Response::default_instance() {
@@ -72985,7 +72564,7 @@ void Response::InternalSwap(Response* other) {
 
 ::google::protobuf::Metadata Response::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[154];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[153];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -75744,7 +75323,7 @@ void CustomerFlowMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowMessage::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[155].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[154].descriptor;
 }
 
 const CustomerFlowMessage& CustomerFlowMessage::default_instance() {
@@ -76068,7 +75647,7 @@ void CustomerFlowMessage::InternalSwap(CustomerFlowMessage* other) {
 
 ::google::protobuf::Metadata CustomerFlowMessage::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[155];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[154];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

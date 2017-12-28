@@ -212,7 +212,7 @@ public:
         std::string m_strGoodsCategory;
         std::string m_strAddress;
         std::list<Entrance> m_entranceList;
-        std::string m_strAreaID;
+        Area m_area;
         unsigned int m_uiOpenState;
         std::string m_strCreateDate;
         std::string m_strExtend;
@@ -267,17 +267,11 @@ public:
         std::string m_strCreateDate;
     };
 
-    struct EntranceBrief                    //出入口简要信息
-    {
-        std::string m_strEntranceID;
-        std::string m_strEntranceName;
-    };
-
     struct PatrolStoreEntrance              //巡店店铺出入口
     {
         std::string m_strStoreID;
         std::string m_strStoreName;
-        std::list<EntranceBrief> m_entranceList;
+        std::list<Entrance> m_entranceList;
     };
 
     struct RegularPatrol                    //定时巡店

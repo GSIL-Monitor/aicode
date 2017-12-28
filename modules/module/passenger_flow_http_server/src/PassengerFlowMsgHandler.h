@@ -266,6 +266,7 @@ private:
         std::string m_strExtend;
         std::string m_strCreateDate;
         std::string m_strDomainID;
+        std::string m_strDomainName;
         unsigned int m_uiOpenState;
     };
 
@@ -427,7 +428,7 @@ private:
 
     bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist);
 
-    bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreInfo> &storelist);
+    bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreAndEntranceInfo> &storelist);
 
     
     bool AddEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, EntranceInfo &einfo);

@@ -222,7 +222,7 @@ bool AccessManager::GetMsgType(const std::string &strMsg, int &iMsgType)
 
 bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
-    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+    ReturnInfo::RetCode(ReturnInfo::SESSION_TIMEOUT);
 
     bool blResult = false;
 
@@ -6876,7 +6876,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    char sql[1024] = { 0 };
+    char sql[2048] = { 0 };
     int size = sizeof(sql);
     int len;
 
@@ -6975,7 +6975,7 @@ void AccessManager::InsertDevPropertyToDB(const InteractiveProtoHandler::LoginRe
 
 void AccessManager::UpdateDevicePropertyToDB(const InteractiveProtoHandler::ModifyDevicePropertyReq_DEV &modifyDevicePropertyReq)
 {
-    char sql[1024] = { 0 };
+    char sql[2048] = { 0 };
     int size = sizeof(sql);
     int len;
     snprintf(sql, size, "update t_device_parameter_ipc set updatedate = current_time");
@@ -7233,7 +7233,7 @@ void AccessManager::InsertDoorbellParameterToDB(const InteractiveProtoHandler::L
     std::string::size_type pos = strCurrentTime.find('T');
     strCurrentTime.replace(pos, 1, std::string(" "));
 
-    char sql[1024] = { 0 };
+    char sql[2048] = { 0 };
     int size = sizeof(sql);
     int len;
 
@@ -7332,7 +7332,7 @@ void AccessManager::InsertDoorbellParameterToDB(const InteractiveProtoHandler::L
 
 void AccessManager::UpdateDoorbellParameterToDB(const std::string &strDeviceID, const InteractiveProtoHandler::DoorbellParameter &doorbellParameter)
 {
-    char sql[1024] = { 0 };
+    char sql[4096] = { 0 };
     int size = sizeof(sql);
     int len;
     snprintf(sql, size, "update t_device_parameter_doorbell set updatedate = current_time");

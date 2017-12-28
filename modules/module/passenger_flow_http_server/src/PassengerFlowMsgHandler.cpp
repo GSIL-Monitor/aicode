@@ -516,8 +516,9 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsStoreInfoList;
+    Json::Value jsDomainInfo;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreInfoList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreInfoList, &jsDomainInfo)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -535,7 +536,7 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
             {
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["entrance"] = jsStoreInfoList;
-
+                (*pJsBody)["domain"] = jsDomainInfo;
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -582,6 +583,9 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
         return blResult;
     }
 
+    jsDomainInfo["domainid"] = sinfo.m_strDomainID;
+    jsDomainInfo["name"] = sinfo.m_strDomainName;
+    
     auto itBegin = einfo.begin();
     auto itEnd = einfo.end();
     while (itBegin != itEnd)
@@ -617,7 +621,6 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("address", sinfo.m_strAddress));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("create_date", sinfo.m_strCreateDate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", sinfo.m_strExtend));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("domainid", sinfo.m_strDomainID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("open_state", boost::lexical_cast<std::string>(sinfo.m_uiOpenState)));
 
     blResult = true;
@@ -633,7 +636,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsStoreInfoList;
-
+    
     BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsStoreInfoList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
@@ -652,7 +655,6 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
             {
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["store"] = jsStoreInfoList;
-
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -701,7 +703,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
 
     LOG_INFO_RLD("Query all store info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex);
 
-    std::list<StoreInfo> storelist;
+    std::list<StoreAndEntranceInfo> storelist;
 
     if (!QueryAllStore(strSid, strUserID, uiBeginIndex, storelist))
     {
@@ -714,10 +716,36 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
     while (itBegin != itEnd)
     {
         Json::Value jsStore;
-        jsStore["store_id"] = itBegin->m_strStoreID;
-        jsStore["store_name"] = itBegin->m_strStoreName;
-        //jsStore["create_date"] = itBegin->m_strCreateDate;
-        jsStore["open_state"] = boost::lexical_cast<std::string>(itBegin->m_uiOpenState);
+        jsStore["store_id"] = itBegin->stinfo.m_strStoreID;
+        jsStore["store_name"] = itBegin->stinfo.m_strStoreName;
+        jsStore["address"] = itBegin->stinfo.m_strAddress;
+        jsStore["open_state"] = boost::lexical_cast<std::string>(itBegin->stinfo.m_uiOpenState);
+        
+        Json::Value jsEntranceInfoList;
+        for (auto itB1 = itBegin->etinfolist.begin(), itE1 = itBegin->etinfolist.end(); itB1 != itE1; ++itB1)
+        {
+            Json::Value jsEntranceInfo;
+            jsEntranceInfo["entrance_id"] = itB1->m_strID;
+            jsEntranceInfo["entrance_name"] = itB1->m_strName;
+
+            Json::Value jsDevid;
+            unsigned int i = 0;
+            auto itB2 = itB1->m_DeviceIDList.begin();
+            auto itE2 = itB1->m_DeviceIDList.end();
+            while (itB2 != itE2)
+            {
+                jsDevid[i] = *itB2;
+
+                ++itB2;
+                ++i;
+            }
+
+            jsEntranceInfo["device_id"] = jsDevid;
+
+            jsEntranceInfoList.append(jsEntranceInfo);
+        }
+
+        jsStore["entrance"] = jsEntranceInfoList;
 
         jsStoreInfoList.append(jsStore);
 
@@ -6334,7 +6362,7 @@ bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::str
         AddStoreReq.m_storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
         AddStoreReq.m_storeInfo.m_strStoreName = store.m_strStoreName;
         AddStoreReq.m_storeInfo.m_uiState = 0;
-        AddStoreReq.m_storeInfo.m_strAreaID = store.m_strDomainID;
+        AddStoreReq.m_storeInfo.m_area.m_strAreaID = store.m_strDomainID;
         AddStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
         std::string strSerializeOutPut;
@@ -6444,7 +6472,7 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
         ModStoreReq.m_storeInfo.m_strStoreName = store.m_strStoreName;
         ModStoreReq.m_storeInfo.m_uiState = 0;
         ModStoreReq.m_storeInfo.m_strStoreID = store.m_strStoreID;
-        ModStoreReq.m_storeInfo.m_strAreaID = store.m_strDomainID;
+        ModStoreReq.m_storeInfo.m_area.m_strAreaID = store.m_strDomainID;
         ModStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
         std::string strSerializeOutPut;
@@ -6525,7 +6553,8 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
         store.m_strGoodsCategory = QueryStoreRsp.m_storeInfo.m_strGoodsCategory;
         store.m_strStoreID = QueryStoreRsp.m_storeInfo.m_strStoreID;
         store.m_strStoreName = QueryStoreRsp.m_storeInfo.m_strStoreName;
-        store.m_strDomainID = QueryStoreRsp.m_storeInfo.m_strAreaID;
+        store.m_strDomainID = QueryStoreRsp.m_storeInfo.m_area.m_strAreaID;
+        store.m_strDomainName = QueryStoreRsp.m_storeInfo.m_area.m_strAreaName;
         store.m_uiOpenState = QueryStoreRsp.m_storeInfo.m_uiOpenState;
 
         auto itBegin = QueryStoreRsp.m_storeInfo.m_entranceList.begin();
@@ -6570,7 +6599,7 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
 }
 
 
-bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreInfo> &storelist)
+bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreAndEntranceInfo> &storelist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -6608,15 +6637,35 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
         auto itEnd = QueryAllStoreRsp.m_storeList.end();
         while (itBegin != itEnd)
         {
-            StoreInfo store;
-            store.m_strStoreID = itBegin->m_strStoreID;
-            store.m_strStoreName = itBegin->m_strStoreName;
-            store.m_uiOpenState = itBegin->m_uiOpenState;
+            StoreAndEntranceInfo store;
+            store.stinfo.m_strStoreID = itBegin->m_strStoreID;
+            store.stinfo.m_strStoreName = itBegin->m_strStoreName;
+            store.stinfo.m_uiOpenState = itBegin->m_uiOpenState;
+            store.stinfo.m_strAddress = itBegin->m_strAddress;
 
-            LOG_INFO_RLD("Query all store info received and store id is " << itBegin->m_strStoreID <<
-                " and store name is " << itBegin->m_strStoreName << " and open state is " << itBegin->m_uiOpenState);
+            for (auto itB = itBegin->m_entranceList.begin(), itE = itBegin->m_entranceList.end(); itB != itE; ++itB)
+            {
+                EntranceInfo einfo;
+                einfo.m_strID = itB->m_strEntranceID;
+                einfo.m_strName = itB->m_strEntranceName;
+
+                auto itB2 = itB->m_strDeviceIDList.begin();
+                auto itE2 = itB->m_strDeviceIDList.end();
+                while (itB2 != itE2)
+                {
+                    einfo.m_DeviceIDList.push_back(*itB2);
+                    ++itB2;
+                }
+
+                store.etinfolist.push_back(std::move(einfo));
+            }
 
             storelist.push_back(std::move(store));
+
+            LOG_INFO_RLD("Query all store info received and store id is " << itBegin->m_strStoreID <<
+                " and store name is " << itBegin->m_strStoreName << " and open state is " << itBegin->m_uiOpenState << " and address is " <<
+                itBegin->m_strAddress << " and entrance list size is " << itBegin->m_entranceList.size());
+
             ++itBegin;
         }
 
@@ -7736,7 +7785,7 @@ bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Pat
 
             for (auto itB = itBegin->etinfolist.begin(), itE = itBegin->etinfolist.end(); itB != itE; ++itB)
             {
-                PassengerFlowProtoHandler::EntranceBrief et;
+                PassengerFlowProtoHandler::Entrance et;
                 et.m_strEntranceID = itB->m_strID;
                 et.m_strEntranceName = itB->m_strName;
                 pse.m_entranceList.push_back(std::move(et));
@@ -7863,7 +7912,7 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Pat
 
             for (auto itB = itBegin->etinfolist.begin(), itE = itBegin->etinfolist.end(); itB != itE; ++itB)
             {
-                PassengerFlowProtoHandler::EntranceBrief et;
+                PassengerFlowProtoHandler::Entrance et;
                 et.m_strEntranceID = itB->m_strID;
                 et.m_strEntranceName = itB->m_strName;
                 pse.m_entranceList.push_back(std::move(et));

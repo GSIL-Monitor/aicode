@@ -226,7 +226,7 @@ message Store                            //店铺信息
     string strGoodsCategory = 3;
     string strAddress = 4;
     repeated Entrance entrance = 5;
-    string strAreaID = 6;
+    Area area = 6;
     string strCreateDate = 7;
     string strExtend = 8;
     uint32 uiState = 9;
@@ -281,17 +281,11 @@ message SmartGuardStore                  //智能看店计划
     string strCreateDate = 12;
 }
 
-message EntranceBrief                    //出入口简要信息
-{
-    string strEntranceID = 1;
-    string strEntranceName = 2;
-}
-
 message PatrolStoreEntrance              //巡店店铺出入口
 {
     string strStoreID = 1;
     string strStoreName = 2;
-    repeated EntranceBrief entrance = 3;
+    repeated Entrance entrance = 3;
 }
 
 message RegularPatrol                    //定时巡店

@@ -59,6 +59,8 @@ public:
     int Create(const std::string &strSessionID, const std::string &strValue, const unsigned int uiThreshold, TMOUT_CB tcb, const unsigned int uiType = 0,
         const std::string &strID = "", const unsigned int uiTerminalType = TERMINAL_APP_TYPE, const unsigned int uiLoginType = 0);
 
+    bool GetIDBySessionID(const std::string &strSessionID, std::string &strID);
+
     bool GetSessionStatus(const std::string &strSessionID, int &iStatus);
 
     bool GetSessionLoginType(const std::string &strSessionID, unsigned int &uiLoginType);

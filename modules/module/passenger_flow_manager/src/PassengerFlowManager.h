@@ -30,6 +30,9 @@ public:
     static const int UNREAD_STATE = 0;
     static const int READ_STATE = 1;
 
+    static std::string ALLOW_ACCESS;
+    static std::string DISALLOW_ACCESS;
+
     typedef struct _ParamInfo
     {
         std::string m_strDBHost;
@@ -205,6 +208,8 @@ private:
     int QuarterDuration(const std::string &strBeginDate, const std::string &strEndDate);
 
     int TimePrecisionScale(const std::string &strDate, const unsigned int uiTimePrecision);
+
+    bool UserAccessPermission(const std::string &strUserID, const int iMsgType, std::string &strPermission);
 
     bool IsValidArea(const std::string &strUserID, const std::string &strAreaName);
 

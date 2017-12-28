@@ -119,11 +119,14 @@ void SerializeStoreList(const std::list<PassengerFlowProtoHandler::Store> &store
         pDstStoreInfo->set_strstorename(itBegin->m_strStoreName);
         pDstStoreInfo->set_strgoodscategory(itBegin->m_strGoodsCategory);
         pDstStoreInfo->set_straddress(itBegin->m_strAddress);
-        pDstStoreInfo->set_strareaid(itBegin->m_strAreaID);
         pDstStoreInfo->set_uiopenstate(itBegin->m_uiOpenState);
         pDstStoreInfo->set_strcreatedate(itBegin->m_strCreateDate);
         pDstStoreInfo->set_strextend(itBegin->m_strExtend);
         pDstStoreInfo->set_uistate(itBegin->m_uiState);
+
+        auto area = pDstStoreInfo->mutable_area();
+        area->set_strareaid(itBegin->m_area.m_strAreaID);
+        area->set_strareaname(itBegin->m_area.m_strAreaName);
 
         SerializeEntranceList(itBegin->m_entranceList, pDstStoreInfo->mutable_entrance());
     }
@@ -140,11 +143,14 @@ void UnSerializeStoreList(std::list<PassengerFlowProtoHandler::Store> &storeInfo
         storeInfo.m_strStoreName = srcStoreInfo.strstorename();
         storeInfo.m_strGoodsCategory = srcStoreInfo.strgoodscategory();
         storeInfo.m_strAddress = srcStoreInfo.straddress();
-        storeInfo.m_strAreaID = srcStoreInfo.strareaid();
         storeInfo.m_uiOpenState = srcStoreInfo.uiopenstate();
         storeInfo.m_strCreateDate = srcStoreInfo.strcreatedate();
         storeInfo.m_strExtend = srcStoreInfo.strextend();
         storeInfo.m_uiState = srcStoreInfo.uistate();
+
+        auto area = srcStoreInfo.area();
+        storeInfo.m_area.m_strAreaID = area.strareaid();
+        storeInfo.m_area.m_strAreaName = area.strareaname();
 
         UnSerializeEntranceList(storeInfo.m_entranceList, srcStoreInfo.entrance());
 
@@ -183,7 +189,7 @@ void UnSerializePatrolStoreEntranceList(std::list<PassengerFlowProtoHandler::Pat
         for (int j = 0, sz2 = srcPatrolStoreEntrance.entrance_size(); j < sz2; ++j)
         {
             auto srcEntrance = srcPatrolStoreEntrance.entrance(j);
-            PassengerFlowProtoHandler::EntranceBrief entrance;
+            PassengerFlowProtoHandler::Entrance entrance;
             entrance.m_strEntranceID = srcEntrance.strentranceid();
             entrance.m_strEntranceName = srcEntrance.strentrancename();
             storeEntrance.m_entranceList.push_back(entrance);
@@ -2938,7 +2944,7 @@ void PassengerFlowProtoHandler::AddStoreReq::Serializer(CustomerFlowMessage &mes
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
-    store->set_strareaid(m_storeInfo.m_strAreaID);
+    store->mutable_area()->set_strareaid(m_storeInfo.m_area.m_strAreaID);
     store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
@@ -2957,7 +2963,7 @@ void PassengerFlowProtoHandler::AddStoreReq::UnSerializer(const CustomerFlowMess
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
-    m_storeInfo.m_strAreaID = store.strareaid();
+    m_storeInfo.m_area.m_strAreaID = store.area().strareaid();
     m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
@@ -3024,7 +3030,7 @@ void PassengerFlowProtoHandler::ModifyStoreReq::Serializer(CustomerFlowMessage &
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
-    store->set_strareaid(m_storeInfo.m_strAreaID);
+    store->mutable_area()->set_strareaid(m_storeInfo.m_area.m_strAreaID);
     store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
@@ -3043,7 +3049,7 @@ void PassengerFlowProtoHandler::ModifyStoreReq::UnSerializer(const CustomerFlowM
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
-    m_storeInfo.m_strAreaID = store.strareaid();
+    m_storeInfo.m_area.m_strAreaID = store.area().strareaid();
     m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
@@ -3093,11 +3099,14 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::Serializer(CustomerFlowMessag
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
     store->set_straddress(m_storeInfo.m_strAddress);
-    store->set_strareaid(m_storeInfo.m_strAreaID);
     store->set_uiopenstate(m_storeInfo.m_uiOpenState);
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
+
+    auto area = store->mutable_area();
+    area->set_strareaid(m_storeInfo.m_area.m_strAreaID);
+    area->set_strareaname(m_storeInfo.m_area.m_strAreaName);
     SerializeEntranceList(m_storeInfo.m_entranceList, store->mutable_entrance());
 }
 
@@ -3109,11 +3118,14 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::UnSerializer(const CustomerFl
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
     m_storeInfo.m_strAddress = store.straddress();
-    m_storeInfo.m_strAreaID = store.strareaid();
     m_storeInfo.m_uiOpenState = store.uiopenstate();
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
+
+    auto area = store.area();
+    m_storeInfo.m_area.m_strAreaID = area.strareaid();
+    m_storeInfo.m_area.m_strAreaName = area.strareaname();
     UnSerializeEntranceList(m_storeInfo.m_entranceList, store.entrance());
 }
 
@@ -3141,30 +3153,13 @@ void PassengerFlowProtoHandler::QueryAllStoreRsp::Serializer(CustomerFlowMessage
     Response::Serializer(message);
     message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllStoreRsp_T);
 
-    auto rsp = message.mutable_rspvalue()->mutable_queryallstorersp_value();
-    for (auto it = m_storeList.begin(), end = m_storeList.end(); it != end; ++it)
-    {
-        auto store = rsp->add_storeinfo();
-        store->set_strstoreid(it->m_strStoreID);
-        store->set_strstorename(it->m_strStoreName);
-        store->set_uiopenstate(it->m_uiOpenState);
-    }
+    SerializeStoreList(m_storeList, message.mutable_rspvalue()->mutable_queryallstorersp_value()->mutable_storeinfo());
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreRsp::UnSerializer(const CustomerFlowMessage &message)
 {
     Response::UnSerializer(message);
-    auto rsp = message.rspvalue().queryallstorersp_value();
-    for (int i = 0, sz = rsp.storeinfo_size(); i < sz; ++i)
-    {
-        auto rspStore = rsp.storeinfo(i);
-        PassengerFlowProtoHandler::Store store;
-        store.m_strStoreID = rspStore.strstoreid();
-        store.m_strStoreName = rspStore.strstorename();
-        store.m_uiOpenState = rspStore.uiopenstate();
-
-        m_storeList.push_back(store);
-    }
+    UnSerializeStoreList(m_storeList, message.rspvalue().queryallstorersp_value().storeinfo());
 }
 
 void PassengerFlowProtoHandler::AddEntranceReq::Serializer(CustomerFlowMessage &message) const

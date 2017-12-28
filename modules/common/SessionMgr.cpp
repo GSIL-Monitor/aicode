@@ -240,6 +240,42 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
 
 }
 
+bool SessionMgr::GetIDBySessionID(const std::string &strSessionID, std::string &strID)
+{
+    std::string strValue;
+    if (!MemCacheGet(strSessionID, strValue))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse key not found from memcached and key is " << strSessionID);
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strValue, root, false))
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse value parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!root.isObject())
+    {
+        LOG_ERROR_RLD("Get session info failed beacuse json root parsed failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value jTerm = root["id"];
+
+    if (jTerm.isNull() || !jTerm.isString())
+    {
+        LOG_ERROR_RLD("Get id by session id failed and key is " << strSessionID << " and value is " << strValue);
+        return false;
+    }
+
+    strID = jTerm.asString();
+
+    return true;
+}
+
 bool SessionMgr::GetSessionStatus(const std::string &strSessionID, int &iStatus)
 {
     std::string strValue;

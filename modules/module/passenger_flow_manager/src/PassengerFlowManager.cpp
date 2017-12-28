@@ -8,6 +8,9 @@
 #include "json/json.h"
 #include "HttpClient.h"
 
+std::string PassengerFlowManager::ALLOW_ACCESS = "allow";
+std::string PassengerFlowManager::DISALLOW_ACCESS = "disallow";
+
 PassengerFlowManager::PassengerFlowManager(const ParamInfo &pinfo) :
     m_ParamInfo(pinfo),
     m_DBRuner(1),
@@ -139,6 +142,27 @@ bool PassengerFlowManager::PreCommonHandler(const std::string &strMsg, const std
             LOG_ERROR_RLD("PreCommonHandler req unserialize failed, src id is " << strSrcID);
             return false;
         }
+
+    std::string strID;
+    std::string strPermission;
+    if (!req.m_strSID.empty() && !m_SessionMgr.GetIDBySessionID(req.m_strSID, strID))
+    {
+        LOG_ERROR_RLD("PreCommonHandler failed, get id error, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!strID.empty() && !UserAccessPermission(strID, req.m_MsgType, strPermission))
+    {
+        LOG_ERROR_RLD("PreCommonHandler failed, query user permission error, src id is " << strSrcID);
+        return false;
+    }
+
+    if (strPermission == DISALLOW_ACCESS)
+    {
+        ReturnInfo::RetCode(ReturnInfo::NO_ACCESS_PERMISSION);
+        LOG_ERROR_RLD("PreCommonHandler failed, the operation is disallowed, src id is " << strSrcID);
+        return false;
+    }
 
     //if (PassengerFlowProtoHandler::CustomerFlowMsgType::LoginReq_USR_T == req.m_MsgType ||
     //    PassengerFlowProtoHandler::CustomerFlowMsgType::RegisterUserReq_USR_T == req.m_MsgType ||
@@ -446,12 +470,12 @@ bool PassengerFlowManager::BindPushClientIDReq(const std::string &strMsg, const 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
         {
-            LOG_ERROR_RLD("Bind push clientID rsp serialize failed");
+            LOG_ERROR_RLD("Bind push client ID rsp serialize failed");
             return;
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("Bind push clientID rsp already send, dst id is " << strSrcID
+        LOG_INFO_RLD("Bind push client ID rsp already send, dst id is " << strSrcID
             << " and user id is " << req.m_strUserID
             << " and client id is " << req.m_strClientID
             << " and result is " << blResult);
@@ -460,7 +484,7 @@ bool PassengerFlowManager::BindPushClientIDReq(const std::string &strMsg, const 
 
         if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
         {
-            LOG_ERROR_RLD("Bind push clientID req unserialize failed, src id is " << strSrcID);
+            LOG_ERROR_RLD("Bind push client ID req unserialize failed, src id is " << strSrcID);
             return false;
         }
 
@@ -492,12 +516,12 @@ bool PassengerFlowManager::UnbindPushClientIDReq(const std::string &strMsg, cons
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
         {
-            LOG_ERROR_RLD("Unbind push clientID rsp serialize failed");
+            LOG_ERROR_RLD("Unbind push client ID rsp serialize failed");
             return;
         }
 
         writer(strSrcID, strSerializeOutPut);
-        LOG_INFO_RLD("Unbind push clientID rsp already send, dst id is " << strSrcID
+        LOG_INFO_RLD("Unbind push client ID rsp already send, dst id is " << strSrcID
             << " and user id is " << req.m_strUserID
             << " and client id is " << req.m_strClientID
             << " and result is " << blResult);
@@ -506,7 +530,7 @@ bool PassengerFlowManager::UnbindPushClientIDReq(const std::string &strMsg, cons
 
         if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
         {
-            LOG_ERROR_RLD("Unbind push clientID req unserialize failed, src id is " << strSrcID);
+            LOG_ERROR_RLD("Unbind push client ID req unserialize failed, src id is " << strSrcID);
             return false;
         }
 
@@ -548,7 +572,7 @@ bool PassengerFlowManager::AddStoreReq(const std::string &strMsg, const std::str
             << " and store id is " << strStoreID
             << " and goods category is " << req.m_storeInfo.m_strGoodsCategory
             << " and address is " << req.m_storeInfo.m_strAddress
-            << " and area id is " << req.m_storeInfo.m_strAreaID
+            << " and area id is " << req.m_storeInfo.m_area.m_strAreaID
             << " and open state is " << req.m_storeInfo.m_uiOpenState
             << " and result is " << blResult);
     }
@@ -571,7 +595,7 @@ bool PassengerFlowManager::AddStoreReq(const std::string &strMsg, const std::str
     storeInfo.m_strStoreName = req.m_storeInfo.m_strStoreName;
     storeInfo.m_strGoodsCategory = req.m_storeInfo.m_strGoodsCategory;
     storeInfo.m_strAddress = req.m_storeInfo.m_strAddress;
-    storeInfo.m_strAreaID = req.m_storeInfo.m_strAreaID;
+    storeInfo.m_area.m_strAreaID = req.m_storeInfo.m_area.m_strAreaID;
     storeInfo.m_uiOpenState = req.m_storeInfo.m_uiOpenState;
     storeInfo.m_entranceList = req.m_storeInfo.m_entranceList;
     storeInfo.m_strCreateDate = CurrentTime();
@@ -698,7 +722,8 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
             rsp.m_storeInfo.m_strStoreName = storeInfo.m_strStoreName;
             rsp.m_storeInfo.m_strGoodsCategory = storeInfo.m_strGoodsCategory;
             rsp.m_storeInfo.m_strAddress = storeInfo.m_strAddress;
-            rsp.m_storeInfo.m_strAreaID = storeInfo.m_strAreaID;
+            rsp.m_storeInfo.m_area.m_strAreaID = storeInfo.m_area.m_strAreaID;
+            rsp.m_storeInfo.m_area.m_strAreaName = storeInfo.m_area.m_strAreaName;
             rsp.m_storeInfo.m_uiOpenState = storeInfo.m_uiOpenState;
             rsp.m_storeInfo.m_strCreateDate = storeInfo.m_strCreateDate;
             rsp.m_storeInfo.m_entranceList.swap(storeInfo.m_entranceList);
@@ -717,7 +742,7 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
             << " and store name is " << storeInfo.m_strStoreName
             << " and goods category is " << storeInfo.m_strGoodsCategory
             << " and address is " << storeInfo.m_strAddress
-            << " and area id is " << storeInfo.m_strAreaID
+            << " and area id is " << storeInfo.m_area.m_strAreaID
             << " and open state is " << storeInfo.m_uiOpenState
             << " and create date is " << storeInfo.m_strCreateDate
             << " and result is " << blResult);
@@ -782,7 +807,9 @@ bool PassengerFlowManager::QueryAllStoreReq(const std::string &strMsg, const std
             {
                 LOG_INFO_RLD("Store info[" << i++ << "]:"
                     << " store id is " << store.m_strStoreID
-                    << " and store name is " << store.m_strStoreName);
+                    << " and store name is " << store.m_strStoreName
+                    << " and address is " << store.m_strAddress
+                    << " and open state is " << store.m_uiOpenState);
             }
         }
     }
@@ -3610,6 +3637,45 @@ int PassengerFlowManager::TimePrecisionScale(const std::string &strDate, const u
     return ((date - epoch).total_seconds() / uiTimePrecision) * uiTimePrecision;
 }
 
+bool PassengerFlowManager::UserAccessPermission(const std::string &strUserID, const int iMsgType, std::string &strPermission)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select b.access_permission from"
+        " t_user_role_association a join t_role_menu_association b on a.role_id = b.role_id"
+        " where a.user_id = '%s' and b.menu_id = %d";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), iMsgType);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            result = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("UserAccessPermission sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("UserAccessPermission exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        strPermission = boost::any_cast<std::string>(ResultList.front());
+    }
+
+    return true;
+}
+
 bool PassengerFlowManager::IsValidArea(const std::string &strUserID, const std::string &strAreaName)
 {
     char sql[512] = { 0 };
@@ -3910,7 +3976,7 @@ void PassengerFlowManager::AddStore(const std::string &strUserID, const Passenge
     const char *sqlfmt = "insert into t_store_info (id, store_id, store_name, goods_category, address, area_id, open_state, create_date)"
         " values (uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, storeInfo.m_strStoreID.c_str(), storeInfo.m_strStoreName.c_str(), storeInfo.m_strGoodsCategory.c_str(),
-        storeInfo.m_strAddress.c_str(), storeInfo.m_strAreaID.c_str(), storeInfo.m_uiOpenState, storeInfo.m_strCreateDate.c_str());
+        storeInfo.m_strAddress.c_str(), storeInfo.m_area.m_strAreaID.c_str(), storeInfo.m_uiOpenState, storeInfo.m_strCreateDate.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -3976,9 +4042,9 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
         blModified = true;
     }
 
-    if (!storeInfo.m_strAreaID.empty())
+    if (!storeInfo.m_area.m_strAreaID.empty())
     {
-        len += snprintf(sql + len, size - len, ", area_id = '%s'", storeInfo.m_strAreaID.c_str());
+        len += snprintf(sql + len, size - len, ", area_id = '%s'", storeInfo.m_area.m_strAreaID.c_str());
         blModified = true;
     }
 
@@ -4005,8 +4071,8 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
 bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, PassengerFlowProtoHandler::Store &storeInfo)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select store_id, store_name, goods_category, address, area_id, open_state, create_date from"
-        " t_store_info where store_id = '%s'";
+    const char *sqlfmt = "select a.store_id, a.store_name, a.goods_category, a.address, a.area_id, a.open_state, a.create_date, b.area_name from"
+        " t_store_info a join t_area_info b on a.area_id = b.area_id where a.store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
     PassengerFlowProtoHandler::Store rstStore;
@@ -4027,13 +4093,16 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
             rstStore.m_strAddress = strColumn;
             break;
         case 4:
-            rstStore.m_strAreaID = strColumn;
+            rstStore.m_area.m_strAreaID = strColumn;
             break;
         case 5:
             rstStore.m_uiOpenState = boost::lexical_cast<unsigned int>(strColumn);
             break;
         case 6:
             rstStore.m_strCreateDate = strColumn;
+            break;
+        case 7:
+            rstStore.m_area.m_strAreaName = strColumn;
             result = rstStore;
             break;
 
@@ -4069,7 +4138,8 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
     storeInfo.m_strStoreName = store.m_strStoreName;
     storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
     storeInfo.m_strAddress = store.m_strAddress;
-    storeInfo.m_strAreaID = store.m_strAreaID;
+    storeInfo.m_area.m_strAreaID = store.m_area.m_strAreaID;
+    storeInfo.m_area.m_strAreaName = store.m_area.m_strAreaName;
     storeInfo.m_uiOpenState = store.m_uiOpenState;
     storeInfo.m_strCreateDate = store.m_strCreateDate;
 
@@ -4170,25 +4240,17 @@ bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, std::list
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select a.store_id, a.store_name, a.open_state from"
+    const char *sqlfmt = "select a.store_id from"
         " t_store_info a join t_user_store_association b on a.store_id = b.store_id"
         " where b.user_id = '%s' limit %d, %d";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiBeginIndex, uiPageSize);
 
-    PassengerFlowProtoHandler::Store rstStore;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
         switch (uiColumnNum)
         {
         case 0:
-            rstStore.m_strStoreID = strColumn;
-            break;
-        case 1:
-            rstStore.m_strStoreName = strColumn;
-            break;
-        case 2:
-            rstStore.m_uiOpenState = boost::lexical_cast<unsigned int>(strColumn);
-            result = rstStore;
+            result = strColumn;
             break;
 
         default:
@@ -4208,7 +4270,10 @@ bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, std::list
 
     for (auto &result : ResultList)
     {
-        storeList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::Store>(result)));
+        PassengerFlowProtoHandler::Store store;
+        QueryStoreInfo(boost::any_cast<std::string>(result), store);
+
+        storeList.push_back(std::move(store));
     }
 
     return true;
@@ -5622,7 +5687,7 @@ bool PassengerFlowManager::QueryPatrolPlanEntranceAssociation(const std::string 
         " where a.plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
-    PassengerFlowProtoHandler::EntranceBrief rstEntrance;
+    PassengerFlowProtoHandler::Entrance rstEntrance;
     PassengerFlowProtoHandler::PatrolStoreEntrance rstStoreEntrance;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
