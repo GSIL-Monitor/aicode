@@ -252,6 +252,8 @@ private:
         std::string m_strDomainID;
         std::string m_strDomainName;
         std::string m_strExtend;
+        std::string m_strParentDomainID;
+        unsigned int m_uiLevel;
     };
 
     struct StoreInfo
@@ -536,6 +538,8 @@ private:
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);
+
+    bool ValidNumber(const std::string &strNumber, const unsigned int uiCount = 1);
 
     bool GetEntrance(const std::string &strEntrance, std::list<EntranceInfo> &einfolist);
 

@@ -2519,6 +2519,8 @@ void PassengerFlowProtoHandler::AddAreaReq::Serializer(CustomerFlowMessage &mess
     auto area = req->mutable_areainfo();
     area->set_strareaid(m_areaInfo.m_strAreaID);
     area->set_strareaname(m_areaInfo.m_strAreaName);
+    area->set_uilevel(m_areaInfo.m_uiLevel);
+    area->set_strparentareaid(m_areaInfo.m_strParentAreaID);
     area->set_strcreatedate(m_areaInfo.m_strCreateDate);
     area->set_uistate(m_areaInfo.m_uiState);
     area->set_strextend(m_areaInfo.m_strExtend);
@@ -2533,6 +2535,8 @@ void PassengerFlowProtoHandler::AddAreaReq::UnSerializer(const CustomerFlowMessa
     auto area = req.areainfo();
     m_areaInfo.m_strAreaID = area.strareaid();
     m_areaInfo.m_strAreaName = area.strareaname();
+    m_areaInfo.m_uiLevel = area.uilevel();
+    m_areaInfo.m_strParentAreaID = area.strparentareaid();
     m_areaInfo.m_strCreateDate = area.strcreatedate();
     m_areaInfo.m_uiState = area.uistate();
     m_areaInfo.m_strExtend = area.strextend();
@@ -2595,6 +2599,8 @@ void PassengerFlowProtoHandler::ModifyAreaReq::Serializer(CustomerFlowMessage &m
     auto area = req->mutable_areainfo();
     area->set_strareaid(m_areaInfo.m_strAreaID);
     area->set_strareaname(m_areaInfo.m_strAreaName);
+    area->set_uilevel(m_areaInfo.m_uiLevel);
+    area->set_strparentareaid(m_areaInfo.m_strParentAreaID);
     area->set_strcreatedate(m_areaInfo.m_strCreateDate);
     area->set_uistate(m_areaInfo.m_uiState);
     area->set_strextend(m_areaInfo.m_strExtend);
@@ -2609,6 +2615,8 @@ void PassengerFlowProtoHandler::ModifyAreaReq::UnSerializer(const CustomerFlowMe
     auto area = req.areainfo();
     m_areaInfo.m_strAreaID = area.strareaid();
     m_areaInfo.m_strAreaName = area.strareaname();
+    m_areaInfo.m_uiLevel = area.uilevel();
+    m_areaInfo.m_strParentAreaID = area.strparentareaid();
     m_areaInfo.m_strCreateDate = area.strcreatedate();
     m_areaInfo.m_uiState = area.uistate();
     m_areaInfo.m_strExtend = area.strextend();
@@ -2655,6 +2663,8 @@ void PassengerFlowProtoHandler::QueryAllAreaRsp::Serializer(CustomerFlowMessage 
         auto area = rsp->add_areainfo();
         area->set_strareaid(it->m_strAreaID);
         area->set_strareaname(it->m_strAreaName);
+        area->set_uilevel(it->m_uiLevel);
+        area->set_strparentareaid(it->m_strParentAreaID);
         area->set_strcreatedate(it->m_strCreateDate);
         area->set_uistate(it->m_uiState);
         area->set_strextend(it->m_strExtend);
@@ -2671,6 +2681,8 @@ void PassengerFlowProtoHandler::QueryAllAreaRsp::UnSerializer(const CustomerFlow
         Area area;
         area.m_strAreaID = rspArea.strareaid();
         area.m_strAreaName = rspArea.strareaname();
+        area.m_uiLevel = rspArea.uilevel();
+        area.m_strParentAreaID = rspArea.strparentareaid();
         area.m_strCreateDate = rspArea.strcreatedate();
         area.m_uiState = rspArea.uistate();
         area.m_strExtend = rspArea.strextend();

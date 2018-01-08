@@ -12,6 +12,7 @@
 #include "boost/atomic.hpp"
 #include "SessionMgr.h"
 #include "PassengerFlowProtoHandler.h"
+//#include "MessagePush_Getui.h"
 
 class MysqlImpl;
 
@@ -195,6 +196,8 @@ public:
 
 private:
 
+    //bool PushMessage();
+
     std::string CurrentTime();
 
     int Year(const std::string &strDate);
@@ -355,7 +358,8 @@ private:
 
     bool QueryRegularPatrolInfo(const std::string &strPlanID, PassengerFlowProtoHandler::RegularPatrol &regularPatrol);
 
-    bool QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList);
+    bool QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList,
+        const std::string &strEntranceID = std::string());
 
     bool QueryPatrolPlanUserAssociation(const std::string &strPlanID, std::list<std::string> &strUserIDList);
 
@@ -480,6 +484,7 @@ private:
 
     TimeOutHandler m_DBTimer;
 
+    //MessagePush_Getui m_pushGetui;
 };
 
 

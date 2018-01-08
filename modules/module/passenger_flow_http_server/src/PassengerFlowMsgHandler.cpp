@@ -6135,6 +6135,8 @@ bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std:
         AddAreaReq.m_strUserID = strUserID;
         AddAreaReq.m_areaInfo.m_strAreaName = dmi.m_strDomainName;
         AddAreaReq.m_areaInfo.m_strExtend = dmi.m_strExtend;
+        AddAreaReq.m_areaInfo.m_strParentAreaID = dmi.m_strParentDomainID;
+        AddAreaReq.m_areaInfo.m_uiLevel = dmi.m_uiLevel;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddAreaReq, strSerializeOutPut))
@@ -6320,6 +6322,8 @@ bool PassengerFlowMsgHandler::QueryAllDomain(const std::string &strSid, const st
             dmi.m_strDomainID = itBegin->m_strAreaID;
             dmi.m_strDomainName = itBegin->m_strAreaName;
             dmi.m_strExtend = itBegin->m_strExtend;
+            dmi.m_strParentDomainID = itBegin->m_strParentAreaID;
+            dmi.m_uiLevel = itBegin->m_uiLevel;
 
             dmilist.push_back(std::move(dmi));
 
@@ -9829,14 +9833,44 @@ bool PassengerFlowMsgHandler::CreateDomainHandler(boost::shared_ptr<MsgInfoMap> 
         strExtend = itFind->second;
     }
 
+    itFind = pMsgInfoMap->find("level");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Level name not found.");
+        return blResult;
+    }
+    const std::string strLevelName = itFind->second;
+
+    if (!ValidNumber(strLevelName))
+    {
+        LOG_ERROR_RLD("Level name is not number.");
+        return blResult;
+    }
+
+    std::string strParentDomainID;
+    const unsigned int uiLevel = boost::lexical_cast<unsigned int>(strLevelName);
+    if (1 != uiLevel)
+    {
+        itFind = pMsgInfoMap->find("parent_domainid");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Parent domain id not found.");
+            return blResult;
+        }
+
+        strParentDomainID = itFind->second;
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create domain info received and session id is " << strSid << " and user id is " << strUserID << " and domain name is " << strDomainName
-        << " and extend is " << strExtend);
+        << " and extend is " << strExtend << " and parent domain id is " << strParentDomainID << " and level is " << uiLevel);
 
     DomainInfo dmi;
     dmi.m_strDomainName = strDomainName;
     dmi.m_strExtend = strExtend;
+    dmi.m_strParentDomainID = strParentDomainID;
+    dmi.m_uiLevel = uiLevel;
 
     if (!CreateDomain(strSid, strUserID, dmi))
     {
@@ -10072,6 +10106,8 @@ bool PassengerFlowMsgHandler::QueryAllDomainHandler(boost::shared_ptr<MsgInfoMap
         jsDmi["domainid"] = itBegin->m_strDomainID;
         jsDmi["name"] = itBegin->m_strDomainName;
         jsDmi["extend"] = itBegin->m_strExtend;
+        jsDmi["parent_domainid"] = itBegin->m_strDomainID;
+        jsDmi["level"] = boost::lexical_cast<std::string>(itBegin->m_uiLevel);
 
         jsDomainInfoList.append(jsDmi);
 
@@ -10161,6 +10197,24 @@ bool PassengerFlowMsgHandler::ValidDatetime(const std::string &strDatetime, cons
         !boost::regex_match(strDatetime, reg3) && !boost::regex_match(strDatetime, reg4))
     {
         LOG_ERROR_RLD("Date time is invalid and input date is " << strDatetime);
+        return false;
+    }
+
+    return true;
+}
+
+bool PassengerFlowMsgHandler::ValidNumber(const std::string &strNumber, const unsigned int uiCount)
+{
+    char rep[16] = { 0 };
+    const char* repfmt = "([0-9]{%u})";
+    snprintf(rep, sizeof(rep), repfmt, uiCount);
+    std::string strRepFmt(rep);
+
+    boost::regex reg0(strRepFmt.c_str()); //
+
+    if (!boost::regex_match(strNumber, reg0))
+    {
+        LOG_ERROR_RLD("Number is invalid and input date is " << strNumber);
         return false;
     }
 

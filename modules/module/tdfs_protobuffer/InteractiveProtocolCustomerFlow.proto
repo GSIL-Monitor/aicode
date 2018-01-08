@@ -198,9 +198,11 @@ message Area                             //区域
 {
     string strAreaID = 1;
     string strAreaName = 2;
-    uint32 uiState = 3;
-    string strCreateDate = 4;
-    string strExtend = 5;
+    uint32 uiLevel = 3;
+    string strParentAreaID = 4;
+    uint32 uiState = 5;
+    string strCreateDate = 6;
+    string strExtend = 7;
 }
 
 message Group                            //群组信息

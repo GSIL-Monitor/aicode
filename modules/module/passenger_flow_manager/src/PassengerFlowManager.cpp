@@ -99,7 +99,7 @@ bool PassengerFlowManager::GetMsgType(const std::string &strMsg, int &iMsgType)
 
 bool PassengerFlowManager::PreCommonHandler(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
-    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+    ReturnInfo::RetCode(ReturnInfo::SESSION_TIMEOUT);
 
     bool blResult = false;
 
@@ -1960,7 +1960,7 @@ bool PassengerFlowManager::QueryAllRegularPatrolReq(const std::string &strMsg, c
             for (auto &plan : rsp.m_planList)
             {
                 LOG_INFO_RLD("RegularPatrol info[" << i++ << "]:"
-                    << " smart plan id is " << plan.m_strPlanID
+                    << " regular plan id is " << plan.m_strPlanID
                     << " and plan name is " << plan.m_strPlanName
                     << " and enable is " << plan.m_strEnable);
             }
@@ -3582,6 +3582,22 @@ bool PassengerFlowManager::ReportCustomerFlowDataReq(const std::string &strMsg, 
 
     return blResult;
 }
+
+/*
+bool PassengerFlowManager::PushMessage()
+{
+    MessagePush_Getui::PushMessage message;
+    message.strTitle = "";
+    message.strNotyContent = "";
+    message.strPayloadContent = "";
+    message.bIsOffline = true;
+    message.iOfflineExpireTime = 0;
+    message.strClientID = "";
+    message.strAlias = "";
+
+    m_pushGetui.PushSingle(message);
+}
+*/
 
 std::string PassengerFlowManager::CurrentTime()
 {
@@ -5678,14 +5694,21 @@ bool PassengerFlowManager::QueryRegularPatrolInfo(const std::string &strPlanID, 
         && QueryPatrolPlanUserAssociation(strPlanID, regularPatrol.m_strHandlerList);
 }
 
-bool PassengerFlowManager::QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList)
+bool PassengerFlowManager::QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList,
+    const std::string &strEntranceID /*= std::string()*/)
 {
     char sql[512] = { 0 };
+    int size = sizeof(sql);
     const char *sqlfmt = "select b.entrance_id, b.entrance_name, c.store_id, c.store_name from"
         " t_patrol_plan_entrance_association a join t_entrance_info b on a.entrance_id = b.entrance_id"
         " join t_store_info c on b.store_id = c.store_id"
         " where a.plan_id = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
+    int len = snprintf(sql, size, sqlfmt, strPlanID.c_str());
+
+    if (!strEntranceID.empty())
+    {
+        snprintf(sql + len, size - len, " and a.entrance_id = '%s'", strEntranceID.c_str());
+    }
 
     PassengerFlowProtoHandler::Entrance rstEntrance;
     PassengerFlowProtoHandler::PatrolStoreEntrance rstStoreEntrance;
@@ -5877,26 +5900,32 @@ bool PassengerFlowManager::QueryAllRegularPatrolByUser(const std::string &strUse
 bool PassengerFlowManager::QueryAllRegularPatrolByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select d.plan_id, d.plan_name, d.enable from"
-        " t_entrance_device_association a join t_entrance_info b on a.entrance_id = b.entrance_id"
-        " join t_patrol_plan_store_association c on b.store_id = c.store_id"
-        " join t_regular_patrol_plan d on c.plan_id = d.plan_id"
+    const char *sqlfmt = "select a.entrance_id, c.plan_id, c.plan_name, c.enable from"
+        " t_entrance_device_association a join t_patrol_plan_entrance_association b on a.entrance_id = b.entrance_id"
+        " join t_regular_patrol_plan c on b.plan_id = c.plan_id"
         " where a.device_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
-    PassengerFlowProtoHandler::RegularPatrol rstGuardStore;
+    struct ResultGuardStore
+    {
+        std::string strEntranceID;
+        PassengerFlowProtoHandler::RegularPatrol regularPatrol;
+    } rstGuardStore;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
         switch (uiColumnNum)
         {
         case 0:
-            rstGuardStore.m_strPlanID = strColumn;
+            rstGuardStore.strEntranceID = strColumn;
             break;
         case 1:
-            rstGuardStore.m_strPlanName = strColumn;
+            rstGuardStore.regularPatrol.m_strPlanID = strColumn;
             break;
         case 2:
-            rstGuardStore.m_strEnable = strColumn;
+            rstGuardStore.regularPatrol.m_strPlanName = strColumn;
+            break;
+        case 3:
+            rstGuardStore.regularPatrol.m_strEnable = strColumn;
             result = rstGuardStore;
             break;
 
@@ -5917,12 +5946,12 @@ bool PassengerFlowManager::QueryAllRegularPatrolByDevice(const std::string &strD
 
     for (auto &result : ResultList)
     {
-        auto plan = boost::any_cast<PassengerFlowProtoHandler::RegularPatrol>(result);
-        QueryPatrolPlanEntranceAssociation(plan.m_strPlanID, plan.m_storeEntranceList);
-        QueryRegularPatrolTime(plan.m_strPlanID, plan.m_strPatrolTimeList);
-        QueryPatrolPlanUserAssociation(plan.m_strPlanID, plan.m_strHandlerList);
+        auto plan = boost::any_cast<ResultGuardStore>(result);
+        QueryPatrolPlanEntranceAssociation(plan.regularPatrol.m_strPlanID, plan.regularPatrol.m_storeEntranceList, plan.strEntranceID);
+        QueryRegularPatrolTime(plan.regularPatrol.m_strPlanID, plan.regularPatrol.m_strPatrolTimeList);
+        QueryPatrolPlanUserAssociation(plan.regularPatrol.m_strPlanID, plan.regularPatrol.m_strHandlerList);
 
-        regularPatrolList.push_back(plan);
+        regularPatrolList.push_back(plan.regularPatrol);
     }
 
     return true;

@@ -768,9 +768,23 @@ class Area : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strareaname();
   void set_allocated_strareaname(::std::string* strareaname);
 
-  // string strCreateDate = 4;
+  // string strParentAreaID = 4;
+  void clear_strparentareaid();
+  static const int kStrParentAreaIDFieldNumber = 4;
+  const ::std::string& strparentareaid() const;
+  void set_strparentareaid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strparentareaid(::std::string&& value);
+  #endif
+  void set_strparentareaid(const char* value);
+  void set_strparentareaid(const char* value, size_t size);
+  ::std::string* mutable_strparentareaid();
+  ::std::string* release_strparentareaid();
+  void set_allocated_strparentareaid(::std::string* strparentareaid);
+
+  // string strCreateDate = 6;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 4;
+  static const int kStrCreateDateFieldNumber = 6;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -782,9 +796,9 @@ class Area : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // string strExtend = 5;
+  // string strExtend = 7;
   void clear_strextend();
-  static const int kStrExtendFieldNumber = 5;
+  static const int kStrExtendFieldNumber = 7;
   const ::std::string& strextend() const;
   void set_strextend(const ::std::string& value);
   #if LANG_CXX11
@@ -796,9 +810,15 @@ class Area : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
-  // uint32 uiState = 3;
+  // uint32 uiLevel = 3;
+  void clear_uilevel();
+  static const int kUiLevelFieldNumber = 3;
+  ::google::protobuf::uint32 uilevel() const;
+  void set_uilevel(::google::protobuf::uint32 value);
+
+  // uint32 uiState = 5;
   void clear_uistate();
-  static const int kUiStateFieldNumber = 3;
+  static const int kUiStateFieldNumber = 5;
   ::google::protobuf::uint32 uistate() const;
   void set_uistate(::google::protobuf::uint32 value);
 
@@ -808,8 +828,10 @@ class Area : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strareaid_;
   ::google::protobuf::internal::ArenaStringPtr strareaname_;
+  ::google::protobuf::internal::ArenaStringPtr strparentareaid_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uilevel_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -18589,7 +18611,73 @@ inline void Area::set_allocated_strareaname(::std::string* strareaname) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strAreaName)
 }
 
-// uint32 uiState = 3;
+// uint32 uiLevel = 3;
+inline void Area::clear_uilevel() {
+  uilevel_ = 0u;
+}
+inline ::google::protobuf::uint32 Area::uilevel() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.uiLevel)
+  return uilevel_;
+}
+inline void Area::set_uilevel(::google::protobuf::uint32 value) {
+  
+  uilevel_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.uiLevel)
+}
+
+// string strParentAreaID = 4;
+inline void Area::clear_strparentareaid() {
+  strparentareaid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Area::strparentareaid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+  return strparentareaid_.GetNoArena();
+}
+inline void Area::set_strparentareaid(const ::std::string& value) {
+  
+  strparentareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+}
+#if LANG_CXX11
+inline void Area::set_strparentareaid(::std::string&& value) {
+  
+  strparentareaid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+}
+#endif
+inline void Area::set_strparentareaid(const char* value) {
+  
+  strparentareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+}
+inline void Area::set_strparentareaid(const char* value, size_t size) {
+  
+  strparentareaid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+}
+inline ::std::string* Area::mutable_strparentareaid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+  return strparentareaid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Area::release_strparentareaid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+  
+  return strparentareaid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Area::set_allocated_strparentareaid(::std::string* strparentareaid) {
+  if (strparentareaid != NULL) {
+    
+  } else {
+    
+  }
+  strparentareaid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strparentareaid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strParentAreaID)
+}
+
+// uint32 uiState = 5;
 inline void Area::clear_uistate() {
   uistate_ = 0u;
 }
@@ -18603,7 +18691,7 @@ inline void Area::set_uistate(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Area.uiState)
 }
 
-// string strCreateDate = 4;
+// string strCreateDate = 6;
 inline void Area::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -18655,7 +18743,7 @@ inline void Area::set_allocated_strcreatedate(::std::string* strcreatedate) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Area.strCreateDate)
 }
 
-// string strExtend = 5;
+// string strExtend = 7;
 inline void Area::clear_strextend() {
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

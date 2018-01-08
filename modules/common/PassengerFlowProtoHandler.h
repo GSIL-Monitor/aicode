@@ -185,6 +185,8 @@ public:
     {
         std::string m_strAreaID;
         std::string m_strAreaName;
+        unsigned int m_uiLevel;
+        std::string m_strParentAreaID;
         unsigned int m_uiState;
         std::string m_strCreateDate;
         std::string m_strExtend;
