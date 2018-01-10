@@ -5589,7 +5589,7 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     memset(sql, 0, sizeof(sql));
     const char *sqlft = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, usr.username"
         " from t_device_info dev, t_user_device_relation rel, t_user_info usr"
-        " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
+        " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.deviceid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0 order by rel.relation";
     snprintf(sql, sizeof(sql), sqlft, strDevID.c_str());
 
     std::string strSql;
@@ -5598,7 +5598,8 @@ bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<
     strSql = std::string(sql) + std::string(cTmp);
 
     std::list<boost::any> ResultList;
-    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    //if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty()) //¹Ø±Õ»º´æ
+    if (0)
     {
         boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList;
         pRelationList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> >>(ResultList.front());

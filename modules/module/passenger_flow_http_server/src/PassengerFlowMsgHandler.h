@@ -25,6 +25,7 @@ public:
     static const std::string CREATE_DOMAIN;
     static const std::string REMOVE_DOMAIN;
     static const std::string MODIFY_DOMAIN;
+    static const std::string QUERY_DOMAIN;
     static const std::string QUERY_ALL_DOMAIN;
 
     static const std::string REGISTER_USER_ACTION;
@@ -118,6 +119,8 @@ public:
     bool RemoveDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool ModifyDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryAllDomainHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -419,6 +422,8 @@ private:
 
     bool ModifyDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi);
 
+    bool QueryDomain(const std::string &strSid, const std::string &strUserID, const std::string &strDomainID, DomainInfo &dmi);
+
     bool QueryAllDomain(const std::string &strSid, const std::string &strUserID, std::list<DomainInfo> &dmilist);
 
 
@@ -428,7 +433,7 @@ private:
 
     bool ModifyStore(const std::string &strSid, const std::string &strUserID, const StoreInfo &store);
 
-    bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist);
+    bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist, std::list<DomainInfo> &dmilist);
 
     bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreAndEntranceInfo> &storelist);
 

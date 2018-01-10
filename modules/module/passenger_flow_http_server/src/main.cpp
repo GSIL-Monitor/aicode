@@ -272,6 +272,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::CreateDomainHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::RemoveDomainHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_DOMAIN, boost::bind(&PassengerFlowMsgHandler::ModifyDomainHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_DOMAIN, boost::bind(&PassengerFlowMsgHandler::QueryDomainHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_DOMAIN, boost::bind(&PassengerFlowMsgHandler::QueryAllDomainHandler, &filehdr, _1, _2));
 
 

@@ -139,7 +139,7 @@ public:
         DeleteStoreEvaluationRsp_T = 18330,
         ModifyStoreEvaluationReq_T = 18340,       //修改店铺考评
         ModifyStoreEvaluationRsp_T = 18350,
-        QueryStoreEvaluationInfoReq_T = 18360,     //查询店铺考评信息
+        QueryStoreEvaluationInfoReq_T = 18360,    //查询店铺考评信息
         QueryStoreEvaluationInfoRsp_T = 18370,
         QueryAllStoreEvaluationReq_T = 18380,     //查询所有店铺考评
         QueryAllStoreEvaluationRsp_T = 18390,
@@ -161,8 +161,10 @@ public:
         DeleteAreaRsp_T = 19030,
         ModifyAreaReq_T = 19040,                  //修改区域
         ModifyAreaRsp_T = 19050,
-        QueryAllAreaReq_T = 19060,                //查询所有区域
-        QueryAllAreaRsp_T = 19070,
+        QueryAreaInfoReq_T = 19060,               //查询区域
+        QueryAreaInfoRsp_T = 19070,
+        QueryAllAreaReq_T = 19080,                //查询所有区域
+        QueryAllAreaRsp_T = 19090,
 
         BindPushClientIDReq_T = 19100,            //用户上报推送参数
         BindPushClientIDRsp_T = 19110,
@@ -476,6 +478,23 @@ public:
         virtual void UnSerializer(const CustomerFlowMessage &message);
     };
 
+    struct QueryAreaInfoReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strAreaID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAreaInfoRsp : Response
+    {
+        Area m_areaInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
     struct QueryAllAreaReq : Request
     {
         std::string m_strUserID;
@@ -673,6 +692,7 @@ public:
     struct QueryStoreInfoRsp : Response
     {
         Store m_storeInfo;
+        std::list<Area> m_areaList;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);
@@ -1592,6 +1612,11 @@ private:
     bool ModifyAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool ModifyAreaRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool ModifyAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryAreaInfoReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryAreaInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryAreaInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryAreaInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
     bool QueryAllAreaReq_Serializer(const Request &req, std::string &strOutput);
     bool QueryAllAreaReq_UnSerializer(const CustomerFlowMessage &message, Request &req);

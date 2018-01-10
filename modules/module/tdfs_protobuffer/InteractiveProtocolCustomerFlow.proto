@@ -174,8 +174,10 @@ enum CustomerFlowMsgType
     DeleteAreaRsp_T = 19030;
     ModifyAreaReq_T = 19040;                  //修改区域
     ModifyAreaRsp_T = 19050;
-    QueryAllAreaReq_T = 19060;                //查询所有区域
-    QueryAllAreaRsp_T = 19070;
+    QueryAreaInfoReq_T = 19060;               //查询区域信息
+    QueryAreaInfoRsp_T = 19070;
+    QueryAllAreaReq_T = 19080;                //查询所有区域
+    QueryAllAreaRsp_T = 19090;
 
     BindPushClientIDReq_T = 19100;            //绑定推送Client ID
     BindPushClientIDRsp_T = 19110;
@@ -232,7 +234,7 @@ message Store                            //店铺信息
     string strCreateDate = 7;
     string strExtend = 8;
     uint32 uiState = 9;
-    uint32 uiOpenState = 10; 
+    uint32 uiOpenState = 10;
 }
 
 message UserGroupAssociation             //用户群组关联信息
@@ -435,6 +437,17 @@ message ModifyAreaRsp                    //修改区域响应
     string strValue = 1;
 }
 
+message QueryAreaInfoReq                 //查询区域信息请求
+{
+    string strUserID = 1;
+    string strAreaID = 2;
+}
+
+message QueryAreaInfoRsp                 //查询区域信息响应
+{
+    Area areaInfo = 1;
+}
+
 message QueryAllAreaReq                  //查询所有区域请求
 {
     string strUserID = 1;
@@ -563,6 +576,7 @@ message QueryStoreInfoReq                //查询店铺信息请求
 message QueryStoreInfoRsp                //查询店铺信息响应
 {
     Store storeInfo = 1;
+    repeated Area area = 2;
 }
 
 message QueryAllStoreReq                 //查询所有店铺请求
@@ -1222,7 +1236,8 @@ message Request
     AddAreaReq AddAreaReq_Value = 1100;                                        //添加区域
     DeleteAreaReq DeleteAreaReq_Value = 1110;                                  //删除区域
     ModifyAreaReq ModifyAreaReq_Value = 1120;                                  //修改区域
-    QueryAllAreaReq QueryAllAreaReq_Value = 1130;                              //查询所有区域
+    QueryAreaInfoReq QueryAreaInfoReq_Value = 1130;                            //查询区域信息
+    QueryAllAreaReq QueryAllAreaReq_Value = 1140;                              //查询所有区域
 
     BindPushClientIDReq BindPushClientIDReq_Value = 1150;                      //绑定推送Client ID
     UnbindPushClientIDReq UnbindPushClientIDReq_Value = 1160;                  //解绑推送Client ID
@@ -1316,7 +1331,8 @@ message Response
     AddAreaRsp AddAreaRsp_Value = 1100;                                        //添加区域
     DeleteAreaRsp DeleteAreaRsp_Value = 1110;                                  //删除区域
     ModifyAreaRsp ModifyAreaRsp_Value = 1120;                                  //修改区域
-    QueryAllAreaRsp QueryAllAreaRsp_Value = 1130;                              //查询所有区域
+    QueryAreaInfoRsp QueryAreaInfoRsp_Value = 1130;                            //查询区域信息
+    QueryAllAreaRsp QueryAllAreaRsp_Value = 1140;                              //查询所有区域
 
     BindPushClientIDRsp BindPushClientIDRsp_Value = 1150;                      //绑定推送Client ID
     UnbindPushClientIDRsp UnbindPushClientIDRsp_Value = 1160;                  //解绑推送Client ID

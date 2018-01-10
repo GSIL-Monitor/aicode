@@ -284,6 +284,8 @@ bool PassengerFlowManager::AddAreaReq(const std::string &strMsg, const std::stri
     PassengerFlowProtoHandler::Area areaInfo;
     areaInfo.m_strAreaID = strAreaID = CreateUUID();
     areaInfo.m_strAreaName = req.m_areaInfo.m_strAreaName;
+    areaInfo.m_uiLevel = req.m_areaInfo.m_uiLevel;
+    areaInfo.m_strParentAreaID = req.m_areaInfo.m_strParentAreaID;
     areaInfo.m_strCreateDate = CurrentTime();
     areaInfo.m_strExtend = req.m_areaInfo.m_strExtend;
 
@@ -385,6 +387,68 @@ bool PassengerFlowManager::ModifyAreaReq(const std::string &strMsg, const std::s
     return blResult;
 }
 
+bool PassengerFlowManager::QueryAreaInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::Area area;
+    PassengerFlowProtoHandler::QueryAreaInfoReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &area, &req)
+    {
+        PassengerFlowProtoHandler::QueryAreaInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAreaInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_areaInfo.m_strAreaID = area.m_strAreaID;
+            rsp.m_areaInfo.m_strAreaName = area.m_strAreaName;
+            rsp.m_areaInfo.m_uiLevel = area.m_uiLevel;
+            rsp.m_areaInfo.m_strParentAreaID = area.m_strParentAreaID;
+            rsp.m_areaInfo.m_strCreateDate = area.m_strCreateDate;
+            rsp.m_areaInfo.m_strExtend = area.m_strExtend;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query area info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query area info rsp already send, dst id is " << strSrcID
+            << " and area id is " << req.m_strAreaID
+            << " and area name is " << area.m_strAreaName
+            << " and level is " << area.m_uiLevel
+            << " and parent id is " << area.m_strParentAreaID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query area info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!PassengerFlowManager::QueryAreaInfo(req.m_strAreaID, area))
+    {
+        LOG_ERROR_RLD("Query area info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowManager::QueryAllAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
@@ -426,7 +490,9 @@ bool PassengerFlowManager::QueryAllAreaReq(const std::string &strMsg, const std:
             {
                 LOG_INFO_RLD("Area info[" << i++ << "]:"
                     << " area id is " << area.m_strAreaID
-                    << " and area name is " << area.m_strAreaName);
+                    << " and area name is " << area.m_strAreaName
+                    << " level is " << area.m_uiLevel
+                    << " parent area id is " << area.m_strParentAreaID);
             }
         }
     }
@@ -706,8 +772,9 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
 
     PassengerFlowProtoHandler::QueryStoreInfoReq req;
     PassengerFlowProtoHandler::Store storeInfo;
+    std::list<PassengerFlowProtoHandler::Area> areaList;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &storeInfo)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &storeInfo, &areaList)
     {
         PassengerFlowProtoHandler::QueryStoreInfoRsp rsp;
         rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreInfoRsp_T;
@@ -727,6 +794,8 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
             rsp.m_storeInfo.m_uiOpenState = storeInfo.m_uiOpenState;
             rsp.m_storeInfo.m_strCreateDate = storeInfo.m_strCreateDate;
             rsp.m_storeInfo.m_entranceList.swap(storeInfo.m_entranceList);
+
+            rsp.m_areaList.swap(areaList);
         }
 
         std::string strSerializeOutPut;
@@ -757,7 +826,13 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
 
     if (!QueryStoreInfo(req.m_strStoreID, storeInfo))
     {
-        LOG_ERROR_RLD("Query store info failed, src id is " << strSrcID);
+        LOG_ERROR_RLD("Query store info failed, query store info error, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAreaParent(storeInfo.m_area.m_strAreaID, areaList))
+    {
+        LOG_ERROR_RLD("Query store info failed, query area parent error, src id is " << strSrcID);
         return false;
     }
 
@@ -3774,10 +3849,10 @@ bool PassengerFlowManager::QueryUserCompany(const std::string &strUserID, std::s
 void PassengerFlowManager::AddArea(const std::string &strUserID, const std::string &strCompanyID, const PassengerFlowProtoHandler::Area &areaInfo)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_area_info (id, area_id, area_name, company_id, create_date, extend)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, areaInfo.m_strAreaID.c_str(), areaInfo.m_strAreaName.c_str(), strCompanyID.c_str(),
-        areaInfo.m_strCreateDate.c_str(), areaInfo.m_strExtend.c_str());
+    const char *sqlfmt = "insert into t_area_info (id, area_id, area_name, level, parent_area_id, company_id, create_date, extend)"
+        " values (uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, areaInfo.m_strAreaID.c_str(), areaInfo.m_strAreaName.c_str(), areaInfo.m_uiLevel, areaInfo.m_strParentAreaID.c_str(),
+        strCompanyID.c_str(), areaInfo.m_strCreateDate.c_str(), areaInfo.m_strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -3832,11 +3907,154 @@ void PassengerFlowManager::ModifyArea(const PassengerFlowProtoHandler::Area &are
     }
 }
 
+bool PassengerFlowManager::QueryAreaInfo(const std::string &strAreaID, PassengerFlowProtoHandler::Area &areaInfo)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select area_id, area_name, level, parent_area_id, create_date, extend from"
+        " t_area_info where area_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strAreaID.c_str());
+
+    PassengerFlowProtoHandler::Area rstArea;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstArea.m_strAreaID = strColumn;
+            break;
+        case 1:
+            rstArea.m_strAreaName = strColumn;
+            break;
+        case 2:
+            rstArea.m_uiLevel = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 3:
+            rstArea.m_strParentAreaID = strColumn;
+            break;
+        case 4:
+            rstArea.m_strCreateDate = strColumn;
+            break;
+        case 5:
+            rstArea.m_strExtend = strColumn;
+            result = rstArea;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAreaInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAreaInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryAreaInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto area = boost::any_cast<PassengerFlowProtoHandler::Area>(ResultList.front());
+    areaInfo.m_strAreaID = area.m_strAreaID;
+    areaInfo.m_strAreaName = area.m_strAreaName;
+    areaInfo.m_uiLevel = area.m_uiLevel;
+    areaInfo.m_strParentAreaID = area.m_strParentAreaID;
+    areaInfo.m_strCreateDate = area.m_strCreateDate;
+    areaInfo.m_strExtend = area.m_strExtend;
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAreaParent(const std::string &strAreaID, std::list<PassengerFlowProtoHandler::Area> &areaList)
+{
+    char sql[512] = { 0 };
+    const char *sqlfmt = "select a.area_id, a.area_name, a.level, ifnull(b.area_id, ''), ifnull(b.area_name, ''), ifnull(b.level, 0),"
+        " ifnull(c.area_id, ''), ifnull(c.area_name, ''), ifnull(c.level, 0) from"
+        " t_area_info a left join t_area_info b on a.parent_area_id = b.area_id"
+        " left join t_area_info c on b.parent_area_id = c.area_id"
+        " where a.area_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strAreaID.c_str());
+
+    PassengerFlowProtoHandler::Area rstArea;
+    std::list<PassengerFlowProtoHandler::Area> rstAreaList;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstArea.m_strAreaID = strColumn;
+            break;
+        case 1:
+            rstArea.m_strAreaName = strColumn;
+            break;
+        case 2:
+            rstArea.m_uiLevel = boost::lexical_cast<unsigned int>(strColumn);
+            rstAreaList.push_back(rstArea);
+            break;
+        case 3:
+            rstArea.m_strAreaID = strColumn;
+            break;
+        case 4:
+            rstArea.m_strAreaName = strColumn;
+            break;
+        case 5:
+            rstArea.m_uiLevel = boost::lexical_cast<unsigned int>(strColumn);
+            rstAreaList.push_back(rstArea);
+            break;
+        case 6:
+            rstArea.m_strAreaID = strColumn;
+            break;
+        case 7:
+            rstArea.m_strAreaName = strColumn;
+            break;
+        case 8:
+            rstArea.m_uiLevel = boost::lexical_cast<unsigned int>(strColumn);
+            rstAreaList.push_back(rstArea);
+            result = rstAreaList;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAreaParent sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAreaParent exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryAreaParent sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto result = boost::any_cast<std::list<PassengerFlowProtoHandler::Area>>(ResultList.front());
+    for (auto it = result.begin(), end = result.end(); it != end; ++it)
+    {
+        if (it->m_uiLevel == 0) break;
+        areaList.push_front(*it);
+    }
+
+    return true;
+}
+
 bool PassengerFlowManager::QueryAllArea(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Area> &areaList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select a.area_id, a.area_name from t_area_info a"
+    const char *sqlfmt = "select a.area_id, a.area_name, level, parent_area_id from t_area_info a"
         " where a.company_id = (select b.company_id from t_company_user_info b where b.user_id = '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
@@ -3850,6 +4068,12 @@ bool PassengerFlowManager::QueryAllArea(const std::string &strUserID, std::list<
             break;
         case 1:
             rstArea.m_strAreaName = strColumn;
+            break;
+        case 2:
+            rstArea.m_uiLevel = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 3:
+            rstArea.m_strParentAreaID = strColumn;
             result = rstArea;
             break;
 
@@ -4155,7 +4379,6 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
     storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
     storeInfo.m_strAddress = store.m_strAddress;
     storeInfo.m_area.m_strAreaID = store.m_area.m_strAreaID;
-    storeInfo.m_area.m_strAreaName = store.m_area.m_strAreaName;
     storeInfo.m_uiOpenState = store.m_uiOpenState;
     storeInfo.m_strCreateDate = store.m_strCreateDate;
 

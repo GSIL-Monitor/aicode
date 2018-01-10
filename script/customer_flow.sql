@@ -78,6 +78,8 @@ create table `t_area_info` (
     `id` varchar(36) not null,
     `area_id` varchar(36) not null                   comment '区域ID',
     `area_name` varchar(256) not null                comment '区域名',
+    `level` int not null                             comment '区域层级',
+    `parent_area_id` varchar(36) default ''          comment '父区域ID',
     `company_id` varchar(36) not null                comment '公司ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',

@@ -1,11 +1,14 @@
 新建区域
-curl -F sid=sss -F userid=user01 -F name=area02 -F extend=extend02 http://172.20.120.22:8988/passenger_flow.cgi?action=create_domain
+curl -F sid=sss -F userid=user01 -F name=area10 -F extend=extend10 -F level=2 -F parent_domainid=8F970B3D8B4B8247852EADC9800782A4 http://172.20.120.22:8988/passenger_flow.cgi?action=create_domain
 
 删除区域
 curl -F sid=sss -F userid=user01 -F domainid=DDDED6309DB8284D8889F3BA1DB7A91F http://172.20.120.22:8988/passenger_flow.cgi?action=remove_domain
 
 修改区域
 curl -F sid=sss -F userid=user01 -F domainid=DDDED6309DB8284D8889F3BA1DB7A91F -F name=domain03 -F extend=extend03 http://172.20.120.22:8988/passenger_flow.cgi?action=modify_domain
+
+查询区域信息
+curl -F sid=sss -F userid=user01 -F domainid=DDDED6309DB8284D8889F3BA1DB7A91F http://172.20.120.22:8988/passenger_flow.cgi?action=query_domain
 
 查询所有区域
 curl -F sid=sss -F userid=user01 http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_domain

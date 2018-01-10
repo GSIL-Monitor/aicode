@@ -80,6 +80,8 @@ public:
 
     bool ModifyAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryAreaInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool QueryAllAreaReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool BindPushClientIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -223,6 +225,10 @@ private:
     void DeleteArea(const std::string &strAreaID);
 
     void ModifyArea(const PassengerFlowProtoHandler::Area &areaInfo);
+
+    bool QueryAreaInfo(const std::string &strAreaID, PassengerFlowProtoHandler::Area &areaInfo);
+
+    bool QueryAreaParent(const std::string &strAreaID, std::list<PassengerFlowProtoHandler::Area> &areaList);
 
     bool QueryAllArea(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Area> &areaList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);

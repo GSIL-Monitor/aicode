@@ -388,6 +388,16 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAreaInfoReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAreaInfoReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAreaInfoReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAreaInfoRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAreaInfoRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAreaInfoRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaReq_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllAreaReq_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllAreaReq_T, handler));
@@ -1182,6 +1192,26 @@ bool PassengerFlowProtoHandler::ModifyAreaRsp_Serializer(const Request &rsp, std
 bool PassengerFlowProtoHandler::ModifyAreaRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<ModifyAreaRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryAreaInfoReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryAreaInfoReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAreaInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryAreaInfoReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryAreaInfoRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAreaInfoRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAreaInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryAreaInfoRsp, Request>(message, rsp);
 }
 
 bool PassengerFlowProtoHandler::QueryAllAreaReq_Serializer(const Request &req, std::string &strOutput)
@@ -2637,6 +2667,53 @@ void PassengerFlowProtoHandler::ModifyAreaRsp::UnSerializer(const CustomerFlowMe
     m_strValue = message.rspvalue().modifyarearsp_value().strvalue();
 }
 
+void PassengerFlowProtoHandler::QueryAreaInfoReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAreaInfoReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_queryareainforeq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strareaid(m_strAreaID);
+}
+
+void PassengerFlowProtoHandler::QueryAreaInfoReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().queryareainforeq_value();
+    m_strUserID = req.struserid();
+    m_strAreaID = req.strareaid();
+}
+
+void PassengerFlowProtoHandler::QueryAreaInfoRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAreaInfoRsp_T);
+
+    auto area = message.mutable_rspvalue()->mutable_queryareainforsp_value()->mutable_areainfo();
+    area->set_strareaid(m_areaInfo.m_strAreaID);
+    area->set_strareaname(m_areaInfo.m_strAreaName);
+    area->set_uilevel(m_areaInfo.m_uiLevel);
+    area->set_strparentareaid(m_areaInfo.m_strParentAreaID);
+    area->set_strcreatedate(m_areaInfo.m_strCreateDate);
+    area->set_uistate(m_areaInfo.m_uiState);
+    area->set_strextend(m_areaInfo.m_strExtend);
+}
+
+void PassengerFlowProtoHandler::QueryAreaInfoRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto area = message.rspvalue().queryareainforsp_value().areainfo();
+    m_areaInfo.m_strAreaID = area.strareaid();
+    m_areaInfo.m_strAreaName = area.strareaname();
+    m_areaInfo.m_uiLevel = area.uilevel();
+    m_areaInfo.m_strParentAreaID = area.strparentareaid();
+    m_areaInfo.m_strCreateDate = area.strcreatedate();
+    m_areaInfo.m_uiState = area.uistate();
+    m_areaInfo.m_strExtend = area.strextend();
+}
+
 void PassengerFlowProtoHandler::QueryAllAreaReq::Serializer(CustomerFlowMessage &message) const
 {
     Request::Serializer(message);
@@ -3106,7 +3183,8 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::Serializer(CustomerFlowMessag
     Response::Serializer(message);
     message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryStoreInfoRsp_T);
 
-    auto store = message.mutable_rspvalue()->mutable_querystoreinforsp_value()->mutable_storeinfo();
+    auto rsp = message.mutable_rspvalue()->mutable_querystoreinforsp_value();
+    auto store = rsp->mutable_storeinfo();
     store->set_strstoreid(m_storeInfo.m_strStoreID);
     store->set_strstorename(m_storeInfo.m_strStoreName);
     store->set_strgoodscategory(m_storeInfo.m_strGoodsCategory);
@@ -3116,16 +3194,24 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::Serializer(CustomerFlowMessag
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
 
-    auto area = store->mutable_area();
-    area->set_strareaid(m_storeInfo.m_area.m_strAreaID);
-    area->set_strareaname(m_storeInfo.m_area.m_strAreaName);
+    auto storeArea = store->mutable_area();
+    storeArea->set_strareaid(m_storeInfo.m_area.m_strAreaID);
+    storeArea->set_strareaname(m_storeInfo.m_area.m_strAreaName);
     SerializeEntranceList(m_storeInfo.m_entranceList, store->mutable_entrance());
+
+    for (auto it = m_areaList.begin(), end = m_areaList.end(); it != end; ++it)
+    {
+        auto area = rsp->add_area();
+        area->set_strareaid(it->m_strAreaID);
+        area->set_strareaname(it->m_strAreaName);
+    }
 }
 
 void PassengerFlowProtoHandler::QueryStoreInfoRsp::UnSerializer(const CustomerFlowMessage &message)
 {
     Response::UnSerializer(message);
-    auto store = message.rspvalue().querystoreinforsp_value().storeinfo();
+    auto rsp = message.rspvalue().querystoreinforsp_value();
+    auto store = rsp.storeinfo();
     m_storeInfo.m_strStoreID = store.strstoreid();
     m_storeInfo.m_strStoreName = store.strstorename();
     m_storeInfo.m_strGoodsCategory = store.strgoodscategory();
@@ -3135,10 +3221,20 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::UnSerializer(const CustomerFl
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
 
-    auto area = store.area();
-    m_storeInfo.m_area.m_strAreaID = area.strareaid();
-    m_storeInfo.m_area.m_strAreaName = area.strareaname();
+    auto storeArea = store.area();
+    m_storeInfo.m_area.m_strAreaID = storeArea.strareaid();
+    m_storeInfo.m_area.m_strAreaName = storeArea.strareaname();
     UnSerializeEntranceList(m_storeInfo.m_entranceList, store.entrance());
+
+    for (int i = 0, sz = rsp.area_size(); i < sz; ++i)
+    {
+        auto rspArea = rsp.area(i);
+        Area area;
+        area.m_strAreaID = rspArea.strareaid();
+        area.m_strAreaName = rspArea.strareaname();
+
+        m_areaList.push_back(area);
+    }
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreReq::Serializer(CustomerFlowMessage &message) const
