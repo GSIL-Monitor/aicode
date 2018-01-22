@@ -317,6 +317,43 @@ void SerializeEvaluationTemplateList(const std::list<PassengerFlowProtoHandler::
     }
 }
 
+void SerializeSensorList(const std::list<PassengerFlowProtoHandler::Sensor> &sensorInfoList,
+    ::google::protobuf::RepeatedPtrField<::CustomerFlow::Interactive::Message::Sensor> *pDstSensorInfoList)
+{
+    for (auto itBegin = sensorInfoList.begin(), itEnd = sensorInfoList.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto pDstSensorInfo = pDstSensorInfoList->Add();
+        pDstSensorInfo->set_strsensorid(itBegin->m_strSensorID);
+        pDstSensorInfo->set_strsensorname(itBegin->m_strSensorName);
+        pDstSensorInfo->set_strsensortype(itBegin->m_strSensorType);
+        pDstSensorInfo->set_strstoreid(itBegin->m_strStoreID);
+        pDstSensorInfo->set_strdeviceid(itBegin->m_strDeviceID);
+        pDstSensorInfo->set_strvalue(itBegin->m_strValue);
+        pDstSensorInfo->set_uistate(itBegin->m_uiState);
+        pDstSensorInfo->set_strcreatedate(itBegin->m_strCreateDate);
+    }
+}
+
+void UnSerializeSensorList(std::list<PassengerFlowProtoHandler::Sensor> &sensorInfoList,
+    const ::google::protobuf::RepeatedPtrField<::CustomerFlow::Interactive::Message::Sensor> &srcSensorInfoList)
+{
+    for (int i = 0, sz = srcSensorInfoList.size(); i < sz; ++i)
+    {
+        auto srcSensorInfo = srcSensorInfoList.Get(i);
+        PassengerFlowProtoHandler::Sensor sensorInfo;
+        sensorInfo.m_strSensorID = srcSensorInfo.strsensorid();
+        sensorInfo.m_strSensorName = srcSensorInfo.strsensorname();
+        sensorInfo.m_strSensorType = srcSensorInfo.strsensortype();
+        sensorInfo.m_strStoreID = srcSensorInfo.strstoreid();
+        sensorInfo.m_strDeviceID = srcSensorInfo.strdeviceid();
+        sensorInfo.m_strValue = srcSensorInfo.strvalue();
+        sensorInfo.m_uiState = srcSensorInfo.uistate();
+        sensorInfo.m_strCreateDate = srcSensorInfo.strcreatedate();
+
+        sensorInfoList.push_back(std::move(sensorInfo));
+    }
+}
+
 void UnSerializeEvaluationTemplateList(std::list<PassengerFlowProtoHandler::EvaluationItem> &itemList,
     const ::google::protobuf::RepeatedPtrField<::CustomerFlow::Interactive::Message::EvaluationItem> &srcItemList)
 {
@@ -988,6 +1025,56 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddStoreSensorReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddStoreSensorReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddStoreSensorReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddStoreSensorRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddStoreSensorRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddStoreSensorRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteStoreSensorReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteStoreSensorReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteStoreSensorReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::DeleteStoreSensorRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::DeleteStoreSensorRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteStoreSensorRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyStoreSensorReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyStoreSensorReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyStoreSensorReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyStoreSensorRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyStoreSensorRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyStoreSensorRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryStoreSensorInfoReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryStoreSensorInfoReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryStoreSensorInfoReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryStoreSensorInfoRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryStoreSensorInfoRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryStoreSensorInfoRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllStoreSensorReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllStoreSensorReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllStoreSensorReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllStoreSensorRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllStoreSensorRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllStoreSensorRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::ImportPOSDataReq_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ImportPOSDataReq_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ImportPOSDataReq_T, handler));
@@ -1015,6 +1102,16 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportCustomerFlowDataRsp_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportCustomerFlowDataRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportCustomerFlowDataRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorInfoReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorInfoRsp_T, handler));
 }
 
 PassengerFlowProtoHandler::~PassengerFlowProtoHandler()
@@ -2394,6 +2491,106 @@ bool PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp_UnSerializer(const 
     return UnSerializerT<QueryAllRemotePatrolStoreRsp, Request>(message, rsp);
 }
 
+bool PassengerFlowProtoHandler::AddStoreSensorReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<AddStoreSensorReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<AddStoreSensorReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::AddStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<AddStoreSensorRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<AddStoreSensorRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::DeleteStoreSensorReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<DeleteStoreSensorReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<DeleteStoreSensorReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::DeleteStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<DeleteStoreSensorRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::DeleteStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<DeleteStoreSensorRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::ModifyStoreSensorReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ModifyStoreSensorReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ModifyStoreSensorReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ModifyStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyStoreSensorRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ModifyStoreSensorRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryStoreSensorInfoReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryStoreSensorInfoReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryStoreSensorInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryStoreSensorInfoReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryStoreSensorInfoRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryStoreSensorInfoRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryStoreSensorInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryStoreSensorInfoRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryAllStoreSensorReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllStoreSensorReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryAllStoreSensorReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryAllStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllStoreSensorRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryAllStoreSensorRsp, Request>(message, rsp);
+}
+
 bool PassengerFlowProtoHandler::ImportPOSDataReq_Serializer(const Request &req, std::string &strOutput)
 {
     return SerializerT<ImportPOSDataReq, Request>(req, strOutput);
@@ -2452,6 +2649,26 @@ bool PassengerFlowProtoHandler::ReportCustomerFlowDataRsp_Serializer(const Reque
 bool PassengerFlowProtoHandler::ReportCustomerFlowDataRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<ReportCustomerFlowDataRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorInfoReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ReportSensorInfoReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ReportSensorInfoReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorInfoRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ReportSensorInfoRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ReportSensorInfoRsp, Request>(message, rsp);
 }
 
 
@@ -5479,7 +5696,9 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::Serializer(CustomerFlow
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
     patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
     patrol->set_strdescription(m_patrolStore.m_strDescription);
@@ -5499,7 +5718,9 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::UnSerializer(const Cust
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
     m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
     m_patrolStore.m_strDescription = patrol.strdescription();
@@ -5569,7 +5790,9 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::Serializer(CustomerF
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
     patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
     patrol->set_strdescription(m_patrolStore.m_strDescription);
@@ -5591,7 +5814,9 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::UnSerializer(const C
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
     m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
     m_patrolStore.m_strDescription = patrol.strdescription();
@@ -5646,7 +5871,9 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::Serializer(Custom
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
+    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
+    patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
     patrol->set_uipatrolresult(m_patrolStore.m_uiPatrolResult);
     patrol->set_strdescription(m_patrolStore.m_strDescription);
@@ -5666,7 +5893,9 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::UnSerializer(cons
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
+    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
+    m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
     m_patrolStore.m_uiPatrolResult = patrol.uipatrolresult();
     m_patrolStore.m_strDescription = patrol.strdescription();
@@ -5686,6 +5915,7 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::Serializer(Custome
     auto req = message.mutable_reqvalue()->mutable_queryallremotepatrolstorereq_value();
     req->set_struserid(m_strUserID);
     req->set_strstoreid(m_strStoreID);
+    req->set_strplanid(m_strPlanID);
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
@@ -5698,6 +5928,7 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::UnSerializer(const
     auto req = message.reqvalue().queryallremotepatrolstorereq_value();
     m_strUserID = req.struserid();
     m_strStoreID = req.strstoreid();
+    m_strPlanID = req.strplanid();
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
@@ -5715,7 +5946,9 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::Serializer(Custome
         patrol->set_strpatrolid(it->m_strPatrolID);
         patrol->set_struserid(it->m_strUserID);
         patrol->set_strdeviceid(it->m_strDeviceID);
+        patrol->set_strentranceid(it->m_strEntranceID);
         patrol->set_strstoreid(it->m_strStoreID);
+        patrol->set_strplanid(it->m_strPlanID);
         patrol->set_strpatroldate(it->m_strPatrolDate);
         patrol->set_uipatrolresult(it->m_uiPatrolResult);
         patrol->set_strdescription(it->m_strDescription);
@@ -5740,7 +5973,9 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::UnSerializer(const
         patrol.m_strPatrolID = rspPatrol.strpatrolid();
         patrol.m_strUserID = rspPatrol.struserid();
         patrol.m_strDeviceID = rspPatrol.strdeviceid();
+        patrol.m_strEntranceID = rspPatrol.strentranceid();
         patrol.m_strStoreID = rspPatrol.strstoreid();
+        patrol.m_strPlanID = rspPatrol.strplanid();
         patrol.m_strPatrolDate = rspPatrol.strpatroldate();
         patrol.m_uiPatrolResult = rspPatrol.uipatrolresult();
         patrol.m_strDescription = rspPatrol.strdescription();
@@ -5753,6 +5988,223 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::UnSerializer(const
 
         m_patrolStoreList.push_back(patrol);
     }
+}
+
+void PassengerFlowProtoHandler::AddStoreSensorReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddStoreSensorReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_addstoresensorreq_value();
+    req->set_struserid(m_strUserID);
+
+    auto sensor = req->mutable_sensorinfo();
+    sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
+    sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
+    sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
+    sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
+    sensor->set_strvalue(m_sensorInfo.m_strValue);
+    sensor->set_uistate(m_sensorInfo.m_uiState);
+    sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+}
+
+void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().addstoresensorreq_value();
+    m_strUserID = req.struserid();
+
+    auto sensor = req.sensorinfo();
+    m_sensorInfo.m_strSensorID = sensor.strsensorid();
+    m_sensorInfo.m_strSensorName = sensor.strsensorname();
+    m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strStoreID = sensor.strstoreid();
+    m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
+    m_sensorInfo.m_strValue = sensor.strvalue();
+    m_sensorInfo.m_uiState = sensor.uistate();
+    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+}
+
+void PassengerFlowProtoHandler::AddStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddStoreSensorRsp_T);
+    message.mutable_rspvalue()->mutable_addstoresensorrsp_value()->set_strsensorid(m_strSensorID);
+}
+
+void PassengerFlowProtoHandler::AddStoreSensorRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    m_strSensorID = message.rspvalue().addstoresensorrsp_value().strsensorid();
+}
+
+void PassengerFlowProtoHandler::DeleteStoreSensorReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteStoreSensorReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_deletestoresensorreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strstoreid(m_strStoreID);
+    req->set_strsensorid(m_strSensorID);
+}
+
+void PassengerFlowProtoHandler::DeleteStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().deletestoresensorreq_value();
+    m_strUserID = req.struserid();
+    m_strStoreID = req.strstoreid();
+    m_strSensorID = req.strsensorid();
+}
+
+void PassengerFlowProtoHandler::DeleteStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::DeleteStoreSensorRsp_T);
+
+    message.mutable_rspvalue()->mutable_deletestoresensorrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::DeleteStoreSensorRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().deletestoresensorrsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::ModifyStoreSensorReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyStoreSensorReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_modifystoresensorreq_value();
+    req->set_struserid(m_strUserID);
+
+    auto sensor = req->mutable_sensorinfo();
+    sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
+    sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
+    sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
+    sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
+    sensor->set_strvalue(m_sensorInfo.m_strValue);
+    sensor->set_uistate(m_sensorInfo.m_uiState);
+    sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+}
+
+void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().modifystoresensorreq_value();
+    m_strUserID = req.struserid();
+
+    auto sensor = req.sensorinfo();
+    m_sensorInfo.m_strSensorID = sensor.strsensorid();
+    m_sensorInfo.m_strSensorName = sensor.strsensorname();
+    m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strStoreID = sensor.strstoreid();
+    m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
+    m_sensorInfo.m_strValue = sensor.strvalue();
+    m_sensorInfo.m_uiState = sensor.uistate();
+    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+}
+
+void PassengerFlowProtoHandler::ModifyStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyStoreSensorRsp_T);
+
+    message.mutable_rspvalue()->mutable_modifystoresensorrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::ModifyStoreSensorRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().modifystoresensorrsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::QueryStoreSensorInfoReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryStoreSensorInfoReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querystoresensorinforeq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strsensorid(m_strSensorID);
+}
+
+void PassengerFlowProtoHandler::QueryStoreSensorInfoReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().querystoresensorinforeq_value();
+    m_strUserID = req.struserid();
+    m_strSensorID = req.strsensorid();
+}
+
+void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryStoreSensorInfoRsp_T);
+
+    auto sensor = message.mutable_rspvalue()->mutable_querystoresensorinforsp_value()->mutable_sensorinfo();
+    sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
+    sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
+    sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
+    sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
+    sensor->set_strvalue(m_sensorInfo.m_strValue);
+    sensor->set_uistate(m_sensorInfo.m_uiState);
+    sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+}
+
+void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto sensor = message.rspvalue().querystoresensorinforsp_value().sensorinfo();
+    m_sensorInfo.m_strSensorID = sensor.strsensorid();
+    m_sensorInfo.m_strSensorName = sensor.strsensorname();
+    m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strStoreID = sensor.strstoreid();
+    m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
+    m_sensorInfo.m_strValue = sensor.strvalue();
+    m_sensorInfo.m_uiState = sensor.uistate();
+    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+}
+
+void PassengerFlowProtoHandler::QueryAllStoreSensorReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllStoreSensorReq_T);
+
+    auto rsp = message.mutable_reqvalue()->mutable_queryallstoresensorreq_value();
+    rsp->set_struserid(m_strUserID);
+    rsp->set_strstoreid(m_strStoreID);
+}
+
+void PassengerFlowProtoHandler::QueryAllStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+
+    auto rsp = message.reqvalue().queryallstoresensorreq_value();
+    m_strUserID = rsp.struserid();
+    m_strStoreID = rsp.strstoreid();
+}
+
+void PassengerFlowProtoHandler::QueryAllStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllStoreSensorRsp_T);
+
+    SerializeSensorList(m_sensorList, message.mutable_rspvalue()->mutable_queryallstoresensorrsp_value()->mutable_sensorinfo());
+}
+
+void PassengerFlowProtoHandler::QueryAllStoreSensorRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    UnSerializeSensorList(m_sensorList, message.rspvalue().queryallstoresensorrsp_value().sensorinfo());
 }
 
 void PassengerFlowProtoHandler::ImportPOSDataReq::Serializer(CustomerFlowMessage &message) const
@@ -5868,5 +6320,40 @@ void PassengerFlowProtoHandler::ReportCustomerFlowDataRsp::UnSerializer(const Cu
     Response::UnSerializer(message);
 
     m_strValue = message.rspvalue().reportcustomerflowdatarsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::ReportSensorInfoReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorInfoReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_reportsensorinforeq_value();
+    req->set_strdeviceid(m_strDeviceID);
+
+    SerializeSensorList(m_sensorList, req->mutable_sensorinfo());
+}
+
+void PassengerFlowProtoHandler::ReportSensorInfoReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().reportsensorinforeq_value();
+    m_strDeviceID = req.strdeviceid();
+
+    UnSerializeSensorList(m_sensorList, req.sensorinfo());
+}
+
+void PassengerFlowProtoHandler::ReportSensorInfoRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorInfoRsp_T);
+
+    message.mutable_rspvalue()->mutable_reportsensorinforsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::ReportSensorInfoRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().reportsensorinforsp_value().strvalue();
 }
 

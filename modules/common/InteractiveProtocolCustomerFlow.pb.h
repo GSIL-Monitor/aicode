@@ -99,6 +99,12 @@ extern AddStoreReqDefaultTypeInternal _AddStoreReq_default_instance_;
 class AddStoreRsp;
 class AddStoreRspDefaultTypeInternal;
 extern AddStoreRspDefaultTypeInternal _AddStoreRsp_default_instance_;
+class AddStoreSensorReq;
+class AddStoreSensorReqDefaultTypeInternal;
+extern AddStoreSensorReqDefaultTypeInternal _AddStoreSensorReq_default_instance_;
+class AddStoreSensorRsp;
+class AddStoreSensorRspDefaultTypeInternal;
+extern AddStoreSensorRspDefaultTypeInternal _AddStoreSensorRsp_default_instance_;
 class AddVIPConsumeHistoryReq;
 class AddVIPConsumeHistoryReqDefaultTypeInternal;
 extern AddVIPConsumeHistoryReqDefaultTypeInternal _AddVIPConsumeHistoryReq_default_instance_;
@@ -195,6 +201,12 @@ extern DeleteStoreReqDefaultTypeInternal _DeleteStoreReq_default_instance_;
 class DeleteStoreRsp;
 class DeleteStoreRspDefaultTypeInternal;
 extern DeleteStoreRspDefaultTypeInternal _DeleteStoreRsp_default_instance_;
+class DeleteStoreSensorReq;
+class DeleteStoreSensorReqDefaultTypeInternal;
+extern DeleteStoreSensorReqDefaultTypeInternal _DeleteStoreSensorReq_default_instance_;
+class DeleteStoreSensorRsp;
+class DeleteStoreSensorRspDefaultTypeInternal;
+extern DeleteStoreSensorRspDefaultTypeInternal _DeleteStoreSensorRsp_default_instance_;
 class DeleteVIPConsumeHistoryReq;
 class DeleteVIPConsumeHistoryReqDefaultTypeInternal;
 extern DeleteVIPConsumeHistoryReqDefaultTypeInternal _DeleteVIPConsumeHistoryReq_default_instance_;
@@ -288,6 +300,12 @@ extern ModifyStoreReqDefaultTypeInternal _ModifyStoreReq_default_instance_;
 class ModifyStoreRsp;
 class ModifyStoreRspDefaultTypeInternal;
 extern ModifyStoreRspDefaultTypeInternal _ModifyStoreRsp_default_instance_;
+class ModifyStoreSensorReq;
+class ModifyStoreSensorReqDefaultTypeInternal;
+extern ModifyStoreSensorReqDefaultTypeInternal _ModifyStoreSensorReq_default_instance_;
+class ModifyStoreSensorRsp;
+class ModifyStoreSensorRspDefaultTypeInternal;
+extern ModifyStoreSensorRspDefaultTypeInternal _ModifyStoreSensorRsp_default_instance_;
 class ModifyVIPConsumeHistoryReq;
 class ModifyVIPConsumeHistoryReqDefaultTypeInternal;
 extern ModifyVIPConsumeHistoryReqDefaultTypeInternal _ModifyVIPConsumeHistoryReq_default_instance_;
@@ -357,6 +375,12 @@ extern QueryAllStoreReqDefaultTypeInternal _QueryAllStoreReq_default_instance_;
 class QueryAllStoreRsp;
 class QueryAllStoreRspDefaultTypeInternal;
 extern QueryAllStoreRspDefaultTypeInternal _QueryAllStoreRsp_default_instance_;
+class QueryAllStoreSensorReq;
+class QueryAllStoreSensorReqDefaultTypeInternal;
+extern QueryAllStoreSensorReqDefaultTypeInternal _QueryAllStoreSensorReq_default_instance_;
+class QueryAllStoreSensorRsp;
+class QueryAllStoreSensorRspDefaultTypeInternal;
+extern QueryAllStoreSensorRspDefaultTypeInternal _QueryAllStoreSensorRsp_default_instance_;
 class QueryAllVIPConsumeHistoryReq;
 class QueryAllVIPConsumeHistoryReqDefaultTypeInternal;
 extern QueryAllVIPConsumeHistoryReqDefaultTypeInternal _QueryAllVIPConsumeHistoryReq_default_instance_;
@@ -429,6 +453,12 @@ extern QueryStoreInfoReqDefaultTypeInternal _QueryStoreInfoReq_default_instance_
 class QueryStoreInfoRsp;
 class QueryStoreInfoRspDefaultTypeInternal;
 extern QueryStoreInfoRspDefaultTypeInternal _QueryStoreInfoRsp_default_instance_;
+class QueryStoreSensorInfoReq;
+class QueryStoreSensorInfoReqDefaultTypeInternal;
+extern QueryStoreSensorInfoReqDefaultTypeInternal _QueryStoreSensorInfoReq_default_instance_;
+class QueryStoreSensorInfoRsp;
+class QueryStoreSensorInfoRspDefaultTypeInternal;
+extern QueryStoreSensorInfoRspDefaultTypeInternal _QueryStoreSensorInfoRsp_default_instance_;
 class QueryVIPCustomerInfoReq;
 class QueryVIPCustomerInfoReqDefaultTypeInternal;
 extern QueryVIPCustomerInfoReqDefaultTypeInternal _QueryVIPCustomerInfoReq_default_instance_;
@@ -450,12 +480,21 @@ extern ReportCustomerFlowDataReqDefaultTypeInternal _ReportCustomerFlowDataReq_d
 class ReportCustomerFlowDataRsp;
 class ReportCustomerFlowDataRspDefaultTypeInternal;
 extern ReportCustomerFlowDataRspDefaultTypeInternal _ReportCustomerFlowDataRsp_default_instance_;
+class ReportSensorInfoReq;
+class ReportSensorInfoReqDefaultTypeInternal;
+extern ReportSensorInfoReqDefaultTypeInternal _ReportSensorInfoReq_default_instance_;
+class ReportSensorInfoRsp;
+class ReportSensorInfoRspDefaultTypeInternal;
+extern ReportSensorInfoRspDefaultTypeInternal _ReportSensorInfoRsp_default_instance_;
 class Request;
 class RequestDefaultTypeInternal;
 extern RequestDefaultTypeInternal _Request_default_instance_;
 class Response;
 class ResponseDefaultTypeInternal;
 extern ResponseDefaultTypeInternal _Response_default_instance_;
+class Sensor;
+class SensorDefaultTypeInternal;
+extern SensorDefaultTypeInternal _Sensor_default_instance_;
 class ShakehandReq;
 class ShakehandReqDefaultTypeInternal;
 extern ShakehandReqDefaultTypeInternal _ShakehandReq_default_instance_;
@@ -655,18 +694,30 @@ enum CustomerFlowMsgType {
   BindPushClientIDRsp_T = 19110,
   UnbindPushClientIDReq_T = 19120,
   UnbindPushClientIDRsp_T = 19130,
+  AddStoreSensorReq_T = 19200,
+  AddStoreSensorRsp_T = 19210,
+  DeleteStoreSensorReq_T = 19220,
+  DeleteStoreSensorRsp_T = 19230,
+  ModifyStoreSensorReq_T = 19240,
+  ModifyStoreSensorRsp_T = 19250,
+  QueryStoreSensorInfoReq_T = 19260,
+  QueryStoreSensorInfoRsp_T = 19270,
+  QueryAllStoreSensorReq_T = 19280,
+  QueryAllStoreSensorRsp_T = 19290,
   ImportPOSDataReq_T = 20000,
   ImportPOSDataRsp_T = 20010,
   QueryCustomerFlowStatisticReq_T = 20900,
   QueryCustomerFlowStatisticRsp_T = 20910,
   ReportCustomerFlowDataReq_T = 30000,
   ReportCustomerFlowDataRsp_T = 30010,
+  ReportSensorInfoReq_T = 30100,
+  ReportSensorInfoRsp_T = 30110,
   CustomerFlowMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   CustomerFlowMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool CustomerFlowMsgType_IsValid(int value);
 const CustomerFlowMsgType CustomerFlowMsgType_MIN = Init_T;
-const CustomerFlowMsgType CustomerFlowMsgType_MAX = ReportCustomerFlowDataRsp_T;
+const CustomerFlowMsgType CustomerFlowMsgType_MAX = ReportSensorInfoRsp_T;
 const int CustomerFlowMsgType_ARRAYSIZE = CustomerFlowMsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CustomerFlowMsgType_descriptor();
@@ -3362,10 +3413,10 @@ class RemotePatrolStore : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // repeated string strPatrolPicture = 6;
+  // repeated string strPatrolPicture = 8;
   int strpatrolpicture_size() const;
   void clear_strpatrolpicture();
-  static const int kStrPatrolPictureFieldNumber = 6;
+  static const int kStrPatrolPictureFieldNumber = 8;
   const ::std::string& strpatrolpicture(int index) const;
   ::std::string* mutable_strpatrolpicture(int index);
   void set_strpatrolpicture(int index, const ::std::string& value);
@@ -3420,6 +3471,225 @@ class RemotePatrolStore : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strdeviceid();
   void set_allocated_strdeviceid(::std::string* strdeviceid);
 
+  // string strEntranceID = 4;
+  void clear_strentranceid();
+  static const int kStrEntranceIDFieldNumber = 4;
+  const ::std::string& strentranceid() const;
+  void set_strentranceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strentranceid(::std::string&& value);
+  #endif
+  void set_strentranceid(const char* value);
+  void set_strentranceid(const char* value, size_t size);
+  ::std::string* mutable_strentranceid();
+  ::std::string* release_strentranceid();
+  void set_allocated_strentranceid(::std::string* strentranceid);
+
+  // string strStoreID = 5;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 5;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strPlanID = 6;
+  void clear_strplanid();
+  static const int kStrPlanIDFieldNumber = 6;
+  const ::std::string& strplanid() const;
+  void set_strplanid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strplanid(::std::string&& value);
+  #endif
+  void set_strplanid(const char* value);
+  void set_strplanid(const char* value, size_t size);
+  ::std::string* mutable_strplanid();
+  ::std::string* release_strplanid();
+  void set_allocated_strplanid(::std::string* strplanid);
+
+  // string strPatrolDate = 7;
+  void clear_strpatroldate();
+  static const int kStrPatrolDateFieldNumber = 7;
+  const ::std::string& strpatroldate() const;
+  void set_strpatroldate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpatroldate(::std::string&& value);
+  #endif
+  void set_strpatroldate(const char* value);
+  void set_strpatroldate(const char* value, size_t size);
+  ::std::string* mutable_strpatroldate();
+  ::std::string* release_strpatroldate();
+  void set_allocated_strpatroldate(::std::string* strpatroldate);
+
+  // string strDescription = 10;
+  void clear_strdescription();
+  static const int kStrDescriptionFieldNumber = 10;
+  const ::std::string& strdescription() const;
+  void set_strdescription(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdescription(::std::string&& value);
+  #endif
+  void set_strdescription(const char* value);
+  void set_strdescription(const char* value, size_t size);
+  ::std::string* mutable_strdescription();
+  ::std::string* release_strdescription();
+  void set_allocated_strdescription(::std::string* strdescription);
+
+  // string strCreateDate = 11;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 11;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // uint32 uiPatrolResult = 9;
+  void clear_uipatrolresult();
+  static const int kUiPatrolResultFieldNumber = 9;
+  ::google::protobuf::uint32 uipatrolresult() const;
+  void set_uipatrolresult(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.RemotePatrolStore)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strpatrolpicture_;
+  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strentranceid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strplanid_;
+  ::google::protobuf::internal::ArenaStringPtr strpatroldate_;
+  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::uint32 uipatrolresult_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Sensor) */ {
+ public:
+  Sensor();
+  virtual ~Sensor();
+
+  Sensor(const Sensor& from);
+
+  inline Sensor& operator=(const Sensor& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Sensor& default_instance();
+
+  static inline const Sensor* internal_default_instance() {
+    return reinterpret_cast<const Sensor*>(
+               &_Sensor_default_instance_);
+  }
+
+  void Swap(Sensor* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Sensor* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Sensor* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Sensor& from);
+  void MergeFrom(const Sensor& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Sensor* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strSensorID = 1;
+  void clear_strsensorid();
+  static const int kStrSensorIDFieldNumber = 1;
+  const ::std::string& strsensorid() const;
+  void set_strsensorid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorid(::std::string&& value);
+  #endif
+  void set_strsensorid(const char* value);
+  void set_strsensorid(const char* value, size_t size);
+  ::std::string* mutable_strsensorid();
+  ::std::string* release_strsensorid();
+  void set_allocated_strsensorid(::std::string* strsensorid);
+
+  // string strSensorName = 2;
+  void clear_strsensorname();
+  static const int kStrSensorNameFieldNumber = 2;
+  const ::std::string& strsensorname() const;
+  void set_strsensorname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorname(::std::string&& value);
+  #endif
+  void set_strsensorname(const char* value);
+  void set_strsensorname(const char* value, size_t size);
+  ::std::string* mutable_strsensorname();
+  ::std::string* release_strsensorname();
+  void set_allocated_strsensorname(::std::string* strsensorname);
+
+  // string strSensorType = 3;
+  void clear_strsensortype();
+  static const int kStrSensorTypeFieldNumber = 3;
+  const ::std::string& strsensortype() const;
+  void set_strsensortype(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensortype(::std::string&& value);
+  #endif
+  void set_strsensortype(const char* value);
+  void set_strsensortype(const char* value, size_t size);
+  ::std::string* mutable_strsensortype();
+  ::std::string* release_strsensortype();
+  void set_allocated_strsensortype(::std::string* strsensortype);
+
   // string strStoreID = 4;
   void clear_strstoreid();
   static const int kStrStoreIDFieldNumber = 4;
@@ -3434,37 +3704,37 @@ class RemotePatrolStore : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strstoreid();
   void set_allocated_strstoreid(::std::string* strstoreid);
 
-  // string strPatrolDate = 5;
-  void clear_strpatroldate();
-  static const int kStrPatrolDateFieldNumber = 5;
-  const ::std::string& strpatroldate() const;
-  void set_strpatroldate(const ::std::string& value);
+  // string strDeviceID = 5;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 5;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
   #if LANG_CXX11
-  void set_strpatroldate(::std::string&& value);
+  void set_strdeviceid(::std::string&& value);
   #endif
-  void set_strpatroldate(const char* value);
-  void set_strpatroldate(const char* value, size_t size);
-  ::std::string* mutable_strpatroldate();
-  ::std::string* release_strpatroldate();
-  void set_allocated_strpatroldate(::std::string* strpatroldate);
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
 
-  // string strDescription = 8;
-  void clear_strdescription();
-  static const int kStrDescriptionFieldNumber = 8;
-  const ::std::string& strdescription() const;
-  void set_strdescription(const ::std::string& value);
+  // string strValue = 6;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 6;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
-  void set_strdescription(::std::string&& value);
+  void set_strvalue(::std::string&& value);
   #endif
-  void set_strdescription(const char* value);
-  void set_strdescription(const char* value, size_t size);
-  ::std::string* mutable_strdescription();
-  ::std::string* release_strdescription();
-  void set_allocated_strdescription(::std::string* strdescription);
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
 
-  // string strCreateDate = 9;
+  // string strCreateDate = 8;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 9;
+  static const int kStrCreateDateFieldNumber = 8;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -3476,25 +3746,24 @@ class RemotePatrolStore : public ::google::protobuf::Message /* @@protoc_inserti
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // uint32 uiPatrolResult = 7;
-  void clear_uipatrolresult();
-  static const int kUiPatrolResultFieldNumber = 7;
-  ::google::protobuf::uint32 uipatrolresult() const;
-  void set_uipatrolresult(::google::protobuf::uint32 value);
+  // uint32 uiState = 7;
+  void clear_uistate();
+  static const int kUiStateFieldNumber = 7;
+  ::google::protobuf::uint32 uistate() const;
+  void set_uistate(::google::protobuf::uint32 value);
 
-  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.RemotePatrolStore)
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Sensor)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> strpatrolpicture_;
-  ::google::protobuf::internal::ArenaStringPtr strpatrolid_;
-  ::google::protobuf::internal::ArenaStringPtr struserid_;
-  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorid_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorname_;
+  ::google::protobuf::internal::ArenaStringPtr strsensortype_;
   ::google::protobuf::internal::ArenaStringPtr strstoreid_;
-  ::google::protobuf::internal::ArenaStringPtr strpatroldate_;
-  ::google::protobuf::internal::ArenaStringPtr strdescription_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
-  ::google::protobuf::uint32 uipatrolresult_;
+  ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -16276,9 +16545,23 @@ class QueryAllRemotePatrolStoreReq : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strstoreid();
   void set_allocated_strstoreid(::std::string* strstoreid);
 
-  // string strBeginDate = 3;
+  // string strPlanID = 3;
+  void clear_strplanid();
+  static const int kStrPlanIDFieldNumber = 3;
+  const ::std::string& strplanid() const;
+  void set_strplanid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strplanid(::std::string&& value);
+  #endif
+  void set_strplanid(const char* value);
+  void set_strplanid(const char* value, size_t size);
+  ::std::string* mutable_strplanid();
+  ::std::string* release_strplanid();
+  void set_allocated_strplanid(::std::string* strplanid);
+
+  // string strBeginDate = 4;
   void clear_strbegindate();
-  static const int kStrBeginDateFieldNumber = 3;
+  static const int kStrBeginDateFieldNumber = 4;
   const ::std::string& strbegindate() const;
   void set_strbegindate(const ::std::string& value);
   #if LANG_CXX11
@@ -16290,9 +16573,9 @@ class QueryAllRemotePatrolStoreReq : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strbegindate();
   void set_allocated_strbegindate(::std::string* strbegindate);
 
-  // string strEndDate = 4;
+  // string strEndDate = 5;
   void clear_strenddate();
-  static const int kStrEndDateFieldNumber = 4;
+  static const int kStrEndDateFieldNumber = 5;
   const ::std::string& strenddate() const;
   void set_strenddate(const ::std::string& value);
   #if LANG_CXX11
@@ -16304,9 +16587,9 @@ class QueryAllRemotePatrolStoreReq : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strenddate();
   void set_allocated_strenddate(::std::string* strenddate);
 
-  // uint32 uiBeginIndex = 5;
+  // uint32 uiBeginIndex = 6;
   void clear_uibeginindex();
-  static const int kUiBeginIndexFieldNumber = 5;
+  static const int kUiBeginIndexFieldNumber = 6;
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
 
@@ -16316,6 +16599,7 @@ class QueryAllRemotePatrolStoreReq : public ::google::protobuf::Message /* @@pro
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strplanid_;
   ::google::protobuf::internal::ArenaStringPtr strbegindate_;
   ::google::protobuf::internal::ArenaStringPtr strenddate_;
   ::google::protobuf::uint32 uibeginindex_;
@@ -16408,6 +16692,989 @@ class QueryAllRemotePatrolStoreRsp : public ::google::protobuf::Message /* @@pro
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::RemotePatrolStore > patrolstore_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddStoreSensorReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddStoreSensorReq) */ {
+ public:
+  AddStoreSensorReq();
+  virtual ~AddStoreSensorReq();
+
+  AddStoreSensorReq(const AddStoreSensorReq& from);
+
+  inline AddStoreSensorReq& operator=(const AddStoreSensorReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddStoreSensorReq& default_instance();
+
+  static inline const AddStoreSensorReq* internal_default_instance() {
+    return reinterpret_cast<const AddStoreSensorReq*>(
+               &_AddStoreSensorReq_default_instance_);
+  }
+
+  void Swap(AddStoreSensorReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddStoreSensorReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddStoreSensorReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddStoreSensorReq& from);
+  void MergeFrom(const AddStoreSensorReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddStoreSensorReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+  bool has_sensorinfo() const;
+  void clear_sensorinfo();
+  static const int kSensorInfoFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Sensor& sensorinfo() const;
+  ::CustomerFlow::Interactive::Message::Sensor* mutable_sensorinfo();
+  ::CustomerFlow::Interactive::Message::Sensor* release_sensorinfo();
+  void set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddStoreSensorReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::Sensor* sensorinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddStoreSensorRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddStoreSensorRsp) */ {
+ public:
+  AddStoreSensorRsp();
+  virtual ~AddStoreSensorRsp();
+
+  AddStoreSensorRsp(const AddStoreSensorRsp& from);
+
+  inline AddStoreSensorRsp& operator=(const AddStoreSensorRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddStoreSensorRsp& default_instance();
+
+  static inline const AddStoreSensorRsp* internal_default_instance() {
+    return reinterpret_cast<const AddStoreSensorRsp*>(
+               &_AddStoreSensorRsp_default_instance_);
+  }
+
+  void Swap(AddStoreSensorRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddStoreSensorRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddStoreSensorRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddStoreSensorRsp& from);
+  void MergeFrom(const AddStoreSensorRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddStoreSensorRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strSensorID = 1;
+  void clear_strsensorid();
+  static const int kStrSensorIDFieldNumber = 1;
+  const ::std::string& strsensorid() const;
+  void set_strsensorid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorid(::std::string&& value);
+  #endif
+  void set_strsensorid(const char* value);
+  void set_strsensorid(const char* value, size_t size);
+  ::std::string* mutable_strsensorid();
+  ::std::string* release_strsensorid();
+  void set_allocated_strsensorid(::std::string* strsensorid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddStoreSensorRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteStoreSensorReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteStoreSensorReq) */ {
+ public:
+  DeleteStoreSensorReq();
+  virtual ~DeleteStoreSensorReq();
+
+  DeleteStoreSensorReq(const DeleteStoreSensorReq& from);
+
+  inline DeleteStoreSensorReq& operator=(const DeleteStoreSensorReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteStoreSensorReq& default_instance();
+
+  static inline const DeleteStoreSensorReq* internal_default_instance() {
+    return reinterpret_cast<const DeleteStoreSensorReq*>(
+               &_DeleteStoreSensorReq_default_instance_);
+  }
+
+  void Swap(DeleteStoreSensorReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteStoreSensorReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteStoreSensorReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteStoreSensorReq& from);
+  void MergeFrom(const DeleteStoreSensorReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteStoreSensorReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strStoreID = 2;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 2;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strSensorID = 3;
+  void clear_strsensorid();
+  static const int kStrSensorIDFieldNumber = 3;
+  const ::std::string& strsensorid() const;
+  void set_strsensorid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorid(::std::string&& value);
+  #endif
+  void set_strsensorid(const char* value);
+  void set_strsensorid(const char* value, size_t size);
+  ::std::string* mutable_strsensorid();
+  ::std::string* release_strsensorid();
+  void set_allocated_strsensorid(::std::string* strsensorid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteStoreSensorReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeleteStoreSensorRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp) */ {
+ public:
+  DeleteStoreSensorRsp();
+  virtual ~DeleteStoreSensorRsp();
+
+  DeleteStoreSensorRsp(const DeleteStoreSensorRsp& from);
+
+  inline DeleteStoreSensorRsp& operator=(const DeleteStoreSensorRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeleteStoreSensorRsp& default_instance();
+
+  static inline const DeleteStoreSensorRsp* internal_default_instance() {
+    return reinterpret_cast<const DeleteStoreSensorRsp*>(
+               &_DeleteStoreSensorRsp_default_instance_);
+  }
+
+  void Swap(DeleteStoreSensorRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeleteStoreSensorRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeleteStoreSensorRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeleteStoreSensorRsp& from);
+  void MergeFrom(const DeleteStoreSensorRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeleteStoreSensorRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyStoreSensorReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyStoreSensorReq) */ {
+ public:
+  ModifyStoreSensorReq();
+  virtual ~ModifyStoreSensorReq();
+
+  ModifyStoreSensorReq(const ModifyStoreSensorReq& from);
+
+  inline ModifyStoreSensorReq& operator=(const ModifyStoreSensorReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyStoreSensorReq& default_instance();
+
+  static inline const ModifyStoreSensorReq* internal_default_instance() {
+    return reinterpret_cast<const ModifyStoreSensorReq*>(
+               &_ModifyStoreSensorReq_default_instance_);
+  }
+
+  void Swap(ModifyStoreSensorReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyStoreSensorReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyStoreSensorReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyStoreSensorReq& from);
+  void MergeFrom(const ModifyStoreSensorReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyStoreSensorReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+  bool has_sensorinfo() const;
+  void clear_sensorinfo();
+  static const int kSensorInfoFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Sensor& sensorinfo() const;
+  ::CustomerFlow::Interactive::Message::Sensor* mutable_sensorinfo();
+  ::CustomerFlow::Interactive::Message::Sensor* release_sensorinfo();
+  void set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyStoreSensorReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::Sensor* sensorinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyStoreSensorRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp) */ {
+ public:
+  ModifyStoreSensorRsp();
+  virtual ~ModifyStoreSensorRsp();
+
+  ModifyStoreSensorRsp(const ModifyStoreSensorRsp& from);
+
+  inline ModifyStoreSensorRsp& operator=(const ModifyStoreSensorRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyStoreSensorRsp& default_instance();
+
+  static inline const ModifyStoreSensorRsp* internal_default_instance() {
+    return reinterpret_cast<const ModifyStoreSensorRsp*>(
+               &_ModifyStoreSensorRsp_default_instance_);
+  }
+
+  void Swap(ModifyStoreSensorRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyStoreSensorRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyStoreSensorRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyStoreSensorRsp& from);
+  void MergeFrom(const ModifyStoreSensorRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyStoreSensorRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryStoreSensorInfoReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq) */ {
+ public:
+  QueryStoreSensorInfoReq();
+  virtual ~QueryStoreSensorInfoReq();
+
+  QueryStoreSensorInfoReq(const QueryStoreSensorInfoReq& from);
+
+  inline QueryStoreSensorInfoReq& operator=(const QueryStoreSensorInfoReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryStoreSensorInfoReq& default_instance();
+
+  static inline const QueryStoreSensorInfoReq* internal_default_instance() {
+    return reinterpret_cast<const QueryStoreSensorInfoReq*>(
+               &_QueryStoreSensorInfoReq_default_instance_);
+  }
+
+  void Swap(QueryStoreSensorInfoReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryStoreSensorInfoReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryStoreSensorInfoReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryStoreSensorInfoReq& from);
+  void MergeFrom(const QueryStoreSensorInfoReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryStoreSensorInfoReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strSensorID = 2;
+  void clear_strsensorid();
+  static const int kStrSensorIDFieldNumber = 2;
+  const ::std::string& strsensorid() const;
+  void set_strsensorid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorid(::std::string&& value);
+  #endif
+  void set_strsensorid(const char* value);
+  void set_strsensorid(const char* value, size_t size);
+  ::std::string* mutable_strsensorid();
+  ::std::string* release_strsensorid();
+  void set_allocated_strsensorid(::std::string* strsensorid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryStoreSensorInfoRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp) */ {
+ public:
+  QueryStoreSensorInfoRsp();
+  virtual ~QueryStoreSensorInfoRsp();
+
+  QueryStoreSensorInfoRsp(const QueryStoreSensorInfoRsp& from);
+
+  inline QueryStoreSensorInfoRsp& operator=(const QueryStoreSensorInfoRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryStoreSensorInfoRsp& default_instance();
+
+  static inline const QueryStoreSensorInfoRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryStoreSensorInfoRsp*>(
+               &_QueryStoreSensorInfoRsp_default_instance_);
+  }
+
+  void Swap(QueryStoreSensorInfoRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryStoreSensorInfoRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryStoreSensorInfoRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryStoreSensorInfoRsp& from);
+  void MergeFrom(const QueryStoreSensorInfoRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryStoreSensorInfoRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+  bool has_sensorinfo() const;
+  void clear_sensorinfo();
+  static const int kSensorInfoFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::Sensor& sensorinfo() const;
+  ::CustomerFlow::Interactive::Message::Sensor* mutable_sensorinfo();
+  ::CustomerFlow::Interactive::Message::Sensor* release_sensorinfo();
+  void set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::CustomerFlow::Interactive::Message::Sensor* sensorinfo_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllStoreSensorReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq) */ {
+ public:
+  QueryAllStoreSensorReq();
+  virtual ~QueryAllStoreSensorReq();
+
+  QueryAllStoreSensorReq(const QueryAllStoreSensorReq& from);
+
+  inline QueryAllStoreSensorReq& operator=(const QueryAllStoreSensorReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllStoreSensorReq& default_instance();
+
+  static inline const QueryAllStoreSensorReq* internal_default_instance() {
+    return reinterpret_cast<const QueryAllStoreSensorReq*>(
+               &_QueryAllStoreSensorReq_default_instance_);
+  }
+
+  void Swap(QueryAllStoreSensorReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllStoreSensorReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllStoreSensorReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllStoreSensorReq& from);
+  void MergeFrom(const QueryAllStoreSensorReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllStoreSensorReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strStoreID = 2;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 2;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllStoreSensorRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp) */ {
+ public:
+  QueryAllStoreSensorRsp();
+  virtual ~QueryAllStoreSensorRsp();
+
+  QueryAllStoreSensorRsp(const QueryAllStoreSensorRsp& from);
+
+  inline QueryAllStoreSensorRsp& operator=(const QueryAllStoreSensorRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllStoreSensorRsp& default_instance();
+
+  static inline const QueryAllStoreSensorRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryAllStoreSensorRsp*>(
+               &_QueryAllStoreSensorRsp_default_instance_);
+  }
+
+  void Swap(QueryAllStoreSensorRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllStoreSensorRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllStoreSensorRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllStoreSensorRsp& from);
+  void MergeFrom(const QueryAllStoreSensorRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllStoreSensorRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+  int sensorinfo_size() const;
+  void clear_sensorinfo();
+  static const int kSensorInfoFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::Sensor& sensorinfo(int index) const;
+  ::CustomerFlow::Interactive::Message::Sensor* mutable_sensorinfo(int index);
+  ::CustomerFlow::Interactive::Message::Sensor* add_sensorinfo();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >*
+      mutable_sensorinfo();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >&
+      sensorinfo() const;
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor > sensorinfo_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -17075,6 +18342,201 @@ class ReportCustomerFlowDataRsp : public ::google::protobuf::Message /* @@protoc
 };
 // -------------------------------------------------------------------
 
+class ReportSensorInfoReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ReportSensorInfoReq) */ {
+ public:
+  ReportSensorInfoReq();
+  virtual ~ReportSensorInfoReq();
+
+  ReportSensorInfoReq(const ReportSensorInfoReq& from);
+
+  inline ReportSensorInfoReq& operator=(const ReportSensorInfoReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReportSensorInfoReq& default_instance();
+
+  static inline const ReportSensorInfoReq* internal_default_instance() {
+    return reinterpret_cast<const ReportSensorInfoReq*>(
+               &_ReportSensorInfoReq_default_instance_);
+  }
+
+  void Swap(ReportSensorInfoReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReportSensorInfoReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReportSensorInfoReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReportSensorInfoReq& from);
+  void MergeFrom(const ReportSensorInfoReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReportSensorInfoReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+  int sensorinfo_size() const;
+  void clear_sensorinfo();
+  static const int kSensorInfoFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Sensor& sensorinfo(int index) const;
+  ::CustomerFlow::Interactive::Message::Sensor* mutable_sensorinfo(int index);
+  ::CustomerFlow::Interactive::Message::Sensor* add_sensorinfo();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >*
+      mutable_sensorinfo();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >&
+      sensorinfo() const;
+
+  // string strDeviceID = 1;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 1;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ReportSensorInfoReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor > sensorinfo_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ReportSensorInfoRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ReportSensorInfoRsp) */ {
+ public:
+  ReportSensorInfoRsp();
+  virtual ~ReportSensorInfoRsp();
+
+  ReportSensorInfoRsp(const ReportSensorInfoRsp& from);
+
+  inline ReportSensorInfoRsp& operator=(const ReportSensorInfoRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReportSensorInfoRsp& default_instance();
+
+  static inline const ReportSensorInfoRsp* internal_default_instance() {
+    return reinterpret_cast<const ReportSensorInfoRsp*>(
+               &_ReportSensorInfoRsp_default_instance_);
+  }
+
+  void Swap(ReportSensorInfoRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ReportSensorInfoRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ReportSensorInfoRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ReportSensorInfoRsp& from);
+  void MergeFrom(const ReportSensorInfoRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ReportSensorInfoRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ReportSensorInfoRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Request) */ {
  public:
   Request();
@@ -17727,6 +19189,51 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* release_unbindpushclientidreq_value();
   void set_allocated_unbindpushclientidreq_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* unbindpushclientidreq_value);
 
+  // .CustomerFlow.Interactive.Message.AddStoreSensorReq AddStoreSensorReq_Value = 1200;
+  bool has_addstoresensorreq_value() const;
+  void clear_addstoresensorreq_value();
+  static const int kAddStoreSensorReqValueFieldNumber = 1200;
+  const ::CustomerFlow::Interactive::Message::AddStoreSensorReq& addstoresensorreq_value() const;
+  ::CustomerFlow::Interactive::Message::AddStoreSensorReq* mutable_addstoresensorreq_value();
+  ::CustomerFlow::Interactive::Message::AddStoreSensorReq* release_addstoresensorreq_value();
+  void set_allocated_addstoresensorreq_value(::CustomerFlow::Interactive::Message::AddStoreSensorReq* addstoresensorreq_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteStoreSensorReq DeleteStoreSensorReq_Value = 1210;
+  bool has_deletestoresensorreq_value() const;
+  void clear_deletestoresensorreq_value();
+  static const int kDeleteStoreSensorReqValueFieldNumber = 1210;
+  const ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq& deletestoresensorreq_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* mutable_deletestoresensorreq_value();
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* release_deletestoresensorreq_value();
+  void set_allocated_deletestoresensorreq_value(::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* deletestoresensorreq_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyStoreSensorReq ModifyStoreSensorReq_Value = 1220;
+  bool has_modifystoresensorreq_value() const;
+  void clear_modifystoresensorreq_value();
+  static const int kModifyStoreSensorReqValueFieldNumber = 1220;
+  const ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq& modifystoresensorreq_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* mutable_modifystoresensorreq_value();
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* release_modifystoresensorreq_value();
+  void set_allocated_modifystoresensorreq_value(::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* modifystoresensorreq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq QueryStoreSensorInfoReq_Value = 1230;
+  bool has_querystoresensorinforeq_value() const;
+  void clear_querystoresensorinforeq_value();
+  static const int kQueryStoreSensorInfoReqValueFieldNumber = 1230;
+  const ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq& querystoresensorinforeq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* mutable_querystoresensorinforeq_value();
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* release_querystoresensorinforeq_value();
+  void set_allocated_querystoresensorinforeq_value(::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* querystoresensorinforeq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllStoreSensorReq QueryAllStoreSensorReq_Value = 1240;
+  bool has_queryallstoresensorreq_value() const;
+  void clear_queryallstoresensorreq_value();
+  static const int kQueryAllStoreSensorReqValueFieldNumber = 1240;
+  const ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq& queryallstoresensorreq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* mutable_queryallstoresensorreq_value();
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* release_queryallstoresensorreq_value();
+  void set_allocated_queryallstoresensorreq_value(::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* queryallstoresensorreq_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
   bool has_importposdatareq_value() const;
   void clear_importposdatareq_value();
@@ -17753,6 +19260,15 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* mutable_reportcustomerflowdatareq_value();
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* release_reportcustomerflowdatareq_value();
   void set_allocated_reportcustomerflowdatareq_value(::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* reportcustomerflowdatareq_value);
+
+  // .CustomerFlow.Interactive.Message.ReportSensorInfoReq ReportSensorInfoReq_Value = 3100;
+  bool has_reportsensorinforeq_value() const;
+  void clear_reportsensorinforeq_value();
+  static const int kReportSensorInfoReqValueFieldNumber = 3100;
+  const ::CustomerFlow::Interactive::Message::ReportSensorInfoReq& reportsensorinforeq_value() const;
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* mutable_reportsensorinforeq_value();
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* release_reportsensorinforeq_value();
+  void set_allocated_reportsensorinforeq_value(::CustomerFlow::Interactive::Message::ReportSensorInfoReq* reportsensorinforeq_value);
 
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Request)
  private:
@@ -17823,9 +19339,15 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::QueryAllAreaReq* queryallareareq_value_;
   ::CustomerFlow::Interactive::Message::BindPushClientIDReq* bindpushclientidreq_value_;
   ::CustomerFlow::Interactive::Message::UnbindPushClientIDReq* unbindpushclientidreq_value_;
+  ::CustomerFlow::Interactive::Message::AddStoreSensorReq* addstoresensorreq_value_;
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* deletestoresensorreq_value_;
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* modifystoresensorreq_value_;
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* querystoresensorinforeq_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* queryallstoresensorreq_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataReq* importposdatareq_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticReq* querycustomerflowstatisticreq_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataReq* reportcustomerflowdatareq_value_;
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* reportsensorinforeq_value_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -18497,6 +20019,51 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* release_unbindpushclientidrsp_value();
   void set_allocated_unbindpushclientidrsp_value(::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* unbindpushclientidrsp_value);
 
+  // .CustomerFlow.Interactive.Message.AddStoreSensorRsp AddStoreSensorRsp_Value = 1200;
+  bool has_addstoresensorrsp_value() const;
+  void clear_addstoresensorrsp_value();
+  static const int kAddStoreSensorRspValueFieldNumber = 1200;
+  const ::CustomerFlow::Interactive::Message::AddStoreSensorRsp& addstoresensorrsp_value() const;
+  ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* mutable_addstoresensorrsp_value();
+  ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* release_addstoresensorrsp_value();
+  void set_allocated_addstoresensorrsp_value(::CustomerFlow::Interactive::Message::AddStoreSensorRsp* addstoresensorrsp_value);
+
+  // .CustomerFlow.Interactive.Message.DeleteStoreSensorRsp DeleteStoreSensorRsp_Value = 1210;
+  bool has_deletestoresensorrsp_value() const;
+  void clear_deletestoresensorrsp_value();
+  static const int kDeleteStoreSensorRspValueFieldNumber = 1210;
+  const ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp& deletestoresensorrsp_value() const;
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* mutable_deletestoresensorrsp_value();
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* release_deletestoresensorrsp_value();
+  void set_allocated_deletestoresensorrsp_value(::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* deletestoresensorrsp_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyStoreSensorRsp ModifyStoreSensorRsp_Value = 1220;
+  bool has_modifystoresensorrsp_value() const;
+  void clear_modifystoresensorrsp_value();
+  static const int kModifyStoreSensorRspValueFieldNumber = 1220;
+  const ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp& modifystoresensorrsp_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* mutable_modifystoresensorrsp_value();
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* release_modifystoresensorrsp_value();
+  void set_allocated_modifystoresensorrsp_value(::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* modifystoresensorrsp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp QueryStoreSensorInfoRsp_Value = 1230;
+  bool has_querystoresensorinforsp_value() const;
+  void clear_querystoresensorinforsp_value();
+  static const int kQueryStoreSensorInfoRspValueFieldNumber = 1230;
+  const ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp& querystoresensorinforsp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* mutable_querystoresensorinforsp_value();
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* release_querystoresensorinforsp_value();
+  void set_allocated_querystoresensorinforsp_value(::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* querystoresensorinforsp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp QueryAllStoreSensorRsp_Value = 1240;
+  bool has_queryallstoresensorrsp_value() const;
+  void clear_queryallstoresensorrsp_value();
+  static const int kQueryAllStoreSensorRspValueFieldNumber = 1240;
+  const ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp& queryallstoresensorrsp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* mutable_queryallstoresensorrsp_value();
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* release_queryallstoresensorrsp_value();
+  void set_allocated_queryallstoresensorrsp_value(::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* queryallstoresensorrsp_value);
+
   // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
   bool has_importposdatarsp_value() const;
   void clear_importposdatarsp_value();
@@ -18523,6 +20090,15 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* mutable_reportcustomerflowdatarsp_value();
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* release_reportcustomerflowdatarsp_value();
   void set_allocated_reportcustomerflowdatarsp_value(::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* reportcustomerflowdatarsp_value);
+
+  // .CustomerFlow.Interactive.Message.ReportSensorInfoRsp ReportSensorInfoRsp_Value = 3100;
+  bool has_reportsensorinforsp_value() const;
+  void clear_reportsensorinforsp_value();
+  static const int kReportSensorInfoRspValueFieldNumber = 3100;
+  const ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp& reportsensorinforsp_value() const;
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* mutable_reportsensorinforsp_value();
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* release_reportsensorinforsp_value();
+  void set_allocated_reportsensorinforsp_value(::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* reportsensorinforsp_value);
 
   // int32 iRetcode = 1;
   void clear_iretcode();
@@ -18600,9 +20176,15 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::QueryAllAreaRsp* queryallarearsp_value_;
   ::CustomerFlow::Interactive::Message::BindPushClientIDRsp* bindpushclientidrsp_value_;
   ::CustomerFlow::Interactive::Message::UnbindPushClientIDRsp* unbindpushclientidrsp_value_;
+  ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* addstoresensorrsp_value_;
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* deletestoresensorrsp_value_;
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* modifystoresensorrsp_value_;
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* querystoresensorinforsp_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* queryallstoresensorrsp_value_;
   ::CustomerFlow::Interactive::Message::ImportPOSDataRsp* importposdatarsp_value_;
   ::CustomerFlow::Interactive::Message::QueryCustomerFlowStatisticRsp* querycustomerflowstatisticrsp_value_;
   ::CustomerFlow::Interactive::Message::ReportCustomerFlowDataRsp* reportcustomerflowdatarsp_value_;
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* reportsensorinforsp_value_;
   ::google::protobuf::int32 iretcode_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -23527,7 +25109,59 @@ inline void RemotePatrolStore::set_allocated_strdeviceid(::std::string* strdevic
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDeviceID)
 }
 
-// string strStoreID = 4;
+// string strEntranceID = 4;
+inline void RemotePatrolStore::clear_strentranceid() {
+  strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strentranceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+  return strentranceid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strentranceid(const ::std::string& value) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strentranceid(::std::string&& value) {
+  
+  strentranceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+}
+#endif
+inline void RemotePatrolStore::set_strentranceid(const char* value) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+}
+inline void RemotePatrolStore::set_strentranceid(const char* value, size_t size) {
+  
+  strentranceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+}
+inline ::std::string* RemotePatrolStore::mutable_strentranceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+  return strentranceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strentranceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+  
+  return strentranceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strentranceid(::std::string* strentranceid) {
+  if (strentranceid != NULL) {
+    
+  } else {
+    
+  }
+  strentranceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strentranceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strEntranceID)
+}
+
+// string strStoreID = 5;
 inline void RemotePatrolStore::clear_strstoreid() {
   strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -23579,7 +25213,59 @@ inline void RemotePatrolStore::set_allocated_strstoreid(::std::string* strstorei
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strStoreID)
 }
 
-// string strPatrolDate = 5;
+// string strPlanID = 6;
+inline void RemotePatrolStore::clear_strplanid() {
+  strplanid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemotePatrolStore::strplanid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+  return strplanid_.GetNoArena();
+}
+inline void RemotePatrolStore::set_strplanid(const ::std::string& value) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+}
+#if LANG_CXX11
+inline void RemotePatrolStore::set_strplanid(::std::string&& value) {
+  
+  strplanid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+}
+#endif
+inline void RemotePatrolStore::set_strplanid(const char* value) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+}
+inline void RemotePatrolStore::set_strplanid(const char* value, size_t size) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+}
+inline ::std::string* RemotePatrolStore::mutable_strplanid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+  return strplanid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemotePatrolStore::release_strplanid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+  
+  return strplanid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemotePatrolStore::set_allocated_strplanid(::std::string* strplanid) {
+  if (strplanid != NULL) {
+    
+  } else {
+    
+  }
+  strplanid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strplanid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPlanID)
+}
+
+// string strPatrolDate = 7;
 inline void RemotePatrolStore::clear_strpatroldate() {
   strpatroldate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -23631,7 +25317,7 @@ inline void RemotePatrolStore::set_allocated_strpatroldate(::std::string* strpat
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strPatrolDate)
 }
 
-// repeated string strPatrolPicture = 6;
+// repeated string strPatrolPicture = 8;
 inline int RemotePatrolStore::strpatrolpicture_size() const {
   return strpatrolpicture_.size();
 }
@@ -23686,7 +25372,7 @@ RemotePatrolStore::mutable_strpatrolpicture() {
   return &strpatrolpicture_;
 }
 
-// uint32 uiPatrolResult = 7;
+// uint32 uiPatrolResult = 9;
 inline void RemotePatrolStore::clear_uipatrolresult() {
   uipatrolresult_ = 0u;
 }
@@ -23700,7 +25386,7 @@ inline void RemotePatrolStore::set_uipatrolresult(::google::protobuf::uint32 val
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemotePatrolStore.uiPatrolResult)
 }
 
-// string strDescription = 8;
+// string strDescription = 10;
 inline void RemotePatrolStore::clear_strdescription() {
   strdescription_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -23752,7 +25438,7 @@ inline void RemotePatrolStore::set_allocated_strdescription(::std::string* strde
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strDescription)
 }
 
-// string strCreateDate = 9;
+// string strCreateDate = 11;
 inline void RemotePatrolStore::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -23802,6 +25488,388 @@ inline void RemotePatrolStore::set_allocated_strcreatedate(::std::string* strcre
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemotePatrolStore.strCreateDate)
+}
+
+// -------------------------------------------------------------------
+
+// Sensor
+
+// string strSensorID = 1;
+inline void Sensor::clear_strsensorid() {
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strsensorid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+  return strsensorid_.GetNoArena();
+}
+inline void Sensor::set_strsensorid(const ::std::string& value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+}
+#if LANG_CXX11
+inline void Sensor::set_strsensorid(::std::string&& value) {
+  
+  strsensorid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+}
+#endif
+inline void Sensor::set_strsensorid(const char* value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+}
+inline void Sensor::set_strsensorid(const char* value, size_t size) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+}
+inline ::std::string* Sensor::mutable_strsensorid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+  return strsensorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strsensorid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+  
+  return strsensorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strsensorid(::std::string* strsensorid) {
+  if (strsensorid != NULL) {
+    
+  } else {
+    
+  }
+  strsensorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorID)
+}
+
+// string strSensorName = 2;
+inline void Sensor::clear_strsensorname() {
+  strsensorname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strsensorname() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+  return strsensorname_.GetNoArena();
+}
+inline void Sensor::set_strsensorname(const ::std::string& value) {
+  
+  strsensorname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+}
+#if LANG_CXX11
+inline void Sensor::set_strsensorname(::std::string&& value) {
+  
+  strsensorname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+}
+#endif
+inline void Sensor::set_strsensorname(const char* value) {
+  
+  strsensorname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+}
+inline void Sensor::set_strsensorname(const char* value, size_t size) {
+  
+  strsensorname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+}
+inline ::std::string* Sensor::mutable_strsensorname() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+  return strsensorname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strsensorname() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+  
+  return strsensorname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strsensorname(::std::string* strsensorname) {
+  if (strsensorname != NULL) {
+    
+  } else {
+    
+  }
+  strsensorname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorname);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorName)
+}
+
+// string strSensorType = 3;
+inline void Sensor::clear_strsensortype() {
+  strsensortype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strsensortype() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+  return strsensortype_.GetNoArena();
+}
+inline void Sensor::set_strsensortype(const ::std::string& value) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+}
+#if LANG_CXX11
+inline void Sensor::set_strsensortype(::std::string&& value) {
+  
+  strsensortype_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+}
+#endif
+inline void Sensor::set_strsensortype(const char* value) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+}
+inline void Sensor::set_strsensortype(const char* value, size_t size) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+}
+inline ::std::string* Sensor::mutable_strsensortype() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+  return strsensortype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strsensortype() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+  
+  return strsensortype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strsensortype(::std::string* strsensortype) {
+  if (strsensortype != NULL) {
+    
+  } else {
+    
+  }
+  strsensortype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensortype);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorType)
+}
+
+// string strStoreID = 4;
+inline void Sensor::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void Sensor::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+}
+#if LANG_CXX11
+inline void Sensor::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+}
+#endif
+inline void Sensor::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+}
+inline void Sensor::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+}
+inline ::std::string* Sensor::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strStoreID)
+}
+
+// string strDeviceID = 5;
+inline void Sensor::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void Sensor::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+}
+#if LANG_CXX11
+inline void Sensor::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+}
+#endif
+inline void Sensor::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+}
+inline void Sensor::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+}
+inline ::std::string* Sensor::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
+}
+
+// string strValue = 6;
+inline void Sensor::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void Sensor::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strValue)
+}
+#if LANG_CXX11
+inline void Sensor::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strValue)
+}
+#endif
+inline void Sensor::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strValue)
+}
+inline void Sensor::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strValue)
+}
+inline ::std::string* Sensor::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strValue)
+}
+
+// uint32 uiState = 7;
+inline void Sensor::clear_uistate() {
+  uistate_ = 0u;
+}
+inline ::google::protobuf::uint32 Sensor::uistate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.uiState)
+  return uistate_;
+}
+inline void Sensor::set_uistate(::google::protobuf::uint32 value) {
+  
+  uistate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.uiState)
+}
+
+// string strCreateDate = 8;
+inline void Sensor::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void Sensor::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+}
+#if LANG_CXX11
+inline void Sensor::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+}
+#endif
+inline void Sensor::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+}
+inline void Sensor::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+}
+inline ::std::string* Sensor::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
 }
 
 // -------------------------------------------------------------------
@@ -34243,7 +36311,59 @@ inline void QueryAllRemotePatrolStoreReq::set_allocated_strstoreid(::std::string
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strStoreID)
 }
 
-// string strBeginDate = 3;
+// string strPlanID = 3;
+inline void QueryAllRemotePatrolStoreReq::clear_strplanid() {
+  strplanid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRemotePatrolStoreReq::strplanid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+  return strplanid_.GetNoArena();
+}
+inline void QueryAllRemotePatrolStoreReq::set_strplanid(const ::std::string& value) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+}
+#if LANG_CXX11
+inline void QueryAllRemotePatrolStoreReq::set_strplanid(::std::string&& value) {
+  
+  strplanid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+}
+#endif
+inline void QueryAllRemotePatrolStoreReq::set_strplanid(const char* value) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+}
+inline void QueryAllRemotePatrolStoreReq::set_strplanid(const char* value, size_t size) {
+  
+  strplanid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::mutable_strplanid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+  return strplanid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRemotePatrolStoreReq::release_strplanid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+  
+  return strplanid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRemotePatrolStoreReq::set_allocated_strplanid(::std::string* strplanid) {
+  if (strplanid != NULL) {
+    
+  } else {
+    
+  }
+  strplanid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strplanid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strPlanID)
+}
+
+// string strBeginDate = 4;
 inline void QueryAllRemotePatrolStoreReq::clear_strbegindate() {
   strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -34295,7 +36415,7 @@ inline void QueryAllRemotePatrolStoreReq::set_allocated_strbegindate(::std::stri
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strBeginDate)
 }
 
-// string strEndDate = 4;
+// string strEndDate = 5;
 inline void QueryAllRemotePatrolStoreReq::clear_strenddate() {
   strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -34347,7 +36467,7 @@ inline void QueryAllRemotePatrolStoreReq::set_allocated_strenddate(::std::string
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreReq.strEndDate)
 }
 
-// uint32 uiBeginIndex = 5;
+// uint32 uiBeginIndex = 6;
 inline void QueryAllRemotePatrolStoreReq::clear_uibeginindex() {
   uibeginindex_ = 0u;
 }
@@ -34393,6 +36513,817 @@ inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::
 QueryAllRemotePatrolStoreRsp::patrolstore() const {
   // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllRemotePatrolStoreRsp.patrolStore)
   return patrolstore_;
+}
+
+// -------------------------------------------------------------------
+
+// AddStoreSensorReq
+
+// string strUserID = 1;
+inline void AddStoreSensorReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddStoreSensorReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void AddStoreSensorReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+}
+#if LANG_CXX11
+inline void AddStoreSensorReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+}
+#endif
+inline void AddStoreSensorReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+}
+inline void AddStoreSensorReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+}
+inline ::std::string* AddStoreSensorReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddStoreSensorReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddStoreSensorReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddStoreSensorReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+inline bool AddStoreSensorReq::has_sensorinfo() const {
+  return this != internal_default_instance() && sensorinfo_ != NULL;
+}
+inline void AddStoreSensorReq::clear_sensorinfo() {
+  if (GetArenaNoVirtual() == NULL && sensorinfo_ != NULL) delete sensorinfo_;
+  sensorinfo_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Sensor& AddStoreSensorReq::sensorinfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddStoreSensorReq.sensorInfo)
+  return sensorinfo_ != NULL ? *sensorinfo_
+                         : *::CustomerFlow::Interactive::Message::Sensor::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* AddStoreSensorReq::mutable_sensorinfo() {
+  
+  if (sensorinfo_ == NULL) {
+    sensorinfo_ = new ::CustomerFlow::Interactive::Message::Sensor;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddStoreSensorReq.sensorInfo)
+  return sensorinfo_;
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* AddStoreSensorReq::release_sensorinfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddStoreSensorReq.sensorInfo)
+  
+  ::CustomerFlow::Interactive::Message::Sensor* temp = sensorinfo_;
+  sensorinfo_ = NULL;
+  return temp;
+}
+inline void AddStoreSensorReq::set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo) {
+  delete sensorinfo_;
+  sensorinfo_ = sensorinfo;
+  if (sensorinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddStoreSensorReq.sensorInfo)
+}
+
+// -------------------------------------------------------------------
+
+// AddStoreSensorRsp
+
+// string strSensorID = 1;
+inline void AddStoreSensorRsp::clear_strsensorid() {
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddStoreSensorRsp::strsensorid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+  return strsensorid_.GetNoArena();
+}
+inline void AddStoreSensorRsp::set_strsensorid(const ::std::string& value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+}
+#if LANG_CXX11
+inline void AddStoreSensorRsp::set_strsensorid(::std::string&& value) {
+  
+  strsensorid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+}
+#endif
+inline void AddStoreSensorRsp::set_strsensorid(const char* value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+}
+inline void AddStoreSensorRsp::set_strsensorid(const char* value, size_t size) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+}
+inline ::std::string* AddStoreSensorRsp::mutable_strsensorid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+  return strsensorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddStoreSensorRsp::release_strsensorid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+  
+  return strsensorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddStoreSensorRsp::set_allocated_strsensorid(::std::string* strsensorid) {
+  if (strsensorid != NULL) {
+    
+  } else {
+    
+  }
+  strsensorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddStoreSensorRsp.strSensorID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteStoreSensorReq
+
+// string strUserID = 1;
+inline void DeleteStoreSensorReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStoreSensorReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void DeleteStoreSensorReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+}
+#if LANG_CXX11
+inline void DeleteStoreSensorReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+}
+#endif
+inline void DeleteStoreSensorReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+}
+inline void DeleteStoreSensorReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+}
+inline ::std::string* DeleteStoreSensorReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStoreSensorReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStoreSensorReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strUserID)
+}
+
+// string strStoreID = 2;
+inline void DeleteStoreSensorReq::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStoreSensorReq::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void DeleteStoreSensorReq::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+}
+#if LANG_CXX11
+inline void DeleteStoreSensorReq::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+}
+#endif
+inline void DeleteStoreSensorReq::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+}
+inline void DeleteStoreSensorReq::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+}
+inline ::std::string* DeleteStoreSensorReq::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStoreSensorReq::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStoreSensorReq::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strStoreID)
+}
+
+// string strSensorID = 3;
+inline void DeleteStoreSensorReq::clear_strsensorid() {
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStoreSensorReq::strsensorid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+  return strsensorid_.GetNoArena();
+}
+inline void DeleteStoreSensorReq::set_strsensorid(const ::std::string& value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+}
+#if LANG_CXX11
+inline void DeleteStoreSensorReq::set_strsensorid(::std::string&& value) {
+  
+  strsensorid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+}
+#endif
+inline void DeleteStoreSensorReq::set_strsensorid(const char* value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+}
+inline void DeleteStoreSensorReq::set_strsensorid(const char* value, size_t size) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+}
+inline ::std::string* DeleteStoreSensorReq::mutable_strsensorid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+  return strsensorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStoreSensorReq::release_strsensorid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+  
+  return strsensorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStoreSensorReq::set_allocated_strsensorid(::std::string* strsensorid) {
+  if (strsensorid != NULL) {
+    
+  } else {
+    
+  }
+  strsensorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteStoreSensorReq.strSensorID)
+}
+
+// -------------------------------------------------------------------
+
+// DeleteStoreSensorRsp
+
+// string strValue = 1;
+inline void DeleteStoreSensorRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DeleteStoreSensorRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void DeleteStoreSensorRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+}
+#if LANG_CXX11
+inline void DeleteStoreSensorRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+}
+#endif
+inline void DeleteStoreSensorRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+}
+inline void DeleteStoreSensorRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+}
+inline ::std::string* DeleteStoreSensorRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DeleteStoreSensorRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DeleteStoreSensorRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.DeleteStoreSensorRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyStoreSensorReq
+
+// string strUserID = 1;
+inline void ModifyStoreSensorReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyStoreSensorReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void ModifyStoreSensorReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+}
+#if LANG_CXX11
+inline void ModifyStoreSensorReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+}
+#endif
+inline void ModifyStoreSensorReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+}
+inline void ModifyStoreSensorReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+}
+inline ::std::string* ModifyStoreSensorReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyStoreSensorReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyStoreSensorReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+inline bool ModifyStoreSensorReq::has_sensorinfo() const {
+  return this != internal_default_instance() && sensorinfo_ != NULL;
+}
+inline void ModifyStoreSensorReq::clear_sensorinfo() {
+  if (GetArenaNoVirtual() == NULL && sensorinfo_ != NULL) delete sensorinfo_;
+  sensorinfo_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Sensor& ModifyStoreSensorReq::sensorinfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.sensorInfo)
+  return sensorinfo_ != NULL ? *sensorinfo_
+                         : *::CustomerFlow::Interactive::Message::Sensor::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* ModifyStoreSensorReq::mutable_sensorinfo() {
+  
+  if (sensorinfo_ == NULL) {
+    sensorinfo_ = new ::CustomerFlow::Interactive::Message::Sensor;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.sensorInfo)
+  return sensorinfo_;
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* ModifyStoreSensorReq::release_sensorinfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.sensorInfo)
+  
+  ::CustomerFlow::Interactive::Message::Sensor* temp = sensorinfo_;
+  sensorinfo_ = NULL;
+  return temp;
+}
+inline void ModifyStoreSensorReq::set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo) {
+  delete sensorinfo_;
+  sensorinfo_ = sensorinfo;
+  if (sensorinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyStoreSensorReq.sensorInfo)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyStoreSensorRsp
+
+// string strValue = 1;
+inline void ModifyStoreSensorRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyStoreSensorRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyStoreSensorRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+}
+#if LANG_CXX11
+inline void ModifyStoreSensorRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+}
+#endif
+inline void ModifyStoreSensorRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+}
+inline void ModifyStoreSensorRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+}
+inline ::std::string* ModifyStoreSensorRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyStoreSensorRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyStoreSensorRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyStoreSensorRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryStoreSensorInfoReq
+
+// string strUserID = 1;
+inline void QueryStoreSensorInfoReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryStoreSensorInfoReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryStoreSensorInfoReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryStoreSensorInfoReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+}
+#endif
+inline void QueryStoreSensorInfoReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+}
+inline void QueryStoreSensorInfoReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+}
+inline ::std::string* QueryStoreSensorInfoReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryStoreSensorInfoReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryStoreSensorInfoReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strUserID)
+}
+
+// string strSensorID = 2;
+inline void QueryStoreSensorInfoReq::clear_strsensorid() {
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryStoreSensorInfoReq::strsensorid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+  return strsensorid_.GetNoArena();
+}
+inline void QueryStoreSensorInfoReq::set_strsensorid(const ::std::string& value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+}
+#if LANG_CXX11
+inline void QueryStoreSensorInfoReq::set_strsensorid(::std::string&& value) {
+  
+  strsensorid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+}
+#endif
+inline void QueryStoreSensorInfoReq::set_strsensorid(const char* value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+}
+inline void QueryStoreSensorInfoReq::set_strsensorid(const char* value, size_t size) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+}
+inline ::std::string* QueryStoreSensorInfoReq::mutable_strsensorid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+  return strsensorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryStoreSensorInfoReq::release_strsensorid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+  
+  return strsensorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryStoreSensorInfoReq::set_allocated_strsensorid(::std::string* strsensorid) {
+  if (strsensorid != NULL) {
+    
+  } else {
+    
+  }
+  strsensorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq.strSensorID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryStoreSensorInfoRsp
+
+// .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+inline bool QueryStoreSensorInfoRsp::has_sensorinfo() const {
+  return this != internal_default_instance() && sensorinfo_ != NULL;
+}
+inline void QueryStoreSensorInfoRsp::clear_sensorinfo() {
+  if (GetArenaNoVirtual() == NULL && sensorinfo_ != NULL) delete sensorinfo_;
+  sensorinfo_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Sensor& QueryStoreSensorInfoRsp::sensorinfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp.sensorInfo)
+  return sensorinfo_ != NULL ? *sensorinfo_
+                         : *::CustomerFlow::Interactive::Message::Sensor::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* QueryStoreSensorInfoRsp::mutable_sensorinfo() {
+  
+  if (sensorinfo_ == NULL) {
+    sensorinfo_ = new ::CustomerFlow::Interactive::Message::Sensor;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp.sensorInfo)
+  return sensorinfo_;
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* QueryStoreSensorInfoRsp::release_sensorinfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp.sensorInfo)
+  
+  ::CustomerFlow::Interactive::Message::Sensor* temp = sensorinfo_;
+  sensorinfo_ = NULL;
+  return temp;
+}
+inline void QueryStoreSensorInfoRsp::set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo) {
+  delete sensorinfo_;
+  sensorinfo_ = sensorinfo;
+  if (sensorinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp.sensorInfo)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllStoreSensorReq
+
+// string strUserID = 1;
+inline void QueryAllStoreSensorReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllStoreSensorReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryAllStoreSensorReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryAllStoreSensorReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+}
+#endif
+inline void QueryAllStoreSensorReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+}
+inline void QueryAllStoreSensorReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+}
+inline ::std::string* QueryAllStoreSensorReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllStoreSensorReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllStoreSensorReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strUserID)
+}
+
+// string strStoreID = 2;
+inline void QueryAllStoreSensorReq::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllStoreSensorReq::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void QueryAllStoreSensorReq::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+}
+#if LANG_CXX11
+inline void QueryAllStoreSensorReq::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+}
+#endif
+inline void QueryAllStoreSensorReq::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+}
+inline void QueryAllStoreSensorReq::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+}
+inline ::std::string* QueryAllStoreSensorReq::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllStoreSensorReq::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllStoreSensorReq::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllStoreSensorReq.strStoreID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllStoreSensorRsp
+
+// repeated .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+inline int QueryAllStoreSensorRsp::sensorinfo_size() const {
+  return sensorinfo_.size();
+}
+inline void QueryAllStoreSensorRsp::clear_sensorinfo() {
+  sensorinfo_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::Sensor& QueryAllStoreSensorRsp::sensorinfo(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp.sensorInfo)
+  return sensorinfo_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* QueryAllStoreSensorRsp::mutable_sensorinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp.sensorInfo)
+  return sensorinfo_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* QueryAllStoreSensorRsp::add_sensorinfo() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp.sensorInfo)
+  return sensorinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >*
+QueryAllStoreSensorRsp::mutable_sensorinfo() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp.sensorInfo)
+  return &sensorinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >&
+QueryAllStoreSensorRsp::sensorinfo() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp.sensorInfo)
+  return sensorinfo_;
 }
 
 // -------------------------------------------------------------------
@@ -35075,6 +38006,148 @@ inline void ReportCustomerFlowDataRsp::set_allocated_strvalue(::std::string* str
   }
   strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ReportCustomerFlowDataRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ReportSensorInfoReq
+
+// string strDeviceID = 1;
+inline void ReportSensorInfoReq::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ReportSensorInfoReq::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void ReportSensorInfoReq::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+}
+#if LANG_CXX11
+inline void ReportSensorInfoReq::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+}
+#endif
+inline void ReportSensorInfoReq::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+}
+inline void ReportSensorInfoReq::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+}
+inline ::std::string* ReportSensorInfoReq::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ReportSensorInfoReq::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ReportSensorInfoReq::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ReportSensorInfoReq.strDeviceID)
+}
+
+// repeated .CustomerFlow.Interactive.Message.Sensor sensorInfo = 2;
+inline int ReportSensorInfoReq::sensorinfo_size() const {
+  return sensorinfo_.size();
+}
+inline void ReportSensorInfoReq::clear_sensorinfo() {
+  sensorinfo_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::Sensor& ReportSensorInfoReq::sensorinfo(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ReportSensorInfoReq.sensorInfo)
+  return sensorinfo_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* ReportSensorInfoReq::mutable_sensorinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ReportSensorInfoReq.sensorInfo)
+  return sensorinfo_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::Sensor* ReportSensorInfoReq::add_sensorinfo() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.ReportSensorInfoReq.sensorInfo)
+  return sensorinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >*
+ReportSensorInfoReq::mutable_sensorinfo() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.ReportSensorInfoReq.sensorInfo)
+  return &sensorinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >&
+ReportSensorInfoReq::sensorinfo() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.ReportSensorInfoReq.sensorInfo)
+  return sensorinfo_;
+}
+
+// -------------------------------------------------------------------
+
+// ReportSensorInfoRsp
+
+// string strValue = 1;
+inline void ReportSensorInfoRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ReportSensorInfoRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ReportSensorInfoRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+}
+#if LANG_CXX11
+inline void ReportSensorInfoRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+}
+#endif
+inline void ReportSensorInfoRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+}
+inline void ReportSensorInfoRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+}
+inline ::std::string* ReportSensorInfoRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ReportSensorInfoRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ReportSensorInfoRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ReportSensorInfoRsp.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -37616,6 +40689,201 @@ inline void Request::set_allocated_unbindpushclientidreq_value(::CustomerFlow::I
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.UnbindPushClientIDReq_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddStoreSensorReq AddStoreSensorReq_Value = 1200;
+inline bool Request::has_addstoresensorreq_value() const {
+  return this != internal_default_instance() && addstoresensorreq_value_ != NULL;
+}
+inline void Request::clear_addstoresensorreq_value() {
+  if (GetArenaNoVirtual() == NULL && addstoresensorreq_value_ != NULL) delete addstoresensorreq_value_;
+  addstoresensorreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddStoreSensorReq& Request::addstoresensorreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.AddStoreSensorReq_Value)
+  return addstoresensorreq_value_ != NULL ? *addstoresensorreq_value_
+                         : *::CustomerFlow::Interactive::Message::AddStoreSensorReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddStoreSensorReq* Request::mutable_addstoresensorreq_value() {
+  
+  if (addstoresensorreq_value_ == NULL) {
+    addstoresensorreq_value_ = new ::CustomerFlow::Interactive::Message::AddStoreSensorReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.AddStoreSensorReq_Value)
+  return addstoresensorreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddStoreSensorReq* Request::release_addstoresensorreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.AddStoreSensorReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddStoreSensorReq* temp = addstoresensorreq_value_;
+  addstoresensorreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_addstoresensorreq_value(::CustomerFlow::Interactive::Message::AddStoreSensorReq* addstoresensorreq_value) {
+  delete addstoresensorreq_value_;
+  addstoresensorreq_value_ = addstoresensorreq_value;
+  if (addstoresensorreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.AddStoreSensorReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteStoreSensorReq DeleteStoreSensorReq_Value = 1210;
+inline bool Request::has_deletestoresensorreq_value() const {
+  return this != internal_default_instance() && deletestoresensorreq_value_ != NULL;
+}
+inline void Request::clear_deletestoresensorreq_value() {
+  if (GetArenaNoVirtual() == NULL && deletestoresensorreq_value_ != NULL) delete deletestoresensorreq_value_;
+  deletestoresensorreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq& Request::deletestoresensorreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.DeleteStoreSensorReq_Value)
+  return deletestoresensorreq_value_ != NULL ? *deletestoresensorreq_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteStoreSensorReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* Request::mutable_deletestoresensorreq_value() {
+  
+  if (deletestoresensorreq_value_ == NULL) {
+    deletestoresensorreq_value_ = new ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.DeleteStoreSensorReq_Value)
+  return deletestoresensorreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* Request::release_deletestoresensorreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.DeleteStoreSensorReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* temp = deletestoresensorreq_value_;
+  deletestoresensorreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_deletestoresensorreq_value(::CustomerFlow::Interactive::Message::DeleteStoreSensorReq* deletestoresensorreq_value) {
+  delete deletestoresensorreq_value_;
+  deletestoresensorreq_value_ = deletestoresensorreq_value;
+  if (deletestoresensorreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.DeleteStoreSensorReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyStoreSensorReq ModifyStoreSensorReq_Value = 1220;
+inline bool Request::has_modifystoresensorreq_value() const {
+  return this != internal_default_instance() && modifystoresensorreq_value_ != NULL;
+}
+inline void Request::clear_modifystoresensorreq_value() {
+  if (GetArenaNoVirtual() == NULL && modifystoresensorreq_value_ != NULL) delete modifystoresensorreq_value_;
+  modifystoresensorreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq& Request::modifystoresensorreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ModifyStoreSensorReq_Value)
+  return modifystoresensorreq_value_ != NULL ? *modifystoresensorreq_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyStoreSensorReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* Request::mutable_modifystoresensorreq_value() {
+  
+  if (modifystoresensorreq_value_ == NULL) {
+    modifystoresensorreq_value_ = new ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ModifyStoreSensorReq_Value)
+  return modifystoresensorreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* Request::release_modifystoresensorreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ModifyStoreSensorReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* temp = modifystoresensorreq_value_;
+  modifystoresensorreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_modifystoresensorreq_value(::CustomerFlow::Interactive::Message::ModifyStoreSensorReq* modifystoresensorreq_value) {
+  delete modifystoresensorreq_value_;
+  modifystoresensorreq_value_ = modifystoresensorreq_value;
+  if (modifystoresensorreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ModifyStoreSensorReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryStoreSensorInfoReq QueryStoreSensorInfoReq_Value = 1230;
+inline bool Request::has_querystoresensorinforeq_value() const {
+  return this != internal_default_instance() && querystoresensorinforeq_value_ != NULL;
+}
+inline void Request::clear_querystoresensorinforeq_value() {
+  if (GetArenaNoVirtual() == NULL && querystoresensorinforeq_value_ != NULL) delete querystoresensorinforeq_value_;
+  querystoresensorinforeq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq& Request::querystoresensorinforeq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryStoreSensorInfoReq_Value)
+  return querystoresensorinforeq_value_ != NULL ? *querystoresensorinforeq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* Request::mutable_querystoresensorinforeq_value() {
+  
+  if (querystoresensorinforeq_value_ == NULL) {
+    querystoresensorinforeq_value_ = new ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryStoreSensorInfoReq_Value)
+  return querystoresensorinforeq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* Request::release_querystoresensorinforeq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryStoreSensorInfoReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* temp = querystoresensorinforeq_value_;
+  querystoresensorinforeq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_querystoresensorinforeq_value(::CustomerFlow::Interactive::Message::QueryStoreSensorInfoReq* querystoresensorinforeq_value) {
+  delete querystoresensorinforeq_value_;
+  querystoresensorinforeq_value_ = querystoresensorinforeq_value;
+  if (querystoresensorinforeq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryStoreSensorInfoReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllStoreSensorReq QueryAllStoreSensorReq_Value = 1240;
+inline bool Request::has_queryallstoresensorreq_value() const {
+  return this != internal_default_instance() && queryallstoresensorreq_value_ != NULL;
+}
+inline void Request::clear_queryallstoresensorreq_value() {
+  if (GetArenaNoVirtual() == NULL && queryallstoresensorreq_value_ != NULL) delete queryallstoresensorreq_value_;
+  queryallstoresensorreq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq& Request::queryallstoresensorreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryAllStoreSensorReq_Value)
+  return queryallstoresensorreq_value_ != NULL ? *queryallstoresensorreq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* Request::mutable_queryallstoresensorreq_value() {
+  
+  if (queryallstoresensorreq_value_ == NULL) {
+    queryallstoresensorreq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryAllStoreSensorReq_Value)
+  return queryallstoresensorreq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* Request::release_queryallstoresensorreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryAllStoreSensorReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* temp = queryallstoresensorreq_value_;
+  queryallstoresensorreq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryallstoresensorreq_value(::CustomerFlow::Interactive::Message::QueryAllStoreSensorReq* queryallstoresensorreq_value) {
+  delete queryallstoresensorreq_value_;
+  queryallstoresensorreq_value_ = queryallstoresensorreq_value;
+  if (queryallstoresensorreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllStoreSensorReq_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataReq ImportPOSDataReq_Value = 2000;
 inline bool Request::has_importposdatareq_value() const {
   return this != internal_default_instance() && importposdatareq_value_ != NULL;
@@ -37731,6 +40999,45 @@ inline void Request::set_allocated_reportcustomerflowdatareq_value(::CustomerFlo
     
   }
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ReportCustomerFlowDataReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ReportSensorInfoReq ReportSensorInfoReq_Value = 3100;
+inline bool Request::has_reportsensorinforeq_value() const {
+  return this != internal_default_instance() && reportsensorinforeq_value_ != NULL;
+}
+inline void Request::clear_reportsensorinforeq_value() {
+  if (GetArenaNoVirtual() == NULL && reportsensorinforeq_value_ != NULL) delete reportsensorinforeq_value_;
+  reportsensorinforeq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ReportSensorInfoReq& Request::reportsensorinforeq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ReportSensorInfoReq_Value)
+  return reportsensorinforeq_value_ != NULL ? *reportsensorinforeq_value_
+                         : *::CustomerFlow::Interactive::Message::ReportSensorInfoReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* Request::mutable_reportsensorinforeq_value() {
+  
+  if (reportsensorinforeq_value_ == NULL) {
+    reportsensorinforeq_value_ = new ::CustomerFlow::Interactive::Message::ReportSensorInfoReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ReportSensorInfoReq_Value)
+  return reportsensorinforeq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* Request::release_reportsensorinforeq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ReportSensorInfoReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoReq* temp = reportsensorinforeq_value_;
+  reportsensorinforeq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_reportsensorinforeq_value(::CustomerFlow::Interactive::Message::ReportSensorInfoReq* reportsensorinforeq_value) {
+  delete reportsensorinforeq_value_;
+  reportsensorinforeq_value_ = reportsensorinforeq_value;
+  if (reportsensorinforeq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ReportSensorInfoReq_Value)
 }
 
 // -------------------------------------------------------------------
@@ -40338,6 +43645,201 @@ inline void Response::set_allocated_unbindpushclientidrsp_value(::CustomerFlow::
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.UnbindPushClientIDRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddStoreSensorRsp AddStoreSensorRsp_Value = 1200;
+inline bool Response::has_addstoresensorrsp_value() const {
+  return this != internal_default_instance() && addstoresensorrsp_value_ != NULL;
+}
+inline void Response::clear_addstoresensorrsp_value() {
+  if (GetArenaNoVirtual() == NULL && addstoresensorrsp_value_ != NULL) delete addstoresensorrsp_value_;
+  addstoresensorrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddStoreSensorRsp& Response::addstoresensorrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.AddStoreSensorRsp_Value)
+  return addstoresensorrsp_value_ != NULL ? *addstoresensorrsp_value_
+                         : *::CustomerFlow::Interactive::Message::AddStoreSensorRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* Response::mutable_addstoresensorrsp_value() {
+  
+  if (addstoresensorrsp_value_ == NULL) {
+    addstoresensorrsp_value_ = new ::CustomerFlow::Interactive::Message::AddStoreSensorRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.AddStoreSensorRsp_Value)
+  return addstoresensorrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* Response::release_addstoresensorrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.AddStoreSensorRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddStoreSensorRsp* temp = addstoresensorrsp_value_;
+  addstoresensorrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_addstoresensorrsp_value(::CustomerFlow::Interactive::Message::AddStoreSensorRsp* addstoresensorrsp_value) {
+  delete addstoresensorrsp_value_;
+  addstoresensorrsp_value_ = addstoresensorrsp_value;
+  if (addstoresensorrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.AddStoreSensorRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.DeleteStoreSensorRsp DeleteStoreSensorRsp_Value = 1210;
+inline bool Response::has_deletestoresensorrsp_value() const {
+  return this != internal_default_instance() && deletestoresensorrsp_value_ != NULL;
+}
+inline void Response::clear_deletestoresensorrsp_value() {
+  if (GetArenaNoVirtual() == NULL && deletestoresensorrsp_value_ != NULL) delete deletestoresensorrsp_value_;
+  deletestoresensorrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp& Response::deletestoresensorrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.DeleteStoreSensorRsp_Value)
+  return deletestoresensorrsp_value_ != NULL ? *deletestoresensorrsp_value_
+                         : *::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* Response::mutable_deletestoresensorrsp_value() {
+  
+  if (deletestoresensorrsp_value_ == NULL) {
+    deletestoresensorrsp_value_ = new ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.DeleteStoreSensorRsp_Value)
+  return deletestoresensorrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* Response::release_deletestoresensorrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.DeleteStoreSensorRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* temp = deletestoresensorrsp_value_;
+  deletestoresensorrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_deletestoresensorrsp_value(::CustomerFlow::Interactive::Message::DeleteStoreSensorRsp* deletestoresensorrsp_value) {
+  delete deletestoresensorrsp_value_;
+  deletestoresensorrsp_value_ = deletestoresensorrsp_value;
+  if (deletestoresensorrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.DeleteStoreSensorRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyStoreSensorRsp ModifyStoreSensorRsp_Value = 1220;
+inline bool Response::has_modifystoresensorrsp_value() const {
+  return this != internal_default_instance() && modifystoresensorrsp_value_ != NULL;
+}
+inline void Response::clear_modifystoresensorrsp_value() {
+  if (GetArenaNoVirtual() == NULL && modifystoresensorrsp_value_ != NULL) delete modifystoresensorrsp_value_;
+  modifystoresensorrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp& Response::modifystoresensorrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ModifyStoreSensorRsp_Value)
+  return modifystoresensorrsp_value_ != NULL ? *modifystoresensorrsp_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* Response::mutable_modifystoresensorrsp_value() {
+  
+  if (modifystoresensorrsp_value_ == NULL) {
+    modifystoresensorrsp_value_ = new ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ModifyStoreSensorRsp_Value)
+  return modifystoresensorrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* Response::release_modifystoresensorrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ModifyStoreSensorRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* temp = modifystoresensorrsp_value_;
+  modifystoresensorrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_modifystoresensorrsp_value(::CustomerFlow::Interactive::Message::ModifyStoreSensorRsp* modifystoresensorrsp_value) {
+  delete modifystoresensorrsp_value_;
+  modifystoresensorrsp_value_ = modifystoresensorrsp_value;
+  if (modifystoresensorrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ModifyStoreSensorRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryStoreSensorInfoRsp QueryStoreSensorInfoRsp_Value = 1230;
+inline bool Response::has_querystoresensorinforsp_value() const {
+  return this != internal_default_instance() && querystoresensorinforsp_value_ != NULL;
+}
+inline void Response::clear_querystoresensorinforsp_value() {
+  if (GetArenaNoVirtual() == NULL && querystoresensorinforsp_value_ != NULL) delete querystoresensorinforsp_value_;
+  querystoresensorinforsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp& Response::querystoresensorinforsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryStoreSensorInfoRsp_Value)
+  return querystoresensorinforsp_value_ != NULL ? *querystoresensorinforsp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* Response::mutable_querystoresensorinforsp_value() {
+  
+  if (querystoresensorinforsp_value_ == NULL) {
+    querystoresensorinforsp_value_ = new ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryStoreSensorInfoRsp_Value)
+  return querystoresensorinforsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* Response::release_querystoresensorinforsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryStoreSensorInfoRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* temp = querystoresensorinforsp_value_;
+  querystoresensorinforsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_querystoresensorinforsp_value(::CustomerFlow::Interactive::Message::QueryStoreSensorInfoRsp* querystoresensorinforsp_value) {
+  delete querystoresensorinforsp_value_;
+  querystoresensorinforsp_value_ = querystoresensorinforsp_value;
+  if (querystoresensorinforsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryStoreSensorInfoRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllStoreSensorRsp QueryAllStoreSensorRsp_Value = 1240;
+inline bool Response::has_queryallstoresensorrsp_value() const {
+  return this != internal_default_instance() && queryallstoresensorrsp_value_ != NULL;
+}
+inline void Response::clear_queryallstoresensorrsp_value() {
+  if (GetArenaNoVirtual() == NULL && queryallstoresensorrsp_value_ != NULL) delete queryallstoresensorrsp_value_;
+  queryallstoresensorrsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp& Response::queryallstoresensorrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryAllStoreSensorRsp_Value)
+  return queryallstoresensorrsp_value_ != NULL ? *queryallstoresensorrsp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* Response::mutable_queryallstoresensorrsp_value() {
+  
+  if (queryallstoresensorrsp_value_ == NULL) {
+    queryallstoresensorrsp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryAllStoreSensorRsp_Value)
+  return queryallstoresensorrsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* Response::release_queryallstoresensorrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryAllStoreSensorRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* temp = queryallstoresensorrsp_value_;
+  queryallstoresensorrsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryallstoresensorrsp_value(::CustomerFlow::Interactive::Message::QueryAllStoreSensorRsp* queryallstoresensorrsp_value) {
+  delete queryallstoresensorrsp_value_;
+  queryallstoresensorrsp_value_ = queryallstoresensorrsp_value;
+  if (queryallstoresensorrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllStoreSensorRsp_Value)
+}
+
 // .CustomerFlow.Interactive.Message.ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;
 inline bool Response::has_importposdatarsp_value() const {
   return this != internal_default_instance() && importposdatarsp_value_ != NULL;
@@ -40453,6 +43955,45 @@ inline void Response::set_allocated_reportcustomerflowdatarsp_value(::CustomerFl
     
   }
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ReportCustomerFlowDataRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ReportSensorInfoRsp ReportSensorInfoRsp_Value = 3100;
+inline bool Response::has_reportsensorinforsp_value() const {
+  return this != internal_default_instance() && reportsensorinforsp_value_ != NULL;
+}
+inline void Response::clear_reportsensorinforsp_value() {
+  if (GetArenaNoVirtual() == NULL && reportsensorinforsp_value_ != NULL) delete reportsensorinforsp_value_;
+  reportsensorinforsp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp& Response::reportsensorinforsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ReportSensorInfoRsp_Value)
+  return reportsensorinforsp_value_ != NULL ? *reportsensorinforsp_value_
+                         : *::CustomerFlow::Interactive::Message::ReportSensorInfoRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* Response::mutable_reportsensorinforsp_value() {
+  
+  if (reportsensorinforsp_value_ == NULL) {
+    reportsensorinforsp_value_ = new ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ReportSensorInfoRsp_Value)
+  return reportsensorinforsp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* Response::release_reportsensorinforsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ReportSensorInfoRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* temp = reportsensorinforsp_value_;
+  reportsensorinforsp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_reportsensorinforsp_value(::CustomerFlow::Interactive::Message::ReportSensorInfoRsp* reportsensorinforsp_value) {
+  delete reportsensorinforsp_value_;
+  reportsensorinforsp_value_ = reportsensorinforsp_value;
+  if (reportsensorinforsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ReportSensorInfoRsp_Value)
 }
 
 // -------------------------------------------------------------------
@@ -40618,6 +44159,32 @@ inline void CustomerFlowMessage::set_allocated_rspvalue(::CustomerFlow::Interact
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

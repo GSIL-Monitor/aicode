@@ -447,7 +447,7 @@ private:
 
     bool QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<std::string> &scoreList);
 
-    bool QueryAllRemotePatrolStore(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
+    bool QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     void ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount,

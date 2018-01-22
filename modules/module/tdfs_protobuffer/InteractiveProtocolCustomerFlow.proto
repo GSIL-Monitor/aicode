@@ -184,6 +184,17 @@ enum CustomerFlowMsgType
     UnbindPushClientIDReq_T = 19120;          //解绑推送Client ID
     UnbindPushClientIDRsp_T = 19130;
 
+    AddStoreSensorReq_T = 19200;              //添加店铺传感器
+    AddStoreSensorRsp_T = 19210;
+    DeleteStoreSensorReq_T = 19220;           //删除店铺传感器
+    DeleteStoreSensorRsp_T = 19230;
+    ModifyStoreSensorReq_T = 19240;           //修改店铺传感器
+    ModifyStoreSensorRsp_T = 19250;
+    QueryStoreSensorInfoReq_T = 19260;        //查询店铺传感器信息
+    QueryStoreSensorInfoRsp_T = 19270;
+    QueryAllStoreSensorReq_T = 19280;         //查询所有店铺传感器
+    QueryAllStoreSensorRsp_T = 19290;
+
     ImportPOSDataReq_T = 20000;               //录入POS数据
     ImportPOSDataRsp_T = 20010;
 
@@ -194,6 +205,9 @@ enum CustomerFlowMsgType
 
     ReportCustomerFlowDataReq_T = 30000;      //设备上报客流数据
     ReportCustomerFlowDataRsp_T = 30010;
+
+    ReportSensorInfoReq_T = 30100;            //上报传感器信息
+    ReportSensorInfoRsp_T = 30110;
 }
 
 message Area                             //区域
@@ -368,12 +382,26 @@ message RemotePatrolStore                //远程巡店记录
     string strPatrolID = 1;
     string strUserID = 2;
     string strDeviceID = 3;
+    string strEntranceID = 4;
+    string strStoreID = 5;
+    string strPlanID = 6;
+    string strPatrolDate = 7;
+    repeated string strPatrolPicture = 8;
+    uint32 uiPatrolResult = 9;
+    string strDescription = 10;
+    string strCreateDate = 11;
+}
+
+message Sensor                           //传感器
+{
+    string strSensorID = 1;
+    string strSensorName = 2;
+    string strSensorType = 3;
     string strStoreID = 4;
-    string strPatrolDate = 5;
-    repeated string strPatrolPicture = 6;
-    uint32 uiPatrolResult = 7;
-    string strDescription = 8;
-    string strCreateDate = 9;
+    string strDeviceID = 5;
+    string strValue = 6;
+    uint32 uiState = 7;
+    string strCreateDate = 8;
 }
 
 message RawCustomerFlow                  //设备客流信息
@@ -1106,14 +1134,71 @@ message QueryAllRemotePatrolStoreReq     //查询所有远程巡店记录请求
 {
     string strUserID = 1;
     string strStoreID = 2;
-    string strBeginDate = 3;
-    string strEndDate = 4;
-    uint32 uiBeginIndex = 5;
+    string strPlanID = 3;
+    string strBeginDate = 4;
+    string strEndDate = 5;
+    uint32 uiBeginIndex = 6;
 }
 
 message QueryAllRemotePatrolStoreRsp     //查询所有远程巡店记录响应
 {
     repeated RemotePatrolStore patrolStore = 1;
+}
+
+message AddStoreSensorReq                //添加店铺传感器请求
+{
+    string strUserID = 1;
+    Sensor sensorInfo = 2;
+}
+
+message AddStoreSensorRsp                //添加店铺传感器响应
+{
+    string strSensorID = 1;
+}
+
+message DeleteStoreSensorReq             //删除店铺传感器请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strSensorID = 3;
+}
+
+message DeleteStoreSensorRsp             //删除店铺传感器响应
+{
+    string strValue = 1;
+}
+
+message ModifyStoreSensorReq             //修改店铺传感器请求
+{
+    string strUserID = 1;
+    Sensor sensorInfo = 2;
+}
+
+message ModifyStoreSensorRsp             //修改店铺传感器响应
+{
+    string strValue = 1;
+}
+
+message QueryStoreSensorInfoReq          //查询店铺传感器信息请求
+{
+    string strUserID = 1;
+    string strSensorID = 2;
+}
+
+message QueryStoreSensorInfoRsp          //查询店铺传感器信息响应
+{
+    Sensor sensorInfo = 1;
+}
+
+message QueryAllStoreSensorReq           //查询所有店铺传感器请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+}
+
+message QueryAllStoreSensorRsp           //查询所有店铺传感器响应
+{
+    repeated Sensor sensorInfo = 1;
 }
 
 message ImportPOSDataReq                 //录入POS数据请求
@@ -1152,6 +1237,17 @@ message ReportCustomerFlowDataReq        //设备上报客流数据请求
 }
 
 message ReportCustomerFlowDataRsp        //设备上报客流数据响应
+{
+    string strValue = 1;
+}
+
+message ReportSensorInfoReq              //上报传感器信息请求
+{
+    string strDeviceID = 1;
+    repeated Sensor sensorInfo = 2;
+}
+
+message ReportSensorInfoRsp              //上报传感器信息响应
 {
     string strValue = 1;
 }
@@ -1242,6 +1338,12 @@ message Request
     BindPushClientIDReq BindPushClientIDReq_Value = 1150;                      //绑定推送Client ID
     UnbindPushClientIDReq UnbindPushClientIDReq_Value = 1160;                  //解绑推送Client ID
 
+    AddStoreSensorReq AddStoreSensorReq_Value = 1200;                          //添加店铺传感器
+    DeleteStoreSensorReq DeleteStoreSensorReq_Value = 1210;                    //删除店铺传感器
+    ModifyStoreSensorReq ModifyStoreSensorReq_Value = 1220;                    //修改店铺传感器
+    QueryStoreSensorInfoReq QueryStoreSensorInfoReq_Value = 1230;              //查询店铺传感器信息
+    QueryAllStoreSensorReq QueryAllStoreSensorReq_Value = 1240;                //查询所有店铺传感器
+
     ImportPOSDataReq ImportPOSDataReq_Value = 2000;                            //录入POS数据
 
     QueryCustomerFlowStatisticReq QueryCustomerFlowStatisticReq_Value = 2900;  //查询客流统计
@@ -1249,6 +1351,8 @@ message Request
     //////////////////////////////////////////////////////////////////////
 
     ReportCustomerFlowDataReq ReportCustomerFlowDataReq_Value = 3000;          //设备上报客流信息
+
+    ReportSensorInfoReq ReportSensorInfoReq_Value = 3100;                      //上报传感器信息
 }
 
 //响应对象
@@ -1337,6 +1441,12 @@ message Response
     BindPushClientIDRsp BindPushClientIDRsp_Value = 1150;                      //绑定推送Client ID
     UnbindPushClientIDRsp UnbindPushClientIDRsp_Value = 1160;                  //解绑推送Client ID
 
+    AddStoreSensorRsp AddStoreSensorRsp_Value = 1200;                          //添加店铺传感器
+    DeleteStoreSensorRsp DeleteStoreSensorRsp_Value = 1210;                    //删除店铺传感器
+    ModifyStoreSensorRsp ModifyStoreSensorRsp_Value = 1220;                    //修改店铺传感器
+    QueryStoreSensorInfoRsp QueryStoreSensorInfoRsp_Value = 1230;              //查询店铺传感器信息
+    QueryAllStoreSensorRsp QueryAllStoreSensorRsp_Value = 1240;                //查询所有店铺传感器
+
     ImportPOSDataRsp ImportPOSDataRsp_Value = 2000;                            //录入POS数据
 
     QueryCustomerFlowStatisticRsp QueryCustomerFlowStatisticRsp_Value = 2900;  //查询客流统计
@@ -1344,6 +1454,8 @@ message Response
     //////////////////////////////////////////////////////////////////////
 
     ReportCustomerFlowDataRsp ReportCustomerFlowDataRsp_Value = 3000;          //设备上报客流信息
+
+    ReportSensorInfoRsp ReportSensorInfoRsp_Value = 3100;                      //上报传感器信息
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理

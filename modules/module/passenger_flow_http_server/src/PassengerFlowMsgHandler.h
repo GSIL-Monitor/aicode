@@ -98,6 +98,13 @@ public:
     static const std::string QUERY_PATROL_RECORD;
     static const std::string QUERY_ALL_PATROL_RECORD;
 
+    static const std::string CREATE_STORE_SENSOR;
+    static const std::string DELETE_STORE_SENSOR;
+    static const std::string MODIFY_STORE_SENSOR;
+    static const std::string QUERY_STORE_SENSOR;
+    static const std::string QUERY_ALL_STORE_SENSOR;
+
+    static const std::string REPORT_STORE_SENSOR;
 
     typedef struct _ParamInfo
     {
@@ -246,6 +253,18 @@ public:
     bool UploadPassengerFlowHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
+    bool CreateStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool DeleteStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ReportSensorInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
 private:
@@ -410,6 +429,18 @@ private:
         std::list<std::string> m_strPatrolPicURLList;
         unsigned int m_uiPatrolResult;
         std::string m_strPatrolDesc;
+        std::string m_strPlanID;
+        std::string m_strEntranceID;
+    };
+
+    struct Sensor
+    {
+        std::string m_strID;
+        std::string m_strName;
+        unsigned int m_uiType;
+        std::string m_strValue;
+        std::string m_strStoreID;
+        std::string m_strDevID;        
     };
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
@@ -469,7 +500,7 @@ private:
     bool QueryEvent(const std::string &strSid, EventInfo &eventinfo);
 
     bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
-        const std::string &strProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
+        const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
 
 
     bool CreateGuardStorePlan(const std::string &strSid, Plan &plan);
@@ -538,8 +569,16 @@ private:
     bool DeletePatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strPatrolID);
     bool ModifyPatrolRecord(const std::string &strSid, PatrolRecord &pr);
     bool QueryPatrolRecord(const std::string &strSid, PatrolRecord &pr);
-    bool QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID,
+    bool QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strPlanID,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist);
+
+    bool CreateStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr);
+    bool DeleteStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strSensorID);
+    bool ModifyStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr);
+    bool QueryStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr);
+    bool QueryAllStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, std::list<Sensor> &srlist);
+
+    bool ReportSensorInfo(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);

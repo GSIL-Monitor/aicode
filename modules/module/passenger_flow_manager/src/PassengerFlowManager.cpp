@@ -3247,7 +3247,9 @@ bool PassengerFlowManager::AddRemotePatrolStoreReq(const std::string &strMsg, co
             << " and patrol id is " << strPatrolID
             << " and user id is " << req.m_patrolStore.m_strUserID
             << " and device id is " << req.m_patrolStore.m_strDeviceID
+            << " and entrance id is " << req.m_patrolStore.m_strEntranceID
             << " and store id is " << req.m_patrolStore.m_strStoreID
+            << " and plan id is " << req.m_patrolStore.m_strPlanID
             << " and patrol date is " << req.m_patrolStore.m_strPatrolDate
             << " and patrol result is " << req.m_patrolStore.m_uiPatrolResult
             << " and result is " << blResult);
@@ -3264,7 +3266,9 @@ bool PassengerFlowManager::AddRemotePatrolStoreReq(const std::string &strMsg, co
     patrolStore.m_strPatrolID = strPatrolID = CreateUUID();
     patrolStore.m_strUserID = req.m_patrolStore.m_strUserID;
     patrolStore.m_strDeviceID = req.m_patrolStore.m_strDeviceID;
+    patrolStore.m_strEntranceID = req.m_patrolStore.m_strEntranceID;
     patrolStore.m_strStoreID = req.m_patrolStore.m_strStoreID;
+    patrolStore.m_strPlanID = req.m_patrolStore.m_strPlanID;
     patrolStore.m_strPatrolDate = req.m_patrolStore.m_strPatrolDate;
     patrolStore.m_strPatrolPictureList = req.m_patrolStore.m_strPatrolPictureList;
     patrolStore.m_uiPatrolResult = req.m_patrolStore.m_uiPatrolResult;
@@ -3391,7 +3395,9 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfoReq(const std::string &strM
             rsp.m_patrolStore.m_strPatrolID = patrolStore.m_strPatrolID;
             rsp.m_patrolStore.m_strUserID = patrolStore.m_strUserID;
             rsp.m_patrolStore.m_strDeviceID = patrolStore.m_strDeviceID;
+            rsp.m_patrolStore.m_strEntranceID = patrolStore.m_strEntranceID;
             rsp.m_patrolStore.m_strStoreID = patrolStore.m_strStoreID;
+            rsp.m_patrolStore.m_strPlanID = patrolStore.m_strPlanID;
             rsp.m_patrolStore.m_strPatrolDate = patrolStore.m_strPatrolDate;
             rsp.m_patrolStore.m_strPatrolPictureList = patrolStore.m_strPatrolPictureList;
             rsp.m_patrolStore.m_uiPatrolResult = patrolStore.m_uiPatrolResult;
@@ -3411,7 +3417,9 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfoReq(const std::string &strM
             << " and patrol id is " << patrolStore.m_strPatrolID
             << " and user id is " << patrolStore.m_strUserID
             << " and device id is " << patrolStore.m_strDeviceID
+            << " and entrance id is " << patrolStore.m_strEntranceID
             << " and store id is " << patrolStore.m_strStoreID
+            << " and plan id is " << patrolStore.m_strPlanID
             << " and patrol date is " << patrolStore.m_strPatrolDate
             << " and patrol result is " << patrolStore.m_uiPatrolResult
             << " and result is " << blResult);
@@ -3491,7 +3499,7 @@ bool PassengerFlowManager::QueryAllRemotePatrolStoreReq(const std::string &strMs
             return false;
         }
 
-    if (!QueryAllRemotePatrolStore(req.m_strStoreID, patrolStoreList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+    if (!QueryAllRemotePatrolStore(req.m_strStoreID, req.m_strPlanID, patrolStoreList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all remote patrol store failed, src id is " << strSrcID);
         return false;
@@ -6044,7 +6052,6 @@ bool PassengerFlowManager::QueryRegularPatrolTime(const std::string &strPlanID, 
         {
         case 0:
             result = strColumn;
-            break;
 
         default:
             LOG_ERROR_RLD("QueryRegularPatrolTime sql callback error, row num is " << uiRowNum
@@ -7008,11 +7015,17 @@ bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID
 
 void PassengerFlowManager::AddRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
 {
+    std::string entranceID = patrolStore.m_strEntranceID;
+    if (!patrolStore.m_strDeviceID.empty())
+    {
+        QueryDeviceBoundEntrance(patrolStore.m_strDeviceID, entranceID);
+    }
+
     char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_remote_patrol_store (id, patrol_id, user_id, device_id, store_id, patrol_date, patrol_result, description, create_date)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, patrolStore.m_strPatrolID.c_str(), patrolStore.m_strUserID.c_str(),
-        patrolStore.m_strDeviceID.c_str(), patrolStore.m_strStoreID.c_str(), patrolStore.m_strPatrolDate.c_str(),
+    const char *sqlfmt = "insert into t_remote_patrol_store (id, patrol_id, user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, patrolStore.m_strPatrolID.c_str(), patrolStore.m_strUserID.c_str(), patrolStore.m_strDeviceID.c_str(),
+        entranceID.c_str(), patrolStore.m_strStoreID.c_str(), patrolStore.m_strPlanID.c_str(), patrolStore.m_strPatrolDate.c_str(),
         patrolStore.m_uiPatrolResult, patrolStore.m_strDescription.c_str(), CurrentTime().c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -7123,7 +7136,7 @@ void PassengerFlowManager::DeleteRemotePatrolStoreScreenshot(const std::string &
 bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatrolID, PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
 {
     char sql[512] = { 0 };
-    const char *sqlfmt = "select user_id, device_id, store_id, patrol_date, patrol_result, description"
+    const char *sqlfmt = "select user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description"
         " from t_remote_patrol_store where patrol_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
 
@@ -7139,15 +7152,21 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatr
             rstPatrolStore.m_strDeviceID = strColumn;
             break;
         case 2:
-            rstPatrolStore.m_strStoreID = strColumn;
+            rstPatrolStore.m_strEntranceID = strColumn;
             break;
         case 3:
-            rstPatrolStore.m_strPatrolDate = strColumn;
+            rstPatrolStore.m_strStoreID = strColumn;
             break;
         case 4:
-            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            rstPatrolStore.m_strPlanID = strColumn;
             break;
         case 5:
+            rstPatrolStore.m_strPatrolDate = strColumn;
+            break;
+        case 6:
+            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 7:
             rstPatrolStore.m_strDescription = strColumn;
             result = rstPatrolStore;
             break;
@@ -7176,7 +7195,9 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatr
     auto patrol = boost::any_cast<PassengerFlowProtoHandler::RemotePatrolStore>(ResultList.front());
     patrolStore.m_strUserID = patrol.m_strUserID;
     patrolStore.m_strDeviceID = patrol.m_strDeviceID;
+    patrolStore.m_strEntranceID = patrol.m_strEntranceID;
     patrolStore.m_strStoreID = patrol.m_strStoreID;
+    patrolStore.m_strPlanID = patrol.m_strPlanID;
     patrolStore.m_uiPatrolResult = patrol.m_uiPatrolResult;
     patrolStore.m_strPatrolDate = patrol.m_strPatrolDate;
     patrolStore.m_strDescription = patrol.m_strDescription;
@@ -7215,21 +7236,21 @@ bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &s
 
     for (auto &result : ResultList)
     {
-        screenshotList.push_back(boost::any_cast<std::string>(result));
+        screenshotList.push_back("http://172.20.120.22:7000/filemgr.cgi?action=download_file&fileid=" + boost::any_cast<std::string>(result));
     }
 
     return true;
 }
 
-bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
+bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[512] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select patrol_id, user_id, device_id, store_id, patrol_date, patrol_result, description from"
-        " t_remote_patrol_store where store_id = '%s'";
-
-    int len = snprintf(sql, size, sqlfmt, strStoreID.c_str());
+    const char *sqlfmt = "select patrol_id, user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description from"
+        " t_remote_patrol_store where store_id %s and plan_id %s";
+    int len = snprintf(sql, size, sqlfmt, strStoreID.empty() ? "is not null" : ("= '" + strStoreID + "'").c_str(),
+        strPlanID.empty() ? "is not null" : ("= '" + strPlanID + "'").c_str());
 
     if (!strBeginDate.empty())
     {
@@ -7258,15 +7279,21 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
             rstPatrolStore.m_strDeviceID = strColumn;
             break;
         case 3:
-            rstPatrolStore.m_strStoreID = strColumn;
+            rstPatrolStore.m_strEntranceID = strColumn;
             break;
         case 4:
-            rstPatrolStore.m_strPatrolDate = strColumn;
+            rstPatrolStore.m_strStoreID = strColumn;
             break;
         case 5:
-            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            rstPatrolStore.m_strPlanID = strColumn;
             break;
         case 6:
+            rstPatrolStore.m_strPatrolDate = strColumn;
+            break;
+        case 7:
+            rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 8:
             rstPatrolStore.m_strDescription = strColumn;
             result = rstPatrolStore;
             break;

@@ -171,6 +171,17 @@ public:
         UnbindPushClientIDReq_T = 19120,          //解绑推送Client ID
         UnbindPushClientIDRsp_T = 19130,
 
+        AddStoreSensorReq_T = 19200,              //添加店铺传感器
+        AddStoreSensorRsp_T = 19210,
+        DeleteStoreSensorReq_T = 19220,           //删除店铺传感器
+        DeleteStoreSensorRsp_T = 19230,
+        ModifyStoreSensorReq_T = 19240,           //修改店铺传感器
+        ModifyStoreSensorRsp_T = 19250,
+        QueryStoreSensorInfoReq_T = 19260,        //查询店铺传感器信息
+        QueryStoreSensorInfoRsp_T = 19270,
+        QueryAllStoreSensorReq_T = 19280,         //查询所有店铺传感器
+        QueryAllStoreSensorRsp_T = 19290,
+
         ImportPOSDataReq_T = 20000,               //录入POS数据
         ImportPOSDataRsp_T = 20010,
 
@@ -180,7 +191,10 @@ public:
         //////////////////////////////////////////////////////////
 
         ReportCustomerFlowDataReq_T = 30000,      //设备上报客流数据
-        ReportCustomerFlowDataRsp_T = 30010
+        ReportCustomerFlowDataRsp_T = 30010,
+
+        ReportSensorInfoReq_T = 30100,            //上报传感器信息
+        ReportSensorInfoRsp_T = 30110
     };
 
     struct Area                             //区域
@@ -354,11 +368,25 @@ public:
         std::string m_strPatrolID;
         std::string m_strUserID;
         std::string m_strDeviceID;
+        std::string m_strEntranceID;
         std::string m_strStoreID;
+        std::string m_strPlanID;
         std::string m_strPatrolDate;
         std::list<std::string> m_strPatrolPictureList;
         unsigned int m_uiPatrolResult;
         std::string m_strDescription;
+        std::string m_strCreateDate;
+    };
+
+    struct Sensor                           //传感器
+    {
+        std::string m_strSensorID;
+        std::string m_strSensorName;
+        std::string m_strSensorType;
+        std::string m_strStoreID;
+        std::string m_strDeviceID;
+        std::string m_strValue;
+        unsigned int m_uiState;
         std::string m_strCreateDate;
     };
 
@@ -1501,6 +1529,7 @@ public:
     {
         std::string m_strUserID;
         std::string m_strStoreID;
+        std::string m_strPlanID;
         std::string m_strBeginDate;
         std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
@@ -1512,6 +1541,92 @@ public:
     struct QueryAllRemotePatrolStoreRsp : Response
     {
         std::list<RemotePatrolStore> m_patrolStoreList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddStoreSensorReq :Request
+    {
+        std::string m_strUserID;
+        Sensor m_sensorInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddStoreSensorRsp :Response
+    {
+        std::string m_strSensorID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteStoreSensorReq :Request
+    {
+        std::string m_strUserID;
+        std::string m_strStoreID;
+        std::string m_strSensorID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct DeleteStoreSensorRsp :Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyStoreSensorReq :Request
+    {
+        std::string m_strUserID;
+        Sensor m_sensorInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyStoreSensorRsp :Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryStoreSensorInfoReq :Request
+    {
+        std::string m_strUserID;
+        std::string m_strSensorID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryStoreSensorInfoRsp :Response
+    {
+        Sensor m_sensorInfo;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllStoreSensorReq :Request
+    {
+        std::string m_strUserID;
+        std::string m_strStoreID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllStoreSensorRsp :Response
+    {
+        std::list<Sensor> m_sensorList;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);
@@ -1568,6 +1683,23 @@ public:
     };
 
     struct ReportCustomerFlowDataRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ReportSensorInfoReq : Request
+    {
+        std::string m_strDeviceID;
+        std::list<Sensor> m_sensorList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ReportSensorInfoRsp : Response
     {
         std::string m_strValue;
 
@@ -1913,6 +2045,31 @@ private:
     bool QueryAllRemotePatrolStoreRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QueryAllRemotePatrolStoreRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
+    bool AddStoreSensorReq_Serializer(const Request &req, std::string &strOutput);
+    bool AddStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool AddStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool AddStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool DeleteStoreSensorReq_Serializer(const Request &req, std::string &strOutput);
+    bool DeleteStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool DeleteStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool DeleteStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool ModifyStoreSensorReq_Serializer(const Request &req, std::string &strOutput);
+    bool ModifyStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ModifyStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ModifyStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryStoreSensorInfoReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryStoreSensorInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryStoreSensorInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryStoreSensorInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryAllStoreSensorReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryAllStoreSensorReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryAllStoreSensorRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryAllStoreSensorRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
     bool ImportPOSDataReq_Serializer(const Request &req, std::string &strOutput);
     bool ImportPOSDataReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool ImportPOSDataRsp_Serializer(const Request &rsp, std::string &strOutput);
@@ -1927,6 +2084,11 @@ private:
     bool ReportCustomerFlowDataReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool ReportCustomerFlowDataRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool ReportCustomerFlowDataRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool ReportSensorInfoReq_Serializer(const Request &req, std::string &strOutput);
+    bool ReportSensorInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ReportSensorInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ReportSensorInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
 
     typedef boost::function<bool(const Request &req, std::string &strOutput)> Serializer;

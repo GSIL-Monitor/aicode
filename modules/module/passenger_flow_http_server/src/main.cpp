@@ -344,6 +344,15 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryPatrolRecordHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryAllPatrolRecordHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::CreateStoreSensorHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::DeleteStoreSensorHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::ModifyStoreSensorHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::QueryStoreSensorHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::QueryAllStoreSensorHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::ReportSensorInfoHandler, &filehdr, _1, _2));
+
+
 
     fcgimgr.Run(true);
     return 0;

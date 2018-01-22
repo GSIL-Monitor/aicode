@@ -317,7 +317,7 @@ bool CTimeZone::GetTimezoneFromCountryCode( TimeZone &timezone )
 
     char sql[1024] = { 0 };
     const char* sqlfmt = "select countrycode, country_en, country_cn, countrySQ from t_timezone_info where countrycode = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, timezone.sCode.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, timezone.sCode.empty() ? "CN" : timezone.sCode.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {

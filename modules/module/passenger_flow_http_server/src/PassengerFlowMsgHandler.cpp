@@ -141,6 +141,18 @@ const std::string PassengerFlowMsgHandler::QUERY_PATROL_RECORD("query_patrol_rec
 
 const std::string PassengerFlowMsgHandler::QUERY_ALL_PATROL_RECORD("query_all_patrol_record");
 
+const std::string PassengerFlowMsgHandler::CREATE_STORE_SENSOR("add_store_sensor");
+
+const std::string PassengerFlowMsgHandler::DELETE_STORE_SENSOR("remove_store_sensor");
+
+const std::string PassengerFlowMsgHandler::MODIFY_STORE_SENSOR("modify_store_sensor");
+
+const std::string PassengerFlowMsgHandler::QUERY_STORE_SENSOR("query_store_sensor");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_STORE_SENSOR("query_all_store_sensor");
+
+const std::string PassengerFlowMsgHandler::REPORT_STORE_SENSOR("report_sensor_info");
+
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new PassengerFlowProtoHandler)
@@ -1511,7 +1523,7 @@ bool PassengerFlowMsgHandler::ReportEventHandler(boost::shared_ptr<MsgInfoMap> p
     
     std::string strDevID;
     itFind = pMsgInfoMap->find("deviceid");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
         strDevID = itFind->second;
     }
@@ -1813,12 +1825,12 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
         }
     }
 
+    unsigned int uiViewState = 0xFFFFFFFF;
     std::string strViewState;
     itFind = pMsgInfoMap->find("view_state");
     if (pMsgInfoMap->end() != itFind)
     {
-        strViewState = itFind->second;
-        unsigned int uiViewState = 0;
+        strViewState = itFind->second;        
         if (!ValidType<unsigned int>(strViewState, uiViewState))
         {
             LOG_ERROR_RLD("View state value parse failed.");
@@ -1843,7 +1855,7 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
     einfo.m_strSubmitDate = strSubmitDate;
     einfo.m_strUserID = strUserID;
     einfo.m_strProcessState = strProcessState;
-    einfo.m_strViewState = strViewState;
+    einfo.m_strViewState = boost::lexical_cast<std::string>(uiViewState);
 
     auto itBegin = strEventTypeList.begin();
     auto itEnd = strEventTypeList.end();
@@ -2064,12 +2076,12 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         }
     }
 
+    unsigned int uiProcessState = 0xFFFFFFFF;
     std::string strProcessState;
     itFind = pMsgInfoMap->find("process_state");
     if (pMsgInfoMap->end() != itFind)
     {
-        strProcessState = itFind->second;
-        unsigned int uiProcessState = 0;
+        strProcessState = itFind->second;        
         if (!ValidType<unsigned int>(strProcessState, uiProcessState))
         {
             LOG_ERROR_RLD("Process state parse failed.");
@@ -2104,10 +2116,10 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query all event info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex <<
-        " and process state is " << strProcessState << " and begin date is " << strBeginDate << " and end date is " << strEndDate);
+        " and process state is " << uiProcessState << " and begin date is " << strBeginDate << " and end date is " << strEndDate);
 
     std::list<EventInfo> einfoList;    
-    if (!QueryAllEvent(strSid, strUserID, uiBeginIndex, strProcessState, strBeginDate, strEndDate, einfoList))
+    if (!QueryAllEvent(strSid, strUserID, uiBeginIndex, uiProcessState, strBeginDate, strEndDate, einfoList))
     {
         LOG_ERROR_RLD("Query all event handle failed");
         return blResult;
@@ -2118,24 +2130,33 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
     while (itBegin != itEnd)
     {
         Json::Value jsRemark;
-        Json::Reader reader;
-        if (!reader.parse(itBegin->m_strRemark, jsRemark, false))
+        if (!itBegin->m_strRemark.empty())
         {
-            LOG_ERROR_RLD("Parsed failed and value is " << itBegin->m_strRemark);
-            return blResult;
+            
+            Json::Reader reader;
+            if (!reader.parse(itBegin->m_strRemark, jsRemark, false))
+            {
+                LOG_ERROR_RLD("Parsed failed and value is " << itBegin->m_strRemark);
+                return blResult;
+            }
         }
-
+        
         Json::Value jsEventInfo;
         jsEventInfo["event_id"] = itBegin->m_strEventID;
         jsEventInfo["source"] = itBegin->m_strSource;
         jsEventInfo["submit_date"] = itBegin->m_strSubmitDate;
         jsEventInfo["expire_date"] = itBegin->m_strExpireDate;
         jsEventInfo["process_state"] = itBegin->m_strProcessState;
-        jsEventInfo["create_date"] = itBegin->m_strCreateDate;
-        jsEventInfo["remark"] = jsRemark;
+        //jsEventInfo["create_date"] = itBegin->m_strCreateDate;
+        
         jsEventInfo["userid"] = itBegin->m_strUserID;
-        jsEventInfo["deviceid"] = itBegin->m_strDevID;
+        //jsEventInfo["deviceid"] = itBegin->m_strDevID;
         jsEventInfo["view_state"] = itBegin->m_strViewState;
+
+        if (!itBegin->m_strRemark.empty())
+        {
+            jsEventInfo["remark"] = jsRemark;
+        }
         
         Json::Value jsEventTypeList;
         Json::Value jsEventHandlerList;
@@ -5566,7 +5587,33 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
         LOG_ERROR_RLD("User id and device id all empty.");
         return blResult;
     }
-        
+
+    std::string strPlanID;
+    if (!strDevID.empty())
+    {        
+        itFind = pMsgInfoMap->find("planid");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Plan id not found.");
+            return blResult;
+        }
+
+        strPlanID = itFind->second;
+    }
+
+    std::string strEntranceID;
+    if (!strUserID.empty())
+    {
+        itFind = pMsgInfoMap->find("entranceid");
+        if (pMsgInfoMap->end() == itFind)
+        {
+            LOG_ERROR_RLD("Entrance id not found.");
+            return blResult;
+        }
+
+        strEntranceID = itFind->second;
+    }
+    
     itFind = pMsgInfoMap->find("storeid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -5634,6 +5681,8 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     pr.m_strStoreID = strStoreID;
     pr.m_strUserID = strUserID;
     pr.m_uiPatrolResult = uiPatrolResult;
+    pr.m_strPlanID = strPlanID;
+    pr.m_strEntranceID = strEntranceID;
     
     if (!CreatePatrolRecord(strSid, pr))
     {
@@ -5912,7 +5961,9 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", pr.m_strDevID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storeid", pr.m_strStoreID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_date", pr.m_strPatrolDate));
-    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("planid", pr.m_strPlanID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("entranceid", pr.m_strEntranceID));
+        
     blResult = true;
 
     return blResult;
@@ -5967,14 +6018,27 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
     }
     const std::string strUserID = itFind->second;
 
+    std::string strStoreID;
     itFind = pMsgInfoMap->find("storeid");
-    if (pMsgInfoMap->end() == itFind)
+    if (pMsgInfoMap->end() != itFind)
     {
-        LOG_ERROR_RLD("Store id not found.");
-        return blResult;
+        strStoreID = itFind->second;
     }
-    const std::string strStoreID = itFind->second;
-
+    
+    std::string strPlanID;
+    itFind = pMsgInfoMap->find("planid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPlanID = itFind->second;
+    }
+    
+    ////
+    //if (strStoreID.empty() && strPlanID.empty())
+    //{
+    //    LOG_ERROR_RLD("Store id and pland id all empty.");
+    //    return blResult;
+    //}
+    
     std::string strBeginDate;
     itFind = pMsgInfoMap->find("begindate");
     if (pMsgInfoMap->end() != itFind)
@@ -6020,7 +6084,7 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
     }
 
     std::list<PatrolRecord> prlist;
-    if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, strBeginDate, strEndDate, uiBeginIndex, prlist))
+    if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, strPlanID, strBeginDate, strEndDate, uiBeginIndex, prlist))
     {
         LOG_ERROR_RLD("Query all evaluation of store failed.");
         return blResult;
@@ -6036,6 +6100,8 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
         jsPr["deviceid"] = itBegin->m_strDevID;
         jsPr["storeid"] = itBegin->m_strStoreID;
         jsPr["patrol_date"] = itBegin->m_strPatrolDate;
+        jsPr["planid"] = itBegin->m_strPlanID;
+        jsPr["entranceid"] = itBegin->m_strEntranceID;
 
         Json::Value jsPatrolPicURLList;
         unsigned int k = 0;
@@ -6137,6 +6203,562 @@ bool PassengerFlowMsgHandler::UploadPassengerFlowHandler(boost::shared_ptr<MsgIn
     return blResult;
 
 
+}
+
+bool PassengerFlowMsgHandler::CreateStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    itFind = pMsgInfoMap->find("name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Name not found.");
+        return blResult;
+    }
+    const std::string strName = itFind->second;
+
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type not found.");
+        return blResult;
+    }
+    const std::string strType = itFind->second;
+
+    unsigned int uiType = 0;
+    if (!ValidType<unsigned int>(strType, uiType))
+    {
+        LOG_ERROR_RLD("Value is invalid and value is " << strType);
+        return blResult;
+    }
+    
+    Sensor sr;
+    sr.m_strDevID = strDevID;
+    sr.m_strName = strName;
+    sr.m_strStoreID = strStoreID;
+    sr.m_uiType = uiType;
+
+    if (!CreateStoreSensor(strSid, strUserID, sr))
+    {
+        LOG_ERROR_RLD("Create store sensor failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create store sensor info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and sensor id is " << sr.m_strID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sensorid", sr.m_strID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::DeleteStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    itFind = pMsgInfoMap->find("sensorid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sensor id not found.");
+        return blResult;
+    }
+    const std::string strSensorID = itFind->second;
+    
+    if (!DeleteStoreSensor(strSid, strUserID, strStoreID, strSensorID))
+    {
+        LOG_ERROR_RLD("Delete store sensor failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete store sensor info received and session id is " << strSid << " and user id is " << strUserID
+        << " and sensor id of store is " << strSensorID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("sensorid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sensor id not found.");
+        return blResult;
+    }
+    const std::string strSensorID = itFind->second;
+    
+    std::string strName;
+    itFind = pMsgInfoMap->find("name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strName = itFind->second;
+    }
+
+    unsigned int uiType = 0;
+    std::string strType;
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strType = itFind->second;        
+        if (!ValidType<unsigned int>(strType, uiType))
+        {
+            LOG_ERROR_RLD("Value is invalid and value is " << strType);
+            return blResult;
+        }
+    }
+    
+    std::string strStoreID;
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStoreID = itFind->second;
+    }
+
+    std::string strDevID;
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDevID = itFind->second;
+    }
+
+    Sensor sr;
+    sr.m_strDevID = strDevID;
+    sr.m_strName = strName;
+    sr.m_strStoreID = strStoreID;
+    sr.m_uiType = uiType;
+    sr.m_strID = strSensorID;
+
+    if (!ModifyStoreSensor(strSid, strUserID, sr))
+    {
+        LOG_ERROR_RLD("Modify store sensor failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify store sensor info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and sensor id is " << sr.m_strID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("sensorid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sensor id not found.");
+        return blResult;
+    }
+    const std::string strSensorID = itFind->second;
+
+    Sensor sr;
+    sr.m_strID = strSensorID;
+    
+    if (!QueryStoreSensor(strSid, strUserID, sr))
+    {
+        LOG_ERROR_RLD("Query sensor info failed.");
+        return blResult;
+    }
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query sensor info received and session id is " << strSid << " and user id is " << strUserID
+        << " and sensor id is " << strSensorID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", boost::lexical_cast<std::string>(sr.m_uiType)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("value", sr.m_strValue));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("name", sr.m_strName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storeid", sr.m_strStoreID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", sr.m_strDevID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsSensorInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsSensorInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["store_sensor"] = jsSensorInfoList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Store id not found.");
+        return blResult;
+    }
+    const std::string strStoreID = itFind->second;
+
+    std::list<Sensor> srlist;
+    if (!QueryAllStoreSensor(strSid, strUserID, strStoreID, srlist))
+    {
+        LOG_ERROR_RLD("Query all sensor info of store failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = srlist.begin(), itEnd = srlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsSensor;
+        jsSensor["deviceid"] = itBegin->m_strDevID;
+        jsSensor["storeid"] = itBegin->m_strStoreID;
+        jsSensor["name"] = itBegin->m_strName;
+        jsSensor["type"] = boost::lexical_cast<std::string>(itBegin->m_uiType);
+        jsSensor["value"] = itBegin->m_strValue;
+        jsSensor["sensorid"] = itBegin->m_strID;
+
+        jsSensorInfoList[i] = jsSensor;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all sensor info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ReportSensorInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("info");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Info not found.");
+        return blResult;
+    }
+    const std::string strSensorInfo = itFind->second;
+    
+    std::list<Sensor> srlist;
+    auto SensorInfoParse = [&](Json::Value jsValue) ->bool
+    {
+        if (!jsValue.isObject())
+        {
+            LOG_ERROR_RLD("Sensor info parse failed");
+            return blResult;
+        }
+
+        auto jsSensorType = jsValue["type"];
+        if (jsSensorType.isNull() || !jsSensorType.isString() || jsSensorType.asString().empty())
+        {
+            LOG_ERROR_RLD("Sensor type parse failed");
+            return blResult;
+        }
+
+        auto jsSensorValue = jsValue["value"];
+        if (jsSensorValue.isNull() || !jsSensorValue.isString() || jsSensorValue.asString().empty())
+        {
+            LOG_ERROR_RLD("Sensor value parse failed");
+            return blResult;
+        }
+
+        unsigned int uiSensorType = 0;
+        if (!ValidType<unsigned int>(jsSensorType.asString(), uiSensorType))
+        {
+            LOG_ERROR_RLD("Sensor type is invalid and value is " << jsSensorType.asString());
+            return blResult;
+        }
+
+        Sensor sr;
+        sr.m_uiType = uiSensorType;
+        sr.m_strValue = jsSensorValue.asString();
+
+        srlist.push_back(std::move(sr));
+
+        return true;
+    };
+
+    if (!GetValueFromList(strSensorInfo, SensorInfoParse))
+    {
+        LOG_ERROR_RLD("Sensor info parse failed and value is " << strSensorInfo);
+        return blResult;
+    }
+    
+    if (!ReportSensorInfo(strSid, strDevID, srlist))
+    {
+        LOG_ERROR_RLD("Report sensor info failed.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Report sensor info received and session id is " << strSid << " and device id is " << strDevID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
 }
 
 bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
@@ -7461,7 +8083,7 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
 }
 
 bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
-    const std::string &strProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
+    const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -7474,7 +8096,7 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
         QueryAllEventReq.m_uiBeginIndex = uiBeginIndex;
 
         QueryAllEventReq.m_strBeginDate = strBeginDate;
-        QueryAllEventReq.m_uiProcessState = boost::lexical_cast<unsigned int>(strProcessState);
+        QueryAllEventReq.m_uiProcessState = uiProcessState;
         QueryAllEventReq.m_strEndDate = strEndDate;
 
 
@@ -9534,6 +10156,8 @@ bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, Patr
         AddRemotePRReq.m_patrolStore.m_strStoreID = pr.m_strStoreID;
         AddRemotePRReq.m_patrolStore.m_strUserID = pr.m_strUserID;
         AddRemotePRReq.m_patrolStore.m_uiPatrolResult = pr.m_uiPatrolResult;
+        AddRemotePRReq.m_patrolStore.m_strPlanID = pr.m_strPlanID;
+        AddRemotePRReq.m_patrolStore.m_strEntranceID = pr.m_strEntranceID;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddRemotePRReq, strSerializeOutPut))
@@ -9728,6 +10352,8 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
         pr.m_strStoreID = QueryRemotePRRsp.m_patrolStore.m_strStoreID;
         pr.m_strUserID = QueryRemotePRRsp.m_patrolStore.m_strUserID;
         pr.m_uiPatrolResult = QueryRemotePRRsp.m_patrolStore.m_uiPatrolResult;
+        pr.m_strPlanID = QueryRemotePRRsp.m_patrolStore.m_strPlanID;
+        pr.m_strEntranceID = QueryRemotePRRsp.m_patrolStore.m_strEntranceID;
         
         pr.m_strPatrolPicURLList.swap(QueryRemotePRRsp.m_patrolStore.m_strPatrolPictureList);
 
@@ -9749,7 +10375,7 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strPlanID,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -9762,6 +10388,7 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
         QueryAllRemotePRReq.m_strBeginDate = strBeginDate;
         QueryAllRemotePRReq.m_strEndDate = strEndDate;
         QueryAllRemotePRReq.m_strStoreID = strStoreID;
+        QueryAllRemotePRReq.m_strPlanID = strPlanID;
         QueryAllRemotePRReq.m_strUserID = strUserID;
         QueryAllRemotePRReq.m_uiBeginIndex = uiBeginIndex;
         
@@ -9796,6 +10423,8 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
             pr.m_strStoreID = itBegin->m_strStoreID;
             pr.m_strUserID = itBegin->m_strUserID;
             pr.m_uiPatrolResult = itBegin->m_uiPatrolResult;
+            pr.m_strPlanID = itBegin->m_strPlanID;
+            pr.m_strEntranceID = itBegin->m_strEntranceID;
 
             pr.m_strPatrolPicURLList.swap(itBegin->m_strPatrolPictureList);
 
@@ -9808,6 +10437,355 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
             " and session id is " << strSid <<
             " and return code is " << QueryAllRemotePRRsp.m_iRetcode <<
             " and return msg is " << QueryAllRemotePRRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddStoreSensorReq AddStoreSensorReq;
+        AddStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreSensorReq_T;
+        AddStoreSensorReq.m_uiMsgSeq = 1;
+        AddStoreSensorReq.m_strSID = strSid;
+
+        AddStoreSensorReq.m_strUserID = strUserID;
+        AddStoreSensorReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
+        AddStoreSensorReq.m_sensorInfo.m_strSensorName = sr.m_strName;
+        AddStoreSensorReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
+        AddStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreSensorReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Create store sensor req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddStoreSensorRsp AddStoreSensorRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddStoreSensorRsp))
+        {
+            LOG_ERROR_RLD("Create store sensor rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddStoreSensorRsp.m_iRetcode;
+
+        sr.m_strID = AddStoreSensorRsp.m_strSensorID;
+
+        LOG_INFO_RLD("Create store sensor and id is " << sr.m_strID <<
+            " and session id is " << strSid <<
+            " and return code is " << AddStoreSensorRsp.m_iRetcode <<
+            " and return msg is " << AddStoreSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::DeleteStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strSensorID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::DeleteStoreSensorReq DelStoreSensorReq;
+        DelStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreSensorReq_T;
+        DelStoreSensorReq.m_uiMsgSeq = 1;
+        DelStoreSensorReq.m_strSID = strSid;
+
+        DelStoreSensorReq.m_strUserID = strUserID;
+        DelStoreSensorReq.m_strSensorID = strSensorID;
+        DelStoreSensorReq.m_strStoreID = strStoreID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelStoreSensorReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete store sensor req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::DeleteStoreSensorRsp DelStoreSensorRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelStoreSensorRsp))
+        {
+            LOG_ERROR_RLD("Delete store sensor unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = DelStoreSensorRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Delete store sensor id is " << strSensorID << " and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << DelStoreSensorRsp.m_iRetcode <<
+            " and return msg is " << DelStoreSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyStoreSensorReq ModifyStoreSensorReq;
+        ModifyStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreSensorReq_T;
+        ModifyStoreSensorReq.m_uiMsgSeq = 1;
+        ModifyStoreSensorReq.m_strSID = strSid;
+
+        ModifyStoreSensorReq.m_strUserID = strUserID;
+        ModifyStoreSensorReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
+        ModifyStoreSensorReq.m_sensorInfo.m_strSensorName = sr.m_strName;
+        ModifyStoreSensorReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
+        ModifyStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
+        ModifyStoreSensorReq.m_sensorInfo.m_strSensorID = sr.m_strID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyStoreSensorReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify store sensor req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyStoreSensorRsp ModifyStoreSensorRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyStoreSensorRsp))
+        {
+            LOG_ERROR_RLD("Modify store sensor rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModifyStoreSensorRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify store sensor and id is " << sr.m_strID <<
+            " and session id is " << strSid <<
+            " and return code is " << ModifyStoreSensorRsp.m_iRetcode <<
+            " and return msg is " << ModifyStoreSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryStoreSensorInfoReq QuerySensorInfoReq;
+        QuerySensorInfoReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreSensorInfoReq_T;
+        QuerySensorInfoReq.m_uiMsgSeq = 1;
+        QuerySensorInfoReq.m_strSID = strSid;
+
+        QuerySensorInfoReq.m_strSensorID = sr.m_strID;
+        QuerySensorInfoReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorInfoReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query sensor info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryStoreSensorInfoRsp QuerySensorInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorInfoRsp))
+        {
+            LOG_ERROR_RLD("Query sensor info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        sr.m_strDevID = QuerySensorInfoRsp.m_sensorInfo.m_strDeviceID;
+        sr.m_strName = QuerySensorInfoRsp.m_sensorInfo.m_strSensorName;
+        sr.m_strStoreID = QuerySensorInfoRsp.m_sensorInfo.m_strStoreID;
+        sr.m_strValue = QuerySensorInfoRsp.m_sensorInfo.m_strValue;
+        sr.m_uiType = QuerySensorInfoRsp.m_sensorInfo.m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(QuerySensorInfoRsp.m_sensorInfo.m_strSensorType);
+        
+        iRet = QuerySensorInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query sensor info and sensor id is " << sr.m_strID <<
+            " and session id is " << strSid <<
+            " and return code is " << QuerySensorInfoRsp.m_iRetcode <<
+            " and return msg is " << QuerySensorInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, std::list<Sensor> &srlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllStoreSensorReq QueryAllSensorReq;
+        QueryAllSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreSensorReq_T;
+        QueryAllSensorReq.m_uiMsgSeq = 1;
+        QueryAllSensorReq.m_strSID = strSid;
+
+        QueryAllSensorReq.m_strStoreID = strStoreID;
+        QueryAllSensorReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllSensorReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all sensor info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllStoreSensorRsp QueryAllSensorRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllSensorRsp))
+        {
+            LOG_ERROR_RLD("Query all sensor info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryAllSensorRsp.m_sensorList.begin(), itEnd = QueryAllSensorRsp.m_sensorList.end(); itBegin != itEnd; ++itBegin)
+        {
+            Sensor sr;
+            sr.m_strDevID = itBegin->m_strDeviceID;
+            sr.m_strID = itBegin->m_strSensorID;
+            sr.m_strName = itBegin->m_strSensorName;
+            sr.m_strStoreID = itBegin->m_strStoreID;
+            sr.m_strValue = itBegin->m_strValue;
+            sr.m_uiType = itBegin->m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
+            
+            srlist.push_back(std::move(sr));
+        }
+
+        iRet = QueryAllSensorRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all sensor info record and store id is " << strStoreID <<
+            " and session id is " << strSid <<
+            " and return code is " << QueryAllSensorRsp.m_iRetcode <<
+            " and return msg is " << QueryAllSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ReportSensorInfoReq ReportSensorReq;
+        ReportSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorInfoReq_T;
+        ReportSensorReq.m_uiMsgSeq = 1;
+        ReportSensorReq.m_strSID = strSid;
+
+        ReportSensorReq.m_strDeviceID = strDevID;
+
+        std::list<PassengerFlowProtoHandler::Sensor> psrlist;
+        for (auto itBegin = srlist.begin(), itEnd = srlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::Sensor psr;
+            psr.m_strDeviceID = strDevID;
+            psr.m_strValue = itBegin->m_strValue;
+            psr.m_strSensorType = boost::lexical_cast<std::string>(itBegin->m_uiType);
+            psrlist.push_back(std::move(psr));
+        }
+        ReportSensorReq.m_sensorList.swap(psrlist);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Report sensor req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ReportSensorInfoRsp ReportSensorRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ReportSensorRsp))
+        {
+            LOG_ERROR_RLD("Report store sensor unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ReportSensorRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Report store and session id is " << strSid << " and device id is " << strDevID <<
+            " and return code is " << ReportSensorRsp.m_iRetcode <<
+            " and return msg is " << ReportSensorRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
