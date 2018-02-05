@@ -12,7 +12,7 @@
 #include "boost/atomic.hpp"
 #include "SessionMgr.h"
 #include "PassengerFlowProtoHandler.h"
-//#include "MessagePush_Getui.h"
+#include "MessagePush_Getui.h"
 
 class MysqlImpl;
 
@@ -144,6 +144,8 @@ public:
 
     bool QueryStoreAllUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryCompanyAllUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool AddVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool DeleteVIPCustomerReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -190,15 +192,27 @@ public:
 
     bool QueryAllRemotePatrolStoreReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool DeleteStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryStoreSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool ImportPOSDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool QueryCustomerFlowStatisticReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool ReportCustomerFlowDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool ReportSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
 
-    //bool PushMessage();
+    bool PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strUserID, const int iClientPlatform);
 
     std::string CurrentTime();
 
@@ -255,8 +269,10 @@ private:
 
     bool QueryEntranceDevice(const std::string &strEntranceID, std::list<std::string> &strDeviceIDList);
 
-    bool QueryAllStore(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Store> &storeList,
-        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+    bool QueryAllStore(const std::string &strUserID, const std::string &strAreaID, const unsigned int uiOpenState,
+        std::list<PassengerFlowProtoHandler::Store> &storeList, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+
+    bool QuerySubArea(const std::string &strAreaID, std::list<std::string> &strSubAreaIDList);
 
     bool IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName);
 
@@ -382,6 +398,8 @@ private:
 
     bool QueryStoreAllUser(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::UserBrief> &userList);
 
+    bool QueryCompanyAllUser(const std::string &strCompanyID, std::list<PassengerFlowProtoHandler::UserBrief> &userList);
+
     void AddVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo);
 
     void DeleteVIPCustomer(const std::string &strVIPID);
@@ -433,22 +451,40 @@ private:
 
     void AddRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
 
-    void AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strScreenshot);
+    void AddRemotePatrolStoreEntrance(const std::string &strPatrolID, const std::string &strEntranceID);
+
+    void AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strEntranceID, const std::string &strScreenshot);
 
     void DeleteRemotePatrolStore(const std::string &strPatrolID);
 
     void ModifyRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
 
-    void ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::list<std::string> &screenshotList);
+    void ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strEntranceID, const std::list<std::string> &screenshotList);
 
     void DeleteRemotePatrolStoreScreenshot(const std::string &strPatrolID);
 
     bool QueryRemotePatrolStoreInfo(const std::string &strPatrolID, PassengerFlowProtoHandler::RemotePatrolStore &patrolStore);
 
-    bool QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<std::string> &scoreList);
+    bool QueryRemotePatrolStoreEntrance(const std::string &strPatrolID, std::list<std::string> &entranceList);
 
-    bool QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
-        const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
+    bool QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<PassengerFlowProtoHandler::EntrancePicture> &screenshotList);
+
+    bool QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, const unsigned int uiPatrolResult, const unsigned int uiPlanFlag,
+        std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList, const std::string &strBeginDate, const std::string &strEndDate,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 12);
+
+    void AddStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo);
+
+    void DeleteStoreSensor(const std::string &strSensorID);
+
+    void ModifyStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo);
+
+    bool QueryStoreSensorInfo(const std::string &strSensorID, PassengerFlowProtoHandler::Sensor &sensorInfo);
+
+    bool QuerySensorValue(const std::string &strSensorID, std::string &strValue);
+
+    bool QueryAllStoreSensor(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::Sensor> &sensorList,
+        const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     void ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount,
         const double dDealAmount, const std::string &strDealDate);
@@ -475,6 +511,12 @@ private:
 
     void AddCustomerFlow(const std::string &strDeviceID, const PassengerFlowProtoHandler::RawCustomerFlow &customerFlowInfo);
 
+    void ReportSensorInfo(const std::string &strDeviceID, const std::list<PassengerFlowProtoHandler::Sensor> &sensorList);
+
+    bool QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, std::string &strSensorID);
+
+    void AddSensorInfo(const std::string &strDeviceID, const std::string &strSensorID, const PassengerFlowProtoHandler::Sensor &sensorInfo);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -490,7 +532,8 @@ private:
 
     TimeOutHandler m_DBTimer;
 
-    //MessagePush_Getui m_pushGetui;
+    MessagePush_Getui m_pushGetuiIOS;
+    MessagePush_Getui m_pushGetuiAndroid;
 };
 
 

@@ -298,3 +298,41 @@ int HttpClient::HttpsPostForm(const std::string &url, const std::map<std::string
 
     return ret;
 }
+
+int HttpClient::HttpsPostJson(const std::string &url, const std::string auth, const std::string &request, std::string &response)
+{
+    CURL *curl = curl_easy_init();
+    if (curl == NULL)
+    {
+        return CURLE_FAILED_INIT;
+    }
+
+    struct curl_slist *slist = NULL;
+
+    slist = curl_slist_append(slist, "Content-Type:application/json");
+    if (!auth.empty()) slist = curl_slist_append(slist, auth.c_str());
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist);
+
+    curl_easy_setopt(curl, CURLOPT_POST, 1);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request.c_str());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, request.length());
+    curl_easy_setopt(curl, CURLOPT_READFUNCTION, NULL);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteToString);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&response);
+
+    curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 45);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
+
+    int ret = curl_easy_perform(curl);
+
+    curl_slist_free_all(slist);
+
+    curl_easy_cleanup(curl);
+
+    return ret;
+}

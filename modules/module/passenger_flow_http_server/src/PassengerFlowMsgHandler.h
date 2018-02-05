@@ -80,6 +80,7 @@ public:
     static const std::string USER_JOIN_STORE;
     static const std::string USER_QUIT_STORE;
     static const std::string QUERY_USER_STORE;
+    static const std::string QUERY_ALL_USER_LIST;
 
     static const std::string CREATE_EVALUATION_TEMPLATE;
     static const std::string DELETE_EVALUATION_TEMPLATE;
@@ -218,6 +219,8 @@ public:
 
     bool QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool QueryAllUserListHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     bool CreateEvaluationTemplateHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -284,6 +287,7 @@ private:
         std::string m_strStoreName;
         std::string m_strGoodsCategory;
         std::string m_strAddress;
+        std::list<std::string> m_strPhoneList;
         std::string m_strEntrance;
         std::string m_strAlterEntrance;
         std::string m_strDelEntrance;
@@ -390,6 +394,7 @@ private:
         std::string m_strStoreID;
         std::string m_strStoreName;
         std::string m_strRole;
+        std::string m_strAdminID;
     };
 
     struct EvaluationTemplate
@@ -414,23 +419,30 @@ private:
         unsigned int m_uiCheckStatus;
         std::string m_strEvaluationDate;
         double m_dEvaluationTotalValue;
+        double m_dEvaluationTemplateTotalValue;
 
         std::list<EvaluationTemplate> m_evlist;
     };
 
     struct PatrolRecord
     {
+        struct PatrolPic
+        {
+            std::string m_strEntranceID;
+            std::list<std::string> m_strPicIDList;
+        };
         std::string m_strPatrolID;
         std::string m_strUserID;
         std::string m_strDevID;
         std::string m_strStoreID;
         std::string m_strPatrolDate;
-        std::list<std::string> m_strPatrolPicIDList;
-        std::list<std::string> m_strPatrolPicURLList;
+        std::list<std::string> m_strPatrolPicIDList; //当设备上报时填充
+        //std::list<std::string> m_strPatrolPicURLList;
         unsigned int m_uiPatrolResult;
         std::string m_strPatrolDesc;
         std::string m_strPlanID;
-        std::string m_strEntranceID;
+        std::list<std::string> m_strEntranceIDList;
+        std::list<PatrolPic> m_PicList;
     };
 
     struct Sensor
@@ -462,11 +474,13 @@ private:
 
     bool DelStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID);
 
-    bool ModifyStore(const std::string &strSid, const std::string &strUserID, const StoreInfo &store);
+    bool ModifyStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store);
 
-    bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist, std::list<DomainInfo> &dmilist);
+    bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist, std::list<DomainInfo> &dmilist,
+        std::list<std::string> &strPhoneList);
 
-    bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreAndEntranceInfo> &storelist);
+    bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+        const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist);
 
     
     bool AddEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, EntranceInfo &einfo);
@@ -499,7 +513,7 @@ private:
 
     bool QueryEvent(const std::string &strSid, EventInfo &eventinfo);
 
-    bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+    bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiRelation, const unsigned int uiBeginIndex, 
         const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
 
 
@@ -552,6 +566,8 @@ private:
 
     bool QueryUserOfStore(const std::string &strSid, const UserOfStore &us, std::list<UserOfStore> &uslist);
 
+    bool QueryAllUserList(const std::string &strSid, const std::string &strUserID, std::list<UserOfStore> &uslist);
+
 
     bool CreateEvaluationTemplate(const std::string &strSid, EvaluationTemplate &evt);
     bool DeleteEvaluationTemplate(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationID);
@@ -569,7 +585,8 @@ private:
     bool DeletePatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strPatrolID);
     bool ModifyPatrolRecord(const std::string &strSid, PatrolRecord &pr);
     bool QueryPatrolRecord(const std::string &strSid, PatrolRecord &pr);
-    bool QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strPlanID,
+    bool QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+        const unsigned int uiPatrolResult, const unsigned int uiPlanFlag, const std::string &strPlanID,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist);
 
     bool CreateStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr);

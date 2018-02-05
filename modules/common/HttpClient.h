@@ -26,6 +26,7 @@ public:
     int HttpsGet(const std::string &url, const std::list<std::string> &strHeaderList, std::string &response);
     int HttpsPost(const std::string &url, const std::string &request, std::string &response);
     int HttpsPostForm(const std::string &url, const std::map<std::string, std::string> &reqFormMap, std::string &response);
+    int HttpsPostJson(const std::string &url, const std::string auth, const std::string &request, std::string &response);
 
     static void lock_callback(int mode, int type, char *file, int line);
 

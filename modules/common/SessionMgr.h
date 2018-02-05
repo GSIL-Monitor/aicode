@@ -65,6 +65,8 @@ public:
 
     bool GetSessionLoginType(const std::string &strSessionID, unsigned int &uiLoginType);
 
+    bool GetTerminalType(const std::string &strID, unsigned int &uiTerminalType);
+
     bool Exist(const std::string &strSessionID);
     
     bool ExistID(const std::string &strID); //用户id或者设备id，判断该用户或者设备是否在线
@@ -95,8 +97,6 @@ private:
     void RemoveSTMap(const std::string &strSessionID);
 
     bool SetSessionStatus(const std::string &strID, const int iStatus);
-
-    bool GetTerminalType(const std::string &strID, unsigned int &uiTerminalType);
 
     bool UpdateSidList(const std::string &strID, const std::string &strSessionID);
 

@@ -98,6 +98,7 @@ create table `t_store_info` (
     `address` varchar(256) default ''                comment '地址',
     `area_id` varchar(36) default ''                 comment '区域ID',
     `open_state` int default 1                       comment '营业状态',
+    `telephone` varchar(256) default ''              comment '联系电话',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -746,6 +747,7 @@ create table `t_event_info` (
     `user_id` varchar(36) default ''                 comment '用户ID',
     `device_id` varchar(36) default ''               comment '设备ID',
     `process_state` varchar(36) not null             comment '事件处理状态',
+    `view_state` int not null                        comment '事件查看状态',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -834,7 +836,6 @@ create table `t_remote_patrol_store` (
     `patrol_id` varchar(36) not null                 comment '巡查ID',
     `user_id` varchar(36) default ''                 comment '用户ID',
     `device_id` varchar(36) default ''               comment '设备ID',
-    `entrance_id` varchar(36) not null               comment '出入口ID',
     `store_id` varchar(36) not null                  comment '店铺ID',
     `plan_id` varchar(36) default ''                 comment '巡店计划ID',
     `patrol_date` datetime not null                  comment '巡查日期',
@@ -848,11 +849,24 @@ create table `t_remote_patrol_store` (
     index index_ref2 (`user_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店记录表';
 
+drop table if exists `t_patrol_store_entrance_association`;
+create table `t_patrol_store_entrance_association` (
+    `id` varchar(36) not null,
+    `patrol_id` varchar(36) not null                 comment '巡查ID',
+    `entrance_id` varchar(36) not null               comment '出入口ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`patrol_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='远程巡店-出入口关联表';
+
 drop table if exists `t_patrol_store_screenshot_association`;
 create table `t_patrol_store_screenshot_association` (
     `id` varchar(36) not null,
     `patrol_id` varchar(36) not null                 comment '巡查ID',
-    `screenshot_id` varchar(64) not null             comment '截图ID',
+    `entrance_id` varchar(36) not null               comment '出入口ID',
+    `screenshot_id` varchar(256) not null            comment '截图ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -871,4 +885,32 @@ create table `t_user_client_id_association` (
     primary key (`id`),
     index index_ref1 (`user_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='用户-Client ID关联表';
+
+drop table if exists `t_store_sensor`;
+create table `t_store_sensor` (
+    `id` varchar(36) not null,
+    `store_id` varchar(36) not null                  comment '店铺ID',
+    `sensor_id` varchar(36) not null                 comment '传感器ID',
+    `device_id` varchar(36) not null                 comment '设备ID',
+    `sensor_name` varchar(256) not null              comment '传感器名称',
+    `sensor_type` varchar(16) not null               comment '传感器类型',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`store_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='店铺传感器表';
+
+drop table if exists `t_sensor_value`;
+create table `t_sensor_value` (
+    `id` varchar(36) not null,
+    `sensor_id` varchar(36) not null                 comment '传感器ID',
+    `value` varchar(16) not null                     comment '数值',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`sensor_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='传感器数值表';
+
 

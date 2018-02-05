@@ -437,17 +437,41 @@ void FCGIManager::ParseMsgOfPost(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, FCGX
             if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
             {
                 LOG_INFO_RLD("FCGI get line is " << cReadBuffer);
-                if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
+
+                std::string strValueEnd;
+                while (1)
                 {
-                    LOG_INFO_RLD("FCGI get line2 is " << cReadBuffer);
+                    if (FCGX_GetLine(cReadBuffer, sizeof(cReadBuffer), pRequest->in))
+                    {
+                        LOG_INFO_RLD("FCGI get line2 is " << cReadBuffer);
 
-                    strValue = cReadBuffer;
+                        strValue = cReadBuffer;
 
-                    boost::algorithm::trim_if(strValue, boost::algorithm::is_any_of(" \n\r"));
+                        strValueEnd += strValue;
 
-                    pMsgInfoMap->insert(MsgInfoMap::value_type(strKey, strValue));
+                        if (1 == strValue.length()) //表示中间读取的回车符号，内容中包含了多个回车
+                        {
+                            LOG_INFO_RLD("FCGI get line length is too short");
+                            continue;
+                        }
 
-                    LOG_INFO_RLD("FCGI insert param map key is " << strKey << " and value is " << strValue);
+                        int iPosLast = strValue.length() - 1;
+                        int iPosLast2 = strValue.length() - 2;
+                        
+                        bool blNormalEnd = 0x0D == strValue[iPosLast2] && 0x0A == strValue[iPosLast];
+
+                        if (blNormalEnd)
+                        {
+                            boost::algorithm::trim_if(strValueEnd, boost::algorithm::is_any_of(" \n\r"));
+
+                            pMsgInfoMap->insert(MsgInfoMap::value_type(strKey, strValueEnd));
+
+                            LOG_INFO_RLD("FCGI insert param map key is " << strKey << " and value is " << strValueEnd);
+
+                            break;
+                        }
+
+                    }
                 }
             }
         }

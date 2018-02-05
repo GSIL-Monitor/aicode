@@ -326,6 +326,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_JOIN_STORE, boost::bind(&PassengerFlowMsgHandler::UserJoinStoreHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_QUIT_STORE, boost::bind(&PassengerFlowMsgHandler::UserQuitStoreHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_USER_STORE, boost::bind(&PassengerFlowMsgHandler::QueryUserOfStoreHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_USER_LIST, boost::bind(&PassengerFlowMsgHandler::QueryAllUserListHandler, &filehdr, _1, _2));
 
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::CreateEvaluationTemplateHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::DeleteEvaluationTemplateHandler, &filehdr, _1, _2));

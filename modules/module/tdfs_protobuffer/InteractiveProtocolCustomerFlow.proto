@@ -116,6 +116,8 @@ enum CustomerFlowMsgType
     UserQuitStoreRsp_T = 10730;
     QueryStoreAllUserReq_T = 10740;        //查询店铺所有用户
     QueryStoreAllUserRsp_T = 10750;
+    QueryCompanyAllUserReq_T = 10760;      //查询公司所有用户
+    QueryCompanyAllUserRsp_T = 10770;
 
     AddVIPCustomerReq_T = 18000;           //添加VIP客户
     AddVIPCustomerRsp_T = 18010;
@@ -201,6 +203,9 @@ enum CustomerFlowMsgType
     QueryCustomerFlowStatisticReq_T = 20900;  //查询客流统计
     QueryCustomerFlowStatisticRsp_T = 20910;
 
+    QueryPatrolResultReportReq_T = 21000;     //查询巡店结果统计
+    QueryPatrolResultReportRsp_T = 21010;
+
     //////////////////////////////////////////////////////////
 
     ReportCustomerFlowDataReq_T = 30000;      //设备上报客流数据
@@ -249,6 +254,7 @@ message Store                            //店铺信息
     string strExtend = 8;
     uint32 uiState = 9;
     uint32 uiOpenState = 10;
+    repeated string strTelephone = 11;
 }
 
 message UserGroupAssociation             //用户群组关联信息
@@ -374,7 +380,14 @@ message StoreEvaluation                  //店铺考评
     double dTotalScore = 5;
     uint32 uiCheckStatus = 6;
     repeated EvaluationItemScore itemScore = 7;
-    string strCreateDate = 8;
+    double dTotalPoint = 8;
+    string strCreateDate = 9;
+}
+
+message EntrancePicture                  //出入口截图
+{
+    string strEntranceID = 1;
+    repeated string strPatrolPicture = 2;
 }
 
 message RemotePatrolStore                //远程巡店记录
@@ -382,14 +395,15 @@ message RemotePatrolStore                //远程巡店记录
     string strPatrolID = 1;
     string strUserID = 2;
     string strDeviceID = 3;
-    string strEntranceID = 4;
+    repeated string strEntranceID = 4;
     string strStoreID = 5;
     string strPlanID = 6;
     string strPatrolDate = 7;
-    repeated string strPatrolPicture = 8;
-    uint32 uiPatrolResult = 9;
-    string strDescription = 10;
-    string strCreateDate = 11;
+    repeated EntrancePicture patrolPicture = 8;
+    repeated string strPatrolPicture = 9;
+    uint32 uiPatrolResult = 10;
+    string strDescription = 11;
+    string strCreateDate = 12;
 }
 
 message Sensor                           //传感器
@@ -610,7 +624,9 @@ message QueryStoreInfoRsp                //查询店铺信息响应
 message QueryAllStoreReq                 //查询所有店铺请求
 {
     string strUserID = 1;
-    uint32 uiBeginIndex = 2;
+    string strAreaID = 2;
+    uint32 uiOpenState = 3;
+    uint32 uiBeginIndex = 4;
 }
 
 message QueryAllStoreRsp                 //查询所有店铺响应
@@ -729,9 +745,10 @@ message QueryAllEventReq                 //查询所有事件请求
 {
     string strUserID = 1;
     uint32 uiProcessState = 2;
-    string strBeginDate = 3;
-    string strEndDate = 4;
-    uint32 uiBeginIndex = 5;
+    uint32 uiRelaton = 3;
+    string strBeginDate = 4;
+    string strEndDate = 5;
+    uint32 uiBeginIndex = 6;
 }
 
 message QueryAllEventRsp                 //查询所有事件响应
@@ -853,9 +870,10 @@ message QueryAllRegularPatrolRsp         //查询所有定时巡店计划响应
 
 message UserJoinStoreReq                 //用户加入店铺请求
 {
-    string strUserID = 1;
-    string strStoreID = 2;
-    string strRole = 3;
+    string strAdministratorID = 1;
+    string strUserID = 2;
+    string strStoreID = 3;
+    string strRole = 4;
 }
 
 message UserJoinStoreRsp                 //用户加入店铺响应
@@ -882,6 +900,16 @@ message QueryStoreAllUserReq             //查询店铺所有用户请求
 }
 
 message QueryStoreAllUserRsp             //查询店铺所有用户响应
+{
+    repeated UserBrief user = 1;
+}
+
+message QueryCompanyAllUserReq           //查询公司所有用户请求
+{
+    string strUserID = 1;
+}
+
+message QueryCompanyAllUserRsp           //查询公司所有用户响应
 {
     repeated UserBrief user = 1;
 }
@@ -1134,10 +1162,12 @@ message QueryAllRemotePatrolStoreReq     //查询所有远程巡店记录请求
 {
     string strUserID = 1;
     string strStoreID = 2;
-    string strPlanID = 3;
-    string strBeginDate = 4;
-    string strEndDate = 5;
-    uint32 uiBeginIndex = 6;
+    uint32 uiPatrolResult = 3;
+    uint32 uiPlanFlag = 4;
+    string strPlanID = 5;
+    string strBeginDate = 6;
+    string strEndDate = 7;
+    uint32 uiBeginIndex = 8;
 }
 
 message QueryAllRemotePatrolStoreRsp     //查询所有远程巡店记录响应
@@ -1230,6 +1260,21 @@ message QueryCustomerFlowStatisticRsp    //查询客流统计响应
     string strChartData = 1;
 }
 
+message QueryPatrolResultReportReq       //查询巡店结果统计请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strBeginDate = 3;
+    string strEndDate = 4;
+    uint32 uiPatrolResult = 5;
+    string strPatrolUserID = 6;
+}
+
+message QueryPatrolResultReportRsp       //查询巡店结果统计响应
+{
+    string strChartData = 1;
+}
+
 message ReportCustomerFlowDataReq        //设备上报客流数据请求
 {
     string strDeviceID = 1;
@@ -1300,6 +1345,7 @@ message Request
     UserJoinStoreReq UserJoinStoreReq_Value = 500;                             //用户加入店铺
     UserQuitStoreReq UserQuitStoreReq_Value = 510;                             //用户退出店铺
     QueryStoreAllUserReq QueryStoreAllUserReq_Value = 520;                     //查询店铺所有用户
+    QueryCompanyAllUserReq QueryCompanyAllUserReq_Value = 530;                 //查询公司所有用户
 
     AddVIPCustomerReq AddVIPCustomerReq_Value = 800;                           //添加VIP客户
     DeleteVIPCustomerReq DeleteVIPCustomerReq_Value = 810;                     //删除VIP客户
@@ -1348,11 +1394,13 @@ message Request
 
     QueryCustomerFlowStatisticReq QueryCustomerFlowStatisticReq_Value = 2900;  //查询客流统计
 
+    QueryPatrolResultReportReq QueryPatrolResultReportReq_Value = 3000;        //查询巡店结果统计
+
     //////////////////////////////////////////////////////////////////////
 
-    ReportCustomerFlowDataReq ReportCustomerFlowDataReq_Value = 3000;          //设备上报客流信息
+    ReportCustomerFlowDataReq ReportCustomerFlowDataReq_Value = 5000;          //设备上报客流信息
 
-    ReportSensorInfoReq ReportSensorInfoReq_Value = 3100;                      //上报传感器信息
+    ReportSensorInfoReq ReportSensorInfoReq_Value = 5100;                      //上报传感器信息
 }
 
 //响应对象
@@ -1403,6 +1451,7 @@ message Response
     UserJoinStoreRsp UserJoinStoreRsp_Value = 500;                             //用户加入店铺
     UserQuitStoreRsp UserQuitStoreRsp_Value = 510;                             //用户退出店铺
     QueryStoreAllUserRsp QueryStoreAllUserRsp_Value = 520;                     //查询店铺所有用户
+    QueryCompanyAllUserRsp QueryCompanyAllUserRsp_Value = 530;                 //查询公司所有用户
 
     AddVIPCustomerRsp AddVIPCustomerRsp_Value = 800;                           //添加VIP客户
     DeleteVIPCustomerRsp DeleteVIPCustomerRsp_Value = 810;                     //删除VIP客户
@@ -1451,11 +1500,13 @@ message Response
 
     QueryCustomerFlowStatisticRsp QueryCustomerFlowStatisticRsp_Value = 2900;  //查询客流统计
 
+    QueryPatrolResultReportRsp QueryPatrolResultReportRsp_Value = 3000;        //查询巡店结果统计
+
     //////////////////////////////////////////////////////////////////////
 
-    ReportCustomerFlowDataRsp ReportCustomerFlowDataRsp_Value = 3000;          //设备上报客流信息
+    ReportCustomerFlowDataRsp ReportCustomerFlowDataRsp_Value = 5000;          //设备上报客流信息
 
-    ReportSensorInfoRsp ReportSensorInfoRsp_Value = 3100;                      //上报传感器信息
+    ReportSensorInfoRsp ReportSensorInfoRsp_Value = 5100;                      //上报传感器信息
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理

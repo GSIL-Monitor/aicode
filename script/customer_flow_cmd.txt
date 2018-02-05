@@ -83,13 +83,13 @@ curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F planid=B1442943230
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F deviceid=dev_x -F beginindex=0 http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_smart_guard_store
 
 新建定时巡店计划
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F plan_name=巡店02 -F enable=yes -F entrance='{"6ABF7009D0FC80488B576499B8B220A4":["13C2C4F916C16747ACD08B78D4093153","34448A8094B7854C918DC9D6960A9D6F"],"C3FD00943998BC4EBEE72D0241466798":["4DC0C2D5D1EF3645B99875CED64FEE29","B6E587676D674146A78388DF848EADDF"]}' -F patrol_time='["17:30:20","18:25:25"]' -F handler='["user05","user06"]' http://172.20.120.22:8988/passenger_flow.cgi?action=create_regular_patrol
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F plan_name=巡店02 -F enable=yes -F entrance='{"125F9931C55EBA4693F35954F6DE95C1":["13C2C4F916C16747ACD08B78D4093153","34448A8094B7854C918DC9D6960A9D6F"],"C3FD00943998BC4EBEE72D0241466798":["4DC0C2D5D1EF3645B99875CED64FEE29","B6E587676D674146A78388DF848EADDF"]}' -F patrol_time='["17:30:20","18:25:25"]' -F handler='["user05","user06"]' http://172.20.120.22:8988/passenger_flow.cgi?action=create_regular_patrol
 
 删除定时巡店计划
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F planid=118831D8FAF171478F2A8E2283C97510 http://172.20.120.22:8988/passenger_flow.cgi?action=delete_regular_patrol
 
 修改定时巡店计划
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F planid=118831D8FAF171478F2A8E2283C97510 -F plan_name=巡店02 -F enable=no -F entrance='{"6ABF7009D0FC80488B576499B8B220A4":["34448A8094B7854C918DC9D6960A9D6F"],"C3FD00943998BC4EBEE72D0241466798":["4DC0C2D5D1EF3645B99875CED64FEE29"]}' -F patrol_time='["14:33:20","11:45:50"]' -F handler='["user02","user03"]' http://172.20.120.22:8988/passenger_flow.cgi?action=modify_regular_patrol
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F planid=118831D8FAF171478F2A8E2283C97510 -F plan_name=巡店02 -F enable=no -F entrance='{"125F9931C55EBA4693F35954F6DE95C1":["34448A8094B7854C918DC9D6960A9D6F"],"C3FD00943998BC4EBEE72D0241466798":["4DC0C2D5D1EF3645B99875CED64FEE29"]}' -F patrol_time='["14:33:20","11:45:50"]' -F handler='["user02","user03"]' http://172.20.120.22:8988/passenger_flow.cgi?action=modify_regular_patrol
 
 查询定时巡店计划信息
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F planid=118831D8FAF171478F2A8E2283C97510 http://172.20.120.22:8988/passenger_flow.cgi?action=query_regular_patrol
@@ -133,6 +133,9 @@ curl -F sid=sss -F administrator=admin -F userid=0F53D8540BE93540B73CCF91B33CCF8
 查询店铺所有用户
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=C3FD00943998BC4EBEE72D0241466798 http://172.20.120.22:8988/passenger_flow.cgi?action=query_store_all_user
 
+查询公司所有用户
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_userlist
+
 创建店铺考评模板
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F evaluation=item02 -F evaluation_desc=description02 -F evaluation_value=8.0 http://172.20.120.22:8988/passenger_flow.cgi?action=create_evaluation_template
 
@@ -146,34 +149,51 @@ curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F evaluationid=E1C68
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 http://172.20.120.22:8988/passenger_flow.cgi?action=query_evaluation_template
 
 创建店铺考评
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F userid_check=user05 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F evaluation_info='[{"evaluation_id":"2DEE5737B06DF64E803945BB753DB3F5","evaluation_desc":"unfinished","evaluation_value":"4.5"},{"evaluation_id":"FD79F82E75431C41A627C0C3F4A3689D","evaluation_desc":"done","evaluation_value":"2.5"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=create_store_evaluation
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F userid_check=user05 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F evaluation_info='[{"evaluation_id":"2DEE5737B06DF64E803945BB753DB3F5","evaluation_desc":"unfinished","evaluation_value":"4.5"},{"evaluation_id":"FD79F82E75431C41A627C0C3F4A3689D","evaluation_desc":"done","evaluation_value":"2.5"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=create_store_evaluation
 
 删除店铺考评
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F store_evaluation_id=1C3A0FC21963124E855594EA1BE2C693 http://172.20.120.22:8988/passenger_flow.cgi?action=remove_store_evaluation
 
 修改店铺考评
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F userid_check=user05 -F store_evaluation_id=1C3A0FC21963124E855594EA1BE2C693 -F check_status=1 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F evaluation_info='[{"evaluation_id":"2DEE5737B06DF64E803945BB753DB3F5","evaluation_desc":"modify","evaluation_value":"2.0"},{"evaluation_id":"FD79F82E75431C41A627C0C3F4A3689D","evaluation_desc":"start","evaluation_value":"3.5"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=modify_store_evaluation
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F userid_check=user05 -F store_evaluation_id=1C3A0FC21963124E855594EA1BE2C693 -F check_status=1 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F evaluation_info='[{"evaluation_id":"2DEE5737B06DF64E803945BB753DB3F5","evaluation_desc":"modify","evaluation_value":"2.0"},{"evaluation_id":"FD79F82E75431C41A627C0C3F4A3689D","evaluation_desc":"start","evaluation_value":"3.5"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=modify_store_evaluation
 
 查询店铺考评信息
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F store_evaluation_id=1C3A0FC21963124E855594EA1BE2C693 http://172.20.120.22:8988/passenger_flow.cgi?action=query_store_evaluation
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F store_evaluation_id=1C3A0FC21963124E855594EA1BE2C693 http://172.20.120.22:8988/passenger_flow.cgi?action=query_store_evaluation
 
 查询所有店铺考评
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F begindate='2017-11-02 10:50:30' -F enddate='2017-11-02 12:58:30' -F beginindex= http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_store_evaluation
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F begindate='2017-11-02 10:50:30' -F enddate='2017-11-02 12:58:30' -F beginindex= http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_store_evaluation
 
 创建巡店记录
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F deviceid=dev_m -F entranceid=4DC0C2D5D1EF3645B99875CED64FEE29 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F planid=118831D8FAF171478F2A8E2283C97510 -F patrol_date='2018-01-10 17:05:10' -F patrol_picture='["pic7"]' -F patrol_result=3 -F patrol_desc=desc5 http://172.20.120.22:8988/passenger_flow.cgi?action=create_patrol_record
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F deviceid= -F entranceid='["98E7E45DF3DB3245BCB9AA2E450B3361","8A2C2EF105E68641B4FA413B1BC3941A"]' -F storeid=633C589CF2FA3C4A9C3237E4C922F56E -F planid=CEE3D626584B9149B64A18299B077712 -F patrol_date='2018-01-10 17:05:10' -F patrol_picture='[{"eid":"98E7E45DF3DB3245BCB9AA2E450B3361","pic":["pic1","pic2"]},{"eid":"8A2C2EF105E68641B4FA413B1BC3941A","pic":["pic3","pic4"]}]' -F patrol_result=1 -F patrol_desc=desc1 http://172.20.120.22:8988/passenger_flow.cgi?action=create_patrol_record
 
 删除巡店记录
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F patrol_id=959DE5228D2B6E45B905065E4265496E http://172.20.120.22:8988/passenger_flow.cgi?action=remove_patrol_record
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=633C589CF2FA3C4A9C3237E4C922F56E -F patrol_id=1F4C1E0A701DBC4194BA1F55C34DC78C http://172.20.120.22:8988/passenger_flow.cgi?action=remove_patrol_record
 
 修改巡店记录
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F patrol_id=959DE5228D2B6E45B905065E4265496E -F patrol_picture='["pic4","pic5"]' -F patrol_result=0 -F patrol_desc=descmod http://172.20.120.22:8988/passenger_flow.cgi?action=modify_patrol_record
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=633C589CF2FA3C4A9C3237E4C922F56E -F patrol_id=1F4C1E0A701DBC4194BA1F55C34DC78C -F patrol_picture='[{"eid":"98E7E45DF3DB3245BCB9AA2E450B3361","pic":["pic01","pic02"]},{"eid":"8A2C2EF105E68641B4FA413B1BC3941A","pic":["pic03","pic04"]}]' -F patrol_result=0 -F patrol_desc=descmod http://172.20.120.22:8988/passenger_flow.cgi?action=modify_patrol_record
 
 查询巡店记录信息
-curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=6ABF7009D0FC80488B576499B8B220A4 -F patrol_id=959DE5228D2B6E45B905065E4265496E http://172.20.120.22:8988/passenger_flow.cgi?action=query_patrol_record
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=633C589CF2FA3C4A9C3237E4C922F56E -F patrol_id=1F4C1E0A701DBC4194BA1F55C34DC78C http://172.20.120.22:8988/passenger_flow.cgi?action=query_patrol_record
 
 查询所有巡店记录
 curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid= -F begindate= -F enddate= -F beginindex= http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_patrol_record
 
+新增传感器
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F deviceid=0018A978B9EB -F name=人体感应 -F type=2 http://172.20.120.22:8988/passenger_flow.cgi?action=add_store_sensor
+
+删除传感器
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F sensorid=0B4C3E261C7BC24387062B8EF3E4B34F http://172.20.120.22:8988/passenger_flow.cgi?action=remove_store_sensor
+
+修改传感器
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F sensorid=0B4C3E261C7BC24387062B8EF3E4B34F -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F deviceid=0018A978B9EB -F name=紧急 -F type=9 http://172.20.120.22:8988/passenger_flow.cgi?action=modify_store_sensor
+
+查询传感器信息
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F sensorid=0B4C3E261C7BC24387062B8EF3E4B34F http://172.20.120.22:8988/passenger_flow.cgi?action=query_store_sensor
+
+查询所有传感器
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 http://172.20.120.22:8988/passenger_flow.cgi?action=query_all_store_sensor
+
+设备上报传感器信息
+curl -F sid=sss -F deviceid=0018A978B9EB -F info='[{"type":"4","value":"12"},{"type":"1","value":"25"},{"type":"9","value":"35"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=report_sensor_info
 
 

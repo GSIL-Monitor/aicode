@@ -112,6 +112,8 @@ const std::string PassengerFlowMsgHandler::USER_QUIT_STORE("user_quit_store");
 
 const std::string PassengerFlowMsgHandler::QUERY_USER_STORE("query_store_all_user");
 
+const std::string PassengerFlowMsgHandler::QUERY_ALL_USER_LIST("query_all_userlist");
+
 const std::string PassengerFlowMsgHandler::CREATE_EVALUATION_TEMPLATE("create_evaluation_template");
 
 const std::string PassengerFlowMsgHandler::DELETE_EVALUATION_TEMPLATE("remove_evaluation_template");
@@ -279,6 +281,20 @@ bool PassengerFlowMsgHandler::AddStoreHandler(boost::shared_ptr<MsgInfoMap> pMsg
         strAddress = itFind->second;
     }
 
+    std::list<std::string> strPhoneList;
+    std::string strPhone;
+    itFind = pMsgInfoMap->find("phone");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPhone = itFind->second;
+
+        if (!GetValueList(strPhone, strPhoneList))
+        {
+            LOG_ERROR_RLD("Parse phone info failed and value is " << strPhone);
+            return blResult;
+        }
+    }
+
     std::string strExtend;
     itFind = pMsgInfoMap->find("extend");
     if (pMsgInfoMap->end() != itFind)
@@ -315,6 +331,7 @@ bool PassengerFlowMsgHandler::AddStoreHandler(boost::shared_ptr<MsgInfoMap> pMsg
 
     StoreInfo store;
     store.m_strAddress = strAddress;
+    store.m_strPhoneList.swap(strPhoneList);
     store.m_strExtend = strExtend;
     store.m_strGoodsCategory = strGoodsCategory;
     store.m_strStoreName = strStoreName;
@@ -467,6 +484,20 @@ bool PassengerFlowMsgHandler::ModifyStoreHandler(boost::shared_ptr<MsgInfoMap> p
         strAddress = itFind->second;
     }
 
+    std::list<std::string> strPhoneList;
+    std::string strPhone;
+    itFind = pMsgInfoMap->find("phone");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPhone = itFind->second;
+
+        if (!GetValueList(strPhone, strPhoneList))
+        {
+            LOG_ERROR_RLD("Parse phone info failed and value is " << strPhone);
+            return blResult;
+        }
+    }
+
     std::string strExtend;
     itFind = pMsgInfoMap->find("extend");
     if (pMsgInfoMap->end() != itFind)
@@ -502,6 +533,7 @@ bool PassengerFlowMsgHandler::ModifyStoreHandler(boost::shared_ptr<MsgInfoMap> p
 
     StoreInfo store;
     store.m_strAddress = strAddress;
+    store.m_strPhoneList.swap(strPhoneList);
     store.m_strExtend = strExtend;
     store.m_strGoodsCategory = strGoodsCategory;
     store.m_strStoreName = strStoreName;
@@ -531,8 +563,9 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsEtrList;
     Json::Value jsDmiList;
+    Json::Value jsPhoneList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEtrList, &jsDmiList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEtrList, &jsDmiList, &jsPhoneList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -551,6 +584,7 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["entrance"] = jsEtrList;
                 (*pJsBody)["domain"] = jsDmiList;
+                (*pJsBody)["phone"] = jsPhoneList;
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -587,12 +621,13 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
 
     LOG_INFO_RLD("Query store info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID);
 
+    std::list<std::string> strPhoneList;
     std::list<DomainInfo> dmilist;
     std::list<EntranceInfo> etilist;
     StoreInfo sinfo;
     sinfo.m_strStoreID = strStoreID;
 
-    if (!QueryStore(strSid, strUserID, sinfo, etilist, dmilist))
+    if (!QueryStore(strSid, strUserID, sinfo, etilist, dmilist, strPhoneList))
     {
         LOG_ERROR_RLD("Query store handle failed");
         return blResult;
@@ -600,6 +635,13 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
 
     //jsDmiList["domainid"] = sinfo.m_strDomainID;
     //jsDmiList["name"] = sinfo.m_strDomainName;
+
+    Json::Value jsPhoneInfo;
+    unsigned int uiPhoneK = 0;
+    for (auto itBegin = strPhoneList.begin(), itEnd = strPhoneList.end(); itBegin != itEnd; ++itBegin, ++uiPhoneK)
+    {
+        jsPhoneList[uiPhoneK] = *itBegin;
+    }
 
     for (auto itBegin = dmilist.begin(), itEnd = dmilist.end(); itBegin != itEnd; ++itBegin)
     {
@@ -722,13 +764,35 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
         }
     }
 
+    std::string strDomainID;
+    itFind = pMsgInfoMap->find("domainid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strDomainID = itFind->second;
+    }
+    
+    unsigned int uiOpenState = 0xFFFFFFFF;
+    std::string strOpenState;
+    itFind = pMsgInfoMap->find("open_state");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOpenState = itFind->second;
+
+        if (!ValidType<unsigned int>(strOpenState, uiOpenState))
+        {
+            LOG_ERROR_RLD("Open state is invalid and value is " << strOpenState);
+            return blResult;
+        }
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Query all store info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex);
+    LOG_INFO_RLD("Query all store info received and session id is " << strSid << " and user id is " << strUserID << " and begin index is " << uiBeginIndex
+        << " and domian id is " << strDomainID << " and open state is " << uiOpenState);
 
     std::list<StoreAndEntranceInfo> storelist;
 
-    if (!QueryAllStore(strSid, strUserID, uiBeginIndex, storelist))
+    if (!QueryAllStore(strSid, strUserID, uiBeginIndex, strDomainID, uiOpenState, storelist))
     {
         LOG_ERROR_RLD("Query all store handle failed");
         return blResult;
@@ -774,6 +838,19 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
         jsDmi["domainid"] = itBegin->stinfo.m_strDomainID;
         jsDmi["name"] = itBegin->stinfo.m_strDomainName;
         jsStore["domain"] = jsDmi;
+
+        Json::Value jsPhoneInfo;
+        unsigned int i = 0;
+        auto itB2 = itBegin->stinfo.m_strPhoneList.begin();
+        auto itE2 = itBegin->stinfo.m_strPhoneList.end();
+        while (itB2 != itE2)
+        {
+            jsPhoneInfo[i] = *itB2;
+
+            ++itB2;
+            ++i;
+        }
+        jsStore["phone"] = jsPhoneInfo;
 
         jsStoreInfoList.append(jsStore);
 
@@ -2056,6 +2133,19 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
     }
     const std::string strUserID = itFind->second;
 
+    unsigned int uiRelation = 0xFFFFFFFF;
+    std::string strRelation;
+    itFind = pMsgInfoMap->find("relation");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strRelation = itFind->second;
+        if (!ValidType<unsigned int>(strRelation, uiRelation))
+        {
+            LOG_ERROR_RLD("Relation parse failed.");
+            return blResult;
+        }
+    }
+
     unsigned int uiBeginIndex = 0;
     itFind = pMsgInfoMap->find("beginindex");
     if (pMsgInfoMap->end() != itFind)
@@ -2119,7 +2209,7 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         " and process state is " << uiProcessState << " and begin date is " << strBeginDate << " and end date is " << strEndDate);
 
     std::list<EventInfo> einfoList;    
-    if (!QueryAllEvent(strSid, strUserID, uiBeginIndex, uiProcessState, strBeginDate, strEndDate, einfoList))
+    if (!QueryAllEvent(strSid, strUserID, uiRelation, uiBeginIndex, uiProcessState, strBeginDate, strEndDate, einfoList))
     {
         LOG_ERROR_RLD("Query all event handle failed");
         return blResult;
@@ -4391,11 +4481,19 @@ bool PassengerFlowMsgHandler::UserJoinStoreHandler(boost::shared_ptr<MsgInfoMap>
     }
     const std::string strRole = itFind->second;
 
-    
+    itFind = pMsgInfoMap->find("administratorid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Admin id not found.");
+        return blResult;
+    }
+    const std::string strAdminID = itFind->second;
+        
     UserOfStore us;
     us.m_strRole = strRole;
     us.m_strStoreID = strStoreID;
     us.m_strUserID = strUserID;
+    us.m_strAdminID = strAdminID;
 
     if (!UserJoinStore(strSid, us))
     {
@@ -4472,6 +4570,7 @@ bool PassengerFlowMsgHandler::UserQuitStoreHandler(boost::shared_ptr<MsgInfoMap>
     UserOfStore us;
     us.m_strStoreID = strStoreID;
     us.m_strUserID = strUserID;
+    us.m_strAdminID = strAdminID;
 
     if (!UserQuitStore(strSid, strAdminID, us))
     {
@@ -4575,6 +4674,85 @@ bool PassengerFlowMsgHandler::QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoM
 
     LOG_INFO_RLD("Query user of store info received and session id is " << strSid << " and user id is " << strUserID
         << " and store id  is " << strStoreID << " and user of store record size is " << uslist.size());
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllUserListHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsAllUserList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsAllUserList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["user_list"] = jsAllUserList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    std::list<UserOfStore> uslist;
+    if (!QueryAllUserList(strSid, strUserID, uslist))
+    {
+        LOG_ERROR_RLD("Query all user list failed.");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = uslist.begin(), itEnd = uslist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsUser;
+        jsUser["user_id"] = itBegin->m_strUserID;
+        jsUser["user_name"] = itBegin->m_strUserName;
+
+        jsAllUserList[i] = jsUser;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all user list info received and session id is " << strSid << " and user id is " << strUserID
+        << " and user of list size is " << uslist.size());
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5520,7 +5698,8 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
         jsEva["userid"] = itBegin->m_strUserID;
         jsEva["evaluation_date"] = itBegin->m_strEvaluationDate;
         jsEva["evaluation_total_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaluationTotalValue);
-        
+        jsEva["evaluation_template_total_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaluationTemplateTotalValue);
+
         jsEvaList[i] = jsEva;
     }
 
@@ -5560,7 +5739,7 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     }
     BOOST_SCOPE_EXIT_END
 
-    auto itFind = pMsgInfoMap->find("sid");
+        auto itFind = pMsgInfoMap->find("sid");
     if (pMsgInfoMap->end() == itFind)
     {
         LOG_ERROR_RLD("Session id not found.");
@@ -5574,7 +5753,7 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     {
         strUserID = itFind->second;
     }
-    
+
     std::string strDevID;
     itFind = pMsgInfoMap->find("deviceid");
     if (pMsgInfoMap->end() != itFind)
@@ -5590,7 +5769,7 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
 
     std::string strPlanID;
     if (!strDevID.empty())
-    {        
+    {
         itFind = pMsgInfoMap->find("planid");
         if (pMsgInfoMap->end() == itFind)
         {
@@ -5601,7 +5780,7 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
         strPlanID = itFind->second;
     }
 
-    std::string strEntranceID;
+    std::list<std::string> strEntranceIDList;
     if (!strUserID.empty())
     {
         itFind = pMsgInfoMap->find("entranceid");
@@ -5611,9 +5790,13 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
             return blResult;
         }
 
-        strEntranceID = itFind->second;
+        if (!GetValueList(itFind->second, strEntranceIDList))
+        {
+            LOG_ERROR_RLD("Entrance id list parse failed.");
+            return blResult;
+        }
     }
-    
+
     itFind = pMsgInfoMap->find("storeid");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -5635,7 +5818,6 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
         return blResult;
     }
 
-    std::list<std::string> strPicIDList;    
     itFind = pMsgInfoMap->find("patrol_picture");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -5644,10 +5826,63 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     }
     const std::string strPatrolPicInfo = itFind->second;
 
-    if (!GetValueList(strPatrolPicInfo, strPicIDList))
+    std::list<PatrolRecord::PatrolPic> PicList;
+    std::list<std::string> strPicIDList;
+    if (!strDevID.empty())
     {
-        LOG_ERROR_RLD("Patrol picture list parse failed");
-        return blResult;
+        if (!GetValueList(strPatrolPicInfo, strPicIDList))
+        {
+            LOG_ERROR_RLD("Patrol picture list parse failed and value is " << strPatrolPicInfo);
+            return blResult;
+        }
+    }
+    else
+    {
+        auto PicParse = [&](Json::Value jsValue) ->bool
+        {
+            if (!jsValue.isObject())
+            {
+                LOG_ERROR_RLD("Pic info parse failed");
+                return blResult;
+            }
+
+            auto jsEid = jsValue["eid"];
+            if (jsEid.isNull() || !jsEid.isString() || jsEid.asString().empty())
+            {
+                LOG_ERROR_RLD("Entrance id parse failed");
+                return blResult;
+            }
+
+            PatrolRecord::PatrolPic pic;
+            pic.m_strEntranceID = jsEid.asString();
+
+            auto jsPicValue = jsValue["pic"];
+            if (jsPicValue.isNull() || !jsPicValue.isArray())
+            {
+                LOG_ERROR_RLD("Pic parse failed");
+                return blResult;
+            }
+
+            for (unsigned int i = 0; i < jsPicValue.size(); ++i)
+            {
+                if (jsPicValue[i].isNull() || !jsPicValue[i].isString() || jsPicValue[i].asString().empty())
+                {
+                    LOG_ERROR_RLD("Pic parse failed");
+                    return blResult;
+                }
+                pic.m_strPicIDList.push_back(jsPicValue[i].asString());
+            }
+
+            PicList.push_back(std::move(pic));
+
+            return true;
+        };
+
+        if (!GetValueFromList(strPatrolPicInfo, PicParse))
+        {
+            LOG_ERROR_RLD("Pic info parse failed and value is " << strPatrolPicInfo);
+            return blResult;
+        }
     }
 
     itFind = pMsgInfoMap->find("patrol_result");
@@ -5682,7 +5917,8 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     pr.m_strUserID = strUserID;
     pr.m_uiPatrolResult = uiPatrolResult;
     pr.m_strPlanID = strPlanID;
-    pr.m_strEntranceID = strEntranceID;
+    pr.m_strEntranceIDList.swap(strEntranceIDList);
+    pr.m_PicList.swap(PicList);
     
     if (!CreatePatrolRecord(strSid, pr))
     {
@@ -5815,19 +6051,58 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecordHandler(boost::shared_ptr<MsgInf
     }
     const std::string strPatrolID = itFind->second;
         
-    std::list<std::string> strPicIDList;
+    std::list<PatrolRecord::PatrolPic> PicList;
     itFind = pMsgInfoMap->find("patrol_picture");
     if (pMsgInfoMap->end() != itFind)
     {
         const std::string strPatrolPicInfo = itFind->second;
-
-        if (!GetValueList(strPatrolPicInfo, strPicIDList))
+        auto PicParse = [&](Json::Value jsValue) ->bool
         {
-            LOG_ERROR_RLD("Patrol picture list parse failed");
+            if (!jsValue.isObject())
+            {
+                LOG_ERROR_RLD("Pic info parse failed");
+                return blResult;
+            }
+
+            auto jsEid = jsValue["eid"];
+            if (jsEid.isNull() || !jsEid.isString() || jsEid.asString().empty())
+            {
+                LOG_ERROR_RLD("Entrance id parse failed");
+                return blResult;
+            }
+
+            PatrolRecord::PatrolPic pic;
+            pic.m_strEntranceID = jsEid.asString();
+
+            auto jsPicValue = jsValue["pic"];
+            if (jsPicValue.isNull() || !jsPicValue.isArray())
+            {
+                LOG_ERROR_RLD("Pic parse failed");
+                return blResult;
+            }
+
+            for (unsigned int i = 0; i < jsPicValue.size(); ++i)
+            {
+                if (jsPicValue[i].isNull() || !jsPicValue[i].isString() || jsPicValue[i].asString().empty())
+                {
+                    LOG_ERROR_RLD("Pic parse failed");
+                    return blResult;
+                }
+                pic.m_strPicIDList.push_back(jsPicValue[i].asString());
+            }
+
+            PicList.push_back(std::move(pic));
+
+            return true;
+        };
+
+        if (!GetValueFromList(strPatrolPicInfo, PicParse))
+        {
+            LOG_ERROR_RLD("Pic info parse failed and value is " << strPatrolPicInfo);
             return blResult;
-        }
+        }        
     }
-    
+
     unsigned int uiPatrolResult = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("patrol_result");
     if (pMsgInfoMap->end() != itFind)
@@ -5852,7 +6127,7 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecordHandler(boost::shared_ptr<MsgInf
     PatrolRecord pr;
     pr.m_strPatrolID = strPatrolID;
     pr.m_strPatrolDesc = strPatrolDesc;
-    pr.m_strPatrolPicIDList.swap(strPicIDList);
+    pr.m_PicList.swap(PicList);
     pr.m_strUserID = strUserID;
     pr.m_uiPatrolResult = uiPatrolResult;
 
@@ -5881,8 +6156,9 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsPatrolPicURLList;
+    Json::Value jsEidList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPatrolPicURLList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPatrolPicURLList, &jsEidList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -5900,6 +6176,7 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
             {
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["patrol_picture"] = jsPatrolPicURLList;
+                (*pJsBody)["entranceid"] = jsEidList;
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -5941,10 +6218,32 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
         return blResult;
     }
 
-    unsigned int i = 0;
-    for (auto itBegin = pr.m_strPatrolPicURLList.begin(), itEnd = pr.m_strPatrolPicURLList.end(); itBegin != itEnd; ++itBegin, ++i)
+    for (auto itBegin = pr.m_PicList.begin(), itEnd = pr.m_PicList.end(); itBegin != itEnd; ++itBegin)
     {
-        jsPatrolPicURLList[i] = *itBegin;
+        Json::Value jsPicInfo;
+        jsPicInfo["eid"] = itBegin->m_strEntranceID;
+
+        Json::Value jsURL;
+        unsigned int i = 0;
+        auto itB1 = itBegin->m_strPicIDList.begin();
+        auto itE1 = itBegin->m_strPicIDList.end();
+        while (itB1 != itE1)
+        {
+            jsURL[i] = *itB1;
+
+            ++itB1;
+            ++i;
+        }
+
+        jsPicInfo["pic"] = jsURL;
+
+        jsPatrolPicURLList.append(jsPicInfo);
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = pr.m_strEntranceIDList.begin(), itEnd = pr.m_strEntranceIDList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {        
+        jsEidList[i] = *itBegin;
     }
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
@@ -5962,7 +6261,7 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storeid", pr.m_strStoreID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("patrol_date", pr.m_strPatrolDate));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("planid", pr.m_strPlanID));
-    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("entranceid", pr.m_strEntranceID));
+    //ResultInfoMap.insert(std::map<std::string, std::string>::value_type("entranceid", pr.m_strEntranceID));
         
     blResult = true;
 
@@ -6024,7 +6323,33 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
     {
         strStoreID = itFind->second;
     }
-    
+
+    unsigned int uiPatrolResult = 0xFFFFFFFF;
+    std::string strPatrolResult;
+    itFind = pMsgInfoMap->find("patrol_result");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolResult = itFind->second;
+        if (!ValidType<unsigned int>(strPatrolResult, uiPatrolResult))
+        {
+            LOG_ERROR_RLD("Patrol result type is incorrect.");
+            return blResult;
+        }
+    }
+
+    unsigned int uiPlanFlag = 0xFFFFFFFF;
+    std::string strPlanFlag;
+    itFind = pMsgInfoMap->find("plan_flag");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPlanFlag = itFind->second;
+        if (!ValidType<unsigned int>(strPlanFlag, uiPlanFlag))
+        {
+            LOG_ERROR_RLD("Plan flag type is incorrect.");
+            return blResult;
+        }
+    }
+        
     std::string strPlanID;
     itFind = pMsgInfoMap->find("planid");
     if (pMsgInfoMap->end() != itFind)
@@ -6084,14 +6409,14 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
     }
 
     std::list<PatrolRecord> prlist;
-    if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, strPlanID, strBeginDate, strEndDate, uiBeginIndex, prlist))
+    if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, uiPatrolResult, uiPlanFlag, strPlanID, strBeginDate, strEndDate, uiBeginIndex, prlist))
     {
         LOG_ERROR_RLD("Query all evaluation of store failed.");
         return blResult;
     }
 
-    unsigned int i = 0;
-    for (auto itBegin = prlist.begin(), itEnd = prlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    unsigned int ii = 0;
+    for (auto itBegin = prlist.begin(), itEnd = prlist.end(); itBegin != itEnd; ++itBegin, ++ii)
     {
         Json::Value jsPr;
         jsPr["userid"] = itBegin->m_strUserID;
@@ -6101,18 +6426,44 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
         jsPr["storeid"] = itBegin->m_strStoreID;
         jsPr["patrol_date"] = itBegin->m_strPatrolDate;
         jsPr["planid"] = itBegin->m_strPlanID;
-        jsPr["entranceid"] = itBegin->m_strEntranceID;
-
+        //jsPr["entranceid"] = itBegin->m_strEntranceID;
+        jsPr["patrol_id"] = itBegin->m_strPatrolID;
+        
         Json::Value jsPatrolPicURLList;
-        unsigned int k = 0;
-        for (auto itBegin2 = itBegin->m_strPatrolPicURLList.begin(), itEnd2 = itBegin->m_strPatrolPicURLList.end(); itBegin2 != itEnd2; ++itBegin2, ++k)
+        for (auto itBeginPic = itBegin->m_PicList.begin(), itEndPic = itBegin->m_PicList.end(); itBeginPic != itEndPic; ++itBeginPic)
         {
-            jsPatrolPicURLList[k] = *itBegin2;
+            Json::Value jsPicInfo;
+            jsPicInfo["eid"] = itBeginPic->m_strEntranceID;
+
+            Json::Value jsURL;
+            unsigned int i = 0;
+            auto itB1 = itBeginPic->m_strPicIDList.begin();
+            auto itE1 = itBeginPic->m_strPicIDList.end();
+            while (itB1 != itE1)
+            {
+                jsURL[i] = *itB1;
+
+                ++itB1;
+                ++i;
+            }
+
+            jsPicInfo["pic"] = jsURL;
+
+            jsPatrolPicURLList.append(jsPicInfo);
         }
 
         jsPr["patrol_picture"] = jsPatrolPicURLList;
 
-        jsPatrolRecordList[i] = jsPr;
+        Json::Value jsEid;
+        unsigned int i = 0;
+        for (auto itBeginEid = itBegin->m_strEntranceIDList.begin(), itEndEid = itBegin->m_strEntranceIDList.end(); itBeginEid != itEndEid; ++itBeginEid, ++i)
+        {            
+            jsEid[i] = *itBeginEid;
+        }
+
+        jsPr["entranceid"] = jsEid;
+
+        jsPatrolRecordList[ii] = jsPr;
     }
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
@@ -7055,6 +7406,7 @@ bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::str
 
         AddStoreReq.m_strUserID = strUserID;
         AddStoreReq.m_storeInfo.m_strAddress = store.m_strAddress;
+        AddStoreReq.m_storeInfo.m_strTelephoneList.swap(store.m_strPhoneList);
         AddStoreReq.m_storeInfo.m_strCreateDate = strCurrentTime;
         AddStoreReq.m_storeInfo.m_strExtend = store.m_strExtend;
         AddStoreReq.m_storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
@@ -7153,7 +7505,7 @@ bool PassengerFlowMsgHandler::DelStore(const std::string &strSid, const std::str
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::string &strUserID, const StoreInfo &store)
+bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -7164,6 +7516,7 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
 
         ModStoreReq.m_strUserID = strUserID;
         ModStoreReq.m_storeInfo.m_strAddress = store.m_strAddress;
+        ModStoreReq.m_storeInfo.m_strTelephoneList.swap(store.m_strPhoneList);
         //ModStoreReq.m_storeInfo.m_strCreateDate = strCurrentTime;
         ModStoreReq.m_storeInfo.m_strExtend = store.m_strExtend;
         ModStoreReq.m_storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
@@ -7212,7 +7565,7 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
 }
 
 bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist,
-    std::list<DomainInfo> &dmilist)
+    std::list<DomainInfo> &dmilist, std::list<std::string> &strPhoneList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -7255,6 +7608,8 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
         store.m_strDomainID = QueryStoreRsp.m_storeInfo.m_area.m_strAreaID;
         store.m_strDomainName = QueryStoreRsp.m_storeInfo.m_area.m_strAreaName;
         store.m_uiOpenState = QueryStoreRsp.m_storeInfo.m_uiOpenState;
+
+        strPhoneList.swap(QueryStoreRsp.m_storeInfo.m_strTelephoneList);
 
         for (auto itBegin = QueryStoreRsp.m_areaList.begin(), itEnd = QueryStoreRsp.m_areaList.end(); itBegin != itEnd; ++itBegin)
         {
@@ -7306,7 +7661,8 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
 }
 
 
-bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<StoreAndEntranceInfo> &storelist)
+bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+    const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -7317,6 +7673,8 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
 
         QueryAllStoreReq.m_strUserID = strUserID;
         QueryAllStoreReq.m_uiBeginIndex = uiBeginIndex;
+        QueryAllStoreReq.m_strAreaID = strDomainID;
+        QueryAllStoreReq.m_uiOpenState = uiOpenState;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllStoreReq, strSerializeOutPut))
@@ -7351,6 +7709,8 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
             store.stinfo.m_strAddress = itBegin->m_strAddress;
             store.stinfo.m_strDomainID = itBegin->m_area.m_strAreaID;
             store.stinfo.m_strDomainName = itBegin->m_area.m_strAreaName;
+
+            store.stinfo.m_strPhoneList.swap(itBegin->m_strTelephoneList);
 
             for (auto itB = itBegin->m_entranceList.begin(), itE = itBegin->m_entranceList.end(); itB != itE; ++itB)
             {
@@ -8082,7 +8442,7 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
+bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiRelation, const unsigned int uiBeginIndex,
     const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -8098,7 +8458,7 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
         QueryAllEventReq.m_strBeginDate = strBeginDate;
         QueryAllEventReq.m_uiProcessState = uiProcessState;
         QueryAllEventReq.m_strEndDate = strEndDate;
-
+        QueryAllEventReq.m_uiRelation = uiRelation;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllEventReq, strSerializeOutPut))
@@ -9434,6 +9794,7 @@ bool PassengerFlowMsgHandler::UserJoinStore(const std::string &strSid, UserOfSto
         UserJoinStoreReq.m_strRole = us.m_strRole;
         UserJoinStoreReq.m_strStoreID = us.m_strStoreID;
         UserJoinStoreReq.m_strUserID = us.m_strUserID;
+        UserJoinStoreReq.m_strAdministratorID = us.m_strAdminID;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UserJoinStoreReq, strSerializeOutPut))
@@ -9577,6 +9938,66 @@ bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const 
         LOG_INFO_RLD("Query user of store  and session id is " << strSid << " and user id is " << us.m_strUserID << " and store id is " << us.m_strStoreID <<
             " and return code is " << QueryUserOfStoreRsp.m_iRetcode <<
             " and return msg is " << QueryUserOfStoreRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const std::string &strUserID, std::list<UserOfStore> &uslist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryCompanyAllUserReq QueryAllUserListReq;
+        QueryAllUserListReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCompanyAllUserReq_T;
+        QueryAllUserListReq.m_uiMsgSeq = 1;
+        QueryAllUserListReq.m_strSID = strSid;
+
+        QueryAllUserListReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllUserListReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all user list req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryCompanyAllUserRsp QueryAllUserListRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllUserListRsp))
+        {
+            LOG_ERROR_RLD("Query all user list rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryAllUserListRsp.m_iRetcode;
+
+        for (auto itBegin = QueryAllUserListRsp.m_userList.begin(), itEnd = QueryAllUserListRsp.m_userList.end(); itBegin != itEnd; ++itBegin)
+        {
+            UserOfStore us;
+            us.m_strRole = itBegin->m_strRole;
+            us.m_strUserID = itBegin->m_strUserID;
+            us.m_strUserName = itBegin->m_strUserName;
+
+            uslist.push_back(std::move(us));
+        }
+
+        LOG_INFO_RLD("Query all user list and session id is " << strSid << " and user id is " << strUserID << " and store id is " <<
+            " and return code is " << QueryAllUserListRsp.m_iRetcode <<
+            " and return msg is " << QueryAllUserListRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
@@ -10113,6 +10534,7 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSi
         {
             Evaluation ev;
             ev.m_dEvaluationTotalValue = itBegin->m_dTotalScore;
+            ev.m_dEvaluationTemplateTotalValue = itBegin->m_dTotalPoint;
             ev.m_strEvaluationDate = itBegin->m_strCreateDate;
             ev.m_strEvaluationID = itBegin->m_strEvaluationID;
             ev.m_strStoreID = itBegin->m_strStoreID;
@@ -10157,8 +10579,17 @@ bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, Patr
         AddRemotePRReq.m_patrolStore.m_strUserID = pr.m_strUserID;
         AddRemotePRReq.m_patrolStore.m_uiPatrolResult = pr.m_uiPatrolResult;
         AddRemotePRReq.m_patrolStore.m_strPlanID = pr.m_strPlanID;
-        AddRemotePRReq.m_patrolStore.m_strEntranceID = pr.m_strEntranceID;
+        AddRemotePRReq.m_patrolStore.m_strEntranceIDList.swap(pr.m_strEntranceIDList);
         
+        for (auto itBegin = pr.m_PicList.begin(), itEnd = pr.m_PicList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::EntrancePicture pic;
+            pic.m_strEntranceID = itBegin->m_strEntranceID;
+            pic.m_strPatrolPictureList.swap(itBegin->m_strPicIDList);
+
+            AddRemotePRReq.m_patrolStore.m_patrolPictureList.push_back(std::move(pic));
+        }
+
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddRemotePRReq, strSerializeOutPut))
         {
@@ -10271,6 +10702,15 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecord(const std::string &strSid, Patr
         ModRemotePRReq.m_patrolStore.m_strStoreID = pr.m_strStoreID;
         ModRemotePRReq.m_patrolStore.m_strUserID = pr.m_strUserID;
         ModRemotePRReq.m_patrolStore.m_uiPatrolResult = pr.m_uiPatrolResult;
+        
+        for (auto itBegin = pr.m_PicList.begin(), itEnd = pr.m_PicList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::EntrancePicture pic;
+            pic.m_strEntranceID = itBegin->m_strEntranceID;
+            pic.m_strPatrolPictureList.swap(itBegin->m_strPicIDList);
+
+            ModRemotePRReq.m_patrolStore.m_patrolPictureList.push_back(std::move(pic));
+        }
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModRemotePRReq, strSerializeOutPut))
@@ -10353,9 +10793,21 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
         pr.m_strUserID = QueryRemotePRRsp.m_patrolStore.m_strUserID;
         pr.m_uiPatrolResult = QueryRemotePRRsp.m_patrolStore.m_uiPatrolResult;
         pr.m_strPlanID = QueryRemotePRRsp.m_patrolStore.m_strPlanID;
-        pr.m_strEntranceID = QueryRemotePRRsp.m_patrolStore.m_strEntranceID;
+        //pr.m_strEntranceID = QueryRemotePRRsp.m_patrolStore.m_strEntranceID;
+        pr.m_strEntranceIDList.swap(QueryRemotePRRsp.m_patrolStore.m_strEntranceIDList);
+
+        //pr.m_strPatrolPicURLList.swap(QueryRemotePRRsp.m_patrolStore.m_strPatrolPictureList);
+
+        for (auto itBegin = QueryRemotePRRsp.m_patrolStore.m_patrolPictureList.begin(), 
+            itEnd = QueryRemotePRRsp.m_patrolStore.m_patrolPictureList.end(); itBegin != itEnd; ++ itBegin)
+        {
+            PatrolRecord::PatrolPic pic;
+            pic.m_strEntranceID = itBegin->m_strEntranceID;
+            pic.m_strPicIDList.swap(itBegin->m_strPatrolPictureList);
+
+            pr.m_PicList.push_back(std::move(pic));
+        }
         
-        pr.m_strPatrolPicURLList.swap(QueryRemotePRRsp.m_patrolStore.m_strPatrolPictureList);
 
         iRet = QueryRemotePRRsp.m_iRetcode;
 
@@ -10375,7 +10827,8 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strPlanID,
+bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+    const unsigned int uiPatrolResult, const unsigned int uiPlanFlag, const std::string &strPlanID,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -10391,6 +10844,8 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
         QueryAllRemotePRReq.m_strPlanID = strPlanID;
         QueryAllRemotePRReq.m_strUserID = strUserID;
         QueryAllRemotePRReq.m_uiBeginIndex = uiBeginIndex;
+        QueryAllRemotePRReq.m_uiPatrolResult = uiPatrolResult;
+        QueryAllRemotePRReq.m_uiPlanFlag = uiPlanFlag;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRemotePRReq, strSerializeOutPut))
@@ -10424,9 +10879,22 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
             pr.m_strUserID = itBegin->m_strUserID;
             pr.m_uiPatrolResult = itBegin->m_uiPatrolResult;
             pr.m_strPlanID = itBegin->m_strPlanID;
-            pr.m_strEntranceID = itBegin->m_strEntranceID;
+            //pr.m_strEntranceID = itBegin->m_strEntranceID;
+            pr.m_strEntranceIDList.swap(itBegin->m_strEntranceIDList);
+            pr.m_strPatrolID = itBegin->m_strPatrolID;
 
-            pr.m_strPatrolPicURLList.swap(itBegin->m_strPatrolPictureList);
+            //pr.m_strPatrolPicURLList.swap(itBegin->m_strPatrolPictureList);
+
+            for (auto itBeginPic = itBegin->m_patrolPictureList.begin(),
+                itEndPic = itBegin->m_patrolPictureList.end(); itBeginPic != itEndPic; ++itBeginPic)
+            {
+                PatrolRecord::PatrolPic pic;
+                pic.m_strEntranceID = itBeginPic->m_strEntranceID;
+                pic.m_strPicIDList.swap(itBeginPic->m_strPatrolPictureList);
+
+                pr.m_PicList.push_back(std::move(pic));
+            }
+
 
             prlist.push_back(std::move(pr));
         }

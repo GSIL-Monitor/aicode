@@ -103,6 +103,8 @@ public:
         UserQuitStoreRsp_T = 10730,
         QueryStoreAllUserReq_T = 10740,        //查询店铺所有用户
         QueryStoreAllUserRsp_T = 10750,
+        QueryCompanyAllUserReq_T = 10760,      //查询公司所有用户
+        QueryCompanyAllUserRsp_T = 10770,
 
         AddVIPCustomerReq_T = 18000,           //添加VIP客户
         AddVIPCustomerRsp_T = 18010,
@@ -188,6 +190,9 @@ public:
         QueryCustomerFlowStatisticReq_T = 20900,  //查询客流统计
         QueryCustomerFlowStatisticRsp_T = 20910,
 
+        QueryPatrolResultReportReq_T = 21000,     //查询巡店结果统计
+        QueryPatrolResultReportRsp_T = 21010,
+
         //////////////////////////////////////////////////////////
 
         ReportCustomerFlowDataReq_T = 30000,      //设备上报客流数据
@@ -235,6 +240,7 @@ public:
         std::string m_strCreateDate;
         std::string m_strExtend;
         unsigned int m_uiState;
+        std::list<std::string> m_strTelephoneList;
     };
 
     struct UserGroupAssociation             //用户群组关联信息
@@ -360,7 +366,14 @@ public:
         double m_dTotalScore;
         unsigned int m_uiCheckStatus;
         std::list<EvaluationItemScore> m_itemScoreList;
+        double m_dTotalPoint;
         std::string m_strCreateDate;
+    };
+
+    struct EntrancePicture                  //出入口截图
+    {
+        std::string m_strEntranceID;
+        std::list<std::string> m_strPatrolPictureList;
     };
 
     struct RemotePatrolStore                //远程巡店记录
@@ -368,10 +381,11 @@ public:
         std::string m_strPatrolID;
         std::string m_strUserID;
         std::string m_strDeviceID;
-        std::string m_strEntranceID;
+        std::list<std::string> m_strEntranceIDList;
         std::string m_strStoreID;
         std::string m_strPlanID;
         std::string m_strPatrolDate;
+        std::list<EntrancePicture> m_patrolPictureList;
         std::list<std::string> m_strPatrolPictureList;
         unsigned int m_uiPatrolResult;
         std::string m_strDescription;
@@ -729,6 +743,8 @@ public:
     struct QueryAllStoreReq : Request
     {
         std::string m_strUserID;
+        std::string m_strAreaID;
+        unsigned int m_uiOpenState;
         unsigned int m_uiBeginIndex;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
@@ -908,6 +924,7 @@ public:
     {
         std::string m_strUserID;
         unsigned int m_uiProcessState;
+        unsigned int m_uiRelation;
         std::string m_strBeginDate;
         std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
@@ -1098,6 +1115,7 @@ public:
 
     struct UserJoinStoreReq : Request
     {
+        std::string m_strAdministratorID;
         std::string m_strUserID;
         std::string m_strStoreID;
         std::string m_strRole;
@@ -1142,6 +1160,22 @@ public:
     };
 
     struct QueryStoreAllUserRsp : Response
+    {
+        std::list<UserBrief> m_userList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryCompanyAllUserReq : Request
+    {
+        std::string m_strUserID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryCompanyAllUserRsp : Response
     {
         std::list<UserBrief> m_userList;
 
@@ -1529,6 +1563,8 @@ public:
     {
         std::string m_strUserID;
         std::string m_strStoreID;
+        unsigned int m_uiPatrolResult;
+        unsigned int m_uiPlanFlag;
         std::string m_strPlanID;
         std::string m_strBeginDate;
         std::string m_strEndDate;
@@ -1666,6 +1702,27 @@ public:
     };
 
     struct QueryCustomerFlowStatisticRsp : Response
+    {
+        std::string m_strChartData;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryPatrolResultReportReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strStoreID;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiPatrolResult;
+        std::string m_strPatrolUserID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryPatrolResultReportRsp : Response
     {
         std::string m_strChartData;
 
@@ -1930,6 +1987,11 @@ private:
     bool QueryStoreAllUserRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QueryStoreAllUserRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
+    bool QueryCompanyAllUserReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryCompanyAllUserReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryCompanyAllUserRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryCompanyAllUserRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
     bool AddVIPCustomerReq_Serializer(const Request &req, std::string &strOutput);
     bool AddVIPCustomerReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool AddVIPCustomerRsp_Serializer(const Request &rsp, std::string &strOutput);
@@ -2079,6 +2141,11 @@ private:
     bool QueryCustomerFlowStatisticReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool QueryCustomerFlowStatisticRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QueryCustomerFlowStatisticRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryPatrolResultReportReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryPatrolResultReportReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryPatrolResultReportRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryPatrolResultReportRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
     bool ReportCustomerFlowDataReq_Serializer(const Request &req, std::string &strOutput);
     bool ReportCustomerFlowDataReq_UnSerializer(const CustomerFlowMessage &message, Request &req);

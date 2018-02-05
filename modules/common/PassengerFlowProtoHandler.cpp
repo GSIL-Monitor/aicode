@@ -124,6 +124,11 @@ void SerializeStoreList(const std::list<PassengerFlowProtoHandler::Store> &store
         pDstStoreInfo->set_strextend(itBegin->m_strExtend);
         pDstStoreInfo->set_uistate(itBegin->m_uiState);
 
+        for (auto it = itBegin->m_strTelephoneList.begin(), end = itBegin->m_strTelephoneList.end(); it != end; ++it)
+        {
+            pDstStoreInfo->add_strtelephone(*it);
+        }
+
         auto area = pDstStoreInfo->mutable_area();
         area->set_strareaid(itBegin->m_area.m_strAreaID);
         area->set_strareaname(itBegin->m_area.m_strAreaName);
@@ -147,6 +152,11 @@ void UnSerializeStoreList(std::list<PassengerFlowProtoHandler::Store> &storeInfo
         storeInfo.m_strCreateDate = srcStoreInfo.strcreatedate();
         storeInfo.m_strExtend = srcStoreInfo.strextend();
         storeInfo.m_uiState = srcStoreInfo.uistate();
+
+        for (int j = 0, sz2 = srcStoreInfo.strtelephone_size(); j < sz2; ++j)
+        {
+            storeInfo.m_strTelephoneList.push_back(srcStoreInfo.strtelephone(j));
+        }
 
         auto area = srcStoreInfo.area();
         storeInfo.m_area.m_strAreaID = area.strareaid();
@@ -795,6 +805,16 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
 
     /////////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryCompanyAllUserReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryCompanyAllUserReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryCompanyAllUserReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryCompanyAllUserRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryCompanyAllUserRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryCompanyAllUserRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddVIPCustomerReq_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddVIPCustomerReq_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddVIPCustomerReq_T, handler));
@@ -1092,6 +1112,16 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryCustomerFlowStatisticRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryPatrolResultReportReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryPatrolResultReportReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryPatrolResultReportReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryPatrolResultReportRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryPatrolResultReportRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryPatrolResultReportRsp_T, handler));
 
     /////////////////////////////////////////////////////
 
@@ -2031,6 +2061,26 @@ bool PassengerFlowProtoHandler::QueryStoreAllUserRsp_UnSerializer(const Customer
     return UnSerializerT<QueryStoreAllUserRsp, Request>(message, rsp);
 }
 
+bool PassengerFlowProtoHandler::QueryCompanyAllUserReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryCompanyAllUserReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryCompanyAllUserReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryCompanyAllUserReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryCompanyAllUserRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryCompanyAllUserRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryCompanyAllUserRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryCompanyAllUserRsp, Request>(message, rsp);
+}
+
 bool PassengerFlowProtoHandler::AddVIPCustomerReq_Serializer(const Request &req, std::string &strOutput)
 {
     return SerializerT<AddVIPCustomerReq, Request>(req, strOutput);
@@ -2629,6 +2679,26 @@ bool PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp_Serializer(const R
 bool PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<QueryCustomerFlowStatisticRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryPatrolResultReportReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryPatrolResultReportReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryPatrolResultReportReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryPatrolResultReportReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryPatrolResultReportRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryPatrolResultReportRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryPatrolResultReportRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryPatrolResultReportRsp, Request>(message, rsp);
 }
 
 bool PassengerFlowProtoHandler::ReportCustomerFlowDataReq_Serializer(const Request &req, std::string &strOutput)
@@ -3255,6 +3325,11 @@ void PassengerFlowProtoHandler::AddStoreReq::Serializer(CustomerFlowMessage &mes
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
+    for (auto it = m_storeInfo.m_strTelephoneList.begin(), end = m_storeInfo.m_strTelephoneList.end(); it != end; ++it)
+    {
+        store->add_strtelephone(*it);
+    }
+
     SerializeEntranceList(m_storeInfo.m_entranceList, store->mutable_entrance());
 }
 
@@ -3274,6 +3349,11 @@ void PassengerFlowProtoHandler::AddStoreReq::UnSerializer(const CustomerFlowMess
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
+    for (int i = 0, sz = store.strtelephone_size(); i < sz; ++i)
+    {
+        m_storeInfo.m_strTelephoneList.push_back(store.strtelephone(i));
+    }
+
     UnSerializeEntranceList(m_storeInfo.m_entranceList, store.entrance());
 }
 
@@ -3341,6 +3421,11 @@ void PassengerFlowProtoHandler::ModifyStoreReq::Serializer(CustomerFlowMessage &
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
+    for (auto it = m_storeInfo.m_strTelephoneList.begin(), end = m_storeInfo.m_strTelephoneList.end(); it != end; ++it)
+    {
+        store->add_strtelephone(*it);
+    }
+
     SerializeEntranceList(m_storeInfo.m_entranceList, store->mutable_entrance());
 }
 
@@ -3360,6 +3445,11 @@ void PassengerFlowProtoHandler::ModifyStoreReq::UnSerializer(const CustomerFlowM
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
+    for (int i = 0, sz = store.strtelephone_size(); i < sz; ++i)
+    {
+        m_storeInfo.m_strTelephoneList.push_back(store.strtelephone(i));
+    }
+
     UnSerializeEntranceList(m_storeInfo.m_entranceList, store.entrance());
 }
 
@@ -3410,6 +3500,10 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::Serializer(CustomerFlowMessag
     store->set_strcreatedate(m_storeInfo.m_strCreateDate);
     store->set_strextend(m_storeInfo.m_strExtend);
     store->set_uistate(m_storeInfo.m_uiState);
+    for (auto it = m_storeInfo.m_strTelephoneList.begin(), end = m_storeInfo.m_strTelephoneList.end(); it != end; ++it)
+    {
+        store->add_strtelephone(*it);
+    }
 
     auto storeArea = store->mutable_area();
     storeArea->set_strareaid(m_storeInfo.m_area.m_strAreaID);
@@ -3437,6 +3531,10 @@ void PassengerFlowProtoHandler::QueryStoreInfoRsp::UnSerializer(const CustomerFl
     m_storeInfo.m_strCreateDate = store.strcreatedate();
     m_storeInfo.m_strExtend = store.strextend();
     m_storeInfo.m_uiState = store.uistate();
+    for (int i = 0, sz = store.strtelephone_size(); i < sz; ++i)
+    {
+        m_storeInfo.m_strTelephoneList.push_back(store.strtelephone(i));
+    }
 
     auto storeArea = store.area();
     m_storeInfo.m_area.m_strAreaID = storeArea.strareaid();
@@ -3461,6 +3559,8 @@ void PassengerFlowProtoHandler::QueryAllStoreReq::Serializer(CustomerFlowMessage
 
     auto req = message.mutable_reqvalue()->mutable_queryallstorereq_value();
     req->set_struserid(m_strUserID);
+    req->set_strareaid(m_strAreaID);
+    req->set_uiopenstate(m_uiOpenState);
     req->set_uibeginindex(m_uiBeginIndex);
 }
 
@@ -3470,6 +3570,8 @@ void PassengerFlowProtoHandler::QueryAllStoreReq::UnSerializer(const CustomerFlo
 
     auto req = message.reqvalue().queryallstorereq_value();
     m_strUserID = req.struserid();
+    m_strAreaID = req.strareaid();
+    m_uiOpenState = req.uiopenstate();
     m_uiBeginIndex = req.uibeginindex();
 }
 
@@ -3993,6 +4095,7 @@ void PassengerFlowProtoHandler::QueryAllEventReq::Serializer(CustomerFlowMessage
     auto req = message.mutable_reqvalue()->mutable_queryalleventreq_value();
     req->set_struserid(m_strUserID);
     req->set_uiprocessstate(m_uiProcessState);
+    req->set_uirelaton(m_uiRelation);
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
@@ -4005,6 +4108,7 @@ void PassengerFlowProtoHandler::QueryAllEventReq::UnSerializer(const CustomerFlo
     auto req = message.reqvalue().queryalleventreq_value();
     m_strUserID = req.struserid();
     m_uiProcessState = req.uiprocessstate();
+    m_uiRelation = req.uirelaton();
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
@@ -4715,6 +4819,7 @@ void PassengerFlowProtoHandler::UserJoinStoreReq::Serializer(CustomerFlowMessage
     message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UserJoinStoreReq_T);
 
     auto req = message.mutable_reqvalue()->mutable_userjoinstorereq_value();
+    req->set_stradministratorid(m_strAdministratorID);
     req->set_struserid(m_strUserID);
     req->set_strstoreid(m_strStoreID);
     req->set_strrole(m_strRole);
@@ -4724,6 +4829,7 @@ void PassengerFlowProtoHandler::UserJoinStoreReq::UnSerializer(const CustomerFlo
 {
     Request::UnSerializer(message);
     auto req = message.reqvalue().userjoinstorereq_value();
+    m_strAdministratorID = req.stradministratorid();
     m_strUserID = req.struserid();
     m_strStoreID = req.strstoreid();
     m_strRole = req.strrole();
@@ -4817,6 +4923,54 @@ void PassengerFlowProtoHandler::QueryStoreAllUserRsp::UnSerializer(const Custome
     Response::UnSerializer(message);
 
     auto rsp = message.rspvalue().querystorealluserrsp_value();
+    for (int i = 0, sz = rsp.user_size(); i < sz; ++i)
+    {
+        auto rspUser = rsp.user(i);
+        PassengerFlowProtoHandler::UserBrief user;
+        user.m_strUserID = rspUser.struserid();
+        user.m_strUserName = rspUser.strusername();
+        user.m_strRole = rspUser.strrole();
+
+        m_userList.push_back(user);
+    }
+}
+
+void PassengerFlowProtoHandler::QueryCompanyAllUserReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryCompanyAllUserReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querycompanyalluserreq_value();
+    req->set_struserid(m_strUserID);
+}
+
+void PassengerFlowProtoHandler::QueryCompanyAllUserReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().querycompanyalluserreq_value();
+    m_strUserID = req.struserid();
+}
+
+void PassengerFlowProtoHandler::QueryCompanyAllUserRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryCompanyAllUserRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_querycompanyalluserrsp_value();
+    for (auto it = m_userList.begin(), end = m_userList.end(); it != end; ++it)
+    {
+        auto user = rsp->add_user();
+        user->set_struserid(it->m_strUserID);
+        user->set_strusername(it->m_strUserName);
+        user->set_strrole(it->m_strRole);
+    }
+}
+
+void PassengerFlowProtoHandler::QueryCompanyAllUserRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto rsp = message.rspvalue().querycompanyalluserrsp_value();
     for (int i = 0, sz = rsp.user_size(); i < sz; ++i)
     {
         auto rspUser = rsp.user(i);
@@ -5663,6 +5817,7 @@ void PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp::Serializer(CustomerF
         evaluation->set_struseridcheck(it->m_strUserIDCheck);
         evaluation->set_dtotalscore(it->m_dTotalScore);
         evaluation->set_uicheckstatus(it->m_uiCheckStatus);
+        evaluation->set_dtotalpoint(it->m_dTotalPoint);
         evaluation->set_strcreatedate(it->m_strCreateDate);
     }
 }
@@ -5681,6 +5836,7 @@ void PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp::UnSerializer(const C
         evaluation.m_strUserIDCheck = rspEvaluation.struseridcheck();
         evaluation.m_dTotalScore = rspEvaluation.dtotalscore();
         evaluation.m_uiCheckStatus = rspEvaluation.uicheckstatus();
+        evaluation.m_dTotalPoint = rspEvaluation.dtotalpoint();
         evaluation.m_strCreateDate = rspEvaluation.strcreatedate();
 
         m_storeEvaluationList.push_back(evaluation);
@@ -5696,7 +5852,6 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::Serializer(CustomerFlow
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
-    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
     patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
@@ -5704,9 +5859,24 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::Serializer(CustomerFlow
     patrol->set_strdescription(m_patrolStore.m_strDescription);
     patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
 
+    for (auto it = m_patrolStore.m_strEntranceIDList.begin(), end = m_patrolStore.m_strEntranceIDList.end(); it != end; ++it)
+    {
+        patrol->add_strentranceid(*it);
+    }
+
     for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
     {
         patrol->add_strpatrolpicture(*it);
+    }
+
+    for (auto it = m_patrolStore.m_patrolPictureList.begin(), end = m_patrolStore.m_patrolPictureList.end(); it != end; ++it)
+    {
+        auto pic = patrol->add_patrolpicture();
+        pic->set_strentranceid(it->m_strEntranceID);
+        for (auto it2 = it->m_strPatrolPictureList.begin(), end2 = it->m_strPatrolPictureList.end(); it2 != end2; ++it2)
+        {
+            pic->add_strpatrolpicture(*it2);
+        }
     }
 }
 
@@ -5718,7 +5888,6 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::UnSerializer(const Cust
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
-    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
     m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
@@ -5726,9 +5895,28 @@ void PassengerFlowProtoHandler::AddRemotePatrolStoreReq::UnSerializer(const Cust
     m_patrolStore.m_strDescription = patrol.strdescription();
     m_patrolStore.m_strCreateDate = patrol.strcreatedate();
 
+    for (int i = 0, sz = patrol.strentranceid_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strEntranceIDList.push_back(patrol.strentranceid(i));
+    }
+
     for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
     {
         m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+
+    for (int i = 0, sz = patrol.patrolpicture_size(); i < sz; ++i)
+    {
+        auto reqPic = patrol.patrolpicture(i);
+        EntrancePicture pic;
+        pic.m_strEntranceID = reqPic.strentranceid();
+
+        for (int j = 0, sz2 = reqPic.strpatrolpicture_size(); j < sz2; ++j)
+        {
+            pic.m_strPatrolPictureList.push_back(reqPic.strpatrolpicture(j));
+        }
+
+        m_patrolStore.m_patrolPictureList.push_back(pic);
     }
 }
 
@@ -5790,7 +5978,6 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::Serializer(CustomerF
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
-    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
     patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
@@ -5798,9 +5985,24 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::Serializer(CustomerF
     patrol->set_strdescription(m_patrolStore.m_strDescription);
     patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
 
+    for (auto it = m_patrolStore.m_strEntranceIDList.begin(), end = m_patrolStore.m_strEntranceIDList.end(); it != end; ++it)
+    {
+        patrol->add_strentranceid(*it);
+    }
+
     for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
     {
         patrol->add_strpatrolpicture(*it);
+    }
+
+    for (auto it = m_patrolStore.m_patrolPictureList.begin(), end = m_patrolStore.m_patrolPictureList.end(); it != end; ++it)
+    {
+        auto pic = patrol->add_patrolpicture();
+        pic->set_strentranceid(it->m_strEntranceID);
+        for (auto it2 = it->m_strPatrolPictureList.begin(), end2 = it->m_strPatrolPictureList.end(); it2 != end2; ++it2)
+        {
+            pic->add_strpatrolpicture(*it2);
+        }
     }
 }
 
@@ -5814,7 +6016,6 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::UnSerializer(const C
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
-    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
     m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
@@ -5822,9 +6023,28 @@ void PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq::UnSerializer(const C
     m_patrolStore.m_strDescription = patrol.strdescription();
     m_patrolStore.m_strCreateDate = patrol.strcreatedate();
 
+    for (int i = 0, sz = patrol.strentranceid_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strEntranceIDList.push_back(patrol.strentranceid(i));
+    }
+
     for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
     {
         m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+
+    for (int i = 0, sz = patrol.patrolpicture_size(); i < sz; ++i)
+    {
+        auto reqPic = patrol.patrolpicture(i);
+        EntrancePicture pic;
+        pic.m_strEntranceID = reqPic.strentranceid();
+
+        for (int j = 0, sz2 = reqPic.strpatrolpicture_size(); j < sz2; ++j)
+        {
+            pic.m_strPatrolPictureList.push_back(reqPic.strpatrolpicture(j));
+        }
+
+        m_patrolStore.m_patrolPictureList.push_back(pic);
     }
 }
 
@@ -5871,7 +6091,6 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::Serializer(Custom
     patrol->set_strpatrolid(m_patrolStore.m_strPatrolID);
     patrol->set_struserid(m_patrolStore.m_strUserID);
     patrol->set_strdeviceid(m_patrolStore.m_strDeviceID);
-    patrol->set_strentranceid(m_patrolStore.m_strEntranceID);
     patrol->set_strstoreid(m_patrolStore.m_strStoreID);
     patrol->set_strplanid(m_patrolStore.m_strPlanID);
     patrol->set_strpatroldate(m_patrolStore.m_strPatrolDate);
@@ -5879,9 +6098,24 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::Serializer(Custom
     patrol->set_strdescription(m_patrolStore.m_strDescription);
     patrol->set_strcreatedate(m_patrolStore.m_strCreateDate);
 
+    for (auto it = m_patrolStore.m_strEntranceIDList.begin(), end = m_patrolStore.m_strEntranceIDList.end(); it != end; ++it)
+    {
+        patrol->add_strentranceid(*it);
+    }
+
     for (auto it = m_patrolStore.m_strPatrolPictureList.begin(), end = m_patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
     {
         patrol->add_strpatrolpicture(*it);
+    }
+
+    for (auto it = m_patrolStore.m_patrolPictureList.begin(), end = m_patrolStore.m_patrolPictureList.end(); it != end; ++it)
+    {
+        auto pic = patrol->add_patrolpicture();
+        pic->set_strentranceid(it->m_strEntranceID);
+        for (auto it2 = it->m_strPatrolPictureList.begin(), end2 = it->m_strPatrolPictureList.end(); it2 != end2; ++it2)
+        {
+            pic->add_strpatrolpicture(*it2);
+        }
     }
 }
 
@@ -5893,7 +6127,6 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::UnSerializer(cons
     m_patrolStore.m_strPatrolID = patrol.strpatrolid();
     m_patrolStore.m_strUserID = patrol.struserid();
     m_patrolStore.m_strDeviceID = patrol.strdeviceid();
-    m_patrolStore.m_strEntranceID = patrol.strentranceid();
     m_patrolStore.m_strStoreID = patrol.strstoreid();
     m_patrolStore.m_strPlanID = patrol.strplanid();
     m_patrolStore.m_strPatrolDate = patrol.strpatroldate();
@@ -5901,9 +6134,28 @@ void PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp::UnSerializer(cons
     m_patrolStore.m_strDescription = patrol.strdescription();
     m_patrolStore.m_strCreateDate = patrol.strcreatedate();
 
+    for (int i = 0, sz = patrol.strentranceid_size(); i < sz; ++i)
+    {
+        m_patrolStore.m_strEntranceIDList.push_back(patrol.strentranceid(i));
+    }
+
     for (int i = 0, sz = patrol.strpatrolpicture_size(); i < sz; ++i)
     {
         m_patrolStore.m_strPatrolPictureList.push_back(patrol.strpatrolpicture(i));
+    }
+
+    for (int i = 0, sz = patrol.patrolpicture_size(); i < sz; ++i)
+    {
+        auto reqPic = patrol.patrolpicture(i);
+        EntrancePicture pic;
+        pic.m_strEntranceID = reqPic.strentranceid();
+
+        for (int j = 0, sz2 = reqPic.strpatrolpicture_size(); j < sz2; ++j)
+        {
+            pic.m_strPatrolPictureList.push_back(reqPic.strpatrolpicture(j));
+        }
+
+        m_patrolStore.m_patrolPictureList.push_back(pic);
     }
 }
 
@@ -5915,6 +6167,8 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::Serializer(Custome
     auto req = message.mutable_reqvalue()->mutable_queryallremotepatrolstorereq_value();
     req->set_struserid(m_strUserID);
     req->set_strstoreid(m_strStoreID);
+    req->set_uipatrolresult(m_uiPatrolResult);
+    req->set_uiplanflag(m_uiPlanFlag);
     req->set_strplanid(m_strPlanID);
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
@@ -5928,6 +6182,8 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq::UnSerializer(const
     auto req = message.reqvalue().queryallremotepatrolstorereq_value();
     m_strUserID = req.struserid();
     m_strStoreID = req.strstoreid();
+    m_uiPatrolResult = req.uipatrolresult();
+    m_uiPlanFlag = req.uiplanflag();
     m_strPlanID = req.strplanid();
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
@@ -5946,7 +6202,6 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::Serializer(Custome
         patrol->set_strpatrolid(it->m_strPatrolID);
         patrol->set_struserid(it->m_strUserID);
         patrol->set_strdeviceid(it->m_strDeviceID);
-        patrol->set_strentranceid(it->m_strEntranceID);
         patrol->set_strstoreid(it->m_strStoreID);
         patrol->set_strplanid(it->m_strPlanID);
         patrol->set_strpatroldate(it->m_strPatrolDate);
@@ -5954,9 +6209,24 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::Serializer(Custome
         patrol->set_strdescription(it->m_strDescription);
         patrol->set_strcreatedate(it->m_strCreateDate);
 
-        for (auto pic = it->m_strPatrolPictureList.begin(), end = it->m_strPatrolPictureList.end(); pic != end; ++pic)
+        for (auto it2 = it->m_strEntranceIDList.begin(), end2 = it->m_strEntranceIDList.end(); it2 != end2; ++it2)
         {
-            patrol->add_strpatrolpicture(*pic);
+            patrol->add_strentranceid(*it2);
+        }
+
+        for (auto it2 = it->m_strPatrolPictureList.begin(), end2 = it->m_strPatrolPictureList.end(); it2 != end2; ++it2)
+        {
+            patrol->add_strpatrolpicture(*it2);
+        }
+
+        for (auto it2 = it->m_patrolPictureList.begin(), end2 = it->m_patrolPictureList.end(); it2 != end2; ++it2)
+        {
+            auto pic = patrol->add_patrolpicture();
+            pic->set_strentranceid(it2->m_strEntranceID);
+            for (auto it3 = it2->m_strPatrolPictureList.begin(), end3 = it2->m_strPatrolPictureList.end(); it3 != end3; ++it3)
+            {
+                pic->add_strpatrolpicture(*it3);
+            }
         }
     }
 }
@@ -5973,7 +6243,6 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::UnSerializer(const
         patrol.m_strPatrolID = rspPatrol.strpatrolid();
         patrol.m_strUserID = rspPatrol.struserid();
         patrol.m_strDeviceID = rspPatrol.strdeviceid();
-        patrol.m_strEntranceID = rspPatrol.strentranceid();
         patrol.m_strStoreID = rspPatrol.strstoreid();
         patrol.m_strPlanID = rspPatrol.strplanid();
         patrol.m_strPatrolDate = rspPatrol.strpatroldate();
@@ -5981,9 +6250,28 @@ void PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp::UnSerializer(const
         patrol.m_strDescription = rspPatrol.strdescription();
         patrol.m_strCreateDate = rspPatrol.strcreatedate();
 
-        for (int i = 0, sz = rspPatrol.strpatrolpicture_size(); i < sz; ++i)
+        for (int j = 0, sz2 = rspPatrol.strentranceid_size(); j < sz2; ++j)
         {
-            patrol.m_strPatrolPictureList.push_back(rspPatrol.strpatrolpicture(i));
+            patrol.m_strEntranceIDList.push_back(rspPatrol.strentranceid(j));
+        }
+
+        for (int j = 0, sz2 = rspPatrol.strpatrolpicture_size(); j < sz2; ++j)
+        {
+            patrol.m_strPatrolPictureList.push_back(rspPatrol.strpatrolpicture(j));
+        }
+
+        for (int j = 0, sz2 = rspPatrol.patrolpicture_size(); j < sz2; ++j)
+        {
+            auto rspPic = rspPatrol.patrolpicture(j);
+            EntrancePicture pic;
+            pic.m_strEntranceID = rspPic.strentranceid();
+
+            for (int k = 0, sz3 = rspPic.strpatrolpicture_size(); k < sz3; ++k)
+            {
+                pic.m_strPatrolPictureList.push_back(rspPic.strpatrolpicture(k));
+            }
+
+            patrol.m_patrolPictureList.push_back(pic);
         }
 
         m_patrolStoreList.push_back(patrol);
@@ -6285,6 +6573,47 @@ void PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp::UnSerializer(cons
     Response::UnSerializer(message);
 
     m_strChartData = message.rspvalue().querycustomerflowstatisticrsp_value().strchartdata();
+}
+
+void PassengerFlowProtoHandler::QueryPatrolResultReportReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryPatrolResultReportReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querypatrolresultreportreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strstoreid(m_strStoreID);
+    req->set_strbegindate(m_strBeginDate);
+    req->set_strenddate(m_strEndDate);
+    req->set_uipatrolresult(m_uiPatrolResult);
+    req->set_strpatroluserid(m_strPatrolUserID);
+}
+
+void PassengerFlowProtoHandler::QueryPatrolResultReportReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    auto req = message.reqvalue().querypatrolresultreportreq_value();
+    m_strUserID = req.struserid();
+    m_strStoreID = req.strstoreid();
+    m_strBeginDate = req.strbegindate();
+    m_strEndDate = req.strenddate();
+    m_uiPatrolResult = req.uipatrolresult();
+    m_strPatrolUserID = req.strpatroluserid();
+}
+
+void PassengerFlowProtoHandler::QueryPatrolResultReportRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryPatrolResultReportRsp_T);
+
+    message.mutable_rspvalue()->mutable_querypatrolresultreportrsp_value()->set_strchartdata(m_strChartData);
+}
+
+void PassengerFlowProtoHandler::QueryPatrolResultReportRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strChartData = message.rspvalue().querypatrolresultreportrsp_value().strchartdata();
 }
 
 void PassengerFlowProtoHandler::ReportCustomerFlowDataReq::Serializer(CustomerFlowMessage &message) const

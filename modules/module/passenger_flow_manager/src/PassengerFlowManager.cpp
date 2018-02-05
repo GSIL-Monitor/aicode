@@ -1,6 +1,8 @@
 #include <map>
 #include "PassengerFlowManager.h"
 #include <boost/scope_exit.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/algorithm/string.hpp>
 #include "CommonUtility.h"
 #include "ReturnCode.h"
 #include "mysql_impl.h"
@@ -18,9 +20,10 @@ PassengerFlowManager::PassengerFlowManager(const ParamInfo &pinfo) :
     m_pMysql(new MysqlImpl),
     m_DBCache(m_pMysql),
     m_uiMsgSeq(0),
-    m_DBTimer(NULL, 600)
+    m_DBTimer(NULL, 600),
+    m_pushGetuiIOS("https://restapi.getui.com/v1/", "fQVYLHhClM718P21Ixxxm8", "fzCetzDw5M87RGzxmJOo1A", "p911CvfvAX9p7vy7ul2da9", 3600),
+    m_pushGetuiAndroid("https://restapi.getui.com/v1/", "38fphtc6KE7jCEBjUPrG4", "vvxhZJRl746I1v7yqXFgi6", "4tf8aWproGA5x18sXVsMW3", 3600)
 {
-
 }
 
 PassengerFlowManager::~PassengerFlowManager()
@@ -78,6 +81,9 @@ bool PassengerFlowManager::Init()
     m_DBRuner.Run();
 
     m_SessionMgr.Run();
+
+    m_pushGetuiIOS.Init();
+    PushMessage(std::string(), std::string(), std::string("0F53D8540BE93540B73CCF91B33CCF83"), MessagePush_Getui::PLATFORM_IOS);
 
     LOG_INFO_RLD("PassengerFlowManager init success");
 
@@ -491,8 +497,8 @@ bool PassengerFlowManager::QueryAllAreaReq(const std::string &strMsg, const std:
                 LOG_INFO_RLD("Area info[" << i++ << "]:"
                     << " area id is " << area.m_strAreaID
                     << " and area name is " << area.m_strAreaName
-                    << " level is " << area.m_uiLevel
-                    << " parent area id is " << area.m_strParentAreaID);
+                    << " and level is " << area.m_uiLevel
+                    << " and parent area id is " << area.m_strParentAreaID);
             }
         }
     }
@@ -664,9 +670,9 @@ bool PassengerFlowManager::AddStoreReq(const std::string &strMsg, const std::str
     storeInfo.m_area.m_strAreaID = req.m_storeInfo.m_area.m_strAreaID;
     storeInfo.m_uiOpenState = req.m_storeInfo.m_uiOpenState;
     storeInfo.m_entranceList = req.m_storeInfo.m_entranceList;
+    storeInfo.m_strTelephoneList = req.m_storeInfo.m_strTelephoneList;
     storeInfo.m_strCreateDate = CurrentTime();
 
-    //这里是异步执行sql，防止阻塞，后续可以使用其他方式比如MQ来消除数据库瓶颈
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddStore, this, req.m_strUserID, storeInfo));
 
     blResult = true;
@@ -794,6 +800,7 @@ bool PassengerFlowManager::QueryStoreInfoReq(const std::string &strMsg, const st
             rsp.m_storeInfo.m_uiOpenState = storeInfo.m_uiOpenState;
             rsp.m_storeInfo.m_strCreateDate = storeInfo.m_strCreateDate;
             rsp.m_storeInfo.m_entranceList.swap(storeInfo.m_entranceList);
+            rsp.m_storeInfo.m_strTelephoneList.swap(storeInfo.m_strTelephoneList);
 
             rsp.m_areaList.swap(areaList);
         }
@@ -896,7 +903,7 @@ bool PassengerFlowManager::QueryAllStoreReq(const std::string &strMsg, const std
             return false;
         }
 
-    if (!QueryAllStore(req.m_strUserID, storeList, req.m_uiBeginIndex))
+    if (!QueryAllStore(req.m_strUserID, req.m_strAreaID, req.m_uiOpenState, storeList, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all store failed, src id is " << strSrcID);
         return false;
@@ -1245,6 +1252,13 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddEvent, this, eventInfo));
 
+    for (auto user : req.m_eventInfo.m_strHandlerList)
+    {
+        unsigned int plat;
+        m_SessionMgr.GetTerminalType(req.m_strSID, plat);
+        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, std::string(), std::string(), user, plat));
+    }
+
     blResult = true;
 
     return blResult;
@@ -1390,7 +1404,7 @@ bool PassengerFlowManager::QueryEventInfoReq(const std::string &strMsg, const st
             << " and user id is " << eventInfo.m_strUserID
             << " and device id is " << eventInfo.m_strDeviceID
             << " and process state is " << eventInfo.m_strProcessState
-            << " and vies state is " << eventInfo.m_uiViewState
+            << " and view state is " << eventInfo.m_uiViewState
             << " and result is " << blResult);
     }
     BOOST_SCOPE_EXIT_END
@@ -1459,7 +1473,7 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
                     << " and user id is " << event.m_strUserID
                     << " and device id is " << event.m_strDeviceID
                     << " and process state is " << event.m_strProcessState
-                    << " and vies state is " << event.m_uiViewState);
+                    << " and view state is " << event.m_uiViewState);
             }
         }
     }
@@ -1471,11 +1485,31 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
             return false;
         }
 
-    if (!QueryAllEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
-        req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+    if (req.m_uiRelation == 0)
     {
-        LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
-        return false;
+        if (!QueryCreatedEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+            req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+        {
+            LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
+            return false;
+        }
+    }
+    else if (req.m_uiRelation == 1) {
+        if (!QueryHandledEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+            req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+        {
+            LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
+            return false;
+        }
+    }
+    else
+    {
+        if (!QueryAllEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+            req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+        {
+            LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
+            return false;
+        }
     }
 
     blResult = true;
@@ -2212,6 +2246,67 @@ bool PassengerFlowManager::QueryStoreAllUserReq(const std::string &strMsg, const
     if (!QueryStoreAllUser(req.m_strStoreID, userList))
     {
         LOG_ERROR_RLD("Query store all user failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryCompanyAllUserReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::list<PassengerFlowProtoHandler::UserBrief> userList;
+    PassengerFlowProtoHandler::QueryCompanyAllUserReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &userList, &req)
+    {
+        PassengerFlowProtoHandler::QueryCompanyAllUserRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCompanyAllUserRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_userList.swap(userList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query company all user rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query company all user rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query company all user req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    std::string strCompanyID;
+    if (!QueryUserCompany(req.m_strUserID, strCompanyID) || strCompanyID.empty())
+    {
+        LOG_ERROR_RLD("Query company all user failed, query user company error, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryCompanyAllUser(strCompanyID, userList))
+    {
+        LOG_ERROR_RLD("Query company all user failed, src id is " << strSrcID);
         return false;
     }
 
@@ -3247,7 +3342,6 @@ bool PassengerFlowManager::AddRemotePatrolStoreReq(const std::string &strMsg, co
             << " and patrol id is " << strPatrolID
             << " and user id is " << req.m_patrolStore.m_strUserID
             << " and device id is " << req.m_patrolStore.m_strDeviceID
-            << " and entrance id is " << req.m_patrolStore.m_strEntranceID
             << " and store id is " << req.m_patrolStore.m_strStoreID
             << " and plan id is " << req.m_patrolStore.m_strPlanID
             << " and patrol date is " << req.m_patrolStore.m_strPatrolDate
@@ -3266,10 +3360,11 @@ bool PassengerFlowManager::AddRemotePatrolStoreReq(const std::string &strMsg, co
     patrolStore.m_strPatrolID = strPatrolID = CreateUUID();
     patrolStore.m_strUserID = req.m_patrolStore.m_strUserID;
     patrolStore.m_strDeviceID = req.m_patrolStore.m_strDeviceID;
-    patrolStore.m_strEntranceID = req.m_patrolStore.m_strEntranceID;
+    patrolStore.m_strEntranceIDList = req.m_patrolStore.m_strEntranceIDList;
     patrolStore.m_strStoreID = req.m_patrolStore.m_strStoreID;
     patrolStore.m_strPlanID = req.m_patrolStore.m_strPlanID;
     patrolStore.m_strPatrolDate = req.m_patrolStore.m_strPatrolDate;
+    patrolStore.m_patrolPictureList = req.m_patrolStore.m_patrolPictureList;
     patrolStore.m_strPatrolPictureList = req.m_patrolStore.m_strPatrolPictureList;
     patrolStore.m_uiPatrolResult = req.m_patrolStore.m_uiPatrolResult;
     patrolStore.m_strDescription = req.m_patrolStore.m_strDescription;
@@ -3395,10 +3490,11 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfoReq(const std::string &strM
             rsp.m_patrolStore.m_strPatrolID = patrolStore.m_strPatrolID;
             rsp.m_patrolStore.m_strUserID = patrolStore.m_strUserID;
             rsp.m_patrolStore.m_strDeviceID = patrolStore.m_strDeviceID;
-            rsp.m_patrolStore.m_strEntranceID = patrolStore.m_strEntranceID;
+            rsp.m_patrolStore.m_strEntranceIDList = patrolStore.m_strEntranceIDList;
             rsp.m_patrolStore.m_strStoreID = patrolStore.m_strStoreID;
             rsp.m_patrolStore.m_strPlanID = patrolStore.m_strPlanID;
             rsp.m_patrolStore.m_strPatrolDate = patrolStore.m_strPatrolDate;
+            rsp.m_patrolStore.m_patrolPictureList = patrolStore.m_patrolPictureList;
             rsp.m_patrolStore.m_strPatrolPictureList = patrolStore.m_strPatrolPictureList;
             rsp.m_patrolStore.m_uiPatrolResult = patrolStore.m_uiPatrolResult;
             rsp.m_patrolStore.m_strDescription = patrolStore.m_strDescription;
@@ -3417,7 +3513,6 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfoReq(const std::string &strM
             << " and patrol id is " << patrolStore.m_strPatrolID
             << " and user id is " << patrolStore.m_strUserID
             << " and device id is " << patrolStore.m_strDeviceID
-            << " and entrance id is " << patrolStore.m_strEntranceID
             << " and store id is " << patrolStore.m_strStoreID
             << " and plan id is " << patrolStore.m_strPlanID
             << " and patrol date is " << patrolStore.m_strPatrolDate
@@ -3499,9 +3594,294 @@ bool PassengerFlowManager::QueryAllRemotePatrolStoreReq(const std::string &strMs
             return false;
         }
 
-    if (!QueryAllRemotePatrolStore(req.m_strStoreID, req.m_strPlanID, patrolStoreList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
+    if (!QueryAllRemotePatrolStore(req.m_strStoreID, req.m_strPlanID, req.m_uiPatrolResult, req.m_uiPlanFlag,
+        patrolStoreList, req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query all remote patrol store failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::AddStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strSensorID;
+    PassengerFlowProtoHandler::AddStoreSensorReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strSensorID)
+    {
+        PassengerFlowProtoHandler::AddStoreSensorRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreSensorRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strSensorID = blResult ? strSensorID : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add store sensor rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add store sensor rsp already send, dst id is " << strSrcID
+            << " and sensor id is " << strSensorID
+            << " and sensor name is " << req.m_sensorInfo.m_strSensorName
+            << " and sensor type is " << req.m_sensorInfo.m_strSensorType
+            << " and store id is " << req.m_sensorInfo.m_strStoreID
+            << " and device id is " << req.m_sensorInfo.m_strDeviceID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Add store sensor req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    PassengerFlowProtoHandler::Sensor sensorInfo;
+    sensorInfo.m_strSensorID = strSensorID = CreateUUID();
+    sensorInfo.m_strSensorName = req.m_sensorInfo.m_strSensorName;
+    sensorInfo.m_strSensorType = req.m_sensorInfo.m_strSensorType;
+    sensorInfo.m_strStoreID = req.m_sensorInfo.m_strStoreID;
+    sensorInfo.m_strDeviceID = req.m_sensorInfo.m_strDeviceID;
+    sensorInfo.m_strValue = req.m_sensorInfo.m_strValue;
+    sensorInfo.m_strCreateDate = CurrentTime();
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddStoreSensor, this, sensorInfo));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::DeleteStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::DeleteStoreSensorReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::DeleteStoreSensorRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreSensorRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Delete store sensor rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Delete store sensor rsp already send, dst id is " << strSrcID
+            << " and sensor id is " << req.m_strSensorID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Delete store sensor req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteStoreSensor, this, req.m_strSensorID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyStoreSensorReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyStoreSensorRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreSensorRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify store sensor rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify store sensor rsp already send, dst id is " << strSrcID
+            << " and store sensor id is " << req.m_sensorInfo.m_strSensorID
+            << " and sensor name is " << req.m_sensorInfo.m_strSensorName
+            << " and sensor type is " << req.m_sensorInfo.m_strSensorType
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Modify store sensor req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyStoreSensor, this, req.m_sensorInfo));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryStoreSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::Sensor sensor;
+    PassengerFlowProtoHandler::QueryStoreSensorInfoReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &sensor, &req)
+    {
+        PassengerFlowProtoHandler::QueryStoreSensorInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreSensorInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_sensorInfo.m_strSensorID = sensor.m_strSensorID;
+            rsp.m_sensorInfo.m_strSensorName = sensor.m_strSensorName;
+            rsp.m_sensorInfo.m_strSensorType = sensor.m_strSensorType;
+            rsp.m_sensorInfo.m_strStoreID = sensor.m_strStoreID;
+            rsp.m_sensorInfo.m_strDeviceID = sensor.m_strDeviceID;
+            rsp.m_sensorInfo.m_strValue = sensor.m_strValue;
+            rsp.m_sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query store sensor info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query store sensor info rsp already send, dst id is " << strSrcID
+            << " and sensor id is " << req.m_strSensorID
+            << " and sensor name is " << sensor.m_strSensorName
+            << " and sensor type is " << sensor.m_strSensorType
+            << " and store id is " << sensor.m_strStoreID
+            << " and device id is " << sensor.m_strDeviceID
+            << " and value is " << sensor.m_strValue
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query store sensor info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!PassengerFlowManager::QueryStoreSensorInfo(req.m_strSensorID, sensor))
+    {
+        LOG_ERROR_RLD("Query store sensor info failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllStoreSensorReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllStoreSensorReq req;
+    std::list<PassengerFlowProtoHandler::Sensor> sensorList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &sensorList)
+    {
+        PassengerFlowProtoHandler::QueryAllStoreSensorRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreSensorRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_sensorList.swap(sensorList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all store sensor rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all store sensor rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+        if (blResult)
+        {
+            int i = 0;
+            for (auto &sensor : rsp.m_sensorList)
+            {
+                LOG_INFO_RLD("StoreSensor info[" << i++ << "]:"
+                    << " sensor id is " << sensor.m_strSensorID
+                    << " and sensor name is " << sensor.m_strSensorName
+                    << " and sensor type is " << sensor.m_strSensorType
+                    << " and store id is " << sensor.m_strStoreID
+                    << " and device id is " << sensor.m_strDeviceID
+                    << " and value is " << sensor.m_strValue);
+            }
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query all store sensor req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryAllStoreSensor(req.m_strStoreID, sensorList))
+    {
+        LOG_ERROR_RLD("Query all store sensor failed, src id is " << strSrcID);
         return false;
     }
 
@@ -3666,21 +4046,70 @@ bool PassengerFlowManager::ReportCustomerFlowDataReq(const std::string &strMsg, 
     return blResult;
 }
 
-/*
-bool PassengerFlowManager::PushMessage()
+bool PassengerFlowManager::ReportSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
-    MessagePush_Getui::PushMessage message;
-    message.strTitle = "";
-    message.strNotyContent = "";
-    message.strPayloadContent = "";
-    message.bIsOffline = true;
-    message.iOfflineExpireTime = 0;
-    message.strClientID = "";
-    message.strAlias = "";
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
 
-    m_pushGetui.PushSingle(message);
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ReportSensorInfoReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ReportSensorInfoRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorInfoRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Report sensor info rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Report sensor info rsp already send, dst id is " << strSrcID
+            << " and device id is " << req.m_strDeviceID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Report sensor info req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ReportSensorInfo, this, req.m_strDeviceID, req.m_sensorList));
+
+    blResult = true;
+
+    return blResult;
 }
-*/
+
+bool PassengerFlowManager::PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strUserID, const int iClientPlatform)
+{
+    for (int i = 0; i < 5; ++i)
+    {
+        MessagePush_Getui::PushMessage message;
+        message.strTitle = strTitle + boost::lexical_cast<string>(i);
+        message.strNotyContent = strContent + boost::lexical_cast<string>(i);
+        message.strPayloadContent = strContent + boost::lexical_cast<string>(i);
+        message.bIsOffline = true;
+        message.iOfflineExpireTime = 3600;
+        //message.strClientID = "9fff548fac1537a7963a49a9b191e195";
+        message.strAlias = strUserID;
+
+        m_pushGetuiIOS.PushSingle(message, iClientPlatform);
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
+    }
+
+    return true;
+}
 
 std::string PassengerFlowManager::CurrentTime()
 {
@@ -3738,7 +4167,7 @@ int PassengerFlowManager::TimePrecisionScale(const std::string &strDate, const u
 
 bool PassengerFlowManager::UserAccessPermission(const std::string &strUserID, const int iMsgType, std::string &strPermission)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select b.access_permission from"
         " t_user_role_association a join t_role_menu_association b on a.role_id = b.role_id"
         " where a.user_id = '%s' and b.menu_id = %d";
@@ -3777,7 +4206,7 @@ bool PassengerFlowManager::UserAccessPermission(const std::string &strUserID, co
 
 bool PassengerFlowManager::IsValidArea(const std::string &strUserID, const std::string &strAreaName)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.area_name from t_area_info a join t_user_area_association b"
         " on a.area_id = b.area_id where b.user_id = '%s' and a.area_name = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strAreaName.c_str());
@@ -3816,7 +4245,7 @@ bool PassengerFlowManager::IsValidArea(const std::string &strUserID, const std::
 
 bool PassengerFlowManager::QueryUserCompany(const std::string &strUserID, std::string &strCompanyID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select company_id from t_company_user_info where user_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
@@ -3856,7 +4285,7 @@ bool PassengerFlowManager::QueryUserCompany(const std::string &strUserID, std::s
 
 void PassengerFlowManager::AddArea(const std::string &strUserID, const std::string &strCompanyID, const PassengerFlowProtoHandler::Area &areaInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_area_info (id, area_id, area_name, level, parent_area_id, company_id, create_date, extend)"
         " values (uuid(), '%s', '%s', %d, '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, areaInfo.m_strAreaID.c_str(), areaInfo.m_strAreaName.c_str(), areaInfo.m_uiLevel, areaInfo.m_strParentAreaID.c_str(),
@@ -3871,7 +4300,7 @@ void PassengerFlowManager::AddArea(const std::string &strUserID, const std::stri
 
 void PassengerFlowManager::DeleteArea(const std::string &strAreaID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_area_info where area_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strAreaID.c_str());
 
@@ -3885,7 +4314,7 @@ void PassengerFlowManager::ModifyArea(const PassengerFlowProtoHandler::Area &are
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_area_info set id = id");
 
@@ -3917,7 +4346,7 @@ void PassengerFlowManager::ModifyArea(const PassengerFlowProtoHandler::Area &are
 
 bool PassengerFlowManager::QueryAreaInfo(const std::string &strAreaID, PassengerFlowProtoHandler::Area &areaInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select area_id, area_name, level, parent_area_id, create_date, extend from"
         " t_area_info where area_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strAreaID.c_str());
@@ -3981,7 +4410,7 @@ bool PassengerFlowManager::QueryAreaInfo(const std::string &strAreaID, Passenger
 
 bool PassengerFlowManager::QueryAreaParent(const std::string &strAreaID, std::list<PassengerFlowProtoHandler::Area> &areaList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.area_id, a.area_name, a.level, ifnull(b.area_id, ''), ifnull(b.area_name, ''), ifnull(b.level, 0),"
         " ifnull(c.area_id, ''), ifnull(c.area_name, ''), ifnull(c.level, 0) from"
         " t_area_info a left join t_area_info b on a.parent_area_id = b.area_id"
@@ -4061,7 +4490,7 @@ bool PassengerFlowManager::QueryAreaParent(const std::string &strAreaID, std::li
 bool PassengerFlowManager::QueryAllArea(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Area> &areaList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.area_id, a.area_name, level, parent_area_id from t_area_info a"
         " where a.company_id = (select b.company_id from t_company_user_info b where b.user_id = '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
@@ -4110,7 +4539,7 @@ bool PassengerFlowManager::QueryAllArea(const std::string &strUserID, std::list<
 
 void PassengerFlowManager::BindPushClientID(const std::string &strUserID, const std::string &strCllientID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_user_client_id_association (id, user_id, client_id, create_date)"
         " values (uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strCllientID.c_str(), CurrentTime().c_str());
@@ -4124,7 +4553,7 @@ void PassengerFlowManager::BindPushClientID(const std::string &strUserID, const 
 
 void PassengerFlowManager::UnbindPushClientID(const std::string &strUserID, const std::string &strCllientID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_user_client_id_association (id, user_id, client_id, create_date)"
         " values (uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strCllientID.c_str(), CurrentTime().c_str());
@@ -4138,7 +4567,7 @@ void PassengerFlowManager::UnbindPushClientID(const std::string &strUserID, cons
 
 bool PassengerFlowManager::QueryPushParameter(const std::string &strUserID, std::list<std::string> &strClientIDList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select client_id from t_user_client_id_association where user_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
@@ -4181,7 +4610,7 @@ bool PassengerFlowManager::QueryPushParameter(const std::string &strUserID, std:
 
 bool PassengerFlowManager::IsValidStore(const std::string &strUserID, const std::string &strStoreName)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.store_name from t_store_info a join t_user_store_association b"
         " on a.store_id = b.store_id where b.user_id = '%s' and a.store_name = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreName.c_str());
@@ -4220,11 +4649,18 @@ bool PassengerFlowManager::IsValidStore(const std::string &strUserID, const std:
 
 void PassengerFlowManager::AddStore(const std::string &strUserID, const PassengerFlowProtoHandler::Store &storeInfo)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_store_info (id, store_id, store_name, goods_category, address, area_id, open_state, create_date)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s')";
+    std::string tel;
+    for (auto it = storeInfo.m_strTelephoneList.begin(), end = storeInfo.m_strTelephoneList.end(); it != end;)
+    {
+        tel.append(*it);
+        if (++it != end) tel.append(",");
+    }
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_store_info (id, store_id, store_name, goods_category, address, area_id, open_state, telephone, create_date)"
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, storeInfo.m_strStoreID.c_str(), storeInfo.m_strStoreName.c_str(), storeInfo.m_strGoodsCategory.c_str(),
-        storeInfo.m_strAddress.c_str(), storeInfo.m_area.m_strAreaID.c_str(), storeInfo.m_uiOpenState, storeInfo.m_strCreateDate.c_str());
+        storeInfo.m_strAddress.c_str(), storeInfo.m_area.m_strAreaID.c_str(), storeInfo.m_uiOpenState, tel.c_str(), storeInfo.m_strCreateDate.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -4237,7 +4673,7 @@ void PassengerFlowManager::AddStore(const std::string &strUserID, const Passenge
 
 void PassengerFlowManager::AddUserStoreAssociation(const std::string &strUserID, const std::string &strStoreID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_user_store_association (id, user_id, store_id, user_role, create_date)"
         " values (uuid(), '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreID.c_str(), "owner", CurrentTime().c_str());
@@ -4250,7 +4686,7 @@ void PassengerFlowManager::AddUserStoreAssociation(const std::string &strUserID,
 
 void PassengerFlowManager::DeleteStore(const std::string &strStoreID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b, c, d from"
         " t_store_info a left join t_user_store_association b on a.store_id = b.store_id"
         " left join t_entrance_info c on a.store_id = c.store_id"
@@ -4268,7 +4704,7 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_store_info set id = id");
 
@@ -4302,6 +4738,18 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
         blModified = true;
     }
 
+    if (!storeInfo.m_strTelephoneList.empty())
+    {
+        std::string tel;
+        for (auto it = storeInfo.m_strTelephoneList.begin(), end = storeInfo.m_strTelephoneList.end(); it != end;)
+        {
+            tel.append(*it);
+            if (++it != end) tel.append(",");
+        }
+        len += snprintf(sql + len, size - len, ", telephone = '%s'", tel.c_str());
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("ModifyStore completed, store info is not changed");
@@ -4318,8 +4766,8 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
 
 bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, PassengerFlowProtoHandler::Store &storeInfo)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "select a.store_id, a.store_name, a.goods_category, a.address, a.area_id, a.open_state, a.create_date, b.area_name from"
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select a.store_id, a.store_name, a.goods_category, a.address, a.area_id, a.open_state, a.telephone, a.create_date, b.area_name from"
         " t_store_info a join t_area_info b on a.area_id = b.area_id where a.store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
@@ -4347,9 +4795,19 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
             rstStore.m_uiOpenState = boost::lexical_cast<unsigned int>(strColumn);
             break;
         case 6:
+        {
+            if (!strColumn.empty())
+            {
+                std::list<std::string> telList;
+                boost::split(telList, strColumn, boost::is_any_of(","));
+                for (auto tel : telList) rstStore.m_strTelephoneList.push_back(tel);
+            }
+            break;
+        }
+        case 7:
             rstStore.m_strCreateDate = strColumn;
             break;
-        case 7:
+        case 8:
             rstStore.m_area.m_strAreaName = strColumn;
             result = rstStore;
             break;
@@ -4388,6 +4846,7 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
     storeInfo.m_strAddress = store.m_strAddress;
     storeInfo.m_area.m_strAreaID = store.m_area.m_strAreaID;
     storeInfo.m_uiOpenState = store.m_uiOpenState;
+    storeInfo.m_strTelephoneList = store.m_strTelephoneList;
     storeInfo.m_strCreateDate = store.m_strCreateDate;
 
     return true;
@@ -4395,7 +4854,7 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
 
 bool PassengerFlowManager::QueryStoreEntrance(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::Entrance> &entranceList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select entrance_id, entrance_name from t_entrance_info where store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
@@ -4448,7 +4907,7 @@ bool PassengerFlowManager::QueryStoreEntrance(const std::string &strStoreID, std
 
 bool PassengerFlowManager::QueryEntranceDevice(const std::string &strEntranceID, std::list<std::string> &strDeviceIDList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select device_id from t_entrance_device_association where entrance_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEntranceID.c_str());
 
@@ -4483,14 +4942,32 @@ bool PassengerFlowManager::QueryEntranceDevice(const std::string &strEntranceID,
     return true;
 }
 
-bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Store> &storeList,
-    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, const std::string &strAreaID, const unsigned int uiOpenState,
+    std::list<PassengerFlowProtoHandler::Store> &storeList, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
     const char *sqlfmt = "select a.store_id from"
         " t_store_info a join t_user_store_association b on a.store_id = b.store_id"
-        " where b.user_id = '%s' limit %d, %d";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiBeginIndex, uiPageSize);
+        " where b.user_id = '%s'";
+    int len = snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+
+    if (!strAreaID.empty())
+    {
+        std::list<std::string> areaList;
+        QuerySubArea(strAreaID, areaList);
+        std::string areas = "'" + strAreaID + "'";
+        for (auto area : areaList) areas.append(", '").append(area).append("'");
+
+        len += snprintf(sql + len, size - len, " and a.area_id in (%s)", areas.c_str());
+    }
+
+    if (uiOpenState != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, " and a.open_state = %d", uiOpenState);
+    }
+
+    snprintf(sql + len, size - len, " limit %d, %d", uiBeginIndex, uiPageSize);
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -4526,9 +5003,61 @@ bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, std::list
     return true;
 }
 
+bool PassengerFlowManager::QuerySubArea(const std::string &strAreaID, std::list<std::string> &strSubAreaIDList)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select area_id, level from t_area_info where parent_area_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strAreaID.c_str());
+
+    struct ResultArea
+    {
+        std::string strAreaID;
+        int iLevel;
+    } rstArea;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstArea.strAreaID = strColumn;
+            break;
+        case 1:
+            rstArea.iLevel = boost::lexical_cast<int>(strColumn);
+            result = rstArea;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllStore sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllStore exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        auto area = boost::any_cast<ResultArea>(result);
+        if (area.iLevel < 3)
+        {
+            QuerySubArea(area.strAreaID, strSubAreaIDList);
+        }
+
+        strSubAreaIDList.push_back(area.strAreaID);
+    }
+
+    return true;
+}
+
 bool PassengerFlowManager::IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select entrance_name from t_entrance_info"
         " where store_id = '%s' and entrance_name = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str(), strEntranceName.c_str());
@@ -4567,7 +5096,7 @@ bool PassengerFlowManager::IsValidEntrance(const std::string &strStoreID, const 
 
 void PassengerFlowManager::AddEntrance(const std::string &strStoreID, const PassengerFlowProtoHandler::Entrance &entranceInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_entrance_info (id, entrance_id, entrance_name, store_id, create_date)"
         " values (uuid(), '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, entranceInfo.m_strEntranceID.c_str(), entranceInfo.m_strEntranceName.c_str(),
@@ -4587,7 +5116,7 @@ void PassengerFlowManager::AddEntrance(const std::string &strStoreID, const Pass
 
 bool PassengerFlowManager::QueryDeviceBoundEntrance(const std::string &strDeviceID, std::string &strEntranceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select entrance_id from t_entrance_device_association where device_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -4628,7 +5157,7 @@ bool PassengerFlowManager::QueryDeviceBoundEntrance(const std::string &strDevice
 
 void PassengerFlowManager::AddEntranceDevice(const std::string &strEntranceID, const std::string &strDeviceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_entrance_device_association (id, entrance_id, device_id, create_date)"
         " values(uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEntranceID.c_str(), strDeviceID.c_str(), CurrentTime().c_str());
@@ -4642,7 +5171,7 @@ void PassengerFlowManager::AddEntranceDevice(const std::string &strEntranceID, c
 
 void PassengerFlowManager::DeleteEntrance(const std::string &strEntranceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b from"
         " t_entrance_info a left join t_entrance_device_association b"
         " on a.entrance_id = b.entrance_id where a.entrance_id = '%s' ";
@@ -4656,7 +5185,7 @@ void PassengerFlowManager::DeleteEntrance(const std::string &strEntranceID)
 
 void PassengerFlowManager::DeleteEntranceDevice(const std::string &strEntranceID, const std::string &strDeviceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_entrance_device_association"
         " where entrance_id = '%s' and device_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEntranceID.c_str(), strDeviceID.c_str());
@@ -4672,7 +5201,7 @@ void PassengerFlowManager::ModifyEntrance(const PassengerFlowProtoHandler::Entra
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_entrance_info set id = id");
 
@@ -4708,11 +5237,11 @@ void PassengerFlowManager::ModifyEntrance(const PassengerFlowProtoHandler::Entra
 
 void PassengerFlowManager::AddEvent(const PassengerFlowProtoHandler::Event &eventInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_event_info (id, event_id, source, submit_date, expire_date, user_id, device_id, process_state, view_state, create_date)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, eventInfo.m_strEventID.c_str(), eventInfo.m_strSource.c_str(),
-        eventInfo.m_strSubmitDate.c_str(), eventInfo.m_strExpireDate.c_str(), eventInfo.m_strUserID.c_str(),
+        eventInfo.m_strSubmitDate.c_str(), eventInfo.m_strExpireDate.empty() ? "2199-01-01 00:00:00" : eventInfo.m_strExpireDate.c_str(), eventInfo.m_strUserID.c_str(),
         eventInfo.m_strDeviceID.c_str(), eventInfo.m_strProcessState.c_str(), eventInfo.m_uiViewState, eventInfo.m_strCreateDate.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -4731,12 +5260,15 @@ void PassengerFlowManager::AddEvent(const PassengerFlowProtoHandler::Event &even
         AddEventUserAssociation(eventInfo.m_strEventID, user, "handler");
     }
 
-    AddEventRemark(eventInfo.m_strEventID, eventInfo.m_strUserID, eventInfo.m_strRemark);
+    if (!eventInfo.m_strRemark.empty())
+    {
+        AddEventRemark(eventInfo.m_strEventID, eventInfo.m_strUserID, eventInfo.m_strRemark);
+    }
 }
 
 void PassengerFlowManager::AddEventType(const std::string &strEventID, const unsigned int uiType)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_event_type (id, event_id, event_type, create_date)"
         " values (uuid(), '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), uiType, CurrentTime().c_str());
@@ -4749,7 +5281,7 @@ void PassengerFlowManager::AddEventType(const std::string &strEventID, const uns
 
 void PassengerFlowManager::AddEventUserAssociation(const std::string &strEventID, const std::string &strUserID, const std::string &strUserRole)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_event_user_association (id, event_id, user_id, user_role, read_state, create_date)"
         " values (uuid(), '%s', '%s', '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str(), strUserRole.c_str(), UNREAD_STATE, CurrentTime().c_str());
@@ -4762,7 +5294,7 @@ void PassengerFlowManager::AddEventUserAssociation(const std::string &strEventID
 
 void PassengerFlowManager::AddEventRemark(const std::string &strEventID, const std::string &strUserID, const std::string &strRemark)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_event_remark (id, event_id, remark, user_id, create_date)"
         " values (uuid(), '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strRemark.c_str(), strUserID.c_str(), CurrentTime().c_str());
@@ -4781,7 +5313,7 @@ void PassengerFlowManager::DeleteEvent(const std::string &strEventID, const std:
 
 void PassengerFlowManager::DeleteCreatedEvent(const std::string &strEventID, const std::string &strUserID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str());
 
@@ -4793,7 +5325,7 @@ void PassengerFlowManager::DeleteCreatedEvent(const std::string &strEventID, con
 
 void PassengerFlowManager::DeleteHandledEvent(const std::string &strEventID, const std::string &strUserID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_event_user_association where event_id = '%s' and user_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str());
 
@@ -4807,7 +5339,7 @@ void PassengerFlowManager::ModifyEvent(const PassengerFlowProtoHandler::Event &e
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_event_info set id = id");
 
@@ -4831,7 +5363,7 @@ void PassengerFlowManager::ModifyEvent(const PassengerFlowProtoHandler::Event &e
 
     if (eventInfo.m_uiViewState != UNUSED_INPUT_UINT)
     {
-        len += snprintf(sql + len, size - len, ", viesprocess_state = %d", eventInfo.m_uiViewState);
+        len += snprintf(sql + len, size - len, ", view_state = %d", eventInfo.m_uiViewState);
         blModified = true;
     }
 
@@ -4886,7 +5418,7 @@ void PassengerFlowManager::ModifyEventHandler(const std::string &strEventID, con
 
 void PassengerFlowManager::DeleteEventType(const std::string &strEventID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_event_type where event_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
@@ -4898,7 +5430,7 @@ void PassengerFlowManager::DeleteEventType(const std::string &strEventID)
 
 void PassengerFlowManager::DeleteEventHandler(const std::string &strEventID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_event_user_association where event_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
@@ -4910,9 +5442,9 @@ void PassengerFlowManager::DeleteEventHandler(const std::string &strEventID)
 
 bool PassengerFlowManager::QueryEventInfo(const std::string &strEventID, PassengerFlowProtoHandler::Event &eventInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select event_id, source, submit_date, expire_date, user_id, device_id, process_state, view_state, create_date from"
-        " t_event_info where event_id = '%s'";
+        " t_event_info where event_id = '%s' and state = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
     PassengerFlowProtoHandler::Event rstEvent;
@@ -5004,7 +5536,7 @@ bool PassengerFlowManager::QueryEventInfo(const std::string &strEventID, Passeng
 
 bool PassengerFlowManager::QueryEventType(const std::string &strEventID, std::list<unsigned int> &typeList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select event_type from t_event_type where event_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
@@ -5041,7 +5573,7 @@ bool PassengerFlowManager::QueryEventType(const std::string &strEventID, std::li
 
 bool PassengerFlowManager::QueryEventUserAssociation(const std::string &strEventID, std::list<std::string> &handlerList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select user_id, user_role from t_event_user_association where event_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
@@ -5087,7 +5619,7 @@ bool PassengerFlowManager::QueryEventUserAssociation(const std::string &strEvent
 
 bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::string &strRemark)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select create_date, user_id, remark from t_event_remark where event_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str());
 
@@ -5140,32 +5672,32 @@ bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::
 bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select * from"
-        " (select event_id, source, submit_date, expire_date, user_id, device_id, process_state, view_state"
-        " from t_event_info where user_id = '%s' union all"
-        " select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
-        " from t_event_info a join t_event_user_association b on a.event_id = b.event_id"
-        " where b.user_id = '%s') where state = 0";
+        " (select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
+        " from t_event_info a where a.user_id = '%s' and a.state = 0 union all"
+        " select b.event_id, b.source, b.submit_date, b.expire_date, b.user_id, b.device_id, b.process_state, b.view_state"
+        " from t_event_info b join t_event_user_association c on b.event_id = c.event_id where b.state = 0 and c.user_id = '%s') d"
+        " where 1 = 1";
     int len = snprintf(sql, size, sqlfmt, strUserID.c_str(), strUserID.c_str());
 
     if (strProcessState == "0" || strProcessState == "1")
     {
-        len += snprintf(sql + len, size - len, " and process_state = '%s'", strProcessState.c_str());
+        len += snprintf(sql + len, size - len, " and d.process_state = '%s'", strProcessState.c_str());
     }
 
     if (!strBeginDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and submit_date >= '%s'", strBeginDate.c_str());
+        len += snprintf(sql + len, size - len, " and d.submit_date >= '%s'", strBeginDate.c_str());
     }
 
     if (!strEndDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and submit_date <= '%s'", strEndDate.c_str());
+        len += snprintf(sql + len, size - len, " and d.submit_date <= '%s'", strEndDate.c_str());
     }
 
-    snprintf(sql + len, size - len, " order by submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);
+    snprintf(sql + len, size - len, " order by d.submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);
 
     return QueryEventSub(std::string(sql), eventList);
 }
@@ -5173,7 +5705,7 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std
 bool PassengerFlowManager::QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select event_id, source, submit_date, expire_date, user_id, device_id, process_state, view_state"
         " from t_event_info where user_id = '%s' and state = 0";
@@ -5202,7 +5734,7 @@ bool PassengerFlowManager::QueryCreatedEvent(const std::string &strUserID, const
 bool PassengerFlowManager::QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = " select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
         " from t_event_info a join t_event_user_association b on a.event_id = b.event_id"
@@ -5295,7 +5827,7 @@ bool PassengerFlowManager::QueryEventSub(const std::string &strSql, std::list<Pa
 void PassengerFlowManager::AddSmartGuardStore(const std::string &strUserID, const std::string &strStoreID,
     const PassengerFlowProtoHandler::SmartGuardStore &smartGuardStore)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_smart_guard_store_plan"
         " (id, plan_id, user_id, store_id, plan_name, enable, begin_time, end_time, begin_time2, end_time2, create_date)"
         " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, '%s')";
@@ -5317,7 +5849,7 @@ void PassengerFlowManager::AddSmartGuardStore(const std::string &strUserID, cons
 
 void PassengerFlowManager::AddGuardStoreEntranceAssociation(const std::string &strPlanID, const std::string &strEntranceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_guard_plan_entrance_association (id, plan_id, entrance_id, create_date)"
         " values(uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strEntranceID.c_str(), CurrentTime().c_str());
@@ -5330,7 +5862,7 @@ void PassengerFlowManager::AddGuardStoreEntranceAssociation(const std::string &s
 
 void PassengerFlowManager::DeleteSmartGuardStore(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b from"
         " t_smart_guard_store_plan a left join t_guard_plan_entrance_association b on a.plan_id = b.plan_id"
         " where a.plan_id = '%s'";
@@ -5346,7 +5878,7 @@ void PassengerFlowManager::ModifySmartGuardStore(const PassengerFlowProtoHandler
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_smart_guard_store_plan set id = id");
 
@@ -5417,7 +5949,7 @@ void PassengerFlowManager::ModifyGuardStoreEntranceAssociation(const std::string
 
 void PassengerFlowManager::DeleteGuardStoreEntranceAssociation(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_guard_plan_entrance_association where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5429,7 +5961,7 @@ void PassengerFlowManager::DeleteGuardStoreEntranceAssociation(const std::string
 
 bool PassengerFlowManager::QuerySmartGuardStoreInfo(const std::string &strPlanID, PassengerFlowProtoHandler::SmartGuardStore &smartGuardStore)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select b.store_id, b.store_name, a.plan_name, a.enable, a.begin_time, a.end_time, ifnull(a.begin_time2, ''), ifnull(a.end_time2, '')"
         " from t_smart_guard_store_plan a join t_store_info b on a.store_id = b.store_id"
         " where a.plan_id = '%s'";
@@ -5502,7 +6034,7 @@ bool PassengerFlowManager::QuerySmartGuardStoreInfo(const std::string &strPlanID
 
 bool PassengerFlowManager::QueryGuardStoreEntranceAssociation(const std::string &strPlanID, std::list<std::string> &strEntranceIDList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select entrance_id from t_guard_plan_entrance_association where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5540,7 +6072,7 @@ bool PassengerFlowManager::QueryGuardStoreEntranceAssociation(const std::string 
 bool PassengerFlowManager::QueryAllSmartGuardStoreByUser(const std::string &strUserID, std::list<PassengerFlowProtoHandler::SmartGuardStore> &smartGuardStoreList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select b.store_id, b.store_name, a.plan_id, a.plan_name, a.enable, a.begin_time, a.end_time, ifnull(a.begin_time2, ''), ifnull(a.end_time2, '')"
         " from t_smart_guard_store_plan a join t_store_info b on a.store_id = b.store_id"
         " where a.user_id = '%s' limit %d, %d";
@@ -5605,7 +6137,7 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreByUser(const std::string &strU
 
 bool PassengerFlowManager::QueryAllSmartGuardStoreByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::SmartGuardStore> &smartGuardStoreList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select d.store_id, d.store_name, c.plan_id, c.plan_name, c.enable, c.begin_time, c.end_time, ifnull(c.begin_time2, ''), ifnull(c.end_time2, '')"
         " from t_entrance_device_association a join t_guard_plan_entrance_association b on a.entrance_id = b.entrance_id"
         " join t_smart_guard_store_plan c on b.plan_id = c.plan_id"
@@ -5672,7 +6204,7 @@ bool PassengerFlowManager::QueryAllSmartGuardStoreByDevice(const std::string &st
 
 void PassengerFlowManager::AddRegularPatrol(const std::string &strUserID, const PassengerFlowProtoHandler::RegularPatrol &regularPatrol)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_regular_patrol_plan"
         " (id, plan_id, user_id, plan_name, enable, last_update_time, create_date)"
         " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s')";
@@ -5705,7 +6237,7 @@ void PassengerFlowManager::AddRegularPatrol(const std::string &strUserID, const 
 
 void PassengerFlowManager::AddPatrolPlanEntranceAssociation(const std::string &strPlanID, const std::string &strEntranceID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_patrol_plan_entrance_association (id, plan_id, entrance_id, create_date)"
         " values(uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strEntranceID.c_str(), CurrentTime().c_str());
@@ -5718,7 +6250,7 @@ void PassengerFlowManager::AddPatrolPlanEntranceAssociation(const std::string &s
 
 void PassengerFlowManager::AddPatrolPlanUserAssociation(const std::string &strPlanID, const std::string &strUserID, const std::string &strRole)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_patrol_plan_user_association (id, plan_id, user_id, user_role, create_date)"
         " values(uuid(), '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strUserID.c_str(), strRole.c_str(), CurrentTime().c_str());
@@ -5731,7 +6263,7 @@ void PassengerFlowManager::AddPatrolPlanUserAssociation(const std::string &strPl
 
 void PassengerFlowManager::AddRegularPatrolTime(const std::string &strPlanID, const std::string &strTime)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_regular_patrol_time (id, plan_id, patrol_time, create_date)"
         " values(uuid(), '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str(), strTime.c_str(), CurrentTime().c_str());
@@ -5744,7 +6276,7 @@ void PassengerFlowManager::AddRegularPatrolTime(const std::string &strPlanID, co
 
 void PassengerFlowManager::DeleteRegularPatrol(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b, c, d from"
         " t_regular_patrol_plan a left join t_patrol_plan_entrance_association b on a.plan_id = b.plan_id"
         " left join t_regular_patrol_time c on a.plan_id = c.plan_id"
@@ -5762,7 +6294,7 @@ void PassengerFlowManager::ModifyRegularPatrol(const PassengerFlowProtoHandler::
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_regular_patrol_plan set id = id");
 
@@ -5832,7 +6364,7 @@ void PassengerFlowManager::ModifyPatrolPlanUserAssociation(const std::string &st
 
 void PassengerFlowManager::DeletePatrolPlanEntranceAssociation(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_patrol_plan_entrance_association where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5844,7 +6376,7 @@ void PassengerFlowManager::DeletePatrolPlanEntranceAssociation(const std::string
 
 void PassengerFlowManager::DeletePatrolPlanUserAssociation(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_patrol_plan_user_association where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5866,7 +6398,7 @@ void PassengerFlowManager::ModifyRegularPatrolTime(const std::string &strPlanID,
 
 void PassengerFlowManager::DeleteRegularPatrolTime(const std::string &strPlanID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_regular_patrol_time where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5878,7 +6410,7 @@ void PassengerFlowManager::DeleteRegularPatrolTime(const std::string &strPlanID)
 
 bool PassengerFlowManager::QueryRegularPatrolInfo(const std::string &strPlanID, PassengerFlowProtoHandler::RegularPatrol &regularPatrol)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select plan_name, enable from t_regular_patrol_plan where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -5928,7 +6460,7 @@ bool PassengerFlowManager::QueryRegularPatrolInfo(const std::string &strPlanID, 
 bool PassengerFlowManager::QueryPatrolPlanEntranceAssociation(const std::string &strPlanID, std::list<PassengerFlowProtoHandler::PatrolStoreEntrance> &storeEntranceList,
     const std::string &strEntranceID /*= std::string()*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select b.entrance_id, b.entrance_name, c.store_id, c.store_name from"
         " t_patrol_plan_entrance_association a join t_entrance_info b on a.entrance_id = b.entrance_id"
@@ -6003,7 +6535,7 @@ bool PassengerFlowManager::QueryPatrolPlanEntranceAssociation(const std::string 
 
 bool PassengerFlowManager::QueryPatrolPlanUserAssociation(const std::string &strPlanID, std::list<std::string> &strUserIDList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select user_id, user_role from t_patrol_plan_user_association where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -6042,7 +6574,7 @@ bool PassengerFlowManager::QueryPatrolPlanUserAssociation(const std::string &str
 
 bool PassengerFlowManager::QueryRegularPatrolTime(const std::string &strPlanID, std::list<std::string> &strTimeList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select patrol_time from t_regular_patrol_time where plan_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPlanID.c_str());
 
@@ -6052,6 +6584,11 @@ bool PassengerFlowManager::QueryRegularPatrolTime(const std::string &strPlanID, 
         {
         case 0:
             result = strColumn;
+            if (strPlanID == "97CBD233CB6C764E936E123EFCA53775")
+            {
+                result = CurrentTime().erase(0, 11);
+            }
+            break;
 
         default:
             LOG_ERROR_RLD("QueryRegularPatrolTime sql callback error, row num is " << uiRowNum
@@ -6079,9 +6616,9 @@ bool PassengerFlowManager::QueryRegularPatrolTime(const std::string &strPlanID, 
 bool PassengerFlowManager::QueryAllRegularPatrolByUser(const std::string &strUserID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "select plan_id, plan_name, enable from t_regular_patrol_plan where user_id = '%s' limit %d, %d";
-    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), uiBeginIndex, uiPageSize);
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select plan_id, plan_name, enable from t_regular_patrol_plan where user_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
     PassengerFlowProtoHandler::RegularPatrol rstGuardStore;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
@@ -6129,7 +6666,7 @@ bool PassengerFlowManager::QueryAllRegularPatrolByUser(const std::string &strUse
 
 bool PassengerFlowManager::QueryAllRegularPatrolByDevice(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::RegularPatrol> &regularPatrolList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.entrance_id, c.plan_id, c.plan_name, c.enable from"
         " t_entrance_device_association a join t_patrol_plan_entrance_association b on a.entrance_id = b.entrance_id"
         " join t_regular_patrol_plan c on b.plan_id = c.plan_id"
@@ -6189,7 +6726,7 @@ bool PassengerFlowManager::QueryAllRegularPatrolByDevice(const std::string &strD
 
 void PassengerFlowManager::UserJoinStore(const std::string &strUserID, const std::string &strStoreID, const std::string &strRole)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_user_store_association (id, user_id, store_id, user_role, create_date)"
         " values (uuid(), '%s', '%s', '%s', '%s') on duplicate key update update_date = current_time";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreID.c_str(), strRole.c_str(), CurrentTime().c_str());
@@ -6202,7 +6739,7 @@ void PassengerFlowManager::UserJoinStore(const std::string &strUserID, const std
 
 void PassengerFlowManager::UserQuitStore(const std::string &strUserID, const std::string &strStoreID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_user_store_association where user_id = '%s' and store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strStoreID.c_str(), CurrentTime().c_str());
 
@@ -6214,10 +6751,10 @@ void PassengerFlowManager::UserQuitStore(const std::string &strUserID, const std
 
 bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.user_id, b.aliasname, a.user_role from"
         " t_user_store_association a join PlatformDB.t_user_info b on a.user_id = b.userid"
-        " where store_id = '%s'";
+        " where store_id = '%s' and b.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
     PassengerFlowProtoHandler::UserBrief user;
@@ -6259,9 +6796,53 @@ bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std:
     return true;
 }
 
+bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select a.user_id, b.aliasname from"
+        " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid"
+        " where company_id = '%s' and b.status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strCompanyID.c_str());
+
+    PassengerFlowProtoHandler::UserBrief user;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            user.m_strUserID = strColumn;
+            break;
+        case 1:
+            user.m_strUserName = strColumn;
+            result = user;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryCompanyAllUser sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryCompanyAllUser exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        userList.push_back(std::move(boost::any_cast<PassengerFlowProtoHandler::UserBrief>(result)));
+    }
+
+    return true;
+}
+
 void PassengerFlowManager::AddVIPCustomer(const PassengerFlowProtoHandler::VIPCustomer &customerInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_vip_customer_info"
         " (id, vip_id, profile_picture, vip_name, cellphone, visit_date, visit_times, register_date)"
         " values(uuid(), '%s', '%s', '%s', '%s', '%s', %d, '%s')";
@@ -6282,7 +6863,7 @@ void PassengerFlowManager::AddVIPCustomer(const PassengerFlowProtoHandler::VIPCu
 
 void PassengerFlowManager::DeleteVIPCustomer(const std::string &strVIPID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b from"
         " t_vip_customer_info a left join t_vip_consume_history b on a.vip_id = b.vip_id"
         " where a.vip_id = '%s'";
@@ -6298,7 +6879,7 @@ void PassengerFlowManager::ModifyVIPCustomer(const PassengerFlowProtoHandler::VI
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_vip_customer_info set id = id");
 
@@ -6348,7 +6929,7 @@ void PassengerFlowManager::ModifyVIPCustomer(const PassengerFlowProtoHandler::VI
 
 bool PassengerFlowManager::QueryVIPCustomerInfo(const std::string &strVIPID, PassengerFlowProtoHandler::VIPCustomer &customerInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select profile_picture, vip_name, cellphone, visit_date, visit_times, register_date from"
         " t_vip_customer_info where vip_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str());
@@ -6413,7 +6994,7 @@ bool PassengerFlowManager::QueryVIPCustomerInfo(const std::string &strVIPID, Pas
 bool PassengerFlowManager::QueryAllVIPCustomer(std::list<PassengerFlowProtoHandler::VIPCustomer> &customerInfoList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select vip_id, profile_picture, vip_name, cellphone, visit_date, visit_times, register_date"
         " from t_vip_customer_info limit %d, %d";
     snprintf(sql, sizeof(sql), sqlfmt, uiBeginIndex, uiPageSize);
@@ -6471,7 +7052,7 @@ bool PassengerFlowManager::QueryAllVIPCustomer(std::list<PassengerFlowProtoHandl
 
 void PassengerFlowManager::AddVIPConsumeHistory(const PassengerFlowProtoHandler::VIPConsumeHistory &consumeHistory)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_vip_consume_history (id, consume_id, vip_id, goods_name, goods_number, salesman, consume_amount, consume_date)"
         " values(uuid(), '%s', '%s', '%s', %d, '%s', %f, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, consumeHistory.m_strConsumeID.c_str(), consumeHistory.m_strVIPID.c_str(), consumeHistory.m_strGoodsName.c_str(),
@@ -6485,7 +7066,7 @@ void PassengerFlowManager::AddVIPConsumeHistory(const PassengerFlowProtoHandler:
 
 void PassengerFlowManager::DeleteVIPConsumeHistory(const std::string &strVIPID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_vip_consume_history where consume_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str());
 
@@ -6499,7 +7080,7 @@ void PassengerFlowManager::ModifyVIPConsumeHistory(const PassengerFlowProtoHandl
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_vip_consume_history set id = id");
 
@@ -6550,7 +7131,7 @@ void PassengerFlowManager::ModifyVIPConsumeHistory(const PassengerFlowProtoHandl
 bool PassengerFlowManager::QueryAllVIPConsumeHistory(const std::string &strVIPID, std::list<PassengerFlowProtoHandler::VIPConsumeHistory> &consumeHistoryList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select consume_id, goods_name, goods_number, salesman, consume_amount, consume_date from"
         " t_vip_consume_history where vip_id = '%s' order by consume_date desc limit %d, %d";
     snprintf(sql, sizeof(sql), sqlfmt, strVIPID.c_str(), uiBeginIndex, uiPageSize);
@@ -6605,7 +7186,7 @@ bool PassengerFlowManager::QueryAllVIPConsumeHistory(const std::string &strVIPID
 
 void PassengerFlowManager::AddEvaluationTemplate(const PassengerFlowProtoHandler::EvaluationItem &evaluationItem)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_evaluation_item (id, item_id, item_name, description, total_point, create_date)"
         " values(uuid(), '%s', '%s', '%s', %f, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, evaluationItem.m_strItemID.c_str(), evaluationItem.m_strItemName.c_str(),
@@ -6619,7 +7200,7 @@ void PassengerFlowManager::AddEvaluationTemplate(const PassengerFlowProtoHandler
 
 void PassengerFlowManager::DeleteEvaluationTemplate(const std::string &strItemID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_evaluation_item where item_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strItemID.c_str());
 
@@ -6633,7 +7214,7 @@ void PassengerFlowManager::ModifyEvaluationTemplate(const PassengerFlowProtoHand
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_evaluation_item set id = id");
 
@@ -6672,7 +7253,7 @@ void PassengerFlowManager::ModifyEvaluationTemplate(const PassengerFlowProtoHand
 bool PassengerFlowManager::QueryAllEvaluationTemplate(std::list<PassengerFlowProtoHandler::EvaluationItem> &evaluationItemList,
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select item_id, item_name, description, total_point from t_evaluation_item";
     snprintf(sql, sizeof(sql), sqlfmt);
 
@@ -6720,7 +7301,7 @@ bool PassengerFlowManager::QueryAllEvaluationTemplate(std::list<PassengerFlowPro
 
 void PassengerFlowManager::AddStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_store_evaluation (id, evaluation_id, store_id, user_id_create, user_id_check, check_status, create_date)"
         " values(uuid(), '%s', '%s', '%s', '%s', %d, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, storeEvaluation.m_strEvaluationID.c_str(), storeEvaluation.m_strStoreID.c_str(),
@@ -6739,7 +7320,7 @@ void PassengerFlowManager::AddStoreEvaluation(const PassengerFlowProtoHandler::S
 
 void PassengerFlowManager::AddStoreEvaluationScore(const std::string &strEvaluationID, const PassengerFlowProtoHandler::EvaluationItemScore &itemScore)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_store_evaluation_score (id, evaluation_id, item_id, score, description, create_date)"
         " values(uuid(), '%s', '%s', %f, '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str(), itemScore.m_evaluationItem.m_strItemID.c_str(), itemScore.m_dScore,
@@ -6753,7 +7334,7 @@ void PassengerFlowManager::AddStoreEvaluationScore(const std::string &strEvaluat
 
 void PassengerFlowManager::DeleteStoreEvaluation(const std::string &strEvaluationID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete a, b from"
         " t_store_evaluation a left join t_store_evaluation_score b on a.evaluation_id = b.evaluation_id"
         " where a.evaluation_id = '%s'";
@@ -6769,7 +7350,7 @@ void PassengerFlowManager::ModifyStoreEvaluation(const PassengerFlowProtoHandler
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_store_evaluation set id = id");
 
@@ -6816,7 +7397,7 @@ void PassengerFlowManager::ModifyStoreEvaluationScore(const std::string &strEval
 
 void PassengerFlowManager::DeleteStoreEvaluationScore(const std::string &strEvaluationID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_store_evaluation_score where evaluation_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
 
@@ -6828,7 +7409,7 @@ void PassengerFlowManager::DeleteStoreEvaluationScore(const std::string &strEval
 
 bool PassengerFlowManager::QueryStoreEvaluationInfo(const std::string &strEvaluationID, PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select user_id_create, user_id_check, check_status, create_date"
         " from t_store_evaluation where evaluation_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strEvaluationID.c_str());
@@ -6885,7 +7466,7 @@ bool PassengerFlowManager::QueryStoreEvaluationInfo(const std::string &strEvalua
 bool PassengerFlowManager::QueryStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
     std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "select a.score, a.description, b.item_id, b.item_name, b.description, b.total_point from"
         " t_store_evaluation_score a join t_evaluation_item b on a.item_id = b.item_id"
         " where a.evaluation_id = '%s'";
@@ -6945,10 +7526,11 @@ bool PassengerFlowManager::QueryStoreEvaluationScore(const std::string &strEvalu
 bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::StoreEvaluation> &storeEvaluationList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select a.evaluation_id, a.user_id_create, a.user_id_check, a.check_status, a.create_date, sum(b.score) from"
+    const char *sqlfmt = "select a.evaluation_id, a.user_id_create, a.user_id_check, a.check_status, a.create_date, sum(b.score), sum(c.total_point) from"
         " t_store_evaluation a join t_store_evaluation_score b on a.evaluation_id = b.evaluation_id"
+        " join t_evaluation_item c on b.item_id = c.item_id"
         " where a.store_id = '%s'";
 
     int len = snprintf(sql, size, sqlfmt, strStoreID.c_str());
@@ -6987,6 +7569,9 @@ bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID
             break;
         case 5:
             rstStoreEvaluation.m_dTotalScore = boost::lexical_cast<double>(strColumn);
+            break;
+        case 6:
+            rstStoreEvaluation.m_dTotalPoint = boost::lexical_cast<double>(strColumn);
             result = rstStoreEvaluation;
             break;
 
@@ -7015,17 +7600,11 @@ bool PassengerFlowManager::QueryAllStoreEvaluation(const std::string &strStoreID
 
 void PassengerFlowManager::AddRemotePatrolStore(const PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
 {
-    std::string entranceID = patrolStore.m_strEntranceID;
-    if (!patrolStore.m_strDeviceID.empty())
-    {
-        QueryDeviceBoundEntrance(patrolStore.m_strDeviceID, entranceID);
-    }
-
-    char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_remote_patrol_store (id, patrol_id, user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description, create_date)"
-        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_remote_patrol_store (id, patrol_id, user_id, device_id, store_id, plan_id, patrol_date, patrol_result, description, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, patrolStore.m_strPatrolID.c_str(), patrolStore.m_strUserID.c_str(), patrolStore.m_strDeviceID.c_str(),
-        entranceID.c_str(), patrolStore.m_strStoreID.c_str(), patrolStore.m_strPlanID.c_str(), patrolStore.m_strPatrolDate.c_str(),
+        patrolStore.m_strStoreID.c_str(), patrolStore.m_strPlanID.c_str(), patrolStore.m_strPatrolDate.c_str(),
         patrolStore.m_uiPatrolResult, patrolStore.m_strDescription.c_str(), CurrentTime().c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
@@ -7033,18 +7612,50 @@ void PassengerFlowManager::AddRemotePatrolStore(const PassengerFlowProtoHandler:
         LOG_ERROR_RLD("AddRemotePatrolStore exec sql failed, sql is " << sql);
     }
 
-    for (auto it = patrolStore.m_strPatrolPictureList.begin(), end = patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+    if (patrolStore.m_strEntranceIDList.empty())  //设备创建巡店记录
     {
-        AddRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, *it);
+        std::string entranceID;
+        QueryDeviceBoundEntrance(patrolStore.m_strDeviceID, entranceID);
+        AddRemotePatrolStoreEntrance(patrolStore.m_strPatrolID, entranceID);
+
+        for (auto it = patrolStore.m_strPatrolPictureList.begin(), end = patrolStore.m_strPatrolPictureList.end(); it != end; ++it)
+        {
+            AddRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, entranceID, *it);
+        }
+    }
+    else
+    {
+        for (auto it = patrolStore.m_patrolPictureList.begin(), end = patrolStore.m_patrolPictureList.end(); it != end; ++it)
+        {
+            AddRemotePatrolStoreEntrance(patrolStore.m_strPatrolID, it->m_strEntranceID);
+
+            for (auto it2 = it->m_strPatrolPictureList.begin(), end2 = it->m_strPatrolPictureList.end(); it2 != end2; ++it2)
+            {
+                AddRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, it->m_strEntranceID, *it2);
+            }
+        }
     }
 }
 
-void PassengerFlowManager::AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strScreenshot)
+void PassengerFlowManager::AddRemotePatrolStoreEntrance(const std::string &strPatrolID, const std::string &strEntranceID)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "insert into t_patrol_store_screenshot_association (id, patrol_id, screenshot_id, create_date)"
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_patrol_store_entrance_association (id, patrol_id, entrance_id, create_date)"
         " values(uuid(), '%s', '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str(), strScreenshot.c_str(), CurrentTime().c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str(), strEntranceID.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddRemotePatrolStoreEntrance exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::AddRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strEntranceID, const std::string &strScreenshot)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_patrol_store_screenshot_association (id, patrol_id, entrance_id, screenshot_id, create_date)"
+        " values(uuid(), '%s', '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str(), strEntranceID.c_str(), strScreenshot.c_str(), CurrentTime().c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -7054,9 +7665,10 @@ void PassengerFlowManager::AddRemotePatrolStoreScreenshot(const std::string &str
 
 void PassengerFlowManager::DeleteRemotePatrolStore(const std::string &strPatrolID)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "delete a, b from"
-        " t_remote_patrol_store a left join t_patrol_store_screenshot_association b on a.patrol_id = b.patrol_id"
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete a, b, c from"
+        " t_remote_patrol_store a left join t_patrol_store_entrance_association b on a.patrol_id = b.patrol_id"
+        " left join t_patrol_store_screenshot_association c on a.patrol_id = c.patrol_id"
         " where a.patrol_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
 
@@ -7070,7 +7682,7 @@ void PassengerFlowManager::ModifyRemotePatrolStore(const PassengerFlowProtoHandl
 {
     bool blModified = false;
 
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_remote_patrol_store set id = id");
 
@@ -7092,9 +7704,13 @@ void PassengerFlowManager::ModifyRemotePatrolStore(const PassengerFlowProtoHandl
         blModified = true;
     }
 
-    if (!patrolStore.m_strPatrolPictureList.empty())
+    if (!patrolStore.m_patrolPictureList.empty())
     {
-        ModifyRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, patrolStore.m_strPatrolPictureList);
+        DeleteRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID);
+        for (auto it = patrolStore.m_patrolPictureList.begin(), end = patrolStore.m_patrolPictureList.end(); it != end; ++it)
+        {
+            ModifyRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, it->m_strEntranceID, it->m_strPatrolPictureList);
+        }
     }
 
     if (!blModified)
@@ -7111,32 +7727,30 @@ void PassengerFlowManager::ModifyRemotePatrolStore(const PassengerFlowProtoHandl
     }
 }
 
-void PassengerFlowManager::ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::list<std::string> &screenshotList)
+void PassengerFlowManager::ModifyRemotePatrolStoreScreenshot(const std::string &strPatrolID, const std::string &strEntranceID, const std::list<std::string> &screenshotList)
 {
-    DeleteRemotePatrolStoreScreenshot(strPatrolID);
-
     for (auto &screenshot : screenshotList)
     {
-        AddRemotePatrolStoreScreenshot(strPatrolID, screenshot);
+        AddRemotePatrolStoreScreenshot(strPatrolID, strEntranceID, screenshot);
     }
 }
 
 void PassengerFlowManager::DeleteRemotePatrolStoreScreenshot(const std::string &strPatrolID)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_patrol_store_screenshot_association where patrol_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
-        LOG_ERROR_RLD("DeleteRemotePatrolStoreScore exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("DeleteRemotePatrolStoreScreenshot exec sql failed, sql is " << sql);
     }
 }
 
 bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatrolID, PassengerFlowProtoHandler::RemotePatrolStore &patrolStore)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "select user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description"
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select user_id, device_id, store_id, plan_id, patrol_date, patrol_result, description"
         " from t_remote_patrol_store where patrol_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
 
@@ -7152,21 +7766,18 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatr
             rstPatrolStore.m_strDeviceID = strColumn;
             break;
         case 2:
-            rstPatrolStore.m_strEntranceID = strColumn;
-            break;
-        case 3:
             rstPatrolStore.m_strStoreID = strColumn;
             break;
-        case 4:
+        case 3:
             rstPatrolStore.m_strPlanID = strColumn;
             break;
-        case 5:
+        case 4:
             rstPatrolStore.m_strPatrolDate = strColumn;
             break;
-        case 6:
+        case 5:
             rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
             break;
-        case 7:
+        case 6:
             rstPatrolStore.m_strDescription = strColumn;
             result = rstPatrolStore;
             break;
@@ -7195,20 +7806,25 @@ bool PassengerFlowManager::QueryRemotePatrolStoreInfo(const std::string &strPatr
     auto patrol = boost::any_cast<PassengerFlowProtoHandler::RemotePatrolStore>(ResultList.front());
     patrolStore.m_strUserID = patrol.m_strUserID;
     patrolStore.m_strDeviceID = patrol.m_strDeviceID;
-    patrolStore.m_strEntranceID = patrol.m_strEntranceID;
     patrolStore.m_strStoreID = patrol.m_strStoreID;
     patrolStore.m_strPlanID = patrol.m_strPlanID;
     patrolStore.m_uiPatrolResult = patrol.m_uiPatrolResult;
     patrolStore.m_strPatrolDate = patrol.m_strPatrolDate;
     patrolStore.m_strDescription = patrol.m_strDescription;
 
-    return QueryRemotePatrolStoreScreenshot(strPatrolID, patrolStore.m_strPatrolPictureList);
+    QueryRemotePatrolStoreScreenshot(strPatrolID, patrolStore.m_patrolPictureList);
+    for (auto it = patrolStore.m_patrolPictureList.begin(), end = patrolStore.m_patrolPictureList.end(); it != end; ++it)
+    {
+        patrolStore.m_strEntranceIDList.push_back(it->m_strEntranceID);
+    }
+
+    return true;
 }
 
-bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<std::string> &screenshotList)
+bool PassengerFlowManager::QueryRemotePatrolStoreEntrance(const std::string &strPatrolID, std::list<std::string> &entranceList)
 {
-    char sql[512] = { 0 };
-    const char *sqlfmt = "select screenshot_id from t_patrol_store_screenshot_association where patrol_id = '%s'";
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select entrance_id from t_patrol_store_entrance_association where patrol_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
@@ -7217,6 +7833,49 @@ bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &s
         {
         case 0:
             result = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryRemotePatrolStoreEntrance sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryRemotePatrolStoreEntrance exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        entranceList.push_back(boost::any_cast<std::string>(result));
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &strPatrolID, std::list<PassengerFlowProtoHandler::EntrancePicture> &screenshotList)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select entrance_id, screenshot_id from t_patrol_store_screenshot_association where patrol_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strPatrolID.c_str());
+
+    PassengerFlowProtoHandler::EntrancePicture rstScreenshot;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstScreenshot.m_strEntranceID = strColumn;
+            break;
+        case 1:
+            rstScreenshot.m_strPatrolPictureList.push_back("http://172.20.120.22:7000/filemgr.cgi?action=download_file&fileid=" + strColumn);
+            result = rstScreenshot;
+            rstScreenshot.m_strPatrolPictureList.clear();
             break;
 
         default:
@@ -7236,30 +7895,65 @@ bool PassengerFlowManager::QueryRemotePatrolStoreScreenshot(const std::string &s
 
     for (auto &result : ResultList)
     {
-        screenshotList.push_back("http://172.20.120.22:7000/filemgr.cgi?action=download_file&fileid=" + boost::any_cast<std::string>(result));
+        auto screenshot = boost::any_cast<PassengerFlowProtoHandler::EntrancePicture>(result);
+        auto it = screenshotList.begin();
+        auto end = screenshotList.end();
+        for (; it != end; ++it)
+        {
+            if (it->m_strEntranceID == screenshot.m_strEntranceID)
+            {
+                it->m_strPatrolPictureList.push_back(screenshot.m_strPatrolPictureList.front());
+                break;
+            }
+        }
+
+        if (it == end)
+        {
+            screenshotList.push_back(screenshot);
+        }
     }
 
     return true;
 }
 
-bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList,
-    const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStoreID, const std::string &strPlanID, const unsigned int uiPatrolResult, const unsigned int uiPlanFlag,
+    std::list<PassengerFlowProtoHandler::RemotePatrolStore> &patrolStoreList, const std::string &strBeginDate, const std::string &strEndDate,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 12*/)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select patrol_id, user_id, device_id, entrance_id, store_id, plan_id, patrol_date, patrol_result, description from"
-        " t_remote_patrol_store where store_id %s and plan_id %s";
-    int len = snprintf(sql, size, sqlfmt, strStoreID.empty() ? "is not null" : ("= '" + strStoreID + "'").c_str(),
-        strPlanID.empty() ? "is not null" : ("= '" + strPlanID + "'").c_str());
+    const char *sqlfmt = "select patrol_id, user_id, device_id, store_id, plan_id, patrol_date, patrol_result, description from"
+        " t_remote_patrol_store where 1 = 1";
+    int len = snprintf(sql, size, sqlfmt);
+
+    if (!strStoreID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and store_id = '%s'", strStoreID.c_str());
+    }
+
+    if (uiPatrolResult != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, " and patrol_result = %d", uiPatrolResult);
+    }
+
+    if (uiPlanFlag != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, " and plan_id %s", uiPlanFlag == 0 ? "= ''" : "!= ''");
+    }
+
+    if (uiPlanFlag == 1 && !strPlanID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and plan_id = '%s'", strPlanID.c_str());
+    }
 
     if (!strBeginDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and create_date >= '%s'", strBeginDate.c_str());
+        len += snprintf(sql + len, size - len, " and patrol_date >= '%s'", strBeginDate.c_str());
     }
 
     if (!strEndDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and create_date <= '%s'", strEndDate.c_str());
+        len += snprintf(sql + len, size - len, " and patrol_date <= '%s'", strEndDate.c_str());
     }
 
     snprintf(sql + len, size - len, " order by patrol_date desc limit %d, %d", uiBeginIndex, uiPageSize);
@@ -7279,21 +7973,18 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
             rstPatrolStore.m_strDeviceID = strColumn;
             break;
         case 3:
-            rstPatrolStore.m_strEntranceID = strColumn;
-            break;
-        case 4:
             rstPatrolStore.m_strStoreID = strColumn;
             break;
-        case 5:
+        case 4:
             rstPatrolStore.m_strPlanID = strColumn;
             break;
-        case 6:
+        case 5:
             rstPatrolStore.m_strPatrolDate = strColumn;
             break;
-        case 7:
+        case 6:
             rstPatrolStore.m_uiPatrolResult = boost::lexical_cast<unsigned int>(strColumn);
             break;
-        case 8:
+        case 7:
             rstPatrolStore.m_strDescription = strColumn;
             result = rstPatrolStore;
             break;
@@ -7316,9 +8007,256 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
     for (auto &result : ResultList)
     {
         auto patrolStore = boost::any_cast<PassengerFlowProtoHandler::RemotePatrolStore>(result);
-        QueryRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, patrolStore.m_strPatrolPictureList);
+        QueryRemotePatrolStoreScreenshot(patrolStore.m_strPatrolID, patrolStore.m_patrolPictureList);
+        for (auto it = patrolStore.m_patrolPictureList.begin(), end = patrolStore.m_patrolPictureList.end(); it != end; ++it)
+        {
+            patrolStore.m_strEntranceIDList.push_back(it->m_strEntranceID);
+        }
 
         patrolStoreList.push_back(std::move(patrolStore));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_store_sensor (id, store_id, sensor_id, device_id, sensor_name, sensor_type, create_date)"
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, sensorInfo.m_strStoreID.c_str(), sensorInfo.m_strSensorID.c_str(), sensorInfo.m_strDeviceID.c_str(),
+        sensorInfo.m_strSensorName.c_str(), sensorInfo.m_strSensorType.c_str(), sensorInfo.m_strCreateDate.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddStoreSensor exec sql failed, sql is " << sql);
+        return;
+    }
+}
+
+void PassengerFlowManager::DeleteStoreSensor(const std::string &strSensorID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete a, b from"
+        " t_store_sensor a left join t_sensor_value b on a.sensor_id = b.sensor_id"
+        " where a.sensor_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("DeleteStoreSensor exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo)
+{
+    bool blModified = false;
+
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_store_sensor set id = id");
+
+    if (!sensorInfo.m_strSensorName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", sensor_name = '%s'", sensorInfo.m_strSensorName.c_str());
+        blModified = true;
+    }
+
+    if (!sensorInfo.m_strSensorType.empty())
+    {
+        len += snprintf(sql + len, size - len, ", sensor_type = '%s'", sensorInfo.m_strSensorType.c_str());
+        blModified = true;
+    }
+
+    if (!sensorInfo.m_strStoreID.empty())
+    {
+        len += snprintf(sql + len, size - len, ", store_id = '%s'", sensorInfo.m_strStoreID.c_str());
+        blModified = true;
+    }
+
+    if (!sensorInfo.m_strDeviceID.empty())
+    {
+        len += snprintf(sql + len, size - len, ", device_id = '%s'", sensorInfo.m_strDeviceID.c_str());
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("ModifyStoreSensor completed, sensor info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where sensor_id = '%s'", sensorInfo.m_strSensorID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("ModifyStoreSensor exec sql failed, sql is " << sql);
+    }
+}
+
+bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, PassengerFlowProtoHandler::Sensor &sensorInfo)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, ifnull(b.value, ''), a.create_date from"
+        " t_store_sensor a left join t_sensor_value b on a.sensor_id = b.sensor_id"
+        " where a.sensor_id = '%s' order by b.create_date desc limit 0, 1";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
+
+    PassengerFlowProtoHandler::Sensor rstStoreSensor;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstStoreSensor.m_strStoreID = strColumn;
+            break;
+        case 1:
+            rstStoreSensor.m_strSensorID = strColumn;
+            break;
+        case 2:
+            rstStoreSensor.m_strDeviceID = strColumn;
+            break;
+        case 3:
+            rstStoreSensor.m_strSensorName = strColumn;
+            break;
+        case 4:
+            rstStoreSensor.m_strSensorType = strColumn;
+            break;
+        case 5:
+            rstStoreSensor.m_strValue = strColumn;
+            break;
+        case 6:
+            rstStoreSensor.m_strCreateDate = strColumn;
+            result = rstStoreSensor;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryStoreSensorInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryStoreSensorInfo exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("QueryStoreSensorInfo sql result is empty, sql is " << sql);
+        return false;
+    }
+
+    auto sensor = boost::any_cast<PassengerFlowProtoHandler::Sensor>(ResultList.front());
+    sensorInfo.m_strStoreID = sensor.m_strStoreID;
+    sensorInfo.m_strSensorID = sensor.m_strSensorID;
+    sensorInfo.m_strDeviceID = sensor.m_strDeviceID;
+    sensorInfo.m_strSensorName = sensor.m_strSensorName;
+    sensorInfo.m_strSensorType = sensor.m_strSensorType;
+    sensorInfo.m_strValue = sensor.m_strValue;
+    sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
+
+    return true;
+}
+
+bool PassengerFlowManager::QuerySensorValue(const std::string &strSensorID, std::string &strValue)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select value, create_date from t_sensor_value"
+        " where sensor_id = '%s' order by create_date desc limit 0, 1";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            result = strColumn;
+            break;
+        case 1:
+            break;
+
+        default:
+            LOG_ERROR_RLD("QuerySensorValue sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QuerySensorValue exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        strValue = boost::any_cast<std::string>(ResultList.front());
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::Sensor> &sensorList,
+    const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date from t_store_sensor"
+        " where store_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
+
+    PassengerFlowProtoHandler::Sensor rstStoreSensor;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstStoreSensor.m_strStoreID = strColumn;
+            break;
+        case 1:
+            rstStoreSensor.m_strSensorID = strColumn;
+            break;
+        case 2:
+            rstStoreSensor.m_strDeviceID = strColumn;
+            break;
+        case 3:
+            rstStoreSensor.m_strSensorName = strColumn;
+            break;
+        case 4:
+            rstStoreSensor.m_strSensorType = strColumn;
+            break;
+        case 5:
+            rstStoreSensor.m_strCreateDate = strColumn;
+            result = rstStoreSensor;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryAllStoreSensor sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryAllStoreSensor exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        auto sensor = boost::any_cast<PassengerFlowProtoHandler::Sensor>(result);
+        QuerySensorValue(sensor.m_strSensorID, sensor.m_strValue);
+
+        sensorList.push_back(std::move(sensor));
     }
 
     return true;
@@ -7327,7 +8265,7 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
 void PassengerFlowManager::ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount,
     const unsigned int uiGoodsAmount, const double dDealAmount, const std::string &strDealDate)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_store_deal_pos (id, store_id, deal_date, order_amount, goods_amount, deal_amount, create_date)"
         " values(uuid(), '%s', '%s', %d, %d, %f, '%s')"
         " on duplicate key update order_amount = %d, goods_amount = %d, deal_amount = %f";
@@ -7643,7 +8581,7 @@ void PassengerFlowManager::ReportCustomerFlow(const std::string &strDeviceID, co
 
 void PassengerFlowManager::AddCustomerFlow(const std::string &strDeviceID, const PassengerFlowProtoHandler::RawCustomerFlow &customerFlowInfo)
 {
-    char sql[512] = { 0 };
+    char sql[1024] = { 0 };
     const char *sqlfmt = "insert into t_customer_flow_original_%d (id, device_id, data_time, enter_number, leave_number, stay_number)"
         " values(uuid(), '%s', '%s', %d, %d, %d)";
     snprintf(sql, sizeof(sql), sqlfmt, Month(customerFlowInfo.m_strDataTime), customerFlowInfo.m_strDataTime.c_str(),
@@ -7652,6 +8590,72 @@ void PassengerFlowManager::AddCustomerFlow(const std::string &strDeviceID, const
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("AddCustomerFlow exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::ReportSensorInfo(const std::string &strDeviceID, const std::list<PassengerFlowProtoHandler::Sensor> &sensorList)
+{
+    for (auto &sensor : sensorList)
+    {
+        std::string strSensorID;
+        if (!QueryDeviceSensor(strDeviceID, sensor.m_strSensorType, strSensorID) || strSensorID.empty())
+        {
+            LOG_ERROR_RLD("ReportSensorInfo error, query device sensor error, device id is " << strDeviceID
+                << " and sensor type is " << sensor.m_strSensorType);
+            continue;
+        }
+
+        AddSensorInfo(strDeviceID, strSensorID, sensor);
+    }
+}
+
+bool PassengerFlowManager::QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, std::string &strSensorID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select sensor_id from t_store_sensor where device_id = '%s' and sensor_type = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strSensorType.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            result = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryDeviceSensor sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDeviceSensor exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ResultList.empty())
+    {
+        strSensorID = boost::any_cast<std::string>(ResultList.front());
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::AddSensorInfo(const std::string &strDeviceID, const std::string &strSensorID, const PassengerFlowProtoHandler::Sensor &sensorInfo)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_sensor_value (id, sensor_id, value, create_date)"
+        " values(uuid(), '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str(), sensorInfo.m_strValue.c_str(), CurrentTime().c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("AddSensorInfo exec sql failed, sql is " << sql);
     }
 }
 
