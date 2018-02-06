@@ -41,6 +41,8 @@ const std::string HttpMsgHandler::MODIFY_DEVICE_ACTION("modify_device");
 
 const std::string HttpMsgHandler::QUERY_DEVICE_INFO_ACTION("query_deviceinfo");
 
+const std::string HttpMsgHandler::QUERY_DEVICE_INFO_MULTIPLE_ACTION("query_deviceinfo_multiple");
+
 const std::string HttpMsgHandler::QUERY_DEVICE_OF_USER_ACTION("query_device_of_user");
 
 const std::string HttpMsgHandler::QUERY_USER_OF_DEVICE_ACTION("query_user_of_device");
@@ -1385,6 +1387,103 @@ bool HttpMsgHandler::QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     return blResult;
 }
 
+bool HttpMsgHandler::QueryDeviceMultipleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsDevInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsDevInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["data"] = jsDevInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("devid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+    std::list<std::string> strDevIDList;
+    if (!GetValueList(strDevID, strDevIDList))
+    {
+        LOG_ERROR_RLD("Parse device id info failed and value is " << strDevID);
+        return blResult;
+    }
+
+    if (strDevIDList.empty())
+    {
+        LOG_ERROR_RLD("Device id list is empty.");
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query multiple device info received and  device id is " << strDevID << " and sid is " << strSid);
+
+    std::list<DeviceIf> DevInfoList;
+    if (!QueryDeviceInfoMultiple(strSid, strDevIDList, DevInfoList))
+    {
+        LOG_ERROR_RLD("Query multiple device info received and  device id is " << strDevID << " and sid is " << strSid);
+        return blResult;
+    }
+
+    auto itBegin = DevInfoList.begin();
+    auto itEnd = DevInfoList.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsDevInfo;
+        jsDevInfo["devid"] = itBegin->m_strDevID;
+        jsDevInfo["p2pid"] = itBegin->m_strP2pid;
+        jsDevInfo["online"] = itBegin->m_strOnline;
+        jsDevInfo["domainname"] = itBegin->m_strDomainname;
+        jsDevInfo["devpwd"] = itBegin->m_strDevPwd;
+        jsDevInfo["devinnerinfo"] = itBegin->m_strDevInnerInfo;
+        
+        jsDevInfoList.append(jsDevInfo);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
@@ -1575,7 +1674,7 @@ bool HttpMsgHandler::QueryUsersOfDeviceHandler(boost::shared_ptr<MsgInfoMap> pMs
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
        
-    LOG_INFO_RLD("Query users of device info received and  user id is " << strDevID
+    LOG_INFO_RLD("Query users of device info received and  device id is " << strDevID
         << " and begin index is " << uiBeginIndex
         << " and session id is " << strSid);
 
@@ -6974,6 +7073,69 @@ bool HttpMsgHandler::QueryDeviceInfo(const std::string &strSid, const std::strin
 
 }
 
+bool HttpMsgHandler::QueryDeviceInfoMultiple(const std::string &strSid, std::list<std::string> &strDevIDList, std::list<DeviceIf> &DevInfoList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR QueryDevReq;
+        QueryDevReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceInfoMultiReq_USR_T;
+        QueryDevReq.m_uiMsgSeq = 1;
+        QueryDevReq.m_strSID = strSid;
+        QueryDevReq.m_strDeviceIDList.swap(strDevIDList);
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query multiple device info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR QueryDevRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevRsp))
+        {
+            LOG_ERROR_RLD("Query multiple device info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryDevRsp.m_deviceStatusList.begin(), itEnd = QueryDevRsp.m_deviceStatusList.end(); itBegin != itEnd; ++itBegin)
+        {
+            DeviceIf devinfo;
+            devinfo.m_strDevID = itBegin->m_deviceInfo.m_strDevID;
+            devinfo.m_strP2pid = itBegin->m_deviceInfo.m_strP2pID;
+            devinfo.m_strOnline = itBegin->m_strOnlineStatus;
+            devinfo.m_strDomainname = itBegin->m_deviceInfo.m_strDomainName;
+            devinfo.m_strDevPwd = itBegin->m_deviceInfo.m_strDevPassword;
+            devinfo.m_strDevInnerInfo = itBegin->m_deviceInfo.m_strInnerinfo;
+
+            DevInfoList.push_back(std::move(devinfo));
+        }
+
+        iRet = QueryDevRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query multiple device info  and session id is " << strSid <<
+            " and return code is " << QueryDevRsp.m_iRetcode <<
+            " and return msg is " << QueryDevRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+
+}
+
 template<typename T>
 bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList,
     std::list<std::string> &strDevNameList)
@@ -9693,5 +9855,45 @@ bool HttpMsgHandler::ValidDatetime(const std::string &strDatetime)
     }
 
     return true;
+}
+
+bool HttpMsgHandler::GetValueList(const std::string &strValue, std::list<std::string> &strValueList)
+{
+    bool blResult = false;
+
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(strValue, root))
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+
+    if (!root.isArray())
+    {
+        LOG_ERROR_RLD("Value info parse failed, raw data is : " << strValue);
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Value list size is " << root.size());
+
+    for (unsigned int i = 0; i < root.size(); ++i)
+    {
+        auto jsValueItem = root[i];
+        if (jsValueItem.isNull() || !jsValueItem.isString())
+        {
+            LOG_ERROR_RLD("Value info type is error, raw data is: " << strValue);
+            return blResult;
+        }
+
+        strValueList.emplace_back(jsValueItem.asString());
+
+        LOG_INFO_RLD("Value item is " << jsValueItem.asString());
+    }
+
+    blResult = true;
+
+    return blResult;
 }
 

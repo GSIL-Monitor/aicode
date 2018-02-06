@@ -32,6 +32,7 @@ public:
     static const std::string DELETE_DEVICE_ACTION;
     static const std::string MODIFY_DEVICE_ACTION;
     static const std::string QUERY_DEVICE_INFO_ACTION;
+    static const std::string QUERY_DEVICE_INFO_MULTIPLE_ACTION;
     static const std::string QUERY_DEVICE_OF_USER_ACTION;
     static const std::string QUERY_USER_OF_DEVICE_ACTION;
     static const std::string SHARING_DEVICE_ACTION;
@@ -124,6 +125,8 @@ public:
     bool ModifyDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryDeviceMultipleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -289,6 +292,7 @@ private:
         std::string m_strP2pid;
         std::string m_strDomainname;
         std::string m_strIpaddress;
+        std::string m_strOnline;
     } DeviceIf;
 
     typedef struct
@@ -366,6 +370,8 @@ private:
     template<typename T>
     bool QueryDeviceInfo(const std::string &strSid, const std::string &strDevID, T &DevInfo, std::string &strUpdateDate, std::string &strVersion, std::string &strOnline,
         const unsigned int uiDevShared, const std::string &strUserID);
+
+    bool QueryDeviceInfoMultiple(const std::string &strSid, std::list<std::string> &strDevIDList, std::list<DeviceIf> &DevInfoList);
 
     template<typename T>
     bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList, 
@@ -473,6 +479,8 @@ private:
 
 private:
     bool ValidDatetime(const std::string &strDatetime);
+
+    bool GetValueList(const std::string &strValue, std::list<std::string> &strValueList);
 
 private:
     ParamInfo m_ParamInfo;

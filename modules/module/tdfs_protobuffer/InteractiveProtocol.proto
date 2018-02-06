@@ -182,6 +182,9 @@ enum MsgType
   QueryRegionStorageInfoReq_USR_T = 20880;      //查询区域存储情况
   QueryRegionStorageInfoRsp_USR_T = 20890;
 
+  QueryDeviceInfoMultiReq_USR_T = 20950;        //批量查询设备信息
+  QueryDeviceInfoMultiRsp_USR_T = 20960;
+  
   ///////////////////////////////////////////////////////
   
   GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
@@ -195,7 +198,7 @@ enum MsgType
   GetDeviceAccessRecordRsp_INNER_T = 30210;
   GetUserAccessRecordReq_INNER_T = 30220;       //获取用户接入记录
   GetUserAccessRecordRsp_INNER_T = 30230;
-  
+
   ///////////////////////////////////////////////////////
 
   QueryUploadURLReq_MGR_T = 40000;              //查询文件上传URL
@@ -229,6 +232,12 @@ message Device                                  //设备信息对象
   string strInnerinfo = 8;                      //设备上传到平台的信息
   string strP2pID = 9;                          //设备二级域名
   string strDomainName = 10;                    //设备P2P ID
+}
+
+message DeviceStatus                            //设备状态
+{
+  Device deviceInfo = 1;
+  string strOnlineStatus = 2;
 }
 
 message User                                    //用户信息对象
@@ -1112,6 +1121,16 @@ message QueryRegionStorageInfoRsp_USR           //查询区域存储情况响应
   uint32 uiSizeOfSpaceUsed = 3;
 }
 
+message QueryDeviceInfoMultiReq_USR             //批量查询设备信息请求
+{
+  repeated string strDeviceID = 1;
+}
+
+message QueryDeviceInfoMultiRsp_USR             //批量查询设备信息响应
+{
+  repeated DeviceStatus deviceStatus = 1;
+}
+
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
 
@@ -1306,6 +1325,8 @@ message Req
 
   QueryRegionStorageInfoReq_USR QueryRegionStorageInfoReq_USR_Value = 740;    //查询区域存储情况
 
+  QueryDeviceInfoMultiReq_USR QueryDeviceInfoMultiReq_USR_Value = 1100;       //批量查询设备信息
+
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;            //获取在线设备信息
@@ -1315,7 +1336,7 @@ message Req
 
   GetDeviceAccessRecordReq_INNER GetDeviceAccessRecordReq_INNER_Value = 440;  //获取设备接入记录
   GetUserAccessRecordReq_INNER GetUserAccessRecordReq_INNER_Value = 450;      //获取用户接入记录
-  
+
   QueryUploadURLReq_MGR QueryUploadURLReq_MGR_Value = 600;                    //查询文件上传URL
   
   AddConfigurationReq_MGR AddConfigurationReq_MGR_Value = 610;                //新增配置项
@@ -1404,6 +1425,8 @@ message Rsp
   QueryStorageDetailRsp_USR QueryStorageDetailRsp_USR_Value = 730;   //用户查询存储详情
 
   QueryRegionStorageInfoRsp_USR QueryRegionStorageInfoRsp_USR_Value = 740;  //查询区域存储情况
+
+  QueryDeviceInfoMultiRsp_USR QueryDeviceInfoMultiRsp_USR_Value = 1100;     //批量查询设备信息
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

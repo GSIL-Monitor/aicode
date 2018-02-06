@@ -17,7 +17,7 @@ curl -F sid=91EE6325C2A4AA448D83A559B2466AAB -F userid=2F479583629E2946B0A875961
 curl -F username=zycai@annigroup.com -F email=zycai@annigroup.com http://xvripc.net:8888/access.cgi?action=retrieve_pwd
 
 用户登录
-curl -F username=zycai@annigroup.com -F userpwd=123456 -F terminaltype=8 http://xvripc.net:8888/access.cgi?action=user_login
+curl -F username=zycai@annigroup.com -F userpwd=123456 -F terminaltype=9 -F type=1 http://xvripc.net:8888/access.cgi?action=user_login
 
 用户登出
 curl -F sid=91EE6325C2A4AA448D83A559B2466AAB -F userid=2F479583629E2946B0A87596177A8E62 http://xvripc.net:8888/access.cgi?action=user_logout
@@ -99,6 +99,9 @@ curl -F sid=91EE6325C2A4AA448D83A559B2466AAB -F userid=7588DCA8D6EC5D45AAE7CA3C3
 
 查询区域存储情况
 curl -F sid=91EE6325C2A4AA448D83A559B2466AAB -F userid=7588DCA8D6EC5D45AAE7CA3C3F57CAAB http://xvripc.net:8888/access.cgi?action=query_storage_info
+
+批量查询设备信息
+curl -F sid=9804B2690070A74798F065EB1ADBF274 -F devid='["0018A978B9EB","0018A978C0A4","0018A978C646"]' http://xvripc.net:8888/access.cgi?action=query_deviceinfo_multiple
 
 
 

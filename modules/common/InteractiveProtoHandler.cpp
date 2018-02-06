@@ -1267,6 +1267,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryRegionStorageInfoRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceInfoMultiReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceInfoMultiRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2527,6 +2541,26 @@ bool InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_Serializer(const Req
 bool InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryRegionStorageInfoRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceInfoMultiReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryDeviceInfoMultiReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceInfoMultiRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryDeviceInfoMultiRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 
@@ -5285,5 +5319,63 @@ void InteractiveProtoHandler::QueryRegionStorageInfoRsp_USR::Serializer(Interact
     InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uidomainid(m_uiDomainID);
     InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uisizeofspace(m_uiSizeOfSpace);
     InteractiveMsg.mutable_rspvalue()->mutable_queryregionstorageinforsp_usr_value()->set_uisizeofspaceused(m_uiSizeOfSpaceUsed);
+}
+
+void InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+
+    for (int i = 0, sz = InteractiveMsg.reqvalue().querydeviceinfomultireq_usr_value().strdeviceid_size(); i < sz; ++i)
+    {
+        m_strDeviceIDList.push_back(InteractiveMsg.reqvalue().querydeviceinfomultireq_usr_value().strdeviceid(i));
+    }
+}
+
+void InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceInfoMultiReq_USR_T);
+
+    for (auto it = m_strDeviceIDList.begin(), end = m_strDeviceIDList.end(); it != end; ++it)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_querydeviceinfomultireq_usr_value()->add_strdeviceid(*it);
+    }
+}
+
+void InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    for (int i = 0, sz = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus_size(); i < sz; ++i)
+    {
+        DeviceStatus devStatus;
+        devStatus.m_deviceInfo.m_strDevID = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdevid();
+        devStatus.m_deviceInfo.m_strP2pID = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strp2pid();
+        devStatus.m_deviceInfo.m_strDomainName = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdomainname();
+        devStatus.m_deviceInfo.m_strDevName = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdevname();
+        devStatus.m_deviceInfo.m_strDevPassword = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdevpassword();
+        devStatus.m_deviceInfo.m_strInnerinfo = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strinnerinfo();
+        devStatus.m_strOnlineStatus = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).stronlinestatus();
+
+        m_deviceStatusList.push_back(devStatus);
+    }
+}
+
+void InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceInfoMultiRsp_USR_T);
+
+    for (auto it = m_deviceStatusList.begin(), end = m_deviceStatusList.end(); it != end; ++it)
+    {
+        auto deviceStatus = InteractiveMsg.mutable_rspvalue()->mutable_querydeviceinfomultirsp_usr_value()->add_devicestatus();
+        deviceStatus->mutable_deviceinfo()->set_strdevid(it->m_deviceInfo.m_strDevID);
+        deviceStatus->mutable_deviceinfo()->set_strp2pid(it->m_deviceInfo.m_strP2pID);
+        deviceStatus->mutable_deviceinfo()->set_strdomainname(it->m_deviceInfo.m_strDomainName);
+        deviceStatus->mutable_deviceinfo()->set_strdevname(it->m_deviceInfo.m_strDevName);
+        deviceStatus->mutable_deviceinfo()->set_strdevpassword(it->m_deviceInfo.m_strDevPassword);
+        deviceStatus->mutable_deviceinfo()->set_strinnerinfo(it->m_deviceInfo.m_strInnerinfo);
+        deviceStatus->set_stronlinestatus(it->m_strOnlineStatus);
+    }
 }
 

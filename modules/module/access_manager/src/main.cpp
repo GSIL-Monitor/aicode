@@ -433,6 +433,7 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::ModifyStorageDetailReq_USR_T, boost::bind(&AccessManager::ModifyStorageDetailReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryStorageDetailReq_USR_T, boost::bind(&AccessManager::QueryStorageDetailReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryRegionStorageInfoReq_USR_T, boost::bind(&AccessManager::QueryRegionStorageInfoReqUser, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceInfoMultiReq_USR_T, boost::bind(&AccessManager::QueryDeviceInfoMultiReqUser, &Umg, _1, _2, _3));
 
 
     ccenter.Run(true);

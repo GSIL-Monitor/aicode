@@ -281,6 +281,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_DEVICE_ACTION, boost::bind(&HttpMsgHandler::DeleteDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::MODIFY_DEVICE_ACTION, boost::bind(&HttpMsgHandler::ModifyDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_INFO_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_INFO_MULTIPLE_ACTION, boost::bind(&HttpMsgHandler::QueryDeviceMultipleHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_OF_USER_ACTION, boost::bind(&HttpMsgHandler::QueryDevicesOfUserHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_OF_DEVICE_ACTION, boost::bind(&HttpMsgHandler::QueryUsersOfDeviceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::SHARING_DEVICE_ACTION, boost::bind(&HttpMsgHandler::SharingDeviceHandler, &filehdr, _1, _2));

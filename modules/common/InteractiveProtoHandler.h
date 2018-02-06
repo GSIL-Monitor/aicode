@@ -159,6 +159,9 @@ public:
         QueryRegionStorageInfoReq_USR_T = 20880,
         QueryRegionStorageInfoRsp_USR_T = 20890,
 
+        QueryDeviceInfoMultiReq_USR_T = 20950,        //批量查询设备信息
+        QueryDeviceInfoMultiRsp_USR_T = 20960,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -200,6 +203,12 @@ public:
         unsigned int m_uiStatus;
         std::string m_strExtend;
         std::string m_strInnerinfo;                          //设备上传到平台的信息  
+    };
+
+    struct DeviceStatus
+    {
+        Device m_deviceInfo;
+        std::string m_strOnlineStatus;
     };
 
     struct User
@@ -1134,6 +1143,24 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QueryDeviceInfoMultiReq_USR : Req
+    {
+        std::list<std::string> m_strDeviceIDList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDeviceInfoMultiRsp_USR : Rsp
+    {
+        std::list<DeviceStatus> m_deviceStatusList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct AddFileReq_DEV : Req
     {
@@ -2000,6 +2027,11 @@ private:
     bool QueryRegionStorageInfoReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryRegionStorageInfoRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryRegionStorageInfoRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryDeviceInfoMultiReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryDeviceInfoMultiReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryDeviceInfoMultiRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryDeviceInfoMultiRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

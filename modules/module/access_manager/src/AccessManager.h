@@ -250,6 +250,8 @@ public:
 
     bool QueryRegionStorageInfoReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryDeviceInfoMultiReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -441,6 +443,8 @@ private:
     bool QueryStorageDetailToDB(const std::string &strObjectID, InteractiveProtoHandler::StorageDetail &storageDetail, int &iErrorCode);
 
     bool QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigned int &uiTotalSize);
+
+    bool QueryDeviceInfoMultiToDB(const std::list<std::string> &strDeviceIDList, std::list<InteractiveProtoHandler::DeviceStatus> &deviceStatusList);
 
     void UpdateDeviceEventStoredTime();
 

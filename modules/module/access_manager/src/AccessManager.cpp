@@ -4173,6 +4173,58 @@ bool AccessManager::QueryRegionStorageInfoReqUser(const std::string &strMsg, con
     return blResult;
 }
 
+bool AccessManager::QueryDeviceInfoMultiReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryDeviceInfoMultiReq_USR req;
+    std::list<InteractiveProtoHandler::DeviceStatus> deviceStatusList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &deviceStatusList)
+    {
+        InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceInfoMultiRsp_USR_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_deviceStatusList.swap(deviceStatusList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device info multi rsp serialize failed.");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query device info multi rsp already send, dst id is " << strSrcID <<
+            " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query device info multi req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryDeviceInfoMultiToDB(req.m_strDeviceIDList, deviceStatusList))
+    {
+        LOG_ERROR_RLD("Query device info multi from db failed, src id is " << strSrcID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -8453,6 +8505,72 @@ bool AccessManager::QueryRegionStorageInfoToDB(unsigned int &uiUsedSize, unsigne
     auto result = boost::any_cast<StorageInfo>(ResultList.front());
     uiUsedSize = result.usedSize;
     uiTotalSize = result.totalSize;
+
+    return true;
+}
+
+bool AccessManager::QueryDeviceInfoMultiToDB(const std::list<std::string> &strDeviceIDList, std::list<InteractiveProtoHandler::DeviceStatus> &deviceStatusList)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select deviceid, devicename, devicepassword, p2pid, domainname, innerinfo from t_device_info"
+        " where status = 0 and deviceid in (";
+    int len = snprintf(sql, size, sqlfmt);
+
+    for (auto device : strDeviceIDList)
+    {
+        len += snprintf(sql + len, size - len, "'%s', ", device.c_str());
+    }
+
+    std::string strSql(sql);
+    strSql.replace(strSql.size() - 2, 2, std::string(")"));
+
+    InteractiveProtoHandler::Device rstDevice;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstDevice.m_strDevID = strColumn;
+            break;
+        case 1:
+            rstDevice.m_strDevName = strColumn;
+            break;
+        case 2:
+            rstDevice.m_strDevPassword = strColumn;
+            break;
+        case 3:
+            rstDevice.m_strP2pID = strColumn;
+            break;
+        case 4:
+            rstDevice.m_strDomainName = strColumn;
+            break;
+        case 5:
+            rstDevice.m_strInnerinfo = strColumn;
+            Result = rstDevice;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryDeviceInfoMultiToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(strSql, ResultList, SqlFunc))
+    {
+        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << strSql);
+        return false;
+    }
+
+    for (auto result : ResultList)
+    {
+        InteractiveProtoHandler::DeviceStatus deviceStatus;
+        deviceStatus.m_deviceInfo = boost::any_cast<InteractiveProtoHandler::Device>(result);
+        deviceStatus.m_strOnlineStatus = m_SessionMgr.ExistID(deviceStatus.m_deviceInfo.m_strDevID) ? ONLINE : OFFLINE;
+
+        deviceStatusList.push_back(std::move(deviceStatus));
+    }
 
     return true;
 }
