@@ -5,7 +5,8 @@
 #include "time.h"
 #include "json/json.h"
 
-SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL), m_blUserLoginMutex(false), m_blAllowDiffTerminal(false), m_uiKickoutType(KICKOUT_BEFORE)
+SessionMgr::SessionMgr() : m_pMemCl(NULL), m_pMemClGlobal(NULL), m_blUserLoginMutex(false), m_blAllowDiffTerminal(false), m_uiKickoutType(KICKOUT_BEFORE),
+m_SessionCleanRunner(1)
 {
 
 }
@@ -81,6 +82,8 @@ bool SessionMgr::Init()
             LOG_INFO_RLD("memcached client init succeed, remote ip: " << m_strMemAddressGlobal << ", remote port:" << m_strMemPortGlobal);
         }
     }
+
+    m_SessionCleanRunner.Run();
 
     return blRet;
 }
@@ -436,6 +439,13 @@ bool SessionMgr::Reset(const std::string &strSessionID)
 
 bool SessionMgr::ResetID(const std::string &strID)
 {
+    m_SessionCleanRunner.Post(boost::bind(&SessionMgr::ResetIDInner, this, strID));
+    return true;
+}
+
+
+bool SessionMgr::ResetIDInner(const std::string &strID)
+{
     std::string strValue;
     if (!MemCacheGet(strID, strValue))
     {
@@ -465,15 +475,86 @@ bool SessionMgr::ResetID(const std::string &strID)
         return false;
     }
 
-    ////
-    //if (!jThreshold.isUInt())
-    //{
-    //    LOG_ERROR_RLD("Reset session failed beacuse json threshold parsed as uint is invalid and key is " << strSessionID << " and value is " << strValue);
-    //    return false;
-    //}
+    Json::Value jsID = root["id"];
+    Json::Value jsTerminaltype = root["terminaltype"];
+    
+    if (jsID.isNull() || jsTerminaltype.isNull())
+    {
+        LOG_ERROR_RLD("ID json or terminal type value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    Json::Value JSid = root["sid"];
+    if (JSid.isNull())
+    {
+        LOG_ERROR_RLD("Sid json value is null and key is " << strID << " and value is " << strValue);
+        return false;
+    }
+
+    if (!JSid.isArray())
+    {
+        LOG_ERROR_RLD("Sid json value is not array, raw data is : " << strValue);
+        return false;
+    }
+
+    std::list<std::string> strSidValidList;
+    unsigned int uiSize = JSid.size();
+    for (unsigned int i = 0; i < uiSize; ++i)
+    {
+        auto jsSid = JSid[i];
+        if (jsSid.isNull() || !jsSid.isString())
+        {
+            LOG_ERROR_RLD("Sid info failed, raw data is: " << strValue);
+            return false;
+        }
+
+        if (Exist(jsSid.asString()))
+        {
+            strSidValidList.push_back(jsSid.asString());
+            LOG_INFO_RLD("Sid of valid is  " << jsSid.asString() << " and ID is " << strID);
+        }
+    }
+
+    Json::Value jsBody;
+    Json::Value jsSidValid;
+
+    unsigned int i = 0;
+    for (auto itBegin = strSidValidList.begin(), itEnd = strSidValidList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsSidValid[i] = *itBegin;
+    }
+
+    jsBody["sid"] = jsSidValid;
+    jsBody["id"] = jsID.asString();
+    jsBody["threshold"] = jThreshold.asUInt();
+    jsBody["terminaltype"] = jsTerminaltype.asUInt();
+
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(jsBody);
+
+    /**
+     *Json::Value jsBody;
+     jsBody["id"] = strID;
+     jsBody["threshold"] = uiThreshold;
+     jsBody["terminaltype"] = uiTerminalType;
+     Json::Value jsSid;
+     jsSid[(unsigned int)0] = strSessionID;
+     jsBody["sid"] = jsSid;
+     //jsBody["sid"] = strSessionID;
+
+     Json::FastWriter fastwriter;
+     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
+
+     if (!MemCacheCreate(strID, strBody, uiThreshold))
+     {
+     LOG_ERROR_RLD("Create id failed because memcache error.");
+     return CACHE_ERROR;
+     }
+     *
+     */
 
 
-    if (!MemCacheReset(strID, strValue, jThreshold.asUInt()))
+    if (!MemCacheReset(strID, strBody, jThreshold.asUInt()))
     {
         LOG_ERROR_RLD("Rest id failed becasue memecache failed, id is " << strID);
         return false;
@@ -865,6 +946,7 @@ bool SessionMgr::UpdateSidList(const std::string &strID, const std::string &strS
 
     return true;
 }
+
 
 SessionMgr::SessionTimer::SessionTimer()
 {

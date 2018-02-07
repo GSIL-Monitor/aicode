@@ -100,6 +100,8 @@ private:
 
     bool UpdateSidList(const std::string &strID, const std::string &strSessionID);
 
+    bool ResetIDInner(const std::string &strID);
+
 private:
 
     SessionTimeoutCB m_scb;
@@ -136,6 +138,8 @@ private:
     bool m_blUserLoginMutex;
     bool m_blAllowDiffTerminal;
     unsigned int m_uiKickoutType;
+
+    Runner m_SessionCleanRunner;
 
 };
 
