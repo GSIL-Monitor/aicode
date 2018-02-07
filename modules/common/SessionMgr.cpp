@@ -120,6 +120,8 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
 
     if (!strID.empty())
     {
+        boost::unique_lock<boost::mutex> lock(m_UpdateCacheMutex);
+
         if (!MemCacheExist(strID))
         {
             Json::Value jsBody;
@@ -446,6 +448,8 @@ bool SessionMgr::ResetID(const std::string &strID)
 
 bool SessionMgr::ResetIDInner(const std::string &strID)
 {
+    boost::unique_lock<boost::mutex> lock(m_UpdateCacheMutex);
+
     std::string strValue;
     if (!MemCacheGet(strID, strValue))
     {

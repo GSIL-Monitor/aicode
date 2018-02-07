@@ -140,6 +140,7 @@ private:
     unsigned int m_uiKickoutType;
 
     Runner m_SessionCleanRunner;
+    boost::mutex m_UpdateCacheMutex;
 
 };
 
