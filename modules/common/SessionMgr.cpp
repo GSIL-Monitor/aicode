@@ -515,6 +515,13 @@ bool SessionMgr::ResetIDInner(const std::string &strID)
         }
     }
 
+    if (strSidValidList.empty())
+    {
+        MemCacheRemove(strID);
+        LOG_INFO_RLD("Valid session is empty and ID is " << strID);
+        return true;
+    }
+
     Json::Value jsBody;
     Json::Value jsSidValid;
 
@@ -910,7 +917,7 @@ bool SessionMgr::UpdateSidList(const std::string &strID, const std::string &strS
     Json::Value JSid = root["sid"];
     if (JSid.isNull())
     {
-        LOG_ERROR_RLD("Update session list failed beacuse json threshold  json value is null and key is " << strID << " and value is " << strValue);
+        LOG_ERROR_RLD("Update session list failed beacuse sid  json value is null and key is " << strID << " and value is " << strValue);
         return false;
     }
 
