@@ -102,6 +102,8 @@ private:
 
     bool ResetIDInner(const std::string &strID);
 
+    bool ResetInner(const std::string &strSessionID);
+
 private:
 
     SessionTimeoutCB m_scb;

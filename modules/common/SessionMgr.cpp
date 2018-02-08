@@ -381,6 +381,12 @@ bool SessionMgr::ExistID(const std::string &strID)
 
 bool SessionMgr::Reset(const std::string &strSessionID)
 {
+    m_SessionCleanRunner.Post(boost::bind(&SessionMgr::ResetInner, this, strSessionID));
+    return true;
+}
+
+bool SessionMgr::ResetInner(const std::string &strSessionID)
+{
     std::string strValue;
     if (!MemCacheGet(strSessionID, strValue))
     {
