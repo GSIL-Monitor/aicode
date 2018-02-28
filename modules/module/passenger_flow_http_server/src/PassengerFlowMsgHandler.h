@@ -107,6 +107,8 @@ public:
 
     static const std::string REPORT_STORE_SENSOR;
 
+    static const std::string QUERY_PATROL_RESULT_REPORT;
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -267,6 +269,9 @@ public:
     bool QueryAllStoreSensorHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool ReportSensorInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool QueryPatrolResultReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
     
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
@@ -455,6 +460,15 @@ private:
         std::string m_strDevID;        
     };
 
+    struct PatrolResultReportQueryParam
+    {
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        std::string m_strStoreID;
+        unsigned int m_uiPatrolResult;
+        std::string m_strPatrolUserID;
+    };
+
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
@@ -596,6 +610,8 @@ private:
     bool QueryAllStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, std::list<Sensor> &srlist);
 
     bool ReportSensorInfo(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist);
+
+    bool QueryPatrolResult(const std::string &strSid, const std::string &strUserID, PatrolResultReportQueryParam &prqm, std::string &strReport);
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);

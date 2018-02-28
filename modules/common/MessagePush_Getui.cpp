@@ -102,6 +102,18 @@ void MessagePush_Getui::GetAuthToken()
         return;
     }
 
+    if (rsp["result"].isNull() || !rsp["result"].isString())
+    {
+        LOG_ERROR_RLD("GetAuthToken failed, response result format error, raw data is " << strResponse);
+        return;
+    }
+
+    if (rsp["result"].asString() != "ok")
+    {
+        LOG_ERROR_RLD("GetAuthToken failed, auth sign error, raw data is " << strResponse);
+        return;
+    }
+
     if (rsp["expire_time"].isNull() || !rsp["expire_time"].isString())
     {
         LOG_ERROR_RLD("GetAuthToken failed, response expire time format error, raw data is " << strResponse);
@@ -229,5 +241,25 @@ void MessagePush_Getui::PushSingle(const PushMessage &message, const int iClient
         LOG_ERROR_RLD("PushSingle failed, http post error, url is " << strUrl);
     }
     LOG_ERROR_RLD("---debug, response: " << strResponse);
+
+    Json::Value rsp;
+    Json::Reader reader;
+    if (!reader.parse(strResponse, rsp))
+    {
+        LOG_ERROR_RLD("PushSingle failed, parse response error, raw data is " << strResponse);
+        return;
+    }
+
+    if (rsp["result"].isNull() || !rsp["result"].isString())
+    {
+        LOG_ERROR_RLD("PushSingle failed, response result format error, raw data is " << strResponse);
+        return;
+    }
+
+    if (rsp["result"].asString() != "ok")
+    {
+        LOG_ERROR_RLD("PushSingle failed, push message error, raw data is " << strResponse);
+        return;
+    }
 }
 

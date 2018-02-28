@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::ReportSensorInfoHandler, &filehdr, _1, _2));
 
-
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RESULT_REPORT, boost::bind(&PassengerFlowMsgHandler::QueryPatrolResultReportHandler, &filehdr, _1, _2));
 
     fcgimgr.Run(true);
     return 0;

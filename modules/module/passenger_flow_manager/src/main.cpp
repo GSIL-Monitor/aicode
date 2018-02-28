@@ -442,6 +442,8 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCustomerFlowStatisticReq_T, boost::bind(&PassengerFlowManager::QueryCustomerFlowStatisticReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryPatrolResultReportReq_T, boost::bind(&PassengerFlowManager::QueryPatrolResultReportReq, &Umg, _1, _2, _3));
+
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ReportCustomerFlowDataReq_T, boost::bind(&PassengerFlowManager::ReportCustomerFlowDataReq, &Umg, _1, _2, _3));
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorInfoReq_T, boost::bind(&PassengerFlowManager::ReportSensorInfoReq, &Umg, _1, _2, _3));

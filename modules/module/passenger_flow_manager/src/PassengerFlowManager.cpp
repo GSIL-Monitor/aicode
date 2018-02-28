@@ -83,7 +83,8 @@ bool PassengerFlowManager::Init()
     m_SessionMgr.Run();
 
     m_pushGetuiIOS.Init();
-    PushMessage(std::string(), std::string(), std::string("0F53D8540BE93540B73CCF91B33CCF83"), MessagePush_Getui::PLATFORM_IOS);
+    PushMessage(std::string("New message"), std::string("New event"), std::string("0F53D8540BE93540B73CCF91B33CCF83"), MessagePush_Getui::PLATFORM_ANDROID);
+    PushMessage(std::string("New message"), std::string("New event"), std::string("0F53D8540BE93540B73CCF91B33CCF83"), MessagePush_Getui::PLATFORM_IOS);
 
     LOG_INFO_RLD("PassengerFlowManager init success");
 
@@ -190,6 +191,7 @@ bool PassengerFlowManager::PreCommonHandler(const std::string &strMsg, const std
     //    PassengerFlowProtoHandler::CustomerFlowMsgType::QueryPlatformPushStateReq_DEV_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
+        LOG_ERROR_RLD("---debug, session id: " << req.m_strSID);
         blResult = true;
         return blResult;
     }
@@ -1254,9 +1256,9 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
 
     for (auto user : req.m_eventInfo.m_strHandlerList)
     {
-        unsigned int plat;
-        m_SessionMgr.GetTerminalType(req.m_strSID, plat);
-        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, std::string(), std::string(), user, plat));
+        //无法确定处理人登录时使用的终端，所以Android和iOS都推送
+        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, std::string("New message"), strEventID, user, MessagePush_Getui::PLATFORM_ANDROID));
+        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, std::string("New message"), strEventID, user, MessagePush_Getui::PLATFORM_IOS));
     }
 
     blResult = true;
@@ -3987,6 +3989,59 @@ bool PassengerFlowManager::QueryCustomerFlowStatisticReq(const std::string &strM
     return blResult;
 }
 
+bool PassengerFlowManager::QueryPatrolResultReportReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strChartData;
+    PassengerFlowProtoHandler::QueryPatrolResultReportReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &strChartData)
+    {
+        PassengerFlowProtoHandler::QueryPatrolResultReportRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryPatrolResultReportRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strChartData = blResult ? strChartData : "";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query patrol result report rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query patrol result report rsp already send, dst id is " << strSrcID
+            << " and chart data is " << strChartData
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+        if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+        {
+            LOG_ERROR_RLD("Query patrol result report req unserialize failed, src id is " << strSrcID);
+            return false;
+        }
+
+    if (!QueryPatrolResultReport(req.m_strUserID, req.m_strStoreID, req.m_strPatrolUserID, req.m_uiPatrolResult,
+        req.m_strBeginDate, req.m_strEndDate, strChartData))
+    {
+        LOG_ERROR_RLD("Query patrol result report failed, statistic error, src id is " << strSrcID
+            << " and store id is " << req.m_strStoreID);
+        return false;
+    }
+
+    LOG_ERROR_RLD("---debug, chart: " << strChartData);
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowManager::ReportCustomerFlowDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
 {
     ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
@@ -4093,20 +4148,17 @@ bool PassengerFlowManager::ReportSensorInfoReq(const std::string &strMsg, const 
 
 bool PassengerFlowManager::PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strUserID, const int iClientPlatform)
 {
-    for (int i = 0; i < 5; ++i)
-    {
-        MessagePush_Getui::PushMessage message;
-        message.strTitle = strTitle + boost::lexical_cast<string>(i);
-        message.strNotyContent = strContent + boost::lexical_cast<string>(i);
-        message.strPayloadContent = strContent + boost::lexical_cast<string>(i);
-        message.bIsOffline = true;
-        message.iOfflineExpireTime = 3600;
-        //message.strClientID = "9fff548fac1537a7963a49a9b191e195";
-        message.strAlias = strUserID;
+    MessagePush_Getui::PushMessage message;
+    message.strTitle = strTitle;
+    message.strNotyContent = strContent;
+    message.strPayloadContent = strContent;
+    message.bIsOffline = true;
+    message.iOfflineExpireTime = 3600;
+    //message.strClientID = "9fff548fac1537a7963a49a9b191e195";
+    message.strAlias = strUserID;
 
-        m_pushGetuiIOS.PushSingle(message, iClientPlatform);
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
-    }
+    m_pushGetuiIOS.PushSingle(message, iClientPlatform);
+    boost::this_thread::sleep(boost::posix_time::seconds(1));
 
     return true;
 }
@@ -8569,6 +8621,151 @@ void PassengerFlowManager::GenerateChartDataWithPOS(const std::map<std::string, 
         root[legend[i]] = statData[i];
     }
     strChartData = writer.write(root);
+}
+
+bool PassengerFlowManager::QueryPatrolResultReport(const std::string &strUserID, const std::string &strStoreID, const std::string &strPatrolUserID,
+    const unsigned int uiPatrolResult, const std::string &strBeginDate, const std::string &strEndDate, std::string &strChartData)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select date_format(a.patrol_date, '%%Y-%%m-%%d') d, group_concat(distinct b.store_name order by b.store_name separator '\\n'),"
+        " count(a.patrol_result=0 or null), count(a.patrol_result=1 or null), count(a.patrol_result=2 or null)"
+        " from t_remote_patrol_store a join t_store_info b on a.store_id = b.store_id where 1 = 1";
+    int len = snprintf(sql, size, sqlfmt);
+
+    if (!strStoreID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.store_id = '%s'", strStoreID.c_str());
+    }
+
+    if (!strPatrolUserID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.user_id = '%s'", strPatrolUserID.c_str());
+    }
+
+    if (uiPatrolResult != UNUSED_INPUT_UINT)
+    {
+        len += snprintf(sql + len, size - len, " and a.patrol_result = %d", uiPatrolResult);
+    }
+
+    if (!strBeginDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.patrol_date >= '%s'", strBeginDate.c_str());
+    }
+
+    if (!strEndDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.patrol_date <= '%s'", strEndDate.c_str());
+    }
+
+    snprintf(sql + len, size - len, " group by d order by d");
+
+    struct ResultPatrolRecord
+    {
+        std::string strPatrolDate;
+        std::string strStoreName;
+        int iPassCount;
+        int iNotPassCount;
+        int iTodoCount;
+    } rstPatrolRecord;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            rstPatrolRecord.strPatrolDate = strColumn;
+            break;
+        case 1:
+            rstPatrolRecord.strStoreName = strColumn;
+            break;
+        case 2:
+            rstPatrolRecord.iPassCount = boost::lexical_cast<int>(strColumn);
+            break;
+        case 3:
+            rstPatrolRecord.iNotPassCount = boost::lexical_cast<int>(strColumn);
+            break;
+        case 4:
+            rstPatrolRecord.iTodoCount = boost::lexical_cast<int>(strColumn);
+            result = rstPatrolRecord;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryPatrolResultReport sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryPatrolResultReport exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    const int seriesNum = 3;
+    //const char *legend[] = { "合格", "不合格", "待处理" };
+    const char *legend[] = { "pass", "not_pass", "todo" };
+    Json::Value label;
+    Json::Value series[seriesNum];
+    Json::Value statData[seriesNum];
+
+    unsigned int uiTimePrecision = 3600 * 24;
+    for (int begin = TimePrecisionScale(strBeginDate, uiTimePrecision), end = TimePrecisionScale(strEndDate, uiTimePrecision); begin <= end; begin += uiTimePrecision)
+    {
+        std::string time = boost::posix_time::to_iso_extended_string(boost::posix_time::from_time_t(begin)).erase(10);
+
+        label.append(time);
+
+        auto rstIt = ResultList.begin();
+        auto rstEnd = ResultList.end();
+        for (; rstIt != rstEnd; ++rstIt)
+        {
+            auto patrol = boost::any_cast<ResultPatrolRecord>(*rstIt);
+
+            LOG_ERROR_RLD("---debug, result record: " << patrol.strPatrolDate
+                << ", " << patrol.strStoreName
+                << ", " << patrol.iPassCount
+                << ", " << patrol.iNotPassCount
+                << ", " << patrol.iTodoCount);
+
+            if (patrol.strPatrolDate == time)
+            {
+                series[0]["data"].append(patrol.iPassCount);
+                series[0]["tip"].append(patrol.strStoreName);
+                series[1]["data"].append(patrol.iNotPassCount);
+                series[1]["tip"].append(patrol.strStoreName);
+                series[2]["data"].append(patrol.iTodoCount);
+                series[2]["tip"].append(patrol.strStoreName);
+
+                break;
+            }
+        }
+
+        if (rstIt == rstEnd)
+        {
+            series[0]["data"].append(0);
+            series[0]["tip"].append(std::string());
+            series[1]["data"].append(0);
+            series[1]["tip"].append(std::string());
+            series[2]["data"].append(0);
+            series[2]["tip"].append(std::string());
+        }
+    }
+
+    Json::Value root;
+    Json::FastWriter writer;
+    root["chart_label"] = label;
+    for (int i = 0; i < seriesNum; ++i)
+    {
+        series[i]["name"] = std::string(legend[i]);
+        root["chart_legend"].append(std::string(legend[i]));
+        root["series"].append(series[i]);
+    }
+    strChartData = writer.write(root);
+
+    return true;
 }
 
 void PassengerFlowManager::ReportCustomerFlow(const std::string &strDeviceID, const std::list<PassengerFlowProtoHandler::RawCustomerFlow> &customerFlowList)

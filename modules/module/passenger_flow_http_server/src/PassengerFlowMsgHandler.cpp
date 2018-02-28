@@ -155,6 +155,8 @@ const std::string PassengerFlowMsgHandler::QUERY_ALL_STORE_SENSOR("query_all_sto
 
 const std::string PassengerFlowMsgHandler::REPORT_STORE_SENSOR("report_sensor_info");
 
+const std::string PassengerFlowMsgHandler::QUERY_PATROL_RESULT_REPORT("query_patrol_result_report");
+
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new PassengerFlowProtoHandler)
@@ -199,7 +201,7 @@ bool PassengerFlowMsgHandler::PreCommonHandler(const std::string &strMsgReceived
         return false;
     }
 
-    if (PassengerFlowProtoHandler::CustomerFlowMsgType::CustomerFlowPreHandleReq_T == mtype)
+    if (PassengerFlowProtoHandler::CustomerFlowMsgType::CustomerFlowPreHandleRsp_T == mtype)
     {
         PassengerFlowProtoHandler::CustomerFlowPreHandleRsp rsp;
         if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, rsp))
@@ -7112,6 +7114,148 @@ bool PassengerFlowMsgHandler::ReportSensorInfoHandler(boost::shared_ptr<MsgInfoM
     return blResult;
 }
 
+bool PassengerFlowMsgHandler::QueryPatrolResultReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsChartData;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsChartData)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["chart_data"] = jsChartData;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Begin date not found.");
+        return blResult;
+    }
+    const std::string strBeginDate = itFind->second;
+
+    if (!ValidDatetime(strBeginDate))
+    {
+        LOG_ERROR_RLD("Begin data is invalid and value is " << strBeginDate);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("End date not found.");
+        return blResult;
+    }
+    const std::string strEndDate = itFind->second;
+
+    if (!ValidDatetime(strEndDate))
+    {
+        LOG_ERROR_RLD("End data is invalid and value is " << strEndDate);
+        return blResult;
+    }
+
+    std::string strStoreID;
+    itFind = pMsgInfoMap->find("storeid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strStoreID = itFind->second;
+    }
+
+    unsigned int uiPatrolResult = 0xFFFFFFFF;
+    std::string strPatrolResult;
+    itFind = pMsgInfoMap->find("patrol_result");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolResult = itFind->second;
+
+        if (!ValidType<unsigned int>(strPatrolResult, uiPatrolResult))
+        {
+            LOG_ERROR_RLD("Patrol result value is error and value is " << strPatrolResult);
+            return blResult;
+        }
+    }
+
+    std::string strPatrolUserID;
+    itFind = pMsgInfoMap->find("patrol_userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPatrolUserID = itFind->second;
+    }
+
+    PatrolResultReportQueryParam prqm;
+    prqm.m_strBeginDate = strBeginDate;
+    prqm.m_strEndDate = strEndDate;
+    prqm.m_strPatrolUserID = strPatrolUserID;
+    prqm.m_strStoreID = strStoreID;
+    prqm.m_uiPatrolResult = uiPatrolResult;
+
+    std::string strReport;
+    if (!QueryPatrolResult(strSid, strUserID, prqm, strReport))
+    {
+        LOG_ERROR_RLD("Query patrol result report info failed.");
+        return blResult;
+    }
+
+    Json::Reader reader;
+    if (!reader.parse(strReport, jsChartData, false))
+    {
+        LOG_ERROR_RLD("Parsed patrol result report failed and value is " << strReport);
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query patrol result report info received and session id is " << strSid << " and user id is " << strUserID << " and begin date is " << strBeginDate
+        << " and end date is " << strEndDate << " and store id is " << strStoreID << " and patrol result is " << uiPatrolResult << " and patrol user id is " << strPatrolUserID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("chart_data", strReport));
+
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -11254,6 +11398,64 @@ bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const 
         LOG_INFO_RLD("Report store and session id is " << strSid << " and device id is " << strDevID <<
             " and return code is " << ReportSensorRsp.m_iRetcode <<
             " and return msg is " << ReportSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryPatrolResult(const std::string &strSid, const std::string &strUserID, PatrolResultReportQueryParam &prqm, std::string &strReport)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryPatrolResultReportReq QueryPatrolResultReq;
+        QueryPatrolResultReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryPatrolResultReportReq_T;
+        QueryPatrolResultReq.m_uiMsgSeq = 1;
+        QueryPatrolResultReq.m_strSID = strSid;
+
+        QueryPatrolResultReq.m_strBeginDate = prqm.m_strBeginDate;
+        QueryPatrolResultReq.m_strUserID = strUserID;
+        QueryPatrolResultReq.m_strEndDate = prqm.m_strEndDate;
+        QueryPatrolResultReq.m_strPatrolUserID = prqm.m_strPatrolUserID;
+        QueryPatrolResultReq.m_strStoreID = prqm.m_strStoreID;
+        QueryPatrolResultReq.m_uiPatrolResult = prqm.m_uiPatrolResult;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPatrolResultReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query patrol result info req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryPatrolResultReportRsp QuerySensorInfoRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorInfoRsp))
+        {
+            LOG_ERROR_RLD("Query patrol result info rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strReport = QuerySensorInfoRsp.m_strChartData;
+        
+        iRet = QuerySensorInfoRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query sensor info and report is " << strReport <<
+            " and session id is " << strSid <<
+            " and return code is " << QuerySensorInfoRsp.m_iRetcode <<
+            " and return msg is " << QuerySensorInfoRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

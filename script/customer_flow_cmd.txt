@@ -196,4 +196,8 @@ curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C5
 设备上报传感器信息
 curl -F sid=sss -F deviceid=0018A978B9EB -F info='[{"type":"4","value":"12"},{"type":"1","value":"25"},{"type":"9","value":"35"}]' http://172.20.120.22:8988/passenger_flow.cgi?action=report_sensor_info
 
+查询巡店结果统计报表
+curl -F sid=sss -F userid=0F53D8540BE93540B73CCF91B33CCF83 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F patrol_result=0 -F patrol_userid=0F53D8540BE93540B73CCF91B33CCF83 -F begindate='2018-01-31 15:00:00' -F enddate='2018-02-05 23:00:00' http://172.20.120.22:8988/passenger_flow.cgi?action=query_patrol_result_report
+
+
 

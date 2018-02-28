@@ -14,8 +14,11 @@ public:
         const string &strMasterSecret, const int iAuthExpire);
     ~MessagePush_Getui();
 
-    static const int PLATFORM_IOS = 0;
-    static const int PLATFORM_ANDROID = 1;
+    static const int PLATFORM_ANDROID = 0;
+    static const int PLATFORM_ANDROID_HD = 1;
+    static const int PLATFORM_IOS = 2;
+    static const int PLATFORM_IOS_HD = 3;
+    static const int PLATFORM_WEB = 9;
 
     struct Style
     {

@@ -206,6 +206,8 @@ public:
 
     bool QueryCustomerFlowStatisticReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QueryPatrolResultReportReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
     bool ReportCustomerFlowDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool ReportSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
@@ -506,6 +508,9 @@ private:
 
     void GenerateChartDataWithPOS(const std::map<std::string, std::list<boost::any>> &chartDataMap, const std::string &strBeginDate,
         const std::string &strEndDate, const unsigned int uiTimePrecision, std::string &strChartData);
+
+    bool QueryPatrolResultReport(const std::string &strUserID, const std::string &strStoreID, const std::string &strPatrolUserID,
+        const unsigned int uiPatrolResult, const std::string &strBeginDate, const std::string &strEndDate, std::string &strChartData);
 
     void ReportCustomerFlow(const std::string &strDeviceID, const std::list<PassengerFlowProtoHandler::RawCustomerFlow> &customerFlowList);
 

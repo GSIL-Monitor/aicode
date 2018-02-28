@@ -2745,12 +2745,14 @@ bool PassengerFlowProtoHandler::ReportSensorInfoRsp_UnSerializer(const CustomerF
 void PassengerFlowProtoHandler::Request::Serializer(CustomerFlowMessage &message) const
 {
     message.set_uimsgseq(m_uiMsgSeq);
+    message.set_strsid(m_strSID);
 }
 
 void PassengerFlowProtoHandler::Request::UnSerializer(const CustomerFlowMessage &message)
 {
     m_MsgType = (CustomerFlowMsgType)message.type();
     m_uiMsgSeq = message.uimsgseq();
+    m_strSID = message.strsid();
 }
 
 void PassengerFlowProtoHandler::Response::Serializer(CustomerFlowMessage &message) const
