@@ -308,6 +308,7 @@ private:
         std::string m_strID;
         std::string m_strName;
         std::list<std::string> m_DeviceIDList;
+        std::string m_strPicture;
     };
 
     struct PassengerFlowInfo 
@@ -361,6 +362,8 @@ private:
     {
         std::string m_strPatrolID;
         std::string m_strPatrolName;
+        std::string m_strCreateDate;
+        std::string m_strModifyDate;
         std::string m_strUserID;       
         std::string m_strEnable;
         std::list<std::string> m_strPatrolTimeList;
@@ -425,6 +428,7 @@ private:
         std::string m_strEvaluationDate;
         double m_dEvaluationTotalValue;
         double m_dEvaluationTemplateTotalValue;
+        std::list<std::string> m_strFileIDList;
 
         std::list<EvaluationTemplate> m_evlist;
     };
@@ -502,7 +506,7 @@ private:
     bool DelEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strEntranceID);
 
     bool ModifyEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
-        const std::string &strEntranceID, const std::string &strEntranceName, 
+        const std::string &strEntranceID, const std::string &strEntranceName, const std::string &strPicture,
         EntranceInfo &einfoadd, EntranceInfo &einfodel);
 
     bool UploadPassengerFlow(const std::string &strSid, const std::string &strDevID, const std::list<PassengerFlowInfo> &pfinfolist);

@@ -318,6 +318,78 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("MasterNode config item not found.");
     }
 
+    const std::string &strServerUrl = GetConfig("Push.ServerUrl");
+    if (strServerUrl.empty())
+    {
+        LOG_ERROR_RLD("ServerUrl config item not found.");
+    }
+
+    const std::string &strAuthExpire = GetConfig("Push.AuthExpire");
+    if (strAuthExpire.empty())
+    {
+        LOG_ERROR_RLD("AuthExpire config item not found.");
+    }
+
+    const std::string &strAndroidAppID = GetConfig("Push.AndroidAppID");
+    if (strAndroidAppID.empty())
+    {
+        LOG_ERROR_RLD("AndroidAppID config item not found.");
+    }
+
+    const std::string &strAndroidAppKey = GetConfig("Push.AndroidAppKey");
+    if (strAndroidAppKey.empty())
+    {
+        LOG_ERROR_RLD("AndroidAppKey config item not found.");
+    }
+
+    const std::string &strAndroidMasterSecret = GetConfig("Push.AndroidMasterSecret");
+    if (strAndroidMasterSecret.empty())
+    {
+        LOG_ERROR_RLD("AndroidMasterSecret config item not found.");
+    }
+
+    const std::string &strIOSAppID = GetConfig("Push.IOSAppID");
+    if (strIOSAppID.empty())
+    {
+        LOG_ERROR_RLD("IOSAppID config item not found.");
+    }
+
+    const std::string &strIOSAppKey = GetConfig("Push.IOSAppKey");
+    if (strIOSAppKey.empty())
+    {
+        LOG_ERROR_RLD("IOSAppKey config item not found.");
+    }
+
+    const std::string &strIOSMasterSecret = GetConfig("Push.IOSMasterSecret");
+    if (strIOSMasterSecret.empty())
+    {
+        LOG_ERROR_RLD("IOSMasterSecret config item not found.");
+    }
+
+    const std::string &strMessageTitle = GetConfig("Push.MessageTitle");
+    if (strMessageTitle.empty())
+    {
+        LOG_ERROR_RLD("MessageTitle config item not found.");
+    }
+
+    const std::string &strMessageContentRegularPatrol = GetConfig("Push.MessageContentRegularPatrol");
+    if (strMessageContentRegularPatrol.empty())
+    {
+        LOG_ERROR_RLD("MessageContentRegularPatrol config item not found.");
+    }
+
+    const std::string &strMessageContentRemotePatrol = GetConfig("Push.MessageContentRemotePatrol");
+    if (strMessageContentRemotePatrol.empty())
+    {
+        LOG_ERROR_RLD("MessageContentRemotePatrol config item not found.");
+    }
+
+    const std::string &strMessageContentEvaluation = GetConfig("Push.MessageContentEvaluation");
+    if (strMessageContentEvaluation.empty())
+    {
+        LOG_ERROR_RLD("MessageContentEvaluation config item not found.");
+    }
+
     ////////////////////////////////////////////////////////////////////////////
 
     PassengerFlowManager::ParamInfo UmgParam;
@@ -338,6 +410,18 @@ int main(int argc, char* argv[])
     UmgParam.m_strUserAllowDiffTerminal = strUserAllowDiffTerminal;
     UmgParam.m_strUserKickoutType = strUserKickoutType;
     UmgParam.m_strMasterNode = strMasterNode;
+    UmgParam.m_strPushServerUrl = strServerUrl;
+    UmgParam.m_iAuthExpire = boost::lexical_cast<int>(strAuthExpire);
+    UmgParam.m_strAndroidAppID = strAndroidAppID;
+    UmgParam.m_strAndroidAppKey = strAndroidAppKey;
+    UmgParam.m_strAndroidMasterSecret = strAndroidMasterSecret;
+    UmgParam.m_strIOSAppID = strIOSAppID;
+    UmgParam.m_strIOSAppKey = strIOSAppKey;
+    UmgParam.m_strIOSMasterSecret = strIOSMasterSecret;
+    UmgParam.m_strMessageTitle = strMessageTitle;
+    UmgParam.m_strMessageContentRegularPatrol = strMessageContentRegularPatrol;
+    UmgParam.m_strMessageContentRemotePatrol = strMessageContentRemotePatrol;
+    UmgParam.m_strMessageContentEvaluation = strMessageContentEvaluation;
 
     PassengerFlowManager Umg(UmgParam);
     if (!Umg.Init())

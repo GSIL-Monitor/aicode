@@ -1170,6 +1170,20 @@ class Entrance : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::std::string* release_strentrancename();
   void set_allocated_strentrancename(::std::string* strentrancename);
 
+  // string strPicture = 4;
+  void clear_strpicture();
+  static const int kStrPictureFieldNumber = 4;
+  const ::std::string& strpicture() const;
+  void set_strpicture(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strpicture(::std::string&& value);
+  #endif
+  void set_strpicture(const char* value);
+  void set_strpicture(const char* value, size_t size);
+  ::std::string* mutable_strpicture();
+  ::std::string* release_strpicture();
+  void set_allocated_strpicture(::std::string* strpicture);
+
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Entrance)
  private:
 
@@ -1177,6 +1191,7 @@ class Entrance : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::RepeatedPtrField< ::std::string> strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr strentranceid_;
   ::google::protobuf::internal::ArenaStringPtr strentrancename_;
+  ::google::protobuf::internal::ArenaStringPtr strpicture_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -2465,6 +2480,20 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
+  // string strUpdateDate = 10;
+  void clear_strupdatedate();
+  static const int kStrUpdateDateFieldNumber = 10;
+  const ::std::string& strupdatedate() const;
+  void set_strupdatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatedate(::std::string&& value);
+  #endif
+  void set_strupdatedate(const char* value);
+  void set_strupdatedate(const char* value, size_t size);
+  ::std::string* mutable_strupdatedate();
+  ::std::string* release_strupdatedate();
+  void set_allocated_strupdatedate(::std::string* strupdatedate);
+
   // uint32 uiState = 7;
   void clear_uistate();
   static const int kUiStateFieldNumber = 7;
@@ -2483,6 +2512,7 @@ class RegularPatrol : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::internal::ArenaStringPtr strenable_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatedate_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -3283,6 +3313,22 @@ class StoreEvaluation : public ::google::protobuf::Message /* @@protoc_insertion
   const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EvaluationItemScore >&
       itemscore() const;
 
+  // repeated string picture = 8;
+  int picture_size() const;
+  void clear_picture();
+  static const int kPictureFieldNumber = 8;
+  const ::std::string& picture(int index) const;
+  ::std::string* mutable_picture(int index);
+  void set_picture(int index, const ::std::string& value);
+  void set_picture(int index, const char* value);
+  void set_picture(int index, const char* value, size_t size);
+  ::std::string* add_picture();
+  void add_picture(const ::std::string& value);
+  void add_picture(const char* value);
+  void add_picture(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& picture() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_picture();
+
   // string strEvaluationID = 1;
   void clear_strevaluationid();
   static const int kStrEvaluationIDFieldNumber = 1;
@@ -3339,9 +3385,9 @@ class StoreEvaluation : public ::google::protobuf::Message /* @@protoc_insertion
   ::std::string* release_struseridcheck();
   void set_allocated_struseridcheck(::std::string* struseridcheck);
 
-  // string strCreateDate = 9;
+  // string strCreateDate = 10;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 9;
+  static const int kStrCreateDateFieldNumber = 10;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -3359,9 +3405,9 @@ class StoreEvaluation : public ::google::protobuf::Message /* @@protoc_insertion
   double dtotalscore() const;
   void set_dtotalscore(double value);
 
-  // double dTotalPoint = 8;
+  // double dTotalPoint = 9;
   void clear_dtotalpoint();
-  static const int kDTotalPointFieldNumber = 8;
+  static const int kDTotalPointFieldNumber = 9;
   double dtotalpoint() const;
   void set_dtotalpoint(double value);
 
@@ -3376,6 +3422,7 @@ class StoreEvaluation : public ::google::protobuf::Message /* @@protoc_insertion
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::EvaluationItemScore > itemscore_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> picture_;
   ::google::protobuf::internal::ArenaStringPtr strevaluationid_;
   ::google::protobuf::internal::ArenaStringPtr strstoreid_;
   ::google::protobuf::internal::ArenaStringPtr struseridcreate_;
@@ -21692,6 +21739,58 @@ Entrance::mutable_strdeviceid() {
   return &strdeviceid_;
 }
 
+// string strPicture = 4;
+inline void Entrance::clear_strpicture() {
+  strpicture_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Entrance::strpicture() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  return strpicture_.GetNoArena();
+}
+inline void Entrance::set_strpicture(const ::std::string& value) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+#if LANG_CXX11
+inline void Entrance::set_strpicture(::std::string&& value) {
+  
+  strpicture_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+#endif
+inline void Entrance::set_strpicture(const char* value) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+inline void Entrance::set_strpicture(const char* value, size_t size) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+inline ::std::string* Entrance::mutable_strpicture() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  return strpicture_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Entrance::release_strpicture() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  
+  return strpicture_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Entrance::set_allocated_strpicture(::std::string* strpicture) {
+  if (strpicture != NULL) {
+    
+  } else {
+    
+  }
+  strpicture_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpicture);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+
 // -------------------------------------------------------------------
 
 // Store
@@ -24266,6 +24365,58 @@ inline void RegularPatrol::set_allocated_strextend(::std::string* strextend) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
 }
 
+// string strUpdateDate = 10;
+inline void RegularPatrol::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegularPatrol::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+inline void RegularPatrol::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+#if LANG_CXX11
+inline void RegularPatrol::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+#endif
+inline void RegularPatrol::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+inline void RegularPatrol::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+inline ::std::string* RegularPatrol::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegularPatrol::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegularPatrol::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+
 // -------------------------------------------------------------------
 
 // UserBrief
@@ -25645,7 +25796,62 @@ StoreEvaluation::itemscore() const {
   return itemscore_;
 }
 
-// double dTotalPoint = 8;
+// repeated string picture = 8;
+inline int StoreEvaluation::picture_size() const {
+  return picture_.size();
+}
+inline void StoreEvaluation::clear_picture() {
+  picture_.Clear();
+}
+inline const ::std::string& StoreEvaluation::picture(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Get(index);
+}
+inline ::std::string* StoreEvaluation::mutable_picture(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Mutable(index);
+}
+inline void StoreEvaluation::set_picture(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  picture_.Mutable(index)->assign(value);
+}
+inline void StoreEvaluation::set_picture(int index, const char* value) {
+  picture_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+inline void StoreEvaluation::set_picture(int index, const char* value, size_t size) {
+  picture_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+inline ::std::string* StoreEvaluation::add_picture() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Add();
+}
+inline void StoreEvaluation::add_picture(const ::std::string& value) {
+  picture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+inline void StoreEvaluation::add_picture(const char* value) {
+  picture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+inline void StoreEvaluation::add_picture(const char* value, size_t size) {
+  picture_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+StoreEvaluation::picture() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+StoreEvaluation::mutable_picture() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return &picture_;
+}
+
+// double dTotalPoint = 9;
 inline void StoreEvaluation::clear_dtotalpoint() {
   dtotalpoint_ = 0;
 }
@@ -25659,7 +25865,7 @@ inline void StoreEvaluation::set_dtotalpoint(double value) {
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.StoreEvaluation.dTotalPoint)
 }
 
-// string strCreateDate = 9;
+// string strCreateDate = 10;
 inline void StoreEvaluation::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

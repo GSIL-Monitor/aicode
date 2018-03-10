@@ -409,6 +409,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Entrance, strentranceid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Entrance, strentrancename_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Entrance, strdeviceid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Entrance, strpicture_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Store, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -492,6 +493,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegularPatrol, uistate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegularPatrol, strcreatedate_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegularPatrol, strextend_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegularPatrol, strupdatedate_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UserBrief, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -549,6 +551,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, dtotalscore_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, uicheckstatus_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, itemscore_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, picture_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, dtotalpoint_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreEvaluation, strcreatedate_),
   ~0u,  // no _has_bits_
@@ -1641,178 +1644,178 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(Area)},
   { 11, -1, sizeof(Group)},
   { 20, -1, sizeof(Entrance)},
-  { 27, -1, sizeof(Store)},
-  { 42, -1, sizeof(UserGroupAssociation)},
-  { 49, -1, sizeof(UserStoreAssociation)},
-  { 56, -1, sizeof(Event)},
-  { 74, -1, sizeof(SmartGuardStore)},
-  { 90, -1, sizeof(PatrolStoreEntrance)},
-  { 97, -1, sizeof(RegularPatrol)},
-  { 110, -1, sizeof(UserBrief)},
-  { 117, -1, sizeof(VIPConsumeHistory)},
-  { 128, -1, sizeof(VIPCustomer)},
-  { 141, -1, sizeof(EvaluationItem)},
-  { 149, -1, sizeof(EvaluationItemScore)},
-  { 156, -1, sizeof(StoreEvaluation)},
-  { 169, -1, sizeof(EntrancePicture)},
-  { 175, -1, sizeof(RemotePatrolStore)},
-  { 191, -1, sizeof(Sensor)},
-  { 203, -1, sizeof(RawCustomerFlow)},
-  { 211, -1, sizeof(CustomerFlowPreHandleReq)},
-  { 216, -1, sizeof(CustomerFlowPreHandleRsp)},
-  { 221, -1, sizeof(ShakehandReq)},
-  { 226, -1, sizeof(ShakehandRsp)},
-  { 231, -1, sizeof(AddAreaReq)},
-  { 237, -1, sizeof(AddAreaRsp)},
-  { 242, -1, sizeof(DeleteAreaReq)},
-  { 248, -1, sizeof(DeleteAreaRsp)},
-  { 253, -1, sizeof(ModifyAreaReq)},
-  { 259, -1, sizeof(ModifyAreaRsp)},
-  { 264, -1, sizeof(QueryAreaInfoReq)},
-  { 270, -1, sizeof(QueryAreaInfoRsp)},
-  { 275, -1, sizeof(QueryAllAreaReq)},
-  { 280, -1, sizeof(QueryAllAreaRsp)},
-  { 285, -1, sizeof(BindPushClientIDReq)},
-  { 291, -1, sizeof(BindPushClientIDRsp)},
-  { 296, -1, sizeof(UnbindPushClientIDReq)},
-  { 302, -1, sizeof(UnbindPushClientIDRsp)},
-  { 307, -1, sizeof(AddGroupReq)},
-  { 313, -1, sizeof(AddGroupRsp)},
-  { 318, -1, sizeof(DeleteGroupReq)},
-  { 324, -1, sizeof(DeleteGroupRsp)},
-  { 329, -1, sizeof(ModifyGroupReq)},
-  { 335, -1, sizeof(ModifyGroupRsp)},
-  { 340, -1, sizeof(QueryGroupInfoReq)},
-  { 346, -1, sizeof(QueryGroupInfoRsp)},
-  { 351, -1, sizeof(QueryAllGroupReq)},
-  { 356, -1, sizeof(QueryAllGroupRsp)},
-  { 361, -1, sizeof(AddStoreReq)},
-  { 367, -1, sizeof(AddStoreRsp)},
-  { 372, -1, sizeof(DeleteStoreReq)},
-  { 378, -1, sizeof(DeleteStoreRsp)},
-  { 383, -1, sizeof(ModifyStoreReq)},
-  { 389, -1, sizeof(ModifyStoreRsp)},
-  { 394, -1, sizeof(QueryStoreInfoReq)},
-  { 400, -1, sizeof(QueryStoreInfoRsp)},
-  { 406, -1, sizeof(QueryAllStoreReq)},
-  { 414, -1, sizeof(QueryAllStoreRsp)},
-  { 419, -1, sizeof(AddEntranceReq)},
-  { 426, -1, sizeof(AddEntranceRsp)},
-  { 431, -1, sizeof(DeleteEntranceReq)},
-  { 438, -1, sizeof(DeleteEntranceRsp)},
-  { 443, -1, sizeof(ModifyEntranceReq)},
-  { 452, -1, sizeof(ModifyEntranceRsp)},
-  { 457, -1, sizeof(AddEntranceDeviceReq)},
-  { 465, -1, sizeof(AddEntranceDeviceRsp)},
-  { 470, -1, sizeof(DeleteEntranceDeviceReq)},
-  { 478, -1, sizeof(DeleteEntranceDeviceRsp)},
-  { 483, -1, sizeof(AddEventReq)},
-  { 488, -1, sizeof(AddEventRsp)},
-  { 493, -1, sizeof(DeleteEventReq)},
-  { 499, -1, sizeof(DeleteEventRsp)},
-  { 504, -1, sizeof(ModifyEventReq)},
-  { 510, -1, sizeof(ModifyEventRsp)},
-  { 515, -1, sizeof(QueryEventInfoReq)},
-  { 521, -1, sizeof(QueryEventInfoRsp)},
-  { 526, -1, sizeof(QueryAllEventReq)},
-  { 536, -1, sizeof(QueryAllEventRsp)},
-  { 541, -1, sizeof(AddSmartGuardStoreReq)},
-  { 547, -1, sizeof(AddSmartGuardStoreRsp)},
-  { 552, -1, sizeof(DeleteSmartGuardStoreReq)},
-  { 558, -1, sizeof(DeleteSmartGuardStoreRsp)},
-  { 563, -1, sizeof(ModifySmartGuardStoreReq)},
-  { 569, -1, sizeof(ModifySmartGuardStoreRsp)},
-  { 574, -1, sizeof(QuerySmartGuardStoreInfoReq)},
-  { 580, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
-  { 585, -1, sizeof(QueryAllSmartGuardStoreReq)},
-  { 592, -1, sizeof(QueryAllSmartGuardStoreRsp)},
-  { 597, -1, sizeof(AddRegularPatrolReq)},
-  { 603, -1, sizeof(AddRegularPatrolRsp)},
-  { 608, -1, sizeof(DeleteRegularPatrolReq)},
-  { 614, -1, sizeof(DeleteRegularPatrolRsp)},
-  { 619, -1, sizeof(ModifyRegularPatrolReq)},
-  { 625, -1, sizeof(ModifyRegularPatrolRsp)},
-  { 630, -1, sizeof(QueryRegularPatrolInfoReq)},
-  { 636, -1, sizeof(QueryRegularPatrolInfoRsp)},
-  { 641, -1, sizeof(QueryAllRegularPatrolReq)},
-  { 648, -1, sizeof(QueryAllRegularPatrolRsp)},
-  { 653, -1, sizeof(UserJoinStoreReq)},
-  { 661, -1, sizeof(UserJoinStoreRsp)},
-  { 666, -1, sizeof(UserQuitStoreReq)},
-  { 673, -1, sizeof(UserQuitStoreRsp)},
-  { 678, -1, sizeof(QueryStoreAllUserReq)},
-  { 684, -1, sizeof(QueryStoreAllUserRsp)},
-  { 689, -1, sizeof(QueryCompanyAllUserReq)},
-  { 694, -1, sizeof(QueryCompanyAllUserRsp)},
-  { 699, -1, sizeof(AddVIPCustomerReq)},
-  { 705, -1, sizeof(AddVIPCustomerRsp)},
-  { 710, -1, sizeof(DeleteVIPCustomerReq)},
-  { 716, -1, sizeof(DeleteVIPCustomerRsp)},
-  { 721, -1, sizeof(ModifyVIPCustomerReq)},
-  { 727, -1, sizeof(ModifyVIPCustomerRsp)},
-  { 732, -1, sizeof(QueryVIPCustomerInfoReq)},
-  { 738, -1, sizeof(QueryVIPCustomerInfoRsp)},
-  { 743, -1, sizeof(QueryAllVIPCustomerReq)},
-  { 749, -1, sizeof(QueryAllVIPCustomerRsp)},
-  { 754, -1, sizeof(AddVIPConsumeHistoryReq)},
-  { 760, -1, sizeof(AddVIPConsumeHistoryRsp)},
-  { 765, -1, sizeof(DeleteVIPConsumeHistoryReq)},
-  { 771, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
-  { 776, -1, sizeof(ModifyVIPConsumeHistoryReq)},
-  { 782, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
-  { 787, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
-  { 794, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
-  { 799, -1, sizeof(AddEvaluationTemplateReq)},
-  { 805, -1, sizeof(AddEvaluationTemplateRsp)},
-  { 810, -1, sizeof(DeleteEvaluationTemplateReq)},
-  { 816, -1, sizeof(DeleteEvaluationTemplateRsp)},
-  { 821, -1, sizeof(ModifyEvaluationTemplateReq)},
-  { 827, -1, sizeof(ModifyEvaluationTemplateRsp)},
-  { 832, -1, sizeof(QueryAllEvaluationTemplateReq)},
-  { 837, -1, sizeof(QueryAllEvaluationTemplateRsp)},
-  { 842, -1, sizeof(AddStoreEvaluationReq)},
-  { 847, -1, sizeof(AddStoreEvaluationRsp)},
-  { 852, -1, sizeof(DeleteStoreEvaluationReq)},
-  { 858, -1, sizeof(DeleteStoreEvaluationRsp)},
-  { 863, -1, sizeof(ModifyStoreEvaluationReq)},
-  { 869, -1, sizeof(ModifyStoreEvaluationRsp)},
-  { 874, -1, sizeof(QueryStoreEvaluationInfoReq)},
-  { 881, -1, sizeof(QueryStoreEvaluationInfoRsp)},
-  { 886, -1, sizeof(QueryAllStoreEvaluationReq)},
-  { 895, -1, sizeof(QueryAllStoreEvaluationRsp)},
-  { 900, -1, sizeof(AddRemotePatrolStoreReq)},
-  { 905, -1, sizeof(AddRemotePatrolStoreRsp)},
-  { 910, -1, sizeof(DeleteRemotePatrolStoreReq)},
-  { 916, -1, sizeof(DeleteRemotePatrolStoreRsp)},
-  { 921, -1, sizeof(ModifyRemotePatrolStoreReq)},
-  { 927, -1, sizeof(ModifyRemotePatrolStoreRsp)},
-  { 932, -1, sizeof(QueryRemotePatrolStoreInfoReq)},
-  { 938, -1, sizeof(QueryRemotePatrolStoreInfoRsp)},
-  { 943, -1, sizeof(QueryAllRemotePatrolStoreReq)},
-  { 955, -1, sizeof(QueryAllRemotePatrolStoreRsp)},
-  { 960, -1, sizeof(AddStoreSensorReq)},
-  { 966, -1, sizeof(AddStoreSensorRsp)},
-  { 971, -1, sizeof(DeleteStoreSensorReq)},
-  { 978, -1, sizeof(DeleteStoreSensorRsp)},
-  { 983, -1, sizeof(ModifyStoreSensorReq)},
-  { 989, -1, sizeof(ModifyStoreSensorRsp)},
-  { 994, -1, sizeof(QueryStoreSensorInfoReq)},
-  { 1000, -1, sizeof(QueryStoreSensorInfoRsp)},
-  { 1005, -1, sizeof(QueryAllStoreSensorReq)},
-  { 1011, -1, sizeof(QueryAllStoreSensorRsp)},
-  { 1016, -1, sizeof(ImportPOSDataReq)},
-  { 1026, -1, sizeof(ImportPOSDataRsp)},
-  { 1031, -1, sizeof(QueryCustomerFlowStatisticReq)},
-  { 1040, -1, sizeof(QueryCustomerFlowStatisticRsp)},
-  { 1045, -1, sizeof(QueryPatrolResultReportReq)},
-  { 1055, -1, sizeof(QueryPatrolResultReportRsp)},
-  { 1060, -1, sizeof(ReportCustomerFlowDataReq)},
-  { 1066, -1, sizeof(ReportCustomerFlowDataRsp)},
-  { 1071, -1, sizeof(ReportSensorInfoReq)},
-  { 1077, -1, sizeof(ReportSensorInfoRsp)},
-  { 1082, -1, sizeof(Request)},
-  { 1162, -1, sizeof(Response)},
-  { 1244, -1, sizeof(CustomerFlowMessage)},
+  { 28, -1, sizeof(Store)},
+  { 43, -1, sizeof(UserGroupAssociation)},
+  { 50, -1, sizeof(UserStoreAssociation)},
+  { 57, -1, sizeof(Event)},
+  { 75, -1, sizeof(SmartGuardStore)},
+  { 91, -1, sizeof(PatrolStoreEntrance)},
+  { 98, -1, sizeof(RegularPatrol)},
+  { 112, -1, sizeof(UserBrief)},
+  { 119, -1, sizeof(VIPConsumeHistory)},
+  { 130, -1, sizeof(VIPCustomer)},
+  { 143, -1, sizeof(EvaluationItem)},
+  { 151, -1, sizeof(EvaluationItemScore)},
+  { 158, -1, sizeof(StoreEvaluation)},
+  { 172, -1, sizeof(EntrancePicture)},
+  { 178, -1, sizeof(RemotePatrolStore)},
+  { 194, -1, sizeof(Sensor)},
+  { 206, -1, sizeof(RawCustomerFlow)},
+  { 214, -1, sizeof(CustomerFlowPreHandleReq)},
+  { 219, -1, sizeof(CustomerFlowPreHandleRsp)},
+  { 224, -1, sizeof(ShakehandReq)},
+  { 229, -1, sizeof(ShakehandRsp)},
+  { 234, -1, sizeof(AddAreaReq)},
+  { 240, -1, sizeof(AddAreaRsp)},
+  { 245, -1, sizeof(DeleteAreaReq)},
+  { 251, -1, sizeof(DeleteAreaRsp)},
+  { 256, -1, sizeof(ModifyAreaReq)},
+  { 262, -1, sizeof(ModifyAreaRsp)},
+  { 267, -1, sizeof(QueryAreaInfoReq)},
+  { 273, -1, sizeof(QueryAreaInfoRsp)},
+  { 278, -1, sizeof(QueryAllAreaReq)},
+  { 283, -1, sizeof(QueryAllAreaRsp)},
+  { 288, -1, sizeof(BindPushClientIDReq)},
+  { 294, -1, sizeof(BindPushClientIDRsp)},
+  { 299, -1, sizeof(UnbindPushClientIDReq)},
+  { 305, -1, sizeof(UnbindPushClientIDRsp)},
+  { 310, -1, sizeof(AddGroupReq)},
+  { 316, -1, sizeof(AddGroupRsp)},
+  { 321, -1, sizeof(DeleteGroupReq)},
+  { 327, -1, sizeof(DeleteGroupRsp)},
+  { 332, -1, sizeof(ModifyGroupReq)},
+  { 338, -1, sizeof(ModifyGroupRsp)},
+  { 343, -1, sizeof(QueryGroupInfoReq)},
+  { 349, -1, sizeof(QueryGroupInfoRsp)},
+  { 354, -1, sizeof(QueryAllGroupReq)},
+  { 359, -1, sizeof(QueryAllGroupRsp)},
+  { 364, -1, sizeof(AddStoreReq)},
+  { 370, -1, sizeof(AddStoreRsp)},
+  { 375, -1, sizeof(DeleteStoreReq)},
+  { 381, -1, sizeof(DeleteStoreRsp)},
+  { 386, -1, sizeof(ModifyStoreReq)},
+  { 392, -1, sizeof(ModifyStoreRsp)},
+  { 397, -1, sizeof(QueryStoreInfoReq)},
+  { 403, -1, sizeof(QueryStoreInfoRsp)},
+  { 409, -1, sizeof(QueryAllStoreReq)},
+  { 417, -1, sizeof(QueryAllStoreRsp)},
+  { 422, -1, sizeof(AddEntranceReq)},
+  { 429, -1, sizeof(AddEntranceRsp)},
+  { 434, -1, sizeof(DeleteEntranceReq)},
+  { 441, -1, sizeof(DeleteEntranceRsp)},
+  { 446, -1, sizeof(ModifyEntranceReq)},
+  { 455, -1, sizeof(ModifyEntranceRsp)},
+  { 460, -1, sizeof(AddEntranceDeviceReq)},
+  { 468, -1, sizeof(AddEntranceDeviceRsp)},
+  { 473, -1, sizeof(DeleteEntranceDeviceReq)},
+  { 481, -1, sizeof(DeleteEntranceDeviceRsp)},
+  { 486, -1, sizeof(AddEventReq)},
+  { 491, -1, sizeof(AddEventRsp)},
+  { 496, -1, sizeof(DeleteEventReq)},
+  { 502, -1, sizeof(DeleteEventRsp)},
+  { 507, -1, sizeof(ModifyEventReq)},
+  { 513, -1, sizeof(ModifyEventRsp)},
+  { 518, -1, sizeof(QueryEventInfoReq)},
+  { 524, -1, sizeof(QueryEventInfoRsp)},
+  { 529, -1, sizeof(QueryAllEventReq)},
+  { 539, -1, sizeof(QueryAllEventRsp)},
+  { 544, -1, sizeof(AddSmartGuardStoreReq)},
+  { 550, -1, sizeof(AddSmartGuardStoreRsp)},
+  { 555, -1, sizeof(DeleteSmartGuardStoreReq)},
+  { 561, -1, sizeof(DeleteSmartGuardStoreRsp)},
+  { 566, -1, sizeof(ModifySmartGuardStoreReq)},
+  { 572, -1, sizeof(ModifySmartGuardStoreRsp)},
+  { 577, -1, sizeof(QuerySmartGuardStoreInfoReq)},
+  { 583, -1, sizeof(QuerySmartGuardStoreInfoRsp)},
+  { 588, -1, sizeof(QueryAllSmartGuardStoreReq)},
+  { 595, -1, sizeof(QueryAllSmartGuardStoreRsp)},
+  { 600, -1, sizeof(AddRegularPatrolReq)},
+  { 606, -1, sizeof(AddRegularPatrolRsp)},
+  { 611, -1, sizeof(DeleteRegularPatrolReq)},
+  { 617, -1, sizeof(DeleteRegularPatrolRsp)},
+  { 622, -1, sizeof(ModifyRegularPatrolReq)},
+  { 628, -1, sizeof(ModifyRegularPatrolRsp)},
+  { 633, -1, sizeof(QueryRegularPatrolInfoReq)},
+  { 639, -1, sizeof(QueryRegularPatrolInfoRsp)},
+  { 644, -1, sizeof(QueryAllRegularPatrolReq)},
+  { 651, -1, sizeof(QueryAllRegularPatrolRsp)},
+  { 656, -1, sizeof(UserJoinStoreReq)},
+  { 664, -1, sizeof(UserJoinStoreRsp)},
+  { 669, -1, sizeof(UserQuitStoreReq)},
+  { 676, -1, sizeof(UserQuitStoreRsp)},
+  { 681, -1, sizeof(QueryStoreAllUserReq)},
+  { 687, -1, sizeof(QueryStoreAllUserRsp)},
+  { 692, -1, sizeof(QueryCompanyAllUserReq)},
+  { 697, -1, sizeof(QueryCompanyAllUserRsp)},
+  { 702, -1, sizeof(AddVIPCustomerReq)},
+  { 708, -1, sizeof(AddVIPCustomerRsp)},
+  { 713, -1, sizeof(DeleteVIPCustomerReq)},
+  { 719, -1, sizeof(DeleteVIPCustomerRsp)},
+  { 724, -1, sizeof(ModifyVIPCustomerReq)},
+  { 730, -1, sizeof(ModifyVIPCustomerRsp)},
+  { 735, -1, sizeof(QueryVIPCustomerInfoReq)},
+  { 741, -1, sizeof(QueryVIPCustomerInfoRsp)},
+  { 746, -1, sizeof(QueryAllVIPCustomerReq)},
+  { 752, -1, sizeof(QueryAllVIPCustomerRsp)},
+  { 757, -1, sizeof(AddVIPConsumeHistoryReq)},
+  { 763, -1, sizeof(AddVIPConsumeHistoryRsp)},
+  { 768, -1, sizeof(DeleteVIPConsumeHistoryReq)},
+  { 774, -1, sizeof(DeleteVIPConsumeHistoryRsp)},
+  { 779, -1, sizeof(ModifyVIPConsumeHistoryReq)},
+  { 785, -1, sizeof(ModifyVIPConsumeHistoryRsp)},
+  { 790, -1, sizeof(QueryAllVIPConsumeHistoryReq)},
+  { 797, -1, sizeof(QueryAllVIPConsumeHistoryRsp)},
+  { 802, -1, sizeof(AddEvaluationTemplateReq)},
+  { 808, -1, sizeof(AddEvaluationTemplateRsp)},
+  { 813, -1, sizeof(DeleteEvaluationTemplateReq)},
+  { 819, -1, sizeof(DeleteEvaluationTemplateRsp)},
+  { 824, -1, sizeof(ModifyEvaluationTemplateReq)},
+  { 830, -1, sizeof(ModifyEvaluationTemplateRsp)},
+  { 835, -1, sizeof(QueryAllEvaluationTemplateReq)},
+  { 840, -1, sizeof(QueryAllEvaluationTemplateRsp)},
+  { 845, -1, sizeof(AddStoreEvaluationReq)},
+  { 850, -1, sizeof(AddStoreEvaluationRsp)},
+  { 855, -1, sizeof(DeleteStoreEvaluationReq)},
+  { 861, -1, sizeof(DeleteStoreEvaluationRsp)},
+  { 866, -1, sizeof(ModifyStoreEvaluationReq)},
+  { 872, -1, sizeof(ModifyStoreEvaluationRsp)},
+  { 877, -1, sizeof(QueryStoreEvaluationInfoReq)},
+  { 884, -1, sizeof(QueryStoreEvaluationInfoRsp)},
+  { 889, -1, sizeof(QueryAllStoreEvaluationReq)},
+  { 898, -1, sizeof(QueryAllStoreEvaluationRsp)},
+  { 903, -1, sizeof(AddRemotePatrolStoreReq)},
+  { 908, -1, sizeof(AddRemotePatrolStoreRsp)},
+  { 913, -1, sizeof(DeleteRemotePatrolStoreReq)},
+  { 919, -1, sizeof(DeleteRemotePatrolStoreRsp)},
+  { 924, -1, sizeof(ModifyRemotePatrolStoreReq)},
+  { 930, -1, sizeof(ModifyRemotePatrolStoreRsp)},
+  { 935, -1, sizeof(QueryRemotePatrolStoreInfoReq)},
+  { 941, -1, sizeof(QueryRemotePatrolStoreInfoRsp)},
+  { 946, -1, sizeof(QueryAllRemotePatrolStoreReq)},
+  { 958, -1, sizeof(QueryAllRemotePatrolStoreRsp)},
+  { 963, -1, sizeof(AddStoreSensorReq)},
+  { 969, -1, sizeof(AddStoreSensorRsp)},
+  { 974, -1, sizeof(DeleteStoreSensorReq)},
+  { 981, -1, sizeof(DeleteStoreSensorRsp)},
+  { 986, -1, sizeof(ModifyStoreSensorReq)},
+  { 992, -1, sizeof(ModifyStoreSensorRsp)},
+  { 997, -1, sizeof(QueryStoreSensorInfoReq)},
+  { 1003, -1, sizeof(QueryStoreSensorInfoRsp)},
+  { 1008, -1, sizeof(QueryAllStoreSensorReq)},
+  { 1014, -1, sizeof(QueryAllStoreSensorRsp)},
+  { 1019, -1, sizeof(ImportPOSDataReq)},
+  { 1029, -1, sizeof(ImportPOSDataRsp)},
+  { 1034, -1, sizeof(QueryCustomerFlowStatisticReq)},
+  { 1043, -1, sizeof(QueryCustomerFlowStatisticRsp)},
+  { 1048, -1, sizeof(QueryPatrolResultReportReq)},
+  { 1058, -1, sizeof(QueryPatrolResultReportRsp)},
+  { 1063, -1, sizeof(ReportCustomerFlowDataReq)},
+  { 1069, -1, sizeof(ReportCustomerFlowDataRsp)},
+  { 1074, -1, sizeof(ReportSensorInfoReq)},
+  { 1080, -1, sizeof(ReportSensorInfoRsp)},
+  { 1085, -1, sizeof(Request)},
+  { 1165, -1, sizeof(Response)},
+  { 1247, -1, sizeof(CustomerFlowMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -2949,854 +2952,855 @@ void AddDescriptorsImpl() {
       " \001(\t\022\021\n\tstrExtend\030\007 \001(\t\"l\n\005Group\022\022\n\nstrG"
       "roupID\030\001 \001(\t\022\024\n\014strGroupName\030\002 \001(\t\022\025\n\rst"
       "rCreateDate\030\003 \001(\t\022\021\n\tstrExtend\030\004 \001(\t\022\017\n\007"
-      "uiState\030\005 \001(\r\"O\n\010Entrance\022\025\n\rstrEntrance"
+      "uiState\030\005 \001(\r\"c\n\010Entrance\022\025\n\rstrEntrance"
       "ID\030\001 \001(\t\022\027\n\017strEntranceName\030\002 \001(\t\022\023\n\013str"
-      "DeviceID\030\003 \003(\t\"\271\002\n\005Store\022\022\n\nstrStoreID\030\001"
-      " \001(\t\022\024\n\014strStoreName\030\002 \001(\t\022\030\n\020strGoodsCa"
-      "tegory\030\003 \001(\t\022\022\n\nstrAddress\030\004 \001(\t\022<\n\010entr"
-      "ance\030\005 \003(\0132*.CustomerFlow.Interactive.Me"
-      "ssage.Entrance\0224\n\004area\030\006 \001(\0132&.CustomerF"
-      "low.Interactive.Message.Area\022\025\n\rstrCreat"
-      "eDate\030\007 \001(\t\022\021\n\tstrExtend\030\010 \001(\t\022\017\n\007uiStat"
-      "e\030\t \001(\r\022\023\n\013uiOpenState\030\n \001(\r\022\024\n\014strTelep"
-      "hone\030\013 \003(\t\"R\n\024UserGroupAssociation\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\022\023\n\013str"
-      "UserRole\030\003 \001(\t\"R\n\024UserStoreAssociation\022\021"
-      "\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\023\n"
-      "\013strUserRole\030\003 \001(\t\"\244\002\n\005Event\022\022\n\nstrEvent"
-      "ID\030\001 \001(\t\022\021\n\tstrSource\030\002 \001(\t\022\025\n\rstrSubmit"
-      "Date\030\003 \001(\t\022\025\n\rstrExpireDate\030\004 \001(\t\022\021\n\tstr"
-      "UserID\030\005 \001(\t\022\023\n\013strDeviceID\030\006 \001(\t\022\027\n\017str"
-      "ProcessState\030\007 \001(\t\022\021\n\tstrRemark\030\010 \001(\t\022\016\n"
-      "\006uiType\030\t \003(\r\022\022\n\nstrHandler\030\n \003(\t\022\023\n\013uiV"
-      "iewState\030\013 \001(\r\022\025\n\rstrCreateDate\030\014 \001(\t\022\021\n"
-      "\tstrExtend\030\r \001(\t\022\017\n\007uiState\030\016 \001(\r\"\213\002\n\017Sm"
-      "artGuardStore\022\021\n\tstrPlanID\030\001 \001(\t\022\022\n\nstrS"
-      "toreID\030\002 \001(\t\022\024\n\014strStoreName\030\003 \001(\t\022\023\n\013st"
-      "rPlanName\030\004 \001(\t\022\025\n\rstrEntranceID\030\005 \003(\t\022\021"
-      "\n\tstrEnable\030\006 \001(\t\022\024\n\014strBeginTime\030\007 \001(\t\022"
-      "\022\n\nstrEndTime\030\010 \001(\t\022\025\n\rstrBeginTime2\030\t \001"
-      "(\t\022\023\n\013strEndTime2\030\n \001(\t\022\017\n\007uiState\030\013 \001(\r"
-      "\022\025\n\rstrCreateDate\030\014 \001(\t\"}\n\023PatrolStoreEn"
-      "trance\022\022\n\nstrStoreID\030\001 \001(\t\022\024\n\014strStoreNa"
-      "me\030\002 \001(\t\022<\n\010entrance\030\003 \003(\0132*.CustomerFlo"
-      "w.Interactive.Message.Entrance\"\376\001\n\rRegul"
-      "arPatrol\022\021\n\tstrPlanID\030\001 \001(\t\022\023\n\013strPlanNa"
-      "me\030\002 \001(\t\022\021\n\tstrEnable\030\003 \001(\t\022L\n\rstoreEntr"
-      "ance\030\004 \003(\01325.CustomerFlow.Interactive.Me"
-      "ssage.PatrolStoreEntrance\022\025\n\rstrPatrolTi"
-      "me\030\005 \003(\t\022\022\n\nstrHandler\030\006 \003(\t\022\017\n\007uiState\030"
-      "\007 \001(\r\022\025\n\rstrCreateDate\030\010 \001(\t\022\021\n\tstrExten"
-      "d\030\t \001(\t\"D\n\tUserBrief\022\021\n\tstrUserID\030\001 \001(\t\022"
-      "\023\n\013strUserName\030\002 \001(\t\022\017\n\007strRole\030\003 \001(\t\"\255\001"
-      "\n\021VIPConsumeHistory\022\024\n\014strConsumeID\030\001 \001("
-      "\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014strGoodsName\030\003 \001("
-      "\t\022\025\n\ruiGoodsNumber\030\004 \001(\r\022\023\n\013strSalesman\030"
-      "\005 \001(\t\022\026\n\016dConsumeAmount\030\006 \001(\001\022\026\n\016strCons"
-      "umeDate\030\007 \001(\t\"\207\002\n\013VIPCustomer\022\020\n\010strVIPI"
-      "D\030\001 \001(\t\022\031\n\021strProfilePicture\030\002 \001(\t\022\022\n\nst"
-      "rVIPName\030\003 \001(\t\022\024\n\014strCellphone\030\004 \001(\t\022\024\n\014"
-      "strVisitDate\030\005 \001(\t\022\024\n\014uiVisitTimes\030\006 \001(\r"
-      "\022\027\n\017strRegisterDate\030\007 \001(\t\022K\n\016consumeHist"
-      "ory\030\010 \003(\01323.CustomerFlow.Interactive.Mes"
-      "sage.VIPConsumeHistory\022\017\n\007uiState\030\t \001(\r\""
-      "e\n\016EvaluationItem\022\021\n\tstrItemID\030\001 \001(\t\022\023\n\013"
-      "strItemName\030\002 \001(\t\022\026\n\016strDescription\030\003 \001("
-      "\t\022\023\n\013dTotalPoint\030\004 \001(\001\"\207\001\n\023EvaluationIte"
-      "mScore\022H\n\016evaluationItem\030\001 \001(\01320.Custome"
-      "rFlow.Interactive.Message.EvaluationItem"
-      "\022\016\n\006dScore\030\002 \001(\001\022\026\n\016strDescription\030\003 \001(\t"
-      "\"\221\002\n\017StoreEvaluation\022\027\n\017strEvaluationID\030"
-      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\027\n\017strUserIDCr"
-      "eate\030\003 \001(\t\022\026\n\016strUserIDCheck\030\004 \001(\t\022\023\n\013dT"
-      "otalScore\030\005 \001(\001\022\025\n\ruiCheckStatus\030\006 \001(\r\022H"
-      "\n\titemScore\030\007 \003(\01325.CustomerFlow.Interac"
-      "tive.Message.EvaluationItemScore\022\023\n\013dTot"
-      "alPoint\030\010 \001(\001\022\025\n\rstrCreateDate\030\t \001(\t\"B\n\017"
-      "EntrancePicture\022\025\n\rstrEntranceID\030\001 \001(\t\022\030"
-      "\n\020strPatrolPicture\030\002 \003(\t\"\320\002\n\021RemotePatro"
-      "lStore\022\023\n\013strPatrolID\030\001 \001(\t\022\021\n\tstrUserID"
-      "\030\002 \001(\t\022\023\n\013strDeviceID\030\003 \001(\t\022\025\n\rstrEntran"
-      "ceID\030\004 \003(\t\022\022\n\nstrStoreID\030\005 \001(\t\022\021\n\tstrPla"
-      "nID\030\006 \001(\t\022\025\n\rstrPatrolDate\030\007 \001(\t\022H\n\rpatr"
-      "olPicture\030\010 \003(\01321.CustomerFlow.Interacti"
-      "ve.Message.EntrancePicture\022\030\n\020strPatrolP"
-      "icture\030\t \003(\t\022\026\n\016uiPatrolResult\030\n \001(\r\022\026\n\016"
-      "strDescription\030\013 \001(\t\022\025\n\rstrCreateDate\030\014 "
-      "\001(\t\"\256\001\n\006Sensor\022\023\n\013strSensorID\030\001 \001(\t\022\025\n\rs"
-      "trSensorName\030\002 \001(\t\022\025\n\rstrSensorType\030\003 \001("
-      "\t\022\022\n\nstrStoreID\030\004 \001(\t\022\023\n\013strDeviceID\030\005 \001"
-      "(\t\022\020\n\010strValue\030\006 \001(\t\022\017\n\007uiState\030\007 \001(\r\022\025\n"
-      "\rstrCreateDate\030\010 \001(\t\"j\n\017RawCustomerFlow\022"
-      "\025\n\ruiEnterNumber\030\001 \001(\r\022\025\n\ruiLeaveNumber\030"
-      "\002 \001(\r\022\024\n\014uiStayNumber\030\003 \001(\r\022\023\n\013strDataTi"
-      "me\030\004 \001(\t\",\n\030CustomerFlowPreHandleReq\022\020\n\010"
-      "strValue\030\001 \001(\t\",\n\030CustomerFlowPreHandleR"
-      "sp\022\020\n\010strValue\030\001 \001(\t\"\035\n\014ShakehandReq\022\r\n\005"
-      "strID\030\001 \001(\t\" \n\014ShakehandRsp\022\020\n\010strValue\030"
-      "\001 \001(\t\"Y\n\nAddAreaReq\022\021\n\tstrUserID\030\001 \001(\t\0228"
-      "\n\010areaInfo\030\002 \001(\0132&.CustomerFlow.Interact"
-      "ive.Message.Area\"\037\n\nAddAreaRsp\022\021\n\tstrAre"
-      "aID\030\001 \001(\t\"5\n\rDeleteAreaReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\021\n\tstrAreaID\030\002 \001(\t\"!\n\rDeleteAreaRs"
-      "p\022\020\n\010strValue\030\001 \001(\t\"\\\n\rModifyAreaReq\022\021\n\t"
-      "strUserID\030\001 \001(\t\0228\n\010areaInfo\030\002 \001(\0132&.Cust"
-      "omerFlow.Interactive.Message.Area\"!\n\rMod"
-      "ifyAreaRsp\022\020\n\010strValue\030\001 \001(\t\"8\n\020QueryAre"
-      "aInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrAreaID"
-      "\030\002 \001(\t\"L\n\020QueryAreaInfoRsp\0228\n\010areaInfo\030\001"
-      " \001(\0132&.CustomerFlow.Interactive.Message."
-      "Area\"$\n\017QueryAllAreaReq\022\021\n\tstrUserID\030\001 \001"
-      "(\t\"K\n\017QueryAllAreaRsp\0228\n\010areaInfo\030\001 \003(\0132"
-      "&.CustomerFlow.Interactive.Message.Area\""
-      "=\n\023BindPushClientIDReq\022\021\n\tstrUserID\030\001 \001("
-      "\t\022\023\n\013strClientID\030\002 \001(\t\"\'\n\023BindPushClient"
-      "IDRsp\022\020\n\010strValue\030\001 \001(\t\"\?\n\025UnbindPushCli"
-      "entIDReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strClient"
-      "ID\030\002 \001(\t\")\n\025UnbindPushClientIDRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"\\\n\013AddGroupReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.CustomerFlow."
-      "Interactive.Message.Group\"!\n\013AddGroupRsp"
-      "\022\022\n\nstrGroupID\030\001 \001(\t\"7\n\016DeleteGroupReq\022\021"
-      "\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\"\"\n"
-      "\016DeleteGroupRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016Mod"
-      "ifyGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupI"
-      "nfo\030\002 \001(\0132\'.CustomerFlow.Interactive.Mes"
-      "sage.Group\"\"\n\016ModifyGroupRsp\022\020\n\010strValue"
-      "\030\001 \001(\t\":\n\021QueryGroupInfoReq\022\021\n\tstrUserID"
-      "\030\001 \001(\t\022\022\n\nstrGroupID\030\002 \001(\t\"O\n\021QueryGroup"
-      "InfoRsp\022:\n\tgroupInfo\030\001 \001(\0132\'.CustomerFlo"
-      "w.Interactive.Message.Group\"%\n\020QueryAllG"
-      "roupReq\022\021\n\tstrUserID\030\001 \001(\t\"N\n\020QueryAllGr"
-      "oupRsp\022:\n\tgroupInfo\030\001 \003(\0132\'.CustomerFlow"
-      ".Interactive.Message.Group\"\\\n\013AddStoreRe"
-      "q\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo\030\002 \001(\0132"
-      "\'.CustomerFlow.Interactive.Message.Store"
-      "\"!\n\013AddStoreRsp\022\022\n\nstrStoreID\030\001 \001(\t\"7\n\016D"
-      "eleteStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrS"
-      "toreID\030\002 \001(\t\"\"\n\016DeleteStoreRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"_\n\016ModifyStoreReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022:\n\tstoreInfo\030\002 \001(\0132\'.CustomerFlow."
-      "Interactive.Message.Store\"\"\n\016ModifyStore"
-      "Rsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryStoreInfoR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001("
-      "\t\"\205\001\n\021QueryStoreInfoRsp\022:\n\tstoreInfo\030\001 \001"
-      "(\0132\'.CustomerFlow.Interactive.Message.St"
-      "ore\0224\n\004area\030\002 \003(\0132&.CustomerFlow.Interac"
-      "tive.Message.Area\"c\n\020QueryAllStoreReq\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\021\n\tstrAreaID\030\002 \001(\t\022\023\n\013u"
-      "iOpenState\030\003 \001(\r\022\024\n\014uiBeginIndex\030\004 \001(\r\"N"
-      "\n\020QueryAllStoreRsp\022:\n\tstoreInfo\030\001 \003(\0132\'."
-      "CustomerFlow.Interactive.Message.Store\"y"
-      "\n\016AddEntranceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\ns"
-      "trStoreID\030\002 \001(\t\022@\n\014entranceInfo\030\003 \001(\0132*."
-      "CustomerFlow.Interactive.Message.Entranc"
-      "e\"\'\n\016AddEntranceRsp\022\025\n\rstrEntranceID\030\001 \001"
-      "(\t\"Q\n\021DeleteEntranceReq\022\021\n\tstrUserID\030\001 \001"
-      "(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntranceID\030"
-      "\003 \001(\t\"%\n\021DeleteEntranceRsp\022\020\n\010strValue\030\001"
-      " \001(\t\"\262\001\n\021ModifyEntranceReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014entranceInf"
-      "o\030\003 \001(\0132*.CustomerFlow.Interactive.Messa"
-      "ge.Entrance\022\030\n\020strAddedDeviceID\030\004 \003(\t\022\032\n"
-      "\022strDeletedDeviceID\030\005 \003(\t\"%\n\021ModifyEntra"
-      "nceRsp\022\020\n\010strValue\030\001 \001(\t\"i\n\024AddEntranceD"
-      "eviceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreI"
-      "D\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strDev"
-      "iceID\030\004 \001(\t\"(\n\024AddEntranceDeviceRsp\022\020\n\010s"
-      "trValue\030\001 \001(\t\"l\n\027DeleteEntranceDeviceReq"
-      "\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022"
-      "\025\n\rstrEntranceID\030\003 \001(\t\022\023\n\013strDeviceID\030\004 "
-      "\001(\t\"+\n\027DeleteEntranceDeviceRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"I\n\013AddEventReq\022:\n\teventInfo\030\001 \001"
-      "(\0132\'.CustomerFlow.Interactive.Message.Ev"
-      "ent\"!\n\013AddEventRsp\022\022\n\nstrEventID\030\001 \001(\t\"7"
-      "\n\016DeleteEventReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\ns"
-      "trEventID\030\002 \001(\t\"\"\n\016DeleteEventRsp\022\020\n\010str"
-      "Value\030\001 \001(\t\"_\n\016ModifyEventReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\022:\n\teventInfo\030\002 \001(\0132\'.CustomerFl"
-      "ow.Interactive.Message.Event\"\"\n\016ModifyEv"
-      "entRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryEventIn"
-      "foReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrEventID\030\002"
-      " \001(\t\"O\n\021QueryEventInfoRsp\022:\n\teventInfo\030\001"
+      "DeviceID\030\003 \003(\t\022\022\n\nstrPicture\030\004 \001(\t\"\271\002\n\005S"
+      "tore\022\022\n\nstrStoreID\030\001 \001(\t\022\024\n\014strStoreName"
+      "\030\002 \001(\t\022\030\n\020strGoodsCategory\030\003 \001(\t\022\022\n\nstrA"
+      "ddress\030\004 \001(\t\022<\n\010entrance\030\005 \003(\0132*.Custome"
+      "rFlow.Interactive.Message.Entrance\0224\n\004ar"
+      "ea\030\006 \001(\0132&.CustomerFlow.Interactive.Mess"
+      "age.Area\022\025\n\rstrCreateDate\030\007 \001(\t\022\021\n\tstrEx"
+      "tend\030\010 \001(\t\022\017\n\007uiState\030\t \001(\r\022\023\n\013uiOpenSta"
+      "te\030\n \001(\r\022\024\n\014strTelephone\030\013 \003(\t\"R\n\024UserGr"
+      "oupAssociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstr"
+      "GroupID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"R\n\024Us"
+      "erStoreAssociation\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
+      "\nstrStoreID\030\002 \001(\t\022\023\n\013strUserRole\030\003 \001(\t\"\244"
+      "\002\n\005Event\022\022\n\nstrEventID\030\001 \001(\t\022\021\n\tstrSourc"
+      "e\030\002 \001(\t\022\025\n\rstrSubmitDate\030\003 \001(\t\022\025\n\rstrExp"
+      "ireDate\030\004 \001(\t\022\021\n\tstrUserID\030\005 \001(\t\022\023\n\013strD"
+      "eviceID\030\006 \001(\t\022\027\n\017strProcessState\030\007 \001(\t\022\021"
+      "\n\tstrRemark\030\010 \001(\t\022\016\n\006uiType\030\t \003(\r\022\022\n\nstr"
+      "Handler\030\n \003(\t\022\023\n\013uiViewState\030\013 \001(\r\022\025\n\rst"
+      "rCreateDate\030\014 \001(\t\022\021\n\tstrExtend\030\r \001(\t\022\017\n\007"
+      "uiState\030\016 \001(\r\"\213\002\n\017SmartGuardStore\022\021\n\tstr"
+      "PlanID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strS"
+      "toreName\030\003 \001(\t\022\023\n\013strPlanName\030\004 \001(\t\022\025\n\rs"
+      "trEntranceID\030\005 \003(\t\022\021\n\tstrEnable\030\006 \001(\t\022\024\n"
+      "\014strBeginTime\030\007 \001(\t\022\022\n\nstrEndTime\030\010 \001(\t\022"
+      "\025\n\rstrBeginTime2\030\t \001(\t\022\023\n\013strEndTime2\030\n "
+      "\001(\t\022\017\n\007uiState\030\013 \001(\r\022\025\n\rstrCreateDate\030\014 "
+      "\001(\t\"}\n\023PatrolStoreEntrance\022\022\n\nstrStoreID"
+      "\030\001 \001(\t\022\024\n\014strStoreName\030\002 \001(\t\022<\n\010entrance"
+      "\030\003 \003(\0132*.CustomerFlow.Interactive.Messag"
+      "e.Entrance\"\225\002\n\rRegularPatrol\022\021\n\tstrPlanI"
+      "D\030\001 \001(\t\022\023\n\013strPlanName\030\002 \001(\t\022\021\n\tstrEnabl"
+      "e\030\003 \001(\t\022L\n\rstoreEntrance\030\004 \003(\01325.Custome"
+      "rFlow.Interactive.Message.PatrolStoreEnt"
+      "rance\022\025\n\rstrPatrolTime\030\005 \003(\t\022\022\n\nstrHandl"
+      "er\030\006 \003(\t\022\017\n\007uiState\030\007 \001(\r\022\025\n\rstrCreateDa"
+      "te\030\010 \001(\t\022\021\n\tstrExtend\030\t \001(\t\022\025\n\rstrUpdate"
+      "Date\030\n \001(\t\"D\n\tUserBrief\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022\023\n\013strUserName\030\002 \001(\t\022\017\n\007strRole\030\003 \001(\t"
+      "\"\255\001\n\021VIPConsumeHistory\022\024\n\014strConsumeID\030\001"
+      " \001(\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014strGoodsName\030\003"
+      " \001(\t\022\025\n\ruiGoodsNumber\030\004 \001(\r\022\023\n\013strSalesm"
+      "an\030\005 \001(\t\022\026\n\016dConsumeAmount\030\006 \001(\001\022\026\n\016strC"
+      "onsumeDate\030\007 \001(\t\"\207\002\n\013VIPCustomer\022\020\n\010strV"
+      "IPID\030\001 \001(\t\022\031\n\021strProfilePicture\030\002 \001(\t\022\022\n"
+      "\nstrVIPName\030\003 \001(\t\022\024\n\014strCellphone\030\004 \001(\t\022"
+      "\024\n\014strVisitDate\030\005 \001(\t\022\024\n\014uiVisitTimes\030\006 "
+      "\001(\r\022\027\n\017strRegisterDate\030\007 \001(\t\022K\n\016consumeH"
+      "istory\030\010 \003(\01323.CustomerFlow.Interactive."
+      "Message.VIPConsumeHistory\022\017\n\007uiState\030\t \001"
+      "(\r\"e\n\016EvaluationItem\022\021\n\tstrItemID\030\001 \001(\t\022"
+      "\023\n\013strItemName\030\002 \001(\t\022\026\n\016strDescription\030\003"
+      " \001(\t\022\023\n\013dTotalPoint\030\004 \001(\001\"\207\001\n\023Evaluation"
+      "ItemScore\022H\n\016evaluationItem\030\001 \001(\01320.Cust"
+      "omerFlow.Interactive.Message.EvaluationI"
+      "tem\022\016\n\006dScore\030\002 \001(\001\022\026\n\016strDescription\030\003 "
+      "\001(\t\"\242\002\n\017StoreEvaluation\022\027\n\017strEvaluation"
+      "ID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\027\n\017strUserI"
+      "DCreate\030\003 \001(\t\022\026\n\016strUserIDCheck\030\004 \001(\t\022\023\n"
+      "\013dTotalScore\030\005 \001(\001\022\025\n\ruiCheckStatus\030\006 \001("
+      "\r\022H\n\titemScore\030\007 \003(\01325.CustomerFlow.Inte"
+      "ractive.Message.EvaluationItemScore\022\017\n\007p"
+      "icture\030\010 \003(\t\022\023\n\013dTotalPoint\030\t \001(\001\022\025\n\rstr"
+      "CreateDate\030\n \001(\t\"B\n\017EntrancePicture\022\025\n\rs"
+      "trEntranceID\030\001 \001(\t\022\030\n\020strPatrolPicture\030\002"
+      " \003(\t\"\320\002\n\021RemotePatrolStore\022\023\n\013strPatrolI"
+      "D\030\001 \001(\t\022\021\n\tstrUserID\030\002 \001(\t\022\023\n\013strDeviceI"
+      "D\030\003 \001(\t\022\025\n\rstrEntranceID\030\004 \003(\t\022\022\n\nstrSto"
+      "reID\030\005 \001(\t\022\021\n\tstrPlanID\030\006 \001(\t\022\025\n\rstrPatr"
+      "olDate\030\007 \001(\t\022H\n\rpatrolPicture\030\010 \003(\01321.Cu"
+      "stomerFlow.Interactive.Message.EntranceP"
+      "icture\022\030\n\020strPatrolPicture\030\t \003(\t\022\026\n\016uiPa"
+      "trolResult\030\n \001(\r\022\026\n\016strDescription\030\013 \001(\t"
+      "\022\025\n\rstrCreateDate\030\014 \001(\t\"\256\001\n\006Sensor\022\023\n\013st"
+      "rSensorID\030\001 \001(\t\022\025\n\rstrSensorName\030\002 \001(\t\022\025"
+      "\n\rstrSensorType\030\003 \001(\t\022\022\n\nstrStoreID\030\004 \001("
+      "\t\022\023\n\013strDeviceID\030\005 \001(\t\022\020\n\010strValue\030\006 \001(\t"
+      "\022\017\n\007uiState\030\007 \001(\r\022\025\n\rstrCreateDate\030\010 \001(\t"
+      "\"j\n\017RawCustomerFlow\022\025\n\ruiEnterNumber\030\001 \001"
+      "(\r\022\025\n\ruiLeaveNumber\030\002 \001(\r\022\024\n\014uiStayNumbe"
+      "r\030\003 \001(\r\022\023\n\013strDataTime\030\004 \001(\t\",\n\030Customer"
+      "FlowPreHandleReq\022\020\n\010strValue\030\001 \001(\t\",\n\030Cu"
+      "stomerFlowPreHandleRsp\022\020\n\010strValue\030\001 \001(\t"
+      "\"\035\n\014ShakehandReq\022\r\n\005strID\030\001 \001(\t\" \n\014Shake"
+      "handRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\nAddAreaReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\0228\n\010areaInfo\030\002 \001(\0132&.C"
+      "ustomerFlow.Interactive.Message.Area\"\037\n\n"
+      "AddAreaRsp\022\021\n\tstrAreaID\030\001 \001(\t\"5\n\rDeleteA"
+      "reaReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrAreaID\030\002"
+      " \001(\t\"!\n\rDeleteAreaRsp\022\020\n\010strValue\030\001 \001(\t\""
+      "\\\n\rModifyAreaReq\022\021\n\tstrUserID\030\001 \001(\t\0228\n\010a"
+      "reaInfo\030\002 \001(\0132&.CustomerFlow.Interactive"
+      ".Message.Area\"!\n\rModifyAreaRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"8\n\020QueryAreaInfoReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\021\n\tstrAreaID\030\002 \001(\t\"L\n\020QueryAreaI"
+      "nfoRsp\0228\n\010areaInfo\030\001 \001(\0132&.CustomerFlow."
+      "Interactive.Message.Area\"$\n\017QueryAllArea"
+      "Req\022\021\n\tstrUserID\030\001 \001(\t\"K\n\017QueryAllAreaRs"
+      "p\0228\n\010areaInfo\030\001 \003(\0132&.CustomerFlow.Inter"
+      "active.Message.Area\"=\n\023BindPushClientIDR"
+      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strClientID\030\002 \001"
+      "(\t\"\'\n\023BindPushClientIDRsp\022\020\n\010strValue\030\001 "
+      "\001(\t\"\?\n\025UnbindPushClientIDReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\023\n\013strClientID\030\002 \001(\t\")\n\025UnbindPu"
+      "shClientIDRsp\022\020\n\010strValue\030\001 \001(\t\"\\\n\013AddGr"
+      "oupReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tgroupInfo\030\002"
       " \001(\0132\'.CustomerFlow.Interactive.Message."
-      "Event\"\220\001\n\020QueryAllEventReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\026\n\016uiProcessState\030\002 \001(\r\022\021\n\tuiRelat"
-      "on\030\003 \001(\r\022\024\n\014strBeginDate\030\004 \001(\t\022\022\n\nstrEnd"
-      "Date\030\005 \001(\t\022\024\n\014uiBeginIndex\030\006 \001(\r\"N\n\020Quer"
-      "yAllEventRsp\022:\n\teventInfo\030\001 \003(\0132\'.Custom"
-      "erFlow.Interactive.Message.Event\"v\n\025AddS"
-      "martGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n\017"
-      "smartGuardStore\030\002 \001(\01321.CustomerFlow.Int"
-      "eractive.Message.SmartGuardStore\"*\n\025AddS"
-      "martGuardStoreRsp\022\021\n\tstrPlanID\030\001 \001(\t\"@\n\030"
-      "DeleteSmartGuardStoreReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022\021\n\tstrPlanID\030\002 \001(\t\",\n\030DeleteSmartGua"
-      "rdStoreRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\030ModifySm"
-      "artGuardStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n\017s"
-      "martGuardStore\030\002 \001(\01321.CustomerFlow.Inte"
-      "ractive.Message.SmartGuardStore\",\n\030Modif"
-      "ySmartGuardStoreRsp\022\020\n\010strValue\030\001 \001(\t\"C\n"
-      "\033QuerySmartGuardStoreInfoReq\022\021\n\tstrUserI"
-      "D\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"i\n\033QuerySmart"
-      "GuardStoreInfoRsp\022J\n\017smartGuardStore\030\001 \001"
-      "(\01321.CustomerFlow.Interactive.Message.Sm"
-      "artGuardStore\"Z\n\032QueryAllSmartGuardStore"
-      "Req\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strDeviceID\030\002 "
-      "\001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"h\n\032QueryAllSma"
-      "rtGuardStoreRsp\022J\n\017smartGuardStore\030\001 \003(\013"
+      "Group\"!\n\013AddGroupRsp\022\022\n\nstrGroupID\030\001 \001(\t"
+      "\"7\n\016DeleteGroupReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n"
+      "\nstrGroupID\030\002 \001(\t\"\"\n\016DeleteGroupRsp\022\020\n\010s"
+      "trValue\030\001 \001(\t\"_\n\016ModifyGroupReq\022\021\n\tstrUs"
+      "erID\030\001 \001(\t\022:\n\tgroupInfo\030\002 \001(\0132\'.Customer"
+      "Flow.Interactive.Message.Group\"\"\n\016Modify"
+      "GroupRsp\022\020\n\010strValue\030\001 \001(\t\":\n\021QueryGroup"
+      "InfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrGroupID"
+      "\030\002 \001(\t\"O\n\021QueryGroupInfoRsp\022:\n\tgroupInfo"
+      "\030\001 \001(\0132\'.CustomerFlow.Interactive.Messag"
+      "e.Group\"%\n\020QueryAllGroupReq\022\021\n\tstrUserID"
+      "\030\001 \001(\t\"N\n\020QueryAllGroupRsp\022:\n\tgroupInfo\030"
+      "\001 \003(\0132\'.CustomerFlow.Interactive.Message"
+      ".Group\"\\\n\013AddStoreReq\022\021\n\tstrUserID\030\001 \001(\t"
+      "\022:\n\tstoreInfo\030\002 \001(\0132\'.CustomerFlow.Inter"
+      "active.Message.Store\"!\n\013AddStoreRsp\022\022\n\ns"
+      "trStoreID\030\001 \001(\t\"7\n\016DeleteStoreReq\022\021\n\tstr"
+      "UserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"\"\n\016Dele"
+      "teStoreRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016ModifySt"
+      "oreReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\tstoreInfo\030\002"
+      " \001(\0132\'.CustomerFlow.Interactive.Message."
+      "Store\"\"\n\016ModifyStoreRsp\022\020\n\010strValue\030\001 \001("
+      "\t\":\n\021QueryStoreInfoReq\022\021\n\tstrUserID\030\001 \001("
+      "\t\022\022\n\nstrStoreID\030\002 \001(\t\"\205\001\n\021QueryStoreInfo"
+      "Rsp\022:\n\tstoreInfo\030\001 \001(\0132\'.CustomerFlow.In"
+      "teractive.Message.Store\0224\n\004area\030\002 \003(\0132&."
+      "CustomerFlow.Interactive.Message.Area\"c\n"
+      "\020QueryAllStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\t"
+      "strAreaID\030\002 \001(\t\022\023\n\013uiOpenState\030\003 \001(\r\022\024\n\014"
+      "uiBeginIndex\030\004 \001(\r\"N\n\020QueryAllStoreRsp\022:"
+      "\n\tstoreInfo\030\001 \003(\0132\'.CustomerFlow.Interac"
+      "tive.Message.Store\"y\n\016AddEntranceReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022@\n\014e"
+      "ntranceInfo\030\003 \001(\0132*.CustomerFlow.Interac"
+      "tive.Message.Entrance\"\'\n\016AddEntranceRsp\022"
+      "\025\n\rstrEntranceID\030\001 \001(\t\"Q\n\021DeleteEntrance"
+      "Req\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001"
+      "(\t\022\025\n\rstrEntranceID\030\003 \001(\t\"%\n\021DeleteEntra"
+      "nceRsp\022\020\n\010strValue\030\001 \001(\t\"\262\001\n\021ModifyEntra"
+      "nceReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
+      "\002 \001(\t\022@\n\014entranceInfo\030\003 \001(\0132*.CustomerFl"
+      "ow.Interactive.Message.Entrance\022\030\n\020strAd"
+      "dedDeviceID\030\004 \003(\t\022\032\n\022strDeletedDeviceID\030"
+      "\005 \003(\t\"%\n\021ModifyEntranceRsp\022\020\n\010strValue\030\001"
+      " \001(\t\"i\n\024AddEntranceDeviceReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntran"
+      "ceID\030\003 \001(\t\022\023\n\013strDeviceID\030\004 \001(\t\"(\n\024AddEn"
+      "tranceDeviceRsp\022\020\n\010strValue\030\001 \001(\t\"l\n\027Del"
+      "eteEntranceDeviceReq\022\021\n\tstrUserID\030\001 \001(\t\022"
+      "\022\n\nstrStoreID\030\002 \001(\t\022\025\n\rstrEntranceID\030\003 \001"
+      "(\t\022\023\n\013strDeviceID\030\004 \001(\t\"+\n\027DeleteEntranc"
+      "eDeviceRsp\022\020\n\010strValue\030\001 \001(\t\"I\n\013AddEvent"
+      "Req\022:\n\teventInfo\030\001 \001(\0132\'.CustomerFlow.In"
+      "teractive.Message.Event\"!\n\013AddEventRsp\022\022"
+      "\n\nstrEventID\030\001 \001(\t\"7\n\016DeleteEventReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022\022\n\nstrEventID\030\002 \001(\t\"\"\n\016D"
+      "eleteEventRsp\022\020\n\010strValue\030\001 \001(\t\"_\n\016Modif"
+      "yEventReq\022\021\n\tstrUserID\030\001 \001(\t\022:\n\teventInf"
+      "o\030\002 \001(\0132\'.CustomerFlow.Interactive.Messa"
+      "ge.Event\"\"\n\016ModifyEventRsp\022\020\n\010strValue\030\001"
+      " \001(\t\":\n\021QueryEventInfoReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\022\n\nstrEventID\030\002 \001(\t\"O\n\021QueryEventIn"
+      "foRsp\022:\n\teventInfo\030\001 \001(\0132\'.CustomerFlow."
+      "Interactive.Message.Event\"\220\001\n\020QueryAllEv"
+      "entReq\022\021\n\tstrUserID\030\001 \001(\t\022\026\n\016uiProcessSt"
+      "ate\030\002 \001(\r\022\021\n\tuiRelaton\030\003 \001(\r\022\024\n\014strBegin"
+      "Date\030\004 \001(\t\022\022\n\nstrEndDate\030\005 \001(\t\022\024\n\014uiBegi"
+      "nIndex\030\006 \001(\r\"N\n\020QueryAllEventRsp\022:\n\teven"
+      "tInfo\030\001 \003(\0132\'.CustomerFlow.Interactive.M"
+      "essage.Event\"v\n\025AddSmartGuardStoreReq\022\021\n"
+      "\tstrUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001("
+      "\01321.CustomerFlow.Interactive.Message.Sma"
+      "rtGuardStore\"*\n\025AddSmartGuardStoreRsp\022\021\n"
+      "\tstrPlanID\030\001 \001(\t\"@\n\030DeleteSmartGuardStor"
+      "eReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001"
+      "(\t\",\n\030DeleteSmartGuardStoreRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"y\n\030ModifySmartGuardStoreReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022J\n\017smartGuardStore\030\002 \001(\013"
       "21.CustomerFlow.Interactive.Message.Smar"
-      "tGuardStore\"p\n\023AddRegularPatrolReq\022\021\n\tst"
-      "rUserID\030\001 \001(\t\022F\n\rregularPatrol\030\002 \001(\0132/.C"
-      "ustomerFlow.Interactive.Message.RegularP"
-      "atrol\"(\n\023AddRegularPatrolRsp\022\021\n\tstrPlanI"
-      "D\030\001 \001(\t\">\n\026DeleteRegularPatrolReq\022\021\n\tstr"
-      "UserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"*\n\026Delet"
-      "eRegularPatrolRsp\022\020\n\010strValue\030\001 \001(\t\"s\n\026M"
-      "odifyRegularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022F\n\rregularPatrol\030\002 \001(\0132/.CustomerFlow.I"
-      "nteractive.Message.RegularPatrol\"*\n\026Modi"
-      "fyRegularPatrolRsp\022\020\n\010strValue\030\001 \001(\t\"A\n\031"
-      "QueryRegularPatrolInfoReq\022\021\n\tstrUserID\030\001"
-      " \001(\t\022\021\n\tstrPlanID\030\002 \001(\t\"c\n\031QueryRegularP"
-      "atrolInfoRsp\022F\n\rregularPatrol\030\001 \001(\0132/.Cu"
-      "stomerFlow.Interactive.Message.RegularPa"
-      "trol\"X\n\030QueryAllRegularPatrolReq\022\021\n\tstrU"
-      "serID\030\001 \001(\t\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiBe"
-      "ginIndex\030\003 \001(\r\"b\n\030QueryAllRegularPatrolR"
-      "sp\022F\n\rregularPatrol\030\001 \003(\0132/.CustomerFlow"
-      ".Interactive.Message.RegularPatrol\"f\n\020Us"
-      "erJoinStoreReq\022\032\n\022strAdministratorID\030\001 \001"
-      "(\t\022\021\n\tstrUserID\030\002 \001(\t\022\022\n\nstrStoreID\030\003 \001("
-      "\t\022\017\n\007strRole\030\004 \001(\t\"$\n\020UserJoinStoreRsp\022\020"
-      "\n\010strValue\030\001 \001(\t\"U\n\020UserQuitStoreReq\022\032\n\022"
-      "strAdministratorID\030\001 \001(\t\022\021\n\tstrUserID\030\002 "
-      "\001(\t\022\022\n\nstrStoreID\030\003 \001(\t\"$\n\020UserQuitStore"
-      "Rsp\022\020\n\010strValue\030\001 \001(\t\"=\n\024QueryStoreAllUs"
-      "erReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002"
-      " \001(\t\"Q\n\024QueryStoreAllUserRsp\0229\n\004user\030\001 \003"
-      "(\0132+.CustomerFlow.Interactive.Message.Us"
-      "erBrief\"+\n\026QueryCompanyAllUserReq\022\021\n\tstr"
-      "UserID\030\001 \001(\t\"S\n\026QueryCompanyAllUserRsp\0229"
-      "\n\004user\030\001 \003(\0132+.CustomerFlow.Interactive."
-      "Message.UserBrief\"k\n\021AddVIPCustomerReq\022\021"
-      "\n\tstrUserID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001(\0132"
-      "-.CustomerFlow.Interactive.Message.VIPCu"
-      "stomer\"%\n\021AddVIPCustomerRsp\022\020\n\010strVIPID\030"
-      "\001 \001(\t\";\n\024DeleteVIPCustomerReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"(\n\024DeleteVIPC"
-      "ustomerRsp\022\020\n\010strValue\030\001 \001(\t\"n\n\024ModifyVI"
-      "PCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022C\n\014custo"
-      "merInfo\030\002 \001(\0132-.CustomerFlow.Interactive"
-      ".Message.VIPCustomer\"(\n\024ModifyVIPCustome"
-      "rRsp\022\020\n\010strValue\030\001 \001(\t\">\n\027QueryVIPCustom"
-      "erInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID"
-      "\030\002 \001(\t\"^\n\027QueryVIPCustomerInfoRsp\022C\n\014cus"
-      "tomerInfo\030\001 \001(\0132-.CustomerFlow.Interacti"
-      "ve.Message.VIPCustomer\"A\n\026QueryAllVIPCus"
-      "tomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014uiBeginIn"
-      "dex\030\002 \001(\r\"Y\n\026QueryAllVIPCustomerRsp\022\?\n\010c"
-      "ustomer\030\001 \003(\0132-.CustomerFlow.Interactive"
-      ".Message.VIPCustomer\"y\n\027AddVIPConsumeHis"
-      "toryReq\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consumeHis"
-      "tory\030\002 \001(\01323.CustomerFlow.Interactive.Me"
-      "ssage.VIPConsumeHistory\"/\n\027AddVIPConsume"
-      "HistoryRsp\022\024\n\014strConsumeID\030\001 \001(\t\"E\n\032Dele"
-      "teVIPConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001("
-      "\t\022\024\n\014strConsumeID\030\002 \001(\t\".\n\032DeleteVIPCons"
-      "umeHistoryRsp\022\020\n\010strValue\030\001 \001(\t\"|\n\032Modif"
-      "yVIPConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001(\t"
-      "\022K\n\016consumeHistory\030\002 \001(\01323.CustomerFlow."
-      "Interactive.Message.VIPConsumeHistory\".\n"
-      "\032ModifyVIPConsumeHistoryRsp\022\020\n\010strValue\030"
-      "\001 \001(\t\"Y\n\034QueryAllVIPConsumeHistoryReq\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\022\024\n\014ui"
-      "BeginIndex\030\003 \001(\r\"k\n\034QueryAllVIPConsumeHi"
-      "storyRsp\022K\n\016consumeHistory\030\001 \003(\01323.Custo"
-      "merFlow.Interactive.Message.VIPConsumeHi"
-      "story\"w\n\030AddEvaluationTemplateReq\022\021\n\tstr"
-      "UserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001(\01320.C"
-      "ustomerFlow.Interactive.Message.Evaluati"
-      "onItem\"3\n\030AddEvaluationTemplateRsp\022\027\n\017st"
-      "rEvaluationID\030\001 \001(\t\"I\n\033DeleteEvaluationT"
-      "emplateReq\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017strEval"
-      "uationID\030\002 \001(\t\"/\n\033DeleteEvaluationTempla"
-      "teRsp\022\020\n\010strValue\030\001 \001(\t\"z\n\033ModifyEvaluat"
-      "ionTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016eva"
-      "luationItem\030\002 \001(\01320.CustomerFlow.Interac"
-      "tive.Message.EvaluationItem\"/\n\033ModifyEva"
-      "luationTemplateRsp\022\020\n\010strValue\030\001 \001(\t\"2\n\035"
-      "QueryAllEvaluationTemplateReq\022\021\n\tstrUser"
-      "ID\030\001 \001(\t\"i\n\035QueryAllEvaluationTemplateRs"
-      "p\022H\n\016evaluationItem\030\001 \003(\01320.CustomerFlow"
-      ".Interactive.Message.EvaluationItem\"c\n\025A"
-      "ddStoreEvaluationReq\022J\n\017storeEvaluation\030"
-      "\001 \001(\01321.CustomerFlow.Interactive.Message"
-      ".StoreEvaluation\"0\n\025AddStoreEvaluationRs"
-      "p\022\027\n\017strEvaluationID\030\001 \001(\t\"F\n\030DeleteStor"
-      "eEvaluationReq\022\021\n\tstrUserID\030\001 \001(\t\022\027\n\017str"
-      "EvaluationID\030\002 \001(\t\",\n\030DeleteStoreEvaluat"
-      "ionRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\030ModifyStoreE"
-      "valuationReq\022\021\n\tstrUserID\030\001 \001(\t\022J\n\017store"
-      "Evaluation\030\002 \001(\01321.CustomerFlow.Interact"
-      "ive.Message.StoreEvaluation\",\n\030ModifySto"
-      "reEvaluationRsp\022\020\n\010strValue\030\001 \001(\t\"]\n\033Que"
-      "ryStoreEvaluationInfoReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\027\n\017strEvaluation"
-      "ID\030\003 \001(\t\"i\n\033QueryStoreEvaluationInfoRsp\022"
-      "J\n\017storeEvaluation\030\001 \001(\01321.CustomerFlow."
-      "Interactive.Message.StoreEvaluation\"\203\001\n\032"
-      "QueryAllStoreEvaluationReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBeginDat"
-      "e\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\024\n\014uiBeginIn"
-      "dex\030\005 \001(\r\"h\n\032QueryAllStoreEvaluationRsp\022"
-      "J\n\017storeEvaluation\030\001 \003(\01321.CustomerFlow."
-      "Interactive.Message.StoreEvaluation\"c\n\027A"
-      "ddRemotePatrolStoreReq\022H\n\013patrolStore\030\001 "
-      "\001(\01323.CustomerFlow.Interactive.Message.R"
-      "emotePatrolStore\".\n\027AddRemotePatrolStore"
-      "Rsp\022\023\n\013strPatrolID\030\001 \001(\t\"D\n\032DeleteRemote"
-      "PatrolStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013str"
-      "PatrolID\030\002 \001(\t\".\n\032DeleteRemotePatrolStor"
-      "eRsp\022\020\n\010strValue\030\001 \001(\t\"y\n\032ModifyRemotePa"
-      "trolStoreReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\013patro"
-      "lStore\030\002 \001(\01323.CustomerFlow.Interactive."
-      "Message.RemotePatrolStore\".\n\032ModifyRemot"
-      "ePatrolStoreRsp\022\020\n\010strValue\030\001 \001(\t\"G\n\035Que"
-      "ryRemotePatrolStoreInfoReq\022\021\n\tstrUserID\030"
-      "\001 \001(\t\022\023\n\013strPatrolID\030\002 \001(\t\"i\n\035QueryRemot"
-      "ePatrolStoreInfoRsp\022H\n\013patrolStore\030\001 \001(\013"
-      "23.CustomerFlow.Interactive.Message.Remo"
-      "tePatrolStore\"\304\001\n\034QueryAllRemotePatrolSt"
-      "oreReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
-      "\002 \001(\t\022\026\n\016uiPatrolResult\030\003 \001(\r\022\022\n\nuiPlanF"
-      "lag\030\004 \001(\r\022\021\n\tstrPlanID\030\005 \001(\t\022\024\n\014strBegin"
-      "Date\030\006 \001(\t\022\022\n\nstrEndDate\030\007 \001(\t\022\024\n\014uiBegi"
-      "nIndex\030\010 \001(\r\"h\n\034QueryAllRemotePatrolStor"
-      "eRsp\022H\n\013patrolStore\030\001 \003(\01323.CustomerFlow"
-      ".Interactive.Message.RemotePatrolStore\"d"
-      "\n\021AddStoreSensorReq\022\021\n\tstrUserID\030\001 \001(\t\022<"
-      "\n\nsensorInfo\030\002 \001(\0132(.CustomerFlow.Intera"
-      "ctive.Message.Sensor\"(\n\021AddStoreSensorRs"
-      "p\022\023\n\013strSensorID\030\001 \001(\t\"R\n\024DeleteStoreSen"
-      "sorReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
-      "\002 \001(\t\022\023\n\013strSensorID\030\003 \001(\t\"(\n\024DeleteStor"
-      "eSensorRsp\022\020\n\010strValue\030\001 \001(\t\"g\n\024ModifySt"
-      "oreSensorReq\022\021\n\tstrUserID\030\001 \001(\t\022<\n\nsenso"
-      "rInfo\030\002 \001(\0132(.CustomerFlow.Interactive.M"
-      "essage.Sensor\"(\n\024ModifyStoreSensorRsp\022\020\n"
-      "\010strValue\030\001 \001(\t\"A\n\027QueryStoreSensorInfoR"
-      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strSensorID\030\002 \001"
-      "(\t\"W\n\027QueryStoreSensorInfoRsp\022<\n\nsensorI"
-      "nfo\030\001 \001(\0132(.CustomerFlow.Interactive.Mes"
-      "sage.Sensor\"\?\n\026QueryAllStoreSensorReq\022\021\n"
-      "\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"V\n\026"
-      "QueryAllStoreSensorRsp\022<\n\nsensorInfo\030\001 \003"
-      "(\0132(.CustomerFlow.Interactive.Message.Se"
-      "nsor\"\221\001\n\020ImportPOSDataReq\022\021\n\tstrUserID\030\001"
-      " \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\025\n\ruiOrderAmoun"
-      "t\030\003 \001(\r\022\025\n\ruiGoodsAmount\030\004 \001(\r\022\023\n\013dDealA"
-      "mount\030\005 \001(\001\022\023\n\013strDealDate\030\006 \001(\t\"$\n\020Impo"
-      "rtPOSDataRsp\022\020\n\010strValue\030\001 \001(\t\"\211\001\n\035Query"
-      "CustomerFlowStatisticReq\022\021\n\tstrUserID\030\001 "
-      "\001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014strBeginDate\030"
-      "\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\027\n\017uiTimePreci"
-      "sion\030\005 \001(\r\"5\n\035QueryCustomerFlowStatistic"
-      "Rsp\022\024\n\014strChartData\030\001 \001(\t\"\236\001\n\032QueryPatro"
-      "lResultReportReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\ns"
-      "trStoreID\030\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n"
-      "\nstrEndDate\030\004 \001(\t\022\026\n\016uiPatrolResult\030\005 \001("
-      "\r\022\027\n\017strPatrolUserID\030\006 \001(\t\"2\n\032QueryPatro"
-      "lResultReportRsp\022\024\n\014strChartData\030\001 \001(\t\"y"
-      "\n\031ReportCustomerFlowDataReq\022\023\n\013strDevice"
-      "ID\030\001 \001(\t\022G\n\014customerFlow\030\002 \003(\01321.Custome"
-      "rFlow.Interactive.Message.RawCustomerFlo"
-      "w\"-\n\031ReportCustomerFlowDataRsp\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"h\n\023ReportSensorInfoReq\022\023\n\013strDe"
-      "viceID\030\001 \001(\t\022<\n\nsensorInfo\030\002 \003(\0132(.Custo"
-      "merFlow.Interactive.Message.Sensor\"\'\n\023Re"
-      "portSensorInfoRsp\022\020\n\010strValue\030\001 \001(\t\"\3127\n\007"
-      "Request\022b\n\036CustomerFlowPreHandleReq_Valu"
-      "e\030\n \001(\0132:.CustomerFlow.Interactive.Messa"
-      "ge.CustomerFlowPreHandleReq\022J\n\022Shakehand"
-      "Req_Value\0302 \001(\0132..CustomerFlow.Interacti"
-      "ve.Message.ShakehandReq\022H\n\021AddGroupReq_V"
-      "alue\030d \001(\0132-.CustomerFlow.Interactive.Me"
-      "ssage.AddGroupReq\022N\n\024DeleteGroupReq_Valu"
-      "e\030n \001(\01320.CustomerFlow.Interactive.Messa"
-      "ge.DeleteGroupReq\022N\n\024ModifyGroupReq_Valu"
-      "e\030x \001(\01320.CustomerFlow.Interactive.Messa"
-      "ge.ModifyGroupReq\022U\n\027QueryGroupInfoReq_V"
-      "alue\030\202\001 \001(\01323.CustomerFlow.Interactive.M"
-      "essage.QueryGroupInfoReq\022S\n\026QueryAllGrou"
-      "pReq_Value\030\214\001 \001(\01322.CustomerFlow.Interac"
-      "tive.Message.QueryAllGroupReq\022I\n\021AddStor"
-      "eReq_Value\030\226\001 \001(\0132-.CustomerFlow.Interac"
-      "tive.Message.AddStoreReq\022O\n\024DeleteStoreR"
-      "eq_Value\030\240\001 \001(\01320.CustomerFlow.Interacti"
-      "ve.Message.DeleteStoreReq\022O\n\024ModifyStore"
-      "Req_Value\030\252\001 \001(\01320.CustomerFlow.Interact"
-      "ive.Message.ModifyStoreReq\022U\n\027QueryStore"
-      "InfoReq_Value\030\264\001 \001(\01323.CustomerFlow.Inte"
-      "ractive.Message.QueryStoreInfoReq\022S\n\026Que"
-      "ryAllStoreReq_Value\030\276\001 \001(\01322.CustomerFlo"
-      "w.Interactive.Message.QueryAllStoreReq\022O"
-      "\n\024AddEntranceReq_Value\030\310\001 \001(\01320.Customer"
-      "Flow.Interactive.Message.AddEntranceReq\022"
-      "U\n\027DeleteEntranceReq_Value\030\322\001 \001(\01323.Cust"
-      "omerFlow.Interactive.Message.DeleteEntra"
-      "nceReq\022U\n\027ModifyEntranceReq_Value\030\334\001 \001(\013"
-      "23.CustomerFlow.Interactive.Message.Modi"
-      "fyEntranceReq\022[\n\032AddEntranceDeviceReq_Va"
-      "lue\030\346\001 \001(\01326.CustomerFlow.Interactive.Me"
-      "ssage.AddEntranceDeviceReq\022a\n\035DeleteEntr"
-      "anceDeviceReq_Value\030\360\001 \001(\01329.CustomerFlo"
-      "w.Interactive.Message.DeleteEntranceDevi"
-      "ceReq\022I\n\021AddEventReq_Value\030\254\002 \001(\0132-.Cust"
-      "omerFlow.Interactive.Message.AddEventReq"
-      "\022O\n\024DeleteEventReq_Value\030\266\002 \001(\01320.Custom"
-      "erFlow.Interactive.Message.DeleteEventRe"
-      "q\022O\n\024ModifyEventReq_Value\030\300\002 \001(\01320.Custo"
-      "merFlow.Interactive.Message.ModifyEventR"
-      "eq\022U\n\027QueryEventInfoReq_Value\030\312\002 \001(\01323.C"
-      "ustomerFlow.Interactive.Message.QueryEve"
-      "ntInfoReq\022S\n\026QueryAllEventReq_Value\030\324\002 \001"
-      "(\01322.CustomerFlow.Interactive.Message.Qu"
-      "eryAllEventReq\022]\n\033AddSmartGuardStoreReq_"
-      "Value\030\336\002 \001(\01327.CustomerFlow.Interactive."
-      "Message.AddSmartGuardStoreReq\022c\n\036DeleteS"
-      "martGuardStoreReq_Value\030\350\002 \001(\0132:.Custome"
-      "rFlow.Interactive.Message.DeleteSmartGua"
-      "rdStoreReq\022c\n\036ModifySmartGuardStoreReq_V"
-      "alue\030\362\002 \001(\0132:.CustomerFlow.Interactive.M"
-      "essage.ModifySmartGuardStoreReq\022i\n!Query"
-      "SmartGuardStoreInfoReq_Value\030\374\002 \001(\0132=.Cu"
-      "stomerFlow.Interactive.Message.QuerySmar"
-      "tGuardStoreInfoReq\022g\n QueryAllSmartGuard"
-      "StoreReq_Value\030\206\003 \001(\0132<.CustomerFlow.Int"
-      "eractive.Message.QueryAllSmartGuardStore"
-      "Req\022Y\n\031AddRegularPatrolReq_Value\030\220\003 \001(\0132"
-      "5.CustomerFlow.Interactive.Message.AddRe"
-      "gularPatrolReq\022_\n\034DeleteRegularPatrolReq"
-      "_Value\030\232\003 \001(\01328.CustomerFlow.Interactive"
-      ".Message.DeleteRegularPatrolReq\022_\n\034Modif"
-      "yRegularPatrolReq_Value\030\244\003 \001(\01328.Custome"
-      "rFlow.Interactive.Message.ModifyRegularP"
-      "atrolReq\022e\n\037QueryRegularPatrolInfoReq_Va"
-      "lue\030\256\003 \001(\0132;.CustomerFlow.Interactive.Me"
-      "ssage.QueryRegularPatrolInfoReq\022c\n\036Query"
-      "AllRegularPatrolReq_Value\030\270\003 \001(\0132:.Custo"
-      "merFlow.Interactive.Message.QueryAllRegu"
-      "larPatrolReq\022S\n\026UserJoinStoreReq_Value\030\364"
-      "\003 \001(\01322.CustomerFlow.Interactive.Message"
-      ".UserJoinStoreReq\022S\n\026UserQuitStoreReq_Va"
-      "lue\030\376\003 \001(\01322.CustomerFlow.Interactive.Me"
-      "ssage.UserQuitStoreReq\022[\n\032QueryStoreAllU"
-      "serReq_Value\030\210\004 \001(\01326.CustomerFlow.Inter"
-      "active.Message.QueryStoreAllUserReq\022_\n\034Q"
-      "ueryCompanyAllUserReq_Value\030\222\004 \001(\01328.Cus"
-      "tomerFlow.Interactive.Message.QueryCompa"
-      "nyAllUserReq\022U\n\027AddVIPCustomerReq_Value\030"
-      "\240\006 \001(\01323.CustomerFlow.Interactive.Messag"
-      "e.AddVIPCustomerReq\022[\n\032DeleteVIPCustomer"
-      "Req_Value\030\252\006 \001(\01326.CustomerFlow.Interact"
-      "ive.Message.DeleteVIPCustomerReq\022[\n\032Modi"
-      "fyVIPCustomerReq_Value\030\264\006 \001(\01326.Customer"
-      "Flow.Interactive.Message.ModifyVIPCustom"
-      "erReq\022a\n\035QueryVIPCustomerInfoReq_Value\030\276"
-      "\006 \001(\01329.CustomerFlow.Interactive.Message"
-      ".QueryVIPCustomerInfoReq\022_\n\034QueryAllVIPC"
-      "ustomerReq_Value\030\310\006 \001(\01328.CustomerFlow.I"
-      "nteractive.Message.QueryAllVIPCustomerRe"
-      "q\022a\n\035AddVIPConsumeHistoryReq_Value\030\322\006 \001("
-      "\01329.CustomerFlow.Interactive.Message.Add"
-      "VIPConsumeHistoryReq\022g\n DeleteVIPConsume"
-      "HistoryReq_Value\030\334\006 \001(\0132<.CustomerFlow.I"
-      "nteractive.Message.DeleteVIPConsumeHisto"
-      "ryReq\022g\n ModifyVIPConsumeHistoryReq_Valu"
-      "e\030\346\006 \001(\0132<.CustomerFlow.Interactive.Mess"
-      "age.ModifyVIPConsumeHistoryReq\022k\n\"QueryA"
-      "llVIPConsumeHistoryReq_Value\030\360\006 \001(\0132>.Cu"
-      "stomerFlow.Interactive.Message.QueryAllV"
-      "IPConsumeHistoryReq\022c\n\036AddEvaluationTemp"
-      "lateReq_Value\030\204\007 \001(\0132:.CustomerFlow.Inte"
-      "ractive.Message.AddEvaluationTemplateReq"
-      "\022i\n!DeleteEvaluationTemplateReq_Value\030\216\007"
-      " \001(\0132=.CustomerFlow.Interactive.Message."
-      "DeleteEvaluationTemplateReq\022i\n!ModifyEva"
-      "luationTemplateReq_Value\030\230\007 \001(\0132=.Custom"
-      "erFlow.Interactive.Message.ModifyEvaluat"
-      "ionTemplateReq\022m\n#QueryAllEvaluationTemp"
-      "lateReq_Value\030\242\007 \001(\0132\?.CustomerFlow.Inte"
-      "ractive.Message.QueryAllEvaluationTempla"
-      "teReq\022]\n\033AddStoreEvaluationReq_Value\030\266\007 "
-      "\001(\01327.CustomerFlow.Interactive.Message.A"
-      "ddStoreEvaluationReq\022c\n\036DeleteStoreEvalu"
-      "ationReq_Value\030\300\007 \001(\0132:.CustomerFlow.Int"
-      "eractive.Message.DeleteStoreEvaluationRe"
-      "q\022c\n\036ModifyStoreEvaluationReq_Value\030\312\007 \001"
-      "(\0132:.CustomerFlow.Interactive.Message.Mo"
-      "difyStoreEvaluationReq\022i\n!QueryStoreEval"
-      "uationInfoReq_Value\030\324\007 \001(\0132=.CustomerFlo"
-      "w.Interactive.Message.QueryStoreEvaluati"
-      "onInfoReq\022g\n QueryAllStoreEvaluationReq_"
-      "Value\030\336\007 \001(\0132<.CustomerFlow.Interactive."
-      "Message.QueryAllStoreEvaluationReq\022a\n\035Ad"
-      "dRemotePatrolStoreReq_Value\030\350\007 \001(\01329.Cus"
-      "tomerFlow.Interactive.Message.AddRemoteP"
-      "atrolStoreReq\022g\n DeleteRemotePatrolStore"
-      "Req_Value\030\362\007 \001(\0132<.CustomerFlow.Interact"
-      "ive.Message.DeleteRemotePatrolStoreReq\022g"
-      "\n ModifyRemotePatrolStoreReq_Value\030\374\007 \001("
-      "\0132<.CustomerFlow.Interactive.Message.Mod"
-      "ifyRemotePatrolStoreReq\022m\n#QueryRemotePa"
-      "trolStoreInfoReq_Value\030\206\010 \001(\0132\?.Customer"
-      "Flow.Interactive.Message.QueryRemotePatr"
-      "olStoreInfoReq\022k\n\"QueryAllRemotePatrolSt"
-      "oreReq_Value\030\220\010 \001(\0132>.CustomerFlow.Inter"
-      "active.Message.QueryAllRemotePatrolStore"
-      "Req\022G\n\020AddAreaReq_Value\030\314\010 \001(\0132,.Custome"
-      "rFlow.Interactive.Message.AddAreaReq\022M\n\023"
-      "DeleteAreaReq_Value\030\326\010 \001(\0132/.CustomerFlo"
-      "w.Interactive.Message.DeleteAreaReq\022M\n\023M"
-      "odifyAreaReq_Value\030\340\010 \001(\0132/.CustomerFlow"
-      ".Interactive.Message.ModifyAreaReq\022S\n\026Qu"
-      "eryAreaInfoReq_Value\030\352\010 \001(\01322.CustomerFl"
-      "ow.Interactive.Message.QueryAreaInfoReq\022"
-      "Q\n\025QueryAllAreaReq_Value\030\364\010 \001(\01321.Custom"
-      "erFlow.Interactive.Message.QueryAllAreaR"
-      "eq\022Y\n\031BindPushClientIDReq_Value\030\376\010 \001(\01325"
-      ".CustomerFlow.Interactive.Message.BindPu"
-      "shClientIDReq\022]\n\033UnbindPushClientIDReq_V"
-      "alue\030\210\t \001(\01327.CustomerFlow.Interactive.M"
-      "essage.UnbindPushClientIDReq\022U\n\027AddStore"
-      "SensorReq_Value\030\260\t \001(\01323.CustomerFlow.In"
-      "teractive.Message.AddStoreSensorReq\022[\n\032D"
-      "eleteStoreSensorReq_Value\030\272\t \001(\01326.Custo"
-      "merFlow.Interactive.Message.DeleteStoreS"
-      "ensorReq\022[\n\032ModifyStoreSensorReq_Value\030\304"
-      "\t \001(\01326.CustomerFlow.Interactive.Message"
-      ".ModifyStoreSensorReq\022a\n\035QueryStoreSenso"
-      "rInfoReq_Value\030\316\t \001(\01329.CustomerFlow.Int"
-      "eractive.Message.QueryStoreSensorInfoReq"
-      "\022_\n\034QueryAllStoreSensorReq_Value\030\330\t \001(\0132"
-      "8.CustomerFlow.Interactive.Message.Query"
-      "AllStoreSensorReq\022S\n\026ImportPOSDataReq_Va"
-      "lue\030\320\017 \001(\01322.CustomerFlow.Interactive.Me"
-      "ssage.ImportPOSDataReq\022m\n#QueryCustomerF"
-      "lowStatisticReq_Value\030\324\026 \001(\0132\?.CustomerF"
-      "low.Interactive.Message.QueryCustomerFlo"
-      "wStatisticReq\022g\n QueryPatrolResultReport"
-      "Req_Value\030\270\027 \001(\0132<.CustomerFlow.Interact"
-      "ive.Message.QueryPatrolResultReportReq\022e"
-      "\n\037ReportCustomerFlowDataReq_Value\030\210\' \001(\013"
-      "2;.CustomerFlow.Interactive.Message.Repo"
-      "rtCustomerFlowDataReq\022Y\n\031ReportSensorInf"
-      "oReq_Value\030\354\' \001(\01325.CustomerFlow.Interac"
-      "tive.Message.ReportSensorInfoReq\"\3607\n\010Res"
-      "ponse\022\020\n\010iRetcode\030\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001"
-      "(\t\022b\n\036CustomerFlowPreHandleRsp_Value\030\n \001"
-      "(\0132:.CustomerFlow.Interactive.Message.Cu"
-      "stomerFlowPreHandleRsp\022J\n\022ShakehandRsp_V"
-      "alue\0302 \001(\0132..CustomerFlow.Interactive.Me"
-      "ssage.ShakehandRsp\022H\n\021AddGroupRsp_Value\030"
-      "d \001(\0132-.CustomerFlow.Interactive.Message"
-      ".AddGroupRsp\022N\n\024DeleteGroupRsp_Value\030n \001"
-      "(\01320.CustomerFlow.Interactive.Message.De"
-      "leteGroupRsp\022N\n\024ModifyGroupRsp_Value\030x \001"
-      "(\01320.CustomerFlow.Interactive.Message.Mo"
-      "difyGroupRsp\022U\n\027QueryGroupInfoRsp_Value\030"
-      "\202\001 \001(\01323.CustomerFlow.Interactive.Messag"
-      "e.QueryGroupInfoRsp\022S\n\026QueryAllGroupRsp_"
-      "Value\030\214\001 \001(\01322.CustomerFlow.Interactive."
-      "Message.QueryAllGroupRsp\022I\n\021AddStoreRsp_"
-      "Value\030\226\001 \001(\0132-.CustomerFlow.Interactive."
-      "Message.AddStoreRsp\022O\n\024DeleteStoreRsp_Va"
-      "lue\030\240\001 \001(\01320.CustomerFlow.Interactive.Me"
-      "ssage.DeleteStoreRsp\022O\n\024ModifyStoreRsp_V"
-      "alue\030\252\001 \001(\01320.CustomerFlow.Interactive.M"
-      "essage.ModifyStoreRsp\022U\n\027QueryStoreInfoR"
-      "sp_Value\030\264\001 \001(\01323.CustomerFlow.Interacti"
-      "ve.Message.QueryStoreInfoRsp\022S\n\026QueryAll"
-      "StoreRsp_Value\030\276\001 \001(\01322.CustomerFlow.Int"
-      "eractive.Message.QueryAllStoreRsp\022O\n\024Add"
-      "EntranceRsp_Value\030\310\001 \001(\01320.CustomerFlow."
-      "Interactive.Message.AddEntranceRsp\022U\n\027De"
-      "leteEntranceRsp_Value\030\322\001 \001(\01323.CustomerF"
-      "low.Interactive.Message.DeleteEntranceRs"
-      "p\022U\n\027ModifyEntranceRsp_Value\030\334\001 \001(\01323.Cu"
-      "stomerFlow.Interactive.Message.ModifyEnt"
-      "ranceRsp\022[\n\032AddEntranceDeviceRsp_Value\030\346"
-      "\001 \001(\01326.CustomerFlow.Interactive.Message"
-      ".AddEntranceDeviceRsp\022a\n\035DeleteEntranceD"
-      "eviceRsp_Value\030\360\001 \001(\01329.CustomerFlow.Int"
-      "eractive.Message.DeleteEntranceDeviceRsp"
-      "\022I\n\021AddEventRsp_Value\030\254\002 \001(\0132-.CustomerF"
-      "low.Interactive.Message.AddEventRsp\022O\n\024D"
-      "eleteEventRsp_Value\030\266\002 \001(\01320.CustomerFlo"
-      "w.Interactive.Message.DeleteEventRsp\022O\n\024"
-      "ModifyEventRsp_Value\030\300\002 \001(\01320.CustomerFl"
-      "ow.Interactive.Message.ModifyEventRsp\022U\n"
-      "\027QueryEventInfoRsp_Value\030\312\002 \001(\01323.Custom"
-      "erFlow.Interactive.Message.QueryEventInf"
-      "oRsp\022S\n\026QueryAllEventRsp_Value\030\324\002 \001(\01322."
+      "tGuardStore\",\n\030ModifySmartGuardStoreRsp\022"
+      "\020\n\010strValue\030\001 \001(\t\"C\n\033QuerySmartGuardStor"
+      "eInfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID"
+      "\030\002 \001(\t\"i\n\033QuerySmartGuardStoreInfoRsp\022J\n"
+      "\017smartGuardStore\030\001 \001(\01321.CustomerFlow.In"
+      "teractive.Message.SmartGuardStore\"Z\n\032Que"
+      "ryAllSmartGuardStoreReq\022\021\n\tstrUserID\030\001 \001"
+      "(\t\022\023\n\013strDeviceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030"
+      "\003 \001(\r\"h\n\032QueryAllSmartGuardStoreRsp\022J\n\017s"
+      "martGuardStore\030\001 \003(\01321.CustomerFlow.Inte"
+      "ractive.Message.SmartGuardStore\"p\n\023AddRe"
+      "gularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rreg"
+      "ularPatrol\030\002 \001(\0132/.CustomerFlow.Interact"
+      "ive.Message.RegularPatrol\"(\n\023AddRegularP"
+      "atrolRsp\022\021\n\tstrPlanID\030\001 \001(\t\">\n\026DeleteReg"
+      "ularPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrP"
+      "lanID\030\002 \001(\t\"*\n\026DeleteRegularPatrolRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"s\n\026ModifyRegularPatrolRe"
+      "q\022\021\n\tstrUserID\030\001 \001(\t\022F\n\rregularPatrol\030\002 "
+      "\001(\0132/.CustomerFlow.Interactive.Message.R"
+      "egularPatrol\"*\n\026ModifyRegularPatrolRsp\022\020"
+      "\n\010strValue\030\001 \001(\t\"A\n\031QueryRegularPatrolIn"
+      "foReq\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tstrPlanID\030\002 "
+      "\001(\t\"c\n\031QueryRegularPatrolInfoRsp\022F\n\rregu"
+      "larPatrol\030\001 \001(\0132/.CustomerFlow.Interacti"
+      "ve.Message.RegularPatrol\"X\n\030QueryAllRegu"
+      "larPatrolReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strDe"
+      "viceID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"b\n\030Qu"
+      "eryAllRegularPatrolRsp\022F\n\rregularPatrol\030"
+      "\001 \003(\0132/.CustomerFlow.Interactive.Message"
+      ".RegularPatrol\"f\n\020UserJoinStoreReq\022\032\n\022st"
+      "rAdministratorID\030\001 \001(\t\022\021\n\tstrUserID\030\002 \001("
+      "\t\022\022\n\nstrStoreID\030\003 \001(\t\022\017\n\007strRole\030\004 \001(\t\"$"
+      "\n\020UserJoinStoreRsp\022\020\n\010strValue\030\001 \001(\t\"U\n\020"
+      "UserQuitStoreReq\022\032\n\022strAdministratorID\030\001"
+      " \001(\t\022\021\n\tstrUserID\030\002 \001(\t\022\022\n\nstrStoreID\030\003 "
+      "\001(\t\"$\n\020UserQuitStoreRsp\022\020\n\010strValue\030\001 \001("
+      "\t\"=\n\024QueryStoreAllUserReq\022\021\n\tstrUserID\030\001"
+      " \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\"Q\n\024QueryStoreAl"
+      "lUserRsp\0229\n\004user\030\001 \003(\0132+.CustomerFlow.In"
+      "teractive.Message.UserBrief\"+\n\026QueryComp"
+      "anyAllUserReq\022\021\n\tstrUserID\030\001 \001(\t\"S\n\026Quer"
+      "yCompanyAllUserRsp\0229\n\004user\030\001 \003(\0132+.Custo"
+      "merFlow.Interactive.Message.UserBrief\"k\n"
+      "\021AddVIPCustomerReq\022\021\n\tstrUserID\030\001 \001(\t\022C\n"
+      "\014customerInfo\030\002 \001(\0132-.CustomerFlow.Inter"
+      "active.Message.VIPCustomer\"%\n\021AddVIPCust"
+      "omerRsp\022\020\n\010strVIPID\030\001 \001(\t\";\n\024DeleteVIPCu"
+      "stomerReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010strVIPID"
+      "\030\002 \001(\t\"(\n\024DeleteVIPCustomerRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"n\n\024ModifyVIPCustomerReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022C\n\014customerInfo\030\002 \001(\0132-.Cust"
+      "omerFlow.Interactive.Message.VIPCustomer"
+      "\"(\n\024ModifyVIPCustomerRsp\022\020\n\010strValue\030\001 \001"
+      "(\t\">\n\027QueryVIPCustomerInfoReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\020\n\010strVIPID\030\002 \001(\t\"^\n\027QueryVIPCu"
+      "stomerInfoRsp\022C\n\014customerInfo\030\001 \001(\0132-.Cu"
+      "stomerFlow.Interactive.Message.VIPCustom"
+      "er\"A\n\026QueryAllVIPCustomerReq\022\021\n\tstrUserI"
+      "D\030\001 \001(\t\022\024\n\014uiBeginIndex\030\002 \001(\r\"Y\n\026QueryAl"
+      "lVIPCustomerRsp\022\?\n\010customer\030\001 \003(\0132-.Cust"
+      "omerFlow.Interactive.Message.VIPCustomer"
+      "\"y\n\027AddVIPConsumeHistoryReq\022\021\n\tstrUserID"
+      "\030\001 \001(\t\022K\n\016consumeHistory\030\002 \001(\01323.Custome"
+      "rFlow.Interactive.Message.VIPConsumeHist"
+      "ory\"/\n\027AddVIPConsumeHistoryRsp\022\024\n\014strCon"
+      "sumeID\030\001 \001(\t\"E\n\032DeleteVIPConsumeHistoryR"
+      "eq\022\021\n\tstrUserID\030\001 \001(\t\022\024\n\014strConsumeID\030\002 "
+      "\001(\t\".\n\032DeleteVIPConsumeHistoryRsp\022\020\n\010str"
+      "Value\030\001 \001(\t\"|\n\032ModifyVIPConsumeHistoryRe"
+      "q\022\021\n\tstrUserID\030\001 \001(\t\022K\n\016consumeHistory\030\002"
+      " \001(\01323.CustomerFlow.Interactive.Message."
+      "VIPConsumeHistory\".\n\032ModifyVIPConsumeHis"
+      "toryRsp\022\020\n\010strValue\030\001 \001(\t\"Y\n\034QueryAllVIP"
+      "ConsumeHistoryReq\022\021\n\tstrUserID\030\001 \001(\t\022\020\n\010"
+      "strVIPID\030\002 \001(\t\022\024\n\014uiBeginIndex\030\003 \001(\r\"k\n\034"
+      "QueryAllVIPConsumeHistoryRsp\022K\n\016consumeH"
+      "istory\030\001 \003(\01323.CustomerFlow.Interactive."
+      "Message.VIPConsumeHistory\"w\n\030AddEvaluati"
+      "onTemplateReq\022\021\n\tstrUserID\030\001 \001(\t\022H\n\016eval"
+      "uationItem\030\002 \001(\01320.CustomerFlow.Interact"
+      "ive.Message.EvaluationItem\"3\n\030AddEvaluat"
+      "ionTemplateRsp\022\027\n\017strEvaluationID\030\001 \001(\t\""
+      "I\n\033DeleteEvaluationTemplateReq\022\021\n\tstrUse"
+      "rID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\"/\n\033De"
+      "leteEvaluationTemplateRsp\022\020\n\010strValue\030\001 "
+      "\001(\t\"z\n\033ModifyEvaluationTemplateReq\022\021\n\tst"
+      "rUserID\030\001 \001(\t\022H\n\016evaluationItem\030\002 \001(\01320."
+      "CustomerFlow.Interactive.Message.Evaluat"
+      "ionItem\"/\n\033ModifyEvaluationTemplateRsp\022\020"
+      "\n\010strValue\030\001 \001(\t\"2\n\035QueryAllEvaluationTe"
+      "mplateReq\022\021\n\tstrUserID\030\001 \001(\t\"i\n\035QueryAll"
+      "EvaluationTemplateRsp\022H\n\016evaluationItem\030"
+      "\001 \003(\01320.CustomerFlow.Interactive.Message"
+      ".EvaluationItem\"c\n\025AddStoreEvaluationReq"
+      "\022J\n\017storeEvaluation\030\001 \001(\01321.CustomerFlow"
+      ".Interactive.Message.StoreEvaluation\"0\n\025"
+      "AddStoreEvaluationRsp\022\027\n\017strEvaluationID"
+      "\030\001 \001(\t\"F\n\030DeleteStoreEvaluationReq\022\021\n\tst"
+      "rUserID\030\001 \001(\t\022\027\n\017strEvaluationID\030\002 \001(\t\","
+      "\n\030DeleteStoreEvaluationRsp\022\020\n\010strValue\030\001"
+      " \001(\t\"y\n\030ModifyStoreEvaluationReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022J\n\017storeEvaluation\030\002 \001(\01321.C"
+      "ustomerFlow.Interactive.Message.StoreEva"
+      "luation\",\n\030ModifyStoreEvaluationRsp\022\020\n\010s"
+      "trValue\030\001 \001(\t\"]\n\033QueryStoreEvaluationInf"
+      "oReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 "
+      "\001(\t\022\027\n\017strEvaluationID\030\003 \001(\t\"i\n\033QuerySto"
+      "reEvaluationInfoRsp\022J\n\017storeEvaluation\030\001"
+      " \001(\01321.CustomerFlow.Interactive.Message."
+      "StoreEvaluation\"\203\001\n\032QueryAllStoreEvaluat"
+      "ionReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030"
+      "\002 \001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEndDat"
+      "e\030\004 \001(\t\022\024\n\014uiBeginIndex\030\005 \001(\r\"h\n\032QueryAl"
+      "lStoreEvaluationRsp\022J\n\017storeEvaluation\030\001"
+      " \003(\01321.CustomerFlow.Interactive.Message."
+      "StoreEvaluation\"c\n\027AddRemotePatrolStoreR"
+      "eq\022H\n\013patrolStore\030\001 \001(\01323.CustomerFlow.I"
+      "nteractive.Message.RemotePatrolStore\".\n\027"
+      "AddRemotePatrolStoreRsp\022\023\n\013strPatrolID\030\001"
+      " \001(\t\"D\n\032DeleteRemotePatrolStoreReq\022\021\n\tst"
+      "rUserID\030\001 \001(\t\022\023\n\013strPatrolID\030\002 \001(\t\".\n\032De"
+      "leteRemotePatrolStoreRsp\022\020\n\010strValue\030\001 \001"
+      "(\t\"y\n\032ModifyRemotePatrolStoreReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022H\n\013patrolStore\030\002 \001(\01323.Custo"
+      "merFlow.Interactive.Message.RemotePatrol"
+      "Store\".\n\032ModifyRemotePatrolStoreRsp\022\020\n\010s"
+      "trValue\030\001 \001(\t\"G\n\035QueryRemotePatrolStoreI"
+      "nfoReq\022\021\n\tstrUserID\030\001 \001(\t\022\023\n\013strPatrolID"
+      "\030\002 \001(\t\"i\n\035QueryRemotePatrolStoreInfoRsp\022"
+      "H\n\013patrolStore\030\001 \001(\01323.CustomerFlow.Inte"
+      "ractive.Message.RemotePatrolStore\"\304\001\n\034Qu"
+      "eryAllRemotePatrolStoreReq\022\021\n\tstrUserID\030"
+      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\026\n\016uiPatrolRes"
+      "ult\030\003 \001(\r\022\022\n\nuiPlanFlag\030\004 \001(\r\022\021\n\tstrPlan"
+      "ID\030\005 \001(\t\022\024\n\014strBeginDate\030\006 \001(\t\022\022\n\nstrEnd"
+      "Date\030\007 \001(\t\022\024\n\014uiBeginIndex\030\010 \001(\r\"h\n\034Quer"
+      "yAllRemotePatrolStoreRsp\022H\n\013patrolStore\030"
+      "\001 \003(\01323.CustomerFlow.Interactive.Message"
+      ".RemotePatrolStore\"d\n\021AddStoreSensorReq\022"
+      "\021\n\tstrUserID\030\001 \001(\t\022<\n\nsensorInfo\030\002 \001(\0132("
+      ".CustomerFlow.Interactive.Message.Sensor"
+      "\"(\n\021AddStoreSensorRsp\022\023\n\013strSensorID\030\001 \001"
+      "(\t\"R\n\024DeleteStoreSensorReq\022\021\n\tstrUserID\030"
+      "\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\023\n\013strSensorID"
+      "\030\003 \001(\t\"(\n\024DeleteStoreSensorRsp\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"g\n\024ModifyStoreSensorReq\022\021\n\tstrU"
+      "serID\030\001 \001(\t\022<\n\nsensorInfo\030\002 \001(\0132(.Custom"
+      "erFlow.Interactive.Message.Sensor\"(\n\024Mod"
+      "ifyStoreSensorRsp\022\020\n\010strValue\030\001 \001(\t\"A\n\027Q"
+      "ueryStoreSensorInfoReq\022\021\n\tstrUserID\030\001 \001("
+      "\t\022\023\n\013strSensorID\030\002 \001(\t\"W\n\027QueryStoreSens"
+      "orInfoRsp\022<\n\nsensorInfo\030\001 \001(\0132(.Customer"
+      "Flow.Interactive.Message.Sensor\"\?\n\026Query"
+      "AllStoreSensorReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\n"
+      "strStoreID\030\002 \001(\t\"V\n\026QueryAllStoreSensorR"
+      "sp\022<\n\nsensorInfo\030\001 \003(\0132(.CustomerFlow.In"
+      "teractive.Message.Sensor\"\221\001\n\020ImportPOSDa"
+      "taReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002"
+      " \001(\t\022\025\n\ruiOrderAmount\030\003 \001(\r\022\025\n\ruiGoodsAm"
+      "ount\030\004 \001(\r\022\023\n\013dDealAmount\030\005 \001(\001\022\023\n\013strDe"
+      "alDate\030\006 \001(\t\"$\n\020ImportPOSDataRsp\022\020\n\010strV"
+      "alue\030\001 \001(\t\"\211\001\n\035QueryCustomerFlowStatisti"
+      "cReq\022\021\n\tstrUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 "
+      "\001(\t\022\024\n\014strBeginDate\030\003 \001(\t\022\022\n\nstrEndDate\030"
+      "\004 \001(\t\022\027\n\017uiTimePrecision\030\005 \001(\r\"5\n\035QueryC"
+      "ustomerFlowStatisticRsp\022\024\n\014strChartData\030"
+      "\001 \001(\t\"\236\001\n\032QueryPatrolResultReportReq\022\021\n\t"
+      "strUserID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\024\n\014s"
+      "trBeginDate\030\003 \001(\t\022\022\n\nstrEndDate\030\004 \001(\t\022\026\n"
+      "\016uiPatrolResult\030\005 \001(\r\022\027\n\017strPatrolUserID"
+      "\030\006 \001(\t\"2\n\032QueryPatrolResultReportRsp\022\024\n\014"
+      "strChartData\030\001 \001(\t\"y\n\031ReportCustomerFlow"
+      "DataReq\022\023\n\013strDeviceID\030\001 \001(\t\022G\n\014customer"
+      "Flow\030\002 \003(\01321.CustomerFlow.Interactive.Me"
+      "ssage.RawCustomerFlow\"-\n\031ReportCustomerF"
+      "lowDataRsp\022\020\n\010strValue\030\001 \001(\t\"h\n\023ReportSe"
+      "nsorInfoReq\022\023\n\013strDeviceID\030\001 \001(\t\022<\n\nsens"
+      "orInfo\030\002 \003(\0132(.CustomerFlow.Interactive."
+      "Message.Sensor\"\'\n\023ReportSensorInfoRsp\022\020\n"
+      "\010strValue\030\001 \001(\t\"\3127\n\007Request\022b\n\036CustomerF"
+      "lowPreHandleReq_Value\030\n \001(\0132:.CustomerFl"
+      "ow.Interactive.Message.CustomerFlowPreHa"
+      "ndleReq\022J\n\022ShakehandReq_Value\0302 \001(\0132..Cu"
+      "stomerFlow.Interactive.Message.Shakehand"
+      "Req\022H\n\021AddGroupReq_Value\030d \001(\0132-.Custome"
+      "rFlow.Interactive.Message.AddGroupReq\022N\n"
+      "\024DeleteGroupReq_Value\030n \001(\01320.CustomerFl"
+      "ow.Interactive.Message.DeleteGroupReq\022N\n"
+      "\024ModifyGroupReq_Value\030x \001(\01320.CustomerFl"
+      "ow.Interactive.Message.ModifyGroupReq\022U\n"
+      "\027QueryGroupInfoReq_Value\030\202\001 \001(\01323.Custom"
+      "erFlow.Interactive.Message.QueryGroupInf"
+      "oReq\022S\n\026QueryAllGroupReq_Value\030\214\001 \001(\01322."
       "CustomerFlow.Interactive.Message.QueryAl"
-      "lEventRsp\022]\n\033AddSmartGuardStoreRsp_Value"
-      "\030\336\002 \001(\01327.CustomerFlow.Interactive.Messa"
-      "ge.AddSmartGuardStoreRsp\022c\n\036DeleteSmartG"
-      "uardStoreRsp_Value\030\350\002 \001(\0132:.CustomerFlow"
-      ".Interactive.Message.DeleteSmartGuardSto"
-      "reRsp\022c\n\036ModifySmartGuardStoreRsp_Value\030"
-      "\362\002 \001(\0132:.CustomerFlow.Interactive.Messag"
-      "e.ModifySmartGuardStoreRsp\022i\n!QuerySmart"
-      "GuardStoreInfoRsp_Value\030\374\002 \001(\0132=.Custome"
-      "rFlow.Interactive.Message.QuerySmartGuar"
-      "dStoreInfoRsp\022g\n QueryAllSmartGuardStore"
-      "Rsp_Value\030\206\003 \001(\0132<.CustomerFlow.Interact"
-      "ive.Message.QueryAllSmartGuardStoreRsp\022Y"
-      "\n\031AddRegularPatrolRsp_Value\030\220\003 \001(\01325.Cus"
-      "tomerFlow.Interactive.Message.AddRegular"
-      "PatrolRsp\022_\n\034DeleteRegularPatrolRsp_Valu"
-      "e\030\232\003 \001(\01328.CustomerFlow.Interactive.Mess"
-      "age.DeleteRegularPatrolRsp\022_\n\034ModifyRegu"
-      "larPatrolRsp_Value\030\244\003 \001(\01328.CustomerFlow"
-      ".Interactive.Message.ModifyRegularPatrol"
-      "Rsp\022e\n\037QueryRegularPatrolInfoRsp_Value\030\256"
-      "\003 \001(\0132;.CustomerFlow.Interactive.Message"
-      ".QueryRegularPatrolInfoRsp\022c\n\036QueryAllRe"
-      "gularPatrolRsp_Value\030\270\003 \001(\0132:.CustomerFl"
-      "ow.Interactive.Message.QueryAllRegularPa"
-      "trolRsp\022S\n\026UserJoinStoreRsp_Value\030\364\003 \001(\013"
-      "22.CustomerFlow.Interactive.Message.User"
-      "JoinStoreRsp\022S\n\026UserQuitStoreRsp_Value\030\376"
-      "\003 \001(\01322.CustomerFlow.Interactive.Message"
-      ".UserQuitStoreRsp\022[\n\032QueryStoreAllUserRs"
-      "p_Value\030\210\004 \001(\01326.CustomerFlow.Interactiv"
-      "e.Message.QueryStoreAllUserRsp\022_\n\034QueryC"
-      "ompanyAllUserRsp_Value\030\222\004 \001(\01328.Customer"
-      "Flow.Interactive.Message.QueryCompanyAll"
-      "UserRsp\022U\n\027AddVIPCustomerRsp_Value\030\240\006 \001("
-      "\01323.CustomerFlow.Interactive.Message.Add"
-      "VIPCustomerRsp\022[\n\032DeleteVIPCustomerRsp_V"
-      "alue\030\252\006 \001(\01326.CustomerFlow.Interactive.M"
-      "essage.DeleteVIPCustomerRsp\022[\n\032ModifyVIP"
-      "CustomerRsp_Value\030\264\006 \001(\01326.CustomerFlow."
-      "Interactive.Message.ModifyVIPCustomerRsp"
-      "\022a\n\035QueryVIPCustomerInfoRsp_Value\030\276\006 \001(\013"
-      "29.CustomerFlow.Interactive.Message.Quer"
-      "yVIPCustomerInfoRsp\022_\n\034QueryAllVIPCustom"
-      "erRsp_Value\030\310\006 \001(\01328.CustomerFlow.Intera"
-      "ctive.Message.QueryAllVIPCustomerRsp\022a\n\035"
-      "AddVIPConsumeHistoryRsp_Value\030\322\006 \001(\01329.C"
-      "ustomerFlow.Interactive.Message.AddVIPCo"
-      "nsumeHistoryRsp\022g\n DeleteVIPConsumeHisto"
-      "ryRsp_Value\030\334\006 \001(\0132<.CustomerFlow.Intera"
-      "ctive.Message.DeleteVIPConsumeHistoryRsp"
-      "\022g\n ModifyVIPConsumeHistoryRsp_Value\030\346\006 "
-      "\001(\0132<.CustomerFlow.Interactive.Message.M"
-      "odifyVIPConsumeHistoryRsp\022k\n\"QueryAllVIP"
-      "ConsumeHistoryRsp_Value\030\360\006 \001(\0132>.Custome"
-      "rFlow.Interactive.Message.QueryAllVIPCon"
-      "sumeHistoryRsp\022c\n\036AddEvaluationTemplateR"
-      "sp_Value\030\204\007 \001(\0132:.CustomerFlow.Interacti"
-      "ve.Message.AddEvaluationTemplateRsp\022i\n!D"
-      "eleteEvaluationTemplateRsp_Value\030\216\007 \001(\0132"
-      "=.CustomerFlow.Interactive.Message.Delet"
-      "eEvaluationTemplateRsp\022i\n!ModifyEvaluati"
-      "onTemplateRsp_Value\030\230\007 \001(\0132=.CustomerFlo"
-      "w.Interactive.Message.ModifyEvaluationTe"
-      "mplateRsp\022m\n#QueryAllEvaluationTemplateR"
-      "sp_Value\030\242\007 \001(\0132\?.CustomerFlow.Interacti"
-      "ve.Message.QueryAllEvaluationTemplateRsp"
-      "\022]\n\033AddStoreEvaluationRsp_Value\030\266\007 \001(\01327"
-      ".CustomerFlow.Interactive.Message.AddSto"
-      "reEvaluationRsp\022c\n\036DeleteStoreEvaluation"
-      "Rsp_Value\030\300\007 \001(\0132:.CustomerFlow.Interact"
-      "ive.Message.DeleteStoreEvaluationRsp\022c\n\036"
-      "ModifyStoreEvaluationRsp_Value\030\312\007 \001(\0132:."
-      "CustomerFlow.Interactive.Message.ModifyS"
-      "toreEvaluationRsp\022i\n!QueryStoreEvaluatio"
-      "nInfoRsp_Value\030\324\007 \001(\0132=.CustomerFlow.Int"
-      "eractive.Message.QueryStoreEvaluationInf"
-      "oRsp\022g\n QueryAllStoreEvaluationRsp_Value"
-      "\030\336\007 \001(\0132<.CustomerFlow.Interactive.Messa"
-      "ge.QueryAllStoreEvaluationRsp\022a\n\035AddRemo"
-      "tePatrolStoreRsp_Value\030\350\007 \001(\01329.Customer"
-      "Flow.Interactive.Message.AddRemotePatrol"
-      "StoreRsp\022g\n DeleteRemotePatrolStoreRsp_V"
-      "alue\030\362\007 \001(\0132<.CustomerFlow.Interactive.M"
-      "essage.DeleteRemotePatrolStoreRsp\022g\n Mod"
-      "ifyRemotePatrolStoreRsp_Value\030\374\007 \001(\0132<.C"
-      "ustomerFlow.Interactive.Message.ModifyRe"
-      "motePatrolStoreRsp\022m\n#QueryRemotePatrolS"
-      "toreInfoRsp_Value\030\206\010 \001(\0132\?.CustomerFlow."
-      "Interactive.Message.QueryRemotePatrolSto"
-      "reInfoRsp\022k\n\"QueryAllRemotePatrolStoreRs"
-      "p_Value\030\220\010 \001(\0132>.CustomerFlow.Interactiv"
-      "e.Message.QueryAllRemotePatrolStoreRsp\022G"
-      "\n\020AddAreaRsp_Value\030\314\010 \001(\0132,.CustomerFlow"
-      ".Interactive.Message.AddAreaRsp\022M\n\023Delet"
-      "eAreaRsp_Value\030\326\010 \001(\0132/.CustomerFlow.Int"
-      "eractive.Message.DeleteAreaRsp\022M\n\023Modify"
-      "AreaRsp_Value\030\340\010 \001(\0132/.CustomerFlow.Inte"
-      "ractive.Message.ModifyAreaRsp\022S\n\026QueryAr"
-      "eaInfoRsp_Value\030\352\010 \001(\01322.CustomerFlow.In"
-      "teractive.Message.QueryAreaInfoRsp\022Q\n\025Qu"
-      "eryAllAreaRsp_Value\030\364\010 \001(\01321.CustomerFlo"
-      "w.Interactive.Message.QueryAllAreaRsp\022Y\n"
-      "\031BindPushClientIDRsp_Value\030\376\010 \001(\01325.Cust"
-      "omerFlow.Interactive.Message.BindPushCli"
-      "entIDRsp\022]\n\033UnbindPushClientIDRsp_Value\030"
-      "\210\t \001(\01327.CustomerFlow.Interactive.Messag"
-      "e.UnbindPushClientIDRsp\022U\n\027AddStoreSenso"
-      "rRsp_Value\030\260\t \001(\01323.CustomerFlow.Interac"
-      "tive.Message.AddStoreSensorRsp\022[\n\032Delete"
-      "StoreSensorRsp_Value\030\272\t \001(\01326.CustomerFl"
-      "ow.Interactive.Message.DeleteStoreSensor"
-      "Rsp\022[\n\032ModifyStoreSensorRsp_Value\030\304\t \001(\013"
-      "26.CustomerFlow.Interactive.Message.Modi"
-      "fyStoreSensorRsp\022a\n\035QueryStoreSensorInfo"
-      "Rsp_Value\030\316\t \001(\01329.CustomerFlow.Interact"
-      "ive.Message.QueryStoreSensorInfoRsp\022_\n\034Q"
-      "ueryAllStoreSensorRsp_Value\030\330\t \001(\01328.Cus"
-      "tomerFlow.Interactive.Message.QueryAllSt"
-      "oreSensorRsp\022S\n\026ImportPOSDataRsp_Value\030\320"
-      "\017 \001(\01322.CustomerFlow.Interactive.Message"
-      ".ImportPOSDataRsp\022m\n#QueryCustomerFlowSt"
-      "atisticRsp_Value\030\324\026 \001(\0132\?.CustomerFlow.I"
-      "nteractive.Message.QueryCustomerFlowStat"
-      "isticRsp\022g\n QueryPatrolResultReportRsp_V"
-      "alue\030\270\027 \001(\0132<.CustomerFlow.Interactive.M"
-      "essage.QueryPatrolResultReportRsp\022e\n\037Rep"
-      "ortCustomerFlowDataRsp_Value\030\210\' \001(\0132;.Cu"
-      "stomerFlow.Interactive.Message.ReportCus"
-      "tomerFlowDataRsp\022Y\n\031ReportSensorInfoRsp_"
-      "Value\030\354\' \001(\01325.CustomerFlow.Interactive."
-      "Message.ReportSensorInfoRsp\"\367\001\n\023Customer"
-      "FlowMessage\022C\n\004type\030\001 \001(\01625.CustomerFlow"
-      ".Interactive.Message.CustomerFlowMsgType"
-      "\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022;\n\010re"
-      "qValue\030\004 \001(\0132).CustomerFlow.Interactive."
-      "Message.Request\022<\n\010rspValue\030\005 \001(\0132*.Cust"
-      "omerFlow.Interactive.Message.Response*\323#"
-      "\n\023CustomerFlowMsgType\022\n\n\006Init_T\020\000\022\037\n\032Cus"
-      "tomerFlowPreHandleReq_T\020\250F\022\037\n\032CustomerFl"
-      "owPreHandleRsp_T\020\262F\022\023\n\016ShakehandReq_T\020\214G"
-      "\022\023\n\016ShakehandRsp_T\020\226G\022\022\n\rAddGroupReq_T\020\220"
-      "N\022\022\n\rAddGroupRsp_T\020\232N\022\025\n\020DeleteGroupReq_"
-      "T\020\244N\022\025\n\020DeleteGroupRsp_T\020\256N\022\025\n\020ModifyGro"
-      "upReq_T\020\270N\022\025\n\020ModifyGroupRsp_T\020\302N\022\030\n\023Que"
-      "ryGroupInfoReq_T\020\314N\022\030\n\023QueryGroupInfoRsp"
-      "_T\020\326N\022\027\n\022QueryAllGroupReq_T\020\340N\022\027\n\022QueryA"
-      "llGroupRsp_T\020\352N\022\022\n\rAddStoreReq_T\020\364N\022\022\n\rA"
-      "ddStoreRsp_T\020\376N\022\025\n\020DeleteStoreReq_T\020\210O\022\025"
-      "\n\020DeleteStoreRsp_T\020\222O\022\025\n\020ModifyStoreReq_"
-      "T\020\234O\022\025\n\020ModifyStoreRsp_T\020\246O\022\030\n\023QueryStor"
-      "eInfoReq_T\020\260O\022\030\n\023QueryStoreInfoRsp_T\020\272O\022"
-      "\027\n\022QueryAllStoreReq_T\020\304O\022\027\n\022QueryAllStor"
-      "eRsp_T\020\316O\022\025\n\020AddEntranceReq_T\020\330O\022\025\n\020AddE"
-      "ntranceRsp_T\020\342O\022\030\n\023DeleteEntranceReq_T\020\354"
-      "O\022\030\n\023DeleteEntranceRsp_T\020\366O\022\030\n\023ModifyEnt"
-      "ranceReq_T\020\200P\022\030\n\023ModifyEntranceRsp_T\020\212P\022"
-      "\033\n\026AddEntranceDeviceReq_T\020\224P\022\033\n\026AddEntra"
-      "nceDeviceRsp_T\020\236P\022\036\n\031DeleteEntranceDevic"
-      "eReq_T\020\250P\022\036\n\031DeleteEntranceDeviceRsp_T\020\262"
-      "P\022\022\n\rAddEventReq_T\020\344P\022\022\n\rAddEventRsp_T\020\356"
-      "P\022\025\n\020DeleteEventReq_T\020\370P\022\025\n\020DeleteEventR"
-      "sp_T\020\202Q\022\025\n\020ModifyEventReq_T\020\214Q\022\025\n\020Modify"
-      "EventRsp_T\020\226Q\022\030\n\023QueryEventInfoReq_T\020\240Q\022"
-      "\030\n\023QueryEventInfoRsp_T\020\252Q\022\027\n\022QueryAllEve"
-      "ntReq_T\020\264Q\022\027\n\022QueryAllEventRsp_T\020\276Q\022\034\n\027A"
-      "ddSmartGuardStoreReq_T\020\310Q\022\034\n\027AddSmartGua"
-      "rdStoreRsp_T\020\322Q\022\037\n\032DeleteSmartGuardStore"
-      "Req_T\020\334Q\022\037\n\032DeleteSmartGuardStoreRsp_T\020\346"
-      "Q\022\037\n\032ModifySmartGuardStoreReq_T\020\360Q\022\037\n\032Mo"
-      "difySmartGuardStoreRsp_T\020\372Q\022\"\n\035QuerySmar"
-      "tGuardStoreInfoReq_T\020\204R\022\"\n\035QuerySmartGua"
-      "rdStoreInfoRsp_T\020\216R\022!\n\034QueryAllSmartGuar"
-      "dStoreReq_T\020\230R\022!\n\034QueryAllSmartGuardStor"
-      "eRsp_T\020\242R\022\032\n\025AddRegularPatrolReq_T\020\254R\022\032\n"
-      "\025AddRegularPatrolRsp_T\020\266R\022\035\n\030DeleteRegul"
-      "arPatrolReq_T\020\300R\022\035\n\030DeleteRegularPatrolR"
-      "sp_T\020\312R\022\035\n\030ModifyRegularPatrolReq_T\020\324R\022\035"
-      "\n\030ModifyRegularPatrolRsp_T\020\336R\022 \n\033QueryRe"
-      "gularPatrolInfoReq_T\020\350R\022 \n\033QueryRegularP"
-      "atrolInfoRsp_T\020\362R\022\037\n\032QueryAllRegularPatr"
-      "olReq_T\020\374R\022\037\n\032QueryAllRegularPatrolRsp_T"
-      "\020\206S\022\027\n\022UserJoinStoreReq_T\020\314S\022\027\n\022UserJoin"
-      "StoreRsp_T\020\326S\022\027\n\022UserQuitStoreReq_T\020\340S\022\027"
-      "\n\022UserQuitStoreRsp_T\020\352S\022\033\n\026QueryStoreAll"
-      "UserReq_T\020\364S\022\033\n\026QueryStoreAllUserRsp_T\020\376"
-      "S\022\035\n\030QueryCompanyAllUserReq_T\020\210T\022\035\n\030Quer"
-      "yCompanyAllUserRsp_T\020\222T\022\031\n\023AddVIPCustome"
-      "rReq_T\020\320\214\001\022\031\n\023AddVIPCustomerRsp_T\020\332\214\001\022\034\n"
-      "\026DeleteVIPCustomerReq_T\020\344\214\001\022\034\n\026DeleteVIP"
-      "CustomerRsp_T\020\356\214\001\022\034\n\026ModifyVIPCustomerRe"
-      "q_T\020\370\214\001\022\034\n\026ModifyVIPCustomerRsp_T\020\202\215\001\022\037\n"
-      "\031QueryVIPCustomerInfoReq_T\020\214\215\001\022\037\n\031QueryV"
-      "IPCustomerInfoRsp_T\020\226\215\001\022\036\n\030QueryAllVIPCu"
-      "stomerReq_T\020\240\215\001\022\036\n\030QueryAllVIPCustomerRs"
-      "p_T\020\252\215\001\022\037\n\031AddVIPConsumeHistoryReq_T\020\264\215\001"
-      "\022\037\n\031AddVIPConsumeHistoryRsp_T\020\276\215\001\022\"\n\034Del"
-      "eteVIPConsumeHistoryReq_T\020\310\215\001\022\"\n\034DeleteV"
-      "IPConsumeHistoryRsp_T\020\322\215\001\022\"\n\034ModifyVIPCo"
-      "nsumeHistoryReq_T\020\334\215\001\022\"\n\034ModifyVIPConsum"
-      "eHistoryRsp_T\020\346\215\001\022$\n\036QueryAllVIPConsumeH"
-      "istoryReq_T\020\360\215\001\022$\n\036QueryAllVIPConsumeHis"
-      "toryRsp_T\020\372\215\001\022 \n\032AddEvaluationTemplateRe"
-      "q_T\020\230\216\001\022 \n\032AddEvaluationTemplateRsp_T\020\242\216"
-      "\001\022#\n\035DeleteEvaluationTemplateReq_T\020\254\216\001\022#"
-      "\n\035DeleteEvaluationTemplateRsp_T\020\266\216\001\022#\n\035M"
-      "odifyEvaluationTemplateReq_T\020\300\216\001\022#\n\035Modi"
-      "fyEvaluationTemplateRsp_T\020\312\216\001\022%\n\037QueryAl"
-      "lEvaluationTemplateReq_T\020\324\216\001\022%\n\037QueryAll"
-      "EvaluationTemplateRsp_T\020\336\216\001\022\035\n\027AddStoreE"
-      "valuationReq_T\020\374\216\001\022\035\n\027AddStoreEvaluation"
-      "Rsp_T\020\206\217\001\022 \n\032DeleteStoreEvaluationReq_T\020"
-      "\220\217\001\022 \n\032DeleteStoreEvaluationRsp_T\020\232\217\001\022 \n"
-      "\032ModifyStoreEvaluationReq_T\020\244\217\001\022 \n\032Modif"
-      "yStoreEvaluationRsp_T\020\256\217\001\022#\n\035QueryStoreE"
-      "valuationInfoReq_T\020\270\217\001\022#\n\035QueryStoreEval"
-      "uationInfoRsp_T\020\302\217\001\022\"\n\034QueryAllStoreEval"
-      "uationReq_T\020\314\217\001\022\"\n\034QueryAllStoreEvaluati"
-      "onRsp_T\020\326\217\001\022\037\n\031AddRemotePatrolStoreReq_T"
-      "\020\340\217\001\022\037\n\031AddRemotePatrolStoreRsp_T\020\352\217\001\022\"\n"
-      "\034DeleteRemotePatrolStoreReq_T\020\364\217\001\022\"\n\034Del"
-      "eteRemotePatrolStoreRsp_T\020\376\217\001\022\"\n\034ModifyR"
-      "emotePatrolStoreReq_T\020\210\220\001\022\"\n\034ModifyRemot"
-      "ePatrolStoreRsp_T\020\222\220\001\022%\n\037QueryRemotePatr"
-      "olStoreInfoReq_T\020\234\220\001\022%\n\037QueryRemotePatro"
-      "lStoreInfoRsp_T\020\246\220\001\022$\n\036QueryAllRemotePat"
-      "rolStoreReq_T\020\260\220\001\022$\n\036QueryAllRemotePatro"
-      "lStoreRsp_T\020\272\220\001\022\022\n\014AddAreaReq_T\020\270\224\001\022\022\n\014A"
-      "ddAreaRsp_T\020\302\224\001\022\025\n\017DeleteAreaReq_T\020\314\224\001\022\025"
-      "\n\017DeleteAreaRsp_T\020\326\224\001\022\025\n\017ModifyAreaReq_T"
-      "\020\340\224\001\022\025\n\017ModifyAreaRsp_T\020\352\224\001\022\030\n\022QueryArea"
-      "InfoReq_T\020\364\224\001\022\030\n\022QueryAreaInfoRsp_T\020\376\224\001\022"
-      "\027\n\021QueryAllAreaReq_T\020\210\225\001\022\027\n\021QueryAllArea"
-      "Rsp_T\020\222\225\001\022\033\n\025BindPushClientIDReq_T\020\234\225\001\022\033"
-      "\n\025BindPushClientIDRsp_T\020\246\225\001\022\035\n\027UnbindPus"
-      "hClientIDReq_T\020\260\225\001\022\035\n\027UnbindPushClientID"
-      "Rsp_T\020\272\225\001\022\031\n\023AddStoreSensorReq_T\020\200\226\001\022\031\n\023"
-      "AddStoreSensorRsp_T\020\212\226\001\022\034\n\026DeleteStoreSe"
-      "nsorReq_T\020\224\226\001\022\034\n\026DeleteStoreSensorRsp_T\020"
-      "\236\226\001\022\034\n\026ModifyStoreSensorReq_T\020\250\226\001\022\034\n\026Mod"
-      "ifyStoreSensorRsp_T\020\262\226\001\022\037\n\031QueryStoreSen"
-      "sorInfoReq_T\020\274\226\001\022\037\n\031QueryStoreSensorInfo"
-      "Rsp_T\020\306\226\001\022\036\n\030QueryAllStoreSensorReq_T\020\320\226"
-      "\001\022\036\n\030QueryAllStoreSensorRsp_T\020\332\226\001\022\030\n\022Imp"
-      "ortPOSDataReq_T\020\240\234\001\022\030\n\022ImportPOSDataRsp_"
-      "T\020\252\234\001\022%\n\037QueryCustomerFlowStatisticReq_T"
-      "\020\244\243\001\022%\n\037QueryCustomerFlowStatisticRsp_T\020"
-      "\256\243\001\022\"\n\034QueryPatrolResultReportReq_T\020\210\244\001\022"
-      "\"\n\034QueryPatrolResultReportRsp_T\020\222\244\001\022!\n\033R"
-      "eportCustomerFlowDataReq_T\020\260\352\001\022!\n\033Report"
-      "CustomerFlowDataRsp_T\020\272\352\001\022\033\n\025ReportSenso"
-      "rInfoReq_T\020\224\353\001\022\033\n\025ReportSensorInfoRsp_T\020"
-      "\236\353\001b\006proto3"
+      "lGroupReq\022I\n\021AddStoreReq_Value\030\226\001 \001(\0132-."
+      "CustomerFlow.Interactive.Message.AddStor"
+      "eReq\022O\n\024DeleteStoreReq_Value\030\240\001 \001(\01320.Cu"
+      "stomerFlow.Interactive.Message.DeleteSto"
+      "reReq\022O\n\024ModifyStoreReq_Value\030\252\001 \001(\01320.C"
+      "ustomerFlow.Interactive.Message.ModifySt"
+      "oreReq\022U\n\027QueryStoreInfoReq_Value\030\264\001 \001(\013"
+      "23.CustomerFlow.Interactive.Message.Quer"
+      "yStoreInfoReq\022S\n\026QueryAllStoreReq_Value\030"
+      "\276\001 \001(\01322.CustomerFlow.Interactive.Messag"
+      "e.QueryAllStoreReq\022O\n\024AddEntranceReq_Val"
+      "ue\030\310\001 \001(\01320.CustomerFlow.Interactive.Mes"
+      "sage.AddEntranceReq\022U\n\027DeleteEntranceReq"
+      "_Value\030\322\001 \001(\01323.CustomerFlow.Interactive"
+      ".Message.DeleteEntranceReq\022U\n\027ModifyEntr"
+      "anceReq_Value\030\334\001 \001(\01323.CustomerFlow.Inte"
+      "ractive.Message.ModifyEntranceReq\022[\n\032Add"
+      "EntranceDeviceReq_Value\030\346\001 \001(\01326.Custome"
+      "rFlow.Interactive.Message.AddEntranceDev"
+      "iceReq\022a\n\035DeleteEntranceDeviceReq_Value\030"
+      "\360\001 \001(\01329.CustomerFlow.Interactive.Messag"
+      "e.DeleteEntranceDeviceReq\022I\n\021AddEventReq"
+      "_Value\030\254\002 \001(\0132-.CustomerFlow.Interactive"
+      ".Message.AddEventReq\022O\n\024DeleteEventReq_V"
+      "alue\030\266\002 \001(\01320.CustomerFlow.Interactive.M"
+      "essage.DeleteEventReq\022O\n\024ModifyEventReq_"
+      "Value\030\300\002 \001(\01320.CustomerFlow.Interactive."
+      "Message.ModifyEventReq\022U\n\027QueryEventInfo"
+      "Req_Value\030\312\002 \001(\01323.CustomerFlow.Interact"
+      "ive.Message.QueryEventInfoReq\022S\n\026QueryAl"
+      "lEventReq_Value\030\324\002 \001(\01322.CustomerFlow.In"
+      "teractive.Message.QueryAllEventReq\022]\n\033Ad"
+      "dSmartGuardStoreReq_Value\030\336\002 \001(\01327.Custo"
+      "merFlow.Interactive.Message.AddSmartGuar"
+      "dStoreReq\022c\n\036DeleteSmartGuardStoreReq_Va"
+      "lue\030\350\002 \001(\0132:.CustomerFlow.Interactive.Me"
+      "ssage.DeleteSmartGuardStoreReq\022c\n\036Modify"
+      "SmartGuardStoreReq_Value\030\362\002 \001(\0132:.Custom"
+      "erFlow.Interactive.Message.ModifySmartGu"
+      "ardStoreReq\022i\n!QuerySmartGuardStoreInfoR"
+      "eq_Value\030\374\002 \001(\0132=.CustomerFlow.Interacti"
+      "ve.Message.QuerySmartGuardStoreInfoReq\022g"
+      "\n QueryAllSmartGuardStoreReq_Value\030\206\003 \001("
+      "\0132<.CustomerFlow.Interactive.Message.Que"
+      "ryAllSmartGuardStoreReq\022Y\n\031AddRegularPat"
+      "rolReq_Value\030\220\003 \001(\01325.CustomerFlow.Inter"
+      "active.Message.AddRegularPatrolReq\022_\n\034De"
+      "leteRegularPatrolReq_Value\030\232\003 \001(\01328.Cust"
+      "omerFlow.Interactive.Message.DeleteRegul"
+      "arPatrolReq\022_\n\034ModifyRegularPatrolReq_Va"
+      "lue\030\244\003 \001(\01328.CustomerFlow.Interactive.Me"
+      "ssage.ModifyRegularPatrolReq\022e\n\037QueryReg"
+      "ularPatrolInfoReq_Value\030\256\003 \001(\0132;.Custome"
+      "rFlow.Interactive.Message.QueryRegularPa"
+      "trolInfoReq\022c\n\036QueryAllRegularPatrolReq_"
+      "Value\030\270\003 \001(\0132:.CustomerFlow.Interactive."
+      "Message.QueryAllRegularPatrolReq\022S\n\026User"
+      "JoinStoreReq_Value\030\364\003 \001(\01322.CustomerFlow"
+      ".Interactive.Message.UserJoinStoreReq\022S\n"
+      "\026UserQuitStoreReq_Value\030\376\003 \001(\01322.Custome"
+      "rFlow.Interactive.Message.UserQuitStoreR"
+      "eq\022[\n\032QueryStoreAllUserReq_Value\030\210\004 \001(\0132"
+      "6.CustomerFlow.Interactive.Message.Query"
+      "StoreAllUserReq\022_\n\034QueryCompanyAllUserRe"
+      "q_Value\030\222\004 \001(\01328.CustomerFlow.Interactiv"
+      "e.Message.QueryCompanyAllUserReq\022U\n\027AddV"
+      "IPCustomerReq_Value\030\240\006 \001(\01323.CustomerFlo"
+      "w.Interactive.Message.AddVIPCustomerReq\022"
+      "[\n\032DeleteVIPCustomerReq_Value\030\252\006 \001(\01326.C"
+      "ustomerFlow.Interactive.Message.DeleteVI"
+      "PCustomerReq\022[\n\032ModifyVIPCustomerReq_Val"
+      "ue\030\264\006 \001(\01326.CustomerFlow.Interactive.Mes"
+      "sage.ModifyVIPCustomerReq\022a\n\035QueryVIPCus"
+      "tomerInfoReq_Value\030\276\006 \001(\01329.CustomerFlow"
+      ".Interactive.Message.QueryVIPCustomerInf"
+      "oReq\022_\n\034QueryAllVIPCustomerReq_Value\030\310\006 "
+      "\001(\01328.CustomerFlow.Interactive.Message.Q"
+      "ueryAllVIPCustomerReq\022a\n\035AddVIPConsumeHi"
+      "storyReq_Value\030\322\006 \001(\01329.CustomerFlow.Int"
+      "eractive.Message.AddVIPConsumeHistoryReq"
+      "\022g\n DeleteVIPConsumeHistoryReq_Value\030\334\006 "
+      "\001(\0132<.CustomerFlow.Interactive.Message.D"
+      "eleteVIPConsumeHistoryReq\022g\n ModifyVIPCo"
+      "nsumeHistoryReq_Value\030\346\006 \001(\0132<.CustomerF"
+      "low.Interactive.Message.ModifyVIPConsume"
+      "HistoryReq\022k\n\"QueryAllVIPConsumeHistoryR"
+      "eq_Value\030\360\006 \001(\0132>.CustomerFlow.Interacti"
+      "ve.Message.QueryAllVIPConsumeHistoryReq\022"
+      "c\n\036AddEvaluationTemplateReq_Value\030\204\007 \001(\013"
+      "2:.CustomerFlow.Interactive.Message.AddE"
+      "valuationTemplateReq\022i\n!DeleteEvaluation"
+      "TemplateReq_Value\030\216\007 \001(\0132=.CustomerFlow."
+      "Interactive.Message.DeleteEvaluationTemp"
+      "lateReq\022i\n!ModifyEvaluationTemplateReq_V"
+      "alue\030\230\007 \001(\0132=.CustomerFlow.Interactive.M"
+      "essage.ModifyEvaluationTemplateReq\022m\n#Qu"
+      "eryAllEvaluationTemplateReq_Value\030\242\007 \001(\013"
+      "2\?.CustomerFlow.Interactive.Message.Quer"
+      "yAllEvaluationTemplateReq\022]\n\033AddStoreEva"
+      "luationReq_Value\030\266\007 \001(\01327.CustomerFlow.I"
+      "nteractive.Message.AddStoreEvaluationReq"
+      "\022c\n\036DeleteStoreEvaluationReq_Value\030\300\007 \001("
+      "\0132:.CustomerFlow.Interactive.Message.Del"
+      "eteStoreEvaluationReq\022c\n\036ModifyStoreEval"
+      "uationReq_Value\030\312\007 \001(\0132:.CustomerFlow.In"
+      "teractive.Message.ModifyStoreEvaluationR"
+      "eq\022i\n!QueryStoreEvaluationInfoReq_Value\030"
+      "\324\007 \001(\0132=.CustomerFlow.Interactive.Messag"
+      "e.QueryStoreEvaluationInfoReq\022g\n QueryAl"
+      "lStoreEvaluationReq_Value\030\336\007 \001(\0132<.Custo"
+      "merFlow.Interactive.Message.QueryAllStor"
+      "eEvaluationReq\022a\n\035AddRemotePatrolStoreRe"
+      "q_Value\030\350\007 \001(\01329.CustomerFlow.Interactiv"
+      "e.Message.AddRemotePatrolStoreReq\022g\n Del"
+      "eteRemotePatrolStoreReq_Value\030\362\007 \001(\0132<.C"
+      "ustomerFlow.Interactive.Message.DeleteRe"
+      "motePatrolStoreReq\022g\n ModifyRemotePatrol"
+      "StoreReq_Value\030\374\007 \001(\0132<.CustomerFlow.Int"
+      "eractive.Message.ModifyRemotePatrolStore"
+      "Req\022m\n#QueryRemotePatrolStoreInfoReq_Val"
+      "ue\030\206\010 \001(\0132\?.CustomerFlow.Interactive.Mes"
+      "sage.QueryRemotePatrolStoreInfoReq\022k\n\"Qu"
+      "eryAllRemotePatrolStoreReq_Value\030\220\010 \001(\0132"
+      ">.CustomerFlow.Interactive.Message.Query"
+      "AllRemotePatrolStoreReq\022G\n\020AddAreaReq_Va"
+      "lue\030\314\010 \001(\0132,.CustomerFlow.Interactive.Me"
+      "ssage.AddAreaReq\022M\n\023DeleteAreaReq_Value\030"
+      "\326\010 \001(\0132/.CustomerFlow.Interactive.Messag"
+      "e.DeleteAreaReq\022M\n\023ModifyAreaReq_Value\030\340"
+      "\010 \001(\0132/.CustomerFlow.Interactive.Message"
+      ".ModifyAreaReq\022S\n\026QueryAreaInfoReq_Value"
+      "\030\352\010 \001(\01322.CustomerFlow.Interactive.Messa"
+      "ge.QueryAreaInfoReq\022Q\n\025QueryAllAreaReq_V"
+      "alue\030\364\010 \001(\01321.CustomerFlow.Interactive.M"
+      "essage.QueryAllAreaReq\022Y\n\031BindPushClient"
+      "IDReq_Value\030\376\010 \001(\01325.CustomerFlow.Intera"
+      "ctive.Message.BindPushClientIDReq\022]\n\033Unb"
+      "indPushClientIDReq_Value\030\210\t \001(\01327.Custom"
+      "erFlow.Interactive.Message.UnbindPushCli"
+      "entIDReq\022U\n\027AddStoreSensorReq_Value\030\260\t \001"
+      "(\01323.CustomerFlow.Interactive.Message.Ad"
+      "dStoreSensorReq\022[\n\032DeleteStoreSensorReq_"
+      "Value\030\272\t \001(\01326.CustomerFlow.Interactive."
+      "Message.DeleteStoreSensorReq\022[\n\032ModifySt"
+      "oreSensorReq_Value\030\304\t \001(\01326.CustomerFlow"
+      ".Interactive.Message.ModifyStoreSensorRe"
+      "q\022a\n\035QueryStoreSensorInfoReq_Value\030\316\t \001("
+      "\01329.CustomerFlow.Interactive.Message.Que"
+      "ryStoreSensorInfoReq\022_\n\034QueryAllStoreSen"
+      "sorReq_Value\030\330\t \001(\01328.CustomerFlow.Inter"
+      "active.Message.QueryAllStoreSensorReq\022S\n"
+      "\026ImportPOSDataReq_Value\030\320\017 \001(\01322.Custome"
+      "rFlow.Interactive.Message.ImportPOSDataR"
+      "eq\022m\n#QueryCustomerFlowStatisticReq_Valu"
+      "e\030\324\026 \001(\0132\?.CustomerFlow.Interactive.Mess"
+      "age.QueryCustomerFlowStatisticReq\022g\n Que"
+      "ryPatrolResultReportReq_Value\030\270\027 \001(\0132<.C"
+      "ustomerFlow.Interactive.Message.QueryPat"
+      "rolResultReportReq\022e\n\037ReportCustomerFlow"
+      "DataReq_Value\030\210\' \001(\0132;.CustomerFlow.Inte"
+      "ractive.Message.ReportCustomerFlowDataRe"
+      "q\022Y\n\031ReportSensorInfoReq_Value\030\354\' \001(\01325."
+      "CustomerFlow.Interactive.Message.ReportS"
+      "ensorInfoReq\"\3607\n\010Response\022\020\n\010iRetcode\030\001 "
+      "\001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022b\n\036CustomerFlowPr"
+      "eHandleRsp_Value\030\n \001(\0132:.CustomerFlow.In"
+      "teractive.Message.CustomerFlowPreHandleR"
+      "sp\022J\n\022ShakehandRsp_Value\0302 \001(\0132..Custome"
+      "rFlow.Interactive.Message.ShakehandRsp\022H"
+      "\n\021AddGroupRsp_Value\030d \001(\0132-.CustomerFlow"
+      ".Interactive.Message.AddGroupRsp\022N\n\024Dele"
+      "teGroupRsp_Value\030n \001(\01320.CustomerFlow.In"
+      "teractive.Message.DeleteGroupRsp\022N\n\024Modi"
+      "fyGroupRsp_Value\030x \001(\01320.CustomerFlow.In"
+      "teractive.Message.ModifyGroupRsp\022U\n\027Quer"
+      "yGroupInfoRsp_Value\030\202\001 \001(\01323.CustomerFlo"
+      "w.Interactive.Message.QueryGroupInfoRsp\022"
+      "S\n\026QueryAllGroupRsp_Value\030\214\001 \001(\01322.Custo"
+      "merFlow.Interactive.Message.QueryAllGrou"
+      "pRsp\022I\n\021AddStoreRsp_Value\030\226\001 \001(\0132-.Custo"
+      "merFlow.Interactive.Message.AddStoreRsp\022"
+      "O\n\024DeleteStoreRsp_Value\030\240\001 \001(\01320.Custome"
+      "rFlow.Interactive.Message.DeleteStoreRsp"
+      "\022O\n\024ModifyStoreRsp_Value\030\252\001 \001(\01320.Custom"
+      "erFlow.Interactive.Message.ModifyStoreRs"
+      "p\022U\n\027QueryStoreInfoRsp_Value\030\264\001 \001(\01323.Cu"
+      "stomerFlow.Interactive.Message.QueryStor"
+      "eInfoRsp\022S\n\026QueryAllStoreRsp_Value\030\276\001 \001("
+      "\01322.CustomerFlow.Interactive.Message.Que"
+      "ryAllStoreRsp\022O\n\024AddEntranceRsp_Value\030\310\001"
+      " \001(\01320.CustomerFlow.Interactive.Message."
+      "AddEntranceRsp\022U\n\027DeleteEntranceRsp_Valu"
+      "e\030\322\001 \001(\01323.CustomerFlow.Interactive.Mess"
+      "age.DeleteEntranceRsp\022U\n\027ModifyEntranceR"
+      "sp_Value\030\334\001 \001(\01323.CustomerFlow.Interacti"
+      "ve.Message.ModifyEntranceRsp\022[\n\032AddEntra"
+      "nceDeviceRsp_Value\030\346\001 \001(\01326.CustomerFlow"
+      ".Interactive.Message.AddEntranceDeviceRs"
+      "p\022a\n\035DeleteEntranceDeviceRsp_Value\030\360\001 \001("
+      "\01329.CustomerFlow.Interactive.Message.Del"
+      "eteEntranceDeviceRsp\022I\n\021AddEventRsp_Valu"
+      "e\030\254\002 \001(\0132-.CustomerFlow.Interactive.Mess"
+      "age.AddEventRsp\022O\n\024DeleteEventRsp_Value\030"
+      "\266\002 \001(\01320.CustomerFlow.Interactive.Messag"
+      "e.DeleteEventRsp\022O\n\024ModifyEventRsp_Value"
+      "\030\300\002 \001(\01320.CustomerFlow.Interactive.Messa"
+      "ge.ModifyEventRsp\022U\n\027QueryEventInfoRsp_V"
+      "alue\030\312\002 \001(\01323.CustomerFlow.Interactive.M"
+      "essage.QueryEventInfoRsp\022S\n\026QueryAllEven"
+      "tRsp_Value\030\324\002 \001(\01322.CustomerFlow.Interac"
+      "tive.Message.QueryAllEventRsp\022]\n\033AddSmar"
+      "tGuardStoreRsp_Value\030\336\002 \001(\01327.CustomerFl"
+      "ow.Interactive.Message.AddSmartGuardStor"
+      "eRsp\022c\n\036DeleteSmartGuardStoreRsp_Value\030\350"
+      "\002 \001(\0132:.CustomerFlow.Interactive.Message"
+      ".DeleteSmartGuardStoreRsp\022c\n\036ModifySmart"
+      "GuardStoreRsp_Value\030\362\002 \001(\0132:.CustomerFlo"
+      "w.Interactive.Message.ModifySmartGuardSt"
+      "oreRsp\022i\n!QuerySmartGuardStoreInfoRsp_Va"
+      "lue\030\374\002 \001(\0132=.CustomerFlow.Interactive.Me"
+      "ssage.QuerySmartGuardStoreInfoRsp\022g\n Que"
+      "ryAllSmartGuardStoreRsp_Value\030\206\003 \001(\0132<.C"
+      "ustomerFlow.Interactive.Message.QueryAll"
+      "SmartGuardStoreRsp\022Y\n\031AddRegularPatrolRs"
+      "p_Value\030\220\003 \001(\01325.CustomerFlow.Interactiv"
+      "e.Message.AddRegularPatrolRsp\022_\n\034DeleteR"
+      "egularPatrolRsp_Value\030\232\003 \001(\01328.CustomerF"
+      "low.Interactive.Message.DeleteRegularPat"
+      "rolRsp\022_\n\034ModifyRegularPatrolRsp_Value\030\244"
+      "\003 \001(\01328.CustomerFlow.Interactive.Message"
+      ".ModifyRegularPatrolRsp\022e\n\037QueryRegularP"
+      "atrolInfoRsp_Value\030\256\003 \001(\0132;.CustomerFlow"
+      ".Interactive.Message.QueryRegularPatrolI"
+      "nfoRsp\022c\n\036QueryAllRegularPatrolRsp_Value"
+      "\030\270\003 \001(\0132:.CustomerFlow.Interactive.Messa"
+      "ge.QueryAllRegularPatrolRsp\022S\n\026UserJoinS"
+      "toreRsp_Value\030\364\003 \001(\01322.CustomerFlow.Inte"
+      "ractive.Message.UserJoinStoreRsp\022S\n\026User"
+      "QuitStoreRsp_Value\030\376\003 \001(\01322.CustomerFlow"
+      ".Interactive.Message.UserQuitStoreRsp\022[\n"
+      "\032QueryStoreAllUserRsp_Value\030\210\004 \001(\01326.Cus"
+      "tomerFlow.Interactive.Message.QueryStore"
+      "AllUserRsp\022_\n\034QueryCompanyAllUserRsp_Val"
+      "ue\030\222\004 \001(\01328.CustomerFlow.Interactive.Mes"
+      "sage.QueryCompanyAllUserRsp\022U\n\027AddVIPCus"
+      "tomerRsp_Value\030\240\006 \001(\01323.CustomerFlow.Int"
+      "eractive.Message.AddVIPCustomerRsp\022[\n\032De"
+      "leteVIPCustomerRsp_Value\030\252\006 \001(\01326.Custom"
+      "erFlow.Interactive.Message.DeleteVIPCust"
+      "omerRsp\022[\n\032ModifyVIPCustomerRsp_Value\030\264\006"
+      " \001(\01326.CustomerFlow.Interactive.Message."
+      "ModifyVIPCustomerRsp\022a\n\035QueryVIPCustomer"
+      "InfoRsp_Value\030\276\006 \001(\01329.CustomerFlow.Inte"
+      "ractive.Message.QueryVIPCustomerInfoRsp\022"
+      "_\n\034QueryAllVIPCustomerRsp_Value\030\310\006 \001(\01328"
+      ".CustomerFlow.Interactive.Message.QueryA"
+      "llVIPCustomerRsp\022a\n\035AddVIPConsumeHistory"
+      "Rsp_Value\030\322\006 \001(\01329.CustomerFlow.Interact"
+      "ive.Message.AddVIPConsumeHistoryRsp\022g\n D"
+      "eleteVIPConsumeHistoryRsp_Value\030\334\006 \001(\0132<"
+      ".CustomerFlow.Interactive.Message.Delete"
+      "VIPConsumeHistoryRsp\022g\n ModifyVIPConsume"
+      "HistoryRsp_Value\030\346\006 \001(\0132<.CustomerFlow.I"
+      "nteractive.Message.ModifyVIPConsumeHisto"
+      "ryRsp\022k\n\"QueryAllVIPConsumeHistoryRsp_Va"
+      "lue\030\360\006 \001(\0132>.CustomerFlow.Interactive.Me"
+      "ssage.QueryAllVIPConsumeHistoryRsp\022c\n\036Ad"
+      "dEvaluationTemplateRsp_Value\030\204\007 \001(\0132:.Cu"
+      "stomerFlow.Interactive.Message.AddEvalua"
+      "tionTemplateRsp\022i\n!DeleteEvaluationTempl"
+      "ateRsp_Value\030\216\007 \001(\0132=.CustomerFlow.Inter"
+      "active.Message.DeleteEvaluationTemplateR"
+      "sp\022i\n!ModifyEvaluationTemplateRsp_Value\030"
+      "\230\007 \001(\0132=.CustomerFlow.Interactive.Messag"
+      "e.ModifyEvaluationTemplateRsp\022m\n#QueryAl"
+      "lEvaluationTemplateRsp_Value\030\242\007 \001(\0132\?.Cu"
+      "stomerFlow.Interactive.Message.QueryAllE"
+      "valuationTemplateRsp\022]\n\033AddStoreEvaluati"
+      "onRsp_Value\030\266\007 \001(\01327.CustomerFlow.Intera"
+      "ctive.Message.AddStoreEvaluationRsp\022c\n\036D"
+      "eleteStoreEvaluationRsp_Value\030\300\007 \001(\0132:.C"
+      "ustomerFlow.Interactive.Message.DeleteSt"
+      "oreEvaluationRsp\022c\n\036ModifyStoreEvaluatio"
+      "nRsp_Value\030\312\007 \001(\0132:.CustomerFlow.Interac"
+      "tive.Message.ModifyStoreEvaluationRsp\022i\n"
+      "!QueryStoreEvaluationInfoRsp_Value\030\324\007 \001("
+      "\0132=.CustomerFlow.Interactive.Message.Que"
+      "ryStoreEvaluationInfoRsp\022g\n QueryAllStor"
+      "eEvaluationRsp_Value\030\336\007 \001(\0132<.CustomerFl"
+      "ow.Interactive.Message.QueryAllStoreEval"
+      "uationRsp\022a\n\035AddRemotePatrolStoreRsp_Val"
+      "ue\030\350\007 \001(\01329.CustomerFlow.Interactive.Mes"
+      "sage.AddRemotePatrolStoreRsp\022g\n DeleteRe"
+      "motePatrolStoreRsp_Value\030\362\007 \001(\0132<.Custom"
+      "erFlow.Interactive.Message.DeleteRemoteP"
+      "atrolStoreRsp\022g\n ModifyRemotePatrolStore"
+      "Rsp_Value\030\374\007 \001(\0132<.CustomerFlow.Interact"
+      "ive.Message.ModifyRemotePatrolStoreRsp\022m"
+      "\n#QueryRemotePatrolStoreInfoRsp_Value\030\206\010"
+      " \001(\0132\?.CustomerFlow.Interactive.Message."
+      "QueryRemotePatrolStoreInfoRsp\022k\n\"QueryAl"
+      "lRemotePatrolStoreRsp_Value\030\220\010 \001(\0132>.Cus"
+      "tomerFlow.Interactive.Message.QueryAllRe"
+      "motePatrolStoreRsp\022G\n\020AddAreaRsp_Value\030\314"
+      "\010 \001(\0132,.CustomerFlow.Interactive.Message"
+      ".AddAreaRsp\022M\n\023DeleteAreaRsp_Value\030\326\010 \001("
+      "\0132/.CustomerFlow.Interactive.Message.Del"
+      "eteAreaRsp\022M\n\023ModifyAreaRsp_Value\030\340\010 \001(\013"
+      "2/.CustomerFlow.Interactive.Message.Modi"
+      "fyAreaRsp\022S\n\026QueryAreaInfoRsp_Value\030\352\010 \001"
+      "(\01322.CustomerFlow.Interactive.Message.Qu"
+      "eryAreaInfoRsp\022Q\n\025QueryAllAreaRsp_Value\030"
+      "\364\010 \001(\01321.CustomerFlow.Interactive.Messag"
+      "e.QueryAllAreaRsp\022Y\n\031BindPushClientIDRsp"
+      "_Value\030\376\010 \001(\01325.CustomerFlow.Interactive"
+      ".Message.BindPushClientIDRsp\022]\n\033UnbindPu"
+      "shClientIDRsp_Value\030\210\t \001(\01327.CustomerFlo"
+      "w.Interactive.Message.UnbindPushClientID"
+      "Rsp\022U\n\027AddStoreSensorRsp_Value\030\260\t \001(\01323."
+      "CustomerFlow.Interactive.Message.AddStor"
+      "eSensorRsp\022[\n\032DeleteStoreSensorRsp_Value"
+      "\030\272\t \001(\01326.CustomerFlow.Interactive.Messa"
+      "ge.DeleteStoreSensorRsp\022[\n\032ModifyStoreSe"
+      "nsorRsp_Value\030\304\t \001(\01326.CustomerFlow.Inte"
+      "ractive.Message.ModifyStoreSensorRsp\022a\n\035"
+      "QueryStoreSensorInfoRsp_Value\030\316\t \001(\01329.C"
+      "ustomerFlow.Interactive.Message.QuerySto"
+      "reSensorInfoRsp\022_\n\034QueryAllStoreSensorRs"
+      "p_Value\030\330\t \001(\01328.CustomerFlow.Interactiv"
+      "e.Message.QueryAllStoreSensorRsp\022S\n\026Impo"
+      "rtPOSDataRsp_Value\030\320\017 \001(\01322.CustomerFlow"
+      ".Interactive.Message.ImportPOSDataRsp\022m\n"
+      "#QueryCustomerFlowStatisticRsp_Value\030\324\026 "
+      "\001(\0132\?.CustomerFlow.Interactive.Message.Q"
+      "ueryCustomerFlowStatisticRsp\022g\n QueryPat"
+      "rolResultReportRsp_Value\030\270\027 \001(\0132<.Custom"
+      "erFlow.Interactive.Message.QueryPatrolRe"
+      "sultReportRsp\022e\n\037ReportCustomerFlowDataR"
+      "sp_Value\030\210\' \001(\0132;.CustomerFlow.Interacti"
+      "ve.Message.ReportCustomerFlowDataRsp\022Y\n\031"
+      "ReportSensorInfoRsp_Value\030\354\' \001(\01325.Custo"
+      "merFlow.Interactive.Message.ReportSensor"
+      "InfoRsp\"\367\001\n\023CustomerFlowMessage\022C\n\004type\030"
+      "\001 \001(\01625.CustomerFlow.Interactive.Message"
+      ".CustomerFlowMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016"
+      "\n\006strSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\0132).Custo"
+      "merFlow.Interactive.Message.Request\022<\n\010r"
+      "spValue\030\005 \001(\0132*.CustomerFlow.Interactive"
+      ".Message.Response*\323#\n\023CustomerFlowMsgTyp"
+      "e\022\n\n\006Init_T\020\000\022\037\n\032CustomerFlowPreHandleRe"
+      "q_T\020\250F\022\037\n\032CustomerFlowPreHandleRsp_T\020\262F\022"
+      "\023\n\016ShakehandReq_T\020\214G\022\023\n\016ShakehandRsp_T\020\226"
+      "G\022\022\n\rAddGroupReq_T\020\220N\022\022\n\rAddGroupRsp_T\020\232"
+      "N\022\025\n\020DeleteGroupReq_T\020\244N\022\025\n\020DeleteGroupR"
+      "sp_T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025\n\020Modify"
+      "GroupRsp_T\020\302N\022\030\n\023QueryGroupInfoReq_T\020\314N\022"
+      "\030\n\023QueryGroupInfoRsp_T\020\326N\022\027\n\022QueryAllGro"
+      "upReq_T\020\340N\022\027\n\022QueryAllGroupRsp_T\020\352N\022\022\n\rA"
+      "ddStoreReq_T\020\364N\022\022\n\rAddStoreRsp_T\020\376N\022\025\n\020D"
+      "eleteStoreReq_T\020\210O\022\025\n\020DeleteStoreRsp_T\020\222"
+      "O\022\025\n\020ModifyStoreReq_T\020\234O\022\025\n\020ModifyStoreR"
+      "sp_T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260O\022\030\n\023Que"
+      "ryStoreInfoRsp_T\020\272O\022\027\n\022QueryAllStoreReq_"
+      "T\020\304O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n\020AddEntr"
+      "anceReq_T\020\330O\022\025\n\020AddEntranceRsp_T\020\342O\022\030\n\023D"
+      "eleteEntranceReq_T\020\354O\022\030\n\023DeleteEntranceR"
+      "sp_T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200P\022\030\n\023Mod"
+      "ifyEntranceRsp_T\020\212P\022\033\n\026AddEntranceDevice"
+      "Req_T\020\224P\022\033\n\026AddEntranceDeviceRsp_T\020\236P\022\036\n"
+      "\031DeleteEntranceDeviceReq_T\020\250P\022\036\n\031DeleteE"
+      "ntranceDeviceRsp_T\020\262P\022\022\n\rAddEventReq_T\020\344"
+      "P\022\022\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteEventReq_"
+      "T\020\370P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020ModifyEve"
+      "ntReq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226Q\022\030\n\023Que"
+      "ryEventInfoReq_T\020\240Q\022\030\n\023QueryEventInfoRsp"
+      "_T\020\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027\n\022QueryA"
+      "llEventRsp_T\020\276Q\022\034\n\027AddSmartGuardStoreReq"
+      "_T\020\310Q\022\034\n\027AddSmartGuardStoreRsp_T\020\322Q\022\037\n\032D"
+      "eleteSmartGuardStoreReq_T\020\334Q\022\037\n\032DeleteSm"
+      "artGuardStoreRsp_T\020\346Q\022\037\n\032ModifySmartGuar"
+      "dStoreReq_T\020\360Q\022\037\n\032ModifySmartGuardStoreR"
+      "sp_T\020\372Q\022\"\n\035QuerySmartGuardStoreInfoReq_T"
+      "\020\204R\022\"\n\035QuerySmartGuardStoreInfoRsp_T\020\216R\022"
+      "!\n\034QueryAllSmartGuardStoreReq_T\020\230R\022!\n\034Qu"
+      "eryAllSmartGuardStoreRsp_T\020\242R\022\032\n\025AddRegu"
+      "larPatrolReq_T\020\254R\022\032\n\025AddRegularPatrolRsp"
+      "_T\020\266R\022\035\n\030DeleteRegularPatrolReq_T\020\300R\022\035\n\030"
+      "DeleteRegularPatrolRsp_T\020\312R\022\035\n\030ModifyReg"
+      "ularPatrolReq_T\020\324R\022\035\n\030ModifyRegularPatro"
+      "lRsp_T\020\336R\022 \n\033QueryRegularPatrolInfoReq_T"
+      "\020\350R\022 \n\033QueryRegularPatrolInfoRsp_T\020\362R\022\037\n"
+      "\032QueryAllRegularPatrolReq_T\020\374R\022\037\n\032QueryA"
+      "llRegularPatrolRsp_T\020\206S\022\027\n\022UserJoinStore"
+      "Req_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326S\022\027\n\022Use"
+      "rQuitStoreReq_T\020\340S\022\027\n\022UserQuitStoreRsp_T"
+      "\020\352S\022\033\n\026QueryStoreAllUserReq_T\020\364S\022\033\n\026Quer"
+      "yStoreAllUserRsp_T\020\376S\022\035\n\030QueryCompanyAll"
+      "UserReq_T\020\210T\022\035\n\030QueryCompanyAllUserRsp_T"
+      "\020\222T\022\031\n\023AddVIPCustomerReq_T\020\320\214\001\022\031\n\023AddVIP"
+      "CustomerRsp_T\020\332\214\001\022\034\n\026DeleteVIPCustomerRe"
+      "q_T\020\344\214\001\022\034\n\026DeleteVIPCustomerRsp_T\020\356\214\001\022\034\n"
+      "\026ModifyVIPCustomerReq_T\020\370\214\001\022\034\n\026ModifyVIP"
+      "CustomerRsp_T\020\202\215\001\022\037\n\031QueryVIPCustomerInf"
+      "oReq_T\020\214\215\001\022\037\n\031QueryVIPCustomerInfoRsp_T\020"
+      "\226\215\001\022\036\n\030QueryAllVIPCustomerReq_T\020\240\215\001\022\036\n\030Q"
+      "ueryAllVIPCustomerRsp_T\020\252\215\001\022\037\n\031AddVIPCon"
+      "sumeHistoryReq_T\020\264\215\001\022\037\n\031AddVIPConsumeHis"
+      "toryRsp_T\020\276\215\001\022\"\n\034DeleteVIPConsumeHistory"
+      "Req_T\020\310\215\001\022\"\n\034DeleteVIPConsumeHistoryRsp_"
+      "T\020\322\215\001\022\"\n\034ModifyVIPConsumeHistoryReq_T\020\334\215"
+      "\001\022\"\n\034ModifyVIPConsumeHistoryRsp_T\020\346\215\001\022$\n"
+      "\036QueryAllVIPConsumeHistoryReq_T\020\360\215\001\022$\n\036Q"
+      "ueryAllVIPConsumeHistoryRsp_T\020\372\215\001\022 \n\032Add"
+      "EvaluationTemplateReq_T\020\230\216\001\022 \n\032AddEvalua"
+      "tionTemplateRsp_T\020\242\216\001\022#\n\035DeleteEvaluatio"
+      "nTemplateReq_T\020\254\216\001\022#\n\035DeleteEvaluationTe"
+      "mplateRsp_T\020\266\216\001\022#\n\035ModifyEvaluationTempl"
+      "ateReq_T\020\300\216\001\022#\n\035ModifyEvaluationTemplate"
+      "Rsp_T\020\312\216\001\022%\n\037QueryAllEvaluationTemplateR"
+      "eq_T\020\324\216\001\022%\n\037QueryAllEvaluationTemplateRs"
+      "p_T\020\336\216\001\022\035\n\027AddStoreEvaluationReq_T\020\374\216\001\022\035"
+      "\n\027AddStoreEvaluationRsp_T\020\206\217\001\022 \n\032DeleteS"
+      "toreEvaluationReq_T\020\220\217\001\022 \n\032DeleteStoreEv"
+      "aluationRsp_T\020\232\217\001\022 \n\032ModifyStoreEvaluati"
+      "onReq_T\020\244\217\001\022 \n\032ModifyStoreEvaluationRsp_"
+      "T\020\256\217\001\022#\n\035QueryStoreEvaluationInfoReq_T\020\270"
+      "\217\001\022#\n\035QueryStoreEvaluationInfoRsp_T\020\302\217\001\022"
+      "\"\n\034QueryAllStoreEvaluationReq_T\020\314\217\001\022\"\n\034Q"
+      "ueryAllStoreEvaluationRsp_T\020\326\217\001\022\037\n\031AddRe"
+      "motePatrolStoreReq_T\020\340\217\001\022\037\n\031AddRemotePat"
+      "rolStoreRsp_T\020\352\217\001\022\"\n\034DeleteRemotePatrolS"
+      "toreReq_T\020\364\217\001\022\"\n\034DeleteRemotePatrolStore"
+      "Rsp_T\020\376\217\001\022\"\n\034ModifyRemotePatrolStoreReq_"
+      "T\020\210\220\001\022\"\n\034ModifyRemotePatrolStoreRsp_T\020\222\220"
+      "\001\022%\n\037QueryRemotePatrolStoreInfoReq_T\020\234\220\001"
+      "\022%\n\037QueryRemotePatrolStoreInfoRsp_T\020\246\220\001\022"
+      "$\n\036QueryAllRemotePatrolStoreReq_T\020\260\220\001\022$\n"
+      "\036QueryAllRemotePatrolStoreRsp_T\020\272\220\001\022\022\n\014A"
+      "ddAreaReq_T\020\270\224\001\022\022\n\014AddAreaRsp_T\020\302\224\001\022\025\n\017D"
+      "eleteAreaReq_T\020\314\224\001\022\025\n\017DeleteAreaRsp_T\020\326\224"
+      "\001\022\025\n\017ModifyAreaReq_T\020\340\224\001\022\025\n\017ModifyAreaRs"
+      "p_T\020\352\224\001\022\030\n\022QueryAreaInfoReq_T\020\364\224\001\022\030\n\022Que"
+      "ryAreaInfoRsp_T\020\376\224\001\022\027\n\021QueryAllAreaReq_T"
+      "\020\210\225\001\022\027\n\021QueryAllAreaRsp_T\020\222\225\001\022\033\n\025BindPus"
+      "hClientIDReq_T\020\234\225\001\022\033\n\025BindPushClientIDRs"
+      "p_T\020\246\225\001\022\035\n\027UnbindPushClientIDReq_T\020\260\225\001\022\035"
+      "\n\027UnbindPushClientIDRsp_T\020\272\225\001\022\031\n\023AddStor"
+      "eSensorReq_T\020\200\226\001\022\031\n\023AddStoreSensorRsp_T\020"
+      "\212\226\001\022\034\n\026DeleteStoreSensorReq_T\020\224\226\001\022\034\n\026Del"
+      "eteStoreSensorRsp_T\020\236\226\001\022\034\n\026ModifyStoreSe"
+      "nsorReq_T\020\250\226\001\022\034\n\026ModifyStoreSensorRsp_T\020"
+      "\262\226\001\022\037\n\031QueryStoreSensorInfoReq_T\020\274\226\001\022\037\n\031"
+      "QueryStoreSensorInfoRsp_T\020\306\226\001\022\036\n\030QueryAl"
+      "lStoreSensorReq_T\020\320\226\001\022\036\n\030QueryAllStoreSe"
+      "nsorRsp_T\020\332\226\001\022\030\n\022ImportPOSDataReq_T\020\240\234\001\022"
+      "\030\n\022ImportPOSDataRsp_T\020\252\234\001\022%\n\037QueryCustom"
+      "erFlowStatisticReq_T\020\244\243\001\022%\n\037QueryCustome"
+      "rFlowStatisticRsp_T\020\256\243\001\022\"\n\034QueryPatrolRe"
+      "sultReportReq_T\020\210\244\001\022\"\n\034QueryPatrolResult"
+      "ReportRsp_T\020\222\244\001\022!\n\033ReportCustomerFlowDat"
+      "aReq_T\020\260\352\001\022!\n\033ReportCustomerFlowDataRsp_"
+      "T\020\272\352\001\022\033\n\025ReportSensorInfoReq_T\020\224\353\001\022\033\n\025Re"
+      "portSensorInfoRsp_T\020\236\353\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 34091);
+      descriptor, 34151);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolCustomerFlow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -5462,6 +5466,7 @@ void Group::set_uistate(::google::protobuf::uint32 value) {
 const int Entrance::kStrEntranceIDFieldNumber;
 const int Entrance::kStrEntranceNameFieldNumber;
 const int Entrance::kStrDeviceIDFieldNumber;
+const int Entrance::kStrPictureFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Entrance::Entrance()
@@ -5486,12 +5491,17 @@ Entrance::Entrance(const Entrance& from)
   if (from.strentrancename().size() > 0) {
     strentrancename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentrancename_);
   }
+  strpicture_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strpicture().size() > 0) {
+    strpicture_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpicture_);
+  }
   // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.Entrance)
 }
 
 void Entrance::SharedCtor() {
   strentranceid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strentrancename_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpicture_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -5503,6 +5513,7 @@ Entrance::~Entrance() {
 void Entrance::SharedDtor() {
   strentranceid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strentrancename_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpicture_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void Entrance::SetCachedSize(int size) const {
@@ -5533,6 +5544,7 @@ void Entrance::Clear() {
   strdeviceid_.Clear();
   strentranceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strentrancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strpicture_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 bool Entrance::MergePartialFromCodedStream(
@@ -5585,6 +5597,21 @@ bool Entrance::MergePartialFromCodedStream(
             this->strdeviceid(this->strdeviceid_size() - 1).length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "CustomerFlow.Interactive.Message.Entrance.strDeviceID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strPicture = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strpicture()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strpicture().data(), this->strpicture().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.Entrance.strPicture"));
         } else {
           goto handle_unusual;
         }
@@ -5645,6 +5672,16 @@ void Entrance::SerializeWithCachedSizes(
       3, this->strdeviceid(i), output);
   }
 
+  // string strPicture = 4;
+  if (this->strpicture().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpicture().data(), this->strpicture().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.Entrance.strPicture");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strpicture(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.Entrance)
 }
 
@@ -5684,6 +5721,17 @@ void Entrance::SerializeWithCachedSizes(
       WriteStringToArray(3, this->strdeviceid(i), target);
   }
 
+  // string strPicture = 4;
+  if (this->strpicture().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strpicture().data(), this->strpicture().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.Entrance.strPicture");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strpicture(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.Entrance)
   return target;
 }
@@ -5712,6 +5760,13 @@ size_t Entrance::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->strentrancename());
+  }
+
+  // string strPicture = 4;
+  if (this->strpicture().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strpicture());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -5749,6 +5804,10 @@ void Entrance::MergeFrom(const Entrance& from) {
 
     strentrancename_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strentrancename_);
   }
+  if (from.strpicture().size() > 0) {
+
+    strpicture_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strpicture_);
+  }
 }
 
 void Entrance::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5777,6 +5836,7 @@ void Entrance::InternalSwap(Entrance* other) {
   strdeviceid_.UnsafeArenaSwap(&other->strdeviceid_);
   strentranceid_.Swap(&other->strentranceid_);
   strentrancename_.Swap(&other->strentrancename_);
+  strpicture_.Swap(&other->strpicture_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
@@ -5945,6 +6005,58 @@ Entrance::strdeviceid() const {
 Entrance::mutable_strdeviceid() {
   // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.Entrance.strDeviceID)
   return &strdeviceid_;
+}
+
+// string strPicture = 4;
+void Entrance::clear_strpicture() {
+  strpicture_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& Entrance::strpicture() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  return strpicture_.GetNoArena();
+}
+void Entrance::set_strpicture(const ::std::string& value) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+#if LANG_CXX11
+void Entrance::set_strpicture(::std::string&& value) {
+  
+  strpicture_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+#endif
+void Entrance::set_strpicture(const char* value) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+void Entrance::set_strpicture(const char* value, size_t size) {
+  
+  strpicture_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Entrance.strPicture)
+}
+::std::string* Entrance::mutable_strpicture() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  return strpicture_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* Entrance::release_strpicture() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Entrance.strPicture)
+  
+  return strpicture_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void Entrance::set_allocated_strpicture(::std::string* strpicture) {
+  if (strpicture != NULL) {
+    
+  } else {
+    
+  }
+  strpicture_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strpicture);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Entrance.strPicture)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -11566,6 +11678,7 @@ const int RegularPatrol::kStrHandlerFieldNumber;
 const int RegularPatrol::kUiStateFieldNumber;
 const int RegularPatrol::kStrCreateDateFieldNumber;
 const int RegularPatrol::kStrExtendFieldNumber;
+const int RegularPatrol::kStrUpdateDateFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RegularPatrol::RegularPatrol()
@@ -11604,6 +11717,10 @@ RegularPatrol::RegularPatrol(const RegularPatrol& from)
   if (from.strextend().size() > 0) {
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  strupdatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strupdatedate().size() > 0) {
+    strupdatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strupdatedate_);
+  }
   uistate_ = from.uistate_;
   // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.RegularPatrol)
 }
@@ -11614,6 +11731,7 @@ void RegularPatrol::SharedCtor() {
   strenable_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strupdatedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   uistate_ = 0u;
   _cached_size_ = 0;
 }
@@ -11629,6 +11747,7 @@ void RegularPatrol::SharedDtor() {
   strenable_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strupdatedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void RegularPatrol::SetCachedSize(int size) const {
@@ -11664,6 +11783,7 @@ void RegularPatrol::Clear() {
   strenable_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   uistate_ = 0u;
 }
 
@@ -11810,6 +11930,21 @@ bool RegularPatrol::MergePartialFromCodedStream(
         break;
       }
 
+      // string strUpdateDate = 10;
+      case 10: {
+        if (tag == 82u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strupdatedate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strupdatedate().data(), this->strupdatedate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -11915,6 +12050,16 @@ void RegularPatrol::SerializeWithCachedSizes(
       9, this->strextend(), output);
   }
 
+  // string strUpdateDate = 10;
+  if (this->strupdatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strupdatedate().data(), this->strupdatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      10, this->strupdatedate(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.RegularPatrol)
 }
 
@@ -12009,6 +12154,17 @@ void RegularPatrol::SerializeWithCachedSizes(
         9, this->strextend(), target);
   }
 
+  // string strUpdateDate = 10;
+  if (this->strupdatedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strupdatedate().data(), this->strupdatedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->strupdatedate(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.RegularPatrol)
   return target;
 }
@@ -12079,6 +12235,13 @@ size_t RegularPatrol::ByteSizeLong() const {
         this->strextend());
   }
 
+  // string strUpdateDate = 10;
+  if (this->strupdatedate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strupdatedate());
+  }
+
   // uint32 uiState = 7;
   if (this->uistate() != 0) {
     total_size += 1 +
@@ -12135,6 +12298,10 @@ void RegularPatrol::MergeFrom(const RegularPatrol& from) {
 
     strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
   }
+  if (from.strupdatedate().size() > 0) {
+
+    strupdatedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strupdatedate_);
+  }
   if (from.uistate() != 0) {
     set_uistate(from.uistate());
   }
@@ -12171,6 +12338,7 @@ void RegularPatrol::InternalSwap(RegularPatrol* other) {
   strenable_.Swap(&other->strenable_);
   strcreatedate_.Swap(&other->strcreatedate_);
   strextend_.Swap(&other->strextend_);
+  strupdatedate_.Swap(&other->strupdatedate_);
   std::swap(uistate_, other->uistate_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -12595,6 +12763,58 @@ void RegularPatrol::set_allocated_strextend(::std::string* strextend) {
   }
   strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strExtend)
+}
+
+// string strUpdateDate = 10;
+void RegularPatrol::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& RegularPatrol::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+void RegularPatrol::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+#if LANG_CXX11
+void RegularPatrol::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+#endif
+void RegularPatrol::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+void RegularPatrol::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+}
+::std::string* RegularPatrol::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* RegularPatrol::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void RegularPatrol::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RegularPatrol.strUpdateDate)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -15886,6 +16106,7 @@ const int StoreEvaluation::kStrUserIDCheckFieldNumber;
 const int StoreEvaluation::kDTotalScoreFieldNumber;
 const int StoreEvaluation::kUiCheckStatusFieldNumber;
 const int StoreEvaluation::kItemScoreFieldNumber;
+const int StoreEvaluation::kPictureFieldNumber;
 const int StoreEvaluation::kDTotalPointFieldNumber;
 const int StoreEvaluation::kStrCreateDateFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -15902,6 +16123,7 @@ StoreEvaluation::StoreEvaluation(const StoreEvaluation& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       itemscore_(from.itemscore_),
+      picture_(from.picture_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   strevaluationid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -15980,6 +16202,7 @@ StoreEvaluation* StoreEvaluation::New(::google::protobuf::Arena* arena) const {
 void StoreEvaluation::Clear() {
 // @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.StoreEvaluation)
   itemscore_.Clear();
+  picture_.Clear();
   strevaluationid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   struseridcreate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -16098,9 +16321,25 @@ bool StoreEvaluation::MergePartialFromCodedStream(
         break;
       }
 
-      // double dTotalPoint = 8;
+      // repeated string picture = 8;
       case 8: {
-        if (tag == 65u) {
+        if (tag == 66u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_picture()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->picture(this->picture_size() - 1).data(),
+            this->picture(this->picture_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.StoreEvaluation.picture"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // double dTotalPoint = 9;
+      case 9: {
+        if (tag == 73u) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
@@ -16111,9 +16350,9 @@ bool StoreEvaluation::MergePartialFromCodedStream(
         break;
       }
 
-      // string strCreateDate = 9;
-      case 9: {
-        if (tag == 74u) {
+      // string strCreateDate = 10;
+      case 10: {
+        if (tag == 82u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_strcreatedate()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -16206,19 +16445,29 @@ void StoreEvaluation::SerializeWithCachedSizes(
       7, this->itemscore(i), output);
   }
 
-  // double dTotalPoint = 8;
-  if (this->dtotalpoint() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(8, this->dtotalpoint(), output);
+  // repeated string picture = 8;
+  for (int i = 0; i < this->picture_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->picture(i).data(), this->picture(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.StoreEvaluation.picture");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      8, this->picture(i), output);
   }
 
-  // string strCreateDate = 9;
+  // double dTotalPoint = 9;
+  if (this->dtotalpoint() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(9, this->dtotalpoint(), output);
+  }
+
+  // string strCreateDate = 10;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "CustomerFlow.Interactive.Message.StoreEvaluation.strCreateDate");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      9, this->strcreatedate(), output);
+      10, this->strcreatedate(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.StoreEvaluation)
@@ -16289,12 +16538,22 @@ void StoreEvaluation::SerializeWithCachedSizes(
         7, this->itemscore(i), false, target);
   }
 
-  // double dTotalPoint = 8;
-  if (this->dtotalpoint() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(8, this->dtotalpoint(), target);
+  // repeated string picture = 8;
+  for (int i = 0; i < this->picture_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->picture(i).data(), this->picture(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.StoreEvaluation.picture");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(8, this->picture(i), target);
   }
 
-  // string strCreateDate = 9;
+  // double dTotalPoint = 9;
+  if (this->dtotalpoint() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(9, this->dtotalpoint(), target);
+  }
+
+  // string strCreateDate = 10;
   if (this->strcreatedate().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->strcreatedate().data(), this->strcreatedate().length(),
@@ -16302,7 +16561,7 @@ void StoreEvaluation::SerializeWithCachedSizes(
       "CustomerFlow.Interactive.Message.StoreEvaluation.strCreateDate");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->strcreatedate(), target);
+        10, this->strcreatedate(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.StoreEvaluation)
@@ -16322,6 +16581,14 @@ size_t StoreEvaluation::ByteSizeLong() const {
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->itemscore(i));
     }
+  }
+
+  // repeated string picture = 8;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->picture_size());
+  for (int i = 0; i < this->picture_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->picture(i));
   }
 
   // string strEvaluationID = 1;
@@ -16352,7 +16619,7 @@ size_t StoreEvaluation::ByteSizeLong() const {
         this->struseridcheck());
   }
 
-  // string strCreateDate = 9;
+  // string strCreateDate = 10;
   if (this->strcreatedate().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -16364,7 +16631,7 @@ size_t StoreEvaluation::ByteSizeLong() const {
     total_size += 1 + 8;
   }
 
-  // double dTotalPoint = 8;
+  // double dTotalPoint = 9;
   if (this->dtotalpoint() != 0) {
     total_size += 1 + 8;
   }
@@ -16403,6 +16670,7 @@ void StoreEvaluation::MergeFrom(const StoreEvaluation& from) {
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   itemscore_.MergeFrom(from.itemscore_);
+  picture_.MergeFrom(from.picture_);
   if (from.strevaluationid().size() > 0) {
 
     strevaluationid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strevaluationid_);
@@ -16458,6 +16726,7 @@ void StoreEvaluation::Swap(StoreEvaluation* other) {
 }
 void StoreEvaluation::InternalSwap(StoreEvaluation* other) {
   itemscore_.UnsafeArenaSwap(&other->itemscore_);
+  picture_.UnsafeArenaSwap(&other->picture_);
   strevaluationid_.Swap(&other->strevaluationid_);
   strstoreid_.Swap(&other->strstoreid_);
   struseridcreate_.Swap(&other->struseridcreate_);
@@ -16743,7 +17012,62 @@ StoreEvaluation::itemscore() const {
   return itemscore_;
 }
 
-// double dTotalPoint = 8;
+// repeated string picture = 8;
+int StoreEvaluation::picture_size() const {
+  return picture_.size();
+}
+void StoreEvaluation::clear_picture() {
+  picture_.Clear();
+}
+const ::std::string& StoreEvaluation::picture(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Get(index);
+}
+::std::string* StoreEvaluation::mutable_picture(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Mutable(index);
+}
+void StoreEvaluation::set_picture(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  picture_.Mutable(index)->assign(value);
+}
+void StoreEvaluation::set_picture(int index, const char* value) {
+  picture_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+void StoreEvaluation::set_picture(int index, const char* value, size_t size) {
+  picture_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+::std::string* StoreEvaluation::add_picture() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_.Add();
+}
+void StoreEvaluation::add_picture(const ::std::string& value) {
+  picture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+void StoreEvaluation::add_picture(const char* value) {
+  picture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+void StoreEvaluation::add_picture(const char* value, size_t size) {
+  picture_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+StoreEvaluation::picture() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return picture_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+StoreEvaluation::mutable_picture() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.StoreEvaluation.picture)
+  return &picture_;
+}
+
+// double dTotalPoint = 9;
 void StoreEvaluation::clear_dtotalpoint() {
   dtotalpoint_ = 0;
 }
@@ -16757,7 +17081,7 @@ void StoreEvaluation::set_dtotalpoint(double value) {
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.StoreEvaluation.dTotalPoint)
 }
 
-// string strCreateDate = 9;
+// string strCreateDate = 10;
 void StoreEvaluation::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

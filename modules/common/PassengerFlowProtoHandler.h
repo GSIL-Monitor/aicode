@@ -226,6 +226,7 @@ public:
         std::string m_strEntranceID;
         std::string m_strEntranceName;
         std::list<std::string> m_strDeviceIDList;
+        std::string m_strPicture;
     };
 
     struct Store                            //店铺信息
@@ -309,6 +310,7 @@ public:
         unsigned int m_uiState;
         std::string m_strCreateDate;
         std::string m_strExtend;
+        std::string m_strUpdateDate;
     };
 
     struct UserBrief                        //用户简要信息 
@@ -366,6 +368,7 @@ public:
         double m_dTotalScore;
         unsigned int m_uiCheckStatus;
         std::list<EvaluationItemScore> m_itemScoreList;
+        std::list<std::string> m_strPictureList;
         double m_dTotalPoint;
         std::string m_strCreateDate;
     };

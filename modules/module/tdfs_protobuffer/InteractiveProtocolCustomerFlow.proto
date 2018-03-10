@@ -240,6 +240,7 @@ message Entrance                         //出入口信息
     string strEntranceID = 1;
     string strEntranceName = 2;
     repeated string strDeviceID = 3;
+    string strPicture = 4;
 }
 
 message Store                            //店铺信息
@@ -323,6 +324,7 @@ message RegularPatrol                    //定时巡店
     uint32 uiState = 7;
     string strCreateDate = 8;
     string strExtend = 9;
+    string strUpdateDate = 10;
 }
 
 message UserBrief                        //用户简要信息
@@ -380,8 +382,9 @@ message StoreEvaluation                  //店铺考评
     double dTotalScore = 5;
     uint32 uiCheckStatus = 6;
     repeated EvaluationItemScore itemScore = 7;
-    double dTotalPoint = 8;
-    string strCreateDate = 9;
+    repeated string picture = 8;
+    double dTotalPoint = 9;
+    string strCreateDate = 10;
 }
 
 message EntrancePicture                  //出入口截图

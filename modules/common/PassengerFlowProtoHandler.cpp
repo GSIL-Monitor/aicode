@@ -82,6 +82,7 @@ void SerializeEntranceList(const std::list<PassengerFlowProtoHandler::Entrance> 
         auto pDstEntranceInfo = pDstEntranceInfoList->Add();
         pDstEntranceInfo->set_strentranceid(itBegin->m_strEntranceID);
         pDstEntranceInfo->set_strentrancename(itBegin->m_strEntranceName);
+        pDstEntranceInfo->set_strpicture(itBegin->m_strPicture);
 
         for (auto it = itBegin->m_strDeviceIDList.begin(), end = itBegin->m_strDeviceIDList.end(); it != end; ++it)
         {
@@ -99,6 +100,7 @@ void UnSerializeEntranceList(std::list<PassengerFlowProtoHandler::Entrance> &ent
         PassengerFlowProtoHandler::Entrance entranceInfo;
         entranceInfo.m_strEntranceID = srcEntranceInfo.strentranceid();
         entranceInfo.m_strEntranceName = srcEntranceInfo.strentrancename();
+        entranceInfo.m_strPicture = srcEntranceInfo.strpicture();
 
         for (int j = 0, sz2 = srcEntranceInfo.strdeviceid_size(); j < sz2; ++j)
         {
@@ -182,6 +184,7 @@ void SerializePatrolStoreEntranceList(const std::list<PassengerFlowProtoHandler:
             auto entrance = pDstPatrolStoreEntrance->add_entrance();
             entrance->set_strentranceid(it->m_strEntranceID);
             entrance->set_strentrancename(it->m_strEntranceName);
+            entrance->set_strpicture(it->m_strPicture);
         }
     }
 }
@@ -202,6 +205,7 @@ void UnSerializePatrolStoreEntranceList(std::list<PassengerFlowProtoHandler::Pat
             PassengerFlowProtoHandler::Entrance entrance;
             entrance.m_strEntranceID = srcEntrance.strentranceid();
             entrance.m_strEntranceName = srcEntrance.strentrancename();
+            entrance.m_strPicture = srcEntrance.strpicture();
             storeEntrance.m_entranceList.push_back(entrance);
         }
 
@@ -3603,6 +3607,7 @@ void PassengerFlowProtoHandler::AddEntranceReq::Serializer(CustomerFlowMessage &
     auto entrance = req->mutable_entranceinfo();
     entrance->set_strentranceid(m_entranceInfo.m_strEntranceID);
     entrance->set_strentrancename(m_entranceInfo.m_strEntranceName);
+    entrance->set_strpicture(m_entranceInfo.m_strPicture);
 
     for (auto it = m_entranceInfo.m_strDeviceIDList.begin(), end = m_entranceInfo.m_strDeviceIDList.end(); it != end; ++it)
     {
@@ -3620,6 +3625,7 @@ void PassengerFlowProtoHandler::AddEntranceReq::UnSerializer(const CustomerFlowM
     auto entrance = req.entranceinfo();
     m_entranceInfo.m_strEntranceID = entrance.strentranceid();
     m_entranceInfo.m_strEntranceName = entrance.strentrancename();
+    m_entranceInfo.m_strPicture = entrance.strpicture();
 
     auto deviceList = entrance.strdeviceid();
     for (int i = 0, sz = deviceList.size(); i < sz; ++i)
@@ -3688,6 +3694,7 @@ void PassengerFlowProtoHandler::ModifyEntranceReq::Serializer(CustomerFlowMessag
     auto entrance = req->mutable_entranceinfo();
     entrance->set_strentranceid(m_entranceInfo.m_strEntranceID);
     entrance->set_strentrancename(m_entranceInfo.m_strEntranceName);
+    entrance->set_strpicture(m_entranceInfo.m_strPicture);
 
     for (auto it = m_entranceInfo.m_strDeviceIDList.begin(), end = m_entranceInfo.m_strDeviceIDList.end(); it != end; ++it)
     {
@@ -3715,6 +3722,7 @@ void PassengerFlowProtoHandler::ModifyEntranceReq::UnSerializer(const CustomerFl
     auto entrance = req.entranceinfo();
     m_entranceInfo.m_strEntranceID = entrance.strentranceid();
     m_entranceInfo.m_strEntranceName = entrance.strentrancename();
+    m_entranceInfo.m_strPicture = entrance.strpicture();
 
     auto deviceList = entrance.strdeviceid();
     for (int i = 0, sz = deviceList.size(); i < sz; ++i)
@@ -4695,6 +4703,7 @@ void PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp::Serializer(CustomerFl
     regularPatrol->set_strcreatedate(m_regularPatrol.m_strCreateDate);
     regularPatrol->set_uistate(m_regularPatrol.m_uiState);
     regularPatrol->set_strextend(m_regularPatrol.m_strExtend);
+    regularPatrol->set_strupdatedate(m_regularPatrol.m_strUpdateDate);
 
     for (auto it = m_regularPatrol.m_strPatrolTimeList.begin(), end = m_regularPatrol.m_strPatrolTimeList.end(); it != end; ++it)
     {
@@ -4719,6 +4728,7 @@ void PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp::UnSerializer(const Cu
     m_regularPatrol.m_strCreateDate = regularPatrol.strcreatedate();
     m_regularPatrol.m_uiState = regularPatrol.uistate();
     m_regularPatrol.m_strExtend = regularPatrol.strextend();
+    m_regularPatrol.m_strUpdateDate = regularPatrol.strupdatedate();
 
     for (int i = 0, sz = regularPatrol.strpatroltime_size(); i < sz; ++i)
     {
@@ -4769,6 +4779,7 @@ void PassengerFlowProtoHandler::QueryAllRegularPatrolRsp::Serializer(CustomerFlo
         regularPatrol->set_strcreatedate(it->m_strCreateDate);
         regularPatrol->set_uistate(it->m_uiState);
         regularPatrol->set_strextend(it->m_strExtend);
+        regularPatrol->set_strupdatedate(it->m_strUpdateDate);
 
         for (auto time = it->m_strPatrolTimeList.begin(), end = it->m_strPatrolTimeList.end(); time != end; ++time)
         {
@@ -4798,6 +4809,7 @@ void PassengerFlowProtoHandler::QueryAllRegularPatrolRsp::UnSerializer(const Cus
         regularPatrol.m_strCreateDate = rspRegularPatrol.strcreatedate();
         regularPatrol.m_uiState = rspRegularPatrol.uistate();
         regularPatrol.m_strExtend = rspRegularPatrol.strextend();
+        regularPatrol.m_strUpdateDate = rspRegularPatrol.strupdatedate();
 
         for (int i = 0, sz = rspRegularPatrol.strpatroltime_size(); i < sz; ++i)
         {
@@ -5545,6 +5557,11 @@ void PassengerFlowProtoHandler::AddStoreEvaluationReq::Serializer(CustomerFlowMe
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
     }
+
+    for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
+    {
+        evaluation->add_picture(*it);
+    }
 }
 
 void PassengerFlowProtoHandler::AddStoreEvaluationReq::UnSerializer(const CustomerFlowMessage &message)
@@ -5574,6 +5591,11 @@ void PassengerFlowProtoHandler::AddStoreEvaluationReq::UnSerializer(const Custom
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
 
         m_storeEvaluation.m_itemScoreList.push_back(score);
+    }
+
+    for (int i = 0, sz = evaluation.picture_size(); i < sz; ++i)
+    {
+        m_storeEvaluation.m_strPictureList.push_back(evaluation.picture(i));
     }
 }
 
@@ -5652,6 +5674,11 @@ void PassengerFlowProtoHandler::ModifyStoreEvaluationReq::Serializer(CustomerFlo
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
     }
+
+    for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
+    {
+        evaluation->add_picture(*it);
+    }
 }
 
 void PassengerFlowProtoHandler::ModifyStoreEvaluationReq::UnSerializer(const CustomerFlowMessage &message)
@@ -5683,6 +5710,11 @@ void PassengerFlowProtoHandler::ModifyStoreEvaluationReq::UnSerializer(const Cus
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
 
         m_storeEvaluation.m_itemScoreList.push_back(score);
+    }
+
+    for (int i = 0, sz = evaluation.picture_size(); i < sz; ++i)
+    {
+        m_storeEvaluation.m_strPictureList.push_back(evaluation.picture(i));
     }
 }
 
@@ -5748,6 +5780,11 @@ void PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp::Serializer(Customer
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
     }
+
+    for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
+    {
+        evaluation->add_picture(*it);
+    }
 }
 
 void PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp::UnSerializer(const CustomerFlowMessage &message)
@@ -5777,6 +5814,11 @@ void PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp::UnSerializer(const 
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
 
         m_storeEvaluation.m_itemScoreList.push_back(score);
+    }
+
+    for (int i = 0, sz = evaluation.picture_size(); i < sz; ++i)
+    {
+        m_storeEvaluation.m_strPictureList.push_back(evaluation.picture(i));
     }
 }
 

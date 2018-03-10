@@ -6,7 +6,7 @@ use CustomerFlowDB;
 #create table `t_user_info` (
 #    `id` varchar(36) not null,
 #    `user_id` varchar(36) not null                   comment '用户id',
-#    `user_name` varchar(64) not null                 comment '用户名',
+#    `user_name` varchar(256) not null                comment '用户名',
 #    `password` varchar(32) not null                  comment '密码',
 #    `nickname` varchar(64) default ''                comment '昵称',
 #    `email` varchar(64) not null                     comment '邮箱',
@@ -25,7 +25,7 @@ use CustomerFlowDB;
 #    `device_id` varchar(36) not null                 comment '设备id',
 #    `user_id` varchar(36) not null                   comment '用户id',
 #    `store_id` varchar(36) not null                  comment '店铺id',
-#    `device_name` varchar(64) default ''             comment '设备名',
+#    `device_name` varchar(256) default ''            comment '设备名',
 #    `password` varchar(32) default ''                comment '密码',
 #    `device_type` varchar(32) not null               comment '设备类型',
 #    `state` int default 0                            comment '0-正常，1-删除',
@@ -65,7 +65,7 @@ drop table if exists `t_group_info`;
 create table `t_group_info` (
     `id` varchar(36) not null,
     `group_id` varchar(36) not null                  comment '群组ID',
-    `group_name` varchar(64) not null                comment '群组名',
+    `group_name` varchar(256) not null               comment '群组名',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -93,7 +93,7 @@ drop table if exists `t_store_info`;
 create table `t_store_info` (
     `id` varchar(36) not null,
     `store_id` varchar(36) not null                  comment '店铺ID',
-    `store_name` varchar(64) not null                comment '店铺名',
+    `store_name` varchar(256) not null               comment '店铺名',
     `goods_category` varchar(128) default ''         comment '经营品类',
     `address` varchar(256) default ''                comment '地址',
     `area_id` varchar(36) default ''                 comment '区域ID',
@@ -113,7 +113,8 @@ create table `t_entrance_info` (
     `id` varchar(36) not null,
     `entrance_id` varchar(36) not null               comment '出入口ID',
     `store_id` varchar(36) not null                  comment '店铺ID',
-    `entrance_name` varchar(64) not null             comment '出入口名',
+    `entrance_name` varchar(256) not null            comment '出入口名',
+    `screenshot_id` varchar(256) default ''          comment '截图ID',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
@@ -165,6 +166,18 @@ create table `t_store_evaluation_score` (
     primary key (`id`),
     index index_ref1 (`evaluation_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='店铺考评得分表';
+
+drop table if exists `t_store_evaluation_screenshot`;
+create table `t_store_evaluation_screenshot` (
+    `id` varchar(36) not null,
+    `evaluation_id` varchar(36) not null             comment '考评ID',
+    `screenshot_id` varchar(256) not null            comment '截图ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`evaluation_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='店铺考评截图表';
 
 drop table if exists `t_store_deal_pos`;
 create table `t_store_deal_pos` (

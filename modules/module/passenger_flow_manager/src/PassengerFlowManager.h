@@ -31,6 +31,10 @@ public:
     static const int UNREAD_STATE = 0;
     static const int READ_STATE = 1;
 
+    static const int EVENT_REMOTE_PATROL = 0;
+    static const int EVENT_REGULAR_PATROL = 1;
+    static const int EVENT_STORE_EVALUATION = 2;
+
     static std::string ALLOW_ACCESS;
     static std::string DISALLOW_ACCESS;
 
@@ -53,6 +57,18 @@ public:
         std::string m_strUserAllowDiffTerminal;
         std::string m_strUserKickoutType;
         std::string m_strMasterNode;
+        std::string m_strPushServerUrl;
+        int m_iAuthExpire;
+        std::string m_strAndroidAppID;
+        std::string m_strAndroidAppKey;
+        std::string m_strAndroidMasterSecret;
+        std::string m_strIOSAppID;
+        std::string m_strIOSAppKey;
+        std::string m_strIOSMasterSecret;
+        std::string m_strMessageTitle;
+        std::string m_strMessageContentRegularPatrol;
+        std::string m_strMessageContentRemotePatrol;
+        std::string m_strMessageContentEvaluation;
     } ParamInfo;
 
     typedef struct _AccessDomainInfo
@@ -299,6 +315,12 @@ private:
 
     void AddEventRemark(const std::string &strEventID, const std::string &strUserID, const std::string &strRemark);
 
+    bool QueryStoreByEvent(const std::string &strSource, const unsigned int uiEventType, std::string &strStoreName);
+
+    bool QueryStoreByRegularPatrol(const std::string &strPatrolID, std::string &strStoreName);
+
+    bool QueryStoreByStoreEvaluation(const std::string &strEvaluationID, std::string &strStoreName);
+
     void DeleteEvent(const std::string &strEventID, const std::string &strUserID);
 
     void DeleteCreatedEvent(const std::string &strEventID, const std::string &strUserID);
@@ -435,6 +457,8 @@ private:
 
     void AddStoreEvaluationScore(const std::string &strEvaluationID, const PassengerFlowProtoHandler::EvaluationItemScore &itemScore);
 
+    void AddStoreEvaluationPicture(const std::string &strEvaluationID, const std::string &strPicture);
+
     void DeleteStoreEvaluation(const std::string &strEvaluationID);
 
     void ModifyStoreEvaluation(const PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
@@ -443,10 +467,16 @@ private:
 
     void DeleteStoreEvaluationScore(const std::string &strEvaluationID);
 
+    void ModifyStoreEvaluationPicture(const std::string &strEvaluationID, const std::list<std::string> &strPictureList);
+
+    void DeleteStoreEvaluationPicture(const std::string &strEvaluationID);
+
     bool QueryStoreEvaluationInfo(const std::string &strEvaluationID, PassengerFlowProtoHandler::StoreEvaluation &storeEvaluation);
 
     bool QueryStoreEvaluationScore(const std::string &strEvaluationID, double &dTotalScore,
         std::list<PassengerFlowProtoHandler::EvaluationItemScore> &scoreList);
+
+    bool QueryStoreEvaluationPicture(const std::string &strEvaluationID, std::list<std::string> &strPictureList);
 
     bool QueryAllStoreEvaluation(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::StoreEvaluation> &storeEvaluationList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);

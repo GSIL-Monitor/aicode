@@ -660,7 +660,8 @@ bool PassengerFlowMsgHandler::QueryStoreHandler(boost::shared_ptr<MsgInfoMap> pM
         Json::Value jsEntrance;
         jsEntrance["entrance_name"] = itBegin->m_strName;
         jsEntrance["entrance_id"] = itBegin->m_strID;
-        
+        jsEntrance["picture"] = itBegin->m_strPicture;
+
         Json::Value jsDevid;
         unsigned int i = 0;
         auto itB1 = itBegin->m_DeviceIDList.begin();
@@ -816,6 +817,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
             Json::Value jsEntranceInfo;
             jsEntranceInfo["entrance_id"] = itB1->m_strID;
             jsEntranceInfo["entrance_name"] = itB1->m_strName;
+            jsEntranceInfo["picture"] = itB1->m_strPicture;
 
             Json::Value jsDevid;
             unsigned int i = 0;
@@ -921,6 +923,13 @@ bool PassengerFlowMsgHandler::AddEntranceHandler(boost::shared_ptr<MsgInfoMap> p
     }
     const std::string strEntranceName = itFind->second;
 
+    std::string strPicture;
+    itFind = pMsgInfoMap->find("picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPicture = itFind->second;
+    }
+
     std::string strDevIDInfo;
     itFind = pMsgInfoMap->find("deviceid");
     if (pMsgInfoMap->end() != itFind)
@@ -930,6 +939,7 @@ bool PassengerFlowMsgHandler::AddEntranceHandler(boost::shared_ptr<MsgInfoMap> p
 
     EntranceInfo einfo;
     einfo.m_strName = strEntranceName;
+    einfo.m_strPicture = strPicture;
 
     if (!strDevIDInfo.empty())
     {
@@ -1094,6 +1104,13 @@ bool PassengerFlowMsgHandler::ModifyEntranceHandler(boost::shared_ptr<MsgInfoMap
         strEntranceName = itFind->second;
     }
 
+    std::string strPicture;
+    itFind = pMsgInfoMap->find("picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPicture = itFind->second;
+    }
+
     std::string strAddDevIDInfo;
     itFind = pMsgInfoMap->find("added_deviceid");
     if (pMsgInfoMap->end() != itFind)
@@ -1134,7 +1151,7 @@ bool PassengerFlowMsgHandler::ModifyEntranceHandler(boost::shared_ptr<MsgInfoMap
         << " and entrance id is " << strEntranceID << " and entrance name is " << strEntranceName
         << " and added device id is " << strAddDevIDInfo << " and deleted device id is " << strDelDevIDInfo);
 
-    if (!ModifyEntrance(strSid, strUserID, strStoreID, strEntranceID, strEntranceName, einfoadd, einfodel))
+    if (!ModifyEntrance(strSid, strUserID, strStoreID, strEntranceID, strEntranceName, strPicture, einfoadd, einfodel))
     {
         LOG_ERROR_RLD("Modify entrance info handle failed");
         return blResult;
@@ -3360,6 +3377,9 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("plan_name", pat.m_strPatrolName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("enable", pat.m_strEnable));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", pat.m_strExtend));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("create_date", pat.m_strCreateDate));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("modify_date", pat.m_strModifyDate));
+
     
     blResult = true;
 
@@ -3448,6 +3468,8 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlanHandler(boost::shared_ptr
         Json::Value jsPlanInfo;
         jsPlanInfo["plan_id"] = itBegin->m_strPatrolID;
         jsPlanInfo["plan_name"] = itBegin->m_strPatrolName;
+        jsPlanInfo["create_date"] = itBegin->m_strCreateDate;
+        jsPlanInfo["modify_date"] = itBegin->m_strModifyDate;
         jsPlanInfo["enable"] = itBegin->m_strEnable;
         jsPlanInfo["extend"] = itBegin->m_strExtend;
                 
@@ -5156,6 +5178,18 @@ bool PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler(boost::shared_ptr<M
     }
     const std::string strStoreID = itFind->second;
     
+    std::list<std::string> strFileIDList;
+    itFind = pMsgInfoMap->find("picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        std::string strPic = itFind->second;
+        if (!GetValueList(strPic, strFileIDList))
+        {
+            LOG_ERROR_RLD("Pictcure info error");
+            return blResult;
+        }
+    }
+
     itFind = pMsgInfoMap->find("evaluation_info");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -5168,11 +5202,12 @@ bool PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler(boost::shared_ptr<M
         LOG_ERROR_RLD("Evaluation info is empty.");
         return blResult;
     }
-    
+
     Evaluation ev;
     ev.m_strUserID = strUserID;
     ev.m_strUserIDOfCheck = strUserIDCheck;
     ev.m_strStoreID = strStoreID;
+    ev.m_strFileIDList.swap(strFileIDList);
 
     auto EvaluationParse = [&](Json::Value jsValue) ->bool
     {
@@ -5383,12 +5418,25 @@ bool PassengerFlowMsgHandler::ModifyEvaluationOfStoreHandler(boost::shared_ptr<M
         }
     }    
 
+    std::list<std::string> strFileIDList;
+    itFind = pMsgInfoMap->find("picture");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        std::string strPic = itFind->second;
+        if (!GetValueList(strPic, strFileIDList))
+        {
+            LOG_ERROR_RLD("Pictcure info error");
+            return blResult;
+        }
+    }
+
     Evaluation ev;
     ev.m_strUserID = strUserID;
     ev.m_strUserIDOfCheck = strUserIDCheck;
     ev.m_strStoreID = strStoreID;
     ev.m_strEvaluationID = strEvaluationIDOfStore;
     ev.m_uiCheckStatus = uiCheckStatus;
+    ev.m_strFileIDList.swap(strFileIDList);
 
     std::string strEvaluationInfo;
     itFind = pMsgInfoMap->find("evaluation_info");
@@ -5481,8 +5529,9 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsEvaList;
+    Json::Value jsFileIDList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEvaList)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsEvaList, &jsFileIDList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -5500,6 +5549,7 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
             {
                 Json::Value *pJsBody = (Json::Value*)pValue;
                 (*pJsBody)["evaluation_info"] = jsEvaList;
+                (*pJsBody)["picture"] = jsFileIDList;
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -5547,6 +5597,12 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
     {
         LOG_ERROR_RLD("Query evaluation failed.");
         return blResult;
+    }
+
+    unsigned int k = 0;
+    for (auto itBegin = ev.m_strFileIDList.begin(), itEnd = ev.m_strFileIDList.end(); itBegin != itEnd; ++itBegin, ++k)
+    {
+        jsFileIDList[k] = *itBegin;
     }
 
     unsigned int i = 0;
@@ -7782,6 +7838,7 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
             EntranceInfo einfo;
             einfo.m_strID = itBegin->m_strEntranceID;
             einfo.m_strName = itBegin->m_strEntranceName;
+            einfo.m_strPicture = itBegin->m_strPicture;
             einfo.m_DeviceIDList.swap(itBegin->m_strDeviceIDList);
             entranceInfolist.push_back(std::move(einfo));
 
@@ -7861,6 +7918,7 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
                 EntranceInfo einfo;
                 einfo.m_strID = itB->m_strEntranceID;
                 einfo.m_strName = itB->m_strEntranceName;
+                einfo.m_strPicture = itB->m_strPicture;
 
                 auto itB2 = itB->m_strDeviceIDList.begin();
                 auto itE2 = itB->m_strDeviceIDList.end();
@@ -7913,6 +7971,7 @@ bool PassengerFlowMsgHandler::AddEntrance(const std::string &strSid, const std::
         //AddEntranceReq.m_entranceInfo.m_strEntranceID = einfo.m_strID;
         AddEntranceReq.m_entranceInfo.m_strEntranceName = einfo.m_strName;
         AddEntranceReq.m_entranceInfo.m_strDeviceIDList.swap(einfo.m_DeviceIDList);
+        AddEntranceReq.m_entranceInfo.m_strPicture = einfo.m_strPicture;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddEntranceReq, strSerializeOutPut))
@@ -8008,7 +8067,7 @@ bool PassengerFlowMsgHandler::DelEntrance(const std::string &strSid, const std::
 }
 
 bool PassengerFlowMsgHandler::ModifyEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
-    const std::string &strEntranceID, const std::string &strEntranceName, EntranceInfo &einfoadd, EntranceInfo &einfodel)
+    const std::string &strEntranceID, const std::string &strEntranceName, const std::string &strPicture, EntranceInfo &einfoadd, EntranceInfo &einfodel)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -8023,6 +8082,7 @@ bool PassengerFlowMsgHandler::ModifyEntrance(const std::string &strSid, const st
         ModEntranceReq.m_entranceInfo.m_strEntranceName = strEntranceName;
         ModEntranceReq.m_strAddedDeviceIDList.swap(einfoadd.m_DeviceIDList);
         ModEntranceReq.m_strDeletedDeviceIDList.swap(einfodel.m_DeviceIDList);
+        ModEntranceReq.m_entranceInfo.m_strPicture = strPicture;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModEntranceReq, strSerializeOutPut))
@@ -9210,6 +9270,8 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, 
         pat.m_strEnable = QueryPatrolRsp.m_regularPatrol.m_strEnable;
         pat.m_strPatrolID = QueryPatrolRsp.m_regularPatrol.m_strPlanID;
         pat.m_strPatrolName = QueryPatrolRsp.m_regularPatrol.m_strPlanName;
+        pat.m_strCreateDate = QueryPatrolRsp.m_regularPatrol.m_strCreateDate;
+        pat.m_strModifyDate = QueryPatrolRsp.m_regularPatrol.m_strUpdateDate;
         pat.m_strPatrolTimeList.swap(QueryPatrolRsp.m_regularPatrol.m_strPatrolTimeList);
         pat.m_strExtend = QueryPatrolRsp.m_regularPatrol.m_strExtend;
         pat.m_strPatrolHandlerList.swap(QueryPatrolRsp.m_regularPatrol.m_strHandlerList);
@@ -9235,7 +9297,8 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, 
         
         iRet = QueryPatrolRsp.m_iRetcode;
 
-        LOG_INFO_RLD("Query regular patrol and plan id is " << pat.m_strPatrolID << " and session id is " << strSid <<
+        LOG_INFO_RLD("Query regular patrol and plan id is " << pat.m_strPatrolID << " and session id is " << strSid << 
+            " and create date is " << QueryPatrolRsp.m_regularPatrol.m_strCreateDate << " and modify date is " << QueryPatrolRsp.m_regularPatrol.m_strUpdateDate <<
             " and return code is " << QueryPatrolRsp.m_iRetcode <<
             " and return msg is " << QueryPatrolRsp.m_strRetMsg);
 
@@ -9293,6 +9356,8 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSi
             patinfo.m_strEnable = itBegin->m_strEnable;
             patinfo.m_strPatrolID = itBegin->m_strPlanID;            
             patinfo.m_strPatrolName = itBegin->m_strPlanName;
+            patinfo.m_strCreateDate = itBegin->m_strCreateDate;
+            patinfo.m_strModifyDate = itBegin->m_strUpdateDate;
             patinfo.m_strPatrolTimeList.swap(itBegin->m_strPatrolTimeList);
             patinfo.m_strExtend = itBegin->m_strExtend;
             patinfo.m_strPatrolHandlerList.swap(itBegin->m_strHandlerList);
@@ -10391,6 +10456,7 @@ bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evalua
         AddEvaReq.m_storeEvaluation.m_strStoreID = ev.m_strStoreID;
         AddEvaReq.m_storeEvaluation.m_strUserIDCheck = ev.m_strUserIDOfCheck;
         AddEvaReq.m_storeEvaluation.m_strUserIDCreate = ev.m_strUserID;
+        AddEvaReq.m_storeEvaluation.m_strPictureList.swap(ev.m_strFileIDList);
 
         for (auto itBegin = ev.m_evlist.begin(), itEnd = ev.m_evlist.end(); itBegin != itEnd; ++itBegin)
         {
@@ -10510,6 +10576,7 @@ bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evalua
         ModEvaReq.m_storeEvaluation.m_strUserIDCheck = ev.m_strUserIDOfCheck;
         //ModEvaReq.m_storeEvaluation.m_strUserIDCreate = ev.m_strUserID; //修改人不一定是创建人
         ModEvaReq.m_storeEvaluation.m_uiCheckStatus = ev.m_uiCheckStatus;
+        ModEvaReq.m_storeEvaluation.m_strPictureList.swap(ev.m_strFileIDList);
 
         for (auto itBegin = ev.m_evlist.begin(), itEnd = ev.m_evlist.end(); itBegin != itEnd; ++itBegin)
         {
@@ -10617,6 +10684,8 @@ bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const s
             
             ev.m_evlist.push_back(std::move(evt));
         }
+
+        ev.m_strFileIDList.swap(QueryEvaRsp.m_storeEvaluation.m_strPictureList);
 
         iRet = QueryEvaRsp.m_iRetcode;
 
