@@ -115,5 +115,7 @@ if __name__ == '__main__':
     else:
         p2pid = sys.argv[1]
         devid = GetDevIDByP2pID(p2pid)
-
-        ResetDevice(devid)
+        if devid is None:
+            print 'Cannt find device id by p2pid, maybe p2pid is incorrect!'
+        else:
+            ResetDevice(devid)
