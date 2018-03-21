@@ -18,6 +18,7 @@ ConnectRemoteFlag = 'connect remote'
 ResultFlag = 'find result'
 
 
+
 def ParseFile(filename, begintime=None, endtime=None, uid=None):
     ShowString = ''
     userid = None
@@ -88,6 +89,32 @@ def ParseFile(filename, begintime=None, endtime=None, uid=None):
                     remoteip = line[posflag + 7: posflag2]
 
                     ShowString += 'remote ip: %s ' % remoteip
+
+                elif -1 != line.find('Return msg is writed and result is'):
+                    posflag = line.find('[')
+                    end_time = line[0: posflag - 1]
+
+                    posflag = line.find('Return msg is writed and result is')
+                    posflag2 = line.find('-', posflag)
+                    result = line[posflag + 35 : posflag2 - 1]
+
+                    ShowString += 'endtime %s result: %s' % (end_time, result)
+
+                    if uid is not None:
+                        if userid is not None:
+                            local_uid = userid
+                            userid = None
+
+                            if uid != local_uid:
+                                Status = ActionFlag  # reset loop
+                                continue
+                        else:
+                            Status = ActionFlag  # reset loop
+                            continue
+
+                    print ShowString
+
+                    Status = ActionFlag
 
                 elif -1 != line.find('Connect succeed and remote ip'):
 
