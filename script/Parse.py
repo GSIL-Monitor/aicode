@@ -8,6 +8,9 @@ import datetime
 def total_seconds(time_delta):
     return 1.0 * (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10**6) / 10**6
 
+def total_microseconds(time_delta):
+    return 1.0 * (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10 ** 6) / 1000
+
 TimelineMap = {} #key time, value json
 
 ProcessHandlerMap = {} #key action, value func
@@ -23,6 +26,7 @@ def ParseFile(filename, begintime=None, endtime=None, uid=None):
     ShowString = ''
     userid = None
     devid = None
+    beginaction_micro = None
 
     Status = ActionFlag
     with open(filename, 'r') as f:
@@ -31,6 +35,10 @@ def ParseFile(filename, begintime=None, endtime=None, uid=None):
                 if -1 != line.find('Param info: key=[ACTION]'):
                     posflag = line.find('[')
                     action_time = line[0 : posflag - 1]
+
+                    tmpvalue = action_time[:posflag].split('.')
+                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+                    beginaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
 
                     if begintime is not None:
                         posflag = action_time.find('.')
@@ -100,6 +108,14 @@ def ParseFile(filename, begintime=None, endtime=None, uid=None):
 
                     ShowString += 'endtime %s result: %s' % (end_time, result)
 
+                    tmpvalue = end_time.split('.')
+                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+
+                    endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
+                    deltatime = endaction_micro - beginaction_micro
+                    delta = total_microseconds(deltatime)
+                    ShowString += 'used microseconds:%.3f' % delta
+
                     if uid is not None:
                         if userid is not None:
                             local_uid = userid
@@ -129,7 +145,15 @@ def ParseFile(filename, begintime=None, endtime=None, uid=None):
                     posflag2 = line.find('-', posflag)
                     result = line[posflag + 35 : posflag2 - 1]
 
-                    ShowString += 'endtime %s result: %s' % (end_time, result)
+                    ShowString += 'endtime %s result: %s ' % (end_time, result)
+
+                    tmpvalue = end_time.split('.')
+                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+
+                    endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
+                    deltatime = endaction_micro - beginaction_micro
+                    delta = total_microseconds(deltatime)
+                    ShowString += 'used microseconds:%.3f' % delta
 
                     if uid is not None:
                         if userid is not None:
