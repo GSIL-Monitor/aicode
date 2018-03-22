@@ -1,8 +1,94 @@
-#coding:utf-8
+#coding=utf-8
 
 import sys
 import time
 import datetime
+
+"""
+import chardet
+def _smartCode(item):
+    codedetect = chardet.detect(item)["encoding"]
+    print codedetect
+    try:
+        print item
+        item = unicode(item, codedetect)
+        print item
+        return item.encode("utf-8")
+    except:
+        return u"bad unicode encode try!"
+"""
+
+ipdatamap = {}
+
+def IPDataInit():
+    with open('iplocal.txt', 'r') as f:
+        for line in f:
+            #ipdatalist.append(line)
+            addressinfo = line.split()
+            if not addressinfo:
+                continue
+
+            beginaddress = addressinfo.pop(0)
+            beginaddresslist = beginaddress.split('.')
+            b1 = int(beginaddresslist.pop(0))
+
+            linevalue = ipdatamap.get(b1)
+            if linevalue is None:
+                linevalue = []
+                linevalue.append(line)
+                ipdatamap[b1] = linevalue
+            else:
+                linevalue.append(line)
+
+
+def GetCountryByIP(ipaddress):
+    #with open('iplocal.txt', 'r') as f:
+    ipaddresslist = ipaddress.split('.')
+    ip1 = int(ipaddresslist.pop(0))
+
+    linevalue = ipdatamap.get(ip1)
+    if linevalue is None:
+        return None
+
+    for line in linevalue:#f:
+        addressinfo = line.split()
+        beginaddress = addressinfo.pop(0)
+        endaddress = addressinfo.pop(0)
+
+        countryinfo = ' '.join(addressinfo)
+        localcountry = countryinfo.decode('gbk').encode('utf-8')
+
+        ipaddresslist = ipaddress.split('.')
+        ip1 = int(ipaddresslist.pop(0))
+        ip2 = int(ipaddresslist.pop(0))
+        ip3 = int(ipaddresslist.pop(0))
+        ip4 = int(ipaddresslist.pop(0))
+
+        beginaddresslist = beginaddress.split('.')
+        b1 = int(beginaddresslist.pop(0))
+        b2 = int(beginaddresslist.pop(0))
+        b3 = int(beginaddresslist.pop(0))
+        b4 = int(beginaddresslist.pop(0))
+
+        endaddresslist = endaddress.split('.')
+        e1 = int(endaddresslist.pop(0))
+        e2 = int(endaddresslist.pop(0))
+        e3 = int(endaddresslist.pop(0))
+        e4 = int(endaddresslist.pop(0))
+
+        if ip1 > b1:
+            continue
+        elif ip2 > b2 and ip2 > e2:
+            continue
+        elif ip3 > b3 and ip3 > e3:
+            continue
+        elif ip4 > b4 and ip4 > e4:
+            continue
+
+        return localcountry
+
+    return None
+
 
 #used in python 2.6
 def total_seconds(time_delta):
@@ -31,7 +117,7 @@ class Parse(object):
         self.beginaction_micro = None
         self.Status = ActionFlag
 
-    def ParseFile(self, line, begintime=None, endtime=None, uid=None):
+    def ParseFile(self, line, begintime=None, endtime=None, uid=None, cnflag=None):
 
         if self.Status == ActionFlag:
             if -1 != line.find('Param info: key=[ACTION]'):
@@ -97,8 +183,11 @@ class Parse(object):
                 posflag = line.find('value=[')
                 posflag2 = line.find(']', posflag)
                 remoteip = line[posflag + 7: posflag2]
-
                 self.ShowString += 'remote ip: %s ' % remoteip
+
+                if '1' == cnflag:
+                    localcountry = GetCountryByIP(remoteip)
+                    self.ShowString += 'country: %s ' % localcountry
 
             elif -1 != line.find('Return msg is writed and result is'):
                 posflag = line.find('[')
@@ -190,7 +279,7 @@ def ValidInput(begintime, endtime):
 
     return True
 
-def Run(filename, begintime, endtime, uid):
+def Run(filename, begintime, endtime, uid, cnflag):
     ParseMap = {} #key:threadnum, value Parse object
     with open(filename, 'r') as f:
         for line in f:
@@ -203,7 +292,7 @@ def Run(filename, begintime, endtime, uid):
                 pobject = Parse(threadnum)
                 ParseMap[threadnum] = pobject
 
-            result = pobject.ParseFile(line, begintime, endtime, uid)
+            result = pobject.ParseFile(line, begintime, endtime, uid, cnflag)
             if result == 'continue':
                 continue
             elif result == 'break':
@@ -219,26 +308,33 @@ if __name__ == "__main__":
     print 'Runing at ', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
 
     if 1 >= len(sys.argv):
-        print 'Please give file name first. Parse.py filename [begintime] [endtime] [userid] [deviceid]'
+        print 'Please give file name first. Parse.py filename [cnflag] [begintime] [endtime] [userid]'
 
     else:
         begintime = None
         endtime = None
         uid = None
+        cnflag = None
 
         if 3 <= len(sys.argv):
-            begintime = sys.argv[2]
-            begintime = datetime.datetime.strptime(begintime, "%Y-%m-%d %H:%M:%S")
+            cnflag = sys.argv[2]
 
         if 4 <= len(sys.argv):
-            endtime = sys.argv[3]
-            endtime = datetime.datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+            begintime = sys.argv[3]
+            begintime = datetime.datetime.strptime(begintime, "%Y-%m-%d %H:%M:%S")
 
         if 5 <= len(sys.argv):
-            uid = sys.argv[4]
+            endtime = sys.argv[4]
+            endtime = datetime.datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+
+        if 6 <= len(sys.argv):
+            uid = sys.argv[5]
 
         if (ValidInput(begintime=begintime, endtime=endtime)):
-            Run(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid)
+            if '1' == cnflag:
+                IPDataInit()
+
+            Run(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid, cnflag=cnflag)
             print 'Completed!'
 
 
