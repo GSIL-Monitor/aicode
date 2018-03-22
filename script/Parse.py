@@ -21,155 +21,162 @@ ConnectRemoteFlag = 'connect remote'
 ResultFlag = 'find result'
 
 
+class Parse(object):
+    def __init__(self, threadnum):
+        self.threadnum = threadnum
 
-def ParseFile(filename, begintime=None, endtime=None, uid=None):
-    ShowString = ''
-    userid = None
-    devid = None
-    beginaction_micro = None
+        self.ShowString = ''
+        self.userid = None
+        self.devid = None
+        self.beginaction_micro = None
+        self.Status = ActionFlag
 
-    Status = ActionFlag
-    with open(filename, 'r') as f:
-        for line in f:
-            if Status == ActionFlag:
-                if -1 != line.find('Param info: key=[ACTION]'):
-                    posflag = line.find('[')
-                    action_time = line[0 : posflag - 1]
+    def ParseFile(self, line, begintime=None, endtime=None, uid=None):
 
-                    tmpvalue = action_time[:posflag].split('.')
-                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
-                    beginaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
+        if self.Status == ActionFlag:
+            if -1 != line.find('Param info: key=[ACTION]'):
+                posflag = line.find('[')
+                action_time = line[0 : posflag - 1]
 
-                    if begintime is not None:
-                        posflag = action_time.find('.')
-                        beginaction = action_time[:posflag]
-                        beginaction = datetime.datetime.strptime(beginaction,"%Y%m%d %H:%M:%S")
-                        timevalue = beginaction - begintime
-                        if 0 > total_seconds(timevalue): #timevalue.total_seconds():
-                            continue
+                tmpvalue = action_time[:posflag].split('.')
+                value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+                self.beginaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
 
-                    posflag = line.find('thread')
-                    posflag2 = line.find(']', posflag)
-                    threadnum = line[posflag + 7 : posflag2 - 1]
+                if begintime is not None:
+                    posflag = action_time.find('.')
+                    beginaction = action_time[:posflag]
+                    beginaction = datetime.datetime.strptime(beginaction,"%Y%m%d %H:%M:%S")
+                    timevalue = beginaction - begintime
+                    if 0 > total_seconds(timevalue): #timevalue.total_seconds():
+                        return 'continue'
 
-                    posflag = line.find('value=[')
-                    posflag2 = line.find(']', posflag)
-                    action = line[posflag + 7 : posflag2]
+                posflag = line.find('thread')
+                posflag2 = line.find(']', posflag)
+                threadnum = line[posflag + 7 : posflag2 - 1]
 
-                    ShowString = 'Action: %30s, begintime: %s, threadnum: %s ' % (action, action_time, threadnum)
+                posflag = line.find('value=[')
+                posflag2 = line.find(']', posflag)
+                action = line[posflag + 7 : posflag2]
 
-                    if endtime is not None:
-                        posflag = action_time.find('.')
-                        beginaction = action_time[:posflag]
-                        beginaction = datetime.datetime.strptime(beginaction,"%Y%m%d %H:%M:%S")
-                        timevalue = beginaction - endtime
-                        if 0 < total_seconds(timevalue): #timevalue.total_seconds():
-                            break
+                self.ShowString = 'Action: %30s, begintime: %s, threadnum: %s ' % (action, action_time, threadnum)
 
-                    Status = UserOrDevFlag
+                if endtime is not None:
+                    posflag = action_time.find('.')
+                    beginaction = action_time[:posflag]
+                    beginaction = datetime.datetime.strptime(beginaction,"%Y%m%d %H:%M:%S")
+                    timevalue = beginaction - endtime
+                    if 0 < total_seconds(timevalue): #timevalue.total_seconds():
+                        return 'break'
 
-            elif Status == UserOrDevFlag:
+                self.Status = UserOrDevFlag
 
-                if -1 != line.find('Param info: key=[devid]'):
-                    posflag = line.find('value=[')
-                    posflag2 = line.find(']', posflag)
-                    devid = line[posflag + 7: posflag2]
+        elif self.Status == UserOrDevFlag:
 
-                    ShowString += 'device id: %s ' % devid
+            if -1 != line.find('Param info: key=[devid]'):
+                posflag = line.find('value=[')
+                posflag2 = line.find(']', posflag)
+                self.devid = line[posflag + 7: posflag2]
 
-                elif -1 != line.find('Param info: key=[userid]'):
-                    posflag = line.find('value=[')
-                    posflag2 = line.find(']', posflag)
-                    userid = line[posflag + 7: posflag2]
+                self.ShowString += 'device id: %s ' % self.devid
 
-                    ShowString += 'user   id: %s ' % userid
+            elif -1 != line.find('Param info: key=[userid]'):
+                posflag = line.find('value=[')
+                posflag2 = line.find(']', posflag)
+                self.userid = line[posflag + 7: posflag2]
 
-                elif -1 != line.find('Param info: key=[username]'):
-                    posflag = line.find('value=[')
-                    posflag2 = line.find(']', posflag)
-                    username = line[posflag + 7: posflag2]
+                self.ShowString += 'user   id: %s ' % self.userid
 
-                    ShowString += 'user name: %s ' % username
+            elif -1 != line.find('Param info: key=[username]'):
+                posflag = line.find('value=[')
+                posflag2 = line.find(']', posflag)
+                username = line[posflag + 7: posflag2]
 
-                elif -1 != line.find('Param info: key=[REMOTE_ADDR]'):
-                    posflag = line.find('value=[')
-                    posflag2 = line.find(']', posflag)
-                    remoteip = line[posflag + 7: posflag2]
+                self.ShowString += 'user name: %s ' % username
 
-                    ShowString += 'remote ip: %s ' % remoteip
+            elif -1 != line.find('Param info: key=[REMOTE_ADDR]'):
+                posflag = line.find('value=[')
+                posflag2 = line.find(']', posflag)
+                remoteip = line[posflag + 7: posflag2]
 
-                elif -1 != line.find('Return msg is writed and result is'):
-                    posflag = line.find('[')
-                    end_time = line[0: posflag - 1]
+                self.ShowString += 'remote ip: %s ' % remoteip
 
-                    posflag = line.find('Return msg is writed and result is')
-                    posflag2 = line.find('-', posflag)
-                    result = line[posflag + 35 : posflag2 - 1]
+            elif -1 != line.find('Return msg is writed and result is'):
+                posflag = line.find('[')
+                end_time = line[0: posflag - 1]
 
-                    ShowString += 'endtime %s result: %s' % (end_time, result)
+                posflag = line.find('Return msg is writed and result is')
+                posflag2 = line.find('-', posflag)
+                result = line[posflag + 35 : posflag2 - 1]
 
-                    tmpvalue = end_time.split('.')
-                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+                self.ShowString += 'endtime %s result: %s' % (end_time, result)
 
-                    endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
-                    deltatime = endaction_micro - beginaction_micro
-                    delta = total_microseconds(deltatime)
-                    ShowString += 'used microseconds:%.3f' % delta
+                tmpvalue = end_time.split('.')
+                value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
 
-                    if uid is not None:
-                        if userid is not None:
-                            local_uid = userid
-                            userid = None
+                endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
+                deltatime = endaction_micro - self.beginaction_micro
+                delta = total_microseconds(deltatime)
+                self.ShowString += 'used microseconds:%.3f' % delta
 
-                            if uid != local_uid:
-                                Status = ActionFlag  # reset loop
-                                continue
-                        else:
-                            Status = ActionFlag  # reset loop
-                            continue
+                if uid is not None:
+                    if self.userid is not None:
+                        local_uid = self.userid
+                        self.userid = None
 
-                    print ShowString
+                        if uid != local_uid:
+                            self.Status = ActionFlag  # reset loop
+                            return 'continue'
+                    else:
+                        self.Status = ActionFlag  # reset loop
+                        return 'continue'
 
-                    Status = ActionFlag
+                print self.ShowString
 
-                elif -1 != line.find('Connect succeed and remote ip'):
+                self.Status = ActionFlag
 
-                    Status = ResultFlag
+            elif -1 != line.find('Connect succeed and remote ip'):
 
-            elif Status == ResultFlag:
-                if -1 != line.find('Return msg is writed and result is'):
-                    posflag = line.find('[')
-                    end_time = line[0: posflag - 1]
+                self.Status = ResultFlag
 
-                    posflag = line.find('Return msg is writed and result is')
-                    posflag2 = line.find('-', posflag)
-                    result = line[posflag + 35 : posflag2 - 1]
+        elif self.Status == ResultFlag:
+            if -1 != line.find('Return msg is writed and result is'):
+                posflag = line.find('[')
+                end_time = line[0: posflag - 1]
 
-                    ShowString += 'endtime %s result: %s ' % (end_time, result)
+                posflag = line.find('Return msg is writed and result is')
+                posflag2 = line.find('-', posflag)
+                result = line[posflag + 35 : posflag2 - 1]
 
-                    tmpvalue = end_time.split('.')
-                    value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
+                self.ShowString += 'endtime %s result: %s ' % (end_time, result)
 
-                    endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
-                    deltatime = endaction_micro - beginaction_micro
-                    delta = total_microseconds(deltatime)
-                    ShowString += 'used microseconds:%.3f' % delta
+                tmpvalue = end_time.split('.')
+                value = tmpvalue.pop(0) + '.' + tmpvalue.pop(0) + tmpvalue.pop(0)
 
-                    if uid is not None:
-                        if userid is not None:
-                            local_uid = userid
-                            userid = None
+                endaction_micro = datetime.datetime.strptime(value, "%Y%m%d %H:%M:%S.%f")
+                deltatime = endaction_micro - self.beginaction_micro
+                delta = total_microseconds(deltatime)
+                self.ShowString += 'used microseconds:%.3f' % delta
 
-                            if uid != local_uid:
-                                Status = ActionFlag  # reset loop
-                                continue
-                        else:
-                            Status = ActionFlag  # reset loop
-                            continue
+                if uid is not None:
+                    if self.userid is not None:
+                        local_uid = self.userid
+                        self.userid = None
 
-                    print ShowString
+                        if uid != local_uid:
+                            self.Status = ActionFlag  # reset loop
+                            return 'continue'
+                    else:
+                        self.Status = ActionFlag  # reset loop
+                        return 'continue'
 
-                    Status = ActionFlag
+                print self.ShowString
+
+                self.Status = ActionFlag
+        else:
+            print 'Parse status error'
+            return False
+
+        return True
 
 def ValidInput(begintime, endtime):
     if begintime is not None and endtime is not None:
@@ -182,6 +189,30 @@ def ValidInput(begintime, endtime):
             return False
 
     return True
+
+def Run(filename, begintime, endtime, uid):
+    ParseMap = {} #key:threadnum, value Parse object
+    with open(filename, 'r') as f:
+        for line in f:
+            posflag = line.find('thread')
+            posflag2 = line.find(']', posflag)
+            threadnum = line[posflag + 7: posflag2 - 1]
+
+            pobject = ParseMap.get(threadnum)
+            if pobject is None:
+                pobject = Parse(threadnum)
+                ParseMap[threadnum] = pobject
+
+            result = pobject.ParseFile(line, begintime, endtime, uid)
+            if result == 'continue':
+                continue
+            elif result == 'break':
+                break
+            elif result == True:
+                pass
+            else:
+                break
+
 
 
 if __name__ == "__main__":
@@ -207,8 +238,7 @@ if __name__ == "__main__":
             uid = sys.argv[4]
 
         if (ValidInput(begintime=begintime, endtime=endtime)):
-
-            ParseFile(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid)
+            Run(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid)
             print 'Completed!'
 
 
