@@ -364,7 +364,7 @@ if __name__ == "__main__":
         if 7 <= len(sys.argv):
             uid = sys.argv[6]
 
-        if (ValidInput(begintime=begintime, endtime=endtime)):
+        if ValidInput(begintime=begintime, endtime=endtime):
             if '1' == cnflag:
                 IPDataInit()
 
