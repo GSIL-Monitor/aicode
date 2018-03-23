@@ -97,10 +97,6 @@ def total_seconds(time_delta):
 def total_microseconds(time_delta):
     return 1.0 * (time_delta.microseconds + (time_delta.seconds + time_delta.days * 24 * 3600) * 10 ** 6) / 1000
 
-TimelineMap = {} #key time, value json
-
-ProcessHandlerMap = {} #key action, value func
-
 ActionFlag = 'find action'
 UserOrDevFlag = 'find user_or_dev'
 ConnectRemoteFlag = 'connect remote'
@@ -302,39 +298,81 @@ def Run(filename, begintime, endtime, uid, cnflag):
             else:
                 break
 
+def ReadLineInfinite(filename):
+    with open(filename, 'r') as f:
+        f.seek(0, 2)  # Go to the end of the file
+        while True:
+            line = f.readline()
+            if not line:
+                #print 'sleep...'
+                time.sleep(0.5)  # Sleep briefly
+                continue
+            yield line
 
+def RunInfinite(filename, begintime, endtime, uid, cnflag):
+
+    LineInfinite = ReadLineInfinite(filename)
+
+    ParseMap = {}  # key:threadnum, value Parse object
+    for line in LineInfinite:
+        posflag = line.find('thread')
+        posflag2 = line.find(']', posflag)
+        threadnum = line[posflag + 7: posflag2 - 1]
+
+        pobject = ParseMap.get(threadnum)
+        if pobject is None:
+            pobject = Parse(threadnum)
+            ParseMap[threadnum] = pobject
+
+        result = pobject.ParseFile(line, begintime, endtime, uid, cnflag)
+        if result == 'continue':
+            continue
+        elif result == 'break':
+            break
+        elif result == True:
+            pass
+        else:
+            break
 
 if __name__ == "__main__":
     print 'Runing at ', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
 
     if 1 >= len(sys.argv):
-        print 'Please give file name first. Parse.py filename [cnflag] [begintime] [endtime] [userid]'
+        print 'Please give file name first. Parse.py filename [infinite] [cnflag] [begintime] [endtime] [userid]'
 
     else:
         begintime = None
         endtime = None
         uid = None
         cnflag = None
+        infinite = None
 
         if 3 <= len(sys.argv):
-            cnflag = sys.argv[2]
+            infinite = sys.argv[2]
 
         if 4 <= len(sys.argv):
-            begintime = sys.argv[3]
-            begintime = datetime.datetime.strptime(begintime, "%Y-%m-%d %H:%M:%S")
+            cnflag = sys.argv[3]
 
         if 5 <= len(sys.argv):
-            endtime = sys.argv[4]
-            endtime = datetime.datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+            begintime = sys.argv[4]
+            begintime = datetime.datetime.strptime(begintime, "%Y-%m-%d %H:%M:%S")
 
         if 6 <= len(sys.argv):
-            uid = sys.argv[5]
+            endtime = sys.argv[5]
+            endtime = datetime.datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+
+        if 7 <= len(sys.argv):
+            uid = sys.argv[6]
 
         if (ValidInput(begintime=begintime, endtime=endtime)):
             if '1' == cnflag:
                 IPDataInit()
 
-            Run(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid, cnflag=cnflag)
+            if '0' == infinite:
+                Run(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid, cnflag=cnflag)
+            else:
+                RunInfinite(sys.argv[1], begintime=begintime, endtime=endtime, uid=uid, cnflag=cnflag)
+
             print 'Completed!'
 
 
