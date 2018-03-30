@@ -107,7 +107,7 @@ def ReleaseProxyFileAndRun(rootpath, port):
 
 if __name__ == '__main__':
 
-    global cwd
+    #global cwd #because current position cwd is already global scope.
     cwd = os.getcwd()
 
     print 'Current dir:', os.getcwd()
