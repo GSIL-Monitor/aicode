@@ -31,7 +31,7 @@ def ConnectDB(db_user, db_pwd, db_host, db_name):
 
 def InitDB():
     global db
-    db = ConnectDB('root', '1qaz@WSX', '172.20.120.22', 'PlatformDB')
+    db = ConnectDB('root', '1qaz@WSX', '127.0.0.1', 'PlatformDB')
     if db is None:
         return False
 
@@ -52,7 +52,7 @@ def GetCmsAddressInfo():
     if cursor.rowcount == 0:
         print("Port not founded")
         cursor.close()
-        db.close()
+        #db.close()
         return None
 
     ports = []
@@ -128,7 +128,8 @@ if __name__ == '__main__':
 
         if dbports is None:
             print 'Get ports from database failed.'
-            exit(0)
+            #exit(0)
+            continue
         if not dbports: #ports is empty list
             continue
 
