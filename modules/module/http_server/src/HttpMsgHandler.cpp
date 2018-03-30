@@ -125,6 +125,12 @@ const std::string HttpMsgHandler::QUERY_USER_SPACE_ACTION("query_user_space");
 
 const std::string HttpMsgHandler::QUERY_STORAGE_SPACE_ACTION("query_storage_info");
 
+const std::string HttpMsgHandler::CMS_CALL_ACTION("cms_call");
+
+const std::string HttpMsgHandler::REGISTER_CMSCALL_ACTION("register_cms_call");
+
+const std::string HttpMsgHandler::UNREGISTER_CMSCALL_ACTION("unregister_cms_call");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -6242,6 +6248,211 @@ bool HttpMsgHandler::QueryStorageSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsg
     return blResult;
 }
 
+bool HttpMsgHandler::CmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    Json::Value jsValue;
+    for (auto itBegin = pMsgInfoMap->begin(), itEnd = pMsgInfoMap->end(); itBegin != itEnd; ++itBegin)
+    {
+        jsValue[itBegin->first] = itBegin->second;
+    }
+
+    //Json::StyledWriter stylewriter;
+    Json::FastWriter fastwriter;
+    const std::string &strBody = fastwriter.write(jsValue);
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Cms call param is " << strBody);
+
+    std::string strRetMsg;
+    if (!CmsCall(strBody, strRetMsg))
+    {
+        LOG_ERROR_RLD("Cms call handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", strRetMsg));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    std::string strCmsID;
+    auto itFind = pMsgInfoMap->find("cmsid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCmsID = itFind->second;
+    }
+    
+    std::string strCmsP2pIDList;
+    itFind = pMsgInfoMap->find("cmsp2pid_list");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strCmsP2pIDList = itFind->second;
+    }
+    
+    if ((strCmsP2pIDList.empty() && !strCmsID.empty()) || (!strCmsP2pIDList.empty() && strCmsID.empty()))
+    {
+        LOG_ERROR_RLD("Cms id and p2p id list param not enought and cms id is " << strCmsID << " and cms p2p id list is " << strCmsP2pIDList);
+        return blResult;
+    }
+
+    std::string strDeviceP2pID;
+    std::string strDeviceMac;
+
+    std::list<std::string> strCmsP2pIDList2;
+    if (!strCmsP2pIDList.empty() && !strCmsID.empty())
+    {
+        if (!GetValueList(strCmsP2pIDList, strCmsP2pIDList2))
+        {
+            LOG_ERROR_RLD("Parse cms p2p id list info failed and value is " << strCmsP2pIDList);
+            return blResult;
+        }
+
+        if (strCmsP2pIDList2.empty())
+        {
+            LOG_ERROR_RLD("Cms p2p id list is empty.");
+            return blResult;
+        }
+    }
+    else
+    {
+        itFind = pMsgInfoMap->find("device_mac");
+        if (pMsgInfoMap->end() != itFind)
+        {
+            strDeviceMac = itFind->second;
+        }
+
+
+        itFind = pMsgInfoMap->find("device_p2pid");
+        if (pMsgInfoMap->end() != itFind)
+        {
+            strDeviceP2pID = itFind->second;
+        }
+
+        if ((strDeviceMac.empty() && !strDeviceP2pID.empty()) || (!strDeviceMac.empty() && strDeviceP2pID.empty()))
+        {
+            LOG_ERROR_RLD("Device mac and p2p id param not enought and device mac is " << strDeviceMac << " and p2p id list is " << strDeviceP2pID);
+            return blResult;
+        }
+    }
+        
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Register cms call received and  cms id is " << strCmsID << " and cms p2p id list is " << strCmsP2pIDList
+        << " and device mac is [" << strDeviceMac << "]" << " and device p2p id is " << strDeviceP2pID);
+
+    std::string strAddress;
+    std::string strPort;
+    if (!RegisterCmsCall(strCmsID, strCmsP2pIDList2, strDeviceMac, strDeviceP2pID, strAddress, strPort))
+    {
+        LOG_ERROR_RLD("Register cms call handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("address", strAddress));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("port", strPort));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::UnregisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    
+    auto itFind = pMsgInfoMap->find("cmsid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Cms id not found.");
+        return blResult;
+    }
+
+    const std::string strCmsID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("UnRegister cms call received and  cms id is " << strCmsID);
+
+    if (!UnregisterCmsCall(strCmsID))
+    {
+        LOG_ERROR_RLD("UnRegister cms call handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -9828,6 +10039,140 @@ bool HttpMsgHandler::QueryStorageSpace(const std::string &strSid, const std::str
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::CmsCall(const std::string &strCmsCallMsg, std::string &strRetMsg)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        return writer("0", "0", strCmsCallMsg.c_str(), strCmsCallMsg.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        strRetMsg = strMsgReceived;
+
+        LOG_INFO_RLD("Cms call return msg is " << strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::RegisterCmsCall(const std::string &strCmsID, std::list<std::string> &strCmsP2pIDList, const std::string &strDeviceMac, 
+    const std::string &strDeviceP2pID, std::string &strAddress, std::string &strPort)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::RegisterCmsCallReq_USR RegCmsCallReq;
+        RegCmsCallReq.m_MsgType = InteractiveProtoHandler::MsgType::RegisterCmsCallReq_USR_T;
+        RegCmsCallReq.m_uiMsgSeq = 1;
+        RegCmsCallReq.m_strSID = "";
+        
+        RegCmsCallReq.m_strCmsID = strCmsID;
+        RegCmsCallReq.m_strCmsP2pIDList.swap(strCmsP2pIDList);
+        RegCmsCallReq.m_strDeviceMac = strDeviceMac;
+        RegCmsCallReq.m_strDeviceP2pID = strDeviceP2pID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RegCmsCallReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Register cms call req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::RegisterCmsCallRsp_USR RegCmsCallRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RegCmsCallRsp))
+        {
+            LOG_ERROR_RLD("Register cms call rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        strAddress = RegCmsCallRsp.m_strAddress;
+        strPort = RegCmsCallRsp.m_strPort;
+        
+        iRet = RegCmsCallRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Register cms call and address " << strAddress << " and port is " << strPort <<
+            " and return code is " << RegCmsCallRsp.m_iRetcode <<
+            " and return msg is " << RegCmsCallRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::UnregisterCmsCall(const std::string &strCmsID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::UnregisterCmsCallReq_USR UnRegCmsCallReq;
+        UnRegCmsCallReq.m_MsgType = InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T;
+        UnRegCmsCallReq.m_uiMsgSeq = 1;
+        UnRegCmsCallReq.m_strSID = "";
+
+        UnRegCmsCallReq.m_strCmsID = strCmsID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UnRegCmsCallReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("UnRegister cms call req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::UnregisterCmsCallRsp_USR UnRegCmsCallRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UnRegCmsCallRsp))
+        {
+            LOG_ERROR_RLD("UnRegister cms call rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = UnRegCmsCallRsp.m_iRetcode;
+
+        LOG_INFO_RLD("UnRegister cms call " <<
+            " and return code is " << UnRegCmsCallRsp.m_iRetcode <<
+            " and return msg is " << UnRegCmsCallRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&

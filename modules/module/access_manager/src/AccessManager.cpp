@@ -202,6 +202,12 @@ bool AccessManager::Init()
     m_MsgReceiver->RunReceivedMsg();
     m_MsgSender->RunSendMsg();
 
+    if (!RefreshCmsCallInfo())
+    {
+        LOG_ERROR_RLD("Refresh cms call info failed.");
+        return false;
+    }
+
     LOG_INFO_RLD("UserManager init success");
 
     return true;
@@ -284,7 +290,9 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::QueryUploadURLReq_MGR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::P2pInfoReq_DEV_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::RegisterCmsCallReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T == req.m_MsgType)
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -1002,13 +1010,16 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     }
 
     //检查设备是否已经向平台上报过数据
-    if (!req.m_devInfo.m_strP2pID.empty() && !QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
+    if (DEVICE_TYPE_GATEWAY != req.m_devInfo.m_uiTypeInfo) //网关设备不需要上报
     {
-        LOG_ERROR_RLD("Add device failed, the device p2pid is not recorded, src id is " << strSrcID <<
-            " and p2p id is " << req.m_devInfo.m_strP2pID);
+        if (!req.m_devInfo.m_strP2pID.empty() && !QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
+        {
+            LOG_ERROR_RLD("Add device failed, the device p2pid is not recorded, src id is " << strSrcID <<
+                " and p2p id is " << req.m_devInfo.m_strP2pID);
 
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER);
-        return false;
+            ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER);
+            return false;
+        }
     }
 
     if (req.m_devInfo.m_strP2pID.empty() || DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
@@ -1143,7 +1154,7 @@ bool AccessManager::DelDeviceReq(const std::string &strMsg, const std::string &s
 
     m_DBRuner.Post(boost::bind(&AccessManager::DeleteDeviceParameter, this, req.m_strDevIDList.front()));
 
-    m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS));
+    m_DBRuner.Post(boost::bind(&AccessManager::DelDeviceToDB, this, req.m_strDevIDList, DELETE_STATUS, req.m_strUserID));
 
     blResult = true;
 
@@ -4225,6 +4236,195 @@ bool AccessManager::QueryDeviceInfoMultiReqUser(const std::string &strMsg, const
     return blResult;
 }
 
+bool AccessManager::RegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::string strAddress;
+    std::string strPort;
+    InteractiveProtoHandler::RegisterCmsCallReq_USR RegCmsReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &RegCmsReq, &writer, &strSrcID, &strAddress, &strPort)
+    {
+        InteractiveProtoHandler::RegisterCmsCallRsp_USR RegCmsRsp;
+        RegCmsRsp.m_MsgType = InteractiveProtoHandler::MsgType::RegisterCmsCallRsp_USR_T;
+        RegCmsRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        RegCmsRsp.m_strSID = RegCmsReq.m_strSID;
+        RegCmsRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        RegCmsRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        
+        RegCmsRsp.m_strAddress = strAddress;
+        RegCmsRsp.m_strPort = strPort;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(RegCmsRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Register cms call rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Register cms call rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, RegCmsReq))
+    {
+        LOG_ERROR_RLD("Register cms call req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    //若是CMS注册，则首先校验CMS对应的p2pidlist，确保没有和现有的重复
+    if (!RegCmsReq.m_strCmsID.empty()) //CMS注册消息
+    {
+        if (!ValidCmsCallInfo(RegCmsReq.m_strCmsID, RegCmsReq.m_strCmsP2pIDList))
+        {
+            LOG_ERROR_RLD("Valid failed and cms id is " << RegCmsReq.m_strCmsID);
+            return false;
+        }
+    }
+    
+    //从内存中直接获取，若是CMS的注册消息，则若是成功，则更新内存cmsp2pidlist，并且保存到数据库中去，最后返回成功。
+    //                                                             若是没有找到，则增加内存cmsp2pidlist，并且分配地址和端口，保存到数据库中，最后返回成功
+    //反之，若是设备的注册消息，则纯粹从内存查找，则若是成功，直接返回成功， 若是没有找到，则给设备返回注册失败消息
+    if (GetCmsCallInfo(RegCmsReq.m_strCmsID, RegCmsReq.m_strDeviceP2pID, strAddress, strPort))
+    {
+        if (!RegCmsReq.m_strCmsID.empty()) //CMS注册消息
+        {
+            std::list<CmsCall> CmsCallList;
+            for (auto itBegin = RegCmsReq.m_strCmsP2pIDList.begin(), itEnd = RegCmsReq.m_strCmsP2pIDList.end(); itBegin != itEnd; ++itBegin)
+            {
+                CmsCall cca;
+                cca.m_strAddress = strAddress;
+                cca.m_strPort = strPort;
+                cca.m_strCmsID = RegCmsReq.m_strCmsID;
+                cca.m_strCmsP2pID = *itBegin;
+
+                CmsCallList.push_back(std::move(cca));
+            }
+
+            if (!UpdateCmsCallInfo(RegCmsReq.m_strCmsID, CmsCallList))
+            {
+                LOG_ERROR_RLD("Update cms call failed and cms id is " << RegCmsReq.m_strCmsID);
+                return false;
+            }
+
+            if (!SaveCmsCallInfo(RegCmsReq.m_strCmsID))
+            {
+                LOG_ERROR_RLD("Save cms call failed and cms id is " << RegCmsReq.m_strCmsID);
+                return false;
+            }
+        }        
+
+        LOG_INFO_RLD("Register cms call succeed and address is " << strAddress << " and port is " << strPort);
+
+        blResult = true;
+        return true;
+    }
+
+    //若是设备没有在内存中找到
+    if (!RegCmsReq.m_strDeviceP2pID.empty())
+    {
+        LOG_ERROR_RLD("Device p2pid not found and value is " << RegCmsReq.m_strDeviceP2pID);
+        return false;
+    }
+
+    //若是CMS没有在内存中找到
+    if (!RegCmsReq.m_strCmsID.empty())
+    {
+        AllocCmsAddressAndPort(strAddress, strPort);
+
+        std::list<CmsCall> CmsCallList;
+        for (auto itBegin = RegCmsReq.m_strCmsP2pIDList.begin(), itEnd = RegCmsReq.m_strCmsP2pIDList.end(); itBegin != itEnd; ++itBegin)
+        {
+            CmsCall cca;
+            cca.m_strAddress = strAddress;
+            cca.m_strPort = strPort;
+            cca.m_strCmsID = RegCmsReq.m_strCmsID;
+            cca.m_strCmsP2pID = *itBegin;
+
+            CmsCallList.push_back(std::move(cca));
+        }
+
+        if (!AddCmsCallInfo(RegCmsReq.m_strCmsID, CmsCallList))
+        {
+            LOG_ERROR_RLD("Add cms call failed and cms id is " << RegCmsReq.m_strCmsID);
+            return false;
+        }
+
+        if (!SaveCmsCallInfo(RegCmsReq.m_strCmsID))
+        {
+            LOG_ERROR_RLD("Save cms call failed and cms id is " << RegCmsReq.m_strCmsID);
+            return false;
+        }
+
+    }
+
+    LOG_INFO_RLD("Register cms call succeed and address is " << strAddress << " and port is " << strPort);
+
+    blResult = true;
+    return true;
+}
+
+bool AccessManager::UnRegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    InteractiveProtoHandler::UnregisterCmsCallReq_USR UnRegCmsReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &UnRegCmsReq, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::UnregisterCmsCallRsp_USR UnRegCmsRsp;
+        UnRegCmsRsp.m_MsgType = InteractiveProtoHandler::MsgType::UnregisterCmsCallRsp_USR_T;
+        UnRegCmsRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        UnRegCmsRsp.m_strSID = UnRegCmsReq.m_strSID;
+        UnRegCmsRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        UnRegCmsRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        UnRegCmsRsp.m_strValue = "";
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(UnRegCmsRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("UnRegister cms call rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("UnRegister cms call rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, UnRegCmsReq))
+    {
+        LOG_ERROR_RLD("UnRegister cms call req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!RemoveCmsCallInfo(UnRegCmsReq.m_strCmsID))
+    {
+        LOG_ERROR_RLD("Remove cms call info failed and cms id is " << UnRegCmsReq.m_strCmsID);
+        return false;
+    }
+
+    if (!SaveRemoveCmsCallInfo(UnRegCmsReq.m_strCmsID))
+    {
+        LOG_ERROR_RLD("Save remove cms call info failed and cms id is " << UnRegCmsReq.m_strCmsID);
+        return false;
+    }
+
+    blResult = true;
+    return true;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -6160,8 +6360,9 @@ void AccessManager::InsertRelationToDB(const std::string &strUuid, const Relatio
 void AccessManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
 {
     char sql[1024] = { 0 };
-    const char* sqlfmt = "update t_user_device_relation set status = %d where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, DELETE_STATUS, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_iRelation);
+    const char* sqlfmt = //"update t_user_device_relation set status = %d where userid = '%s' and deviceid = '%s' and relation = %d and status = 0";
+        "delete from t_user_device_relation where status = 0 and relation = 1 and userid = '%s' and deviceid = '%s' and devicekeyid = (select id from t_device_info where deviceid = '%s' and status = 0)";
+    snprintf(sql, sizeof(sql), sqlfmt, relation.m_strUsrID.c_str(), relation.m_strDevID.c_str(), relation.m_strDevID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -6170,20 +6371,36 @@ void AccessManager::RemoveRelationToDB(const RelationOfUsrAndDev &relation)
 
 }
 
-void AccessManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus)
+void AccessManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus, const std::string &strUserID)
 {
     if (strDevIDList.empty())
     {
         LOG_ERROR_RLD("Delete device id list is empty.");
         return;
     }
+    std::string strSql;
+
+    //删除设备关系表
+    for (auto strDevid : strDevIDList)
+    {
+        char sql[1024] = { 0 };
+        const char* sqlfmt = "delete from t_user_device_relation where status = 0 and relation = 0 and userid = '%s' and deviceid = '%s' and devicekeyid = (select id from t_device_info where deviceid = '%s' and status = 0)";
+        snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strDevid.c_str(), strDevid.c_str());
+
+        strSql = sql;
+
+        if (!m_pMysql->QueryExec(strSql))
+        {
+            LOG_ERROR_RLD("Delete t_user_device_relation sql exec failed, sql is " << strSql);
+        }
+
+    }
 
     //"update t_device_info set status = '%d' where deviceid = '%s'";
-
-    std::string strSql;
+    
     char sql[1024] = { 0 };
-    const char* sqlfmt = "update t_device_info set status = '%d' where ";
-    snprintf(sql, sizeof(sql), sqlfmt, iStatus);
+    const char* sqlfmt = "delete from t_device_info where "; //"update t_device_info set status = '%d' where ";
+    snprintf(sql, sizeof(sql), sqlfmt); // , iStatus);
     strSql = sql;
 
     auto itBegin = strDevIDList.begin();
@@ -6211,6 +6428,8 @@ void AccessManager::DelDeviceToDB(const std::list<std::string> &strDevIDList, co
     {
         LOG_ERROR_RLD("Delete t_device_info sql exec failed, sql is " << strSql);
     }
+        
+
 }
 
 void AccessManager::ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo)
@@ -8719,5 +8938,297 @@ bool AccessManager::QueryUserIDByUserName(const std::string &strUserName, std::s
     }
 
     strUserID = boost::any_cast<std::string>(ResultList.front());
+    return true;
+}
+
+bool AccessManager::RefreshCmsCallInfo()
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select cmsid, cmsp2pid, address, port from t_cms_call_info"
+        " where status = 0";
+    snprintf(sql, size, sqlfmt);
+
+    std::string strSql(sql);
+
+    CmsCall cmscall;
+    
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            cmscall.m_strCmsID = strColumn;
+            break;
+
+        case 1:
+            cmscall.m_strCmsP2pID = strColumn;            
+            break;
+
+        case 2:
+            cmscall.m_strAddress = strColumn;
+            break;
+
+        case 3:
+            cmscall.m_strPort = strColumn;
+            Result = cmscall;
+            break;
+
+        default:
+            LOG_ERROR_RLD("Refresh cms call info sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(strSql, ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << strSql);
+        return false;
+    }
+
+    m_CmsCallInfoMap.clear();
+
+    for (const auto &result : ResultList)
+    {
+        cmscall = boost::any_cast<CmsCall>(result);
+
+        auto itFind = m_CmsCallInfoMap.find(cmscall.m_strCmsID);
+        if (m_CmsCallInfoMap.end() == itFind)
+        {
+            std::list<CmsCall> strCmsCallInfoList;
+            strCmsCallInfoList.push_back(cmscall);
+            m_CmsCallInfoMap.insert(std::map<std::string, std::list<CmsCall> >::value_type(cmscall.m_strCmsID, strCmsCallInfoList));
+        }
+        else
+        {
+            itFind->second.push_back(cmscall);
+        }
+    }
+
+    return true;
+}
+
+bool AccessManager::GetCmsCallInfo(const std::string &strCmsID, const std::string &strDeviceP2pID, std::string &strAddress, std::string &strPort)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+
+    if (!strCmsID.empty())
+    {
+        auto itFind = m_CmsCallInfoMap.find(strCmsID);
+        if (m_CmsCallInfoMap.end() == itFind)
+        {
+            LOG_ERROR_RLD("Cms id not found, value is " << strCmsID);
+            return false;
+        }
+
+        strAddress = itFind->second.front().m_strAddress;
+        strPort = itFind->second.front().m_strPort;
+
+        LOG_INFO_RLD("Cms id found and value is " << strCmsID << " and address is " << strAddress << " and port is " << strPort);
+        return true;
+    }
+
+    if (!strDeviceP2pID.empty())
+    {
+        for (auto itBegin = m_CmsCallInfoMap.begin(), itEnd = m_CmsCallInfoMap.end(); itBegin != itEnd; ++itBegin)
+        {
+            for (auto itB1 = itBegin->second.begin(), itE1 = itBegin->second.end(); itB1 != itE1; ++itB1)
+            {
+                LOG_INFO_RLD("P2pid in memory is " << itB1->m_strCmsP2pID);
+
+                if (strDeviceP2pID == itB1->m_strCmsP2pID)
+                {
+                    strAddress = itB1->m_strAddress;
+                    strPort = itB1->m_strPort;
+
+                    LOG_INFO_RLD("Device p2pid found and p2pid is " << strDeviceP2pID << " and address is " << strAddress << " and port is " << strPort);
+                    return true;
+                }
+            }
+        }
+    }
+
+    LOG_ERROR_RLD("Not found address and port, cms id is " << strCmsID << " device p2pid is " << strDeviceP2pID);
+    return false;
+}
+
+bool AccessManager::SaveCmsCallInfo(const std::string &strCmsID)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "delete from t_cms_call_info where cmsid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strCmsID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("delete t_cms_call_info sql exec failed, sql is " << std::string(sql));
+        return false;
+    }
+
+    auto itFind = m_CmsCallInfoMap.find(strCmsID);
+    if (m_CmsCallInfoMap.end() == itFind)
+    {
+        LOG_ERROR_RLD("Cmd id not found, value is " << strCmsID);
+        return false;
+    }
+
+    for (auto itBegin = itFind->second.begin(), itEnd = itFind->second.end(); itBegin != itEnd; ++itBegin)
+    {
+        char sql[1024] = { 0 };
+        const char* sqlfmt = "insert into t_cms_call_info ("
+            "id, cmsid, cmsp2pid, address, port)"
+            " values(uuid(), '%s', '%s', '%s', '%s')";
+
+        snprintf(sql, sizeof(sql), sqlfmt, itBegin->m_strCmsID.c_str(), itBegin->m_strCmsP2pID.c_str(), 
+            itBegin->m_strAddress.c_str(), itBegin->m_strPort.c_str());
+
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("Insert t_cms_call_info sql exec failed, sql is " << std::string(sql));
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool AccessManager::ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+    if (strCmsID.empty())
+    {
+        LOG_ERROR_RLD("Cms id is empty.");
+        return false;
+    }
+
+    for (auto itB1 = strCmsP2pIDList.begin(), itE1 = strCmsP2pIDList.end(); itB1 != itE1; ++itB1)
+    {
+        for (auto itBegin = m_CmsCallInfoMap.begin(), itEnd = m_CmsCallInfoMap.end(); itBegin != itEnd; ++itBegin)
+        {
+            if (itBegin->first == strCmsID) //找到原来旧的cmsid对应的信息，则忽略掉
+            {
+                LOG_INFO_RLD("Old cms info found and continue.");
+                continue;
+            }
+
+            for (auto itB2 = itBegin->second.begin(), itE2 = itBegin->second.end(); itB2 != itE2; ++itB2)
+            {
+                if (*itB1 == itB2->m_strCmsP2pID)
+                {
+                    LOG_ERROR_RLD("Valid failed because cmsid of pending have same value in current map and p2p id is " << *itB1
+                        << " and cms id is " << strCmsID);
+                    return false;
+                }
+            }
+        }
+    }
+
+    LOG_INFO_RLD("Valid success and cms id is " << strCmsID);
+    return true;
+}
+
+bool AccessManager::UpdateCmsCallInfo(const std::string &strCmsID, const std::list<CmsCall> &CmsCallList)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+    if (strCmsID.empty())
+    {
+        LOG_ERROR_RLD("Cms id is empty.");
+        return false;
+    }
+
+    auto itFind = m_CmsCallInfoMap.find(strCmsID);
+    if (m_CmsCallInfoMap.end() == itFind)
+    {
+        LOG_ERROR_RLD("Cmd id not found, value is " << strCmsID);
+        return false;
+    }
+
+    m_CmsCallInfoMap.erase(itFind);
+
+    m_CmsCallInfoMap.insert(std::map<std::string, std::list<CmsCall> >::value_type(strCmsID, CmsCallList));
+
+    return true;
+}
+
+bool AccessManager::AddCmsCallInfo(const std::string &strCmsID, const std::list<CmsCall> &CmsCallList)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+    if (strCmsID.empty())
+    {
+        LOG_ERROR_RLD("Cms id is empty.");
+        return false;
+    }
+
+    auto itFind = m_CmsCallInfoMap.find(strCmsID);
+    if (m_CmsCallInfoMap.end() != itFind)
+    {
+        LOG_ERROR_RLD("Cmd id found, value is " << strCmsID);
+        return false;
+    }
+
+    m_CmsCallInfoMap.insert(std::map<std::string, std::list<CmsCall> >::value_type(strCmsID, CmsCallList));
+
+    return true;
+}
+
+void AccessManager::AllocCmsAddressAndPort(std::string &strAddress, std::string &strPort)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+
+    strAddress = m_ParamInfo.m_strCmsCallAddress;
+
+    unsigned int uiMaxPort = 16990;
+    for (auto itBegin = m_CmsCallInfoMap.begin(), itEnd = m_CmsCallInfoMap.end(); itBegin != itEnd; ++itBegin)
+    {
+        unsigned int uiPort = boost::lexical_cast<unsigned int>(itBegin->second.front().m_strPort);
+        if (uiPort > uiMaxPort)
+        {
+            uiMaxPort = uiPort;
+        }
+    }
+
+    ++uiMaxPort;
+
+    strPort = boost::lexical_cast<std::string>(uiMaxPort);
+}
+
+bool AccessManager::RemoveCmsCallInfo(const std::string &strCmsID)
+{
+    boost::unique_lock<boost::mutex> lock(m_CmsMutex);
+    if (strCmsID.empty())
+    {
+        LOG_ERROR_RLD("Cms id is empty.");
+        return false;
+    }
+
+    auto itFind = m_CmsCallInfoMap.find(strCmsID);
+    if (m_CmsCallInfoMap.end() == itFind)
+    {
+        LOG_ERROR_RLD("Cmd id not found, value is " << strCmsID);
+        return false;
+    }
+
+    m_CmsCallInfoMap.erase(itFind);
+
+    return true;
+}
+
+bool AccessManager::SaveRemoveCmsCallInfo(const std::string &strCmsID)
+{
+    char sql[1024] = { 0 };
+    const char* sqlfmt = "delete from t_cms_call_info where cmsid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strCmsID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("update t_cms_call_info sql exec failed, sql is " << std::string(sql));
+        return false;
+    }
+    
     return true;
 }

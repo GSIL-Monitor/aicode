@@ -1894,6 +1894,34 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::std::string* release_strextend();
   void set_allocated_strextend(::std::string* strextend);
 
+  // string strStoreID = 15;
+  void clear_strstoreid();
+  static const int kStrStoreIDFieldNumber = 15;
+  const ::std::string& strstoreid() const;
+  void set_strstoreid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstoreid(::std::string&& value);
+  #endif
+  void set_strstoreid(const char* value);
+  void set_strstoreid(const char* value, size_t size);
+  ::std::string* mutable_strstoreid();
+  ::std::string* release_strstoreid();
+  void set_allocated_strstoreid(::std::string* strstoreid);
+
+  // string strStoreName = 16;
+  void clear_strstorename();
+  static const int kStrStoreNameFieldNumber = 16;
+  const ::std::string& strstorename() const;
+  void set_strstorename(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strstorename(::std::string&& value);
+  #endif
+  void set_strstorename(const char* value);
+  void set_strstorename(const char* value, size_t size);
+  ::std::string* mutable_strstorename();
+  ::std::string* release_strstorename();
+  void set_allocated_strstorename(::std::string* strstorename);
+
   // uint32 uiViewState = 11;
   void clear_uiviewstate();
   static const int kUiViewStateFieldNumber = 11;
@@ -1923,6 +1951,8 @@ class Event : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::google::protobuf::internal::ArenaStringPtr strremark_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::internal::ArenaStringPtr strstoreid_;
+  ::google::protobuf::internal::ArenaStringPtr strstorename_;
   ::google::protobuf::uint32 uiviewstate_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
@@ -3193,6 +3223,22 @@ class EvaluationItemScore : public ::google::protobuf::Message /* @@protoc_inser
 
   // accessors -------------------------------------------------------
 
+  // repeated string strPicture = 4;
+  int strpicture_size() const;
+  void clear_strpicture();
+  static const int kStrPictureFieldNumber = 4;
+  const ::std::string& strpicture(int index) const;
+  ::std::string* mutable_strpicture(int index);
+  void set_strpicture(int index, const ::std::string& value);
+  void set_strpicture(int index, const char* value);
+  void set_strpicture(int index, const char* value, size_t size);
+  ::std::string* add_strpicture();
+  void add_strpicture(const ::std::string& value);
+  void add_strpicture(const char* value);
+  void add_strpicture(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strpicture() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strpicture();
+
   // string strDescription = 3;
   void clear_strdescription();
   static const int kStrDescriptionFieldNumber = 3;
@@ -3226,6 +3272,7 @@ class EvaluationItemScore : public ::google::protobuf::Message /* @@protoc_inser
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strpicture_;
   ::google::protobuf::internal::ArenaStringPtr strdescription_;
   ::CustomerFlow::Interactive::Message::EvaluationItem* evaluationitem_;
   double dscore_;
@@ -9752,6 +9799,12 @@ class QueryAllEventReq : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
 
+  // uint32 uiEventType = 7;
+  void clear_uieventtype();
+  static const int kUiEventTypeFieldNumber = 7;
+  ::google::protobuf::uint32 uieventtype() const;
+  void set_uieventtype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllEventReq)
  private:
 
@@ -9762,6 +9815,7 @@ class QueryAllEventReq : public ::google::protobuf::Message /* @@protoc_insertio
   ::google::protobuf::uint32 uiprocessstate_;
   ::google::protobuf::uint32 uirelaton_;
   ::google::protobuf::uint32 uibeginindex_;
+  ::google::protobuf::uint32 uieventtype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -16026,6 +16080,12 @@ class QueryAllStoreEvaluationReq : public ::google::protobuf::Message /* @@proto
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
 
+  // uint32 uiCheckStatus = 6;
+  void clear_uicheckstatus();
+  static const int kUiCheckStatusFieldNumber = 6;
+  ::google::protobuf::uint32 uicheckstatus() const;
+  void set_uicheckstatus(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllStoreEvaluationReq)
  private:
 
@@ -16035,6 +16095,7 @@ class QueryAllStoreEvaluationReq : public ::google::protobuf::Message /* @@proto
   ::google::protobuf::internal::ArenaStringPtr strbegindate_;
   ::google::protobuf::internal::ArenaStringPtr strenddate_;
   ::google::protobuf::uint32 uibeginindex_;
+  ::google::protobuf::uint32 uicheckstatus_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -23216,6 +23277,110 @@ inline void Event::set_uistate(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Event.uiState)
 }
 
+// string strStoreID = 15;
+inline void Event::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Event::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Event.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+inline void Event::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Event.strStoreID)
+}
+#if LANG_CXX11
+inline void Event::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Event.strStoreID)
+}
+#endif
+inline void Event::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Event.strStoreID)
+}
+inline void Event::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Event.strStoreID)
+}
+inline ::std::string* Event::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Event.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Event::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Event.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Event::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Event.strStoreID)
+}
+
+// string strStoreName = 16;
+inline void Event::clear_strstorename() {
+  strstorename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Event::strstorename() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Event.strStoreName)
+  return strstorename_.GetNoArena();
+}
+inline void Event::set_strstorename(const ::std::string& value) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Event.strStoreName)
+}
+#if LANG_CXX11
+inline void Event::set_strstorename(::std::string&& value) {
+  
+  strstorename_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Event.strStoreName)
+}
+#endif
+inline void Event::set_strstorename(const char* value) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Event.strStoreName)
+}
+inline void Event::set_strstorename(const char* value, size_t size) {
+  
+  strstorename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Event.strStoreName)
+}
+inline ::std::string* Event::mutable_strstorename() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Event.strStoreName)
+  return strstorename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Event::release_strstorename() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Event.strStoreName)
+  
+  return strstorename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Event::set_allocated_strstorename(::std::string* strstorename) {
+  if (strstorename != NULL) {
+    
+  } else {
+    
+  }
+  strstorename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstorename);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Event.strStoreName)
+}
+
 // -------------------------------------------------------------------
 
 // SmartGuardStore
@@ -25524,6 +25689,61 @@ inline void EvaluationItemScore::set_allocated_strdescription(::std::string* str
   }
   strdescription_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdescription);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.EvaluationItemScore.strDescription)
+}
+
+// repeated string strPicture = 4;
+inline int EvaluationItemScore::strpicture_size() const {
+  return strpicture_.size();
+}
+inline void EvaluationItemScore::clear_strpicture() {
+  strpicture_.Clear();
+}
+inline const ::std::string& EvaluationItemScore::strpicture(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  return strpicture_.Get(index);
+}
+inline ::std::string* EvaluationItemScore::mutable_strpicture(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  return strpicture_.Mutable(index);
+}
+inline void EvaluationItemScore::set_strpicture(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  strpicture_.Mutable(index)->assign(value);
+}
+inline void EvaluationItemScore::set_strpicture(int index, const char* value) {
+  strpicture_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+}
+inline void EvaluationItemScore::set_strpicture(int index, const char* value, size_t size) {
+  strpicture_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+}
+inline ::std::string* EvaluationItemScore::add_strpicture() {
+  // @@protoc_insertion_point(field_add_mutable:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  return strpicture_.Add();
+}
+inline void EvaluationItemScore::add_strpicture(const ::std::string& value) {
+  strpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+}
+inline void EvaluationItemScore::add_strpicture(const char* value) {
+  strpicture_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+}
+inline void EvaluationItemScore::add_strpicture(const char* value, size_t size) {
+  strpicture_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+EvaluationItemScore::strpicture() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  return strpicture_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+EvaluationItemScore::mutable_strpicture() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.EvaluationItemScore.strPicture)
+  return &strpicture_;
 }
 
 // -------------------------------------------------------------------
@@ -31900,6 +32120,20 @@ inline void QueryAllEventReq::set_uibeginindex(::google::protobuf::uint32 value)
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllEventReq.uiBeginIndex)
 }
 
+// uint32 uiEventType = 7;
+inline void QueryAllEventReq::clear_uieventtype() {
+  uieventtype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllEventReq::uieventtype() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllEventReq.uiEventType)
+  return uieventtype_;
+}
+inline void QueryAllEventReq::set_uieventtype(::google::protobuf::uint32 value) {
+  
+  uieventtype_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllEventReq.uiEventType)
+}
+
 // -------------------------------------------------------------------
 
 // QueryAllEventRsp
@@ -36936,6 +37170,20 @@ inline void QueryAllStoreEvaluationReq::set_uibeginindex(::google::protobuf::uin
   
   uibeginindex_ = value;
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllStoreEvaluationReq.uiBeginIndex)
+}
+
+// uint32 uiCheckStatus = 6;
+inline void QueryAllStoreEvaluationReq::clear_uicheckstatus() {
+  uicheckstatus_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllStoreEvaluationReq::uicheckstatus() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllStoreEvaluationReq.uiCheckStatus)
+  return uicheckstatus_;
+}
+inline void QueryAllStoreEvaluationReq::set_uicheckstatus(::google::protobuf::uint32 value) {
+  
+  uicheckstatus_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllStoreEvaluationReq.uiCheckStatus)
 }
 
 // -------------------------------------------------------------------

@@ -404,6 +404,12 @@ extern QueryUsrInfoReq_USRDefaultTypeInternal _QueryUsrInfoReq_USR_default_insta
 class QueryUsrInfoRsp_USR;
 class QueryUsrInfoRsp_USRDefaultTypeInternal;
 extern QueryUsrInfoRsp_USRDefaultTypeInternal _QueryUsrInfoRsp_USR_default_instance_;
+class RegisterCmsCallReq_USR;
+class RegisterCmsCallReq_USRDefaultTypeInternal;
+extern RegisterCmsCallReq_USRDefaultTypeInternal _RegisterCmsCallReq_USR_default_instance_;
+class RegisterCmsCallRsp_USR;
+class RegisterCmsCallRsp_USRDefaultTypeInternal;
+extern RegisterCmsCallRsp_USRDefaultTypeInternal _RegisterCmsCallRsp_USR_default_instance_;
 class RegisterUserReq_USR;
 class RegisterUserReq_USRDefaultTypeInternal;
 extern RegisterUserReq_USRDefaultTypeInternal _RegisterUserReq_USR_default_instance_;
@@ -464,6 +470,12 @@ extern UnRegisterUserReq_USRDefaultTypeInternal _UnRegisterUserReq_USR_default_i
 class UnRegisterUserRsp_USR;
 class UnRegisterUserRsp_USRDefaultTypeInternal;
 extern UnRegisterUserRsp_USRDefaultTypeInternal _UnRegisterUserRsp_USR_default_instance_;
+class UnregisterCmsCallReq_USR;
+class UnregisterCmsCallReq_USRDefaultTypeInternal;
+extern UnregisterCmsCallReq_USRDefaultTypeInternal _UnregisterCmsCallReq_USR_default_instance_;
+class UnregisterCmsCallRsp_USR;
+class UnregisterCmsCallRsp_USRDefaultTypeInternal;
+extern UnregisterCmsCallRsp_USRDefaultTypeInternal _UnregisterCmsCallRsp_USR_default_instance_;
 class User;
 class UserDefaultTypeInternal;
 extern UserDefaultTypeInternal _User_default_instance_;
@@ -601,6 +613,10 @@ enum MsgType {
   QueryRegionStorageInfoRsp_USR_T = 20890,
   QueryDeviceInfoMultiReq_USR_T = 20950,
   QueryDeviceInfoMultiRsp_USR_T = 20960,
+  RegisterCmsCallReq_USR_T = 20961,
+  RegisterCmsCallRsp_USR_T = 20962,
+  UnregisterCmsCallReq_USR_T = 20963,
+  UnregisterCmsCallRsp_USR_T = 20964,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -15485,6 +15501,432 @@ class QueryDeviceInfoMultiRsp_USR : public ::google::protobuf::Message /* @@prot
 };
 // -------------------------------------------------------------------
 
+class RegisterCmsCallReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RegisterCmsCallReq_USR) */ {
+ public:
+  RegisterCmsCallReq_USR();
+  virtual ~RegisterCmsCallReq_USR();
+
+  RegisterCmsCallReq_USR(const RegisterCmsCallReq_USR& from);
+
+  inline RegisterCmsCallReq_USR& operator=(const RegisterCmsCallReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegisterCmsCallReq_USR& default_instance();
+
+  static inline const RegisterCmsCallReq_USR* internal_default_instance() {
+    return reinterpret_cast<const RegisterCmsCallReq_USR*>(
+               &_RegisterCmsCallReq_USR_default_instance_);
+  }
+
+  void Swap(RegisterCmsCallReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RegisterCmsCallReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RegisterCmsCallReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RegisterCmsCallReq_USR& from);
+  void MergeFrom(const RegisterCmsCallReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RegisterCmsCallReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strCmsP2pIDList = 2;
+  int strcmsp2pidlist_size() const;
+  void clear_strcmsp2pidlist();
+  static const int kStrCmsP2PIDListFieldNumber = 2;
+  const ::std::string& strcmsp2pidlist(int index) const;
+  ::std::string* mutable_strcmsp2pidlist(int index);
+  void set_strcmsp2pidlist(int index, const ::std::string& value);
+  void set_strcmsp2pidlist(int index, const char* value);
+  void set_strcmsp2pidlist(int index, const char* value, size_t size);
+  ::std::string* add_strcmsp2pidlist();
+  void add_strcmsp2pidlist(const ::std::string& value);
+  void add_strcmsp2pidlist(const char* value);
+  void add_strcmsp2pidlist(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strcmsp2pidlist() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strcmsp2pidlist();
+
+  // string strCmsID = 1;
+  void clear_strcmsid();
+  static const int kStrCmsIDFieldNumber = 1;
+  const ::std::string& strcmsid() const;
+  void set_strcmsid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcmsid(::std::string&& value);
+  #endif
+  void set_strcmsid(const char* value);
+  void set_strcmsid(const char* value, size_t size);
+  ::std::string* mutable_strcmsid();
+  ::std::string* release_strcmsid();
+  void set_allocated_strcmsid(::std::string* strcmsid);
+
+  // string strDeviceMac = 3;
+  void clear_strdevicemac();
+  static const int kStrDeviceMacFieldNumber = 3;
+  const ::std::string& strdevicemac() const;
+  void set_strdevicemac(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevicemac(::std::string&& value);
+  #endif
+  void set_strdevicemac(const char* value);
+  void set_strdevicemac(const char* value, size_t size);
+  ::std::string* mutable_strdevicemac();
+  ::std::string* release_strdevicemac();
+  void set_allocated_strdevicemac(::std::string* strdevicemac);
+
+  // string strDeviceP2pID = 4;
+  void clear_strdevicep2pid();
+  static const int kStrDeviceP2PIDFieldNumber = 4;
+  const ::std::string& strdevicep2pid() const;
+  void set_strdevicep2pid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevicep2pid(::std::string&& value);
+  #endif
+  void set_strdevicep2pid(const char* value);
+  void set_strdevicep2pid(const char* value, size_t size);
+  ::std::string* mutable_strdevicep2pid();
+  ::std::string* release_strdevicep2pid();
+  void set_allocated_strdevicep2pid(::std::string* strdevicep2pid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RegisterCmsCallReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strcmsp2pidlist_;
+  ::google::protobuf::internal::ArenaStringPtr strcmsid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevicemac_;
+  ::google::protobuf::internal::ArenaStringPtr strdevicep2pid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RegisterCmsCallRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RegisterCmsCallRsp_USR) */ {
+ public:
+  RegisterCmsCallRsp_USR();
+  virtual ~RegisterCmsCallRsp_USR();
+
+  RegisterCmsCallRsp_USR(const RegisterCmsCallRsp_USR& from);
+
+  inline RegisterCmsCallRsp_USR& operator=(const RegisterCmsCallRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegisterCmsCallRsp_USR& default_instance();
+
+  static inline const RegisterCmsCallRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const RegisterCmsCallRsp_USR*>(
+               &_RegisterCmsCallRsp_USR_default_instance_);
+  }
+
+  void Swap(RegisterCmsCallRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RegisterCmsCallRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RegisterCmsCallRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RegisterCmsCallRsp_USR& from);
+  void MergeFrom(const RegisterCmsCallRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RegisterCmsCallRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAddress = 1;
+  void clear_straddress();
+  static const int kStrAddressFieldNumber = 1;
+  const ::std::string& straddress() const;
+  void set_straddress(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straddress(::std::string&& value);
+  #endif
+  void set_straddress(const char* value);
+  void set_straddress(const char* value, size_t size);
+  ::std::string* mutable_straddress();
+  ::std::string* release_straddress();
+  void set_allocated_straddress(::std::string* straddress);
+
+  // string strPort = 2;
+  void clear_strport();
+  static const int kStrPortFieldNumber = 2;
+  const ::std::string& strport() const;
+  void set_strport(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strport(::std::string&& value);
+  #endif
+  void set_strport(const char* value);
+  void set_strport(const char* value, size_t size);
+  ::std::string* mutable_strport();
+  ::std::string* release_strport();
+  void set_allocated_strport(::std::string* strport);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RegisterCmsCallRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straddress_;
+  ::google::protobuf::internal::ArenaStringPtr strport_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UnregisterCmsCallReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.UnregisterCmsCallReq_USR) */ {
+ public:
+  UnregisterCmsCallReq_USR();
+  virtual ~UnregisterCmsCallReq_USR();
+
+  UnregisterCmsCallReq_USR(const UnregisterCmsCallReq_USR& from);
+
+  inline UnregisterCmsCallReq_USR& operator=(const UnregisterCmsCallReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UnregisterCmsCallReq_USR& default_instance();
+
+  static inline const UnregisterCmsCallReq_USR* internal_default_instance() {
+    return reinterpret_cast<const UnregisterCmsCallReq_USR*>(
+               &_UnregisterCmsCallReq_USR_default_instance_);
+  }
+
+  void Swap(UnregisterCmsCallReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UnregisterCmsCallReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UnregisterCmsCallReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UnregisterCmsCallReq_USR& from);
+  void MergeFrom(const UnregisterCmsCallReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UnregisterCmsCallReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCmsID = 1;
+  void clear_strcmsid();
+  static const int kStrCmsIDFieldNumber = 1;
+  const ::std::string& strcmsid() const;
+  void set_strcmsid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcmsid(::std::string&& value);
+  #endif
+  void set_strcmsid(const char* value);
+  void set_strcmsid(const char* value, size_t size);
+  ::std::string* mutable_strcmsid();
+  ::std::string* release_strcmsid();
+  void set_allocated_strcmsid(::std::string* strcmsid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.UnregisterCmsCallReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcmsid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UnregisterCmsCallRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.UnregisterCmsCallRsp_USR) */ {
+ public:
+  UnregisterCmsCallRsp_USR();
+  virtual ~UnregisterCmsCallRsp_USR();
+
+  UnregisterCmsCallRsp_USR(const UnregisterCmsCallRsp_USR& from);
+
+  inline UnregisterCmsCallRsp_USR& operator=(const UnregisterCmsCallRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UnregisterCmsCallRsp_USR& default_instance();
+
+  static inline const UnregisterCmsCallRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const UnregisterCmsCallRsp_USR*>(
+               &_UnregisterCmsCallRsp_USR_default_instance_);
+  }
+
+  void Swap(UnregisterCmsCallRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UnregisterCmsCallRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UnregisterCmsCallRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UnregisterCmsCallRsp_USR& from);
+  void MergeFrom(const UnregisterCmsCallRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UnregisterCmsCallRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.UnregisterCmsCallRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class QueryUploadURLReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUploadURLReq_MGR) */ {
  public:
   QueryUploadURLReq_MGR();
@@ -17908,6 +18350,24 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceInfoMultiReq_USR* release_querydeviceinfomultireq_usr_value();
   void set_allocated_querydeviceinfomultireq_usr_value(::Interactive::Message::QueryDeviceInfoMultiReq_USR* querydeviceinfomultireq_usr_value);
 
+  // .Interactive.Message.RegisterCmsCallReq_USR RegisterCmsCallReq_USR_Value = 1101;
+  bool has_registercmscallreq_usr_value() const;
+  void clear_registercmscallreq_usr_value();
+  static const int kRegisterCmsCallReqUSRValueFieldNumber = 1101;
+  const ::Interactive::Message::RegisterCmsCallReq_USR& registercmscallreq_usr_value() const;
+  ::Interactive::Message::RegisterCmsCallReq_USR* mutable_registercmscallreq_usr_value();
+  ::Interactive::Message::RegisterCmsCallReq_USR* release_registercmscallreq_usr_value();
+  void set_allocated_registercmscallreq_usr_value(::Interactive::Message::RegisterCmsCallReq_USR* registercmscallreq_usr_value);
+
+  // .Interactive.Message.UnregisterCmsCallReq_USR UnregisterCmsCallReq_USR_Value = 1102;
+  bool has_unregistercmscallreq_usr_value() const;
+  void clear_unregistercmscallreq_usr_value();
+  static const int kUnregisterCmsCallReqUSRValueFieldNumber = 1102;
+  const ::Interactive::Message::UnregisterCmsCallReq_USR& unregistercmscallreq_usr_value() const;
+  ::Interactive::Message::UnregisterCmsCallReq_USR* mutable_unregistercmscallreq_usr_value();
+  ::Interactive::Message::UnregisterCmsCallReq_USR* release_unregistercmscallreq_usr_value();
+  void set_allocated_unregistercmscallreq_usr_value(::Interactive::Message::UnregisterCmsCallReq_USR* unregistercmscallreq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -18066,6 +18526,8 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryStorageDetailReq_USR* querystoragedetailreq_usr_value_;
   ::Interactive::Message::QueryRegionStorageInfoReq_USR* queryregionstorageinforeq_usr_value_;
   ::Interactive::Message::QueryDeviceInfoMultiReq_USR* querydeviceinfomultireq_usr_value_;
+  ::Interactive::Message::RegisterCmsCallReq_USR* registercmscallreq_usr_value_;
+  ::Interactive::Message::UnregisterCmsCallReq_USR* unregistercmscallreq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -18658,6 +19120,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceInfoMultiRsp_USR* release_querydeviceinfomultirsp_usr_value();
   void set_allocated_querydeviceinfomultirsp_usr_value(::Interactive::Message::QueryDeviceInfoMultiRsp_USR* querydeviceinfomultirsp_usr_value);
 
+  // .Interactive.Message.RegisterCmsCallRsp_USR RegisterCmsCallRsp_USR_Value = 1101;
+  bool has_registercmscallrsp_usr_value() const;
+  void clear_registercmscallrsp_usr_value();
+  static const int kRegisterCmsCallRspUSRValueFieldNumber = 1101;
+  const ::Interactive::Message::RegisterCmsCallRsp_USR& registercmscallrsp_usr_value() const;
+  ::Interactive::Message::RegisterCmsCallRsp_USR* mutable_registercmscallrsp_usr_value();
+  ::Interactive::Message::RegisterCmsCallRsp_USR* release_registercmscallrsp_usr_value();
+  void set_allocated_registercmscallrsp_usr_value(::Interactive::Message::RegisterCmsCallRsp_USR* registercmscallrsp_usr_value);
+
+  // .Interactive.Message.UnregisterCmsCallRsp_USR UnregisterCmsCallRsp_USR_Value = 1102;
+  bool has_unregistercmscallrsp_usr_value() const;
+  void clear_unregistercmscallrsp_usr_value();
+  static const int kUnregisterCmsCallRspUSRValueFieldNumber = 1102;
+  const ::Interactive::Message::UnregisterCmsCallRsp_USR& unregistercmscallrsp_usr_value() const;
+  ::Interactive::Message::UnregisterCmsCallRsp_USR* mutable_unregistercmscallrsp_usr_value();
+  ::Interactive::Message::UnregisterCmsCallRsp_USR* release_unregistercmscallrsp_usr_value();
+  void set_allocated_unregistercmscallrsp_usr_value(::Interactive::Message::UnregisterCmsCallRsp_USR* unregistercmscallrsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -18805,6 +19285,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryStorageDetailRsp_USR* querystoragedetailrsp_usr_value_;
   ::Interactive::Message::QueryRegionStorageInfoRsp_USR* queryregionstorageinforsp_usr_value_;
   ::Interactive::Message::QueryDeviceInfoMultiRsp_USR* querydeviceinfomultirsp_usr_value_;
+  ::Interactive::Message::RegisterCmsCallRsp_USR* registercmscallrsp_usr_value_;
+  ::Interactive::Message::UnregisterCmsCallRsp_USR* unregistercmscallrsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
@@ -37550,6 +38032,441 @@ QueryDeviceInfoMultiRsp_USR::devicestatus() const {
 
 // -------------------------------------------------------------------
 
+// RegisterCmsCallReq_USR
+
+// string strCmsID = 1;
+inline void RegisterCmsCallReq_USR::clear_strcmsid() {
+  strcmsid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterCmsCallReq_USR::strcmsid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+  return strcmsid_.GetNoArena();
+}
+inline void RegisterCmsCallReq_USR::set_strcmsid(const ::std::string& value) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+}
+#if LANG_CXX11
+inline void RegisterCmsCallReq_USR::set_strcmsid(::std::string&& value) {
+  
+  strcmsid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+}
+#endif
+inline void RegisterCmsCallReq_USR::set_strcmsid(const char* value) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+}
+inline void RegisterCmsCallReq_USR::set_strcmsid(const char* value, size_t size) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+}
+inline ::std::string* RegisterCmsCallReq_USR::mutable_strcmsid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+  return strcmsid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterCmsCallReq_USR::release_strcmsid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+  
+  return strcmsid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterCmsCallReq_USR::set_allocated_strcmsid(::std::string* strcmsid) {
+  if (strcmsid != NULL) {
+    
+  } else {
+    
+  }
+  strcmsid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcmsid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallReq_USR.strCmsID)
+}
+
+// repeated string strCmsP2pIDList = 2;
+inline int RegisterCmsCallReq_USR::strcmsp2pidlist_size() const {
+  return strcmsp2pidlist_.size();
+}
+inline void RegisterCmsCallReq_USR::clear_strcmsp2pidlist() {
+  strcmsp2pidlist_.Clear();
+}
+inline const ::std::string& RegisterCmsCallReq_USR::strcmsp2pidlist(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  return strcmsp2pidlist_.Get(index);
+}
+inline ::std::string* RegisterCmsCallReq_USR::mutable_strcmsp2pidlist(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  return strcmsp2pidlist_.Mutable(index);
+}
+inline void RegisterCmsCallReq_USR::set_strcmsp2pidlist(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  strcmsp2pidlist_.Mutable(index)->assign(value);
+}
+inline void RegisterCmsCallReq_USR::set_strcmsp2pidlist(int index, const char* value) {
+  strcmsp2pidlist_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+}
+inline void RegisterCmsCallReq_USR::set_strcmsp2pidlist(int index, const char* value, size_t size) {
+  strcmsp2pidlist_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+}
+inline ::std::string* RegisterCmsCallReq_USR::add_strcmsp2pidlist() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  return strcmsp2pidlist_.Add();
+}
+inline void RegisterCmsCallReq_USR::add_strcmsp2pidlist(const ::std::string& value) {
+  strcmsp2pidlist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+}
+inline void RegisterCmsCallReq_USR::add_strcmsp2pidlist(const char* value) {
+  strcmsp2pidlist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+}
+inline void RegisterCmsCallReq_USR::add_strcmsp2pidlist(const char* value, size_t size) {
+  strcmsp2pidlist_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RegisterCmsCallReq_USR::strcmsp2pidlist() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  return strcmsp2pidlist_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+RegisterCmsCallReq_USR::mutable_strcmsp2pidlist() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.RegisterCmsCallReq_USR.strCmsP2pIDList)
+  return &strcmsp2pidlist_;
+}
+
+// string strDeviceMac = 3;
+inline void RegisterCmsCallReq_USR::clear_strdevicemac() {
+  strdevicemac_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterCmsCallReq_USR::strdevicemac() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+  return strdevicemac_.GetNoArena();
+}
+inline void RegisterCmsCallReq_USR::set_strdevicemac(const ::std::string& value) {
+  
+  strdevicemac_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+}
+#if LANG_CXX11
+inline void RegisterCmsCallReq_USR::set_strdevicemac(::std::string&& value) {
+  
+  strdevicemac_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+}
+#endif
+inline void RegisterCmsCallReq_USR::set_strdevicemac(const char* value) {
+  
+  strdevicemac_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+}
+inline void RegisterCmsCallReq_USR::set_strdevicemac(const char* value, size_t size) {
+  
+  strdevicemac_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+}
+inline ::std::string* RegisterCmsCallReq_USR::mutable_strdevicemac() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+  return strdevicemac_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterCmsCallReq_USR::release_strdevicemac() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+  
+  return strdevicemac_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterCmsCallReq_USR::set_allocated_strdevicemac(::std::string* strdevicemac) {
+  if (strdevicemac != NULL) {
+    
+  } else {
+    
+  }
+  strdevicemac_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevicemac);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallReq_USR.strDeviceMac)
+}
+
+// string strDeviceP2pID = 4;
+inline void RegisterCmsCallReq_USR::clear_strdevicep2pid() {
+  strdevicep2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterCmsCallReq_USR::strdevicep2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+  return strdevicep2pid_.GetNoArena();
+}
+inline void RegisterCmsCallReq_USR::set_strdevicep2pid(const ::std::string& value) {
+  
+  strdevicep2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+}
+#if LANG_CXX11
+inline void RegisterCmsCallReq_USR::set_strdevicep2pid(::std::string&& value) {
+  
+  strdevicep2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+}
+#endif
+inline void RegisterCmsCallReq_USR::set_strdevicep2pid(const char* value) {
+  
+  strdevicep2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+}
+inline void RegisterCmsCallReq_USR::set_strdevicep2pid(const char* value, size_t size) {
+  
+  strdevicep2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+}
+inline ::std::string* RegisterCmsCallReq_USR::mutable_strdevicep2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+  return strdevicep2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterCmsCallReq_USR::release_strdevicep2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+  
+  return strdevicep2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterCmsCallReq_USR::set_allocated_strdevicep2pid(::std::string* strdevicep2pid) {
+  if (strdevicep2pid != NULL) {
+    
+  } else {
+    
+  }
+  strdevicep2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevicep2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallReq_USR.strDeviceP2pID)
+}
+
+// -------------------------------------------------------------------
+
+// RegisterCmsCallRsp_USR
+
+// string strAddress = 1;
+inline void RegisterCmsCallRsp_USR::clear_straddress() {
+  straddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterCmsCallRsp_USR::straddress() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+  return straddress_.GetNoArena();
+}
+inline void RegisterCmsCallRsp_USR::set_straddress(const ::std::string& value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+}
+#if LANG_CXX11
+inline void RegisterCmsCallRsp_USR::set_straddress(::std::string&& value) {
+  
+  straddress_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+}
+#endif
+inline void RegisterCmsCallRsp_USR::set_straddress(const char* value) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+}
+inline void RegisterCmsCallRsp_USR::set_straddress(const char* value, size_t size) {
+  
+  straddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+}
+inline ::std::string* RegisterCmsCallRsp_USR::mutable_straddress() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+  return straddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterCmsCallRsp_USR::release_straddress() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+  
+  return straddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterCmsCallRsp_USR::set_allocated_straddress(::std::string* straddress) {
+  if (straddress != NULL) {
+    
+  } else {
+    
+  }
+  straddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straddress);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallRsp_USR.strAddress)
+}
+
+// string strPort = 2;
+inline void RegisterCmsCallRsp_USR::clear_strport() {
+  strport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterCmsCallRsp_USR::strport() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+  return strport_.GetNoArena();
+}
+inline void RegisterCmsCallRsp_USR::set_strport(const ::std::string& value) {
+  
+  strport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+#if LANG_CXX11
+inline void RegisterCmsCallRsp_USR::set_strport(::std::string&& value) {
+  
+  strport_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+#endif
+inline void RegisterCmsCallRsp_USR::set_strport(const char* value) {
+  
+  strport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+inline void RegisterCmsCallRsp_USR::set_strport(const char* value, size_t size) {
+  
+  strport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+inline ::std::string* RegisterCmsCallRsp_USR::mutable_strport() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+  return strport_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterCmsCallRsp_USR::release_strport() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+  
+  return strport_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterCmsCallRsp_USR::set_allocated_strport(::std::string* strport) {
+  if (strport != NULL) {
+    
+  } else {
+    
+  }
+  strport_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strport);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+
+// -------------------------------------------------------------------
+
+// UnregisterCmsCallReq_USR
+
+// string strCmsID = 1;
+inline void UnregisterCmsCallReq_USR::clear_strcmsid() {
+  strcmsid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UnregisterCmsCallReq_USR::strcmsid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+  return strcmsid_.GetNoArena();
+}
+inline void UnregisterCmsCallReq_USR::set_strcmsid(const ::std::string& value) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+}
+#if LANG_CXX11
+inline void UnregisterCmsCallReq_USR::set_strcmsid(::std::string&& value) {
+  
+  strcmsid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+}
+#endif
+inline void UnregisterCmsCallReq_USR::set_strcmsid(const char* value) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+}
+inline void UnregisterCmsCallReq_USR::set_strcmsid(const char* value, size_t size) {
+  
+  strcmsid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+}
+inline ::std::string* UnregisterCmsCallReq_USR::mutable_strcmsid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+  return strcmsid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UnregisterCmsCallReq_USR::release_strcmsid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+  
+  return strcmsid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UnregisterCmsCallReq_USR::set_allocated_strcmsid(::std::string* strcmsid) {
+  if (strcmsid != NULL) {
+    
+  } else {
+    
+  }
+  strcmsid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcmsid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UnregisterCmsCallReq_USR.strCmsID)
+}
+
+// -------------------------------------------------------------------
+
+// UnregisterCmsCallRsp_USR
+
+// string strValue = 1;
+inline void UnregisterCmsCallRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UnregisterCmsCallRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void UnregisterCmsCallRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void UnregisterCmsCallRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+}
+#endif
+inline void UnregisterCmsCallRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+}
+inline void UnregisterCmsCallRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+}
+inline ::std::string* UnregisterCmsCallRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UnregisterCmsCallRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UnregisterCmsCallRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UnregisterCmsCallRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
 // QueryUploadURLReq_MGR
 
 // string strValue = 1;
@@ -40811,6 +41728,84 @@ inline void Req::set_allocated_querydeviceinfomultireq_usr_value(::Interactive::
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDeviceInfoMultiReq_USR_Value)
 }
 
+// .Interactive.Message.RegisterCmsCallReq_USR RegisterCmsCallReq_USR_Value = 1101;
+inline bool Req::has_registercmscallreq_usr_value() const {
+  return this != internal_default_instance() && registercmscallreq_usr_value_ != NULL;
+}
+inline void Req::clear_registercmscallreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && registercmscallreq_usr_value_ != NULL) delete registercmscallreq_usr_value_;
+  registercmscallreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RegisterCmsCallReq_USR& Req::registercmscallreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.RegisterCmsCallReq_USR_Value)
+  return registercmscallreq_usr_value_ != NULL ? *registercmscallreq_usr_value_
+                         : *::Interactive::Message::RegisterCmsCallReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RegisterCmsCallReq_USR* Req::mutable_registercmscallreq_usr_value() {
+  
+  if (registercmscallreq_usr_value_ == NULL) {
+    registercmscallreq_usr_value_ = new ::Interactive::Message::RegisterCmsCallReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.RegisterCmsCallReq_USR_Value)
+  return registercmscallreq_usr_value_;
+}
+inline ::Interactive::Message::RegisterCmsCallReq_USR* Req::release_registercmscallreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.RegisterCmsCallReq_USR_Value)
+  
+  ::Interactive::Message::RegisterCmsCallReq_USR* temp = registercmscallreq_usr_value_;
+  registercmscallreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_registercmscallreq_usr_value(::Interactive::Message::RegisterCmsCallReq_USR* registercmscallreq_usr_value) {
+  delete registercmscallreq_usr_value_;
+  registercmscallreq_usr_value_ = registercmscallreq_usr_value;
+  if (registercmscallreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.RegisterCmsCallReq_USR_Value)
+}
+
+// .Interactive.Message.UnregisterCmsCallReq_USR UnregisterCmsCallReq_USR_Value = 1102;
+inline bool Req::has_unregistercmscallreq_usr_value() const {
+  return this != internal_default_instance() && unregistercmscallreq_usr_value_ != NULL;
+}
+inline void Req::clear_unregistercmscallreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && unregistercmscallreq_usr_value_ != NULL) delete unregistercmscallreq_usr_value_;
+  unregistercmscallreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::UnregisterCmsCallReq_USR& Req::unregistercmscallreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.UnregisterCmsCallReq_USR_Value)
+  return unregistercmscallreq_usr_value_ != NULL ? *unregistercmscallreq_usr_value_
+                         : *::Interactive::Message::UnregisterCmsCallReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::UnregisterCmsCallReq_USR* Req::mutable_unregistercmscallreq_usr_value() {
+  
+  if (unregistercmscallreq_usr_value_ == NULL) {
+    unregistercmscallreq_usr_value_ = new ::Interactive::Message::UnregisterCmsCallReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.UnregisterCmsCallReq_USR_Value)
+  return unregistercmscallreq_usr_value_;
+}
+inline ::Interactive::Message::UnregisterCmsCallReq_USR* Req::release_unregistercmscallreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.UnregisterCmsCallReq_USR_Value)
+  
+  ::Interactive::Message::UnregisterCmsCallReq_USR* temp = unregistercmscallreq_usr_value_;
+  unregistercmscallreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_unregistercmscallreq_usr_value(::Interactive::Message::UnregisterCmsCallReq_USR* unregistercmscallreq_usr_value) {
+  delete unregistercmscallreq_usr_value_;
+  unregistercmscallreq_usr_value_ = unregistercmscallreq_usr_value;
+  if (unregistercmscallreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.UnregisterCmsCallReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -43455,6 +44450,84 @@ inline void Rsp::set_allocated_querydeviceinfomultirsp_usr_value(::Interactive::
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDeviceInfoMultiRsp_USR_Value)
 }
 
+// .Interactive.Message.RegisterCmsCallRsp_USR RegisterCmsCallRsp_USR_Value = 1101;
+inline bool Rsp::has_registercmscallrsp_usr_value() const {
+  return this != internal_default_instance() && registercmscallrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_registercmscallrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && registercmscallrsp_usr_value_ != NULL) delete registercmscallrsp_usr_value_;
+  registercmscallrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RegisterCmsCallRsp_USR& Rsp::registercmscallrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.RegisterCmsCallRsp_USR_Value)
+  return registercmscallrsp_usr_value_ != NULL ? *registercmscallrsp_usr_value_
+                         : *::Interactive::Message::RegisterCmsCallRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RegisterCmsCallRsp_USR* Rsp::mutable_registercmscallrsp_usr_value() {
+  
+  if (registercmscallrsp_usr_value_ == NULL) {
+    registercmscallrsp_usr_value_ = new ::Interactive::Message::RegisterCmsCallRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.RegisterCmsCallRsp_USR_Value)
+  return registercmscallrsp_usr_value_;
+}
+inline ::Interactive::Message::RegisterCmsCallRsp_USR* Rsp::release_registercmscallrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.RegisterCmsCallRsp_USR_Value)
+  
+  ::Interactive::Message::RegisterCmsCallRsp_USR* temp = registercmscallrsp_usr_value_;
+  registercmscallrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_registercmscallrsp_usr_value(::Interactive::Message::RegisterCmsCallRsp_USR* registercmscallrsp_usr_value) {
+  delete registercmscallrsp_usr_value_;
+  registercmscallrsp_usr_value_ = registercmscallrsp_usr_value;
+  if (registercmscallrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.RegisterCmsCallRsp_USR_Value)
+}
+
+// .Interactive.Message.UnregisterCmsCallRsp_USR UnregisterCmsCallRsp_USR_Value = 1102;
+inline bool Rsp::has_unregistercmscallrsp_usr_value() const {
+  return this != internal_default_instance() && unregistercmscallrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_unregistercmscallrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && unregistercmscallrsp_usr_value_ != NULL) delete unregistercmscallrsp_usr_value_;
+  unregistercmscallrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::UnregisterCmsCallRsp_USR& Rsp::unregistercmscallrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.UnregisterCmsCallRsp_USR_Value)
+  return unregistercmscallrsp_usr_value_ != NULL ? *unregistercmscallrsp_usr_value_
+                         : *::Interactive::Message::UnregisterCmsCallRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::UnregisterCmsCallRsp_USR* Rsp::mutable_unregistercmscallrsp_usr_value() {
+  
+  if (unregistercmscallrsp_usr_value_ == NULL) {
+    unregistercmscallrsp_usr_value_ = new ::Interactive::Message::UnregisterCmsCallRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.UnregisterCmsCallRsp_USR_Value)
+  return unregistercmscallrsp_usr_value_;
+}
+inline ::Interactive::Message::UnregisterCmsCallRsp_USR* Rsp::release_unregistercmscallrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.UnregisterCmsCallRsp_USR_Value)
+  
+  ::Interactive::Message::UnregisterCmsCallRsp_USR* temp = unregistercmscallrsp_usr_value_;
+  unregistercmscallrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_unregistercmscallrsp_usr_value(::Interactive::Message::UnregisterCmsCallRsp_USR* unregistercmscallrsp_usr_value) {
+  delete unregistercmscallrsp_usr_value_;
+  unregistercmscallrsp_usr_value_ = unregistercmscallrsp_usr_value;
+  if (unregistercmscallrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.UnregisterCmsCallRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -43969,6 +45042,14 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

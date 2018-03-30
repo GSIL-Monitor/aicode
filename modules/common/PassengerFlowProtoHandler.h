@@ -274,6 +274,9 @@ public:
         std::string m_strCreateDate;
         std::string m_strExtend;
         unsigned int m_uiState;
+
+        std::string m_strStoreID;
+        std::string m_strStoreName;
     };
 
     struct SmartGuardStore
@@ -357,6 +360,7 @@ public:
         EvaluationItem m_evaluationItem;
         double m_dScore;
         std::string m_strDescription;
+        std::list<std::string> m_strPictureList;
     };
 
     struct StoreEvaluation                  //µêÆÌ¿¼ÆÀ
@@ -931,6 +935,7 @@ public:
         std::string m_strBeginDate;
         std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
+        unsigned int m_uiEventType;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);
@@ -1482,6 +1487,7 @@ public:
         std::string m_strBeginDate;
         std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
+        unsigned int m_uiCheckStatus;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);

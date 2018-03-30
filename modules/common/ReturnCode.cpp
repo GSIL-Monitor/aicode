@@ -40,6 +40,8 @@ const int ReturnInfo::NO_ACCESS_PERMISSION = 997;                  //√ª”–∑√Œ »®œ
 const int ReturnInfo::INPUT_PARAMETER_TOO_MUCH = 998;              // ‰»Î≤Œ ˝π˝∂‡
 const int ReturnInfo::INPUT_PARAMETER_TOO_LESS = 999;              // ‰»Î≤Œ ˝≤ª◊„
 
+const int ReturnInfo::SENSOR_TYPE_DUPLICATE = 3000;
+
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;
 
 int ReturnInfo::RetCode()

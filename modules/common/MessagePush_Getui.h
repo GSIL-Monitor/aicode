@@ -101,7 +101,6 @@ private:
     string m_strAuthToken;
     long int m_lAuthExpire;
 
-    boost::mutex m_authMutex;
     TimeOutHandler m_authTimer;
 
     boost::atomic_uint32_t m_reqSequence;

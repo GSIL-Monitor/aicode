@@ -51,7 +51,7 @@ string MessagePush_Getui::SHA256String(const string &strSrc)
     SHA256((const unsigned char *)strSrc.c_str(), strSrc.length(), mdStr);
 
     // 哈希后的字符串    
-    string strEnc = string((const char *)mdStr);
+    string strEnc = string((const char *)mdStr, sizeof(mdStr));
     // 哈希后的十六进制串 32字节    
     char buf[65] = { 0 };
     char tmp[3] = { 0 };
@@ -60,11 +60,9 @@ string MessagePush_Getui::SHA256String(const string &strSrc)
         sprintf(tmp, "%02x", mdStr[i]);
         strcat(buf, tmp);
     }
-    //buf[32] = '\0'; // 后面都是0，从32字节截断    
-    string strEncHex = string(buf);
-    LOG_ERROR_RLD("---debug, sha256: " << strEncHex);
 
-    return strEncHex;
+    LOG_ERROR_RLD("---debug, sha256: " << string(buf));
+    return string(buf);
 }
 
 void MessagePush_Getui::GetAuthToken()
@@ -84,8 +82,7 @@ void MessagePush_Getui::GetAuthToken()
     HttpClient http;
     string strResponse;
     string strUrl = m_strPushUrl + m_strAppID + "/auth_sign";
-    LOG_ERROR_RLD("---debug, url: " << strUrl
-        << ", request: " << writer.write(root));
+    LOG_ERROR_RLD("---debug, url: " << strUrl << ", request: " << writer.write(root));
     if (http.HttpsPostJson(strUrl, string(), writer.write(root), strResponse) != CURLE_OK)
     {
         LOG_ERROR_RLD("GetAuthToken failed, http post error, url is " << strUrl);
@@ -126,14 +123,11 @@ void MessagePush_Getui::GetAuthToken()
         return;
     }
 
-    boost::unique_lock<boost::mutex> lock(m_authMutex);
-
     m_lAuthExpire = boost::lexical_cast<long>(rsp["expire_time"].asString());
 
     m_strAuthToken = rsp["auth_token"].asString();
 
-    LOG_ERROR_RLD("---debug, auth expire: " << m_lAuthExpire
-        << ", auth token: " << m_strAuthToken);
+    LOG_ERROR_RLD("---debug, auth expire: " << m_lAuthExpire << ", auth token: " << m_strAuthToken);
 }
 
 bool MessagePush_Getui::FillMessage(const PushMessage &source, Message &message, const int iClientPlatform)
@@ -147,12 +141,12 @@ bool MessagePush_Getui::FillMessage(const PushMessage &source, Message &message,
     message.strAlias = source.strAlias;
     message.strRequestID = boost::lexical_cast<string>(++m_reqSequence) + CurrentTimestamp();
 
-    message.notification.bTransmissionType = false;
+    message.notification.bTransmissionType = true;
     message.notification.strTransmissionContent = source.strPayloadContent;
 
     boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
     string begin = boost::posix_time::to_iso_extended_string(now);
-    string end = boost::posix_time::to_iso_extended_string(now + boost::posix_time::hours(1));
+    string end = boost::posix_time::to_iso_extended_string(now + boost::posix_time::hours(12));
     message.notification.strDurationBegin = begin.replace(begin.find_first_of('T'), 1, string(" "));
     message.notification.strDurationEnd = end.replace(end.find_first_of('T'), 1, string(" "));
 
@@ -185,8 +179,9 @@ bool MessagePush_Getui::FormatMessage(const Message &source, string &strMessage,
     notification["style"] = style;
     notification["transmission_type"] = source.notification.bTransmissionType;
     notification["transmission_content"] = source.notification.strTransmissionContent;
-    notification["duration_begin"] = source.notification.strDurationBegin;
-    notification["duration_end"] = source.notification.strDurationEnd;
+    //安卓填这两项会导致收不到推送，原因不明
+    //notification["duration_begin"] = source.notification.strDurationBegin;
+    //notification["duration_end"] = source.notification.strDurationEnd;
 
     message["appkey"] = m_strAppKey;
     message["msgtype"] = source.strMessageType;
@@ -239,6 +234,7 @@ void MessagePush_Getui::PushSingle(const PushMessage &message, const int iClient
     if (http.HttpsPostJson(strUrl, strAuthToken, strRequest, strResponse) != CURLE_OK)
     {
         LOG_ERROR_RLD("PushSingle failed, http post error, url is " << strUrl);
+        return;
     }
     LOG_ERROR_RLD("---debug, response: " << strResponse);
 

@@ -288,6 +288,9 @@ message Event                            //事件信息
     string strCreateDate = 12;
     string strExtend = 13;
     uint32 uiState = 14;
+    
+    string strStoreID = 15;
+    string strStoreName = 16;
 }
 
 message SmartGuardStore                  //智能看店计划
@@ -371,6 +374,7 @@ message EvaluationItemScore              //店铺考评条目得分
     EvaluationItem evaluationItem = 1;
     double dScore = 2;
     string strDescription = 3;
+    repeated string strPicture = 4;
 }
 
 message StoreEvaluation                  //店铺考评
@@ -752,6 +756,7 @@ message QueryAllEventReq                 //查询所有事件请求
     string strBeginDate = 4;
     string strEndDate = 5;
     uint32 uiBeginIndex = 6;
+    uint32 uiEventType = 7;
 }
 
 message QueryAllEventRsp                 //查询所有事件响应
@@ -1111,6 +1116,7 @@ message QueryAllStoreEvaluationReq       //查询所有店铺考评请求
     string strBeginDate = 3;
     string strEndDate = 4;
     uint32 uiBeginIndex = 5;
+    uint32 uiCheckStatus = 6;
 }
 
 message QueryAllStoreEvaluationRsp       //查询所有店铺考评响应

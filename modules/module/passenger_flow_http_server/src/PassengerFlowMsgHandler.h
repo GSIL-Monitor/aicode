@@ -335,6 +335,9 @@ private:
         std::string m_strExtend;
         std::string m_strCreateDate;
         std::string m_strViewState;
+
+        std::string m_strStoreID;
+        std::string m_strStoreName;
     };
 
     struct Plan 
@@ -415,6 +418,8 @@ private:
 
         std::string m_strEvaDescActive;
         double m_dEvaValueActive;
+
+        std::list<std::string> m_strFileIDList;
 
     };
         
@@ -532,7 +537,8 @@ private:
     bool QueryEvent(const std::string &strSid, EventInfo &eventinfo);
 
     bool QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiRelation, const unsigned int uiBeginIndex, 
-        const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
+        const unsigned int uiProcessState, const unsigned int uiEventType, 
+        const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList);
 
 
     bool CreateGuardStorePlan(const std::string &strSid, Plan &plan);
@@ -596,7 +602,7 @@ private:
     bool DeleteEvaluation(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationIDOfStore);
     bool ModifyEvaluation(const std::string &strSid, Evaluation &ev);
     bool QueryEvaluation(const std::string &strSid, const std::string &strUserID, Evaluation &ev);
-    bool QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+    bool QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const unsigned int uiCheckStatus,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<Evaluation> &evlist);
 
     bool CreatePatrolRecord(const std::string &strSid, PatrolRecord &pr);

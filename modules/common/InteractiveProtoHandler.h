@@ -162,6 +162,11 @@ public:
         QueryDeviceInfoMultiReq_USR_T = 20950,        //批量查询设备信息
         QueryDeviceInfoMultiRsp_USR_T = 20960,
 
+        RegisterCmsCallReq_USR_T = 20961,                //注册CMS呼叫
+        RegisterCmsCallRsp_USR_T = 20962,
+        UnregisterCmsCallReq_USR_T = 20963,              //注销CMS呼叫
+        UnregisterCmsCallRsp_USR_T = 20964,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -1161,6 +1166,46 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct RegisterCmsCallReq_USR : Req
+    {
+        std::string m_strCmsID;
+        std::list<std::string> m_strCmsP2pIDList;
+        std::string m_strDeviceMac;
+        std::string m_strDeviceP2pID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct  RegisterCmsCallRsp_USR : Rsp
+    {
+        std::string m_strAddress;
+        std::string m_strPort;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct UnregisterCmsCallReq_USR : Req
+    {
+        std::string m_strCmsID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct UnregisterCmsCallRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct AddFileReq_DEV : Req
     {
@@ -2033,6 +2078,15 @@ private:
     bool QueryDeviceInfoMultiRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryDeviceInfoMultiRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool RegisterCmsCallReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool RegisterCmsCallReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool RegisterCmsCallRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool RegisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool UnregisterCmsCallReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool UnregisterCmsCallReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool UnregisterCmsCallRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool UnregisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

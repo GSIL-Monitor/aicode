@@ -145,6 +145,9 @@ curl -F sid=E614DF1BCF95D742904790272093D3D6 -F devid=czy_device_001 -F devtype=
 
 
 
+升级门铃固件
+curl -F sid=3235B29E890BE24DBCF6DCEC702B6F28 -F category=Doorbell -F sub_category=0 -F latest_version=2018032007 -F description=fixed:15bugs -F force_version= -F server_address=xvripc.net:7000 -F file_name=DS_6K_DBELL_OV9732.img.rom -F file_id=2/14/66EC5B77A0F2CA40854BA258FAFAF5E4_DS_6K_DBELL_OV9732.img.rom -F file_size=3768151 -F lease=0 http://xvripc.net:8888/access.cgi?action=add_configuration
+
 管理员新增配置项
 curl -F sid=91EE6325C2A4AA448D83A559B2466AAB -F category=IPC -F sub_category=IPC_PROFESSION_16M_6F_BASE -F latest_version=20170525 -F description=fixed:15bugs -F force_version= -F server_address=xvripc.net:7000 -F file_name=IPC_PROFESSION_16M_6F_BASE_V4.00.00.201_20170525.img.rom -F file_id=8/4E6F0BA1D0FCD244924160B1DCB8C5D7_IPC_PROFESSION_16M_6F_BASE_V4.00.00.201_20170525.img.rom -F file_size=9464108 -F lease=0 http://xvripc.net:8888/access.cgi?action=add_configuration
 

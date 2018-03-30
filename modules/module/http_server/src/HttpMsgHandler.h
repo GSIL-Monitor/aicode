@@ -84,6 +84,10 @@ public:
     static const std::string MODIFY_USER_SPACE_ACTION;
     static const std::string QUERY_USER_SPACE_ACTION;
     static const std::string QUERY_STORAGE_SPACE_ACTION;
+
+    static const std::string CMS_CALL_ACTION;
+    static const std::string REGISTER_CMSCALL_ACTION;
+    static const std::string UNREGISTER_CMSCALL_ACTION;
     
     typedef struct _ParamInfo
     {
@@ -209,6 +213,14 @@ public:
     bool QueryUserSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QueryStorageSpaceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool CmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool UnregisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -476,6 +488,13 @@ private:
     bool QueryUserSpace(const std::string &strSid, const std::string &strUserID, const unsigned int &uiDomainID, SpaceInfo &stif);
 
     bool QueryStorageSpace(const std::string &strSid, const std::string &strUserID, StorageInfo &stif);
+
+    bool CmsCall(const std::string &strCmsCallMsg, std::string &strRetMsg);
+
+    bool RegisterCmsCall(const std::string &strCmsID, std::list<std::string> &strCmsP2pIDList, const std::string &strDeviceMac, const std::string &strDeviceP2pID,
+        std::string &strAddress, std::string &strPort);
+
+    bool UnregisterCmsCall(const std::string &strCmsID);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

@@ -283,3 +283,19 @@ CREATE TABLE `t_device_event_info` (
   INDEX index_ref2(deviceid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_cms_call_info`;
+CREATE TABLE `t_cms_call_info` (
+  `id` varchar(36) NOT NULL,
+  `cmsid` varchar(32) NOT NULL,
+  `cmsp2pid` varchar(32) NOT NULL,
+  `address` varchar(256) DEFAULT '',   #cmsid和cmsp2pid对应的连接的地址和端口信息
+  `port` varchar(64) DEFAULT '',
+  `p2ptype` varchar(32) DEFAULT '',  
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(cmsid),
+  INDEX index_ref2(cmsp2pid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+

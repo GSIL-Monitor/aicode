@@ -50,6 +50,8 @@ public:
     static const int INPUT_PARAMETER_TOO_MUCH;           //输入参数过多
     static const int INPUT_PARAMETER_TOO_LESS;           //输入参数不足
 
+    static const int SENSOR_TYPE_DUPLICATE;        //传感器类型重复
+
     static int RetCode();
 
     static void RetCode(const int iRetCode);

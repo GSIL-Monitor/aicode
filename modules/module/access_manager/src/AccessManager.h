@@ -60,6 +60,7 @@ public:
 
     static const int DEVICE_TYPE_DOORBELL = 0;
     static const int DEVICE_TYPE_IPC = 1;
+    static const int DEVICE_TYPE_GATEWAY = 3;
 
     static const std::string ONLINE;
     static const std::string OFFLINE;
@@ -118,6 +119,7 @@ public:
         std::string m_strUserAllowDiffTerminal;
         std::string m_strUserKickoutType;
         std::string m_strMasterNode;
+        std::string m_strCmsCallAddress;
     } ParamInfo;
     
     typedef struct _AccessDomainInfo
@@ -252,6 +254,11 @@ public:
 
     bool QueryDeviceInfoMultiReqUser(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+
+    bool RegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool UnRegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -288,7 +295,7 @@ private:
 
     void RemoveRelationToDB(const RelationOfUsrAndDev &relation);
 
-    void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus);
+    void DelDeviceToDB(const std::list<std::string> &strDevIDList, const int iStatus, const std::string &strUserID);
 
     void ModDeviceToDB(const InteractiveProtoHandler::Device &DevInfo);
 
@@ -458,6 +465,27 @@ private:
 
     bool QueryUserIDByUserName(const std::string &strUserName, std::string &strUserID);
 
+
+    bool RefreshCmsCallInfo();
+
+    bool GetCmsCallInfo(const std::string &strCmsID, const std::string &strDeviceP2pID, std::string &strAddress, std::string &strPort);
+
+    bool SaveCmsCallInfo(const std::string &strCmsID);
+
+    struct CmsCall;
+
+    bool ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList);
+
+    bool UpdateCmsCallInfo(const std::string &strCmsID, const std::list<CmsCall> &CmsCallList);
+
+    bool AddCmsCallInfo(const std::string &strCmsID, const std::list<CmsCall> &CmsCallList);
+
+    void AllocCmsAddressAndPort(std::string &strAddress, std::string &strPort);
+
+    bool RemoveCmsCallInfo(const std::string &strCmsID);
+
+    bool SaveRemoveCmsCallInfo(const std::string &strCmsID);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -490,6 +518,17 @@ private:
 
     boost::shared_ptr<InterProcessHandler> m_MsgSender;
     boost::shared_ptr<InterProcessHandler> m_MsgReceiver;
+
+    struct CmsCall
+    {
+        std::string m_strCmsID;
+        std::string m_strCmsP2pID;
+        std::string m_strAddress;
+        std::string m_strPort;
+    };
+
+    boost::mutex m_CmsMutex;
+    std::map<std::string, std::list<CmsCall> > m_CmsCallInfoMap;
 
 };
 

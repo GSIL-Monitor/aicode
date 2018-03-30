@@ -1281,6 +1281,36 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceInfoMultiRsp_USR_T, handler));
+
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RegisterCmsCallReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RegisterCmsCallReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RegisterCmsCallReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RegisterCmsCallRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RegisterCmsCallRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RegisterCmsCallRsp_USR_T, handler));
+
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::UnregisterCmsCallReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::UnregisterCmsCallReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UnregisterCmsCallReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::UnregisterCmsCallRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::UnregisterCmsCallRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UnregisterCmsCallRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2563,6 +2593,47 @@ bool InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR_UnSerializer(const Int
     return UnSerializerT<QueryDeviceInfoMultiRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
+
+bool InteractiveProtoHandler::RegisterCmsCallReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<RegisterCmsCallReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::RegisterCmsCallReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<RegisterCmsCallReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::RegisterCmsCallRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<RegisterCmsCallRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::RegisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<RegisterCmsCallRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+
+bool InteractiveProtoHandler::UnregisterCmsCallReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<UnregisterCmsCallReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::UnregisterCmsCallReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<UnregisterCmsCallReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::UnregisterCmsCallRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<UnregisterCmsCallRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::UnregisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<UnregisterCmsCallRsp_USR, Req>(InteractiveMsg, rsp);
+}
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
 {
@@ -5379,3 +5450,76 @@ void InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR::Serializer(Interactiv
     }
 }
 
+void InteractiveProtoHandler::RegisterCmsCallReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strCmsID = InteractiveMsg.reqvalue().registercmscallreq_usr_value().strcmsid();
+    m_strDeviceMac = InteractiveMsg.reqvalue().registercmscallreq_usr_value().strdevicemac();
+    m_strDeviceP2pID = InteractiveMsg.reqvalue().registercmscallreq_usr_value().strdevicep2pid();
+
+    for (int i = 0, sz = InteractiveMsg.reqvalue().registercmscallreq_usr_value().strcmsp2pidlist_size(); i < sz; ++i)
+    {
+        m_strCmsP2pIDList.push_back(InteractiveMsg.reqvalue().registercmscallreq_usr_value().strcmsp2pidlist(i));
+    }
+}
+
+void InteractiveProtoHandler::RegisterCmsCallReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RegisterCmsCallReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_registercmscallreq_usr_value()->set_strcmsid(m_strCmsID);
+    InteractiveMsg.mutable_reqvalue()->mutable_registercmscallreq_usr_value()->set_strdevicemac(m_strDeviceMac);
+    InteractiveMsg.mutable_reqvalue()->mutable_registercmscallreq_usr_value()->set_strdevicep2pid(m_strDeviceP2pID);
+
+    for (auto it = m_strCmsP2pIDList.begin(), end = m_strCmsP2pIDList.end(); it != end; ++it)
+    {
+        InteractiveMsg.mutable_reqvalue()->mutable_registercmscallreq_usr_value()->add_strcmsp2pidlist(*it);
+    }
+
+}
+
+void InteractiveProtoHandler::RegisterCmsCallRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strAddress = InteractiveMsg.rspvalue().registercmscallrsp_usr_value().straddress();
+    m_strPort = InteractiveMsg.rspvalue().registercmscallrsp_usr_value().strport();
+}
+
+void InteractiveProtoHandler::RegisterCmsCallRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RegisterCmsCallRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_registercmscallrsp_usr_value()->set_straddress(m_strAddress);
+    InteractiveMsg.mutable_rspvalue()->mutable_registercmscallrsp_usr_value()->set_strport(m_strPort);
+}
+
+
+void InteractiveProtoHandler::UnregisterCmsCallReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strCmsID = InteractiveMsg.reqvalue().unregistercmscallreq_usr_value().strcmsid();
+}
+
+void InteractiveProtoHandler::UnregisterCmsCallReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::UnregisterCmsCallReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_unregistercmscallreq_usr_value()->set_strcmsid(m_strCmsID);
+}
+
+void InteractiveProtoHandler::UnregisterCmsCallRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_strValue = InteractiveMsg.rspvalue().unregistercmscallrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::UnregisterCmsCallRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::UnregisterCmsCallRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_unregistercmscallrsp_usr_value()->set_strvalue(m_strValue);
+}

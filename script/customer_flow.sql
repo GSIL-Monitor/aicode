@@ -167,6 +167,19 @@ create table `t_store_evaluation_score` (
     index index_ref1 (`evaluation_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='店铺考评得分表';
 
+drop table if exists `t_evaluation_item_screenshot`;
+create table `t_evaluation_item_screenshot` (
+    `id` varchar(36) not null,
+    `evaluation_id` varchar(36) not null             comment '考评ID',
+    `item_id` varchar(36) not null                   comment '考评条目',
+    `screenshot_id` varchar(256) not null            comment '截图ID',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`evaluation_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='店铺考评条目截图表';
+
 drop table if exists `t_store_evaluation_screenshot`;
 create table `t_store_evaluation_screenshot` (
     `id` varchar(36) not null,

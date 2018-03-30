@@ -2095,6 +2095,10 @@ bool PassengerFlowMsgHandler::QueryEventHandler(boost::shared_ptr<MsgInfoMap> pM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("userid", einfo.m_strUserID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", einfo.m_strDevID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("view_state", einfo.m_strViewState));
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("store_id", einfo.m_strStoreID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("store_name", einfo.m_strStoreName));
+
             
     blResult = true;
 
@@ -2198,6 +2202,19 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         }
     }
 
+    unsigned int uiEventType = 0xFFFFFFFF;
+    std::string strEventType;
+    itFind = pMsgInfoMap->find("event_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEventType = itFind->second;
+        if (!ValidType<unsigned int>(strEventType, uiEventType))
+        {
+            LOG_ERROR_RLD("Event type parse failed.");
+            return blResult;
+        }
+    }
+    
     std::string strBeginDate;
     itFind = pMsgInfoMap->find("begindate");
     if (pMsgInfoMap->end() != itFind)
@@ -2228,7 +2245,7 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         " and process state is " << uiProcessState << " and begin date is " << strBeginDate << " and end date is " << strEndDate);
 
     std::list<EventInfo> einfoList;    
-    if (!QueryAllEvent(strSid, strUserID, uiRelation, uiBeginIndex, uiProcessState, strBeginDate, strEndDate, einfoList))
+    if (!QueryAllEvent(strSid, strUserID, uiRelation, uiBeginIndex, uiProcessState, uiEventType, strBeginDate, strEndDate, einfoList))
     {
         LOG_ERROR_RLD("Query all event handle failed");
         return blResult;
@@ -2251,6 +2268,9 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         }
         
         Json::Value jsEventInfo;
+        jsEventInfo["store_id"] = itBegin->m_strStoreID;
+        jsEventInfo["store_name"] = itBegin->m_strStoreName;
+
         jsEventInfo["event_id"] = itBegin->m_strEventID;
         jsEventInfo["source"] = itBegin->m_strSource;
         jsEventInfo["submit_date"] = itBegin->m_strSubmitDate;
@@ -5245,10 +5265,28 @@ bool PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler(boost::shared_ptr<M
             return blResult;
         }
 
+        std::list<std::string> strFileIDList;
+        auto jsPic = jsValue["picture"];
+        if (!jsPic.isNull() && !jsPic.isArray())
+        {
+            LOG_ERROR_RLD("Picture info parse failed");
+            return blResult;
+        }
+        
+        Json::StyledWriter stylewriter;
+        const std::string &strBody = stylewriter.write(jsPic);
+
+        if (!GetValueList(strBody, strFileIDList))
+        {
+            LOG_ERROR_RLD("Pictcure info error");
+            return blResult;
+        }
+        
         EvaluationTemplate evt;
         evt.m_dEvaluationValue = dEvaluationValue;
         evt.m_strEvaluationTmpID = jsEvaluationID.asString();
         evt.m_strEvaluationDesc = jsEvaluationDesc.asString();
+        evt.m_strFileIDList.swap(strFileIDList);
 
         ev.m_evlist.push_back(std::move(evt));
         
@@ -5485,10 +5523,28 @@ bool PassengerFlowMsgHandler::ModifyEvaluationOfStoreHandler(boost::shared_ptr<M
                 return blResult;
             }
 
+            std::list<std::string> strFileIDList;
+            auto jsPic = jsValue["picture"];
+            if (jsPic.isNull() || !jsPic.isArray())
+            {
+                LOG_ERROR_RLD("Picture info parse failed");
+                return blResult;
+            }
+
+            Json::StyledWriter stylewriter;
+            const std::string &strBody = stylewriter.write(jsPic);
+
+            if (!GetValueList(strBody, strFileIDList))
+            {
+                LOG_ERROR_RLD("Pictcure info error");
+                return blResult;
+            }
+
             EvaluationTemplate evt;
             evt.m_dEvaluationValue = dEvaluationValue;
             evt.m_strEvaluationTmpID = jsEvaluationID.asString();
             evt.m_strEvaluationDesc = jsEvaluationDesc.asString();
+            evt.m_strFileIDList.swap(strFileIDList);
 
             ev.m_evlist.push_back(std::move(evt));
 
@@ -5573,13 +5629,14 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
     }
     const std::string strUserID = itFind->second;
 
-    itFind = pMsgInfoMap->find("storeid");
-    if (pMsgInfoMap->end() == itFind)
-    {
-        LOG_ERROR_RLD("Store id not found.");
-        return blResult;
-    }
-    const std::string strStoreID = itFind->second;
+    ////去除查询门店考评记录详情中门店ID字段。
+    //itFind = pMsgInfoMap->find("storeid");
+    //if (pMsgInfoMap->end() == itFind)
+    //{
+    //    LOG_ERROR_RLD("Store id not found.");
+    //    return blResult;
+    //}
+    //const std::string strStoreID = itFind->second;
 
     itFind = pMsgInfoMap->find("store_evaluation_id");
     if (pMsgInfoMap->end() == itFind)
@@ -5590,7 +5647,7 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
     const std::string strEvaluationIDOfStore = itFind->second;
     
     Evaluation ev;
-    ev.m_strStoreID = strStoreID;
+    //ev.m_strStoreID = strStoreID;
     ev.m_strEvaluationID = strEvaluationIDOfStore;
 
     if (!QueryEvaluation(strSid, strUserID, ev))
@@ -5615,13 +5672,23 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
         jsEva["evaluation"] = itBegin->m_strEvaluation;
         jsEva["evaluation_desc"] = itBegin->m_strEvaDescActive;
         jsEva["evaluation_value"] = boost::lexical_cast<std::string>(itBegin->m_dEvaValueActive);
+
+        Json::Value jsFileURL;
+        unsigned int kk = 0;
+        for (const auto& strFileURL : itBegin->m_strFileIDList)
+        {
+            jsFileURL[kk++] = strFileURL;
+        }
+        jsEva["picture"] = jsFileURL;
+
         jsEvaList[i] = jsEva;
     }
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query evaluation info received and session id is " << strSid << " and user id is " << strUserID
-        << " and store id is " << strStoreID << " and evaluation id of store is " << strEvaluationIDOfStore);
+        //<< " and store id is " << strStoreID 
+        << " and evaluation id of store is " << strEvaluationIDOfStore);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5695,6 +5762,17 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
     }
     const std::string strStoreID = itFind->second;
 
+    unsigned int uiCheckStatus = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("check_status");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<unsigned int>(itFind->second, uiCheckStatus))
+        {
+            LOG_ERROR_RLD("Check status  is invalid and value is " << itFind->second);
+            return blResult;
+        }
+    }
+
     std::string strBeginDate;
     itFind = pMsgInfoMap->find("begindate");
     if (pMsgInfoMap->end() != itFind)
@@ -5740,7 +5818,7 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
     }
     
     std::list<Evaluation> evlist;
-    if (!QueryAllEvaluationOfStore(strSid, strUserID, strStoreID, strBeginDate, strEndDate, uiBeginIndex, evlist))
+    if (!QueryAllEvaluationOfStore(strSid, strUserID, strStoreID, uiCheckStatus, strBeginDate, strEndDate, uiBeginIndex, evlist))
     {
         LOG_ERROR_RLD("Query all evaluation of store failed.");
         return blResult;
@@ -8628,6 +8706,8 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
         eventinfo.m_strUserID = QueryEventRsp.m_eventInfo.m_strUserID;
         eventinfo.m_uiEventTypeList.swap(QueryEventRsp.m_eventInfo.m_uiTypeList);
         eventinfo.m_strViewState = boost::lexical_cast<std::string>(QueryEventRsp.m_eventInfo.m_uiViewState);
+        eventinfo.m_strStoreID = QueryEventRsp.m_eventInfo.m_strStoreID;
+        eventinfo.m_strStoreName = QueryEventRsp.m_eventInfo.m_strStoreName;
         
         iRet = QueryEventRsp.m_iRetcode;
 
@@ -8647,7 +8727,8 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
 }
 
 bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiRelation, const unsigned int uiBeginIndex,
-    const unsigned int uiProcessState, const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
+    const unsigned int uiProcessState, const unsigned int uiEventType,
+    const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -8663,6 +8744,7 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
         QueryAllEventReq.m_uiProcessState = uiProcessState;
         QueryAllEventReq.m_strEndDate = strEndDate;
         QueryAllEventReq.m_uiRelation = uiRelation;
+        QueryAllEventReq.m_uiEventType = uiEventType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllEventReq, strSerializeOutPut))
@@ -8704,6 +8786,9 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
             eventinfo.m_strUserID = itBegin->m_strUserID;
             eventinfo.m_uiEventTypeList.swap(itBegin->m_uiTypeList);
             eventinfo.m_strViewState = boost::lexical_cast<std::string>(itBegin->m_uiViewState);
+
+            eventinfo.m_strStoreID = itBegin->m_strStoreID;
+            eventinfo.m_strStoreName = itBegin->m_strStoreName;
             
             eventinfoList.push_back(std::move(eventinfo));
 
@@ -10464,6 +10549,7 @@ bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evalua
             evs.m_dScore = itBegin->m_dEvaluationValue;
             evs.m_evaluationItem.m_strItemID = itBegin->m_strEvaluationTmpID;
             evs.m_strDescription = itBegin->m_strEvaluationDesc;
+            evs.m_strPictureList.swap(itBegin->m_strFileIDList);
 
             AddEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
         }
@@ -10584,6 +10670,7 @@ bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evalua
             evs.m_dScore = itBegin->m_dEvaluationValue;
             evs.m_evaluationItem.m_strItemID = itBegin->m_strEvaluationTmpID;
             evs.m_strDescription = itBegin->m_strEvaluationDesc;
+            evs.m_strPictureList.swap(itBegin->m_strFileIDList);
 
             ModEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
         }
@@ -10681,6 +10768,7 @@ bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const s
             evt.m_strEvaluation = itBegin->m_evaluationItem.m_strItemName;
             evt.m_strEvaluationDesc = itBegin->m_evaluationItem.m_strDescription;
             evt.m_strEvaluationTmpID = itBegin->m_evaluationItem.m_strItemID;
+            evt.m_strFileIDList.swap(itBegin->m_strPictureList);
             
             ev.m_evlist.push_back(std::move(evt));
         }
@@ -10704,7 +10792,7 @@ bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const s
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
+bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const unsigned int uiCheckStatus,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<Evaluation> &evlist)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -10716,6 +10804,7 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSi
 
         QueryEvaReq.m_strUserID = strUserID;
         QueryEvaReq.m_strStoreID = strStoreID;
+        QueryEvaReq.m_uiCheckStatus = uiCheckStatus;
         QueryEvaReq.m_strBeginDate = strBeginDate;
         QueryEvaReq.m_strEndDate = strEndDate;
         QueryEvaReq.m_uiBeginIndex = uiBeginIndex;

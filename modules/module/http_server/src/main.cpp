@@ -333,6 +333,12 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_SPACE_ACTION, boost::bind(&HttpMsgHandler::QueryUserSpaceHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_STORAGE_SPACE_ACTION, boost::bind(&HttpMsgHandler::QueryStorageSpaceHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::CMS_CALL_ACTION, boost::bind(&HttpMsgHandler::CmsCallHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::REGISTER_CMSCALL_ACTION, boost::bind(&HttpMsgHandler::RegisterCmsCallHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::UNREGISTER_CMSCALL_ACTION, boost::bind(&HttpMsgHandler::UnregisterCmsCallHandler, &filehdr, _1, _2));
+
+
+
     fcgimgr.Run(true);
     return 0;
 }

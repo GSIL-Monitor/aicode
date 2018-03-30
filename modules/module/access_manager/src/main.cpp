@@ -332,6 +332,13 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("MasterNode config item not found.");
     }
 
+    const std::string &strCmsCallAddress = GetConfig("General.CmsCallAddress");
+    if (strCmsCallAddress.empty())
+    {
+        LOG_ERROR_RLD("Cms call address config item not found.");
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////
 
     AccessManager::ParamInfo UmgParam;
@@ -354,7 +361,8 @@ int main(int argc, char* argv[])
     UmgParam.m_strUserAllowDiffTerminal = strUserAllowDiffTerminal;
     UmgParam.m_strUserKickoutType = strUserKickoutType;
     UmgParam.m_strMasterNode = strMasterNode;
-
+    UmgParam.m_strCmsCallAddress = strCmsCallAddress.empty() ? "xvripc.net" : strCmsCallAddress;
+    
     AccessManager Umg(UmgParam);
     if (!Umg.Init())
     {
@@ -435,6 +443,8 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryRegionStorageInfoReq_USR_T, boost::bind(&AccessManager::QueryRegionStorageInfoReqUser, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceInfoMultiReq_USR_T, boost::bind(&AccessManager::QueryDeviceInfoMultiReqUser, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RegisterCmsCallReq_USR_T, boost::bind(&AccessManager::RegisterCmsCallReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T, boost::bind(&AccessManager::UnRegisterCmsCallReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

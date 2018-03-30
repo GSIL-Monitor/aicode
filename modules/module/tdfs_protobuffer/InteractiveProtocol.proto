@@ -185,6 +185,11 @@ enum MsgType
   QueryDeviceInfoMultiReq_USR_T = 20950;        //批量查询设备信息
   QueryDeviceInfoMultiRsp_USR_T = 20960;
   
+  RegisterCmsCallReq_USR_T = 20961;                //注册CMS呼叫
+  RegisterCmsCallRsp_USR_T = 20962;
+  UnregisterCmsCallReq_USR_T = 20963;              //注销CMS呼叫
+  UnregisterCmsCallRsp_USR_T = 20964;
+  
   ///////////////////////////////////////////////////////
   
   GetOnlineDevInfoReq_INNER_T = 30000;          //获取在线设备信息
@@ -1131,6 +1136,29 @@ message QueryDeviceInfoMultiRsp_USR             //批量查询设备信息响应
   repeated DeviceStatus deviceStatus = 1;
 }
 
+message RegisterCmsCallReq_USR                  //注册CMS呼叫请求
+{
+  string strCmsID = 1;
+  repeated string strCmsP2pIDList = 2;
+  string strDeviceMac = 3;
+  string strDeviceP2pID = 4;
+}
+
+message RegisterCmsCallRsp_USR                  //注册CMS呼叫响应
+{
+  string strAddress = 1;
+  string strPort = 2;
+}
+
+message UnregisterCmsCallReq_USR                //注销CMS呼叫请求
+{
+  string strCmsID = 1;
+}
+
+message UnregisterCmsCallRsp_USR                //注销CMS呼叫响应
+{
+  string strValue = 1;
+}
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
 
@@ -1326,6 +1354,11 @@ message Req
   QueryRegionStorageInfoReq_USR QueryRegionStorageInfoReq_USR_Value = 740;    //查询区域存储情况
 
   QueryDeviceInfoMultiReq_USR QueryDeviceInfoMultiReq_USR_Value = 1100;       //批量查询设备信息
+  
+  RegisterCmsCallReq_USR RegisterCmsCallReq_USR_Value = 1101;                 //注册CMS呼叫请求
+  
+  UnregisterCmsCallReq_USR UnregisterCmsCallReq_USR_Value = 1102;             //注销CMS呼叫请求
+  
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1427,6 +1460,10 @@ message Rsp
   QueryRegionStorageInfoRsp_USR QueryRegionStorageInfoRsp_USR_Value = 740;  //查询区域存储情况
 
   QueryDeviceInfoMultiRsp_USR QueryDeviceInfoMultiRsp_USR_Value = 1100;     //批量查询设备信息
+  
+  RegisterCmsCallRsp_USR RegisterCmsCallRsp_USR_Value = 1101;               //注册CMS呼叫响应
+  
+  UnregisterCmsCallRsp_USR UnregisterCmsCallRsp_USR_Value = 1102;           //注销CMS呼叫响应
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

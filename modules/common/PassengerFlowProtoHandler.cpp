@@ -4055,6 +4055,9 @@ void PassengerFlowProtoHandler::QueryEventInfoRsp::Serializer(CustomerFlowMessag
     event->set_strcreatedate(m_eventInfo.m_strCreateDate);
     event->set_strextend(m_eventInfo.m_strExtend);
     event->set_uistate(m_eventInfo.m_uiState);
+    
+    event->set_strstoreid(m_eventInfo.m_strStoreID);
+    event->set_strstorename(m_eventInfo.m_strStoreName);
 
     for (auto it = m_eventInfo.m_uiTypeList.begin(), end = m_eventInfo.m_uiTypeList.end(); it != end; ++it)
     {
@@ -4084,6 +4087,9 @@ void PassengerFlowProtoHandler::QueryEventInfoRsp::UnSerializer(const CustomerFl
     m_eventInfo.m_strExtend = event.strextend();
     m_eventInfo.m_uiState = event.uistate();
 
+    m_eventInfo.m_strStoreID = event.strstoreid();
+    m_eventInfo.m_strStoreName = event.strstorename();
+
     auto typeList = event.uitype();
     for (int i = 0, sz = typeList.size(); i < sz; ++i)
     {
@@ -4109,6 +4115,7 @@ void PassengerFlowProtoHandler::QueryAllEventReq::Serializer(CustomerFlowMessage
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
+    req->set_uieventtype(m_uiEventType);
 }
 
 void PassengerFlowProtoHandler::QueryAllEventReq::UnSerializer(const CustomerFlowMessage &message)
@@ -4122,6 +4129,7 @@ void PassengerFlowProtoHandler::QueryAllEventReq::UnSerializer(const CustomerFlo
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
+    m_uiEventType = req.uieventtype();
 }
 
 void PassengerFlowProtoHandler::QueryAllEventRsp::Serializer(CustomerFlowMessage &message) const
@@ -4145,6 +4153,9 @@ void PassengerFlowProtoHandler::QueryAllEventRsp::Serializer(CustomerFlowMessage
         event->set_strcreatedate(it->m_strCreateDate);
         event->set_strextend(it->m_strExtend);
         event->set_uistate(it->m_uiState);
+
+        event->set_strstoreid(it->m_strStoreID);
+        event->set_strstorename(it->m_strStoreName);
 
         for (auto type = it->m_uiTypeList.begin(), end = it->m_uiTypeList.end(); type != end; ++type)
         {
@@ -4178,6 +4189,9 @@ void PassengerFlowProtoHandler::QueryAllEventRsp::UnSerializer(const CustomerFlo
         event.m_strCreateDate = rspEvent.strcreatedate();
         event.m_strExtend = rspEvent.strextend();
         event.m_uiState = rspEvent.uistate();
+
+        event.m_strStoreID = rspEvent.strstoreid();
+        event.m_strStoreName = rspEvent.strstorename();
 
         auto typeList = rspEvent.uitype();
         for (int i = 0, sz = typeList.size(); i < sz; ++i)
@@ -5556,6 +5570,11 @@ void PassengerFlowProtoHandler::AddStoreEvaluationReq::Serializer(CustomerFlowMe
         item->set_stritemname(it->m_evaluationItem.m_strItemName);
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
+
+        for (auto it2 = it->m_strPictureList.begin(), end2 = it->m_strPictureList.end(); it2 != end2; ++it2)
+        {
+            score->add_strpicture(*it2);
+        }
     }
 
     for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
@@ -5589,6 +5608,11 @@ void PassengerFlowProtoHandler::AddStoreEvaluationReq::UnSerializer(const Custom
         score.m_evaluationItem.m_strItemName = rspItem.stritemname();
         score.m_evaluationItem.m_dTotalPoint = rspItem.dtotalpoint();
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
+
+        for (int j = 0, sz2 = rspScore.strpicture_size(); j < sz2; ++j)
+        {
+            score.m_strPictureList.push_back(rspScore.strpicture(j));
+        }
 
         m_storeEvaluation.m_itemScoreList.push_back(score);
     }
@@ -5673,6 +5697,11 @@ void PassengerFlowProtoHandler::ModifyStoreEvaluationReq::Serializer(CustomerFlo
         item->set_stritemname(it->m_evaluationItem.m_strItemName);
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
+
+        for (auto it2 = it->m_strPictureList.begin(), end2 = it->m_strPictureList.end(); it2 != end2; ++it2)
+        {
+            score->add_strpicture(*it2);
+        }
     }
 
     for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
@@ -5708,6 +5737,11 @@ void PassengerFlowProtoHandler::ModifyStoreEvaluationReq::UnSerializer(const Cus
         score.m_evaluationItem.m_strItemName = rspItem.stritemname();
         score.m_evaluationItem.m_dTotalPoint = rspItem.dtotalpoint();
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
+
+        for (int j = 0, sz2 = rspScore.strpicture_size(); j < sz2; ++j)
+        {
+            score.m_strPictureList.push_back(rspScore.strpicture(j));
+        }
 
         m_storeEvaluation.m_itemScoreList.push_back(score);
     }
@@ -5779,6 +5813,11 @@ void PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp::Serializer(Customer
         item->set_stritemname(it->m_evaluationItem.m_strItemName);
         item->set_dtotalpoint(it->m_evaluationItem.m_dTotalPoint);
         item->set_strdescription(it->m_evaluationItem.m_strDescription);
+
+        for (auto it2 = it->m_strPictureList.begin(), end2 = it->m_strPictureList.end(); it2 != end2; ++it2)
+        {
+            score->add_strpicture(*it2);
+        }
     }
 
     for (auto it = m_storeEvaluation.m_strPictureList.begin(), end = m_storeEvaluation.m_strPictureList.end(); it != end; ++it)
@@ -5813,6 +5852,11 @@ void PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp::UnSerializer(const 
         score.m_evaluationItem.m_dTotalPoint = rspItem.dtotalpoint();
         score.m_evaluationItem.m_strDescription = rspItem.strdescription();
 
+        for (int j = 0, sz2 = rspScore.strpicture_size(); j < sz2; ++j)
+        {
+            score.m_strPictureList.push_back(rspScore.strpicture(j));
+        }
+
         m_storeEvaluation.m_itemScoreList.push_back(score);
     }
 
@@ -5833,6 +5877,7 @@ void PassengerFlowProtoHandler::QueryAllStoreEvaluationReq::Serializer(CustomerF
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
+    req->set_uicheckstatus(m_uiCheckStatus);
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreEvaluationReq::UnSerializer(const CustomerFlowMessage &message)
@@ -5845,6 +5890,7 @@ void PassengerFlowProtoHandler::QueryAllStoreEvaluationReq::UnSerializer(const C
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
+    m_uiCheckStatus = req.uicheckstatus();
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp::Serializer(CustomerFlowMessage &message) const
