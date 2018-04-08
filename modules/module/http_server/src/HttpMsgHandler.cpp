@@ -131,6 +131,8 @@ const std::string HttpMsgHandler::REGISTER_CMSCALL_ACTION("register_cms_call");
 
 const std::string HttpMsgHandler::UNREGISTER_CMSCALL_ACTION("unregister_cms_call");
 
+const std::string HttpMsgHandler::QUERY_SHARING_DEVICE_LIMIT_ACTION("query_sharing_device_limit");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -6453,6 +6455,67 @@ bool HttpMsgHandler::UnregisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsg
     return blResult;
 }
 
+bool HttpMsgHandler::QuerySharingDeviceLimitHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query sharing device limit info received and sid is " << strSid << " and user id is " << strUserID);
+
+    unsigned int uiCurrentLimitNum = 0;
+    unsigned int uiUsedNum = 0;
+
+    if (!QuerySharingDeviceLimit(strSid, strUserID, uiCurrentLimitNum, uiUsedNum))
+    {
+        LOG_ERROR_RLD("Query sharing device limit handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("used_num", boost::lexical_cast<std::string>(uiUsedNum)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("current_limit_num", boost::lexical_cast<std::string>(uiCurrentLimitNum)));
+    
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -10173,6 +10236,59 @@ bool HttpMsgHandler::UnregisterCmsCall(const std::string &strCmsID)
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QuerySharingDeviceLimit(const std::string &strSid, const std::string &strUserID, unsigned int &uiCurrentLimitNum, unsigned int &uiUsedNum)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR QuerySharingDevLimitReq;
+        QuerySharingDevLimitReq.m_MsgType = InteractiveProtoHandler::MsgType::QuerySharingDeviceLimitReq_USR_T;
+        QuerySharingDevLimitReq.m_uiMsgSeq = 1;
+        QuerySharingDevLimitReq.m_strSID = strSid;
+
+        QuerySharingDevLimitReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySharingDevLimitReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query sharing device limit req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR QuerySharingDevLimitRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySharingDevLimitRsp))
+        {
+            LOG_ERROR_RLD("Query sharing device limit rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        uiCurrentLimitNum = QuerySharingDevLimitRsp.m_uiCurrentLimitNum;
+        uiUsedNum = QuerySharingDevLimitRsp.m_uiUsedNum;
+
+        iRet = QuerySharingDevLimitRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query sharing device limit and current limit num is  " << uiCurrentLimitNum << " and used num is " << uiUsedNum <<
+            " and return code is " << QuerySharingDevLimitRsp.m_iRetcode <<
+            " and return msg is " << QuerySharingDevLimitRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&

@@ -89,6 +89,8 @@ public:
     static const std::string REGISTER_CMSCALL_ACTION;
     static const std::string UNREGISTER_CMSCALL_ACTION;
     
+    static const std::string QUERY_SHARING_DEVICE_LIMIT_ACTION;
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -220,7 +222,10 @@ public:
     bool RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool UnregisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-    
+
+
+    bool QuerySharingDeviceLimitHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+        
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -495,6 +500,8 @@ private:
         std::string &strAddress, std::string &strPort);
 
     bool UnregisterCmsCall(const std::string &strCmsID);
+
+    bool QuerySharingDeviceLimit(const std::string &strSid, const std::string &strUserID, unsigned int &uiCurrentLimitNum, unsigned int &uiUsedNum);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

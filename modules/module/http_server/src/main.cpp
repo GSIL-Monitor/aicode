@@ -337,6 +337,7 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::REGISTER_CMSCALL_ACTION, boost::bind(&HttpMsgHandler::RegisterCmsCallHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::UNREGISTER_CMSCALL_ACTION, boost::bind(&HttpMsgHandler::UnregisterCmsCallHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_SHARING_DEVICE_LIMIT_ACTION, boost::bind(&HttpMsgHandler::QuerySharingDeviceLimitHandler, &filehdr, _1, _2));
 
 
     fcgimgr.Run(true);

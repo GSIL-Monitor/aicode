@@ -35,6 +35,7 @@ public:
     static const int SHARED_USERNAME_IS_INVALID_USER;    //用户名有误，找不到此用户
     static const int LOGIN_USING_TEMP_PASSWORD_USER;     //用户使用临时密码登录，必须修改密码
     static const int SHARED_USERID_IS_INVALID_USER;      //用户ID有误，找不到此用户
+    static const int SHARING_DEVICE_UP_TO_LIMIT;             //用户主动分享设备达到上限
 
     //设备相关的错误代码
     static const int DEVICEID_NOT_EXISTED_DEV;           //设备ID不存在

@@ -167,6 +167,9 @@ public:
         UnregisterCmsCallReq_USR_T = 20963,              //注销CMS呼叫
         UnregisterCmsCallRsp_USR_T = 20964,
 
+        QuerySharingDeviceLimitReq_USR_T = 20965,   //查询分享设备限制
+        QuerySharingDeviceLimitRsp_USR_T = 20966,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -1206,6 +1209,25 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct QuerySharingDeviceLimitReq_USR : Req
+    {
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QuerySharingDeviceLimitRsp_USR : Rsp
+    {
+        unsigned int m_uiCurrentLimitNum;
+        unsigned int m_uiUsedNum;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
 
     struct AddFileReq_DEV : Req
     {
@@ -2087,6 +2109,12 @@ private:
     bool UnregisterCmsCallReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool UnregisterCmsCallRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool UnregisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QuerySharingDeviceLimitReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QuerySharingDeviceLimitReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QuerySharingDeviceLimitRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QuerySharingDeviceLimitRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

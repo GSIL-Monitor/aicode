@@ -1527,6 +1527,30 @@ bool AccessManager::SharingDeviceReq(const std::string &strMsg, const std::strin
         return false;
     }
 
+    unsigned int uiUsedNum = 0;
+    unsigned int uiCurrentLimitNum = SHARING_DEVICE_LIMIT;
+
+    if (!QuerySharingDeviceLimit(strUserID, uiUsedNum))
+    {
+        LOG_ERROR_RLD("Query sharing device limit failed and  user id is " << strUserID);
+        return false;
+    }
+
+    if (!QuerySharingDeviceCurrentLimit(uiCurrentLimitNum))
+    {
+        LOG_ERROR_RLD("Query sharing device current limit failed and  user id is " << strUserID);
+        return false;
+    }
+
+    if (uiUsedNum >= uiCurrentLimitNum)
+    {
+        LOG_ERROR_RLD("Sharing device failed because limit is up on and used num is " << uiUsedNum << " and current limit num is " << uiCurrentLimitNum);
+        ReturnInfo::RetCode(ReturnInfo::SHARING_DEVICE_UP_TO_LIMIT);
+        return false;
+    }
+
+    LOG_INFO_RLD("Sharing device limit used num is " << uiUsedNum << " and current limit num is " << uiCurrentLimitNum);
+
     //考虑到用户设备关系表后续查询的方便，用户与设备的关系在表中体现的是一条条记录
     //分享设备会在对应的用户设备关系表中只增加一条记录，原来的主动分享的记录不变化（还是表示设备最开始的归属）
     std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
@@ -4421,6 +4445,64 @@ bool AccessManager::UnRegisterCmsCallReq(const std::string &strMsg, const std::s
         return false;
     }
 
+    blResult = true;
+    return true;
+}
+
+bool AccessManager::QuerySharingDeviceLimitReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    unsigned int uiCurrentLimitNum = 0;
+    unsigned int uiUsedNum = 0;
+    InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR QuerySDLReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &QuerySDLReq, &writer, &strSrcID, &uiCurrentLimitNum, &uiUsedNum)
+    {
+        InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR QuerySDLRsp;
+        QuerySDLRsp.m_MsgType = InteractiveProtoHandler::MsgType::QuerySharingDeviceLimitRsp_USR_T;
+        QuerySDLRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        QuerySDLRsp.m_strSID = QuerySDLReq.m_strSID;
+        QuerySDLRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        QuerySDLRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        QuerySDLRsp.m_uiCurrentLimitNum = uiCurrentLimitNum;
+        QuerySDLRsp.m_uiUsedNum = uiUsedNum;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(QuerySDLRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query sharing device limit rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Query sharing device rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+    
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, QuerySDLReq))
+    {
+        LOG_ERROR_RLD("Query sharing device limit req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+    
+    if (!QuerySharingDeviceLimit(QuerySDLReq.m_strUserID, uiUsedNum))
+    {
+        LOG_ERROR_RLD("Query sharing device limit failed and  user id is " << QuerySDLReq.m_strUserID);
+        return false;
+    }
+
+    if (!QuerySharingDeviceCurrentLimit(uiCurrentLimitNum))
+    {
+        LOG_ERROR_RLD("Query sharing device current limit failed and  user id is " << QuerySDLReq.m_strUserID);
+        return false;
+    }
+        
     blResult = true;
     return true;
 }
@@ -9230,5 +9312,84 @@ bool AccessManager::SaveRemoveCmsCallInfo(const std::string &strCmsID)
         return false;
     }
     
+    return true;
+}
+
+bool AccessManager::QuerySharingDeviceLimit(const std::string &strUserID, unsigned int &uiUsedNum)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select count(rel.id) from t_device_info dev, t_user_device_relation rel, t_user_info usr "
+        "where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.status = 0 and dev.status = 0 and usr.status = 0 "
+        "and rel.relation = 1 and rel.deviceid "
+        "in (select deviceid from t_user_device_relation where userid = '%s' and relation = 0 and status = 0)";
+    snprintf(sql, size, sqlfmt, strUserID.c_str());
+
+    unsigned int uiResult = 0;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiResult = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiResult;
+
+        LOG_INFO_RLD("Query sharing device sql count(id) is " << uiResult);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query sharing device failed, user id is " << strUserID);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("Query sharing device failed, user id is " << strUserID);
+        return false;
+    }
+
+    auto result = boost::any_cast<unsigned int>(ResultList.front());
+    uiResult = result;
+
+    uiUsedNum = uiResult;
+
+    return true;
+}
+
+bool AccessManager::QuerySharingDeviceCurrentLimit(unsigned int &uiCurrentLimitNum)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select description from t_configuration_info where category = 'Platform_Feature' and subcategory = 'SharingLimitNum'";
+    snprintf(sql, size, sqlfmt);
+
+    unsigned int uiResult = SHARING_DEVICE_LIMIT;
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiResult = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiResult;
+
+        LOG_INFO_RLD("Query sharing device current limit is " << uiResult);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query sharing device current limit failed");
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_INFO_RLD("Query sharing device current limit empty and default limit is " << uiResult);
+    }
+    else
+    {
+        auto result = boost::any_cast<unsigned int>(ResultList.front());
+        uiResult = result;
+    }
+
+    uiCurrentLimitNum = uiResult;
+
     return true;
 }

@@ -27,6 +27,8 @@ const int ReturnInfo::SHARED_USERNAME_IS_INVALID_USER = 1015;      //”√ªß√˚”–ŒÛ£
 const int ReturnInfo::LOGIN_USING_TEMP_PASSWORD_USER = 1016;       //”√ªß π”√¡Ÿ ±√‹¬Îµ«¬º£¨±ÿ–Î–ﬁ∏ƒ√‹¬Î
 const int ReturnInfo::SHARED_USERID_IS_INVALID_USER = 1017;        //”√ªßID”–ŒÛ£¨’“≤ªµΩ¥À”√ªß
 
+const int ReturnInfo::SHARING_DEVICE_UP_TO_LIMIT = 3001;
+
 const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //…Ë±∏∂˛º∂”Ú√˚“—±ª π”√
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //…Ë±∏P2PID“—±ª π”√
 const int ReturnInfo::DEVICE_DOMAINNAME_INVALID = 2002;            //…Ë±∏∂˛º∂”Ú√˚≤ªø…”√

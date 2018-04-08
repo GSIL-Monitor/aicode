@@ -76,6 +76,8 @@ public:
 
     static const unsigned int UNUSED_INPUT_UINT = 0xFFFFFFFF;
 
+    static const unsigned int SHARING_DEVICE_LIMIT = 12;
+
     typedef struct _Relation
     {
         std::string m_strUsrID;
@@ -258,6 +260,8 @@ public:
     bool RegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
     bool UnRegisterCmsCallReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QuerySharingDeviceLimitReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
@@ -485,6 +489,10 @@ private:
     bool RemoveCmsCallInfo(const std::string &strCmsID);
 
     bool SaveRemoveCmsCallInfo(const std::string &strCmsID);
+
+    bool QuerySharingDeviceLimit(const std::string &strUserID, unsigned int &uiUsedNum);
+
+    bool QuerySharingDeviceCurrentLimit(unsigned int &uiCurrentLimitNum);
 
 private:
     ParamInfo m_ParamInfo;

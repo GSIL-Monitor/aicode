@@ -185,10 +185,14 @@ enum MsgType
   QueryDeviceInfoMultiReq_USR_T = 20950;        //批量查询设备信息
   QueryDeviceInfoMultiRsp_USR_T = 20960;
   
-  RegisterCmsCallReq_USR_T = 20961;                //注册CMS呼叫
+  RegisterCmsCallReq_USR_T = 20961;             //注册CMS呼叫
   RegisterCmsCallRsp_USR_T = 20962;
-  UnregisterCmsCallReq_USR_T = 20963;              //注销CMS呼叫
+  UnregisterCmsCallReq_USR_T = 20963;           //注销CMS呼叫
   UnregisterCmsCallRsp_USR_T = 20964;
+  
+  QuerySharingDeviceLimitReq_USR_T = 20965;     //查询分享设备限制
+  QuerySharingDeviceLimitRsp_USR_T = 20966;     
+  
   
   ///////////////////////////////////////////////////////
   
@@ -1160,6 +1164,18 @@ message UnregisterCmsCallRsp_USR                //注销CMS呼叫响应
   string strValue = 1;
 }
 
+message QuerySharingDeviceLimitReq_USR
+{
+  string strUserID = 1;
+}
+
+message QuerySharingDeviceLimitRsp_USR
+{
+  uint32 uiCurrentLimitNum = 1;
+  uint32 uiUsedNum = 2;  
+}
+
+
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
 
 message QueryUploadURLReq_MGR                   //查询文件上传URL请求
@@ -1359,6 +1375,8 @@ message Req
   
   UnregisterCmsCallReq_USR UnregisterCmsCallReq_USR_Value = 1102;             //注销CMS呼叫请求
   
+  QuerySharingDeviceLimitReq_USR QuerySharingDeviceLimitReq_USR_Value = 1103; //查询分享设备限制请求
+  
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1464,6 +1482,8 @@ message Rsp
   RegisterCmsCallRsp_USR RegisterCmsCallRsp_USR_Value = 1101;               //注册CMS呼叫响应
   
   UnregisterCmsCallRsp_USR UnregisterCmsCallRsp_USR_Value = 1102;           //注销CMS呼叫响应
+  
+  QuerySharingDeviceLimitRsp_USR QuerySharingDeviceLimitRsp_USR_Value = 1103; //查询分享设备限制响应
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

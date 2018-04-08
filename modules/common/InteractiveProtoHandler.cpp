@@ -1311,6 +1311,22 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::UnregisterCmsCallRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UnregisterCmsCallRsp_USR_T, handler));
+
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QuerySharingDeviceLimitReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QuerySharingDeviceLimitRsp_USR_T, handler));
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2633,6 +2649,27 @@ bool InteractiveProtoHandler::UnregisterCmsCallRsp_USR_Serializer(const Req &rsp
 bool InteractiveProtoHandler::UnregisterCmsCallRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<UnregisterCmsCallRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+
+bool InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QuerySharingDeviceLimitReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QuerySharingDeviceLimitReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QuerySharingDeviceLimitRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QuerySharingDeviceLimitRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -5522,4 +5559,35 @@ void InteractiveProtoHandler::UnregisterCmsCallRsp_USR::Serializer(InteractiveMe
     InteractiveMsg.set_type(Interactive::Message::MsgType::UnregisterCmsCallRsp_USR_T);
 
     InteractiveMsg.mutable_rspvalue()->mutable_unregistercmscallrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+
+void InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().querysharingdevicelimitreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::QuerySharingDeviceLimitReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QuerySharingDeviceLimitReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_querysharingdevicelimitreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_uiCurrentLimitNum = InteractiveMsg.rspvalue().querysharingdevicelimitrsp_usr_value().uicurrentlimitnum();
+    m_uiUsedNum = InteractiveMsg.rspvalue().querysharingdevicelimitrsp_usr_value().uiusednum();
+}
+
+void InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QuerySharingDeviceLimitRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_querysharingdevicelimitrsp_usr_value()->set_uicurrentlimitnum(m_uiCurrentLimitNum);
+    InteractiveMsg.mutable_rspvalue()->mutable_querysharingdevicelimitrsp_usr_value()->set_uiusednum(m_uiUsedNum);
 }
