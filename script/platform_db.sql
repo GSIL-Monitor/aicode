@@ -298,4 +298,27 @@ CREATE TABLE `t_cms_call_info` (
   INDEX index_ref2(cmsp2pid)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_device_capacity_set`;
+CREATE TABLE `t_device_capacity_set` (
+  `id` varchar(36) NOT NULL,
+  `capacity_id` varchar(32) NOT NULL,      #能力ID
+  `capacity_desc` varchar(256) DEFAULT '', #能力描述
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(capacity_id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_device_type_capacity_info`;
+CREATE TABLE `t_device_type_capacity_info` (
+  `id` varchar(36) NOT NULL,
+  `capacity_id` varchar(32) NOT NULL,         #能力ID
+  `device_type` int(11) NOT NULL DEFAULT '0', #设备类型
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(capacity_id),
+  INDEX index_ref2(device_type)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 

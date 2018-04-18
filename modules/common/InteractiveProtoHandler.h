@@ -170,6 +170,11 @@ public:
         QuerySharingDeviceLimitReq_USR_T = 20965,   //查询分享设备限制
         QuerySharingDeviceLimitRsp_USR_T = 20966,
 
+        QueryDeviceCapacityReq_USR_T = 20967,         //查询设备能力集
+        QueryDeviceCapacityRsp_USR_T = 20968,
+        QueryALLDeviceCapacityReq_USR_T = 20969,      //查询所有设备能力集
+        QueryALLDeviceCapacityRsp_USR_T = 20970,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -391,7 +396,12 @@ public:
         std::string m_strExtend;
     };
 
-
+    struct DeviceCapacity
+    {
+        unsigned int m_uiDevType;
+        std::list<std::string> m_strCapacityList;
+    };
+    
     struct Req
     {
         Req(){};
@@ -1222,6 +1232,43 @@ public:
     {
         unsigned int m_uiCurrentLimitNum;
         unsigned int m_uiUsedNum;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDeviceCapacityReq_USR : Req
+    {
+        std::string m_strUserID;
+        unsigned int m_uiDevType;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDeviceCapacityRsp_USR : Rsp
+    {
+        DeviceCapacity m_DevCap;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllDeviceCapacityReq_USR : Req
+    {
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllDeviceCapacityRsp_USR : Rsp
+    {
+        std::list<DeviceCapacity> m_DevCapList;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -2114,6 +2161,17 @@ private:
     bool QuerySharingDeviceLimitReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QuerySharingDeviceLimitRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QuerySharingDeviceLimitRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryDeviceCapacityReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryDeviceCapacityReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryDeviceCapacityRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAllDeviceCapacityReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAllDeviceCapacityReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAllDeviceCapacityRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAllDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
 
 private:    

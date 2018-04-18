@@ -1327,6 +1327,35 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QuerySharingDeviceLimitRsp_USR_T, handler));
 
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceCapacityReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceCapacityReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceCapacityReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceCapacityRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceCapacityRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceCapacityRsp_USR_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryALLDeviceCapacityReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryALLDeviceCapacityRsp_USR_T, handler));
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2670,6 +2699,46 @@ bool InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_Serializer(const Re
 bool InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QuerySharingDeviceLimitRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryDeviceCapacityReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceCapacityReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceCapacityReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryDeviceCapacityReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryDeviceCapacityRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceCapacityRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryDeviceCapacityRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllDeviceCapacityReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryAllDeviceCapacityReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllDeviceCapacityRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryAllDeviceCapacityRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -5590,4 +5659,96 @@ void InteractiveProtoHandler::QuerySharingDeviceLimitRsp_USR::Serializer(Interac
 
     InteractiveMsg.mutable_rspvalue()->mutable_querysharingdevicelimitrsp_usr_value()->set_uicurrentlimitnum(m_uiCurrentLimitNum);
     InteractiveMsg.mutable_rspvalue()->mutable_querysharingdevicelimitrsp_usr_value()->set_uiusednum(m_uiUsedNum);
+}
+
+
+void InteractiveProtoHandler::QueryDeviceCapacityReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().querydevicecapacityreq_usr_value().struserid();
+    m_uiDevType = InteractiveMsg.reqvalue().querydevicecapacityreq_usr_value().uidevtype();
+}
+
+void InteractiveProtoHandler::QueryDeviceCapacityReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceCapacityReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevicecapacityreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevicecapacityreq_usr_value()->set_uidevtype(m_uiDevType);
+}
+
+void InteractiveProtoHandler::QueryDeviceCapacityRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    m_DevCap.m_uiDevType = InteractiveMsg.rspvalue().querydevicecapacityrsp_usr_value().devcap().uidevtype();
+
+    for (int i = 0, sz = InteractiveMsg.rspvalue().querydevicecapacityrsp_usr_value().devcap().strcapacitylist_size(); i < sz; ++i)
+    {
+        m_DevCap.m_strCapacityList.push_back(InteractiveMsg.rspvalue().querydevicecapacityrsp_usr_value().devcap().strcapacitylist(i));
+    }
+}
+
+void InteractiveProtoHandler::QueryDeviceCapacityRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceCapacityRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicecapacityrsp_usr_value()->mutable_devcap()->set_uidevtype(m_DevCap.m_uiDevType);
+    for (auto it = m_DevCap.m_strCapacityList.begin(), end = m_DevCap.m_strCapacityList.end(); it != end; ++it)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_querydevicecapacityrsp_usr_value()->mutable_devcap()->add_strcapacitylist(*it);
+    }
+}
+
+
+void InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strUserID = InteractiveMsg.reqvalue().queryalldevicecapacityreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryALLDeviceCapacityReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_queryalldevicecapacityreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+    
+    for (int i = 0, sz = InteractiveMsg.rspvalue().queryalldevicecapacityrsp_usr_value().devcaplist_size(); i < sz; ++i)
+    {
+        DeviceCapacity devcap;
+        devcap.m_uiDevType = InteractiveMsg.rspvalue().queryalldevicecapacityrsp_usr_value().devcaplist(i).uidevtype();
+        
+        for (int k = 0, sz_k = InteractiveMsg.rspvalue().queryalldevicecapacityrsp_usr_value().devcaplist(i).strcapacitylist_size(); k < sz_k; ++k)
+        {
+            devcap.m_strCapacityList.push_back(InteractiveMsg.rspvalue().queryalldevicecapacityrsp_usr_value().devcaplist(i).strcapacitylist(k));
+        }
+        
+        m_DevCapList.push_back(devcap);
+    }
+}
+
+void InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryALLDeviceCapacityRsp_USR_T);
+
+    for (auto it = m_DevCapList.begin(), end = m_DevCapList.end(); it != end; ++it)
+    {
+        auto pDevCap = InteractiveMsg.mutable_rspvalue()->mutable_queryalldevicecapacityrsp_usr_value()->mutable_devcaplist()->Add();
+        pDevCap->set_uidevtype(it->m_uiDevType);
+        
+        for (auto itBegin = it->m_strCapacityList.begin(), itEnd = it->m_strCapacityList.end(); itBegin != itEnd; ++itBegin)
+        {
+            auto pStrCap = pDevCap->mutable_strcapacitylist()->Add();
+            *pStrCap = *itBegin;
+        }
+        
+    }
 }

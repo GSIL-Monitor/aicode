@@ -133,6 +133,10 @@ const std::string HttpMsgHandler::UNREGISTER_CMSCALL_ACTION("unregister_cms_call
 
 const std::string HttpMsgHandler::QUERY_SHARING_DEVICE_LIMIT_ACTION("query_sharing_device_limit");
 
+const std::string HttpMsgHandler::QUERY_DEVICE_CAPACITY_ACTION("query_device_capacity");
+
+const std::string HttpMsgHandler::QUERY_ALL_DEVICE_CAPACITY_ACTION("query_all_device_capacity");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -6516,6 +6520,192 @@ bool HttpMsgHandler::QuerySharingDeviceLimitHandler(boost::shared_ptr<MsgInfoMap
     return blResult;
 }
 
+bool HttpMsgHandler::QueryDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    Json::Value jsCapacity;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsCapacity)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if(!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["capacity"] = jsCapacity;               
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("devtype");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device type not found.");
+        return blResult;
+    }
+    const std::string strDevType = itFind->second;
+
+    unsigned int uiDevType = 0;
+    try
+    {
+        uiDevType = boost::lexical_cast<unsigned int>(strDevType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Device type is invalid and error msg is " << e.what() << " and input is " << strDevType);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Device type is invalid and input is " << strDevType);
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query device capacity info received and sid is " << strSid << " and user id is " << strUserID << " and device type is " << uiDevType);
+
+    DeviceCapacity devcap;
+    if (!QueryDeviceCapacity(strSid, strUserID, uiDevType, devcap))
+    {
+        LOG_ERROR_RLD("Query device capacity handle failed");
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = devcap.m_strCapacityList.begin(), itEnd = devcap.m_strCapacityList.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        jsCapacity[i] = *itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("device_type", boost::lexical_cast<std::string>(devcap.m_uiDevType)));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryAllDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    Json::Value jsCapacityList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsCapacityList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["capacity_set"] = jsCapacityList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all device capacity info received and sid is " << strSid << " and user id is " << strUserID);
+
+    std::list<DeviceCapacity> devcaplist;
+    if (!QueryAllDeviceCapacity(strSid, strUserID, devcaplist))
+    {
+        LOG_ERROR_RLD("Query all device capacity handle failed");
+        return blResult;
+    }
+
+    for (auto itB = devcaplist.begin(), itE = devcaplist.end(); itB != itE; ++itB)
+    {
+        Json::Value jsCap;
+        jsCap["device_type"] = boost::lexical_cast<std::string>(itB->m_uiDevType);
+
+        Json::Value jsCapList;
+        unsigned int i = 0;
+        for (auto itBegin = itB->m_strCapacityList.begin(), itEnd = itB->m_strCapacityList.end(); itBegin != itEnd; ++itBegin, ++i)
+        {
+            jsCapList[i] = *itBegin;
+        }
+
+        jsCap["capacity"] = jsCapList;
+
+        jsCapacityList.append(jsCap);
+    }
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -10283,6 +10473,119 @@ bool HttpMsgHandler::QuerySharingDeviceLimit(const std::string &strSid, const st
         LOG_INFO_RLD("Query sharing device limit and current limit num is  " << uiCurrentLimitNum << " and used num is " << uiUsedNum <<
             " and return code is " << QuerySharingDevLimitRsp.m_iRetcode <<
             " and return msg is " << QuerySharingDevLimitRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryDeviceCapacity(const std::string &strSid, const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryDeviceCapacityReq_USR QueryDevCapReq;
+        QueryDevCapReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceCapacityReq_USR_T;
+        QueryDevCapReq.m_uiMsgSeq = 1;
+        QueryDevCapReq.m_strSID = strSid;
+
+        QueryDevCapReq.m_strUserID = strUserID;
+        QueryDevCapReq.m_uiDevType = uiDevType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevCapReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device capacity req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryDeviceCapacityRsp_USR QueryDevCapRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevCapRsp))
+        {
+            LOG_ERROR_RLD("Query device capacity rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        devcap.m_uiDevType = QueryDevCapRsp.m_DevCap.m_uiDevType;
+        devcap.m_strCapacityList.swap(QueryDevCapRsp.m_DevCap.m_strCapacityList);
+
+        iRet = QueryDevCapRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query device capacity and device type is  " << devcap.m_uiDevType <<
+            " and return code is " << QueryDevCapRsp.m_iRetcode <<
+            " and return msg is " << QueryDevCapRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryAllDeviceCapacity(const std::string &strSid, const std::string &strUserID, std::list<DeviceCapacity> &devcaplist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR QueryAllDevCapReq;
+        QueryAllDevCapReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryALLDeviceCapacityReq_USR_T;
+        QueryAllDevCapReq.m_uiMsgSeq = 1;
+        QueryAllDevCapReq.m_strSID = strSid;
+
+        QueryAllDevCapReq.m_strUserID = strUserID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllDevCapReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all device capacity req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR QueryAllDevCapRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllDevCapRsp))
+        {
+            LOG_ERROR_RLD("Query all device capacity rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryAllDevCapRsp.m_DevCapList.begin(), itEnd = QueryAllDevCapRsp.m_DevCapList.end(); itBegin != itEnd; ++itBegin)
+        {
+            DeviceCapacity devcap;
+            devcap.m_uiDevType = itBegin->m_uiDevType;
+            devcap.m_strCapacityList.swap(itBegin->m_strCapacityList);
+
+            devcaplist.push_back(std::move(devcap));
+        }
+
+        iRet = QueryAllDevCapRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all device capacity and user id is  " << strUserID <<
+            " and return code is " << QueryAllDevCapRsp.m_iRetcode <<
+            " and return msg is " << QueryAllDevCapRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

@@ -111,7 +111,7 @@ Command_Entry command_list[] =
 	{command_DATABLOCK,     3*60,  0,     0,   ECSmtp::COMMAND_DATABLOCK},	// Here the valid_reply_code is set to zero because there are no replies when sending data blocks
 	{command_DATAEND,       3*60,  10*60, 250, ECSmtp::MSG_BODY_ERROR},
 	{command_QUIT,          5*60,  5*60,  221, ECSmtp::COMMAND_QUIT},
-	{command_STARTTLS,      5*60,  5*60,  220, ECSmtp::COMMAND_EHLO_STARTTLS}
+	{command_STARTTLS,      5*60,  1*60,  220, ECSmtp::COMMAND_EHLO_STARTTLS} //5*60
 };
 
 Command_Entry* FindCommandEntry(SMTP_COMMAND command)

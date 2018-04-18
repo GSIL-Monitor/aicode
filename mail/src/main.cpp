@@ -3,9 +3,9 @@
 #include <stdlib.h>
 
 //CSmtp *pmail = NULL;
-CSmtp g_mail;
+//CSmtp g_mail;
 
-int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, char *pSenderName, char *pSenderMail,
+int SendMail(char *pMailServer, int uiSSLFlag, int iPort, char *pLoginName, char *pPwd, char *pSenderName, char *pSenderMail,
   char *pRecipient, char *pMsgTitle, char *pMsgContent, char *pAttach)
 {
 	bool bError = false;
@@ -13,7 +13,7 @@ int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, cha
 	try
 	{
 
-		CSmtp &mail = g_mail;//*pmail;
+        CSmtp mail;// = //g_mail;//*pmail;
         mail.ClearMessage();
 		mail.SetCharSet("UTF-8");
 
@@ -36,11 +36,15 @@ int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, cha
 		mail.SetSecurityType(USE_SSL);
 #endif
 
-        mail.SetSMTPServer(pMailServer, 465);//25);//("smtp.163.com",465);//"smtp.qiye.163.com", 465
-		if (uiSSLFlag)
+        mail.SetSMTPServer(pMailServer, (const unsigned short)iPort); //465);//25);//("smtp.163.com",465);//"smtp.qiye.163.com", 465
+		if (0 == uiSSLFlag)
 		{
 			mail.SetSecurityType(USE_SSL);//NO_SECURITY);//USE_SSL);
-		}        
+		}
+        else if (1 == uiSSLFlag)
+        {
+            mail.SetSecurityType(USE_TLS);
+        }
 
 		mail.SetLogin(pLoginName);//"fkdulijun2013");
         mail.SetPassword(pPwd);//
@@ -114,6 +118,7 @@ int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, cha
   		//mail.AddAttachment("c:\\test2.exe");
 		//mail.AddAttachment("c:\\test3.txt");
 		mail.Send();
+
 	}
 	catch(ECSmtp e)
 	{
@@ -124,8 +129,10 @@ int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, cha
     if (!bError)
     {
         std::cout << "Mail was send successfully." << std::endl;
+        exit(0);
     }		
-        
+    
+    /**
     try
     {
         g_mail.DisconnectRemoteServer();
@@ -133,17 +140,17 @@ int SendMail(char *pMailServer, int uiSSLFlag, char *pLoginName, char *pPwd, cha
     catch (...)
     {
     }
-        
+     */   
 
 	return 0;
 }
 
 int main(int uiCount, char *pInput[])
 {
-    if (10 > uiCount)
+    if (11 > uiCount)
     {
         std::cout << "The argument is not enought, please input needed argument." << std::endl;
-        std::cout << "xxx [MailServer] [SSLFlag] [LoginName] [pwd] [SenderName] [SenderMail] [pRecipient] [MsgTitle] [MsgContent] [AttachPath]" << std::endl;
+        std::cout << "xxx [MailServer] [SSLFlag] [Port] [LoginName] [pwd] [SenderName] [SenderMail] [pRecipient] [MsgTitle] [MsgContent] [AttachPath]" << std::endl;
         return 0;
     }
 	
@@ -153,8 +160,8 @@ int main(int uiCount, char *pInput[])
 		return 1;
 	}
     
-    SendMail(pInput[1], atoi(pInput[2]), pInput[3], pInput[4], pInput[5], 
-	pInput[6], pInput[7], pInput[8], pInput[9], uiCount >10 ? pInput[10] : NULL);
+    SendMail(pInput[1], atoi(pInput[2]), atoi(pInput[3]), pInput[4], pInput[5], pInput[6], 
+	pInput[7], pInput[8], pInput[9], pInput[10], uiCount >11 ? pInput[11] : NULL);
 
-    return 1;
+    exit(1);
 }

@@ -131,6 +131,9 @@ extern DeviceDefaultTypeInternal _Device_default_instance_;
 class DeviceAccessRecord;
 class DeviceAccessRecordDefaultTypeInternal;
 extern DeviceAccessRecordDefaultTypeInternal _DeviceAccessRecord_default_instance_;
+class DeviceCapacity;
+class DeviceCapacityDefaultTypeInternal;
+extern DeviceCapacityDefaultTypeInternal _DeviceCapacity_default_instance_;
 class DeviceEvent;
 class DeviceEventDefaultTypeInternal;
 extern DeviceEventDefaultTypeInternal _DeviceEvent_default_instance_;
@@ -278,6 +281,12 @@ extern P2pInfoRsp_USRDefaultTypeInternal _P2pInfoRsp_USR_default_instance_;
 class PermissionOfUser;
 class PermissionOfUserDefaultTypeInternal;
 extern PermissionOfUserDefaultTypeInternal _PermissionOfUser_default_instance_;
+class QueryALLDeviceCapacityReq_USR;
+class QueryALLDeviceCapacityReq_USRDefaultTypeInternal;
+extern QueryALLDeviceCapacityReq_USRDefaultTypeInternal _QueryALLDeviceCapacityReq_USR_default_instance_;
+class QueryALLDeviceCapacityRsp_USR;
+class QueryALLDeviceCapacityRsp_USRDefaultTypeInternal;
+extern QueryALLDeviceCapacityRsp_USRDefaultTypeInternal _QueryALLDeviceCapacityRsp_USR_default_instance_;
 class QueryAccessDomainNameReq_DEV;
 class QueryAccessDomainNameReq_DEVDefaultTypeInternal;
 extern QueryAccessDomainNameReq_DEVDefaultTypeInternal _QueryAccessDomainNameReq_DEV_default_instance_;
@@ -320,6 +329,12 @@ extern QueryDevReq_USRDefaultTypeInternal _QueryDevReq_USR_default_instance_;
 class QueryDevRsp_USR;
 class QueryDevRsp_USRDefaultTypeInternal;
 extern QueryDevRsp_USRDefaultTypeInternal _QueryDevRsp_USR_default_instance_;
+class QueryDeviceCapacityReq_USR;
+class QueryDeviceCapacityReq_USRDefaultTypeInternal;
+extern QueryDeviceCapacityReq_USRDefaultTypeInternal _QueryDeviceCapacityReq_USR_default_instance_;
+class QueryDeviceCapacityRsp_USR;
+class QueryDeviceCapacityRsp_USRDefaultTypeInternal;
+extern QueryDeviceCapacityRsp_USRDefaultTypeInternal _QueryDeviceCapacityRsp_USR_default_instance_;
 class QueryDeviceInfoMultiReq_USR;
 class QueryDeviceInfoMultiReq_USRDefaultTypeInternal;
 extern QueryDeviceInfoMultiReq_USRDefaultTypeInternal _QueryDeviceInfoMultiReq_USR_default_instance_;
@@ -625,6 +640,10 @@ enum MsgType {
   UnregisterCmsCallRsp_USR_T = 20964,
   QuerySharingDeviceLimitReq_USR_T = 20965,
   QuerySharingDeviceLimitRsp_USR_T = 20966,
+  QueryDeviceCapacityReq_USR_T = 20967,
+  QueryDeviceCapacityRsp_USR_T = 20968,
+  QueryALLDeviceCapacityReq_USR_T = 20969,
+  QueryALLDeviceCapacityRsp_USR_T = 20970,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -3202,6 +3221,106 @@ class StorageDetail : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::uint32 uisizeofspaceused_;
   ::google::protobuf::uint32 uistorageunittype_;
   ::google::protobuf::uint32 uistatus_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DeviceCapacity : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.DeviceCapacity) */ {
+ public:
+  DeviceCapacity();
+  virtual ~DeviceCapacity();
+
+  DeviceCapacity(const DeviceCapacity& from);
+
+  inline DeviceCapacity& operator=(const DeviceCapacity& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DeviceCapacity& default_instance();
+
+  static inline const DeviceCapacity* internal_default_instance() {
+    return reinterpret_cast<const DeviceCapacity*>(
+               &_DeviceCapacity_default_instance_);
+  }
+
+  void Swap(DeviceCapacity* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DeviceCapacity* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DeviceCapacity* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DeviceCapacity& from);
+  void MergeFrom(const DeviceCapacity& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DeviceCapacity* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated string strCapacityList = 2;
+  int strcapacitylist_size() const;
+  void clear_strcapacitylist();
+  static const int kStrCapacityListFieldNumber = 2;
+  const ::std::string& strcapacitylist(int index) const;
+  ::std::string* mutable_strcapacitylist(int index);
+  void set_strcapacitylist(int index, const ::std::string& value);
+  void set_strcapacitylist(int index, const char* value);
+  void set_strcapacitylist(int index, const char* value, size_t size);
+  ::std::string* add_strcapacitylist();
+  void add_strcapacitylist(const ::std::string& value);
+  void add_strcapacitylist(const char* value);
+  void add_strcapacitylist(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& strcapacitylist() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_strcapacitylist();
+
+  // uint32 uiDevType = 1;
+  void clear_uidevtype();
+  static const int kUiDevTypeFieldNumber = 1;
+  ::google::protobuf::uint32 uidevtype() const;
+  void set_uidevtype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.DeviceCapacity)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> strcapacitylist_;
+  ::google::protobuf::uint32 uidevtype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -16116,6 +16235,370 @@ class QuerySharingDeviceLimitRsp_USR : public ::google::protobuf::Message /* @@p
 };
 // -------------------------------------------------------------------
 
+class QueryDeviceCapacityReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDeviceCapacityReq_USR) */ {
+ public:
+  QueryDeviceCapacityReq_USR();
+  virtual ~QueryDeviceCapacityReq_USR();
+
+  QueryDeviceCapacityReq_USR(const QueryDeviceCapacityReq_USR& from);
+
+  inline QueryDeviceCapacityReq_USR& operator=(const QueryDeviceCapacityReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDeviceCapacityReq_USR& default_instance();
+
+  static inline const QueryDeviceCapacityReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryDeviceCapacityReq_USR*>(
+               &_QueryDeviceCapacityReq_USR_default_instance_);
+  }
+
+  void Swap(QueryDeviceCapacityReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDeviceCapacityReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryDeviceCapacityReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryDeviceCapacityReq_USR& from);
+  void MergeFrom(const QueryDeviceCapacityReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryDeviceCapacityReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // uint32 uiDevType = 2;
+  void clear_uidevtype();
+  static const int kUiDevTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uidevtype() const;
+  void set_uidevtype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDeviceCapacityReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::uint32 uidevtype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryDeviceCapacityRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryDeviceCapacityRsp_USR) */ {
+ public:
+  QueryDeviceCapacityRsp_USR();
+  virtual ~QueryDeviceCapacityRsp_USR();
+
+  QueryDeviceCapacityRsp_USR(const QueryDeviceCapacityRsp_USR& from);
+
+  inline QueryDeviceCapacityRsp_USR& operator=(const QueryDeviceCapacityRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryDeviceCapacityRsp_USR& default_instance();
+
+  static inline const QueryDeviceCapacityRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryDeviceCapacityRsp_USR*>(
+               &_QueryDeviceCapacityRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryDeviceCapacityRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryDeviceCapacityRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryDeviceCapacityRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryDeviceCapacityRsp_USR& from);
+  void MergeFrom(const QueryDeviceCapacityRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryDeviceCapacityRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .Interactive.Message.DeviceCapacity DevCap = 1;
+  bool has_devcap() const;
+  void clear_devcap();
+  static const int kDevCapFieldNumber = 1;
+  const ::Interactive::Message::DeviceCapacity& devcap() const;
+  ::Interactive::Message::DeviceCapacity* mutable_devcap();
+  ::Interactive::Message::DeviceCapacity* release_devcap();
+  void set_allocated_devcap(::Interactive::Message::DeviceCapacity* devcap);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryDeviceCapacityRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::Interactive::Message::DeviceCapacity* devcap_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryALLDeviceCapacityReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryALLDeviceCapacityReq_USR) */ {
+ public:
+  QueryALLDeviceCapacityReq_USR();
+  virtual ~QueryALLDeviceCapacityReq_USR();
+
+  QueryALLDeviceCapacityReq_USR(const QueryALLDeviceCapacityReq_USR& from);
+
+  inline QueryALLDeviceCapacityReq_USR& operator=(const QueryALLDeviceCapacityReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryALLDeviceCapacityReq_USR& default_instance();
+
+  static inline const QueryALLDeviceCapacityReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryALLDeviceCapacityReq_USR*>(
+               &_QueryALLDeviceCapacityReq_USR_default_instance_);
+  }
+
+  void Swap(QueryALLDeviceCapacityReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryALLDeviceCapacityReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryALLDeviceCapacityReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryALLDeviceCapacityReq_USR& from);
+  void MergeFrom(const QueryALLDeviceCapacityReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryALLDeviceCapacityReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryALLDeviceCapacityReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryALLDeviceCapacityRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryALLDeviceCapacityRsp_USR) */ {
+ public:
+  QueryALLDeviceCapacityRsp_USR();
+  virtual ~QueryALLDeviceCapacityRsp_USR();
+
+  QueryALLDeviceCapacityRsp_USR(const QueryALLDeviceCapacityRsp_USR& from);
+
+  inline QueryALLDeviceCapacityRsp_USR& operator=(const QueryALLDeviceCapacityRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryALLDeviceCapacityRsp_USR& default_instance();
+
+  static inline const QueryALLDeviceCapacityRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryALLDeviceCapacityRsp_USR*>(
+               &_QueryALLDeviceCapacityRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryALLDeviceCapacityRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryALLDeviceCapacityRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryALLDeviceCapacityRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryALLDeviceCapacityRsp_USR& from);
+  void MergeFrom(const QueryALLDeviceCapacityRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryALLDeviceCapacityRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.DeviceCapacity DevCapList = 1;
+  int devcaplist_size() const;
+  void clear_devcaplist();
+  static const int kDevCapListFieldNumber = 1;
+  const ::Interactive::Message::DeviceCapacity& devcaplist(int index) const;
+  ::Interactive::Message::DeviceCapacity* mutable_devcaplist(int index);
+  ::Interactive::Message::DeviceCapacity* add_devcaplist();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceCapacity >*
+      mutable_devcaplist();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceCapacity >&
+      devcaplist() const;
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryALLDeviceCapacityRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceCapacity > devcaplist_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class QueryUploadURLReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUploadURLReq_MGR) */ {
  public:
   QueryUploadURLReq_MGR();
@@ -18566,6 +19049,24 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QuerySharingDeviceLimitReq_USR* release_querysharingdevicelimitreq_usr_value();
   void set_allocated_querysharingdevicelimitreq_usr_value(::Interactive::Message::QuerySharingDeviceLimitReq_USR* querysharingdevicelimitreq_usr_value);
 
+  // .Interactive.Message.QueryDeviceCapacityReq_USR QueryDeviceCapacityReq_USR_Value = 1104;
+  bool has_querydevicecapacityreq_usr_value() const;
+  void clear_querydevicecapacityreq_usr_value();
+  static const int kQueryDeviceCapacityReqUSRValueFieldNumber = 1104;
+  const ::Interactive::Message::QueryDeviceCapacityReq_USR& querydevicecapacityreq_usr_value() const;
+  ::Interactive::Message::QueryDeviceCapacityReq_USR* mutable_querydevicecapacityreq_usr_value();
+  ::Interactive::Message::QueryDeviceCapacityReq_USR* release_querydevicecapacityreq_usr_value();
+  void set_allocated_querydevicecapacityreq_usr_value(::Interactive::Message::QueryDeviceCapacityReq_USR* querydevicecapacityreq_usr_value);
+
+  // .Interactive.Message.QueryALLDeviceCapacityReq_USR QueryALLDeviceCapacityReq_USR_Value = 1105;
+  bool has_queryalldevicecapacityreq_usr_value() const;
+  void clear_queryalldevicecapacityreq_usr_value();
+  static const int kQueryALLDeviceCapacityReqUSRValueFieldNumber = 1105;
+  const ::Interactive::Message::QueryALLDeviceCapacityReq_USR& queryalldevicecapacityreq_usr_value() const;
+  ::Interactive::Message::QueryALLDeviceCapacityReq_USR* mutable_queryalldevicecapacityreq_usr_value();
+  ::Interactive::Message::QueryALLDeviceCapacityReq_USR* release_queryalldevicecapacityreq_usr_value();
+  void set_allocated_queryalldevicecapacityreq_usr_value(::Interactive::Message::QueryALLDeviceCapacityReq_USR* queryalldevicecapacityreq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -18727,6 +19228,8 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::RegisterCmsCallReq_USR* registercmscallreq_usr_value_;
   ::Interactive::Message::UnregisterCmsCallReq_USR* unregistercmscallreq_usr_value_;
   ::Interactive::Message::QuerySharingDeviceLimitReq_USR* querysharingdevicelimitreq_usr_value_;
+  ::Interactive::Message::QueryDeviceCapacityReq_USR* querydevicecapacityreq_usr_value_;
+  ::Interactive::Message::QueryALLDeviceCapacityReq_USR* queryalldevicecapacityreq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -19346,6 +19849,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QuerySharingDeviceLimitRsp_USR* release_querysharingdevicelimitrsp_usr_value();
   void set_allocated_querysharingdevicelimitrsp_usr_value(::Interactive::Message::QuerySharingDeviceLimitRsp_USR* querysharingdevicelimitrsp_usr_value);
 
+  // .Interactive.Message.QueryDeviceCapacityRsp_USR QueryDeviceCapacityRsp_USR_Value = 1104;
+  bool has_querydevicecapacityrsp_usr_value() const;
+  void clear_querydevicecapacityrsp_usr_value();
+  static const int kQueryDeviceCapacityRspUSRValueFieldNumber = 1104;
+  const ::Interactive::Message::QueryDeviceCapacityRsp_USR& querydevicecapacityrsp_usr_value() const;
+  ::Interactive::Message::QueryDeviceCapacityRsp_USR* mutable_querydevicecapacityrsp_usr_value();
+  ::Interactive::Message::QueryDeviceCapacityRsp_USR* release_querydevicecapacityrsp_usr_value();
+  void set_allocated_querydevicecapacityrsp_usr_value(::Interactive::Message::QueryDeviceCapacityRsp_USR* querydevicecapacityrsp_usr_value);
+
+  // .Interactive.Message.QueryALLDeviceCapacityRsp_USR QueryALLDeviceCapacityRsp_USR_Value = 1105;
+  bool has_queryalldevicecapacityrsp_usr_value() const;
+  void clear_queryalldevicecapacityrsp_usr_value();
+  static const int kQueryALLDeviceCapacityRspUSRValueFieldNumber = 1105;
+  const ::Interactive::Message::QueryALLDeviceCapacityRsp_USR& queryalldevicecapacityrsp_usr_value() const;
+  ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* mutable_queryalldevicecapacityrsp_usr_value();
+  ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* release_queryalldevicecapacityrsp_usr_value();
+  void set_allocated_queryalldevicecapacityrsp_usr_value(::Interactive::Message::QueryALLDeviceCapacityRsp_USR* queryalldevicecapacityrsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -19496,6 +20017,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::RegisterCmsCallRsp_USR* registercmscallrsp_usr_value_;
   ::Interactive::Message::UnregisterCmsCallRsp_USR* unregistercmscallrsp_usr_value_;
   ::Interactive::Message::QuerySharingDeviceLimitRsp_USR* querysharingdevicelimitrsp_usr_value_;
+  ::Interactive::Message::QueryDeviceCapacityRsp_USR* querydevicecapacityrsp_usr_value_;
+  ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* queryalldevicecapacityrsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
@@ -24751,6 +25274,79 @@ inline void StorageDetail::set_uistatus(::google::protobuf::uint32 value) {
   
   uistatus_ = value;
   // @@protoc_insertion_point(field_set:Interactive.Message.StorageDetail.uiStatus)
+}
+
+// -------------------------------------------------------------------
+
+// DeviceCapacity
+
+// uint32 uiDevType = 1;
+inline void DeviceCapacity::clear_uidevtype() {
+  uidevtype_ = 0u;
+}
+inline ::google::protobuf::uint32 DeviceCapacity::uidevtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceCapacity.uiDevType)
+  return uidevtype_;
+}
+inline void DeviceCapacity::set_uidevtype(::google::protobuf::uint32 value) {
+  
+  uidevtype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceCapacity.uiDevType)
+}
+
+// repeated string strCapacityList = 2;
+inline int DeviceCapacity::strcapacitylist_size() const {
+  return strcapacitylist_.size();
+}
+inline void DeviceCapacity::clear_strcapacitylist() {
+  strcapacitylist_.Clear();
+}
+inline const ::std::string& DeviceCapacity::strcapacitylist(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.DeviceCapacity.strCapacityList)
+  return strcapacitylist_.Get(index);
+}
+inline ::std::string* DeviceCapacity::mutable_strcapacitylist(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.DeviceCapacity.strCapacityList)
+  return strcapacitylist_.Mutable(index);
+}
+inline void DeviceCapacity::set_strcapacitylist(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.DeviceCapacity.strCapacityList)
+  strcapacitylist_.Mutable(index)->assign(value);
+}
+inline void DeviceCapacity::set_strcapacitylist(int index, const char* value) {
+  strcapacitylist_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.DeviceCapacity.strCapacityList)
+}
+inline void DeviceCapacity::set_strcapacitylist(int index, const char* value, size_t size) {
+  strcapacitylist_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.DeviceCapacity.strCapacityList)
+}
+inline ::std::string* DeviceCapacity::add_strcapacitylist() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.DeviceCapacity.strCapacityList)
+  return strcapacitylist_.Add();
+}
+inline void DeviceCapacity::add_strcapacitylist(const ::std::string& value) {
+  strcapacitylist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.DeviceCapacity.strCapacityList)
+}
+inline void DeviceCapacity::add_strcapacitylist(const char* value) {
+  strcapacitylist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.DeviceCapacity.strCapacityList)
+}
+inline void DeviceCapacity::add_strcapacitylist(const char* value, size_t size) {
+  strcapacitylist_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.DeviceCapacity.strCapacityList)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+DeviceCapacity::strcapacitylist() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.DeviceCapacity.strCapacityList)
+  return strcapacitylist_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+DeviceCapacity::mutable_strcapacitylist() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.DeviceCapacity.strCapacityList)
+  return &strcapacitylist_;
 }
 
 // -------------------------------------------------------------------
@@ -38764,6 +39360,209 @@ inline void QuerySharingDeviceLimitRsp_USR::set_uiusednum(::google::protobuf::ui
 
 // -------------------------------------------------------------------
 
+// QueryDeviceCapacityReq_USR
+
+// string strUserID = 1;
+inline void QueryDeviceCapacityReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryDeviceCapacityReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryDeviceCapacityReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryDeviceCapacityReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+}
+#endif
+inline void QueryDeviceCapacityReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+}
+inline void QueryDeviceCapacityReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+}
+inline ::std::string* QueryDeviceCapacityReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryDeviceCapacityReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryDeviceCapacityReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceCapacityReq_USR.strUserID)
+}
+
+// uint32 uiDevType = 2;
+inline void QueryDeviceCapacityReq_USR::clear_uidevtype() {
+  uidevtype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryDeviceCapacityReq_USR::uidevtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceCapacityReq_USR.uiDevType)
+  return uidevtype_;
+}
+inline void QueryDeviceCapacityReq_USR::set_uidevtype(::google::protobuf::uint32 value) {
+  
+  uidevtype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceCapacityReq_USR.uiDevType)
+}
+
+// -------------------------------------------------------------------
+
+// QueryDeviceCapacityRsp_USR
+
+// .Interactive.Message.DeviceCapacity DevCap = 1;
+inline bool QueryDeviceCapacityRsp_USR::has_devcap() const {
+  return this != internal_default_instance() && devcap_ != NULL;
+}
+inline void QueryDeviceCapacityRsp_USR::clear_devcap() {
+  if (GetArenaNoVirtual() == NULL && devcap_ != NULL) delete devcap_;
+  devcap_ = NULL;
+}
+inline const ::Interactive::Message::DeviceCapacity& QueryDeviceCapacityRsp_USR::devcap() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceCapacityRsp_USR.DevCap)
+  return devcap_ != NULL ? *devcap_
+                         : *::Interactive::Message::DeviceCapacity::internal_default_instance();
+}
+inline ::Interactive::Message::DeviceCapacity* QueryDeviceCapacityRsp_USR::mutable_devcap() {
+  
+  if (devcap_ == NULL) {
+    devcap_ = new ::Interactive::Message::DeviceCapacity;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceCapacityRsp_USR.DevCap)
+  return devcap_;
+}
+inline ::Interactive::Message::DeviceCapacity* QueryDeviceCapacityRsp_USR::release_devcap() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceCapacityRsp_USR.DevCap)
+  
+  ::Interactive::Message::DeviceCapacity* temp = devcap_;
+  devcap_ = NULL;
+  return temp;
+}
+inline void QueryDeviceCapacityRsp_USR::set_allocated_devcap(::Interactive::Message::DeviceCapacity* devcap) {
+  delete devcap_;
+  devcap_ = devcap;
+  if (devcap) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceCapacityRsp_USR.DevCap)
+}
+
+// -------------------------------------------------------------------
+
+// QueryALLDeviceCapacityReq_USR
+
+// string strUserID = 1;
+inline void QueryALLDeviceCapacityReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryALLDeviceCapacityReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryALLDeviceCapacityReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryALLDeviceCapacityReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+}
+#endif
+inline void QueryALLDeviceCapacityReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+}
+inline void QueryALLDeviceCapacityReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+}
+inline ::std::string* QueryALLDeviceCapacityReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryALLDeviceCapacityReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryALLDeviceCapacityReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryALLDeviceCapacityReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryALLDeviceCapacityRsp_USR
+
+// repeated .Interactive.Message.DeviceCapacity DevCapList = 1;
+inline int QueryALLDeviceCapacityRsp_USR::devcaplist_size() const {
+  return devcaplist_.size();
+}
+inline void QueryALLDeviceCapacityRsp_USR::clear_devcaplist() {
+  devcaplist_.Clear();
+}
+inline const ::Interactive::Message::DeviceCapacity& QueryALLDeviceCapacityRsp_USR::devcaplist(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryALLDeviceCapacityRsp_USR.DevCapList)
+  return devcaplist_.Get(index);
+}
+inline ::Interactive::Message::DeviceCapacity* QueryALLDeviceCapacityRsp_USR::mutable_devcaplist(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryALLDeviceCapacityRsp_USR.DevCapList)
+  return devcaplist_.Mutable(index);
+}
+inline ::Interactive::Message::DeviceCapacity* QueryALLDeviceCapacityRsp_USR::add_devcaplist() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryALLDeviceCapacityRsp_USR.DevCapList)
+  return devcaplist_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceCapacity >*
+QueryALLDeviceCapacityRsp_USR::mutable_devcaplist() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryALLDeviceCapacityRsp_USR.DevCapList)
+  return &devcaplist_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::DeviceCapacity >&
+QueryALLDeviceCapacityRsp_USR::devcaplist() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryALLDeviceCapacityRsp_USR.DevCapList)
+  return devcaplist_;
+}
+
+// -------------------------------------------------------------------
+
 // QueryUploadURLReq_MGR
 
 // string strValue = 1;
@@ -42142,6 +42941,84 @@ inline void Req::set_allocated_querysharingdevicelimitreq_usr_value(::Interactiv
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QuerySharingDeviceLimitReq_USR_Value)
 }
 
+// .Interactive.Message.QueryDeviceCapacityReq_USR QueryDeviceCapacityReq_USR_Value = 1104;
+inline bool Req::has_querydevicecapacityreq_usr_value() const {
+  return this != internal_default_instance() && querydevicecapacityreq_usr_value_ != NULL;
+}
+inline void Req::clear_querydevicecapacityreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevicecapacityreq_usr_value_ != NULL) delete querydevicecapacityreq_usr_value_;
+  querydevicecapacityreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDeviceCapacityReq_USR& Req::querydevicecapacityreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryDeviceCapacityReq_USR_Value)
+  return querydevicecapacityreq_usr_value_ != NULL ? *querydevicecapacityreq_usr_value_
+                         : *::Interactive::Message::QueryDeviceCapacityReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDeviceCapacityReq_USR* Req::mutable_querydevicecapacityreq_usr_value() {
+  
+  if (querydevicecapacityreq_usr_value_ == NULL) {
+    querydevicecapacityreq_usr_value_ = new ::Interactive::Message::QueryDeviceCapacityReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryDeviceCapacityReq_USR_Value)
+  return querydevicecapacityreq_usr_value_;
+}
+inline ::Interactive::Message::QueryDeviceCapacityReq_USR* Req::release_querydevicecapacityreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryDeviceCapacityReq_USR_Value)
+  
+  ::Interactive::Message::QueryDeviceCapacityReq_USR* temp = querydevicecapacityreq_usr_value_;
+  querydevicecapacityreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_querydevicecapacityreq_usr_value(::Interactive::Message::QueryDeviceCapacityReq_USR* querydevicecapacityreq_usr_value) {
+  delete querydevicecapacityreq_usr_value_;
+  querydevicecapacityreq_usr_value_ = querydevicecapacityreq_usr_value;
+  if (querydevicecapacityreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDeviceCapacityReq_USR_Value)
+}
+
+// .Interactive.Message.QueryALLDeviceCapacityReq_USR QueryALLDeviceCapacityReq_USR_Value = 1105;
+inline bool Req::has_queryalldevicecapacityreq_usr_value() const {
+  return this != internal_default_instance() && queryalldevicecapacityreq_usr_value_ != NULL;
+}
+inline void Req::clear_queryalldevicecapacityreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryalldevicecapacityreq_usr_value_ != NULL) delete queryalldevicecapacityreq_usr_value_;
+  queryalldevicecapacityreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryALLDeviceCapacityReq_USR& Req::queryalldevicecapacityreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryALLDeviceCapacityReq_USR_Value)
+  return queryalldevicecapacityreq_usr_value_ != NULL ? *queryalldevicecapacityreq_usr_value_
+                         : *::Interactive::Message::QueryALLDeviceCapacityReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryALLDeviceCapacityReq_USR* Req::mutable_queryalldevicecapacityreq_usr_value() {
+  
+  if (queryalldevicecapacityreq_usr_value_ == NULL) {
+    queryalldevicecapacityreq_usr_value_ = new ::Interactive::Message::QueryALLDeviceCapacityReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryALLDeviceCapacityReq_USR_Value)
+  return queryalldevicecapacityreq_usr_value_;
+}
+inline ::Interactive::Message::QueryALLDeviceCapacityReq_USR* Req::release_queryalldevicecapacityreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryALLDeviceCapacityReq_USR_Value)
+  
+  ::Interactive::Message::QueryALLDeviceCapacityReq_USR* temp = queryalldevicecapacityreq_usr_value_;
+  queryalldevicecapacityreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryalldevicecapacityreq_usr_value(::Interactive::Message::QueryALLDeviceCapacityReq_USR* queryalldevicecapacityreq_usr_value) {
+  delete queryalldevicecapacityreq_usr_value_;
+  queryalldevicecapacityreq_usr_value_ = queryalldevicecapacityreq_usr_value;
+  if (queryalldevicecapacityreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryALLDeviceCapacityReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -44903,6 +45780,84 @@ inline void Rsp::set_allocated_querysharingdevicelimitrsp_usr_value(::Interactiv
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QuerySharingDeviceLimitRsp_USR_Value)
 }
 
+// .Interactive.Message.QueryDeviceCapacityRsp_USR QueryDeviceCapacityRsp_USR_Value = 1104;
+inline bool Rsp::has_querydevicecapacityrsp_usr_value() const {
+  return this != internal_default_instance() && querydevicecapacityrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_querydevicecapacityrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevicecapacityrsp_usr_value_ != NULL) delete querydevicecapacityrsp_usr_value_;
+  querydevicecapacityrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryDeviceCapacityRsp_USR& Rsp::querydevicecapacityrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryDeviceCapacityRsp_USR_Value)
+  return querydevicecapacityrsp_usr_value_ != NULL ? *querydevicecapacityrsp_usr_value_
+                         : *::Interactive::Message::QueryDeviceCapacityRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryDeviceCapacityRsp_USR* Rsp::mutable_querydevicecapacityrsp_usr_value() {
+  
+  if (querydevicecapacityrsp_usr_value_ == NULL) {
+    querydevicecapacityrsp_usr_value_ = new ::Interactive::Message::QueryDeviceCapacityRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryDeviceCapacityRsp_USR_Value)
+  return querydevicecapacityrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryDeviceCapacityRsp_USR* Rsp::release_querydevicecapacityrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryDeviceCapacityRsp_USR_Value)
+  
+  ::Interactive::Message::QueryDeviceCapacityRsp_USR* temp = querydevicecapacityrsp_usr_value_;
+  querydevicecapacityrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_querydevicecapacityrsp_usr_value(::Interactive::Message::QueryDeviceCapacityRsp_USR* querydevicecapacityrsp_usr_value) {
+  delete querydevicecapacityrsp_usr_value_;
+  querydevicecapacityrsp_usr_value_ = querydevicecapacityrsp_usr_value;
+  if (querydevicecapacityrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDeviceCapacityRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryALLDeviceCapacityRsp_USR QueryALLDeviceCapacityRsp_USR_Value = 1105;
+inline bool Rsp::has_queryalldevicecapacityrsp_usr_value() const {
+  return this != internal_default_instance() && queryalldevicecapacityrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryalldevicecapacityrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryalldevicecapacityrsp_usr_value_ != NULL) delete queryalldevicecapacityrsp_usr_value_;
+  queryalldevicecapacityrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryALLDeviceCapacityRsp_USR& Rsp::queryalldevicecapacityrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryALLDeviceCapacityRsp_USR_Value)
+  return queryalldevicecapacityrsp_usr_value_ != NULL ? *queryalldevicecapacityrsp_usr_value_
+                         : *::Interactive::Message::QueryALLDeviceCapacityRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* Rsp::mutable_queryalldevicecapacityrsp_usr_value() {
+  
+  if (queryalldevicecapacityrsp_usr_value_ == NULL) {
+    queryalldevicecapacityrsp_usr_value_ = new ::Interactive::Message::QueryALLDeviceCapacityRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryALLDeviceCapacityRsp_USR_Value)
+  return queryalldevicecapacityrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* Rsp::release_queryalldevicecapacityrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryALLDeviceCapacityRsp_USR_Value)
+  
+  ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* temp = queryalldevicecapacityrsp_usr_value_;
+  queryalldevicecapacityrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryalldevicecapacityrsp_usr_value(::Interactive::Message::QueryALLDeviceCapacityRsp_USR* queryalldevicecapacityrsp_usr_value) {
+  delete queryalldevicecapacityrsp_usr_value_;
+  queryalldevicecapacityrsp_usr_value_ = queryalldevicecapacityrsp_usr_value;
+  if (queryalldevicecapacityrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryALLDeviceCapacityRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -45417,6 +46372,16 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

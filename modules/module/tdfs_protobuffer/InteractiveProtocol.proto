@@ -193,6 +193,11 @@ enum MsgType
   QuerySharingDeviceLimitReq_USR_T = 20965;     //查询分享设备限制
   QuerySharingDeviceLimitRsp_USR_T = 20966;     
   
+  QueryDeviceCapacityReq_USR_T = 20967;         //查询设备能力集
+  QueryDeviceCapacityRsp_USR_T = 20968;
+  QueryALLDeviceCapacityReq_USR_T = 20969;      //查询所有设备能力集
+  QueryALLDeviceCapacityRsp_USR_T = 20970;
+  
   
   ///////////////////////////////////////////////////////
   
@@ -397,6 +402,11 @@ message StorageDetail                           //存储详情
   uint32 uiStatus = 14;
 }
 
+message DeviceCapacity                          //设备能力集
+{
+  uint32 uiDevType = 1;
+  repeated string strCapacityList = 2;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -1164,16 +1174,38 @@ message UnregisterCmsCallRsp_USR                //注销CMS呼叫响应
   string strValue = 1;
 }
 
-message QuerySharingDeviceLimitReq_USR
+message QuerySharingDeviceLimitReq_USR          //查询设备分享限制请求
 {
   string strUserID = 1;
 }
 
-message QuerySharingDeviceLimitRsp_USR
+message QuerySharingDeviceLimitRsp_USR          //查询设备分享限制响应
 {
   uint32 uiCurrentLimitNum = 1;
   uint32 uiUsedNum = 2;  
 }
+
+message QueryDeviceCapacityReq_USR              //查询设备能力集请求
+{
+  string strUserID = 1;
+  uint32 uiDevType = 2;
+}
+
+message QueryDeviceCapacityRsp_USR              //查询设备能力集响应
+{
+  DeviceCapacity DevCap = 1;
+}
+
+message QueryALLDeviceCapacityReq_USR           //查询所有设备能力集请求
+{
+  string strUserID = 1;
+}
+
+message QueryALLDeviceCapacityRsp_USR           //查询所有设备能力集响应
+{
+  repeated DeviceCapacity DevCapList = 1;
+}
+
 
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
@@ -1377,6 +1409,10 @@ message Req
   
   QuerySharingDeviceLimitReq_USR QuerySharingDeviceLimitReq_USR_Value = 1103; //查询分享设备限制请求
   
+  QueryDeviceCapacityReq_USR QueryDeviceCapacityReq_USR_Value = 1104;         //查询设备能力集请求
+  
+  QueryALLDeviceCapacityReq_USR QueryALLDeviceCapacityReq_USR_Value = 1105;   //查询所有设备能力集请求
+  
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1484,6 +1520,10 @@ message Rsp
   UnregisterCmsCallRsp_USR UnregisterCmsCallRsp_USR_Value = 1102;           //注销CMS呼叫响应
   
   QuerySharingDeviceLimitRsp_USR QuerySharingDeviceLimitRsp_USR_Value = 1103; //查询分享设备限制响应
+  
+  QueryDeviceCapacityRsp_USR QueryDeviceCapacityRsp_USR_Value = 1104;         //查询设备能力集响应
+  
+  QueryALLDeviceCapacityRsp_USR QueryALLDeviceCapacityRsp_USR_Value = 1105;   //查询所有设备能力集响应
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -263,6 +263,11 @@ public:
 
     bool QuerySharingDeviceLimitReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+
+    bool QueryDeviceCapacityReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllDeviceCapacityReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -494,6 +499,12 @@ private:
 
     bool QuerySharingDeviceCurrentLimit(unsigned int &uiCurrentLimitNum);
 
+    struct DeviceCapacity;
+
+    bool QueryDeviceCapacity(const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap);
+
+    bool QueryAllDeviceCapacity(const std::string &strUserID, std::list<DeviceCapacity> &devcaplist);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -537,6 +548,12 @@ private:
 
     boost::mutex m_CmsMutex;
     std::map<std::string, std::list<CmsCall> > m_CmsCallInfoMap;
+
+    struct DeviceCapacity
+    {
+        unsigned int m_uiDevType;
+        std::list<std::string> m_strCapacityList;
+    };
 
 };
 

@@ -16,5 +16,5 @@ msg1="<success><b><br>你的应用临时登录密码是："
 msg3="$msg1""$Pwd""，请重置新密码在你的应用程序设置"
 msg4="$msg3""<br></b></success>   <success><b><br>Hello,your APP temporary login password is ""$Pwd"",Please reset your new password in your APP setting"
 msg5="$msg4""<br></b></success>"
-./mailsender 'smtp.qiye.163.com' 2 'ringviews@annigroup.com' 'anni@2688' 'RingViews' 'ringviews@annigroup.com' $Recipient 'RingViews' "$msg5"
+./mailsender 'smtp.qiye.163.com' 0 465 'ringviews@annigroup.com' 'anni@2688' 'RingViews' 'ringviews@annigroup.com' $Recipient 'RingViews' "$msg5"
 

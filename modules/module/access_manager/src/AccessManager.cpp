@@ -4507,6 +4507,115 @@ bool AccessManager::QuerySharingDeviceLimitReq(const std::string &strMsg, const 
     return true;
 }
 
+bool AccessManager::QueryDeviceCapacityReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    DeviceCapacity devcap;
+    InteractiveProtoHandler::QueryDeviceCapacityReq_USR QueryDevCapReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &QueryDevCapReq, &writer, &strSrcID, &devcap)
+    {
+        InteractiveProtoHandler::QueryDeviceCapacityRsp_USR QueryDevCapRsp;
+        QueryDevCapRsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceCapacityRsp_USR_T;
+        QueryDevCapRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        QueryDevCapRsp.m_strSID = QueryDevCapReq.m_strSID;
+        QueryDevCapRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        QueryDevCapRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        QueryDevCapRsp.m_DevCap.m_uiDevType = QueryDevCapReq.m_uiDevType;
+        QueryDevCapRsp.m_DevCap.m_strCapacityList.swap(devcap.m_strCapacityList);
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(QueryDevCapRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query devcie capacity rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Query device capacity rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, QueryDevCapReq))
+    {
+        LOG_ERROR_RLD("Query device capacity req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryDeviceCapacity(QueryDevCapReq.m_strUserID, QueryDevCapReq.m_uiDevType, devcap))
+    {
+        LOG_ERROR_RLD("Query device capacity failed and user id is " << QueryDevCapReq.m_strUserID << " and device type is " << QueryDevCapReq.m_uiDevType);
+        return false;
+    }
+
+    blResult = true;
+    return true;
+}
+
+bool AccessManager::QueryAllDeviceCapacityReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    std::list<DeviceCapacity> devcaplist;
+    InteractiveProtoHandler::QueryAllDeviceCapacityReq_USR QueryAllDevCapReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &QueryAllDevCapReq, &writer, &strSrcID, &devcaplist)
+    {
+        InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR QueryAllDevCapRsp;
+        QueryAllDevCapRsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryALLDeviceCapacityRsp_USR_T;
+        QueryAllDevCapRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        QueryAllDevCapRsp.m_strSID = QueryAllDevCapReq.m_strSID;
+        QueryAllDevCapRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        QueryAllDevCapRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        for (auto itBegin = devcaplist.begin(), itEnd = devcaplist.end(); itBegin != itEnd; ++itBegin)
+        {
+            InteractiveProtoHandler::DeviceCapacity devcap;
+            devcap.m_uiDevType = itBegin->m_uiDevType;
+            devcap.m_strCapacityList.swap(itBegin->m_strCapacityList);
+
+            QueryAllDevCapRsp.m_DevCapList.push_back(std::move(devcap));
+        }
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(QueryAllDevCapRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all devcie capacity rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Query all device capacity rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, QueryAllDevCapReq))
+    {
+        LOG_ERROR_RLD("Query all device capacity req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAllDeviceCapacity(QueryAllDevCapReq.m_strUserID, devcaplist))
+    {
+        LOG_ERROR_RLD("Query device capacity failed and user id is " << QueryAllDevCapReq.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+    return true;
+
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -4982,7 +5091,7 @@ void AccessManager::SendUserEmailAction(const std::string &strUserName, const st
     const unsigned int uiAppType, const std::string &strAction)
 {
     char cmd[1024] = { 0 };
-    std::string strType = 0 == uiAppType ? "ring" : "camviews";
+    std::string strType = 0 == uiAppType ? "ring" : (1 == uiAppType ? "camviews": "cloudviews");
     const char *param = "./mail.sh '%s' '%s' '%s' '%s' '%s'";
     snprintf(cmd, sizeof(cmd), param, strEmail.c_str(), strUserName.c_str(), strUserPassword.c_str(), strType.c_str(), strAction.c_str());
 
@@ -9068,7 +9177,7 @@ bool AccessManager::RefreshCmsCallInfo()
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(strSql, ResultList, SqlFunc, true))
     {
-        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << strSql);
+        LOG_ERROR_RLD("RefreshCmsCallInfo exec sql failed, sql is " << strSql);
         return false;
     }
 
@@ -9390,6 +9499,101 @@ bool AccessManager::QuerySharingDeviceCurrentLimit(unsigned int &uiCurrentLimitN
     }
 
     uiCurrentLimitNum = uiResult;
+
+    return true;
+}
+
+bool AccessManager::QueryDeviceCapacity(const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select capacity_id from t_device_type_capacity_info where device_type = %u and status = 0";
+    snprintf(sql, size, sqlfmt, uiDevType);
+    
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            Result = strColumn;            
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query device capacity sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (const auto &result : ResultList)
+    {
+        devcap.m_strCapacityList.push_back(boost::any_cast<std::string>(result));               
+    }
+
+    return true;
+}
+
+bool AccessManager::QueryAllDeviceCapacity(const std::string &strUserID, std::list<DeviceCapacity> &devcaplist)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select device_type, capacity_id from t_device_type_capacity_info where status = 0 order by device_type";
+    snprintf(sql, size, sqlfmt);
+
+    std::map<unsigned int, std::list<std::string> > devcapmap;
+    unsigned int uiKeyTmp = 0xFFFFFFFF;
+    unsigned int uiDevType = 0xFFFFFFFF;
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {  
+        switch (uiColumnNum)
+        {
+        case 0:
+            uiDevType = uiKeyTmp = boost::lexical_cast<unsigned int>(strColumn);
+            if (devcapmap.end() == devcapmap.find(uiDevType))
+            {                
+                devcapmap.insert(std::map<unsigned int, std::list<std::string> >::value_type(uiDevType, std::list<std::string>()));
+            }
+            break;
+
+        case 1:
+            if (devcapmap.end() == devcapmap.find(uiKeyTmp))
+            {
+                LOG_ERROR_RLD("Can not found key tmp " << uiKeyTmp);
+                break;
+            }
+
+            devcapmap.find(uiKeyTmp)->second.push_back(strColumn);            
+
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query device capacity sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (const auto &result : devcapmap)
+    {
+        DeviceCapacity devcap;
+        devcap.m_uiDevType = result.first;
+        devcap.m_strCapacityList = result.second;
+
+        devcaplist.push_back(std::move(devcap));
+    }
 
     return true;
 }

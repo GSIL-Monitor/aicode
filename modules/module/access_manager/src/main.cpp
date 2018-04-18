@@ -447,6 +447,10 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T, boost::bind(&AccessManager::UnRegisterCmsCallReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QuerySharingDeviceLimitReq_USR_T, boost::bind(&AccessManager::QuerySharingDeviceLimitReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceCapacityReq_USR_T, boost::bind(&AccessManager::QueryDeviceCapacityReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryALLDeviceCapacityReq_USR_T, boost::bind(&AccessManager::QueryAllDeviceCapacityReq, &Umg, _1, _2, _3));
+
+
     ccenter.Run(true);
 
     return 0;

@@ -34,6 +34,15 @@ elif [[ "ring" = $Type ]]; then
         echo 'Error action param'
     fi
     
+elif [[ "cloudviews" = $Type ]]; then 
+
+    if [[ "reg" = $Action ]]; then
+        ./cloudviews_reg_mail.sh $Recipient $UserName $Pwd
+    elif [[ "rst" = $Action ]]; then
+        ./cloudviews_rst_mail.sh $Recipient $UserName $Pwd
+    else
+        echo 'Error action param'
+    fi
 else
     echo 'Error param.'
     

@@ -91,6 +91,10 @@ public:
     
     static const std::string QUERY_SHARING_DEVICE_LIMIT_ACTION;
 
+    static const std::string QUERY_DEVICE_CAPACITY_ACTION;
+    static const std::string QUERY_ALL_DEVICE_CAPACITY_ACTION;
+
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -225,7 +229,12 @@ public:
 
 
     bool QuerySharingDeviceLimitHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
-        
+
+
+    bool QueryDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -353,6 +362,12 @@ private:
         std::list<std::string> m_strAddressOthersList;
 
     } NotifyServer;
+
+    typedef struct
+    {
+        unsigned int m_uiDevType;
+        std::list<std::string> m_strCapacityList;
+    } DeviceCapacity;
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
@@ -502,6 +517,10 @@ private:
     bool UnregisterCmsCall(const std::string &strCmsID);
 
     bool QuerySharingDeviceLimit(const std::string &strSid, const std::string &strUserID, unsigned int &uiCurrentLimitNum, unsigned int &uiUsedNum);
+
+    bool QueryDeviceCapacity(const std::string &strSid, const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap);
+
+    bool QueryAllDeviceCapacity(const std::string &strSid, const std::string &strUserID, std::list<DeviceCapacity> &devcaplist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);
