@@ -450,6 +450,8 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceCapacityReq_USR_T, boost::bind(&AccessManager::QueryDeviceCapacityReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryALLDeviceCapacityReq_USR_T, boost::bind(&AccessManager::QueryAllDeviceCapacityReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryDeviceP2pIDReq_USR_T, boost::bind(&AccessManager::QueryDeviceP2pIDReq, &Umg, _1, _2, _3));
+
 
     ccenter.Run(true);
 

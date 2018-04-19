@@ -53,6 +53,8 @@ public:
 
     static const int SENSOR_TYPE_DUPLICATE;        //传感器类型重复
 
+    static const int CMS_P2PID_DUPLICATE;            //CMS注册的p2pid与现有的重复
+
     static int RetCode();
 
     static void RetCode(const int iRetCode);

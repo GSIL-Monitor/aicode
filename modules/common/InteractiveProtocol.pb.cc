@@ -287,6 +287,10 @@ class QueryALLDeviceCapacityReq_USRDefaultTypeInternal : public ::google::protob
 } _QueryALLDeviceCapacityReq_USR_default_instance_;
 class QueryALLDeviceCapacityRsp_USRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryALLDeviceCapacityRsp_USR> {
 } _QueryALLDeviceCapacityRsp_USR_default_instance_;
+class QueryDeviceP2pIDReq_USRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryDeviceP2pIDReq_USR> {
+} _QueryDeviceP2pIDReq_USR_default_instance_;
+class QueryDeviceP2pIDRsp_USRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryDeviceP2pIDRsp_USR> {
+} _QueryDeviceP2pIDRsp_USR_default_instance_;
 class QueryUploadURLReq_MGRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryUploadURLReq_MGR> {
 } _QueryUploadURLReq_MGR_default_instance_;
 class QueryUploadURLRsp_MGRDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QueryUploadURLRsp_MGR> {
@@ -339,7 +343,7 @@ namespace protobuf_InteractiveProtocol_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[157];
+::google::protobuf::Metadata file_level_metadata[159];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -1272,6 +1276,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterCmsCallRsp_USR, straddress_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterCmsCallRsp_USR, strport_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterCmsCallRsp_USR, strp2pidfailedlist_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnregisterCmsCallReq_USR, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1314,6 +1319,22 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryALLDeviceCapacityRsp_USR, devcaplist_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDReq_USR, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDReq_USR, strdomainname_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strupdatetime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strwebport_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strmobileport_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strchannelcount_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strdevicesn_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strp2pid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryDeviceP2pIDRsp_USR, strextend_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QueryUploadURLReq_MGR, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1485,6 +1506,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, querysharingdevicelimitreq_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, querydevicecapacityreq_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, queryalldevicecapacityreq_usr_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, querydevicep2pidreq_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, getonlinedevinforeq_inner_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, broadcastonlinedevinfo_inner_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Req, getonlineuserinforeq_inner_value_),
@@ -1562,6 +1584,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, querysharingdevicelimitrsp_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, querydevicecapacityrsp_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, queryalldevicecapacityrsp_usr_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, querydevicep2pidrsp_usr_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getonlinedevinforsp_inner_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getonlineuserinforsp_inner_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Rsp, getdeviceaccessrecordrsp_inner_value_),
@@ -1709,37 +1732,39 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 908, -1, sizeof(QueryDeviceInfoMultiRsp_USR)},
   { 913, -1, sizeof(RegisterCmsCallReq_USR)},
   { 921, -1, sizeof(RegisterCmsCallRsp_USR)},
-  { 927, -1, sizeof(UnregisterCmsCallReq_USR)},
-  { 932, -1, sizeof(UnregisterCmsCallRsp_USR)},
-  { 937, -1, sizeof(QuerySharingDeviceLimitReq_USR)},
-  { 942, -1, sizeof(QuerySharingDeviceLimitRsp_USR)},
-  { 948, -1, sizeof(QueryDeviceCapacityReq_USR)},
-  { 954, -1, sizeof(QueryDeviceCapacityRsp_USR)},
-  { 959, -1, sizeof(QueryALLDeviceCapacityReq_USR)},
-  { 964, -1, sizeof(QueryALLDeviceCapacityRsp_USR)},
-  { 969, -1, sizeof(QueryUploadURLReq_MGR)},
-  { 974, -1, sizeof(QueryUploadURLRsp_MGR)},
-  { 979, -1, sizeof(AddConfigurationReq_MGR)},
-  { 984, -1, sizeof(AddConfigurationRsp_MGR)},
-  { 989, -1, sizeof(DeleteConfigurationReq_MGR)},
-  { 995, -1, sizeof(DeleteConfigurationRsp_MGR)},
-  { 1000, -1, sizeof(ModifyConfigurationReq_MGR)},
-  { 1005, -1, sizeof(ModifyConfigurationRsp_MGR)},
-  { 1010, -1, sizeof(QueryAllConfigurationReq_MGR)},
-  { 1015, -1, sizeof(QueryAllConfigurationRsp_MGR)},
-  { 1020, -1, sizeof(GetOnlineDevInfoReq_INNER)},
-  { 1025, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
-  { 1031, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
-  { 1037, -1, sizeof(GetOnlineUserInfoReq_INNER)},
-  { 1042, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
-  { 1048, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
-  { 1054, -1, sizeof(GetDeviceAccessRecordReq_INNER)},
-  { 1059, -1, sizeof(GetDeviceAccessRecordRsp_INNER)},
-  { 1065, -1, sizeof(GetUserAccessRecordReq_INNER)},
-  { 1070, -1, sizeof(GetUserAccessRecordRsp_INNER)},
-  { 1076, -1, sizeof(Req)},
-  { 1151, -1, sizeof(Rsp)},
-  { 1226, -1, sizeof(InteractiveMessage)},
+  { 928, -1, sizeof(UnregisterCmsCallReq_USR)},
+  { 933, -1, sizeof(UnregisterCmsCallRsp_USR)},
+  { 938, -1, sizeof(QuerySharingDeviceLimitReq_USR)},
+  { 943, -1, sizeof(QuerySharingDeviceLimitRsp_USR)},
+  { 949, -1, sizeof(QueryDeviceCapacityReq_USR)},
+  { 955, -1, sizeof(QueryDeviceCapacityRsp_USR)},
+  { 960, -1, sizeof(QueryALLDeviceCapacityReq_USR)},
+  { 965, -1, sizeof(QueryALLDeviceCapacityRsp_USR)},
+  { 970, -1, sizeof(QueryDeviceP2pIDReq_USR)},
+  { 975, -1, sizeof(QueryDeviceP2pIDRsp_USR)},
+  { 986, -1, sizeof(QueryUploadURLReq_MGR)},
+  { 991, -1, sizeof(QueryUploadURLRsp_MGR)},
+  { 996, -1, sizeof(AddConfigurationReq_MGR)},
+  { 1001, -1, sizeof(AddConfigurationRsp_MGR)},
+  { 1006, -1, sizeof(DeleteConfigurationReq_MGR)},
+  { 1012, -1, sizeof(DeleteConfigurationRsp_MGR)},
+  { 1017, -1, sizeof(ModifyConfigurationReq_MGR)},
+  { 1022, -1, sizeof(ModifyConfigurationRsp_MGR)},
+  { 1027, -1, sizeof(QueryAllConfigurationReq_MGR)},
+  { 1032, -1, sizeof(QueryAllConfigurationRsp_MGR)},
+  { 1037, -1, sizeof(GetOnlineDevInfoReq_INNER)},
+  { 1042, -1, sizeof(GetOnlineDevInfoRsp_INNER)},
+  { 1048, -1, sizeof(BroadcastOnlineDevInfo_INNER)},
+  { 1054, -1, sizeof(GetOnlineUserInfoReq_INNER)},
+  { 1059, -1, sizeof(GetOnlineUserInfoRsp_INNER)},
+  { 1065, -1, sizeof(BroadcastOnlineUserInfo_INNER)},
+  { 1071, -1, sizeof(GetDeviceAccessRecordReq_INNER)},
+  { 1076, -1, sizeof(GetDeviceAccessRecordRsp_INNER)},
+  { 1082, -1, sizeof(GetUserAccessRecordReq_INNER)},
+  { 1087, -1, sizeof(GetUserAccessRecordRsp_INNER)},
+  { 1093, -1, sizeof(Req)},
+  { 1169, -1, sizeof(Rsp)},
+  { 1245, -1, sizeof(InteractiveMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -1877,6 +1902,8 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryDeviceCapacityRsp_USR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryALLDeviceCapacityReq_USR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryALLDeviceCapacityRsp_USR_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryDeviceP2pIDReq_USR_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QueryDeviceP2pIDRsp_USR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryUploadURLReq_MGR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QueryUploadURLRsp_MGR_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_AddConfigurationReq_MGR_default_instance_),
@@ -1920,7 +1947,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 157);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 159);
 }
 
 }  // namespace
@@ -2194,52 +2221,56 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[132].reflection;
   _QueryALLDeviceCapacityRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[133].reflection;
-  _QueryUploadURLReq_MGR_default_instance_.Shutdown();
+  _QueryDeviceP2pIDReq_USR_default_instance_.Shutdown();
   delete file_level_metadata[134].reflection;
-  _QueryUploadURLRsp_MGR_default_instance_.Shutdown();
+  _QueryDeviceP2pIDRsp_USR_default_instance_.Shutdown();
   delete file_level_metadata[135].reflection;
-  _AddConfigurationReq_MGR_default_instance_.Shutdown();
+  _QueryUploadURLReq_MGR_default_instance_.Shutdown();
   delete file_level_metadata[136].reflection;
-  _AddConfigurationRsp_MGR_default_instance_.Shutdown();
+  _QueryUploadURLRsp_MGR_default_instance_.Shutdown();
   delete file_level_metadata[137].reflection;
-  _DeleteConfigurationReq_MGR_default_instance_.Shutdown();
+  _AddConfigurationReq_MGR_default_instance_.Shutdown();
   delete file_level_metadata[138].reflection;
-  _DeleteConfigurationRsp_MGR_default_instance_.Shutdown();
+  _AddConfigurationRsp_MGR_default_instance_.Shutdown();
   delete file_level_metadata[139].reflection;
-  _ModifyConfigurationReq_MGR_default_instance_.Shutdown();
+  _DeleteConfigurationReq_MGR_default_instance_.Shutdown();
   delete file_level_metadata[140].reflection;
-  _ModifyConfigurationRsp_MGR_default_instance_.Shutdown();
+  _DeleteConfigurationRsp_MGR_default_instance_.Shutdown();
   delete file_level_metadata[141].reflection;
-  _QueryAllConfigurationReq_MGR_default_instance_.Shutdown();
+  _ModifyConfigurationReq_MGR_default_instance_.Shutdown();
   delete file_level_metadata[142].reflection;
-  _QueryAllConfigurationRsp_MGR_default_instance_.Shutdown();
+  _ModifyConfigurationRsp_MGR_default_instance_.Shutdown();
   delete file_level_metadata[143].reflection;
-  _GetOnlineDevInfoReq_INNER_default_instance_.Shutdown();
+  _QueryAllConfigurationReq_MGR_default_instance_.Shutdown();
   delete file_level_metadata[144].reflection;
-  _GetOnlineDevInfoRsp_INNER_default_instance_.Shutdown();
+  _QueryAllConfigurationRsp_MGR_default_instance_.Shutdown();
   delete file_level_metadata[145].reflection;
-  _BroadcastOnlineDevInfo_INNER_default_instance_.Shutdown();
+  _GetOnlineDevInfoReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[146].reflection;
-  _GetOnlineUserInfoReq_INNER_default_instance_.Shutdown();
+  _GetOnlineDevInfoRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[147].reflection;
-  _GetOnlineUserInfoRsp_INNER_default_instance_.Shutdown();
+  _BroadcastOnlineDevInfo_INNER_default_instance_.Shutdown();
   delete file_level_metadata[148].reflection;
-  _BroadcastOnlineUserInfo_INNER_default_instance_.Shutdown();
+  _GetOnlineUserInfoReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[149].reflection;
-  _GetDeviceAccessRecordReq_INNER_default_instance_.Shutdown();
+  _GetOnlineUserInfoRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[150].reflection;
-  _GetDeviceAccessRecordRsp_INNER_default_instance_.Shutdown();
+  _BroadcastOnlineUserInfo_INNER_default_instance_.Shutdown();
   delete file_level_metadata[151].reflection;
-  _GetUserAccessRecordReq_INNER_default_instance_.Shutdown();
+  _GetDeviceAccessRecordReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[152].reflection;
-  _GetUserAccessRecordRsp_INNER_default_instance_.Shutdown();
+  _GetDeviceAccessRecordRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[153].reflection;
-  _Req_default_instance_.Shutdown();
+  _GetUserAccessRecordReq_INNER_default_instance_.Shutdown();
   delete file_level_metadata[154].reflection;
-  _Rsp_default_instance_.Shutdown();
+  _GetUserAccessRecordRsp_INNER_default_instance_.Shutdown();
   delete file_level_metadata[155].reflection;
-  _InteractiveMessage_default_instance_.Shutdown();
+  _Req_default_instance_.Shutdown();
   delete file_level_metadata[156].reflection;
+  _Rsp_default_instance_.Shutdown();
+  delete file_level_metadata[157].reflection;
+  _InteractiveMessage_default_instance_.Shutdown();
+  delete file_level_metadata[158].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -2380,6 +2411,8 @@ void TableStruct::InitDefaultsImpl() {
   _QueryDeviceCapacityRsp_USR_default_instance_.DefaultConstruct();
   _QueryALLDeviceCapacityReq_USR_default_instance_.DefaultConstruct();
   _QueryALLDeviceCapacityRsp_USR_default_instance_.DefaultConstruct();
+  _QueryDeviceP2pIDReq_USR_default_instance_.DefaultConstruct();
+  _QueryDeviceP2pIDRsp_USR_default_instance_.DefaultConstruct();
   _QueryUploadURLReq_MGR_default_instance_.DefaultConstruct();
   _QueryUploadURLRsp_MGR_default_instance_.DefaultConstruct();
   _AddConfigurationReq_MGR_default_instance_.DefaultConstruct();
@@ -2563,6 +2596,8 @@ void TableStruct::InitDefaultsImpl() {
       ::Interactive::Message::QueryDeviceCapacityReq_USR::internal_default_instance());
   _Req_default_instance_.get_mutable()->queryalldevicecapacityreq_usr_value_ = const_cast< ::Interactive::Message::QueryALLDeviceCapacityReq_USR*>(
       ::Interactive::Message::QueryALLDeviceCapacityReq_USR::internal_default_instance());
+  _Req_default_instance_.get_mutable()->querydevicep2pidreq_usr_value_ = const_cast< ::Interactive::Message::QueryDeviceP2pIDReq_USR*>(
+      ::Interactive::Message::QueryDeviceP2pIDReq_USR::internal_default_instance());
   _Req_default_instance_.get_mutable()->getonlinedevinforeq_inner_value_ = const_cast< ::Interactive::Message::GetOnlineDevInfoReq_INNER*>(
       ::Interactive::Message::GetOnlineDevInfoReq_INNER::internal_default_instance());
   _Req_default_instance_.get_mutable()->broadcastonlinedevinfo_inner_value_ = const_cast< ::Interactive::Message::BroadcastOnlineDevInfo_INNER*>(
@@ -2705,6 +2740,8 @@ void TableStruct::InitDefaultsImpl() {
       ::Interactive::Message::QueryDeviceCapacityRsp_USR::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->queryalldevicecapacityrsp_usr_value_ = const_cast< ::Interactive::Message::QueryALLDeviceCapacityRsp_USR*>(
       ::Interactive::Message::QueryALLDeviceCapacityRsp_USR::internal_default_instance());
+  _Rsp_default_instance_.get_mutable()->querydevicep2pidrsp_usr_value_ = const_cast< ::Interactive::Message::QueryDeviceP2pIDRsp_USR*>(
+      ::Interactive::Message::QueryDeviceP2pIDRsp_USR::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->getonlinedevinforsp_inner_value_ = const_cast< ::Interactive::Message::GetOnlineDevInfoRsp_INNER*>(
       ::Interactive::Message::GetOnlineDevInfoRsp_INNER::internal_default_instance());
   _Rsp_default_instance_.get_mutable()->getonlineuserinforsp_inner_value_ = const_cast< ::Interactive::Message::GetOnlineUserInfoRsp_INNER*>(
@@ -3051,468 +3088,481 @@ void AddDescriptorsImpl() {
       "eractive.Message.DeviceStatus\"q\n\026Registe"
       "rCmsCallReq_USR\022\020\n\010strCmsID\030\001 \001(\t\022\027\n\017str"
       "CmsP2pIDList\030\002 \003(\t\022\024\n\014strDeviceMac\030\003 \001(\t"
-      "\022\026\n\016strDeviceP2pID\030\004 \001(\t\"=\n\026RegisterCmsC"
+      "\022\026\n\016strDeviceP2pID\030\004 \001(\t\"Y\n\026RegisterCmsC"
       "allRsp_USR\022\022\n\nstrAddress\030\001 \001(\t\022\017\n\007strPor"
-      "t\030\002 \001(\t\",\n\030UnregisterCmsCallReq_USR\022\020\n\010s"
-      "trCmsID\030\001 \001(\t\",\n\030UnregisterCmsCallRsp_US"
-      "R\022\020\n\010strValue\030\001 \001(\t\"3\n\036QuerySharingDevic"
-      "eLimitReq_USR\022\021\n\tstrUserID\030\001 \001(\t\"N\n\036Quer"
-      "ySharingDeviceLimitRsp_USR\022\031\n\021uiCurrentL"
-      "imitNum\030\001 \001(\r\022\021\n\tuiUsedNum\030\002 \001(\r\"B\n\032Quer"
-      "yDeviceCapacityReq_USR\022\021\n\tstrUserID\030\001 \001("
-      "\t\022\021\n\tuiDevType\030\002 \001(\r\"Q\n\032QueryDeviceCapac"
-      "ityRsp_USR\0223\n\006DevCap\030\001 \001(\0132#.Interactive"
-      ".Message.DeviceCapacity\"2\n\035QueryALLDevic"
-      "eCapacityReq_USR\022\021\n\tstrUserID\030\001 \001(\t\"X\n\035Q"
-      "ueryALLDeviceCapacityRsp_USR\0227\n\nDevCapLi"
-      "st\030\001 \003(\0132#.Interactive.Message.DeviceCap"
-      "acity\")\n\025QueryUploadURLReq_MGR\022\020\n\010strVal"
-      "ue\030\001 \001(\t\"-\n\025QueryUploadURLRsp_MGR\022\024\n\014str"
-      "UploadURL\030\001 \001(\t\"X\n\027AddConfigurationReq_M"
-      "GR\022=\n\021configurationInfo\030\001 \001(\0132\".Interact"
-      "ive.Message.Configuration\"+\n\027AddConfigur"
-      "ationRsp_MGR\022\020\n\010strValue\030\001 \001(\t\"I\n\032Delete"
-      "ConfigurationReq_MGR\022\023\n\013strCategory\030\001 \001("
-      "\t\022\026\n\016strSubCategory\030\002 \001(\t\".\n\032DeleteConfi"
-      "gurationRsp_MGR\022\020\n\010strValue\030\001 \001(\t\"[\n\032Mod"
-      "ifyConfigurationReq_MGR\022=\n\021configuration"
-      "Info\030\001 \001(\0132\".Interactive.Message.Configu"
-      "ration\".\n\032ModifyConfigurationRsp_MGR\022\020\n\010"
-      "strValue\030\001 \001(\t\"4\n\034QueryAllConfigurationR"
-      "eq_MGR\022\024\n\014uiBeginIndex\030\001 \001(\r\"]\n\034QueryAll"
-      "ConfigurationRsp_MGR\022=\n\021configurationInf"
-      "o\030\001 \003(\0132\".Interactive.Message.Configurat"
-      "ion\"-\n\031GetOnlineDevInfoReq_INNER\022\020\n\010strV"
-      "alue\030\001 \001(\t\"[\n\031GetOnlineDevInfoRsp_INNER\022"
-      ",\n\007devInfo\030\001 \003(\0132\033.Interactive.Message.D"
-      "evice\022\020\n\010strValue\030\002 \001(\t\"^\n\034BroadcastOnli"
-      "neDevInfo_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Inter"
-      "active.Message.Device\022\020\n\010strValue\030\002 \001(\t\""
-      ".\n\032GetOnlineUserInfoReq_INNER\022\020\n\010strValu"
-      "e\030\001 \001(\t\"[\n\032GetOnlineUserInfoRsp_INNER\022+\n"
-      "\010userInfo\030\001 \003(\0132\031.Interactive.Message.Us"
-      "er\022\020\n\010strValue\030\002 \001(\t\"^\n\035BroadcastOnlineU"
-      "serInfo_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Intera"
-      "ctive.Message.User\022\020\n\010strValue\030\002 \001(\t\"6\n\036"
-      "GetDeviceAccessRecordReq_INNER\022\024\n\014uiBegi"
-      "nIndex\030\001 \001(\r\"|\n\036GetDeviceAccessRecordRsp"
-      "_INNER\022C\n\022deviceAccessRecord\030\001 \003(\0132\'.Int"
-      "eractive.Message.DeviceAccessRecord\022\025\n\ru"
-      "iRecordTotal\030\002 \001(\r\"4\n\034GetUserAccessRecor"
-      "dReq_INNER\022\024\n\014uiBeginIndex\030\001 \001(\r\"v\n\034GetU"
-      "serAccessRecordRsp_INNER\022\?\n\020userAccessRe"
-      "cord\030\001 \003(\0132%.Interactive.Message.UserAcc"
-      "essRecord\022\025\n\ruiRecordTotal\030\002 \001(\r\"\376-\n\003Req"
-      "\022S\n\035GetAccessAddressReq_DEV_Value\030\n \001(\0132"
-      ",.Interactive.Message.GetAccessAddressRe"
-      "q_DEV\022=\n\022LoginReq_DEV_Value\030\024 \001(\0132!.Inte"
-      "ractive.Message.LoginReq_DEV\022\?\n\023LogoutRe"
-      "q_DEV_Value\030\036 \001(\0132\".Interactive.Message."
-      "LogoutReq_DEV\022E\n\026ShakehandReq_DEV_Value\030"
-      "( \001(\0132%.Interactive.Message.ShakehandReq"
-      "_DEV\022G\n\027ConfigInfoReq_DEV_Value\0302 \001(\0132&."
-      "Interactive.Message.ConfigInfoReq_DEV\022O\n"
-      "\033StorageAddressReq_DEV_Value\0304 \001(\0132*.Int"
-      "eractive.Message.StorageAddressReq_DEV\022A"
-      "\n\024P2pInfoReq_DEV_Value\0306 \001(\0132#.Interacti"
-      "ve.Message.P2pInfoReq_DEV\022A\n\024AddFileReq_"
-      "DEV_Value\030< \001(\0132#.Interactive.Message.Ad"
-      "dFileReq_DEV\022M\n\032QueryTimeZoneReq_DEV_Val"
-      "ue\030= \001(\0132).Interactive.Message.QueryTime"
-      "ZoneReq_DEV\022]\n\"QueryAccessDomainNameReq_"
-      "DEV_Value\030> \001(\01321.Interactive.Message.Qu"
-      "eryAccessDomainNameReq_DEV\022S\n\035QueryUpgra"
-      "deSiteReq_DEV_Value\030\? \001(\0132,.Interactive."
-      "Message.QueryUpgradeSiteReq_DEV\022[\n!Query"
-      "FirmwareUpgradeReq_DEV_Value\030@ \001(\01320.Int"
-      "eractive.Message.QueryFirmwareUpgradeReq"
-      "_DEV\022\\\n!ModifyDevicePropertyReq_DEV_Valu"
-      "e\030\240\006 \001(\01320.Interactive.Message.ModifyDev"
-      "icePropertyReq_DEV\022\\\n!QueryDeviceParamet"
-      "erReq_DEV_Value\030\252\006 \001(\01320.Interactive.Mes"
-      "sage.QueryDeviceParameterReq_DEV\022b\n$Quer"
-      "yPlatformPushStatusReq_DEV_Value\030\204\007 \001(\0132"
-      "3.Interactive.Message.QueryPlatformPushS"
-      "tatusReq_DEV\022V\n\036DeviceEventReportReq_DEV"
-      "_Value\030\350\007 \001(\0132-.Interactive.Message.Devi"
-      "ceEventReportReq_DEV\022M\n\032MsgPreHandlerReq"
-      "_USR_Value\030A \001(\0132).Interactive.Message.M"
-      "sgPreHandlerReq_USR\022S\n\035GetAccessAddressR"
-      "eq_USR_Value\030F \001(\0132,.Interactive.Message"
-      ".GetAccessAddressReq_USR\022K\n\031RegisterUser"
-      "Req_USR_Value\030P \001(\0132(.Interactive.Messag"
-      "e.RegisterUserReq_USR\022O\n\033UnRegisterUserR"
-      "eq_USR_Value\030Z \001(\0132*.Interactive.Message"
-      ".UnRegisterUserReq_USR\022K\n\031QueryUsrInfoRe"
-      "q_USR_Value\030d \001(\0132(.Interactive.Message."
-      "QueryUsrInfoReq_USR\022O\n\033ModifyUserInfoReq"
-      "_USR_Value\030f \001(\0132*.Interactive.Message.M"
-      "odifyUserInfoReq_USR\022I\n\030RetrievePwdReq_U"
-      "SR_Value\030h \001(\0132\'.Interactive.Message.Ret"
-      "rievePwdReq_USR\022=\n\022LoginReq_USR_Value\030n "
-      "\001(\0132!.Interactive.Message.LoginReq_USR\022\?"
-      "\n\023LogoutReq_USR_Value\030x \001(\0132\".Interactiv"
-      "e.Message.LogoutReq_USR\022F\n\026ShakehandReq_"
-      "USR_Value\030\202\001 \001(\0132%.Interactive.Message.S"
-      "hakehandReq_USR\022H\n\027ConfigInfoReq_USR_Val"
-      "ue\030\214\001 \001(\0132&.Interactive.Message.ConfigIn"
-      "foReq_USR\022@\n\023AddDevReq_USR_Value\030\226\001 \001(\0132"
-      "\".Interactive.Message.AddDevReq_USR\022@\n\023D"
-      "elDevReq_USR_Value\030\240\001 \001(\0132\".Interactive."
-      "Message.DelDevReq_USR\022F\n\026ModifyDevReq_US"
-      "R_Value\030\252\001 \001(\0132%.Interactive.Message.Mod"
-      "ifyDevReq_USR\022L\n\031QueryDevInfoReq_USR_Val"
-      "ue\030\264\001 \001(\0132(.Interactive.Message.QueryDev"
-      "InfoReq_USR\022D\n\025QueryDevReq_USR_Value\030\276\001 "
-      "\001(\0132$.Interactive.Message.QueryDevReq_US"
-      "R\022F\n\026QueryUserReq_USR_Value\030\310\001 \001(\0132%.Int"
-      "eractive.Message.QueryUserReq_USR\022H\n\027Sha"
-      "ringDevReq_USR_Value\030\322\001 \001(\0132&.Interactiv"
-      "e.Message.SharingDevReq_USR\022R\n\034CancelSha"
-      "redDevReq_USR_Value\030\334\001 \001(\0132+.Interactive"
-      ".Message.CancelSharedDevReq_USR\022H\n\027AddFr"
-      "iendsReq_USR_Value\030\346\001 \001(\0132&.Interactive."
-      "Message.AddFriendsReq_USR\022H\n\027DelFriendsR"
-      "eq_USR_Value\030\360\001 \001(\0132&.Interactive.Messag"
-      "e.DelFriendsReq_USR\022L\n\031QueryFriendsReq_U"
-      "SR_Value\030\372\001 \001(\0132(.Interactive.Message.Qu"
-      "eryFriendsReq_USR\022P\n\033StorageAddressReq_U"
-      "SR_Value\030\374\001 \001(\0132*.Interactive.Message.St"
-      "orageAddressReq_USR\022B\n\024P2pInfoReq_USR_Va"
-      "lue\030\376\001 \001(\0132#.Interactive.Message.P2pInfo"
-      "Req_USR\022H\n\027DeleteFileReq_USR_Value\030\266\002 \001("
-      "\0132&.Interactive.Message.DeleteFileReq_US"
-      "R\022L\n\031DownloadFileReq_USR_Value\030\300\002 \001(\0132(."
-      "Interactive.Message.DownloadFileReq_USR\022"
-      "F\n\026QueryFileReq_USR_Value\030\312\002 \001(\0132%.Inter"
-      "active.Message.QueryFileReq_USR\022^\n\"Query"
-      "AccessDomainNameReq_USR_Value\030\336\002 \001(\01321.I"
-      "nteractive.Message.QueryAccessDomainName"
-      "Req_USR\022R\n\034QueryAppUpgradeReq_USR_Value\030"
-      "\350\002 \001(\0132+.Interactive.Message.QueryAppUpg"
-      "radeReq_USR\022V\n\036QueryIfP2pIDValidReq_USR_"
-      "Value\030\362\002 \001(\0132-.Interactive.Message.Query"
-      "IfP2pIDValidReq_USR\022Z\n QueryAllDeviceEve"
-      "ntReq_USR_Value\030\220\003 \001(\0132/.Interactive.Mes"
-      "sage.QueryAllDeviceEventReq_USR\022V\n\036Delet"
-      "eDeviceEventReq_USR_Value\030\232\003 \001(\0132-.Inter"
-      "active.Message.DeleteDeviceEventReq_USR\022"
-      "V\n\036ModifyDeviceEventReq_USR_Value\030\244\003 \001(\013"
-      "2-.Interactive.Message.ModifyDeviceEvent"
-      "Req_USR\022T\n\035AddStorageDetailReq_USR_Value"
-      "\030\274\005 \001(\0132,.Interactive.Message.AddStorage"
-      "DetailReq_USR\022Z\n DeleteStorageDetailReq_"
-      "USR_Value\030\306\005 \001(\0132/.Interactive.Message.D"
-      "eleteStorageDetailReq_USR\022Z\n ModifyStora"
-      "geDetailReq_USR_Value\030\320\005 \001(\0132/.Interacti"
-      "ve.Message.ModifyStorageDetailReq_USR\022X\n"
-      "\037QueryStorageDetailReq_USR_Value\030\332\005 \001(\0132"
-      "..Interactive.Message.QueryStorageDetail"
-      "Req_USR\022`\n#QueryRegionStorageInfoReq_USR"
-      "_Value\030\344\005 \001(\01322.Interactive.Message.Quer"
-      "yRegionStorageInfoReq_USR\022\\\n!QueryDevice"
-      "InfoMultiReq_USR_Value\030\314\010 \001(\01320.Interact"
-      "ive.Message.QueryDeviceInfoMultiReq_USR\022"
-      "R\n\034RegisterCmsCallReq_USR_Value\030\315\010 \001(\0132+"
-      ".Interactive.Message.RegisterCmsCallReq_"
-      "USR\022V\n\036UnregisterCmsCallReq_USR_Value\030\316\010"
-      " \001(\0132-.Interactive.Message.UnregisterCms"
-      "CallReq_USR\022b\n$QuerySharingDeviceLimitRe"
-      "q_USR_Value\030\317\010 \001(\01323.Interactive.Message"
-      ".QuerySharingDeviceLimitReq_USR\022Z\n Query"
-      "DeviceCapacityReq_USR_Value\030\320\010 \001(\0132/.Int"
-      "eractive.Message.QueryDeviceCapacityReq_"
-      "USR\022`\n#QueryALLDeviceCapacityReq_USR_Val"
-      "ue\030\321\010 \001(\01322.Interactive.Message.QueryALL"
-      "DeviceCapacityReq_USR\022X\n\037GetOnlineDevInf"
-      "oReq_INNER_Value\030\204\002 \001(\0132..Interactive.Me"
-      "ssage.GetOnlineDevInfoReq_INNER\022^\n\"Broad"
-      "castOnlineDevInfo_INNER_Value\030\216\002 \001(\01321.I"
-      "nteractive.Message.BroadcastOnlineDevInf"
-      "o_INNER\022Z\n GetOnlineUserInfoReq_INNER_Va"
-      "lue\030\230\002 \001(\0132/.Interactive.Message.GetOnli"
-      "neUserInfoReq_INNER\022`\n#BroadcastOnlineUs"
-      "erInfo_INNER_Value\030\242\002 \001(\01322.Interactive."
-      "Message.BroadcastOnlineUserInfo_INNER\022b\n"
-      "$GetDeviceAccessRecordReq_INNER_Value\030\270\003"
-      " \001(\01323.Interactive.Message.GetDeviceAcce"
-      "ssRecordReq_INNER\022^\n\"GetUserAccessRecord"
-      "Req_INNER_Value\030\302\003 \001(\01321.Interactive.Mes"
-      "sage.GetUserAccessRecordReq_INNER\022P\n\033Que"
-      "ryUploadURLReq_MGR_Value\030\330\004 \001(\0132*.Intera"
-      "ctive.Message.QueryUploadURLReq_MGR\022T\n\035A"
-      "ddConfigurationReq_MGR_Value\030\342\004 \001(\0132,.In"
-      "teractive.Message.AddConfigurationReq_MG"
-      "R\022Z\n DeleteConfigurationReq_MGR_Value\030\354\004"
-      " \001(\0132/.Interactive.Message.DeleteConfigu"
-      "rationReq_MGR\022Z\n ModifyConfigurationReq_"
-      "MGR_Value\030\366\004 \001(\0132/.Interactive.Message.M"
-      "odifyConfigurationReq_MGR\022^\n\"QueryAllCon"
-      "figurationReq_MGR_Value\030\200\005 \001(\01321.Interac"
-      "tive.Message.QueryAllConfigurationReq_MG"
-      "R\"\343,\n\003Rsp\022\020\n\010iRetcode\030\n \001(\005\022\021\n\tstrRetMsg"
-      "\030\024 \001(\t\022S\n\035GetAccessAddressRsp_DEV_Value\030"
-      "\036 \001(\0132,.Interactive.Message.GetAccessAdd"
-      "ressRsp_DEV\022=\n\022LoginRsp_DEV_Value\030( \001(\0132"
-      "!.Interactive.Message.LoginRsp_DEV\022\?\n\023Lo"
-      "goutRsp_DEV_Value\0302 \001(\0132\".Interactive.Me"
-      "ssage.LogoutRsp_DEV\022E\n\026ShakehandRsp_DEV_"
-      "Value\030< \001(\0132%.Interactive.Message.Shakeh"
-      "andRsp_DEV\022G\n\027ConfigInfoRsp_DEV_Value\030F "
-      "\001(\0132&.Interactive.Message.ConfigInfoRsp_"
-      "DEV\022O\n\033StorageAddressRsp_DEV_Value\030H \001(\013"
-      "2*.Interactive.Message.StorageAddressRsp"
-      "_DEV\022A\n\024P2pInfoRsp_DEV_Value\030J \001(\0132#.Int"
-      "eractive.Message.P2pInfoRsp_DEV\022A\n\024AddFi"
-      "leRsp_DEV_Value\030P \001(\0132#.Interactive.Mess"
-      "age.AddFileRsp_DEV\022M\n\032QueryTimeZoneRsp_D"
-      "EV_Value\030Q \001(\0132).Interactive.Message.Que"
-      "ryTimeZoneRsp_DEV\022]\n\"QueryAccessDomainNa"
-      "meRsp_DEV_Value\030R \001(\01321.Interactive.Mess"
-      "age.QueryAccessDomainNameRsp_DEV\022S\n\035Quer"
-      "yUpgradeSiteRsp_DEV_Value\030S \001(\0132,.Intera"
-      "ctive.Message.QueryUpgradeSiteRsp_DEV\022[\n"
-      "!QueryFirmwareUpgradeRsp_DEV_Value\030T \001(\013"
-      "20.Interactive.Message.QueryFirmwareUpgr"
-      "adeRsp_DEV\022\\\n!ModifyDevicePropertyRsp_DE"
-      "V_Value\030\240\006 \001(\01320.Interactive.Message.Mod"
-      "ifyDevicePropertyRsp_DEV\022\\\n!QueryDeviceP"
-      "arameterRsp_DEV_Value\030\252\006 \001(\01320.Interacti"
-      "ve.Message.QueryDeviceParameterRsp_DEV\022b"
-      "\n$QueryPlatformPushStatusRsp_DEV_Value\030\204"
-      "\007 \001(\01323.Interactive.Message.QueryPlatfor"
-      "mPushStatusRsp_DEV\022V\n\036DeviceEventReportR"
-      "sp_DEV_Value\030\350\007 \001(\0132-.Interactive.Messag"
-      "e.DeviceEventReportRsp_DEV\022M\n\032MsgPreHand"
-      "lerRsp_USR_Value\030U \001(\0132).Interactive.Mes"
-      "sage.MsgPreHandlerRsp_USR\022S\n\035GetAccessAd"
-      "dressRsp_USR_Value\030Z \001(\0132,.Interactive.M"
-      "essage.GetAccessAddressRsp_USR\022K\n\031Regist"
-      "erUserRsp_USR_Value\030d \001(\0132(.Interactive."
-      "Message.RegisterUserRsp_USR\022O\n\033UnRegiste"
-      "rUserRsp_USR_Value\030n \001(\0132*.Interactive.M"
-      "essage.UnRegisterUserRsp_USR\022K\n\031QueryUsr"
-      "InfoRsp_USR_Value\030x \001(\0132(.Interactive.Me"
-      "ssage.QueryUsrInfoRsp_USR\022O\n\033ModifyUserI"
-      "nfoRsp_USR_Value\030z \001(\0132*.Interactive.Mes"
-      "sage.ModifyUserInfoRsp_USR\022I\n\030RetrievePw"
-      "dRsp_USR_Value\030| \001(\0132\'.Interactive.Messa"
-      "ge.RetrievePwdRsp_USR\022>\n\022LoginRsp_USR_Va"
-      "lue\030\202\001 \001(\0132!.Interactive.Message.LoginRs"
-      "p_USR\022@\n\023LogoutRsp_USR_Value\030\214\001 \001(\0132\".In"
-      "teractive.Message.LogoutRsp_USR\022F\n\026Shake"
-      "handRsp_USR_Value\030\226\001 \001(\0132%.Interactive.M"
-      "essage.ShakehandRsp_USR\022H\n\027ConfigInfoRsp"
-      "_USR_Value\030\240\001 \001(\0132&.Interactive.Message."
-      "ConfigInfoRsp_USR\022@\n\023AddDevRsp_USR_Value"
-      "\030\252\001 \001(\0132\".Interactive.Message.AddDevRsp_"
-      "USR\022@\n\023DelDevRsp_USR_Value\030\264\001 \001(\0132\".Inte"
-      "ractive.Message.DelDevRsp_USR\022F\n\026ModifyD"
-      "evRsp_USR_Value\030\276\001 \001(\0132%.Interactive.Mes"
-      "sage.ModifyDevRsp_USR\022L\n\031QueryDevInfoRsp"
-      "_USR_Value\030\310\001 \001(\0132(.Interactive.Message."
-      "QueryDevInfoRsp_USR\022D\n\025QueryDevRsp_USR_V"
-      "alue\030\322\001 \001(\0132$.Interactive.Message.QueryD"
-      "evRsp_USR\022F\n\026QueryUserRsp_USR_Value\030\334\001 \001"
-      "(\0132%.Interactive.Message.QueryUserRsp_US"
-      "R\022H\n\027SharingDevRsp_USR_Value\030\346\001 \001(\0132&.In"
-      "teractive.Message.SharingDevRsp_USR\022R\n\034C"
-      "ancelSharedDevRsp_USR_Value\030\360\001 \001(\0132+.Int"
-      "eractive.Message.CancelSharedDevRsp_USR\022"
-      "H\n\027AddFriendsRsp_USR_Value\030\372\001 \001(\0132&.Inte"
-      "ractive.Message.AddFriendsRsp_USR\022H\n\027Del"
-      "FriendsRsp_USR_Value\030\204\002 \001(\0132&.Interactiv"
-      "e.Message.DelFriendsRsp_USR\022L\n\031QueryFrie"
-      "ndsRsp_USR_Value\030\216\002 \001(\0132(.Interactive.Me"
-      "ssage.QueryFriendsRsp_USR\022P\n\033StorageAddr"
-      "essReq_USR_Value\030\220\002 \001(\0132*.Interactive.Me"
-      "ssage.StorageAddressRsp_USR\022B\n\024P2pInfoRs"
-      "p_USR_Value\030\222\002 \001(\0132#.Interactive.Message"
-      ".P2pInfoRsp_USR\022H\n\027DeleteFileRsp_USR_Val"
-      "ue\030\266\002 \001(\0132&.Interactive.Message.DeleteFi"
-      "leRsp_USR\022L\n\031DownloadFileRsp_USR_Value\030\300"
-      "\002 \001(\0132(.Interactive.Message.DownloadFile"
-      "Rsp_USR\022F\n\026QueryFileRsp_USR_Value\030\312\002 \001(\013"
-      "2%.Interactive.Message.QueryFileRsp_USR\022"
-      "^\n\"QueryAccessDomainNameRsp_USR_Value\030\336\002"
-      " \001(\01321.Interactive.Message.QueryAccessDo"
-      "mainNameRsp_USR\022R\n\034QueryAppUpgradeRsp_US"
-      "R_Value\030\350\002 \001(\0132+.Interactive.Message.Que"
-      "ryAppUpgradeRsp_USR\022V\n\036QueryIfP2pIDValid"
-      "Rsp_USR_Value\030\362\002 \001(\0132-.Interactive.Messa"
-      "ge.QueryIfP2pIDValidRsp_USR\022Z\n QueryAllD"
-      "eviceEventRsp_USR_Value\030\364\003 \001(\0132/.Interac"
-      "tive.Message.QueryAllDeviceEventRsp_USR\022"
-      "V\n\036DeleteDeviceEventRsp_USR_Value\030\376\003 \001(\013"
-      "2-.Interactive.Message.DeleteDeviceEvent"
-      "Rsp_USR\022V\n\036ModifyDeviceEventRsp_USR_Valu"
-      "e\030\210\004 \001(\0132-.Interactive.Message.ModifyDev"
-      "iceEventRsp_USR\022T\n\035AddStorageDetailRsp_U"
-      "SR_Value\030\274\005 \001(\0132,.Interactive.Message.Ad"
-      "dStorageDetailRsp_USR\022Z\n DeleteStorageDe"
-      "tailRsp_USR_Value\030\306\005 \001(\0132/.Interactive.M"
-      "essage.DeleteStorageDetailRsp_USR\022Z\n Mod"
-      "ifyStorageDetailRsp_USR_Value\030\320\005 \001(\0132/.I"
-      "nteractive.Message.ModifyStorageDetailRs"
-      "p_USR\022X\n\037QueryStorageDetailRsp_USR_Value"
-      "\030\332\005 \001(\0132..Interactive.Message.QueryStora"
-      "geDetailRsp_USR\022`\n#QueryRegionStorageInf"
-      "oRsp_USR_Value\030\344\005 \001(\01322.Interactive.Mess"
-      "age.QueryRegionStorageInfoRsp_USR\022\\\n!Que"
-      "ryDeviceInfoMultiRsp_USR_Value\030\314\010 \001(\01320."
-      "Interactive.Message.QueryDeviceInfoMulti"
-      "Rsp_USR\022R\n\034RegisterCmsCallRsp_USR_Value\030"
-      "\315\010 \001(\0132+.Interactive.Message.RegisterCms"
-      "CallRsp_USR\022V\n\036UnregisterCmsCallRsp_USR_"
-      "Value\030\316\010 \001(\0132-.Interactive.Message.Unreg"
-      "isterCmsCallRsp_USR\022b\n$QuerySharingDevic"
-      "eLimitRsp_USR_Value\030\317\010 \001(\01323.Interactive"
-      ".Message.QuerySharingDeviceLimitRsp_USR\022"
-      "Z\n QueryDeviceCapacityRsp_USR_Value\030\320\010 \001"
-      "(\0132/.Interactive.Message.QueryDeviceCapa"
-      "cityRsp_USR\022`\n#QueryALLDeviceCapacityRsp"
-      "_USR_Value\030\321\010 \001(\01322.Interactive.Message."
-      "QueryALLDeviceCapacityRsp_USR\022X\n\037GetOnli"
-      "neDevInfoRsp_INNER_Value\030\230\002 \001(\0132..Intera"
-      "ctive.Message.GetOnlineDevInfoRsp_INNER\022"
-      "Z\n GetOnlineUserInfoRsp_INNER_Value\030\242\002 \001"
-      "(\0132/.Interactive.Message.GetOnlineUserIn"
-      "foRsp_INNER\022b\n$GetDeviceAccessRecordRsp_"
-      "INNER_Value\030\270\003 \001(\01323.Interactive.Message"
-      ".GetDeviceAccessRecordRsp_INNER\022^\n\"GetUs"
-      "erAccessRecordRsp_INNER_Value\030\302\003 \001(\01321.I"
-      "nteractive.Message.GetUserAccessRecordRs"
-      "p_INNER\022P\n\033QueryUploadURLRsp_MGR_Value\030\330"
-      "\004 \001(\0132*.Interactive.Message.QueryUploadU"
-      "RLRsp_MGR\022T\n\035AddConfigurationRsp_MGR_Val"
-      "ue\030\342\004 \001(\0132,.Interactive.Message.AddConfi"
-      "gurationRsp_MGR\022Z\n DeleteConfigurationRs"
-      "p_MGR_Value\030\354\004 \001(\0132/.Interactive.Message"
-      ".DeleteConfigurationRsp_MGR\022Z\n ModifyCon"
-      "figurationRsp_MGR_Value\030\366\004 \001(\0132/.Interac"
-      "tive.Message.ModifyConfigurationRsp_MGR\022"
-      "^\n\"QueryAllConfigurationRsp_MGR_Value\030\200\005"
-      " \001(\01321.Interactive.Message.QueryAllConfi"
-      "gurationRsp_MGR\"\272\001\n\022InteractiveMessage\022*"
-      "\n\004type\030\001 \001(\0162\034.Interactive.Message.MsgTy"
-      "pe\022\020\n\010uiMsgSeq\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010"
-      "ReqValue\030\004 \001(\0132\030.Interactive.Message.Req"
-      "\022*\n\010RspValue\030\005 \001(\0132\030.Interactive.Message"
-      ".Rsp*\346\"\n\007MsgType\022\n\n\006Init_T\020\000\022\036\n\031GetAcces"
-      "sAddressReq_DEV_T\020\220N\022\036\n\031GetAccessAddress"
-      "Rsp_DEV_T\020\232N\022\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016Log"
-      "inRsp_DEV_T\020\256N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017"
-      "LogoutRsp_DEV_T\020\302N\022\027\n\022ShakehandReq_DEV_T"
-      "\020\314N\022\027\n\022ShakehandRsp_DEV_T\020\326N\022\030\n\023ConfigIn"
-      "foReq_DEV_T\020\340N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N"
-      "\022\034\n\027StorageAddressReq_DEV_T\020\364N\022\034\n\027Storag"
-      "eAddressRsp_DEV_T\020\376N\022\025\n\020P2pInfoReq_DEV_T"
-      "\020\354O\022\025\n\020P2pInfoRsp_DEV_T\020\366O\022\025\n\020AddFileReq"
-      "_DEV_T\020\274P\022\025\n\020AddFileRsp_DEV_T\020\306P\022\033\n\026Quer"
-      "yTimeZoneReq_DEV_T\020\320P\022\033\n\026QueryTimeZoneRs"
-      "p_DEV_T\020\332P\022#\n\036QueryAccessDomainNameReq_D"
-      "EV_T\020\344P\022#\n\036QueryAccessDomainNameRsp_DEV_"
-      "T\020\356P\022\036\n\031QueryUpgradeSiteReq_DEV_T\020\370P\022\036\n\031"
-      "QueryUpgradeSiteRsp_DEV_T\020\202Q\022\"\n\035QueryFir"
-      "mwareUpgradeReq_DEV_T\020\214Q\022\"\n\035QueryFirmwar"
-      "eUpgradeRsp_DEV_T\020\226Q\022\"\n\035ModifyDeviceProp"
-      "ertyReq_DEV_T\020\240Q\022\"\n\035ModifyDeviceProperty"
-      "Rsp_DEV_T\020\252Q\022\"\n\035QueryDeviceParameterReq_"
-      "DEV_T\020\264Q\022\"\n\035QueryDeviceParameterRsp_DEV_"
-      "T\020\276Q\022%\n QueryPlatformPushStatusReq_DEV_T"
-      "\020\204R\022%\n QueryPlatformPushStatusRsp_DEV_T\020"
-      "\216R\022\037\n\032DeviceEventReportReq_DEV_T\020\350R\022\037\n\032D"
-      "eviceEventReportRsp_DEV_T\020\362R\022\034\n\026MsgPreHa"
-      "ndlerReq_USR_T\020\226\234\001\022\034\n\026MsgPreHandlerRsp_U"
-      "SR_T\020\227\234\001\022\037\n\031GetAccessAddressReq_USR_T\020\240\234"
-      "\001\022\037\n\031GetAccessAddressRsp_USR_T\020\252\234\001\022\033\n\025Re"
-      "gisterUserReq_USR_T\020\264\234\001\022\033\n\025RegisterUserR"
-      "sp_USR_T\020\276\234\001\022\035\n\027UnRegisterUserReq_USR_T\020"
-      "\310\234\001\022\035\n\027UnRegisterUserRsp_USR_T\020\322\234\001\022\033\n\025Qu"
-      "eryUsrInfoReq_USR_T\020\323\234\001\022\033\n\025QueryUsrInfoR"
-      "sp_USR_T\020\324\234\001\022\035\n\027ModifyUserInfoReq_USR_T\020"
-      "\327\234\001\022\035\n\027ModifyUserInfoRsp_USR_T\020\330\234\001\022\032\n\024Re"
-      "trievePwdReq_USR_T\020\331\234\001\022\032\n\024RetrievePwdRsp"
-      "_USR_T\020\332\234\001\022\024\n\016LoginReq_USR_T\020\334\234\001\022\024\n\016Logi"
-      "nRsp_USR_T\020\346\234\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n"
-      "\017LogoutRsp_USR_T\020\372\234\001\022\030\n\022ShakehandReq_USR"
-      "_T\020\204\235\001\022\030\n\022ShakehandRsp_USR_T\020\216\235\001\022\031\n\023Conf"
-      "igInfoReq_USR_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR"
-      "_T\020\242\235\001\022\025\n\017AddDevReq_USR_T\020\254\235\001\022\025\n\017AddDevR"
-      "sp_USR_T\020\266\235\001\022\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017D"
-      "elDevRsp_USR_T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T"
-      "\020\324\235\001\022\030\n\022ModifyDevRsp_USR_T\020\336\235\001\022\033\n\025QueryD"
-      "evInfoReq_USR_T\020\337\235\001\022\033\n\025QueryDevInfoRsp_U"
-      "SR_T\020\340\235\001\022\027\n\021QueryDevReq_USR_T\020\350\235\001\022\027\n\021Que"
-      "ryDevRsp_USR_T\020\362\235\001\022\030\n\022QueryUserReq_USR_T"
-      "\020\363\235\001\022\030\n\022QueryUserRsp_USR_T\020\364\235\001\022\031\n\023Sharin"
-      "gDevReq_USR_T\020\374\235\001\022\031\n\023SharingDevRsp_USR_T"
-      "\020\206\236\001\022\036\n\030CancelSharedDevReq_USR_T\020\220\236\001\022\036\n\030"
-      "CancelSharedDevRsp_USR_T\020\232\236\001\022\031\n\023AddFrien"
-      "dsReq_USR_T\020\244\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256"
-      "\236\001\022\031\n\023DelFriendsReq_USR_T\020\270\236\001\022\031\n\023DelFrie"
-      "ndsRsp_USR_T\020\302\236\001\022\034\n\026ModifyFriendsReq_USR"
-      "_T\020\314\236\001\022\034\n\026ModifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025"
-      "QueryFriendsReq_USR_T\020\340\236\001\022\033\n\025QueryFriend"
-      "sRsp_USR_T\020\352\236\001\022\035\n\027StorageAddressReq_USR_"
-      "T\020\364\236\001\022\035\n\027StorageAddressRsp_USR_T\020\376\236\001\022\026\n\020"
-      "P2pInfoReq_USR_T\020\210\237\001\022\026\n\020P2pInfoRsp_USR_T"
-      "\020\222\237\001\022\031\n\023DeleteFileReq_USR_T\020\224\240\001\022\031\n\023Delet"
-      "eFileRsp_USR_T\020\236\240\001\022\033\n\025DownloadFileReq_US"
-      "R_T\020\250\240\001\022\033\n\025DownloadFileRsp_USR_T\020\262\240\001\022\030\n\022"
-      "QueryFileReq_USR_T\020\274\240\001\022\030\n\022QueryFileRsp_U"
-      "SR_T\020\306\240\001\022$\n\036QueryAccessDomainNameReq_USR"
-      "_T\020\370\240\001\022$\n\036QueryAccessDomainNameRsp_USR_T"
-      "\020\202\241\001\022\036\n\030QueryAppUpgradeReq_USR_T\020\214\241\001\022\036\n\030"
-      "QueryAppUpgradeRsp_USR_T\020\226\241\001\022 \n\032QueryIfP"
-      "2pIDValidReq_USR_T\020\240\241\001\022 \n\032QueryIfP2pIDVa"
-      "lidRsp_USR_T\020\252\241\001\022\"\n\034QueryAllDeviceEventR"
-      "eq_USR_T\020\334\241\001\022\"\n\034QueryAllDeviceEventRsp_U"
-      "SR_T\020\346\241\001\022 \n\032DeleteDeviceEventReq_USR_T\020\360"
-      "\241\001\022 \n\032DeleteDeviceEventRsp_USR_T\020\372\241\001\022 \n\032"
-      "ModifyDeviceEventReq_USR_T\020\204\242\001\022 \n\032Modify"
-      "DeviceEventRsp_USR_T\020\216\242\001\022\037\n\031AddStorageDe"
-      "tailReq_USR_T\020\300\242\001\022\037\n\031AddStorageDetailRsp"
-      "_USR_T\020\312\242\001\022\"\n\034DeleteStorageDetailReq_USR"
-      "_T\020\324\242\001\022\"\n\034DeleteStorageDetailRsp_USR_T\020\336"
-      "\242\001\022\"\n\034ModifyStorageDetailReq_USR_T\020\350\242\001\022\""
-      "\n\034ModifyStorageDetailRsp_USR_T\020\362\242\001\022!\n\033Qu"
-      "eryStorageDetailReq_USR_T\020\374\242\001\022!\n\033QuerySt"
-      "orageDetailRsp_USR_T\020\206\243\001\022%\n\037QueryRegionS"
-      "torageInfoReq_USR_T\020\220\243\001\022%\n\037QueryRegionSt"
-      "orageInfoRsp_USR_T\020\232\243\001\022#\n\035QueryDeviceInf"
-      "oMultiReq_USR_T\020\326\243\001\022#\n\035QueryDeviceInfoMu"
-      "ltiRsp_USR_T\020\340\243\001\022\036\n\030RegisterCmsCallReq_U"
-      "SR_T\020\341\243\001\022\036\n\030RegisterCmsCallRsp_USR_T\020\342\243\001"
-      "\022 \n\032UnregisterCmsCallReq_USR_T\020\343\243\001\022 \n\032Un"
-      "registerCmsCallRsp_USR_T\020\344\243\001\022&\n QuerySha"
-      "ringDeviceLimitReq_USR_T\020\345\243\001\022&\n QuerySha"
-      "ringDeviceLimitRsp_USR_T\020\346\243\001\022\"\n\034QueryDev"
-      "iceCapacityReq_USR_T\020\347\243\001\022\"\n\034QueryDeviceC"
-      "apacityRsp_USR_T\020\350\243\001\022%\n\037QueryALLDeviceCa"
-      "pacityReq_USR_T\020\351\243\001\022%\n\037QueryALLDeviceCap"
-      "acityRsp_USR_T\020\352\243\001\022!\n\033GetOnlineDevInfoRe"
-      "q_INNER_T\020\260\352\001\022!\n\033GetOnlineDevInfoRsp_INN"
-      "ER_T\020\272\352\001\022$\n\036BroadcastOnlineDevInfo_INNER"
-      "_T\020\304\352\001\022\"\n\034GetOnlineUserInfoReq_INNER_T\020\316"
-      "\352\001\022\"\n\034GetOnlineUserInfoRsp_INNER_T\020\330\352\001\022%"
-      "\n\037BroadcastOnlineUserInfo_INNER_T\020\342\352\001\022&\n"
-      " GetDeviceAccessRecordReq_INNER_T\020\370\353\001\022&\n"
-      " GetDeviceAccessRecordRsp_INNER_T\020\202\354\001\022$\n"
-      "\036GetUserAccessRecordReq_INNER_T\020\214\354\001\022$\n\036G"
-      "etUserAccessRecordRsp_INNER_T\020\226\354\001\022\035\n\027Que"
-      "ryUploadURLReq_MGR_T\020\300\270\002\022\035\n\027QueryUploadU"
-      "RLRsp_MGR_T\020\312\270\002\022\037\n\031AddConfigurationReq_M"
-      "GR_T\020\324\270\002\022\037\n\031AddConfigurationRsp_MGR_T\020\336\270"
-      "\002\022\"\n\034DeleteConfigurationReq_MGR_T\020\350\270\002\022\"\n"
-      "\034DeleteConfigurationRsp_MGR_T\020\362\270\002\022\"\n\034Mod"
-      "ifyConfigurationReq_MGR_T\020\374\270\002\022\"\n\034ModifyC"
-      "onfigurationRsp_MGR_T\020\206\271\002\022$\n\036QueryAllCon"
-      "figurationReq_MGR_T\020\220\271\002\022$\n\036QueryAllConfi"
-      "gurationRsp_MGR_T\020\232\271\002b\006proto3"
+      "t\030\002 \001(\t\022\032\n\022strP2pIDFailedList\030\003 \003(\t\",\n\030U"
+      "nregisterCmsCallReq_USR\022\020\n\010strCmsID\030\001 \001("
+      "\t\",\n\030UnregisterCmsCallRsp_USR\022\020\n\010strValu"
+      "e\030\001 \001(\t\"3\n\036QuerySharingDeviceLimitReq_US"
+      "R\022\021\n\tstrUserID\030\001 \001(\t\"N\n\036QuerySharingDevi"
+      "ceLimitRsp_USR\022\031\n\021uiCurrentLimitNum\030\001 \001("
+      "\r\022\021\n\tuiUsedNum\030\002 \001(\r\"B\n\032QueryDeviceCapac"
+      "ityReq_USR\022\021\n\tstrUserID\030\001 \001(\t\022\021\n\tuiDevTy"
+      "pe\030\002 \001(\r\"Q\n\032QueryDeviceCapacityRsp_USR\0223"
+      "\n\006DevCap\030\001 \001(\0132#.Interactive.Message.Dev"
+      "iceCapacity\"2\n\035QueryALLDeviceCapacityReq"
+      "_USR\022\021\n\tstrUserID\030\001 \001(\t\"X\n\035QueryALLDevic"
+      "eCapacityRsp_USR\0227\n\nDevCapList\030\001 \003(\0132#.I"
+      "nteractive.Message.DeviceCapacity\"0\n\027Que"
+      "ryDeviceP2pIDReq_USR\022\025\n\rstrDomainName\030\001 "
+      "\001(\t\"\256\001\n\027QueryDeviceP2pIDRsp_USR\022\025\n\rstrUp"
+      "dateTime\030\001 \001(\t\022\022\n\nstrWebPort\030\002 \001(\t\022\025\n\rst"
+      "rMobilePort\030\003 \001(\t\022\027\n\017strChannelCount\030\004 \001"
+      "(\t\022\023\n\013strDeviceSN\030\005 \001(\t\022\020\n\010strP2pID\030\006 \001("
+      "\t\022\021\n\tstrExtend\030\007 \001(\t\")\n\025QueryUploadURLRe"
+      "q_MGR\022\020\n\010strValue\030\001 \001(\t\"-\n\025QueryUploadUR"
+      "LRsp_MGR\022\024\n\014strUploadURL\030\001 \001(\t\"X\n\027AddCon"
+      "figurationReq_MGR\022=\n\021configurationInfo\030\001"
+      " \001(\0132\".Interactive.Message.Configuration"
+      "\"+\n\027AddConfigurationRsp_MGR\022\020\n\010strValue\030"
+      "\001 \001(\t\"I\n\032DeleteConfigurationReq_MGR\022\023\n\013s"
+      "trCategory\030\001 \001(\t\022\026\n\016strSubCategory\030\002 \001(\t"
+      "\".\n\032DeleteConfigurationRsp_MGR\022\020\n\010strVal"
+      "ue\030\001 \001(\t\"[\n\032ModifyConfigurationReq_MGR\022="
+      "\n\021configurationInfo\030\001 \001(\0132\".Interactive."
+      "Message.Configuration\".\n\032ModifyConfigura"
+      "tionRsp_MGR\022\020\n\010strValue\030\001 \001(\t\"4\n\034QueryAl"
+      "lConfigurationReq_MGR\022\024\n\014uiBeginIndex\030\001 "
+      "\001(\r\"]\n\034QueryAllConfigurationRsp_MGR\022=\n\021c"
+      "onfigurationInfo\030\001 \003(\0132\".Interactive.Mes"
+      "sage.Configuration\"-\n\031GetOnlineDevInfoRe"
+      "q_INNER\022\020\n\010strValue\030\001 \001(\t\"[\n\031GetOnlineDe"
+      "vInfoRsp_INNER\022,\n\007devInfo\030\001 \003(\0132\033.Intera"
+      "ctive.Message.Device\022\020\n\010strValue\030\002 \001(\t\"^"
+      "\n\034BroadcastOnlineDevInfo_INNER\022,\n\007devInf"
+      "o\030\001 \003(\0132\033.Interactive.Message.Device\022\020\n\010"
+      "strValue\030\002 \001(\t\".\n\032GetOnlineUserInfoReq_I"
+      "NNER\022\020\n\010strValue\030\001 \001(\t\"[\n\032GetOnlineUserI"
+      "nfoRsp_INNER\022+\n\010userInfo\030\001 \003(\0132\031.Interac"
+      "tive.Message.User\022\020\n\010strValue\030\002 \001(\t\"^\n\035B"
+      "roadcastOnlineUserInfo_INNER\022+\n\010userInfo"
+      "\030\001 \003(\0132\031.Interactive.Message.User\022\020\n\010str"
+      "Value\030\002 \001(\t\"6\n\036GetDeviceAccessRecordReq_"
+      "INNER\022\024\n\014uiBeginIndex\030\001 \001(\r\"|\n\036GetDevice"
+      "AccessRecordRsp_INNER\022C\n\022deviceAccessRec"
+      "ord\030\001 \003(\0132\'.Interactive.Message.DeviceAc"
+      "cessRecord\022\025\n\ruiRecordTotal\030\002 \001(\r\"4\n\034Get"
+      "UserAccessRecordReq_INNER\022\024\n\014uiBeginInde"
+      "x\030\001 \001(\r\"v\n\034GetUserAccessRecordRsp_INNER\022"
+      "\?\n\020userAccessRecord\030\001 \003(\0132%.Interactive."
+      "Message.UserAccessRecord\022\025\n\ruiRecordTota"
+      "l\030\002 \001(\r\"\324.\n\003Req\022S\n\035GetAccessAddressReq_D"
+      "EV_Value\030\n \001(\0132,.Interactive.Message.Get"
+      "AccessAddressReq_DEV\022=\n\022LoginReq_DEV_Val"
+      "ue\030\024 \001(\0132!.Interactive.Message.LoginReq_"
+      "DEV\022\?\n\023LogoutReq_DEV_Value\030\036 \001(\0132\".Inter"
+      "active.Message.LogoutReq_DEV\022E\n\026Shakehan"
+      "dReq_DEV_Value\030( \001(\0132%.Interactive.Messa"
+      "ge.ShakehandReq_DEV\022G\n\027ConfigInfoReq_DEV"
+      "_Value\0302 \001(\0132&.Interactive.Message.Confi"
+      "gInfoReq_DEV\022O\n\033StorageAddressReq_DEV_Va"
+      "lue\0304 \001(\0132*.Interactive.Message.StorageA"
+      "ddressReq_DEV\022A\n\024P2pInfoReq_DEV_Value\0306 "
+      "\001(\0132#.Interactive.Message.P2pInfoReq_DEV"
+      "\022A\n\024AddFileReq_DEV_Value\030< \001(\0132#.Interac"
+      "tive.Message.AddFileReq_DEV\022M\n\032QueryTime"
+      "ZoneReq_DEV_Value\030= \001(\0132).Interactive.Me"
+      "ssage.QueryTimeZoneReq_DEV\022]\n\"QueryAcces"
+      "sDomainNameReq_DEV_Value\030> \001(\01321.Interac"
+      "tive.Message.QueryAccessDomainNameReq_DE"
+      "V\022S\n\035QueryUpgradeSiteReq_DEV_Value\030\? \001(\013"
+      "2,.Interactive.Message.QueryUpgradeSiteR"
+      "eq_DEV\022[\n!QueryFirmwareUpgradeReq_DEV_Va"
+      "lue\030@ \001(\01320.Interactive.Message.QueryFir"
+      "mwareUpgradeReq_DEV\022\\\n!ModifyDevicePrope"
+      "rtyReq_DEV_Value\030\240\006 \001(\01320.Interactive.Me"
+      "ssage.ModifyDevicePropertyReq_DEV\022\\\n!Que"
+      "ryDeviceParameterReq_DEV_Value\030\252\006 \001(\01320."
+      "Interactive.Message.QueryDeviceParameter"
+      "Req_DEV\022b\n$QueryPlatformPushStatusReq_DE"
+      "V_Value\030\204\007 \001(\01323.Interactive.Message.Que"
+      "ryPlatformPushStatusReq_DEV\022V\n\036DeviceEve"
+      "ntReportReq_DEV_Value\030\350\007 \001(\0132-.Interacti"
+      "ve.Message.DeviceEventReportReq_DEV\022M\n\032M"
+      "sgPreHandlerReq_USR_Value\030A \001(\0132).Intera"
+      "ctive.Message.MsgPreHandlerReq_USR\022S\n\035Ge"
+      "tAccessAddressReq_USR_Value\030F \001(\0132,.Inte"
+      "ractive.Message.GetAccessAddressReq_USR\022"
+      "K\n\031RegisterUserReq_USR_Value\030P \001(\0132(.Int"
+      "eractive.Message.RegisterUserReq_USR\022O\n\033"
+      "UnRegisterUserReq_USR_Value\030Z \001(\0132*.Inte"
+      "ractive.Message.UnRegisterUserReq_USR\022K\n"
+      "\031QueryUsrInfoReq_USR_Value\030d \001(\0132(.Inter"
+      "active.Message.QueryUsrInfoReq_USR\022O\n\033Mo"
+      "difyUserInfoReq_USR_Value\030f \001(\0132*.Intera"
+      "ctive.Message.ModifyUserInfoReq_USR\022I\n\030R"
+      "etrievePwdReq_USR_Value\030h \001(\0132\'.Interact"
+      "ive.Message.RetrievePwdReq_USR\022=\n\022LoginR"
+      "eq_USR_Value\030n \001(\0132!.Interactive.Message"
+      ".LoginReq_USR\022\?\n\023LogoutReq_USR_Value\030x \001"
+      "(\0132\".Interactive.Message.LogoutReq_USR\022F"
+      "\n\026ShakehandReq_USR_Value\030\202\001 \001(\0132%.Intera"
+      "ctive.Message.ShakehandReq_USR\022H\n\027Config"
+      "InfoReq_USR_Value\030\214\001 \001(\0132&.Interactive.M"
+      "essage.ConfigInfoReq_USR\022@\n\023AddDevReq_US"
+      "R_Value\030\226\001 \001(\0132\".Interactive.Message.Add"
+      "DevReq_USR\022@\n\023DelDevReq_USR_Value\030\240\001 \001(\013"
+      "2\".Interactive.Message.DelDevReq_USR\022F\n\026"
+      "ModifyDevReq_USR_Value\030\252\001 \001(\0132%.Interact"
+      "ive.Message.ModifyDevReq_USR\022L\n\031QueryDev"
+      "InfoReq_USR_Value\030\264\001 \001(\0132(.Interactive.M"
+      "essage.QueryDevInfoReq_USR\022D\n\025QueryDevRe"
+      "q_USR_Value\030\276\001 \001(\0132$.Interactive.Message"
+      ".QueryDevReq_USR\022F\n\026QueryUserReq_USR_Val"
+      "ue\030\310\001 \001(\0132%.Interactive.Message.QueryUse"
+      "rReq_USR\022H\n\027SharingDevReq_USR_Value\030\322\001 \001"
+      "(\0132&.Interactive.Message.SharingDevReq_U"
+      "SR\022R\n\034CancelSharedDevReq_USR_Value\030\334\001 \001("
+      "\0132+.Interactive.Message.CancelSharedDevR"
+      "eq_USR\022H\n\027AddFriendsReq_USR_Value\030\346\001 \001(\013"
+      "2&.Interactive.Message.AddFriendsReq_USR"
+      "\022H\n\027DelFriendsReq_USR_Value\030\360\001 \001(\0132&.Int"
+      "eractive.Message.DelFriendsReq_USR\022L\n\031Qu"
+      "eryFriendsReq_USR_Value\030\372\001 \001(\0132(.Interac"
+      "tive.Message.QueryFriendsReq_USR\022P\n\033Stor"
+      "ageAddressReq_USR_Value\030\374\001 \001(\0132*.Interac"
+      "tive.Message.StorageAddressReq_USR\022B\n\024P2"
+      "pInfoReq_USR_Value\030\376\001 \001(\0132#.Interactive."
+      "Message.P2pInfoReq_USR\022H\n\027DeleteFileReq_"
+      "USR_Value\030\266\002 \001(\0132&.Interactive.Message.D"
+      "eleteFileReq_USR\022L\n\031DownloadFileReq_USR_"
+      "Value\030\300\002 \001(\0132(.Interactive.Message.Downl"
+      "oadFileReq_USR\022F\n\026QueryFileReq_USR_Value"
+      "\030\312\002 \001(\0132%.Interactive.Message.QueryFileR"
+      "eq_USR\022^\n\"QueryAccessDomainNameReq_USR_V"
+      "alue\030\336\002 \001(\01321.Interactive.Message.QueryA"
+      "ccessDomainNameReq_USR\022R\n\034QueryAppUpgrad"
+      "eReq_USR_Value\030\350\002 \001(\0132+.Interactive.Mess"
+      "age.QueryAppUpgradeReq_USR\022V\n\036QueryIfP2p"
+      "IDValidReq_USR_Value\030\362\002 \001(\0132-.Interactiv"
+      "e.Message.QueryIfP2pIDValidReq_USR\022Z\n Qu"
+      "eryAllDeviceEventReq_USR_Value\030\220\003 \001(\0132/."
+      "Interactive.Message.QueryAllDeviceEventR"
+      "eq_USR\022V\n\036DeleteDeviceEventReq_USR_Value"
+      "\030\232\003 \001(\0132-.Interactive.Message.DeleteDevi"
+      "ceEventReq_USR\022V\n\036ModifyDeviceEventReq_U"
+      "SR_Value\030\244\003 \001(\0132-.Interactive.Message.Mo"
+      "difyDeviceEventReq_USR\022T\n\035AddStorageDeta"
+      "ilReq_USR_Value\030\274\005 \001(\0132,.Interactive.Mes"
+      "sage.AddStorageDetailReq_USR\022Z\n DeleteSt"
+      "orageDetailReq_USR_Value\030\306\005 \001(\0132/.Intera"
+      "ctive.Message.DeleteStorageDetailReq_USR"
+      "\022Z\n ModifyStorageDetailReq_USR_Value\030\320\005 "
+      "\001(\0132/.Interactive.Message.ModifyStorageD"
+      "etailReq_USR\022X\n\037QueryStorageDetailReq_US"
+      "R_Value\030\332\005 \001(\0132..Interactive.Message.Que"
+      "ryStorageDetailReq_USR\022`\n#QueryRegionSto"
+      "rageInfoReq_USR_Value\030\344\005 \001(\01322.Interacti"
+      "ve.Message.QueryRegionStorageInfoReq_USR"
+      "\022\\\n!QueryDeviceInfoMultiReq_USR_Value\030\314\010"
+      " \001(\01320.Interactive.Message.QueryDeviceIn"
+      "foMultiReq_USR\022R\n\034RegisterCmsCallReq_USR"
+      "_Value\030\315\010 \001(\0132+.Interactive.Message.Regi"
+      "sterCmsCallReq_USR\022V\n\036UnregisterCmsCallR"
+      "eq_USR_Value\030\316\010 \001(\0132-.Interactive.Messag"
+      "e.UnregisterCmsCallReq_USR\022b\n$QueryShari"
+      "ngDeviceLimitReq_USR_Value\030\317\010 \001(\01323.Inte"
+      "ractive.Message.QuerySharingDeviceLimitR"
+      "eq_USR\022Z\n QueryDeviceCapacityReq_USR_Val"
+      "ue\030\320\010 \001(\0132/.Interactive.Message.QueryDev"
+      "iceCapacityReq_USR\022`\n#QueryALLDeviceCapa"
+      "cityReq_USR_Value\030\321\010 \001(\01322.Interactive.M"
+      "essage.QueryALLDeviceCapacityReq_USR\022T\n\035"
+      "QueryDeviceP2pIDReq_USR_Value\030\322\010 \001(\0132,.I"
+      "nteractive.Message.QueryDeviceP2pIDReq_U"
+      "SR\022X\n\037GetOnlineDevInfoReq_INNER_Value\030\204\002"
+      " \001(\0132..Interactive.Message.GetOnlineDevI"
+      "nfoReq_INNER\022^\n\"BroadcastOnlineDevInfo_I"
+      "NNER_Value\030\216\002 \001(\01321.Interactive.Message."
+      "BroadcastOnlineDevInfo_INNER\022Z\n GetOnlin"
+      "eUserInfoReq_INNER_Value\030\230\002 \001(\0132/.Intera"
+      "ctive.Message.GetOnlineUserInfoReq_INNER"
+      "\022`\n#BroadcastOnlineUserInfo_INNER_Value\030"
+      "\242\002 \001(\01322.Interactive.Message.BroadcastOn"
+      "lineUserInfo_INNER\022b\n$GetDeviceAccessRec"
+      "ordReq_INNER_Value\030\270\003 \001(\01323.Interactive."
+      "Message.GetDeviceAccessRecordReq_INNER\022^"
+      "\n\"GetUserAccessRecordReq_INNER_Value\030\302\003 "
+      "\001(\01321.Interactive.Message.GetUserAccessR"
+      "ecordReq_INNER\022P\n\033QueryUploadURLReq_MGR_"
+      "Value\030\330\004 \001(\0132*.Interactive.Message.Query"
+      "UploadURLReq_MGR\022T\n\035AddConfigurationReq_"
+      "MGR_Value\030\342\004 \001(\0132,.Interactive.Message.A"
+      "ddConfigurationReq_MGR\022Z\n DeleteConfigur"
+      "ationReq_MGR_Value\030\354\004 \001(\0132/.Interactive."
+      "Message.DeleteConfigurationReq_MGR\022Z\n Mo"
+      "difyConfigurationReq_MGR_Value\030\366\004 \001(\0132/."
+      "Interactive.Message.ModifyConfigurationR"
+      "eq_MGR\022^\n\"QueryAllConfigurationReq_MGR_V"
+      "alue\030\200\005 \001(\01321.Interactive.Message.QueryA"
+      "llConfigurationReq_MGR\"\271-\n\003Rsp\022\020\n\010iRetco"
+      "de\030\n \001(\005\022\021\n\tstrRetMsg\030\024 \001(\t\022S\n\035GetAccess"
+      "AddressRsp_DEV_Value\030\036 \001(\0132,.Interactive"
+      ".Message.GetAccessAddressRsp_DEV\022=\n\022Logi"
+      "nRsp_DEV_Value\030( \001(\0132!.Interactive.Messa"
+      "ge.LoginRsp_DEV\022\?\n\023LogoutRsp_DEV_Value\0302"
+      " \001(\0132\".Interactive.Message.LogoutRsp_DEV"
+      "\022E\n\026ShakehandRsp_DEV_Value\030< \001(\0132%.Inter"
+      "active.Message.ShakehandRsp_DEV\022G\n\027Confi"
+      "gInfoRsp_DEV_Value\030F \001(\0132&.Interactive.M"
+      "essage.ConfigInfoRsp_DEV\022O\n\033StorageAddre"
+      "ssRsp_DEV_Value\030H \001(\0132*.Interactive.Mess"
+      "age.StorageAddressRsp_DEV\022A\n\024P2pInfoRsp_"
+      "DEV_Value\030J \001(\0132#.Interactive.Message.P2"
+      "pInfoRsp_DEV\022A\n\024AddFileRsp_DEV_Value\030P \001"
+      "(\0132#.Interactive.Message.AddFileRsp_DEV\022"
+      "M\n\032QueryTimeZoneRsp_DEV_Value\030Q \001(\0132).In"
+      "teractive.Message.QueryTimeZoneRsp_DEV\022]"
+      "\n\"QueryAccessDomainNameRsp_DEV_Value\030R \001"
+      "(\01321.Interactive.Message.QueryAccessDoma"
+      "inNameRsp_DEV\022S\n\035QueryUpgradeSiteRsp_DEV"
+      "_Value\030S \001(\0132,.Interactive.Message.Query"
+      "UpgradeSiteRsp_DEV\022[\n!QueryFirmwareUpgra"
+      "deRsp_DEV_Value\030T \001(\01320.Interactive.Mess"
+      "age.QueryFirmwareUpgradeRsp_DEV\022\\\n!Modif"
+      "yDevicePropertyRsp_DEV_Value\030\240\006 \001(\01320.In"
+      "teractive.Message.ModifyDevicePropertyRs"
+      "p_DEV\022\\\n!QueryDeviceParameterRsp_DEV_Val"
+      "ue\030\252\006 \001(\01320.Interactive.Message.QueryDev"
+      "iceParameterRsp_DEV\022b\n$QueryPlatformPush"
+      "StatusRsp_DEV_Value\030\204\007 \001(\01323.Interactive"
+      ".Message.QueryPlatformPushStatusRsp_DEV\022"
+      "V\n\036DeviceEventReportRsp_DEV_Value\030\350\007 \001(\013"
+      "2-.Interactive.Message.DeviceEventReport"
+      "Rsp_DEV\022M\n\032MsgPreHandlerRsp_USR_Value\030U "
+      "\001(\0132).Interactive.Message.MsgPreHandlerR"
+      "sp_USR\022S\n\035GetAccessAddressRsp_USR_Value\030"
+      "Z \001(\0132,.Interactive.Message.GetAccessAdd"
+      "ressRsp_USR\022K\n\031RegisterUserRsp_USR_Value"
+      "\030d \001(\0132(.Interactive.Message.RegisterUse"
+      "rRsp_USR\022O\n\033UnRegisterUserRsp_USR_Value\030"
+      "n \001(\0132*.Interactive.Message.UnRegisterUs"
+      "erRsp_USR\022K\n\031QueryUsrInfoRsp_USR_Value\030x"
+      " \001(\0132(.Interactive.Message.QueryUsrInfoR"
+      "sp_USR\022O\n\033ModifyUserInfoRsp_USR_Value\030z "
+      "\001(\0132*.Interactive.Message.ModifyUserInfo"
+      "Rsp_USR\022I\n\030RetrievePwdRsp_USR_Value\030| \001("
+      "\0132\'.Interactive.Message.RetrievePwdRsp_U"
+      "SR\022>\n\022LoginRsp_USR_Value\030\202\001 \001(\0132!.Intera"
+      "ctive.Message.LoginRsp_USR\022@\n\023LogoutRsp_"
+      "USR_Value\030\214\001 \001(\0132\".Interactive.Message.L"
+      "ogoutRsp_USR\022F\n\026ShakehandRsp_USR_Value\030\226"
+      "\001 \001(\0132%.Interactive.Message.ShakehandRsp"
+      "_USR\022H\n\027ConfigInfoRsp_USR_Value\030\240\001 \001(\0132&"
+      ".Interactive.Message.ConfigInfoRsp_USR\022@"
+      "\n\023AddDevRsp_USR_Value\030\252\001 \001(\0132\".Interacti"
+      "ve.Message.AddDevRsp_USR\022@\n\023DelDevRsp_US"
+      "R_Value\030\264\001 \001(\0132\".Interactive.Message.Del"
+      "DevRsp_USR\022F\n\026ModifyDevRsp_USR_Value\030\276\001 "
+      "\001(\0132%.Interactive.Message.ModifyDevRsp_U"
+      "SR\022L\n\031QueryDevInfoRsp_USR_Value\030\310\001 \001(\0132("
+      ".Interactive.Message.QueryDevInfoRsp_USR"
+      "\022D\n\025QueryDevRsp_USR_Value\030\322\001 \001(\0132$.Inter"
+      "active.Message.QueryDevRsp_USR\022F\n\026QueryU"
+      "serRsp_USR_Value\030\334\001 \001(\0132%.Interactive.Me"
+      "ssage.QueryUserRsp_USR\022H\n\027SharingDevRsp_"
+      "USR_Value\030\346\001 \001(\0132&.Interactive.Message.S"
+      "haringDevRsp_USR\022R\n\034CancelSharedDevRsp_U"
+      "SR_Value\030\360\001 \001(\0132+.Interactive.Message.Ca"
+      "ncelSharedDevRsp_USR\022H\n\027AddFriendsRsp_US"
+      "R_Value\030\372\001 \001(\0132&.Interactive.Message.Add"
+      "FriendsRsp_USR\022H\n\027DelFriendsRsp_USR_Valu"
+      "e\030\204\002 \001(\0132&.Interactive.Message.DelFriend"
+      "sRsp_USR\022L\n\031QueryFriendsRsp_USR_Value\030\216\002"
+      " \001(\0132(.Interactive.Message.QueryFriendsR"
+      "sp_USR\022P\n\033StorageAddressReq_USR_Value\030\220\002"
+      " \001(\0132*.Interactive.Message.StorageAddres"
+      "sRsp_USR\022B\n\024P2pInfoRsp_USR_Value\030\222\002 \001(\0132"
+      "#.Interactive.Message.P2pInfoRsp_USR\022H\n\027"
+      "DeleteFileRsp_USR_Value\030\266\002 \001(\0132&.Interac"
+      "tive.Message.DeleteFileRsp_USR\022L\n\031Downlo"
+      "adFileRsp_USR_Value\030\300\002 \001(\0132(.Interactive"
+      ".Message.DownloadFileRsp_USR\022F\n\026QueryFil"
+      "eRsp_USR_Value\030\312\002 \001(\0132%.Interactive.Mess"
+      "age.QueryFileRsp_USR\022^\n\"QueryAccessDomai"
+      "nNameRsp_USR_Value\030\336\002 \001(\01321.Interactive."
+      "Message.QueryAccessDomainNameRsp_USR\022R\n\034"
+      "QueryAppUpgradeRsp_USR_Value\030\350\002 \001(\0132+.In"
+      "teractive.Message.QueryAppUpgradeRsp_USR"
+      "\022V\n\036QueryIfP2pIDValidRsp_USR_Value\030\362\002 \001("
+      "\0132-.Interactive.Message.QueryIfP2pIDVali"
+      "dRsp_USR\022Z\n QueryAllDeviceEventRsp_USR_V"
+      "alue\030\364\003 \001(\0132/.Interactive.Message.QueryA"
+      "llDeviceEventRsp_USR\022V\n\036DeleteDeviceEven"
+      "tRsp_USR_Value\030\376\003 \001(\0132-.Interactive.Mess"
+      "age.DeleteDeviceEventRsp_USR\022V\n\036ModifyDe"
+      "viceEventRsp_USR_Value\030\210\004 \001(\0132-.Interact"
+      "ive.Message.ModifyDeviceEventRsp_USR\022T\n\035"
+      "AddStorageDetailRsp_USR_Value\030\274\005 \001(\0132,.I"
+      "nteractive.Message.AddStorageDetailRsp_U"
+      "SR\022Z\n DeleteStorageDetailRsp_USR_Value\030\306"
+      "\005 \001(\0132/.Interactive.Message.DeleteStorag"
+      "eDetailRsp_USR\022Z\n ModifyStorageDetailRsp"
+      "_USR_Value\030\320\005 \001(\0132/.Interactive.Message."
+      "ModifyStorageDetailRsp_USR\022X\n\037QueryStora"
+      "geDetailRsp_USR_Value\030\332\005 \001(\0132..Interacti"
+      "ve.Message.QueryStorageDetailRsp_USR\022`\n#"
+      "QueryRegionStorageInfoRsp_USR_Value\030\344\005 \001"
+      "(\01322.Interactive.Message.QueryRegionStor"
+      "ageInfoRsp_USR\022\\\n!QueryDeviceInfoMultiRs"
+      "p_USR_Value\030\314\010 \001(\01320.Interactive.Message"
+      ".QueryDeviceInfoMultiRsp_USR\022R\n\034Register"
+      "CmsCallRsp_USR_Value\030\315\010 \001(\0132+.Interactiv"
+      "e.Message.RegisterCmsCallRsp_USR\022V\n\036Unre"
+      "gisterCmsCallRsp_USR_Value\030\316\010 \001(\0132-.Inte"
+      "ractive.Message.UnregisterCmsCallRsp_USR"
+      "\022b\n$QuerySharingDeviceLimitRsp_USR_Value"
+      "\030\317\010 \001(\01323.Interactive.Message.QueryShari"
+      "ngDeviceLimitRsp_USR\022Z\n QueryDeviceCapac"
+      "ityRsp_USR_Value\030\320\010 \001(\0132/.Interactive.Me"
+      "ssage.QueryDeviceCapacityRsp_USR\022`\n#Quer"
+      "yALLDeviceCapacityRsp_USR_Value\030\321\010 \001(\01322"
+      ".Interactive.Message.QueryALLDeviceCapac"
+      "ityRsp_USR\022T\n\035QueryDeviceP2pIDRsp_USR_Va"
+      "lue\030\322\010 \001(\0132,.Interactive.Message.QueryDe"
+      "viceP2pIDRsp_USR\022X\n\037GetOnlineDevInfoRsp_"
+      "INNER_Value\030\230\002 \001(\0132..Interactive.Message"
+      ".GetOnlineDevInfoRsp_INNER\022Z\n GetOnlineU"
+      "serInfoRsp_INNER_Value\030\242\002 \001(\0132/.Interact"
+      "ive.Message.GetOnlineUserInfoRsp_INNER\022b"
+      "\n$GetDeviceAccessRecordRsp_INNER_Value\030\270"
+      "\003 \001(\01323.Interactive.Message.GetDeviceAcc"
+      "essRecordRsp_INNER\022^\n\"GetUserAccessRecor"
+      "dRsp_INNER_Value\030\302\003 \001(\01321.Interactive.Me"
+      "ssage.GetUserAccessRecordRsp_INNER\022P\n\033Qu"
+      "eryUploadURLRsp_MGR_Value\030\330\004 \001(\0132*.Inter"
+      "active.Message.QueryUploadURLRsp_MGR\022T\n\035"
+      "AddConfigurationRsp_MGR_Value\030\342\004 \001(\0132,.I"
+      "nteractive.Message.AddConfigurationRsp_M"
+      "GR\022Z\n DeleteConfigurationRsp_MGR_Value\030\354"
+      "\004 \001(\0132/.Interactive.Message.DeleteConfig"
+      "urationRsp_MGR\022Z\n ModifyConfigurationRsp"
+      "_MGR_Value\030\366\004 \001(\0132/.Interactive.Message."
+      "ModifyConfigurationRsp_MGR\022^\n\"QueryAllCo"
+      "nfigurationRsp_MGR_Value\030\200\005 \001(\01321.Intera"
+      "ctive.Message.QueryAllConfigurationRsp_M"
+      "GR\"\272\001\n\022InteractiveMessage\022*\n\004type\030\001 \001(\0162"
+      "\034.Interactive.Message.MsgType\022\020\n\010uiMsgSe"
+      "q\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022*\n\010ReqValue\030\004 \001("
+      "\0132\030.Interactive.Message.Req\022*\n\010RspValue\030"
+      "\005 \001(\0132\030.Interactive.Message.Rsp*\250#\n\007MsgT"
+      "ype\022\n\n\006Init_T\020\000\022\036\n\031GetAccessAddressReq_D"
+      "EV_T\020\220N\022\036\n\031GetAccessAddressRsp_DEV_T\020\232N\022"
+      "\023\n\016LoginReq_DEV_T\020\244N\022\023\n\016LoginRsp_DEV_T\020\256"
+      "N\022\024\n\017LogoutReq_DEV_T\020\270N\022\024\n\017LogoutRsp_DEV"
+      "_T\020\302N\022\027\n\022ShakehandReq_DEV_T\020\314N\022\027\n\022Shakeh"
+      "andRsp_DEV_T\020\326N\022\030\n\023ConfigInfoReq_DEV_T\020\340"
+      "N\022\030\n\023ConfigInfoRsp_DEV_T\020\352N\022\034\n\027StorageAd"
+      "dressReq_DEV_T\020\364N\022\034\n\027StorageAddressRsp_D"
+      "EV_T\020\376N\022\025\n\020P2pInfoReq_DEV_T\020\354O\022\025\n\020P2pInf"
+      "oRsp_DEV_T\020\366O\022\025\n\020AddFileReq_DEV_T\020\274P\022\025\n\020"
+      "AddFileRsp_DEV_T\020\306P\022\033\n\026QueryTimeZoneReq_"
+      "DEV_T\020\320P\022\033\n\026QueryTimeZoneRsp_DEV_T\020\332P\022#\n"
+      "\036QueryAccessDomainNameReq_DEV_T\020\344P\022#\n\036Qu"
+      "eryAccessDomainNameRsp_DEV_T\020\356P\022\036\n\031Query"
+      "UpgradeSiteReq_DEV_T\020\370P\022\036\n\031QueryUpgradeS"
+      "iteRsp_DEV_T\020\202Q\022\"\n\035QueryFirmwareUpgradeR"
+      "eq_DEV_T\020\214Q\022\"\n\035QueryFirmwareUpgradeRsp_D"
+      "EV_T\020\226Q\022\"\n\035ModifyDevicePropertyReq_DEV_T"
+      "\020\240Q\022\"\n\035ModifyDevicePropertyRsp_DEV_T\020\252Q\022"
+      "\"\n\035QueryDeviceParameterReq_DEV_T\020\264Q\022\"\n\035Q"
+      "ueryDeviceParameterRsp_DEV_T\020\276Q\022%\n Query"
+      "PlatformPushStatusReq_DEV_T\020\204R\022%\n QueryP"
+      "latformPushStatusRsp_DEV_T\020\216R\022\037\n\032DeviceE"
+      "ventReportReq_DEV_T\020\350R\022\037\n\032DeviceEventRep"
+      "ortRsp_DEV_T\020\362R\022\034\n\026MsgPreHandlerReq_USR_"
+      "T\020\226\234\001\022\034\n\026MsgPreHandlerRsp_USR_T\020\227\234\001\022\037\n\031G"
+      "etAccessAddressReq_USR_T\020\240\234\001\022\037\n\031GetAcces"
+      "sAddressRsp_USR_T\020\252\234\001\022\033\n\025RegisterUserReq"
+      "_USR_T\020\264\234\001\022\033\n\025RegisterUserRsp_USR_T\020\276\234\001\022"
+      "\035\n\027UnRegisterUserReq_USR_T\020\310\234\001\022\035\n\027UnRegi"
+      "sterUserRsp_USR_T\020\322\234\001\022\033\n\025QueryUsrInfoReq"
+      "_USR_T\020\323\234\001\022\033\n\025QueryUsrInfoRsp_USR_T\020\324\234\001\022"
+      "\035\n\027ModifyUserInfoReq_USR_T\020\327\234\001\022\035\n\027Modify"
+      "UserInfoRsp_USR_T\020\330\234\001\022\032\n\024RetrievePwdReq_"
+      "USR_T\020\331\234\001\022\032\n\024RetrievePwdRsp_USR_T\020\332\234\001\022\024\n"
+      "\016LoginReq_USR_T\020\334\234\001\022\024\n\016LoginRsp_USR_T\020\346\234"
+      "\001\022\025\n\017LogoutReq_USR_T\020\360\234\001\022\025\n\017LogoutRsp_US"
+      "R_T\020\372\234\001\022\030\n\022ShakehandReq_USR_T\020\204\235\001\022\030\n\022Sha"
+      "kehandRsp_USR_T\020\216\235\001\022\031\n\023ConfigInfoReq_USR"
+      "_T\020\230\235\001\022\031\n\023ConfigInfoRsp_USR_T\020\242\235\001\022\025\n\017Add"
+      "DevReq_USR_T\020\254\235\001\022\025\n\017AddDevRsp_USR_T\020\266\235\001\022"
+      "\025\n\017DelDevReq_USR_T\020\300\235\001\022\025\n\017DelDevRsp_USR_"
+      "T\020\312\235\001\022\030\n\022ModifyDevReq_USR_T\020\324\235\001\022\030\n\022Modif"
+      "yDevRsp_USR_T\020\336\235\001\022\033\n\025QueryDevInfoReq_USR"
+      "_T\020\337\235\001\022\033\n\025QueryDevInfoRsp_USR_T\020\340\235\001\022\027\n\021Q"
+      "ueryDevReq_USR_T\020\350\235\001\022\027\n\021QueryDevRsp_USR_"
+      "T\020\362\235\001\022\030\n\022QueryUserReq_USR_T\020\363\235\001\022\030\n\022Query"
+      "UserRsp_USR_T\020\364\235\001\022\031\n\023SharingDevReq_USR_T"
+      "\020\374\235\001\022\031\n\023SharingDevRsp_USR_T\020\206\236\001\022\036\n\030Cance"
+      "lSharedDevReq_USR_T\020\220\236\001\022\036\n\030CancelSharedD"
+      "evRsp_USR_T\020\232\236\001\022\031\n\023AddFriendsReq_USR_T\020\244"
+      "\236\001\022\031\n\023AddFriendsRsp_USR_T\020\256\236\001\022\031\n\023DelFrie"
+      "ndsReq_USR_T\020\270\236\001\022\031\n\023DelFriendsRsp_USR_T\020"
+      "\302\236\001\022\034\n\026ModifyFriendsReq_USR_T\020\314\236\001\022\034\n\026Mod"
+      "ifyFriendsRsp_USR_T\020\326\236\001\022\033\n\025QueryFriendsR"
+      "eq_USR_T\020\340\236\001\022\033\n\025QueryFriendsRsp_USR_T\020\352\236"
+      "\001\022\035\n\027StorageAddressReq_USR_T\020\364\236\001\022\035\n\027Stor"
+      "ageAddressRsp_USR_T\020\376\236\001\022\026\n\020P2pInfoReq_US"
+      "R_T\020\210\237\001\022\026\n\020P2pInfoRsp_USR_T\020\222\237\001\022\031\n\023Delet"
+      "eFileReq_USR_T\020\224\240\001\022\031\n\023DeleteFileRsp_USR_"
+      "T\020\236\240\001\022\033\n\025DownloadFileReq_USR_T\020\250\240\001\022\033\n\025Do"
+      "wnloadFileRsp_USR_T\020\262\240\001\022\030\n\022QueryFileReq_"
+      "USR_T\020\274\240\001\022\030\n\022QueryFileRsp_USR_T\020\306\240\001\022$\n\036Q"
+      "ueryAccessDomainNameReq_USR_T\020\370\240\001\022$\n\036Que"
+      "ryAccessDomainNameRsp_USR_T\020\202\241\001\022\036\n\030Query"
+      "AppUpgradeReq_USR_T\020\214\241\001\022\036\n\030QueryAppUpgra"
+      "deRsp_USR_T\020\226\241\001\022 \n\032QueryIfP2pIDValidReq_"
+      "USR_T\020\240\241\001\022 \n\032QueryIfP2pIDValidRsp_USR_T\020"
+      "\252\241\001\022\"\n\034QueryAllDeviceEventReq_USR_T\020\334\241\001\022"
+      "\"\n\034QueryAllDeviceEventRsp_USR_T\020\346\241\001\022 \n\032D"
+      "eleteDeviceEventReq_USR_T\020\360\241\001\022 \n\032DeleteD"
+      "eviceEventRsp_USR_T\020\372\241\001\022 \n\032ModifyDeviceE"
+      "ventReq_USR_T\020\204\242\001\022 \n\032ModifyDeviceEventRs"
+      "p_USR_T\020\216\242\001\022\037\n\031AddStorageDetailReq_USR_T"
+      "\020\300\242\001\022\037\n\031AddStorageDetailRsp_USR_T\020\312\242\001\022\"\n"
+      "\034DeleteStorageDetailReq_USR_T\020\324\242\001\022\"\n\034Del"
+      "eteStorageDetailRsp_USR_T\020\336\242\001\022\"\n\034ModifyS"
+      "torageDetailReq_USR_T\020\350\242\001\022\"\n\034ModifyStora"
+      "geDetailRsp_USR_T\020\362\242\001\022!\n\033QueryStorageDet"
+      "ailReq_USR_T\020\374\242\001\022!\n\033QueryStorageDetailRs"
+      "p_USR_T\020\206\243\001\022%\n\037QueryRegionStorageInfoReq"
+      "_USR_T\020\220\243\001\022%\n\037QueryRegionStorageInfoRsp_"
+      "USR_T\020\232\243\001\022#\n\035QueryDeviceInfoMultiReq_USR"
+      "_T\020\326\243\001\022#\n\035QueryDeviceInfoMultiRsp_USR_T\020"
+      "\340\243\001\022\036\n\030RegisterCmsCallReq_USR_T\020\341\243\001\022\036\n\030R"
+      "egisterCmsCallRsp_USR_T\020\342\243\001\022 \n\032Unregiste"
+      "rCmsCallReq_USR_T\020\343\243\001\022 \n\032UnregisterCmsCa"
+      "llRsp_USR_T\020\344\243\001\022&\n QuerySharingDeviceLim"
+      "itReq_USR_T\020\345\243\001\022&\n QuerySharingDeviceLim"
+      "itRsp_USR_T\020\346\243\001\022\"\n\034QueryDeviceCapacityRe"
+      "q_USR_T\020\347\243\001\022\"\n\034QueryDeviceCapacityRsp_US"
+      "R_T\020\350\243\001\022%\n\037QueryALLDeviceCapacityReq_USR"
+      "_T\020\351\243\001\022%\n\037QueryALLDeviceCapacityRsp_USR_"
+      "T\020\352\243\001\022\037\n\031QueryDeviceP2pIDReq_USR_T\020\353\243\001\022\037"
+      "\n\031QueryDeviceP2pIDRsp_USR_T\020\354\243\001\022!\n\033GetOn"
+      "lineDevInfoReq_INNER_T\020\260\352\001\022!\n\033GetOnlineD"
+      "evInfoRsp_INNER_T\020\272\352\001\022$\n\036BroadcastOnline"
+      "DevInfo_INNER_T\020\304\352\001\022\"\n\034GetOnlineUserInfo"
+      "Req_INNER_T\020\316\352\001\022\"\n\034GetOnlineUserInfoRsp_"
+      "INNER_T\020\330\352\001\022%\n\037BroadcastOnlineUserInfo_I"
+      "NNER_T\020\342\352\001\022&\n GetDeviceAccessRecordReq_I"
+      "NNER_T\020\370\353\001\022&\n GetDeviceAccessRecordRsp_I"
+      "NNER_T\020\202\354\001\022$\n\036GetUserAccessRecordReq_INN"
+      "ER_T\020\214\354\001\022$\n\036GetUserAccessRecordRsp_INNER"
+      "_T\020\226\354\001\022\035\n\027QueryUploadURLReq_MGR_T\020\300\270\002\022\035\n"
+      "\027QueryUploadURLRsp_MGR_T\020\312\270\002\022\037\n\031AddConfi"
+      "gurationReq_MGR_T\020\324\270\002\022\037\n\031AddConfiguratio"
+      "nRsp_MGR_T\020\336\270\002\022\"\n\034DeleteConfigurationReq"
+      "_MGR_T\020\350\270\002\022\"\n\034DeleteConfigurationRsp_MGR"
+      "_T\020\362\270\002\022\"\n\034ModifyConfigurationReq_MGR_T\020\374"
+      "\270\002\022\"\n\034ModifyConfigurationRsp_MGR_T\020\206\271\002\022$"
+      "\n\036QueryAllConfigurationReq_MGR_T\020\220\271\002\022$\n\036"
+      "QueryAllConfigurationRsp_MGR_T\020\232\271\002b\006prot"
+      "o3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 30949);
+      descriptor, 31442);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -3660,6 +3710,8 @@ bool MsgType_IsValid(int value) {
     case 20968:
     case 20969:
     case 20970:
+    case 20971:
+    case 20972:
     case 30000:
     case 30010:
     case 30020:
@@ -65401,6 +65453,7 @@ void RegisterCmsCallReq_USR::set_allocated_strdevicep2pid(::std::string* strdevi
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RegisterCmsCallRsp_USR::kStrAddressFieldNumber;
 const int RegisterCmsCallRsp_USR::kStrPortFieldNumber;
+const int RegisterCmsCallRsp_USR::kStrP2PIDFailedListFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 RegisterCmsCallRsp_USR::RegisterCmsCallRsp_USR()
@@ -65414,6 +65467,7 @@ RegisterCmsCallRsp_USR::RegisterCmsCallRsp_USR()
 RegisterCmsCallRsp_USR::RegisterCmsCallRsp_USR(const RegisterCmsCallRsp_USR& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      strp2pidfailedlist_(from.strp2pidfailedlist_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   straddress_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -65468,6 +65522,7 @@ RegisterCmsCallRsp_USR* RegisterCmsCallRsp_USR::New(::google::protobuf::Arena* a
 
 void RegisterCmsCallRsp_USR::Clear() {
 // @@protoc_insertion_point(message_clear_start:Interactive.Message.RegisterCmsCallRsp_USR)
+  strp2pidfailedlist_.Clear();
   straddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   strport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -65506,6 +65561,22 @@ bool RegisterCmsCallRsp_USR::MergePartialFromCodedStream(
             this->strport().data(), this->strport().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "Interactive.Message.RegisterCmsCallRsp_USR.strPort"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated string strP2pIDFailedList = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_strp2pidfailedlist()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strp2pidfailedlist(this->strp2pidfailedlist_size() - 1).data(),
+            this->strp2pidfailedlist(this->strp2pidfailedlist_size() - 1).length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList"));
         } else {
           goto handle_unusual;
         }
@@ -65556,6 +65627,16 @@ void RegisterCmsCallRsp_USR::SerializeWithCachedSizes(
       2, this->strport(), output);
   }
 
+  // repeated string strP2pIDFailedList = 3;
+  for (int i = 0; i < this->strp2pidfailedlist_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pidfailedlist(i).data(), this->strp2pidfailedlist(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->strp2pidfailedlist(i), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Interactive.Message.RegisterCmsCallRsp_USR)
 }
 
@@ -65585,6 +65666,16 @@ void RegisterCmsCallRsp_USR::SerializeWithCachedSizes(
         2, this->strport(), target);
   }
 
+  // repeated string strP2pIDFailedList = 3;
+  for (int i = 0; i < this->strp2pidfailedlist_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pidfailedlist(i).data(), this->strp2pidfailedlist(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(3, this->strp2pidfailedlist(i), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.RegisterCmsCallRsp_USR)
   return target;
 }
@@ -65592,6 +65683,14 @@ void RegisterCmsCallRsp_USR::SerializeWithCachedSizes(
 size_t RegisterCmsCallRsp_USR::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Interactive.Message.RegisterCmsCallRsp_USR)
   size_t total_size = 0;
+
+  // repeated string strP2pIDFailedList = 3;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->strp2pidfailedlist_size());
+  for (int i = 0; i < this->strp2pidfailedlist_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->strp2pidfailedlist(i));
+  }
 
   // string strAddress = 1;
   if (this->straddress().size() > 0) {
@@ -65633,6 +65732,7 @@ void RegisterCmsCallRsp_USR::MergeFrom(const RegisterCmsCallRsp_USR& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.RegisterCmsCallRsp_USR)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strp2pidfailedlist_.MergeFrom(from.strp2pidfailedlist_);
   if (from.straddress().size() > 0) {
 
     straddress_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.straddress_);
@@ -65666,6 +65766,7 @@ void RegisterCmsCallRsp_USR::Swap(RegisterCmsCallRsp_USR* other) {
   InternalSwap(other);
 }
 void RegisterCmsCallRsp_USR::InternalSwap(RegisterCmsCallRsp_USR* other) {
+  strp2pidfailedlist_.UnsafeArenaSwap(&other->strp2pidfailedlist_);
   straddress_.Swap(&other->straddress_);
   strport_.Swap(&other->strport_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -65781,6 +65882,61 @@ void RegisterCmsCallRsp_USR::set_allocated_strport(::std::string* strport) {
   }
   strport_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strport);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RegisterCmsCallRsp_USR.strPort)
+}
+
+// repeated string strP2pIDFailedList = 3;
+int RegisterCmsCallRsp_USR::strp2pidfailedlist_size() const {
+  return strp2pidfailedlist_.size();
+}
+void RegisterCmsCallRsp_USR::clear_strp2pidfailedlist() {
+  strp2pidfailedlist_.Clear();
+}
+const ::std::string& RegisterCmsCallRsp_USR::strp2pidfailedlist(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  return strp2pidfailedlist_.Get(index);
+}
+::std::string* RegisterCmsCallRsp_USR::mutable_strp2pidfailedlist(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  return strp2pidfailedlist_.Mutable(index);
+}
+void RegisterCmsCallRsp_USR::set_strp2pidfailedlist(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  strp2pidfailedlist_.Mutable(index)->assign(value);
+}
+void RegisterCmsCallRsp_USR::set_strp2pidfailedlist(int index, const char* value) {
+  strp2pidfailedlist_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+}
+void RegisterCmsCallRsp_USR::set_strp2pidfailedlist(int index, const char* value, size_t size) {
+  strp2pidfailedlist_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+}
+::std::string* RegisterCmsCallRsp_USR::add_strp2pidfailedlist() {
+  // @@protoc_insertion_point(field_add_mutable:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  return strp2pidfailedlist_.Add();
+}
+void RegisterCmsCallRsp_USR::add_strp2pidfailedlist(const ::std::string& value) {
+  strp2pidfailedlist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+}
+void RegisterCmsCallRsp_USR::add_strp2pidfailedlist(const char* value) {
+  strp2pidfailedlist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+}
+void RegisterCmsCallRsp_USR::add_strp2pidfailedlist(const char* value, size_t size) {
+  strp2pidfailedlist_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RegisterCmsCallRsp_USR::strp2pidfailedlist() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  return strp2pidfailedlist_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+RegisterCmsCallRsp_USR::mutable_strp2pidfailedlist() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.RegisterCmsCallRsp_USR.strP2pIDFailedList)
+  return &strp2pidfailedlist_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -68029,6 +68185,1216 @@ QueryALLDeviceCapacityRsp_USR::devcaplist() const {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryDeviceP2pIDReq_USR::kStrDomainNameFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryDeviceP2pIDReq_USR::QueryDeviceP2pIDReq_USR()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.QueryDeviceP2pIDReq_USR)
+}
+QueryDeviceP2pIDReq_USR::QueryDeviceP2pIDReq_USR(const QueryDeviceP2pIDReq_USR& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strdomainname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdomainname().size() > 0) {
+    strdomainname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdomainname_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.QueryDeviceP2pIDReq_USR)
+}
+
+void QueryDeviceP2pIDReq_USR::SharedCtor() {
+  strdomainname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+QueryDeviceP2pIDReq_USR::~QueryDeviceP2pIDReq_USR() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  SharedDtor();
+}
+
+void QueryDeviceP2pIDReq_USR::SharedDtor() {
+  strdomainname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryDeviceP2pIDReq_USR::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryDeviceP2pIDReq_USR::descriptor() {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[134].descriptor;
+}
+
+const QueryDeviceP2pIDReq_USR& QueryDeviceP2pIDReq_USR::default_instance() {
+  protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryDeviceP2pIDReq_USR* QueryDeviceP2pIDReq_USR::New(::google::protobuf::Arena* arena) const {
+  QueryDeviceP2pIDReq_USR* n = new QueryDeviceP2pIDReq_USR;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryDeviceP2pIDReq_USR::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  strdomainname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool QueryDeviceP2pIDReq_USR::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strDomainName = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdomainname()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdomainname().data(), this->strdomainname().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  return false;
+#undef DO_
+}
+
+void QueryDeviceP2pIDReq_USR::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  // string strDomainName = 1;
+  if (this->strdomainname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdomainname().data(), this->strdomainname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strdomainname(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryDeviceP2pIDReq_USR)
+}
+
+::google::protobuf::uint8* QueryDeviceP2pIDReq_USR::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  // string strDomainName = 1;
+  if (this->strdomainname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdomainname().data(), this->strdomainname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strdomainname(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  return target;
+}
+
+size_t QueryDeviceP2pIDReq_USR::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  size_t total_size = 0;
+
+  // string strDomainName = 1;
+  if (this->strdomainname().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdomainname());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryDeviceP2pIDReq_USR::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryDeviceP2pIDReq_USR* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryDeviceP2pIDReq_USR>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.QueryDeviceP2pIDReq_USR)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.QueryDeviceP2pIDReq_USR)
+    MergeFrom(*source);
+  }
+}
+
+void QueryDeviceP2pIDReq_USR::MergeFrom(const QueryDeviceP2pIDReq_USR& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strdomainname().size() > 0) {
+
+    strdomainname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdomainname_);
+  }
+}
+
+void QueryDeviceP2pIDReq_USR::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryDeviceP2pIDReq_USR::CopyFrom(const QueryDeviceP2pIDReq_USR& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.QueryDeviceP2pIDReq_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryDeviceP2pIDReq_USR::IsInitialized() const {
+  return true;
+}
+
+void QueryDeviceP2pIDReq_USR::Swap(QueryDeviceP2pIDReq_USR* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryDeviceP2pIDReq_USR::InternalSwap(QueryDeviceP2pIDReq_USR* other) {
+  strdomainname_.Swap(&other->strdomainname_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryDeviceP2pIDReq_USR::GetMetadata() const {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[134];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryDeviceP2pIDReq_USR
+
+// string strDomainName = 1;
+void QueryDeviceP2pIDReq_USR::clear_strdomainname() {
+  strdomainname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDReq_USR::strdomainname() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+  return strdomainname_.GetNoArena();
+}
+void QueryDeviceP2pIDReq_USR::set_strdomainname(const ::std::string& value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDReq_USR::set_strdomainname(::std::string&& value) {
+  
+  strdomainname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+}
+#endif
+void QueryDeviceP2pIDReq_USR::set_strdomainname(const char* value) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+}
+void QueryDeviceP2pIDReq_USR::set_strdomainname(const char* value, size_t size) {
+  
+  strdomainname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+}
+::std::string* QueryDeviceP2pIDReq_USR::mutable_strdomainname() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+  return strdomainname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDReq_USR::release_strdomainname() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+  
+  return strdomainname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDReq_USR::set_allocated_strdomainname(::std::string* strdomainname) {
+  if (strdomainname != NULL) {
+    
+  } else {
+    
+  }
+  strdomainname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdomainname);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDReq_USR.strDomainName)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QueryDeviceP2pIDRsp_USR::kStrUpdateTimeFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrWebPortFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrMobilePortFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrChannelCountFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrDeviceSNFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrP2PIDFieldNumber;
+const int QueryDeviceP2pIDRsp_USR::kStrExtendFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QueryDeviceP2pIDRsp_USR::QueryDeviceP2pIDRsp_USR()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+}
+QueryDeviceP2pIDRsp_USR::QueryDeviceP2pIDRsp_USR(const QueryDeviceP2pIDRsp_USR& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strupdatetime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strupdatetime().size() > 0) {
+    strupdatetime_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strupdatetime_);
+  }
+  strwebport_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strwebport().size() > 0) {
+    strwebport_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strwebport_);
+  }
+  strmobileport_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strmobileport().size() > 0) {
+    strmobileport_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strmobileport_);
+  }
+  strchannelcount_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strchannelcount().size() > 0) {
+    strchannelcount_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strchannelcount_);
+  }
+  strdevicesn_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strdevicesn().size() > 0) {
+    strdevicesn_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevicesn_);
+  }
+  strp2pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strp2pid().size() > 0) {
+    strp2pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pid_);
+  }
+  strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strextend().size() > 0) {
+    strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
+  // @@protoc_insertion_point(copy_constructor:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+}
+
+void QueryDeviceP2pIDRsp_USR::SharedCtor() {
+  strupdatetime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strwebport_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strmobileport_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strchannelcount_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevicesn_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  _cached_size_ = 0;
+}
+
+QueryDeviceP2pIDRsp_USR::~QueryDeviceP2pIDRsp_USR() {
+  // @@protoc_insertion_point(destructor:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  SharedDtor();
+}
+
+void QueryDeviceP2pIDRsp_USR::SharedDtor() {
+  strupdatetime_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strwebport_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strmobileport_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strchannelcount_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevicesn_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QueryDeviceP2pIDRsp_USR::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QueryDeviceP2pIDRsp_USR::descriptor() {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[135].descriptor;
+}
+
+const QueryDeviceP2pIDRsp_USR& QueryDeviceP2pIDRsp_USR::default_instance() {
+  protobuf_InteractiveProtocol_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QueryDeviceP2pIDRsp_USR* QueryDeviceP2pIDRsp_USR::New(::google::protobuf::Arena* arena) const {
+  QueryDeviceP2pIDRsp_USR* n = new QueryDeviceP2pIDRsp_USR;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QueryDeviceP2pIDRsp_USR::Clear() {
+// @@protoc_insertion_point(message_clear_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  strupdatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strwebport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strmobileport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strchannelcount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strdevicesn_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool QueryDeviceP2pIDRsp_USR::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUpdateTime = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strupdatetime()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strupdatetime().data(), this->strupdatetime().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strWebPort = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strwebport()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strwebport().data(), this->strwebport().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strMobilePort = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strmobileport()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strmobileport().data(), this->strmobileport().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strChannelCount = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strchannelcount()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strchannelcount().data(), this->strchannelcount().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strDeviceSN = 5;
+      case 5: {
+        if (tag == 42u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strdevicesn()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strdevicesn().data(), this->strdevicesn().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strP2pID = 6;
+      case 6: {
+        if (tag == 50u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strp2pid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strp2pid().data(), this->strp2pid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strExtend = 7;
+      case 7: {
+        if (tag == 58u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strextend()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strextend().data(), this->strextend().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  return false;
+#undef DO_
+}
+
+void QueryDeviceP2pIDRsp_USR::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  // string strUpdateTime = 1;
+  if (this->strupdatetime().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strupdatetime().data(), this->strupdatetime().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->strupdatetime(), output);
+  }
+
+  // string strWebPort = 2;
+  if (this->strwebport().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strwebport().data(), this->strwebport().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strwebport(), output);
+  }
+
+  // string strMobilePort = 3;
+  if (this->strmobileport().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strmobileport().data(), this->strmobileport().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strmobileport(), output);
+  }
+
+  // string strChannelCount = 4;
+  if (this->strchannelcount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strchannelcount().data(), this->strchannelcount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strchannelcount(), output);
+  }
+
+  // string strDeviceSN = 5;
+  if (this->strdevicesn().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevicesn().data(), this->strdevicesn().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->strdevicesn(), output);
+  }
+
+  // string strP2pID = 6;
+  if (this->strp2pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pid().data(), this->strp2pid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->strp2pid(), output);
+  }
+
+  // string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->strextend(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+}
+
+::google::protobuf::uint8* QueryDeviceP2pIDRsp_USR::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  // string strUpdateTime = 1;
+  if (this->strupdatetime().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strupdatetime().data(), this->strupdatetime().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->strupdatetime(), target);
+  }
+
+  // string strWebPort = 2;
+  if (this->strwebport().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strwebport().data(), this->strwebport().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strwebport(), target);
+  }
+
+  // string strMobilePort = 3;
+  if (this->strmobileport().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strmobileport().data(), this->strmobileport().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strmobileport(), target);
+  }
+
+  // string strChannelCount = 4;
+  if (this->strchannelcount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strchannelcount().data(), this->strchannelcount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strchannelcount(), target);
+  }
+
+  // string strDeviceSN = 5;
+  if (this->strdevicesn().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strdevicesn().data(), this->strdevicesn().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->strdevicesn(), target);
+  }
+
+  // string strP2pID = 6;
+  if (this->strp2pid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strp2pid().data(), this->strp2pid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->strp2pid(), target);
+  }
+
+  // string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strextend().data(), this->strextend().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->strextend(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  return target;
+}
+
+size_t QueryDeviceP2pIDRsp_USR::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  size_t total_size = 0;
+
+  // string strUpdateTime = 1;
+  if (this->strupdatetime().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strupdatetime());
+  }
+
+  // string strWebPort = 2;
+  if (this->strwebport().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strwebport());
+  }
+
+  // string strMobilePort = 3;
+  if (this->strmobileport().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strmobileport());
+  }
+
+  // string strChannelCount = 4;
+  if (this->strchannelcount().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strchannelcount());
+  }
+
+  // string strDeviceSN = 5;
+  if (this->strdevicesn().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strdevicesn());
+  }
+
+  // string strP2pID = 6;
+  if (this->strp2pid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strp2pid());
+  }
+
+  // string strExtend = 7;
+  if (this->strextend().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strextend());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QueryDeviceP2pIDRsp_USR::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QueryDeviceP2pIDRsp_USR* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QueryDeviceP2pIDRsp_USR>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+    MergeFrom(*source);
+  }
+}
+
+void QueryDeviceP2pIDRsp_USR::MergeFrom(const QueryDeviceP2pIDRsp_USR& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strupdatetime().size() > 0) {
+
+    strupdatetime_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strupdatetime_);
+  }
+  if (from.strwebport().size() > 0) {
+
+    strwebport_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strwebport_);
+  }
+  if (from.strmobileport().size() > 0) {
+
+    strmobileport_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strmobileport_);
+  }
+  if (from.strchannelcount().size() > 0) {
+
+    strchannelcount_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strchannelcount_);
+  }
+  if (from.strdevicesn().size() > 0) {
+
+    strdevicesn_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strdevicesn_);
+  }
+  if (from.strp2pid().size() > 0) {
+
+    strp2pid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strp2pid_);
+  }
+  if (from.strextend().size() > 0) {
+
+    strextend_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strextend_);
+  }
+}
+
+void QueryDeviceP2pIDRsp_USR::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QueryDeviceP2pIDRsp_USR::CopyFrom(const QueryDeviceP2pIDRsp_USR& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Interactive.Message.QueryDeviceP2pIDRsp_USR)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QueryDeviceP2pIDRsp_USR::IsInitialized() const {
+  return true;
+}
+
+void QueryDeviceP2pIDRsp_USR::Swap(QueryDeviceP2pIDRsp_USR* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QueryDeviceP2pIDRsp_USR::InternalSwap(QueryDeviceP2pIDRsp_USR* other) {
+  strupdatetime_.Swap(&other->strupdatetime_);
+  strwebport_.Swap(&other->strwebport_);
+  strmobileport_.Swap(&other->strmobileport_);
+  strchannelcount_.Swap(&other->strchannelcount_);
+  strdevicesn_.Swap(&other->strdevicesn_);
+  strp2pid_.Swap(&other->strp2pid_);
+  strextend_.Swap(&other->strextend_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QueryDeviceP2pIDRsp_USR::GetMetadata() const {
+  protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[135];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QueryDeviceP2pIDRsp_USR
+
+// string strUpdateTime = 1;
+void QueryDeviceP2pIDRsp_USR::clear_strupdatetime() {
+  strupdatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strupdatetime() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+  return strupdatetime_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strupdatetime(const ::std::string& value) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strupdatetime(::std::string&& value) {
+  
+  strupdatetime_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strupdatetime(const char* value) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+}
+void QueryDeviceP2pIDRsp_USR::set_strupdatetime(const char* value, size_t size) {
+  
+  strupdatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strupdatetime() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+  return strupdatetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strupdatetime() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+  
+  return strupdatetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strupdatetime(::std::string* strupdatetime) {
+  if (strupdatetime != NULL) {
+    
+  } else {
+    
+  }
+  strupdatetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatetime);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strUpdateTime)
+}
+
+// string strWebPort = 2;
+void QueryDeviceP2pIDRsp_USR::clear_strwebport() {
+  strwebport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strwebport() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+  return strwebport_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strwebport(const ::std::string& value) {
+  
+  strwebport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strwebport(::std::string&& value) {
+  
+  strwebport_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strwebport(const char* value) {
+  
+  strwebport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+}
+void QueryDeviceP2pIDRsp_USR::set_strwebport(const char* value, size_t size) {
+  
+  strwebport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strwebport() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+  return strwebport_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strwebport() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+  
+  return strwebport_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strwebport(::std::string* strwebport) {
+  if (strwebport != NULL) {
+    
+  } else {
+    
+  }
+  strwebport_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strwebport);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strWebPort)
+}
+
+// string strMobilePort = 3;
+void QueryDeviceP2pIDRsp_USR::clear_strmobileport() {
+  strmobileport_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strmobileport() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+  return strmobileport_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strmobileport(const ::std::string& value) {
+  
+  strmobileport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strmobileport(::std::string&& value) {
+  
+  strmobileport_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strmobileport(const char* value) {
+  
+  strmobileport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+}
+void QueryDeviceP2pIDRsp_USR::set_strmobileport(const char* value, size_t size) {
+  
+  strmobileport_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strmobileport() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+  return strmobileport_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strmobileport() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+  
+  return strmobileport_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strmobileport(::std::string* strmobileport) {
+  if (strmobileport != NULL) {
+    
+  } else {
+    
+  }
+  strmobileport_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strmobileport);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strMobilePort)
+}
+
+// string strChannelCount = 4;
+void QueryDeviceP2pIDRsp_USR::clear_strchannelcount() {
+  strchannelcount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strchannelcount() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+  return strchannelcount_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strchannelcount(const ::std::string& value) {
+  
+  strchannelcount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strchannelcount(::std::string&& value) {
+  
+  strchannelcount_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strchannelcount(const char* value) {
+  
+  strchannelcount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+}
+void QueryDeviceP2pIDRsp_USR::set_strchannelcount(const char* value, size_t size) {
+  
+  strchannelcount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strchannelcount() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+  return strchannelcount_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strchannelcount() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+  
+  return strchannelcount_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strchannelcount(::std::string* strchannelcount) {
+  if (strchannelcount != NULL) {
+    
+  } else {
+    
+  }
+  strchannelcount_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strchannelcount);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strChannelCount)
+}
+
+// string strDeviceSN = 5;
+void QueryDeviceP2pIDRsp_USR::clear_strdevicesn() {
+  strdevicesn_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strdevicesn() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+  return strdevicesn_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strdevicesn(const ::std::string& value) {
+  
+  strdevicesn_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strdevicesn(::std::string&& value) {
+  
+  strdevicesn_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strdevicesn(const char* value) {
+  
+  strdevicesn_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+}
+void QueryDeviceP2pIDRsp_USR::set_strdevicesn(const char* value, size_t size) {
+  
+  strdevicesn_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strdevicesn() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+  return strdevicesn_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strdevicesn() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+  
+  return strdevicesn_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strdevicesn(::std::string* strdevicesn) {
+  if (strdevicesn != NULL) {
+    
+  } else {
+    
+  }
+  strdevicesn_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevicesn);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strDeviceSN)
+}
+
+// string strP2pID = 6;
+void QueryDeviceP2pIDRsp_USR::clear_strp2pid() {
+  strp2pid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strp2pid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+  return strp2pid_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strp2pid(const ::std::string& value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strp2pid(::std::string&& value) {
+  
+  strp2pid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strp2pid(const char* value) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+}
+void QueryDeviceP2pIDRsp_USR::set_strp2pid(const char* value, size_t size) {
+  
+  strp2pid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strp2pid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+  return strp2pid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strp2pid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+  
+  return strp2pid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strp2pid(::std::string* strp2pid) {
+  if (strp2pid != NULL) {
+    
+  } else {
+    
+  }
+  strp2pid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strp2pid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strP2pID)
+}
+
+// string strExtend = 7;
+void QueryDeviceP2pIDRsp_USR::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QueryDeviceP2pIDRsp_USR::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+  return strextend_.GetNoArena();
+}
+void QueryDeviceP2pIDRsp_USR::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+}
+#if LANG_CXX11
+void QueryDeviceP2pIDRsp_USR::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+}
+#endif
+void QueryDeviceP2pIDRsp_USR::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+}
+void QueryDeviceP2pIDRsp_USR::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+}
+::std::string* QueryDeviceP2pIDRsp_USR::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QueryDeviceP2pIDRsp_USR::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QueryDeviceP2pIDRsp_USR::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryDeviceP2pIDRsp_USR.strExtend)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int QueryUploadURLReq_MGR::kStrValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -68073,7 +69439,7 @@ void QueryUploadURLReq_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUploadURLReq_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[134].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[136].descriptor;
 }
 
 const QueryUploadURLReq_MGR& QueryUploadURLReq_MGR::default_instance() {
@@ -68247,7 +69613,7 @@ void QueryUploadURLReq_MGR::InternalSwap(QueryUploadURLReq_MGR* other) {
 
 ::google::protobuf::Metadata QueryUploadURLReq_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[134];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[136];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -68354,7 +69720,7 @@ void QueryUploadURLRsp_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryUploadURLRsp_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[135].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[137].descriptor;
 }
 
 const QueryUploadURLRsp_MGR& QueryUploadURLRsp_MGR::default_instance() {
@@ -68528,7 +69894,7 @@ void QueryUploadURLRsp_MGR::InternalSwap(QueryUploadURLRsp_MGR* other) {
 
 ::google::protobuf::Metadata QueryUploadURLRsp_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[135];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[137];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -68638,7 +70004,7 @@ void AddConfigurationReq_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddConfigurationReq_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[136].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[138].descriptor;
 }
 
 const AddConfigurationReq_MGR& AddConfigurationReq_MGR::default_instance() {
@@ -68802,7 +70168,7 @@ void AddConfigurationReq_MGR::InternalSwap(AddConfigurationReq_MGR* other) {
 
 ::google::protobuf::Metadata AddConfigurationReq_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[136];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[138];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -68896,7 +70262,7 @@ void AddConfigurationRsp_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* AddConfigurationRsp_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[137].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[139].descriptor;
 }
 
 const AddConfigurationRsp_MGR& AddConfigurationRsp_MGR::default_instance() {
@@ -69070,7 +70436,7 @@ void AddConfigurationRsp_MGR::InternalSwap(AddConfigurationRsp_MGR* other) {
 
 ::google::protobuf::Metadata AddConfigurationRsp_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[137];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[139];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -69184,7 +70550,7 @@ void DeleteConfigurationReq_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteConfigurationReq_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[138].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[140].descriptor;
 }
 
 const DeleteConfigurationReq_MGR& DeleteConfigurationReq_MGR::default_instance() {
@@ -69407,7 +70773,7 @@ void DeleteConfigurationReq_MGR::InternalSwap(DeleteConfigurationReq_MGR* other)
 
 ::google::protobuf::Metadata DeleteConfigurationReq_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[138];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[140];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -69566,7 +70932,7 @@ void DeleteConfigurationRsp_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* DeleteConfigurationRsp_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[139].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[141].descriptor;
 }
 
 const DeleteConfigurationRsp_MGR& DeleteConfigurationRsp_MGR::default_instance() {
@@ -69740,7 +71106,7 @@ void DeleteConfigurationRsp_MGR::InternalSwap(DeleteConfigurationRsp_MGR* other)
 
 ::google::protobuf::Metadata DeleteConfigurationRsp_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[139];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[141];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -69850,7 +71216,7 @@ void ModifyConfigurationReq_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyConfigurationReq_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[140].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[142].descriptor;
 }
 
 const ModifyConfigurationReq_MGR& ModifyConfigurationReq_MGR::default_instance() {
@@ -70014,7 +71380,7 @@ void ModifyConfigurationReq_MGR::InternalSwap(ModifyConfigurationReq_MGR* other)
 
 ::google::protobuf::Metadata ModifyConfigurationReq_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[140];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[142];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -70108,7 +71474,7 @@ void ModifyConfigurationRsp_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* ModifyConfigurationRsp_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[141].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[143].descriptor;
 }
 
 const ModifyConfigurationRsp_MGR& ModifyConfigurationRsp_MGR::default_instance() {
@@ -70282,7 +71648,7 @@ void ModifyConfigurationRsp_MGR::InternalSwap(ModifyConfigurationRsp_MGR* other)
 
 ::google::protobuf::Metadata ModifyConfigurationRsp_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[141];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[143];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -70385,7 +71751,7 @@ void QueryAllConfigurationReq_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllConfigurationReq_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[142].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[144].descriptor;
 }
 
 const QueryAllConfigurationReq_MGR& QueryAllConfigurationReq_MGR::default_instance() {
@@ -70545,7 +71911,7 @@ void QueryAllConfigurationReq_MGR::InternalSwap(QueryAllConfigurationReq_MGR* ot
 
 ::google::protobuf::Metadata QueryAllConfigurationReq_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[142];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[144];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -70609,7 +71975,7 @@ void QueryAllConfigurationRsp_MGR::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* QueryAllConfigurationRsp_MGR::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[143].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[145].descriptor;
 }
 
 const QueryAllConfigurationRsp_MGR& QueryAllConfigurationRsp_MGR::default_instance() {
@@ -70774,7 +72140,7 @@ void QueryAllConfigurationRsp_MGR::InternalSwap(QueryAllConfigurationRsp_MGR* ot
 
 ::google::protobuf::Metadata QueryAllConfigurationRsp_MGR::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[143];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[145];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -70859,7 +72225,7 @@ void GetOnlineDevInfoReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineDevInfoReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[144].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[146].descriptor;
 }
 
 const GetOnlineDevInfoReq_INNER& GetOnlineDevInfoReq_INNER::default_instance() {
@@ -71033,7 +72399,7 @@ void GetOnlineDevInfoReq_INNER::InternalSwap(GetOnlineDevInfoReq_INNER* other) {
 
 ::google::protobuf::Metadata GetOnlineDevInfoReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[144];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[146];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -71142,7 +72508,7 @@ void GetOnlineDevInfoRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineDevInfoRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[145].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[147].descriptor;
 }
 
 const GetOnlineDevInfoRsp_INNER& GetOnlineDevInfoRsp_INNER::default_instance() {
@@ -71356,7 +72722,7 @@ void GetOnlineDevInfoRsp_INNER::InternalSwap(GetOnlineDevInfoRsp_INNER* other) {
 
 ::google::protobuf::Metadata GetOnlineDevInfoRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[145];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[147];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -71495,7 +72861,7 @@ void BroadcastOnlineDevInfo_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BroadcastOnlineDevInfo_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[146].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[148].descriptor;
 }
 
 const BroadcastOnlineDevInfo_INNER& BroadcastOnlineDevInfo_INNER::default_instance() {
@@ -71709,7 +73075,7 @@ void BroadcastOnlineDevInfo_INNER::InternalSwap(BroadcastOnlineDevInfo_INNER* ot
 
 ::google::protobuf::Metadata BroadcastOnlineDevInfo_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[146];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[148];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -71846,7 +73212,7 @@ void GetOnlineUserInfoReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineUserInfoReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[147].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[149].descriptor;
 }
 
 const GetOnlineUserInfoReq_INNER& GetOnlineUserInfoReq_INNER::default_instance() {
@@ -72020,7 +73386,7 @@ void GetOnlineUserInfoReq_INNER::InternalSwap(GetOnlineUserInfoReq_INNER* other)
 
 ::google::protobuf::Metadata GetOnlineUserInfoReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[147];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[149];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -72129,7 +73495,7 @@ void GetOnlineUserInfoRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetOnlineUserInfoRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[148].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[150].descriptor;
 }
 
 const GetOnlineUserInfoRsp_INNER& GetOnlineUserInfoRsp_INNER::default_instance() {
@@ -72343,7 +73709,7 @@ void GetOnlineUserInfoRsp_INNER::InternalSwap(GetOnlineUserInfoRsp_INNER* other)
 
 ::google::protobuf::Metadata GetOnlineUserInfoRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[148];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[150];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -72482,7 +73848,7 @@ void BroadcastOnlineUserInfo_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* BroadcastOnlineUserInfo_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[149].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[151].descriptor;
 }
 
 const BroadcastOnlineUserInfo_INNER& BroadcastOnlineUserInfo_INNER::default_instance() {
@@ -72696,7 +74062,7 @@ void BroadcastOnlineUserInfo_INNER::InternalSwap(BroadcastOnlineUserInfo_INNER* 
 
 ::google::protobuf::Metadata BroadcastOnlineUserInfo_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[149];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[151];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -72829,7 +74195,7 @@ void GetDeviceAccessRecordReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetDeviceAccessRecordReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[150].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[152].descriptor;
 }
 
 const GetDeviceAccessRecordReq_INNER& GetDeviceAccessRecordReq_INNER::default_instance() {
@@ -72989,7 +74355,7 @@ void GetDeviceAccessRecordReq_INNER::InternalSwap(GetDeviceAccessRecordReq_INNER
 
 ::google::protobuf::Metadata GetDeviceAccessRecordReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[150];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[152];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -73056,7 +74422,7 @@ void GetDeviceAccessRecordRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetDeviceAccessRecordRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[151].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[153].descriptor;
 }
 
 const GetDeviceAccessRecordRsp_INNER& GetDeviceAccessRecordRsp_INNER::default_instance() {
@@ -73256,7 +74622,7 @@ void GetDeviceAccessRecordRsp_INNER::InternalSwap(GetDeviceAccessRecordRsp_INNER
 
 ::google::protobuf::Metadata GetDeviceAccessRecordRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[151];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[153];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -73351,7 +74717,7 @@ void GetUserAccessRecordReq_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetUserAccessRecordReq_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[152].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[154].descriptor;
 }
 
 const GetUserAccessRecordReq_INNER& GetUserAccessRecordReq_INNER::default_instance() {
@@ -73511,7 +74877,7 @@ void GetUserAccessRecordReq_INNER::InternalSwap(GetUserAccessRecordReq_INNER* ot
 
 ::google::protobuf::Metadata GetUserAccessRecordReq_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[152];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[154];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -73578,7 +74944,7 @@ void GetUserAccessRecordRsp_INNER::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* GetUserAccessRecordRsp_INNER::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[153].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[155].descriptor;
 }
 
 const GetUserAccessRecordRsp_INNER& GetUserAccessRecordRsp_INNER::default_instance() {
@@ -73778,7 +75144,7 @@ void GetUserAccessRecordRsp_INNER::InternalSwap(GetUserAccessRecordRsp_INNER* ot
 
 ::google::protobuf::Metadata GetUserAccessRecordRsp_INNER::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[153];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[155];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -73893,6 +75259,7 @@ const int Req::kUnregisterCmsCallReqUSRValueFieldNumber;
 const int Req::kQuerySharingDeviceLimitReqUSRValueFieldNumber;
 const int Req::kQueryDeviceCapacityReqUSRValueFieldNumber;
 const int Req::kQueryALLDeviceCapacityReqUSRValueFieldNumber;
+const int Req::kQueryDeviceP2PIDReqUSRValueFieldNumber;
 const int Req::kGetOnlineDevInfoReqINNERValueFieldNumber;
 const int Req::kBroadcastOnlineDevInfoINNERValueFieldNumber;
 const int Req::kGetOnlineUserInfoReqINNERValueFieldNumber;
@@ -74219,6 +75586,11 @@ Req::Req(const Req& from)
   } else {
     queryalldevicecapacityreq_usr_value_ = NULL;
   }
+  if (from.has_querydevicep2pidreq_usr_value()) {
+    querydevicep2pidreq_usr_value_ = new ::Interactive::Message::QueryDeviceP2pIDReq_USR(*from.querydevicep2pidreq_usr_value_);
+  } else {
+    querydevicep2pidreq_usr_value_ = NULL;
+  }
   if (from.has_getonlinedevinforeq_inner_value()) {
     getonlinedevinforeq_inner_value_ = new ::Interactive::Message::GetOnlineDevInfoReq_INNER(*from.getonlinedevinforeq_inner_value_);
   } else {
@@ -74470,6 +75842,9 @@ void Req::SharedDtor() {
     delete queryalldevicecapacityreq_usr_value_;
   }
   if (this != internal_default_instance()) {
+    delete querydevicep2pidreq_usr_value_;
+  }
+  if (this != internal_default_instance()) {
     delete getonlinedevinforeq_inner_value_;
   }
   if (this != internal_default_instance()) {
@@ -74511,7 +75886,7 @@ void Req::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Req::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[154].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[156].descriptor;
 }
 
 const Req& Req::default_instance() {
@@ -74769,6 +76144,10 @@ void Req::Clear() {
     delete queryalldevicecapacityreq_usr_value_;
   }
   queryalldevicecapacityreq_usr_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querydevicep2pidreq_usr_value_ != NULL) {
+    delete querydevicep2pidreq_usr_value_;
+  }
+  querydevicep2pidreq_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && getonlinedevinforeq_inner_value_ != NULL) {
     delete getonlinedevinforeq_inner_value_;
   }
@@ -75606,6 +76985,17 @@ bool Req::MergePartialFromCodedStream(
         break;
       }
 
+      // .Interactive.Message.QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;
+      case 1106: {
+        if (tag == 8850u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querydevicep2pidreq_usr_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -76054,6 +77444,12 @@ void Req::SerializeWithCachedSizes(
   if (this->has_queryalldevicecapacityreq_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1105, *this->queryalldevicecapacityreq_usr_value_, output);
+  }
+
+  // .Interactive.Message.QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;
+  if (this->has_querydevicep2pidreq_usr_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1106, *this->querydevicep2pidreq_usr_value_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.Req)
@@ -76560,6 +77956,13 @@ void Req::SerializeWithCachedSizes(
         1105, *this->queryalldevicecapacityreq_usr_value_, false, target);
   }
 
+  // .Interactive.Message.QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;
+  if (this->has_querydevicep2pidreq_usr_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1106, *this->querydevicep2pidreq_usr_value_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.Req)
   return target;
 }
@@ -76988,6 +78391,13 @@ size_t Req::ByteSizeLong() const {
         *this->queryalldevicecapacityreq_usr_value_);
   }
 
+  // .Interactive.Message.QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;
+  if (this->has_querydevicep2pidreq_usr_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querydevicep2pidreq_usr_value_);
+  }
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   if (this->has_getonlinedevinforeq_inner_value()) {
     total_size += 2 +
@@ -77271,6 +78681,9 @@ void Req::MergeFrom(const Req& from) {
   if (from.has_queryalldevicecapacityreq_usr_value()) {
     mutable_queryalldevicecapacityreq_usr_value()->::Interactive::Message::QueryALLDeviceCapacityReq_USR::MergeFrom(from.queryalldevicecapacityreq_usr_value());
   }
+  if (from.has_querydevicep2pidreq_usr_value()) {
+    mutable_querydevicep2pidreq_usr_value()->::Interactive::Message::QueryDeviceP2pIDReq_USR::MergeFrom(from.querydevicep2pidreq_usr_value());
+  }
   if (from.has_getonlinedevinforeq_inner_value()) {
     mutable_getonlinedevinforeq_inner_value()->::Interactive::Message::GetOnlineDevInfoReq_INNER::MergeFrom(from.getonlinedevinforeq_inner_value());
   }
@@ -77389,6 +78802,7 @@ void Req::InternalSwap(Req* other) {
   std::swap(querysharingdevicelimitreq_usr_value_, other->querysharingdevicelimitreq_usr_value_);
   std::swap(querydevicecapacityreq_usr_value_, other->querydevicecapacityreq_usr_value_);
   std::swap(queryalldevicecapacityreq_usr_value_, other->queryalldevicecapacityreq_usr_value_);
+  std::swap(querydevicep2pidreq_usr_value_, other->querydevicep2pidreq_usr_value_);
   std::swap(getonlinedevinforeq_inner_value_, other->getonlinedevinforeq_inner_value_);
   std::swap(broadcastonlinedevinfo_inner_value_, other->broadcastonlinedevinfo_inner_value_);
   std::swap(getonlineuserinforeq_inner_value_, other->getonlineuserinforeq_inner_value_);
@@ -77405,7 +78819,7 @@ void Req::InternalSwap(Req* other) {
 
 ::google::protobuf::Metadata Req::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[154];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[156];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -79751,6 +81165,45 @@ void Req::set_allocated_queryalldevicecapacityreq_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryALLDeviceCapacityReq_USR_Value)
 }
 
+// .Interactive.Message.QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;
+bool Req::has_querydevicep2pidreq_usr_value() const {
+  return this != internal_default_instance() && querydevicep2pidreq_usr_value_ != NULL;
+}
+void Req::clear_querydevicep2pidreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevicep2pidreq_usr_value_ != NULL) delete querydevicep2pidreq_usr_value_;
+  querydevicep2pidreq_usr_value_ = NULL;
+}
+const ::Interactive::Message::QueryDeviceP2pIDReq_USR& Req::querydevicep2pidreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryDeviceP2pIDReq_USR_Value)
+  return querydevicep2pidreq_usr_value_ != NULL ? *querydevicep2pidreq_usr_value_
+                         : *::Interactive::Message::QueryDeviceP2pIDReq_USR::internal_default_instance();
+}
+::Interactive::Message::QueryDeviceP2pIDReq_USR* Req::mutable_querydevicep2pidreq_usr_value() {
+  
+  if (querydevicep2pidreq_usr_value_ == NULL) {
+    querydevicep2pidreq_usr_value_ = new ::Interactive::Message::QueryDeviceP2pIDReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryDeviceP2pIDReq_USR_Value)
+  return querydevicep2pidreq_usr_value_;
+}
+::Interactive::Message::QueryDeviceP2pIDReq_USR* Req::release_querydevicep2pidreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryDeviceP2pIDReq_USR_Value)
+  
+  ::Interactive::Message::QueryDeviceP2pIDReq_USR* temp = querydevicep2pidreq_usr_value_;
+  querydevicep2pidreq_usr_value_ = NULL;
+  return temp;
+}
+void Req::set_allocated_querydevicep2pidreq_usr_value(::Interactive::Message::QueryDeviceP2pIDReq_USR* querydevicep2pidreq_usr_value) {
+  delete querydevicep2pidreq_usr_value_;
+  querydevicep2pidreq_usr_value_ = querydevicep2pidreq_usr_value;
+  if (querydevicep2pidreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDeviceP2pIDReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -80247,6 +81700,7 @@ const int Rsp::kUnregisterCmsCallRspUSRValueFieldNumber;
 const int Rsp::kQuerySharingDeviceLimitRspUSRValueFieldNumber;
 const int Rsp::kQueryDeviceCapacityRspUSRValueFieldNumber;
 const int Rsp::kQueryALLDeviceCapacityRspUSRValueFieldNumber;
+const int Rsp::kQueryDeviceP2PIDRspUSRValueFieldNumber;
 const int Rsp::kGetOnlineDevInfoRspINNERValueFieldNumber;
 const int Rsp::kGetOnlineUserInfoRspINNERValueFieldNumber;
 const int Rsp::kGetDeviceAccessRecordRspINNERValueFieldNumber;
@@ -80575,6 +82029,11 @@ Rsp::Rsp(const Rsp& from)
   } else {
     queryalldevicecapacityrsp_usr_value_ = NULL;
   }
+  if (from.has_querydevicep2pidrsp_usr_value()) {
+    querydevicep2pidrsp_usr_value_ = new ::Interactive::Message::QueryDeviceP2pIDRsp_USR(*from.querydevicep2pidrsp_usr_value_);
+  } else {
+    querydevicep2pidrsp_usr_value_ = NULL;
+  }
   if (from.has_getonlinedevinforsp_inner_value()) {
     getonlinedevinforsp_inner_value_ = new ::Interactive::Message::GetOnlineDevInfoRsp_INNER(*from.getonlinedevinforsp_inner_value_);
   } else {
@@ -80819,6 +82278,9 @@ void Rsp::SharedDtor() {
     delete queryalldevicecapacityrsp_usr_value_;
   }
   if (this != internal_default_instance()) {
+    delete querydevicep2pidrsp_usr_value_;
+  }
+  if (this != internal_default_instance()) {
     delete getonlinedevinforsp_inner_value_;
   }
   if (this != internal_default_instance()) {
@@ -80854,7 +82316,7 @@ void Rsp::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Rsp::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[155].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[157].descriptor;
 }
 
 const Rsp& Rsp::default_instance() {
@@ -81113,6 +82575,10 @@ void Rsp::Clear() {
     delete queryalldevicecapacityrsp_usr_value_;
   }
   queryalldevicecapacityrsp_usr_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querydevicep2pidrsp_usr_value_ != NULL) {
+    delete querydevicep2pidrsp_usr_value_;
+  }
+  querydevicep2pidrsp_usr_value_ = NULL;
   if (GetArenaNoVirtual() == NULL && getonlinedevinforsp_inner_value_ != NULL) {
     delete getonlinedevinforsp_inner_value_;
   }
@@ -81949,6 +83415,17 @@ bool Rsp::MergePartialFromCodedStream(
         break;
       }
 
+      // .Interactive.Message.QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;
+      case 1106: {
+        if (tag == 8850u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querydevicep2pidrsp_usr_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -82400,6 +83877,12 @@ void Rsp::SerializeWithCachedSizes(
   if (this->has_queryalldevicecapacityrsp_usr_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1105, *this->queryalldevicecapacityrsp_usr_value_, output);
+  }
+
+  // .Interactive.Message.QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;
+  if (this->has_querydevicep2pidrsp_usr_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1106, *this->querydevicep2pidrsp_usr_value_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:Interactive.Message.Rsp)
@@ -82908,6 +84391,13 @@ void Rsp::SerializeWithCachedSizes(
         1105, *this->queryalldevicecapacityrsp_usr_value_, false, target);
   }
 
+  // .Interactive.Message.QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;
+  if (this->has_querydevicep2pidrsp_usr_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1106, *this->querydevicep2pidrsp_usr_value_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Interactive.Message.Rsp)
   return target;
 }
@@ -83343,6 +84833,13 @@ size_t Rsp::ByteSizeLong() const {
         *this->queryalldevicecapacityrsp_usr_value_);
   }
 
+  // .Interactive.Message.QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;
+  if (this->has_querydevicep2pidrsp_usr_value()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querydevicep2pidrsp_usr_value_);
+  }
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   if (this->has_getonlinedevinforsp_inner_value()) {
     total_size += 2 +
@@ -83623,6 +85120,9 @@ void Rsp::MergeFrom(const Rsp& from) {
   if (from.has_queryalldevicecapacityrsp_usr_value()) {
     mutable_queryalldevicecapacityrsp_usr_value()->::Interactive::Message::QueryALLDeviceCapacityRsp_USR::MergeFrom(from.queryalldevicecapacityrsp_usr_value());
   }
+  if (from.has_querydevicep2pidrsp_usr_value()) {
+    mutable_querydevicep2pidrsp_usr_value()->::Interactive::Message::QueryDeviceP2pIDRsp_USR::MergeFrom(from.querydevicep2pidrsp_usr_value());
+  }
   if (from.has_getonlinedevinforsp_inner_value()) {
     mutable_getonlinedevinforsp_inner_value()->::Interactive::Message::GetOnlineDevInfoRsp_INNER::MergeFrom(from.getonlinedevinforsp_inner_value());
   }
@@ -83739,6 +85239,7 @@ void Rsp::InternalSwap(Rsp* other) {
   std::swap(querysharingdevicelimitrsp_usr_value_, other->querysharingdevicelimitrsp_usr_value_);
   std::swap(querydevicecapacityrsp_usr_value_, other->querydevicecapacityrsp_usr_value_);
   std::swap(queryalldevicecapacityrsp_usr_value_, other->queryalldevicecapacityrsp_usr_value_);
+  std::swap(querydevicep2pidrsp_usr_value_, other->querydevicep2pidrsp_usr_value_);
   std::swap(getonlinedevinforsp_inner_value_, other->getonlinedevinforsp_inner_value_);
   std::swap(getonlineuserinforsp_inner_value_, other->getonlineuserinforsp_inner_value_);
   std::swap(getdeviceaccessrecordrsp_inner_value_, other->getdeviceaccessrecordrsp_inner_value_);
@@ -83754,7 +85255,7 @@ void Rsp::InternalSwap(Rsp* other) {
 
 ::google::protobuf::Metadata Rsp::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[155];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[157];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -86166,6 +87667,45 @@ void Rsp::set_allocated_queryalldevicecapacityrsp_usr_value(::Interactive::Messa
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryALLDeviceCapacityRsp_USR_Value)
 }
 
+// .Interactive.Message.QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;
+bool Rsp::has_querydevicep2pidrsp_usr_value() const {
+  return this != internal_default_instance() && querydevicep2pidrsp_usr_value_ != NULL;
+}
+void Rsp::clear_querydevicep2pidrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && querydevicep2pidrsp_usr_value_ != NULL) delete querydevicep2pidrsp_usr_value_;
+  querydevicep2pidrsp_usr_value_ = NULL;
+}
+const ::Interactive::Message::QueryDeviceP2pIDRsp_USR& Rsp::querydevicep2pidrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryDeviceP2pIDRsp_USR_Value)
+  return querydevicep2pidrsp_usr_value_ != NULL ? *querydevicep2pidrsp_usr_value_
+                         : *::Interactive::Message::QueryDeviceP2pIDRsp_USR::internal_default_instance();
+}
+::Interactive::Message::QueryDeviceP2pIDRsp_USR* Rsp::mutable_querydevicep2pidrsp_usr_value() {
+  
+  if (querydevicep2pidrsp_usr_value_ == NULL) {
+    querydevicep2pidrsp_usr_value_ = new ::Interactive::Message::QueryDeviceP2pIDRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryDeviceP2pIDRsp_USR_Value)
+  return querydevicep2pidrsp_usr_value_;
+}
+::Interactive::Message::QueryDeviceP2pIDRsp_USR* Rsp::release_querydevicep2pidrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryDeviceP2pIDRsp_USR_Value)
+  
+  ::Interactive::Message::QueryDeviceP2pIDRsp_USR* temp = querydevicep2pidrsp_usr_value_;
+  querydevicep2pidrsp_usr_value_ = NULL;
+  return temp;
+}
+void Rsp::set_allocated_querydevicep2pidrsp_usr_value(::Interactive::Message::QueryDeviceP2pIDRsp_USR* querydevicep2pidrsp_usr_value) {
+  delete querydevicep2pidrsp_usr_value_;
+  querydevicep2pidrsp_usr_value_ = querydevicep2pidrsp_usr_value;
+  if (querydevicep2pidrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDeviceP2pIDRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -86591,7 +88131,7 @@ void InteractiveMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* InteractiveMessage::descriptor() {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[156].descriptor;
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[158].descriptor;
 }
 
 const InteractiveMessage& InteractiveMessage::default_instance() {
@@ -86915,7 +88455,7 @@ void InteractiveMessage::InternalSwap(InteractiveMessage* other) {
 
 ::google::protobuf::Metadata InteractiveMessage::GetMetadata() const {
   protobuf_InteractiveProtocol_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[156];
+  return protobuf_InteractiveProtocol_2eproto::file_level_metadata[158];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

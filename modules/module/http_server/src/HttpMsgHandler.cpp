@@ -137,6 +137,8 @@ const std::string HttpMsgHandler::QUERY_DEVICE_CAPACITY_ACTION("query_device_cap
 
 const std::string HttpMsgHandler::QUERY_ALL_DEVICE_CAPACITY_ACTION("query_all_device_capacity");
 
+const std::string HttpMsgHandler::QUERY_DEVICE_P2PID("query_device_p2pid");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler)
@@ -6310,8 +6312,9 @@ bool HttpMsgHandler::RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
 
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsP2pIDFailedList;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsP2pIDFailedList)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -6320,9 +6323,19 @@ bool HttpMsgHandler::RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
-        }
 
-        this_->WriteMsg(ResultInfoMap, writer, blResult);
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["p2pid_failed"] = jsP2pIDFailedList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+        else
+        {
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
     }
     BOOST_SCOPE_EXIT_END
 
@@ -6393,8 +6406,15 @@ bool HttpMsgHandler::RegisterCmsCallHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
 
     std::string strAddress;
     std::string strPort;
-    if (!RegisterCmsCall(strCmsID, strCmsP2pIDList2, strDeviceMac, strDeviceP2pID, strAddress, strPort))
+    std::list<std::string> strP2pIDFailedList;
+    if (!RegisterCmsCall(strCmsID, strCmsP2pIDList2, strDeviceMac, strDeviceP2pID, strAddress, strPort, strP2pIDFailedList))
     {
+        unsigned int i = 0;
+        for (auto itBegin = strP2pIDFailedList.begin(), itEnd = strP2pIDFailedList.end(); itBegin != itEnd; ++itBegin, ++i)
+        {
+            jsP2pIDFailedList[i] = *itBegin;
+        }
+
         LOG_ERROR_RLD("Register cms call handle failed");
         return blResult;
     }
@@ -6700,6 +6720,62 @@ bool HttpMsgHandler::QueryAllDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap>
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryDeviceP2pIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("domain_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Domain name not found.");
+        return blResult;
+    }
+    const std::string strDomainName = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query device p2p id received and domain name is " << strDomainName);
+
+    DevP2pIDInfo p2pinfo;
+
+    if (!QueryDeviceP2pID(strDomainName, p2pinfo))
+    {
+        LOG_ERROR_RLD("Query device p2p id handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("updatetime", p2pinfo.m_strUpdateTime));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("webport", p2pinfo.m_strWebPort));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("mobileport", p2pinfo.m_strMobilePort));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("channelcount", p2pinfo.m_strChannelCount));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("devicesn", p2pinfo.m_strDeviceSN));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("p2pid", p2pinfo.m_strP2pID));
     
     blResult = true;
 
@@ -10326,7 +10402,7 @@ bool HttpMsgHandler::CmsCall(const std::string &strCmsCallMsg, std::string &strR
 }
 
 bool HttpMsgHandler::RegisterCmsCall(const std::string &strCmsID, std::list<std::string> &strCmsP2pIDList, const std::string &strDeviceMac, 
-    const std::string &strDeviceP2pID, std::string &strAddress, std::string &strPort)
+    const std::string &strDeviceP2pID, std::string &strAddress, std::string &strPort, std::list<std::string> &strP2pIDFailedList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -10364,8 +10440,11 @@ bool HttpMsgHandler::RegisterCmsCall(const std::string &strCmsID, std::list<std:
 
         strAddress = RegCmsCallRsp.m_strAddress;
         strPort = RegCmsCallRsp.m_strPort;
-        
+        strP2pIDFailedList.swap(RegCmsCallRsp.m_strP2pIDFailedList);
+
         iRet = RegCmsCallRsp.m_iRetcode;
+
+        ReturnInfo::RetCode(iRet);
 
         LOG_INFO_RLD("Register cms call and address " << strAddress << " and port is " << strPort <<
             " and return code is " << RegCmsCallRsp.m_iRetcode <<
@@ -10592,6 +10671,64 @@ bool HttpMsgHandler::QueryAllDeviceCapacity(const std::string &strSid, const std
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &p2pinfo)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryDeviceP2pIDReq_USR QueryDevP2pIDReq;
+        QueryDevP2pIDReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceP2pIDReq_USR_T;
+        QueryDevP2pIDReq.m_uiMsgSeq = 1;
+        QueryDevP2pIDReq.m_strSID = "";
+
+        QueryDevP2pIDReq.m_strDomainName = strDomainName;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevP2pIDReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device p2p id req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR QueryDevP2pIDRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryDevP2pIDRsp))
+        {
+            LOG_ERROR_RLD("Query device p2p id rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryDevP2pIDRsp.m_iRetcode;
+
+        p2pinfo.m_strChannelCount = QueryDevP2pIDRsp.m_strChannelCount;
+        p2pinfo.m_strDeviceSN = QueryDevP2pIDRsp.m_strDeviceSN;
+        p2pinfo.m_strExtend = QueryDevP2pIDRsp.m_strExtend;
+        p2pinfo.m_strMobilePort = QueryDevP2pIDRsp.m_strMobilePort;
+        p2pinfo.m_strP2pID = QueryDevP2pIDRsp.m_strP2pID;
+        p2pinfo.m_strUpdateTime = QueryDevP2pIDRsp.m_strUpdateTime;
+        p2pinfo.m_strWebPort = QueryDevP2pIDRsp.m_strWebPort;
+
+        LOG_INFO_RLD("Query device p2p id and domain name is  " << strDomainName <<
+            " and return code is " << QueryDevP2pIDRsp.m_iRetcode <<
+            " and return msg is " << QueryDevP2pIDRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, RspFunc);
 
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&

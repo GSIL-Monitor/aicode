@@ -1356,6 +1356,20 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryALLDeviceCapacityRsp_USR_T, handler));
 
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceP2pIDReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceP2pIDReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceP2pIDReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceP2pIDRsp_USR_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2739,6 +2753,26 @@ bool InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_Serializer(const Req
 bool InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryAllDeviceCapacityRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryDeviceP2pIDReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceP2pIDReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceP2pIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryDeviceP2pIDReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryDeviceP2pIDRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryDeviceP2pIDRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -5590,6 +5624,11 @@ void InteractiveProtoHandler::RegisterCmsCallRsp_USR::UnSerializer(const Interac
     Rsp::UnSerializer(InteractiveMsg);
     m_strAddress = InteractiveMsg.rspvalue().registercmscallrsp_usr_value().straddress();
     m_strPort = InteractiveMsg.rspvalue().registercmscallrsp_usr_value().strport();
+
+    for (int i = 0, sz = InteractiveMsg.rspvalue().registercmscallrsp_usr_value().strp2pidfailedlist_size(); i < sz; ++i)
+    {
+        m_strP2pIDFailedList.push_back(InteractiveMsg.rspvalue().registercmscallrsp_usr_value().strp2pidfailedlist(i));
+    }
 }
 
 void InteractiveProtoHandler::RegisterCmsCallRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -5599,6 +5638,11 @@ void InteractiveProtoHandler::RegisterCmsCallRsp_USR::Serializer(InteractiveMess
 
     InteractiveMsg.mutable_rspvalue()->mutable_registercmscallrsp_usr_value()->set_straddress(m_strAddress);
     InteractiveMsg.mutable_rspvalue()->mutable_registercmscallrsp_usr_value()->set_strport(m_strPort);
+
+    for (auto it = m_strP2pIDFailedList.begin(), end = m_strP2pIDFailedList.end(); it != end; ++it)
+    {
+        InteractiveMsg.mutable_rspvalue()->mutable_registercmscallrsp_usr_value()->add_strp2pidfailedlist(*it);
+    }
 }
 
 
@@ -5751,4 +5795,45 @@ void InteractiveProtoHandler::QueryAllDeviceCapacityRsp_USR::Serializer(Interact
         }
         
     }
+}
+
+void InteractiveProtoHandler::QueryDeviceP2pIDReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDomainName = InteractiveMsg.reqvalue().querydevicep2pidreq_usr_value().strdomainname();
+}
+
+void InteractiveProtoHandler::QueryDeviceP2pIDReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceP2pIDReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_querydevicep2pidreq_usr_value()->set_strdomainname(m_strDomainName);
+}
+
+void InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strUpdateTime = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strupdatetime();
+    m_strWebPort = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strwebport();
+    m_strMobilePort = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strmobileport();
+    m_strChannelCount = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strchannelcount();
+    m_strDeviceSN = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strdevicesn();
+    m_strP2pID = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strp2pid();
+    m_strExtend = InteractiveMsg.rspvalue().querydevicep2pidrsp_usr_value().strextend();
+}
+
+void InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryDeviceP2pIDRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strupdatetime(m_strUpdateTime);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strwebport(m_strWebPort);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strmobileport(m_strMobilePort);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strchannelcount(m_strChannelCount);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strdevicesn(m_strDeviceSN);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strp2pid(m_strP2pID);
+    InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strextend(m_strExtend);
 }

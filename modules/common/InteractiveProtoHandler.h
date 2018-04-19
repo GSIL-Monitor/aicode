@@ -175,6 +175,9 @@ public:
         QueryALLDeviceCapacityReq_USR_T = 20969,      //查询所有设备能力集
         QueryALLDeviceCapacityRsp_USR_T = 20970,
 
+        QueryDeviceP2pIDReq_USR_T = 20971,               //查询设备P2PID
+        QueryDeviceP2pIDRsp_USR_T = 20972,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -1195,6 +1198,7 @@ public:
     {
         std::string m_strAddress;
         std::string m_strPort;
+        std::list<std::string> m_strP2pIDFailedList;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -1269,6 +1273,31 @@ public:
     struct QueryAllDeviceCapacityRsp_USR : Rsp
     {
         std::list<DeviceCapacity> m_DevCapList;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+
+    struct QueryDeviceP2pIDReq_USR : Req
+    {
+        std::string m_strDomainName;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryDeviceP2pIDRsp_USR : Rsp
+    {
+        std::string m_strUpdateTime;
+        std::string m_strWebPort;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+        std::string m_strDeviceSN;
+        std::string m_strP2pID;
+        std::string m_strExtend;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 
@@ -2172,6 +2201,10 @@ private:
     bool QueryAllDeviceCapacityRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryAllDeviceCapacityRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool QueryDeviceP2pIDReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryDeviceP2pIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryDeviceP2pIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryDeviceP2pIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

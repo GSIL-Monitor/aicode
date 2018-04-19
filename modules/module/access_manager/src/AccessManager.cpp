@@ -292,7 +292,9 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         InteractiveProtoHandler::MsgType::QueryIfP2pIDValidReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::QueryPlatformPushStatusReq_DEV_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::RegisterCmsCallReq_USR_T == req.m_MsgType ||
-        InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T == req.m_MsgType)
+        InteractiveProtoHandler::MsgType::UnregisterCmsCallReq_USR_T == req.m_MsgType ||
+        InteractiveProtoHandler::MsgType::QueryDeviceP2pIDReq_USR_T == req.m_MsgType)
+
     {
         LOG_INFO_RLD("PreCommonHandler return true because no need to check and msg type is " << req.m_MsgType);
         blResult = true;
@@ -4266,11 +4268,12 @@ bool AccessManager::RegisterCmsCallReq(const std::string &strMsg, const std::str
 
     bool blResult = false;
 
+    std::list<std::string> strP2pIDFailedList;
     std::string strAddress;
     std::string strPort;
     InteractiveProtoHandler::RegisterCmsCallReq_USR RegCmsReq;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &RegCmsReq, &writer, &strSrcID, &strAddress, &strPort)
+    BOOST_SCOPE_EXIT(&blResult, this_, &RegCmsReq, &writer, &strSrcID, &strAddress, &strPort, &strP2pIDFailedList)
     {
         InteractiveProtoHandler::RegisterCmsCallRsp_USR RegCmsRsp;
         RegCmsRsp.m_MsgType = InteractiveProtoHandler::MsgType::RegisterCmsCallRsp_USR_T;
@@ -4281,6 +4284,7 @@ bool AccessManager::RegisterCmsCallReq(const std::string &strMsg, const std::str
         
         RegCmsRsp.m_strAddress = strAddress;
         RegCmsRsp.m_strPort = strPort;
+        RegCmsRsp.m_strP2pIDFailedList.swap(strP2pIDFailedList);
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(RegCmsRsp, strSerializeOutPut))
@@ -4305,8 +4309,9 @@ bool AccessManager::RegisterCmsCallReq(const std::string &strMsg, const std::str
     //若是CMS注册，则首先校验CMS对应的p2pidlist，确保没有和现有的重复
     if (!RegCmsReq.m_strCmsID.empty()) //CMS注册消息
     {
-        if (!ValidCmsCallInfo(RegCmsReq.m_strCmsID, RegCmsReq.m_strCmsP2pIDList))
+        if (!ValidCmsCallInfo(RegCmsReq.m_strCmsID, RegCmsReq.m_strCmsP2pIDList, strP2pIDFailedList))
         {
+            ReturnInfo::RetCode(ReturnInfo::CMS_P2PID_DUPLICATE);
             LOG_ERROR_RLD("Valid failed and cms id is " << RegCmsReq.m_strCmsID);
             return false;
         }
@@ -4614,6 +4619,62 @@ bool AccessManager::QueryAllDeviceCapacityReq(const std::string &strMsg, const s
     blResult = true;
     return true;
 
+}
+
+bool AccessManager::QueryDeviceP2pIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    DevP2pIDInfo devp2pinfo;
+    InteractiveProtoHandler::QueryDeviceP2pIDReq_USR QueryDevP2pIDReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &QueryDevP2pIDReq, &writer, &strSrcID, &devp2pinfo)
+    {
+        InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR QueryDevP2pIDRsp;
+        QueryDevP2pIDRsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryDeviceP2pIDRsp_USR_T;
+        QueryDevP2pIDRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        QueryDevP2pIDRsp.m_strSID = QueryDevP2pIDReq.m_strSID;
+        QueryDevP2pIDRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        QueryDevP2pIDRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        QueryDevP2pIDRsp.m_strChannelCount = devp2pinfo.m_strChannelCount;
+        QueryDevP2pIDRsp.m_strDeviceSN = devp2pinfo.m_strDeviceSN;
+        QueryDevP2pIDRsp.m_strExtend = devp2pinfo.m_strExtend;
+        QueryDevP2pIDRsp.m_strMobilePort = devp2pinfo.m_strMobilePort;
+        QueryDevP2pIDRsp.m_strP2pID = devp2pinfo.m_strP2pID;
+        QueryDevP2pIDRsp.m_strUpdateTime = devp2pinfo.m_strUpdateTime;
+        QueryDevP2pIDRsp.m_strWebPort = devp2pinfo.m_strWebPort;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(QueryDevP2pIDRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query device p2p id rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Query device p2p id rsp already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, QueryDevP2pIDReq))
+    {
+        LOG_ERROR_RLD("Query device p2p id req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryDeviceP2pID(QueryDevP2pIDReq.m_strDomainName, devp2pinfo))
+    {
+        LOG_ERROR_RLD("Query device p2p id failed and  user id is " << QueryDevP2pIDReq.m_strDomainName);
+        return false;
+    }
+    
+    blResult = true;
+    return true;
 }
 
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
@@ -9288,7 +9349,7 @@ bool AccessManager::SaveCmsCallInfo(const std::string &strCmsID)
     return true;
 }
 
-bool AccessManager::ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList)
+bool AccessManager::ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList, std::list<std::string> &strP2pIDFailedList)
 {
     boost::unique_lock<boost::mutex> lock(m_CmsMutex);
     if (strCmsID.empty())
@@ -9297,6 +9358,7 @@ bool AccessManager::ValidCmsCallInfo(const std::string &strCmsID, const std::lis
         return false;
     }
 
+    bool blFlag = true;
     for (auto itB1 = strCmsP2pIDList.begin(), itE1 = strCmsP2pIDList.end(); itB1 != itE1; ++itB1)
     {
         for (auto itBegin = m_CmsCallInfoMap.begin(), itEnd = m_CmsCallInfoMap.end(); itBegin != itEnd; ++itBegin)
@@ -9311,12 +9373,21 @@ bool AccessManager::ValidCmsCallInfo(const std::string &strCmsID, const std::lis
             {
                 if (*itB1 == itB2->m_strCmsP2pID)
                 {
+                    strP2pIDFailedList.push_back(*itB1);
+
                     LOG_ERROR_RLD("Valid failed because cmsid of pending have same value in current map and p2p id is " << *itB1
                         << " and cms id is " << strCmsID);
-                    return false;
+
+                    blFlag = false;
+                    break;
                 }
             }
         }
+    }
+
+    if (!blFlag)
+    {
+        return false;
     }
 
     LOG_INFO_RLD("Valid success and cms id is " << strCmsID);
@@ -9527,7 +9598,7 @@ bool AccessManager::QueryDeviceCapacity(const std::string &strUserID, const unsi
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
-        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("Query device capacity exec sql failed, sql is " << sql);
         return false;
     }
 
@@ -9574,7 +9645,7 @@ bool AccessManager::QueryAllDeviceCapacity(const std::string &strUserID, std::li
             break;
 
         default:
-            LOG_ERROR_RLD("Query device capacity sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            LOG_ERROR_RLD("Query all device capacity sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
             break;
         }
     };
@@ -9582,7 +9653,7 @@ bool AccessManager::QueryAllDeviceCapacity(const std::string &strUserID, std::li
     std::list<boost::any> ResultList;
     if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
-        LOG_ERROR_RLD("QueryDeviceInfoMultiToDB exec sql failed, sql is " << sql);
+        LOG_ERROR_RLD("Query all device capacity exec sql failed, sql is " << sql);
         return false;
     }
 
@@ -9594,6 +9665,72 @@ bool AccessManager::QueryAllDeviceCapacity(const std::string &strUserID, std::li
 
         devcaplist.push_back(std::move(devcap));
     }
+
+    return true;
+}
+
+bool AccessManager::QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &devp2pinfo)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select updatedate, webport, mobileport, channelcount, deviceid, p2pid, extend"
+        " from t_device_parameter_ipc where devicedomain = %s and status = 0";
+    snprintf(sql, size, sqlfmt, strDomainName);
+    
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            devp2pinfo.m_strUpdateTime = strColumn;
+            break;
+
+        case 1:
+            devp2pinfo.m_strWebPort = strColumn;
+            break;
+
+        case 2:
+            devp2pinfo.m_strMobilePort = strColumn;
+            break;
+
+        case 3:
+            devp2pinfo.m_strChannelCount = strColumn;
+            break;
+
+        case 4:
+            devp2pinfo.m_strDeviceSN = strColumn;
+            break;
+
+        case 5:
+            devp2pinfo.m_strP2pID = strColumn;
+            break;
+
+        case 6:
+            devp2pinfo.m_strExtend = strColumn;
+
+            Result = devp2pinfo;
+            break;
+            
+        default:
+            LOG_ERROR_RLD("Query device p2p id sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query device p2p id exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("Query device p2p id result is empty.");
+        return false;
+    }
+
+    devp2pinfo = boost::any_cast<DevP2pIDInfo>(ResultList.front());
 
     return true;
 }

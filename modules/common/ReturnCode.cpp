@@ -44,6 +44,8 @@ const int ReturnInfo::INPUT_PARAMETER_TOO_LESS = 999;              //ÊäÈë²ÎÊý²»×
 
 const int ReturnInfo::SENSOR_TYPE_DUPLICATE = 3000;
 
+const int ReturnInfo::CMS_P2PID_DUPLICATE = 3100;
+
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;
 
 int ReturnInfo::RetCode()

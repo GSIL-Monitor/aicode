@@ -94,6 +94,8 @@ public:
     static const std::string QUERY_DEVICE_CAPACITY_ACTION;
     static const std::string QUERY_ALL_DEVICE_CAPACITY_ACTION;
 
+    static const std::string QUERY_DEVICE_P2PID;
+
 
     typedef struct _ParamInfo
     {
@@ -236,6 +238,9 @@ public:
     bool QueryAllDeviceCapacityHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
+    bool QueryDeviceP2pIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
 private:
@@ -368,6 +373,17 @@ private:
         unsigned int m_uiDevType;
         std::list<std::string> m_strCapacityList;
     } DeviceCapacity;
+
+    typedef struct
+    {
+        std::string m_strUpdateTime;
+        std::string m_strWebPort;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+        std::string m_strDeviceSN;
+        std::string m_strP2pID;
+        std::string m_strExtend;
+    } DevP2pIDInfo;
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
@@ -512,7 +528,7 @@ private:
     bool CmsCall(const std::string &strCmsCallMsg, std::string &strRetMsg);
 
     bool RegisterCmsCall(const std::string &strCmsID, std::list<std::string> &strCmsP2pIDList, const std::string &strDeviceMac, const std::string &strDeviceP2pID,
-        std::string &strAddress, std::string &strPort);
+        std::string &strAddress, std::string &strPort, std::list<std::string> &strP2pIDFailedList);
 
     bool UnregisterCmsCall(const std::string &strCmsID);
 
@@ -521,6 +537,8 @@ private:
     bool QueryDeviceCapacity(const std::string &strSid, const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap);
 
     bool QueryAllDeviceCapacity(const std::string &strSid, const std::string &strUserID, std::list<DeviceCapacity> &devcaplist);
+
+    bool QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &p2pinfo);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

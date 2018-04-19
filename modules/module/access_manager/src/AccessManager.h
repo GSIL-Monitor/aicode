@@ -268,6 +268,9 @@ public:
 
     bool QueryAllDeviceCapacityReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+
+    bool QueryDeviceP2pIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -483,7 +486,7 @@ private:
 
     struct CmsCall;
 
-    bool ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList);
+    bool ValidCmsCallInfo(const std::string &strCmsID, const std::list<std::string> &strCmsP2pIDList, std::list<std::string> &strP2pIDFailedList);
 
     bool UpdateCmsCallInfo(const std::string &strCmsID, const std::list<CmsCall> &CmsCallList);
 
@@ -504,6 +507,10 @@ private:
     bool QueryDeviceCapacity(const std::string &strUserID, const unsigned int uiDevType, DeviceCapacity &devcap);
 
     bool QueryAllDeviceCapacity(const std::string &strUserID, std::list<DeviceCapacity> &devcaplist);
+
+    struct DevP2pIDInfo;
+
+    bool QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &devp2pinfo);
 
 private:
     ParamInfo m_ParamInfo;
@@ -553,6 +560,17 @@ private:
     {
         unsigned int m_uiDevType;
         std::list<std::string> m_strCapacityList;
+    };
+
+    struct DevP2pIDInfo
+    {
+        std::string m_strUpdateTime;
+        std::string m_strWebPort;
+        std::string m_strMobilePort;
+        std::string m_strChannelCount;
+        std::string m_strDeviceSN;
+        std::string m_strP2pID;
+        std::string m_strExtend;
     };
 
 };
