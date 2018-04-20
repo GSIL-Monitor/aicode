@@ -6037,7 +6037,7 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
     strSql = std::string(sql) + std::string(cTmp);
     
     std::list<boost::any> ResultList;
-    if (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    if (0) // (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
     {
         boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList;
         pRelationList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > >(ResultList.front());
