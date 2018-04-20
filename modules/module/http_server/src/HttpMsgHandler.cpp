@@ -940,10 +940,11 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 {
     ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
 
+    std::string strUserName;
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &strUserName)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -952,6 +953,18 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
             ResultInfoMap.clear();
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            if (!strUserName.empty())
+            {
+                auto FuncTmp = [&](void *pValue)
+                {
+                    Json::Value *pJsBody = (Json::Value*)pValue;
+                    (*pJsBody)["username"] = strUserName;
+                };
+
+                this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+                return;
+            }       
         }
 
         this_->WriteMsg(ResultInfoMap, writer, blResult);
@@ -1059,8 +1072,9 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         << " and ip address is " << strIpaddress
         << " and session id is " << strSid);
 
+    
     std::string strDevIDOut;
-    if (!AddDevice(strSid, strUserID, devif, strDevIDOut))
+    if (!AddDevice(strSid, strUserID, devif, strDevIDOut, strUserName))
     {
         LOG_ERROR_RLD("Add device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
         return blResult;
@@ -7327,7 +7341,7 @@ bool HttpMsgHandler::Shakehand(const std::string &strSid, const std::string &str
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID)
+bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID, std::string &strUserName)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -7393,7 +7407,7 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
 
         strDevID = AddDevRsp.m_strDeviceID;
 
-        
+        strUserName = AddDevRsp.m_strValue;
 
         LOG_INFO_RLD("Add device is " << strUserID << " and session id is " << strSid <<
             " and return code is " << AddDevRsp.m_iRetcode <<
@@ -7401,8 +7415,6 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
 
         return CommMsgHandler::SUCCEED;
     };
-
-    
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));

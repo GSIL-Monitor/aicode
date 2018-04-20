@@ -978,8 +978,9 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     bool blResult = false;
     InteractiveProtoHandler::AddDevReq_USR req;
     std::string strDeviceID;
+    std::string strUserNameOfCurrent;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID, &strUserNameOfCurrent)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
@@ -988,7 +989,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strDeviceID = blResult ? strDeviceID : "";
-        rsp.m_strValue = "value";
+        rsp.m_strValue = strUserNameOfCurrent;
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1035,7 +1036,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     strCurrentTime.replace(pos, 1, std::string(" "));
 
     std::string strUserID;
-    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID))
+    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID, &strUserNameOfCurrent))
     {
         LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
@@ -1088,7 +1089,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     else
     {
         ReturnInfo::RetCode(ReturnInfo::DEVICE_IS_ADDED_USER);
-        LOG_ERROR_RLD("Add device failed, the device has been added, owner user id is " << strUserID << " and src id is " << strSrcID);
+        LOG_ERROR_RLD("Add device failed, the device has been added, owner user id is " << strUserID << " and user name  is " << strUserNameOfCurrent);
     }
 
     return blResult;
@@ -4930,10 +4931,16 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
     return true;
 }
 
-bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID)
+bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, std::string *pstrUserName)
 {
+    std::string strUserNameTmp;
+    if (NULL == pstrUserName)
+    {
+        pstrUserName = &strUserNameTmp;
+    }
+
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select rel.userid from"
+    const char* sqlfmt = "select rel.userid, usr.username from"
         " t_user_info usr, t_device_info dev, t_user_device_relation rel"
         " where usr.userid = rel.userid and usr.status = 0 and"
         " dev.deviceid = '%s' and dev.id = rel.devicekeyid and dev.status = 0 and"
@@ -4942,11 +4949,26 @@ bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std:
     std::string strSql(sql);
 
     strUserID.clear();
+    pstrUserName->clear();
 
     auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
-        strUserID = strColumn;
-        LOG_INFO_RLD("Query user id by device id from db is " << strUserID);
+        switch (uiColumnNum)
+        {
+        case 0:
+            strUserID = strColumn;
+            break;
+            
+        case 1:
+            *pstrUserName = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query user id by device id is error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+
+        LOG_INFO_RLD("Query user id by device id from db is " << strUserID << " and user name is " << *pstrUserName);
     };
 
     if (!m_pMysql->QueryExec(strSql, FuncTmp))
@@ -9674,8 +9696,8 @@ bool AccessManager::QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDI
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select updatedate, webport, mobileport, channelcount, deviceid, p2pid, extend"
-        " from t_device_parameter_ipc where devicedomain = %s and status = 0";
-    snprintf(sql, size, sqlfmt, strDomainName);
+        " from t_device_parameter_ipc where devicedomain = '%s' and status = 0";
+    snprintf(sql, size, sqlfmt, strDomainName.c_str());
     
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {

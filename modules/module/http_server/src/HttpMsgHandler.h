@@ -409,7 +409,7 @@ private:
 
     bool Shakehand(const std::string &strSid, const std::string &strUserID);
 
-    bool AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID);
+    bool AddDevice(const std::string &strSid, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID, std::string &strUserName);
 
     bool DeleteDevice(const std::string &strSid, const std::string &strUserID, const std::string &strDevID);
 
