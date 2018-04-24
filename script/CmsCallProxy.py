@@ -6,8 +6,9 @@ import mysql.connector
 from mysql.connector import errorcode
 
 db = None
-
 cwd = None
+
+DB_FAILED = 'DB_FAILED'
 
 def ConnectDB(db_user, db_pwd, db_host, db_name):
     try:
@@ -47,7 +48,7 @@ def GetCmsAddressInfo():
     except mysql.connector.Error as err:
         print(err)
         db.close()
-        return None
+        return DB_FAILED
 
     if cursor.rowcount == 0:
         print("Port not founded")
@@ -127,12 +128,18 @@ if __name__ == '__main__':
         print 'Database port:', dbports
 
         if dbports is None:
-            print 'Get ports from database failed.'
+            print 'Get ports from database is empty.'
             #exit(0)
             continue
+
         if not dbports: #ports is empty list
             continue
 
+        if DB_FAILED == dbports:
+            if not InitDB():
+                print "Init db failed."
+                exit(0)
+            continue
 
         ports_pid_runing = GetRuntimeProxyInfo()
         print 'Runing port and pid:', ports_pid_runing
