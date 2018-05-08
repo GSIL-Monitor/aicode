@@ -512,6 +512,8 @@ private:
 
     bool QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &devp2pinfo);
 
+    bool QueryAccessDomainOfBusiness(const std::string &strUserName, const unsigned int uiBussinessType, std::string &strAccessDomainInfo);
+
 private:
     ParamInfo m_ParamInfo;
 

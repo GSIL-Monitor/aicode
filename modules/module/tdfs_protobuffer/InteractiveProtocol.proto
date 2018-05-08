@@ -1003,7 +1003,9 @@ message QueryFileRsp_USR                        //用户查询文件响应
 message QueryAccessDomainNameReq_USR            //用户查询接入服务器域名请求
 {
   string strUserIpAddress = 1;
-  string strValue = 2;
+  string strUsername = 2;
+  uint32 uiBusinessType = 3;
+  string strValue = 4;
 }
 
 message QueryAccessDomainNameRsp_USR            //用户查询接入服务器域名响应

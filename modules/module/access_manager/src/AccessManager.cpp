@@ -2644,7 +2644,7 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     InteractiveProtoHandler::QueryAccessDomainNameReq_USR req;
 
     std::string strDomainName;
-    unsigned int uiLease;
+    unsigned int uiLease = 0;
 
     BOOST_SCOPE_EXIT(&blResult, this_, &req, &strSrcID, &writer, &strDomainName, &uiLease)
     {
@@ -2678,6 +2678,18 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     {
         LOG_ERROR_RLD("Query user access domain name req unserialize failed, src id is " << strSrcID);
         return false;
+    }
+
+    if (req.m_uiBusinessType != 0xFFFFFFFF)
+    {
+        if (!QueryAccessDomainOfBusiness(req.m_strUsername, req.m_uiBusinessType, strDomainName))
+        {
+            LOG_ERROR_RLD("Query user access domain by bussiness failed and user name is " << req.m_strUsername << " and business type is " << req.m_uiBusinessType);
+            return false;
+        }
+
+        blResult = true;
+        return blResult;
     }
 
     TimeZone timezone;
@@ -9753,6 +9765,37 @@ bool AccessManager::QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDI
     }
 
     devp2pinfo = boost::any_cast<DevP2pIDInfo>(ResultList.front());
+
+    return true;
+}
+
+bool AccessManager::QueryAccessDomainOfBusiness(const std::string &strUserName, const unsigned int uiBussinessType, std::string &strAccessDomainInfo)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select a.access_domain from t_access_user_business_info a , t_user_info b where a.userid = b.userid"
+        " and b.username = '%s' and a.business_type = %u and a.status = 0 and b.status = 0";
+    snprintf(sql, size, sqlfmt, strUserName.c_str(), uiBussinessType);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strAccessDomainInfo = strColumn;
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query access domain of business exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("Query access domain of business result is empty.");
+        return true;
+    }
+
+    strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
 
     return true;
 }

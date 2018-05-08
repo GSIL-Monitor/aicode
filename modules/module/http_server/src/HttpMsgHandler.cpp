@@ -3971,6 +3971,27 @@ bool HttpMsgHandler::UserQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoM
         strUserName = itFind->second;
     }
 
+    unsigned int uiBusinessType = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("business_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBusinessType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Business type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Modify user info type is invalid and input is " << itFind->second);
+            return blResult;
+        }
+
+    }
+
     itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
     if (pMsgInfoMap->end() == itFind)
     {
@@ -3986,7 +4007,7 @@ bool HttpMsgHandler::UserQueryAccessDomainNameHandler(boost::shared_ptr<MsgInfoM
 
     std::string strAccessDomainName;
     std::string strLease;
-    if (!UserQueryAccessDomainName(strRemoteIP, strUserName, strAccessDomainName, strLease))
+    if (!UserQueryAccessDomainName(strRemoteIP, strUserName, uiBusinessType, strAccessDomainName, strLease))
     {
         LOG_ERROR_RLD("User query access domain name info handle failed and user name is " << strUserName << " and remote ip is " << strRemoteIP);
         return blResult;
@@ -8935,7 +8956,8 @@ bool HttpMsgHandler::DeviceQueryTimeZone(const std::string &strSid, const std::s
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease)
+bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, const unsigned int  uiBusinessType,
+    std::string &strAccessDomainName, std::string &strLease)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -8945,6 +8967,8 @@ bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, 
         QueryDomainReq.m_strSID = "";
         QueryDomainReq.m_strValue = "";
         QueryDomainReq.m_strUserIpAddress = strIpAddress;
+        QueryDomainReq.m_strUsername = strUserName;
+        QueryDomainReq.m_uiBusinessType = uiBusinessType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDomainReq, strSerializeOutPut))
@@ -8972,6 +8996,11 @@ bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, 
         strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
         iRet = QueryDomainRsp.m_iRetcode;
 
+        if (0xFFFFFFFF != uiBusinessType)
+        {
+            strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        }
+        else
         {
             //////////////////////////////////////////////////////////////////////////
             /* strAccessDomainName∏Ò Ω

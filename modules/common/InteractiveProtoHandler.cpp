@@ -4112,7 +4112,10 @@ void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::UnSerializer(const I
 {
     Req::UnSerializer(InteractiveMsg);
     m_strUserIpAddress = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().struseripaddress();
+    m_strUsername = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().strusername();
+    m_uiBusinessType = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().uibusinesstype();
     m_strValue = InteractiveMsg.reqvalue().queryaccessdomainnamereq_usr_value().strvalue();
+
 }
 
 void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
@@ -4120,6 +4123,8 @@ void InteractiveProtoHandler::QueryAccessDomainNameReq_USR::Serializer(Interacti
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_struseripaddress(m_strUserIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_strusername(m_strUsername);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_uibusinesstype(m_uiBusinessType);
     InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_usr_value()->set_strvalue(m_strValue);
 }
 

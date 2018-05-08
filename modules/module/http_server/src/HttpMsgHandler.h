@@ -470,7 +470,8 @@ private:
     bool DeviceQueryTimeZone(const std::string &strSid, const std::string &strDevID, const std::string &strDevIpAddress, std::string &strCountrycode,
         std::string &strCountryNameEn, std::string &strCountryNameZh, std::string &strTimeZone);
 
-    bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, std::string &strAccessDomainName, std::string &strLease);
+    bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, const unsigned int  uiBusinessType,
+        std::string &strAccessDomainName, std::string &strLease);
 
     bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, NotifyServer &nts, std::string &strLease);
 

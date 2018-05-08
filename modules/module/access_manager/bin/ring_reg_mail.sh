@@ -12,10 +12,10 @@ Pwd=$3
 echo $UserName
 echo $Pwd
 
-msg1="<success><b><br>感谢您注册RingViews，请记住您的用户账号："
-msg2="$msg1""$UserName"" 登陆密码："
-msg3="$msg2""$Pwd""<br></b></success>  <success><b><br>Thank you for registering RingViews, please remember your user account: "
-msg4="$msg3""$UserName"" password: ""$Pwd"
+msg1="<success><b><br>Thank you for registering Belling, please remember your user account: "
+msg2="$msg1""$UserName"
+msg3="$msg2""<br></b></success>  <success><b><br>感谢您注册Belling，请记住您的用户账号："
+msg4="$msg3""$UserName"
 msg5="$msg4""<br></b></success>"
-./mailsender 'smtp.qiye.163.com' 0 465 'ringviews@annigroup.com' 'anni@2688' 'RingViews' 'ringviews@annigroup.com' $Recipient 'RingViews' "$msg5"
+./mailsender 'smtp.163.com' 2 25 'bellingservice@163.com' 'belling163' 'Belling' 'bellingservice@163.com' $Recipient 'Belling' "$msg5"
 

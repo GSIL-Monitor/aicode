@@ -1501,6 +1501,8 @@ public:
     struct QueryAccessDomainNameReq_USR : Req
     {
         std::string m_strUserIpAddress;
+        std::string m_strUsername;
+        unsigned int m_uiBusinessType;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
