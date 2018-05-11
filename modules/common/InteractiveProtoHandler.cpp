@@ -4427,6 +4427,8 @@ void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::UnSerializer(const I
 {
     Req::UnSerializer(InteractiveMsg);
     m_strDevIpAddress = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().strdevipaddress();
+    m_strDevID = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().strdevid();
+    m_uiBusinessType = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().uibusinesstype();
     m_strValue = InteractiveMsg.reqvalue().queryaccessdomainnamereq_dev_value().strvalue();
 }
 
@@ -4435,6 +4437,8 @@ void InteractiveProtoHandler::QueryAccessDomainNameReq_DEV::Serializer(Interacti
     Req::Serializer(InteractiveMsg);
     InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAccessDomainNameReq_DEV_T);
     InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_strdevipaddress(m_strDevIpAddress);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_strdevid(m_strDevID);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_uibusinesstype(m_uiBusinessType);
     InteractiveMsg.mutable_reqvalue()->mutable_queryaccessdomainnamereq_dev_value()->set_strvalue(m_strValue);
 }
 

@@ -5544,9 +5544,23 @@ class QueryAccessDomainNameReq_DEV : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strdevipaddress();
   void set_allocated_strdevipaddress(::std::string* strdevipaddress);
 
-  // string strValue = 2;
+  // string strDevID = 2;
+  void clear_strdevid();
+  static const int kStrDevIDFieldNumber = 2;
+  const ::std::string& strdevid() const;
+  void set_strdevid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevid(::std::string&& value);
+  #endif
+  void set_strdevid(const char* value);
+  void set_strdevid(const char* value, size_t size);
+  ::std::string* mutable_strdevid();
+  ::std::string* release_strdevid();
+  void set_allocated_strdevid(::std::string* strdevid);
+
+  // string strValue = 4;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 2;
+  static const int kStrValueFieldNumber = 4;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -5558,12 +5572,20 @@ class QueryAccessDomainNameReq_DEV : public ::google::protobuf::Message /* @@pro
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
+  // uint32 uiBusinessType = 3;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 3;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAccessDomainNameReq_DEV)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr strdevipaddress_;
+  ::google::protobuf::internal::ArenaStringPtr strdevid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uibusinesstype_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -28353,7 +28375,73 @@ inline void QueryAccessDomainNameReq_DEV::set_allocated_strdevipaddress(::std::s
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevIpAddress)
 }
 
-// string strValue = 2;
+// string strDevID = 2;
+inline void QueryAccessDomainNameReq_DEV::clear_strdevid() {
+  strdevid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAccessDomainNameReq_DEV::strdevid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+  return strdevid_.GetNoArena();
+}
+inline void QueryAccessDomainNameReq_DEV::set_strdevid(const ::std::string& value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+}
+#if LANG_CXX11
+inline void QueryAccessDomainNameReq_DEV::set_strdevid(::std::string&& value) {
+  
+  strdevid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+}
+#endif
+inline void QueryAccessDomainNameReq_DEV::set_strdevid(const char* value) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+}
+inline void QueryAccessDomainNameReq_DEV::set_strdevid(const char* value, size_t size) {
+  
+  strdevid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::mutable_strdevid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+  return strdevid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAccessDomainNameReq_DEV::release_strdevid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+  
+  return strdevid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAccessDomainNameReq_DEV::set_allocated_strdevid(::std::string* strdevid) {
+  if (strdevid != NULL) {
+    
+  } else {
+    
+  }
+  strdevid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAccessDomainNameReq_DEV.strDevID)
+}
+
+// uint32 uiBusinessType = 3;
+inline void QueryAccessDomainNameReq_DEV::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAccessDomainNameReq_DEV::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAccessDomainNameReq_DEV.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void QueryAccessDomainNameReq_DEV::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAccessDomainNameReq_DEV.uiBusinessType)
+}
+
+// string strValue = 4;
 inline void QueryAccessDomainNameReq_DEV::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -514,6 +514,8 @@ private:
 
     bool QueryAccessDomainOfBusiness(const std::string &strUserName, const unsigned int uiBussinessType, std::string &strAccessDomainInfo);
 
+    bool QueryAccessDomainOfBusinessDevice(const std::string &strDevID, const unsigned int uiBussinessType, std::string &strAccessDomainInfo);
+
 private:
     ParamInfo m_ParamInfo;
 

@@ -418,11 +418,12 @@ message Sensor                           //传感器
     string strSensorID = 1;
     string strSensorName = 2;
     string strSensorType = 3;
-    string strStoreID = 4;
-    string strDeviceID = 5;
-    string strValue = 6;
-    uint32 uiState = 7;
-    string strCreateDate = 8;
+    string strSensorAlarmThreshold = 4;
+    string strStoreID = 5;
+    string strDeviceID = 6;
+    string strValue = 7;
+    uint32 uiState = 8;
+    string strCreateDate = 9;
 }
 
 message RawCustomerFlow                  //设备客流信息

@@ -543,7 +543,9 @@ message QueryTimeZoneRsp_DEV                    //查询时区响应
 message QueryAccessDomainNameReq_DEV            //设备查询接入服务器域名请求
 {
   string strDevIpAddress = 1;
-  string strValue = 2;
+  string strDevID = 2;
+  uint32 uiBusinessType = 3;
+  string strValue = 4;
 }
 
 message QueryAccessDomainNameRsp_DEV            //设备查询接入服务器域名响应

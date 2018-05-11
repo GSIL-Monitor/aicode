@@ -404,6 +404,7 @@ public:
         std::string m_strSensorID;
         std::string m_strSensorName;
         std::string m_strSensorType;
+        std::string m_strSensorAlarmThreshold;
         std::string m_strStoreID;
         std::string m_strDeviceID;
         std::string m_strValue;

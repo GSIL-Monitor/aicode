@@ -2774,6 +2774,18 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
         LOG_ERROR_RLD("Query device access domain name req unserialize failed, src id is " << strSrcID);
         return false;
     }
+        
+    if (req.m_uiBusinessType != 0xFFFFFFFF)
+    {
+        if (!QueryAccessDomainOfBusinessDevice(req.m_strDevID, req.m_uiBusinessType, strDomainName))
+        {
+            LOG_ERROR_RLD("Query device access domain by bussiness failed and user name is " << req.m_strDevID << " and business type is " << req.m_uiBusinessType);
+            return false;
+        }
+
+        blResult = true;
+        return blResult;
+    }
 
     TimeZone timezone;
     CTimeZone cTimeZone;
@@ -9776,6 +9788,36 @@ bool AccessManager::QueryAccessDomainOfBusiness(const std::string &strUserName, 
     const char *sqlfmt = "select a.access_domain from t_access_user_business_info a , t_user_info b where a.userid = b.userid"
         " and b.username = '%s' and a.business_type = %u and a.status = 0 and b.status = 0";
     snprintf(sql, size, sqlfmt, strUserName.c_str(), uiBussinessType);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        strAccessDomainInfo = strColumn;
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query access domain of business exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("Query access domain of business result is empty.");
+        return true;
+    }
+
+    strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
+
+    return true;
+}
+
+bool AccessManager::QueryAccessDomainOfBusinessDevice(const std::string &strDevID, const unsigned int uiBussinessType, std::string &strAccessDomainInfo)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select a.access_domain from t_access_device_business_info a where a.deviceid = '%s' and a.business_type = %u and a.status = 0";        
+    snprintf(sql, size, sqlfmt, strDevID.c_str(), uiBussinessType);
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
     {

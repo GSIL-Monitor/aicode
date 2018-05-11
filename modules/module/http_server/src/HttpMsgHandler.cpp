@@ -4031,8 +4031,9 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
     bool blResult = false;
     std::map<std::string, std::string> ResultInfoMap;
     Json::Value jsNotifyServer;
+    unsigned int uiBusinessType = 0xFFFFFFFF;
 
-    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsNotifyServer)
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsNotifyServer, &uiBusinessType)
     {
         LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
@@ -4048,7 +4049,11 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
             auto FuncTmp = [&](void *pValue)
             {
                 Json::Value *pJsBody = (Json::Value*)pValue;
-                (*pJsBody)["notifyserver"] = jsNotifyServer;
+
+                if (0xFFFFFFFF == uiBusinessType)
+                {
+                    (*pJsBody)["notifyserver"] = jsNotifyServer;
+                }                
             };
 
             this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
@@ -4063,6 +4068,27 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
         return blResult;        
     }
     const std::string strDevID = itFind->second;
+
+    
+    itFind = pMsgInfoMap->find("business_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiBusinessType = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Business type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Modify user info type is invalid and input is " << itFind->second);
+            return blResult;
+        }
+
+    }
 
     itFind = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
     if (pMsgInfoMap->end() == itFind)
@@ -4080,25 +4106,28 @@ bool HttpMsgHandler::DeviceQueryAccessDomainNameHandler(boost::shared_ptr<MsgInf
     std::string strAccessDomainName;
     std::string strLease;
     NotifyServer nts;
-    if (!DeviceQueryAccessDomainName(strRemoteIP, strDevID, strAccessDomainName, nts, strLease))
+    if (!DeviceQueryAccessDomainName(strRemoteIP, strDevID, uiBusinessType, strAccessDomainName, nts, strLease))
     {
         LOG_ERROR_RLD("Device query access domain name info handle failed and device id is " << strDevID << " and remote ip is " << strRemoteIP);
         return blResult;
     }
 
-    jsNotifyServer["address_best"] = nts.m_strAddressBest;
-
-    Json::Value jsAddressList;
-    unsigned int i = 0;
-    for (auto itBegin = nts.m_strAddressOthersList.begin(), itEnd = nts.m_strAddressOthersList.end(); itBegin != itEnd; ++itBegin, ++i)
+    if (0xFFFFFFFF == uiBusinessType)
     {
-        jsAddressList[i] = *itBegin;
-    }
-    jsNotifyServer["address_others"] = jsAddressList;
+        jsNotifyServer["address_best"] = nts.m_strAddressBest;
 
-    Json::StyledWriter stylewriter;
-    const std::string &strBody = stylewriter.write(jsNotifyServer);
-    LOG_INFO_RLD("Device query notify server info is " << strBody);
+        Json::Value jsAddressList;
+        unsigned int i = 0;
+        for (auto itBegin = nts.m_strAddressOthersList.begin(), itEnd = nts.m_strAddressOthersList.end(); itBegin != itEnd; ++itBegin, ++i)
+        {
+            jsAddressList[i] = *itBegin;
+        }
+        jsNotifyServer["address_others"] = jsAddressList;
+
+        Json::StyledWriter stylewriter;
+        const std::string &strBody = stylewriter.write(jsNotifyServer);
+        LOG_INFO_RLD("Device query notify server info is " << strBody);
+    }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -9056,8 +9085,8 @@ bool HttpMsgHandler::UserQueryAccessDomainName(const std::string &strIpAddress, 
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, 
-    NotifyServer &nts, std::string &strLease)
+bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, const unsigned int uiBusinessType,
+    std::string &strAccessDomainName, NotifyServer &nts, std::string &strLease)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -9067,6 +9096,8 @@ bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress
         QueryDomainReq.m_strSID = "";
         QueryDomainReq.m_strValue = "";
         QueryDomainReq.m_strDevIpAddress = strIpAddress;
+        QueryDomainReq.m_strDevID = strDevID;
+        QueryDomainReq.m_uiBusinessType = uiBusinessType;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDomainReq, strSerializeOutPut))
@@ -9094,7 +9125,11 @@ bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress
         strLease = boost::lexical_cast<std::string>(QueryDomainRsp.m_uiLease);
         iRet = QueryDomainRsp.m_iRetcode;
 
-
+        if (0xFFFFFFFF != uiBusinessType)
+        {
+            strAccessDomainName = QueryDomainRsp.m_strDomainName;
+        }
+        else
         {
             //////////////////////////////////////////////////////////////////////////
             /* strAccessDomainName∏Ò Ω
@@ -9152,8 +9187,6 @@ bool HttpMsgHandler::DeviceQueryAccessDomainName(const std::string &strIpAddress
 
         return CommMsgHandler::SUCCEED;
     };
-
-    
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
     pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));

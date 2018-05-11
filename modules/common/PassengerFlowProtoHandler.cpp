@@ -340,6 +340,7 @@ void SerializeSensorList(const std::list<PassengerFlowProtoHandler::Sensor> &sen
         pDstSensorInfo->set_strsensorid(itBegin->m_strSensorID);
         pDstSensorInfo->set_strsensorname(itBegin->m_strSensorName);
         pDstSensorInfo->set_strsensortype(itBegin->m_strSensorType);
+        pDstSensorInfo->set_strsensoralarmthreshold(itBegin->m_strSensorAlarmThreshold);
         pDstSensorInfo->set_strstoreid(itBegin->m_strStoreID);
         pDstSensorInfo->set_strdeviceid(itBegin->m_strDeviceID);
         pDstSensorInfo->set_strvalue(itBegin->m_strValue);
@@ -358,6 +359,7 @@ void UnSerializeSensorList(std::list<PassengerFlowProtoHandler::Sensor> &sensorI
         sensorInfo.m_strSensorID = srcSensorInfo.strsensorid();
         sensorInfo.m_strSensorName = srcSensorInfo.strsensorname();
         sensorInfo.m_strSensorType = srcSensorInfo.strsensortype();
+        sensorInfo.m_strSensorAlarmThreshold = srcSensorInfo.strsensoralarmthreshold();
         sensorInfo.m_strStoreID = srcSensorInfo.strstoreid();
         sensorInfo.m_strDeviceID = srcSensorInfo.strdeviceid();
         sensorInfo.m_strValue = srcSensorInfo.strvalue();
@@ -6380,6 +6382,7 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::Serializer(CustomerFlowMessag
     sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
     sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
     sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strsensoralarmthreshold(m_sensorInfo.m_strSensorAlarmThreshold);
     sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
     sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
     sensor->set_strvalue(m_sensorInfo.m_strValue);
@@ -6397,11 +6400,12 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFl
     m_sensorInfo.m_strSensorID = sensor.strsensorid();
     m_sensorInfo.m_strSensorName = sensor.strsensorname();
     m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strSensorAlarmThreshold = sensor.strsensoralarmthreshold();
     m_sensorInfo.m_strStoreID = sensor.strstoreid();
     m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
     m_sensorInfo.m_strValue = sensor.strvalue();
     m_sensorInfo.m_uiState = sensor.uistate();
-    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();    
 }
 
 void PassengerFlowProtoHandler::AddStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
@@ -6464,6 +6468,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::Serializer(CustomerFlowMes
     sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
     sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
     sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strsensoralarmthreshold(m_sensorInfo.m_strSensorAlarmThreshold);
     sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
     sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
     sensor->set_strvalue(m_sensorInfo.m_strValue);
@@ -6481,6 +6486,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const Custome
     m_sensorInfo.m_strSensorID = sensor.strsensorid();
     m_sensorInfo.m_strSensorName = sensor.strsensorname();
     m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strSensorAlarmThreshold = sensor.strsensoralarmthreshold();
     m_sensorInfo.m_strStoreID = sensor.strstoreid();
     m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
     m_sensorInfo.m_strValue = sensor.strvalue();
@@ -6530,6 +6536,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::Serializer(CustomerFlow
     sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
     sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
     sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strsensoralarmthreshold(m_sensorInfo.m_strSensorAlarmThreshold);
     sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
     sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
     sensor->set_strvalue(m_sensorInfo.m_strValue);
@@ -6545,6 +6552,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const Cust
     m_sensorInfo.m_strSensorID = sensor.strsensorid();
     m_sensorInfo.m_strSensorName = sensor.strsensorname();
     m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strSensorAlarmThreshold = sensor.strsensoralarmthreshold();
     m_sensorInfo.m_strStoreID = sensor.strstoreid();
     m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
     m_sensorInfo.m_strValue = sensor.strvalue();

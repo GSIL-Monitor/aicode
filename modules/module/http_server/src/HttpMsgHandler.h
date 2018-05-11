@@ -473,7 +473,8 @@ private:
     bool UserQueryAccessDomainName(const std::string &strIpAddress, const std::string &strUserName, const unsigned int  uiBusinessType,
         std::string &strAccessDomainName, std::string &strLease);
 
-    bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, std::string &strAccessDomainName, NotifyServer &nts, std::string &strLease);
+    bool DeviceQueryAccessDomainName(const std::string &strIpAddress, const std::string &strDevID, const unsigned int uiBusinessType,
+        std::string &strAccessDomainName, NotifyServer &nts, std::string &strLease);
 
     bool DeviceQueryUpdateService(const std::string &strSid, const std::string &strIpAddress, const std::string &strDevID, std::string &strUpdateAddress, std::string &strLease);
 

@@ -3950,9 +3950,23 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strsensortype();
   void set_allocated_strsensortype(::std::string* strsensortype);
 
-  // string strStoreID = 4;
+  // string strSensorAlarmThreshold = 4;
+  void clear_strsensoralarmthreshold();
+  static const int kStrSensorAlarmThresholdFieldNumber = 4;
+  const ::std::string& strsensoralarmthreshold() const;
+  void set_strsensoralarmthreshold(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensoralarmthreshold(::std::string&& value);
+  #endif
+  void set_strsensoralarmthreshold(const char* value);
+  void set_strsensoralarmthreshold(const char* value, size_t size);
+  ::std::string* mutable_strsensoralarmthreshold();
+  ::std::string* release_strsensoralarmthreshold();
+  void set_allocated_strsensoralarmthreshold(::std::string* strsensoralarmthreshold);
+
+  // string strStoreID = 5;
   void clear_strstoreid();
-  static const int kStrStoreIDFieldNumber = 4;
+  static const int kStrStoreIDFieldNumber = 5;
   const ::std::string& strstoreid() const;
   void set_strstoreid(const ::std::string& value);
   #if LANG_CXX11
@@ -3964,9 +3978,9 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strstoreid();
   void set_allocated_strstoreid(::std::string* strstoreid);
 
-  // string strDeviceID = 5;
+  // string strDeviceID = 6;
   void clear_strdeviceid();
-  static const int kStrDeviceIDFieldNumber = 5;
+  static const int kStrDeviceIDFieldNumber = 6;
   const ::std::string& strdeviceid() const;
   void set_strdeviceid(const ::std::string& value);
   #if LANG_CXX11
@@ -3978,9 +3992,9 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strdeviceid();
   void set_allocated_strdeviceid(::std::string* strdeviceid);
 
-  // string strValue = 6;
+  // string strValue = 7;
   void clear_strvalue();
-  static const int kStrValueFieldNumber = 6;
+  static const int kStrValueFieldNumber = 7;
   const ::std::string& strvalue() const;
   void set_strvalue(const ::std::string& value);
   #if LANG_CXX11
@@ -3992,9 +4006,9 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strvalue();
   void set_allocated_strvalue(::std::string* strvalue);
 
-  // string strCreateDate = 8;
+  // string strCreateDate = 9;
   void clear_strcreatedate();
-  static const int kStrCreateDateFieldNumber = 8;
+  static const int kStrCreateDateFieldNumber = 9;
   const ::std::string& strcreatedate() const;
   void set_strcreatedate(const ::std::string& value);
   #if LANG_CXX11
@@ -4006,9 +4020,9 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
-  // uint32 uiState = 7;
+  // uint32 uiState = 8;
   void clear_uistate();
-  static const int kUiStateFieldNumber = 7;
+  static const int kUiStateFieldNumber = 8;
   ::google::protobuf::uint32 uistate() const;
   void set_uistate(::google::protobuf::uint32 value);
 
@@ -4019,6 +4033,7 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::internal::ArenaStringPtr strsensorid_;
   ::google::protobuf::internal::ArenaStringPtr strsensorname_;
   ::google::protobuf::internal::ArenaStringPtr strsensortype_;
+  ::google::protobuf::internal::ArenaStringPtr strsensoralarmthreshold_;
   ::google::protobuf::internal::ArenaStringPtr strstoreid_;
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
@@ -26982,7 +26997,59 @@ inline void Sensor::set_allocated_strsensortype(::std::string* strsensortype) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorType)
 }
 
-// string strStoreID = 4;
+// string strSensorAlarmThreshold = 4;
+inline void Sensor::clear_strsensoralarmthreshold() {
+  strsensoralarmthreshold_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strsensoralarmthreshold() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+  return strsensoralarmthreshold_.GetNoArena();
+}
+inline void Sensor::set_strsensoralarmthreshold(const ::std::string& value) {
+  
+  strsensoralarmthreshold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+}
+#if LANG_CXX11
+inline void Sensor::set_strsensoralarmthreshold(::std::string&& value) {
+  
+  strsensoralarmthreshold_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+}
+#endif
+inline void Sensor::set_strsensoralarmthreshold(const char* value) {
+  
+  strsensoralarmthreshold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+}
+inline void Sensor::set_strsensoralarmthreshold(const char* value, size_t size) {
+  
+  strsensoralarmthreshold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+}
+inline ::std::string* Sensor::mutable_strsensoralarmthreshold() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+  return strsensoralarmthreshold_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strsensoralarmthreshold() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+  
+  return strsensoralarmthreshold_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strsensoralarmthreshold(::std::string* strsensoralarmthreshold) {
+  if (strsensoralarmthreshold != NULL) {
+    
+  } else {
+    
+  }
+  strsensoralarmthreshold_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensoralarmthreshold);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorAlarmThreshold)
+}
+
+// string strStoreID = 5;
 inline void Sensor::clear_strstoreid() {
   strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -27034,7 +27101,7 @@ inline void Sensor::set_allocated_strstoreid(::std::string* strstoreid) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strStoreID)
 }
 
-// string strDeviceID = 5;
+// string strDeviceID = 6;
 inline void Sensor::clear_strdeviceid() {
   strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -27086,7 +27153,7 @@ inline void Sensor::set_allocated_strdeviceid(::std::string* strdeviceid) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strDeviceID)
 }
 
-// string strValue = 6;
+// string strValue = 7;
 inline void Sensor::clear_strvalue() {
   strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -27138,7 +27205,7 @@ inline void Sensor::set_allocated_strvalue(::std::string* strvalue) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strValue)
 }
 
-// uint32 uiState = 7;
+// uint32 uiState = 8;
 inline void Sensor::clear_uistate() {
   uistate_ = 0u;
 }
@@ -27152,7 +27219,7 @@ inline void Sensor::set_uistate(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.uiState)
 }
 
-// string strCreateDate = 8;
+// string strCreateDate = 9;
 inline void Sensor::clear_strcreatedate() {
   strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

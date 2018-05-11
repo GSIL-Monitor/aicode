@@ -335,3 +335,16 @@ CREATE TABLE `t_access_user_business_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `t_access_device_business_info`;
+CREATE TABLE `t_access_device_business_info` (
+  `id` varchar(36) NOT NULL,
+  `deviceid` varchar(32) NOT NULL,                     #设备ID
+  `access_domain` varchar(256) NOT NULL DEFAULT '',    #接入地址
+  `business_type` int(11) NOT NULL DEFAULT '0',        #业务类型
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(deviceid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+

@@ -1354,6 +1354,8 @@ public:
     struct QueryAccessDomainNameReq_DEV : Req
     {
         std::string m_strDevIpAddress;
+        std::string m_strDevID;
+        unsigned int m_uiBusinessType;
         std::string m_strValue;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);

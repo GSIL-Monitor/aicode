@@ -6768,12 +6768,21 @@ bool PassengerFlowMsgHandler::CreateStoreSensorHandler(boost::shared_ptr<MsgInfo
         LOG_ERROR_RLD("Value is invalid and value is " << strType);
         return blResult;
     }
+
+    std::string strAlarmThreshold;
+    itFind = pMsgInfoMap->find("alarm_threshold");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strAlarmThreshold = itFind->second;
+
+    }
     
     Sensor sr;
     sr.m_strDevID = strDevID;
     sr.m_strName = strName;
     sr.m_strStoreID = strStoreID;
     sr.m_uiType = uiType;
+    sr.m_strAlarmThreshold = strAlarmThreshold;
 
     if (!CreateStoreSensor(strSid, strUserID, sr))
     {
@@ -6947,6 +6956,14 @@ bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfo
     {
         strDevID = itFind->second;
     }
+    
+    std::string strAlarmThreshold;
+    itFind = pMsgInfoMap->find("alarm_threshold");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strAlarmThreshold = itFind->second;
+
+    }
 
     Sensor sr;
     sr.m_strDevID = strDevID;
@@ -6954,6 +6971,7 @@ bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfo
     sr.m_strStoreID = strStoreID;
     sr.m_uiType = uiType;
     sr.m_strID = strSensorID;
+    sr.m_strAlarmThreshold = strAlarmThreshold;
 
     if (!ModifyStoreSensor(strSid, strUserID, sr))
     {
@@ -7042,6 +7060,7 @@ bool PassengerFlowMsgHandler::QueryStoreSensorHandler(boost::shared_ptr<MsgInfoM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("name", sr.m_strName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("storeid", sr.m_strStoreID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", sr.m_strDevID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("alarm_threshold", sr.m_strAlarmThreshold));
 
     blResult = true;
 
@@ -7122,6 +7141,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensorHandler(boost::shared_ptr<MsgIn
         jsSensor["type"] = boost::lexical_cast<std::string>(itBegin->m_uiType);
         jsSensor["value"] = itBegin->m_strValue;
         jsSensor["sensorid"] = itBegin->m_strID;
+        jsSensor["alarm_threshold"] = itBegin->m_strAlarmThreshold;
 
         jsSensorInfoList[i] = jsSensor;
     }
@@ -11232,6 +11252,7 @@ bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const
         AddStoreSensorReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
         AddStoreSensorReq.m_sensorInfo.m_strSensorName = sr.m_strName;
         AddStoreSensorReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
+        AddStoreSensorReq.m_sensorInfo.m_strSensorAlarmThreshold = sr.m_strAlarmThreshold;
         AddStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
 
         std::string strSerializeOutPut;
@@ -11341,6 +11362,7 @@ bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const
         ModifyStoreSensorReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorName = sr.m_strName;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
+        ModifyStoreSensorReq.m_sensorInfo.m_strSensorAlarmThreshold = sr.m_strAlarmThreshold;
         ModifyStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorID = sr.m_strID;
         
@@ -11423,7 +11445,8 @@ bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const 
         sr.m_strStoreID = QuerySensorInfoRsp.m_sensorInfo.m_strStoreID;
         sr.m_strValue = QuerySensorInfoRsp.m_sensorInfo.m_strValue;
         sr.m_uiType = QuerySensorInfoRsp.m_sensorInfo.m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(QuerySensorInfoRsp.m_sensorInfo.m_strSensorType);
-        
+        sr.m_strAlarmThreshold = QuerySensorInfoRsp.m_sensorInfo.m_strSensorAlarmThreshold;
+
         iRet = QuerySensorInfoRsp.m_iRetcode;
 
         LOG_INFO_RLD("Query sensor info and sensor id is " << sr.m_strID <<
@@ -11485,7 +11508,8 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, con
             sr.m_strStoreID = itBegin->m_strStoreID;
             sr.m_strValue = itBegin->m_strValue;
             sr.m_uiType = itBegin->m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
-            
+            sr.m_strAlarmThreshold = itBegin->m_strSensorAlarmThreshold;
+
             srlist.push_back(std::move(sr));
         }
 
