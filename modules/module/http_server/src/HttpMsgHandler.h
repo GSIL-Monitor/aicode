@@ -96,6 +96,11 @@ public:
 
     static const std::string QUERY_DEVICE_P2PID;
 
+    static const std::string UPLOAD_USR_CFG_ACTION;
+
+    static const std::string QUERY_USER_CFG_ACTION;
+
+    static const std::string QUERY_DEVICE_P2PID_ASP;
 
     typedef struct _ParamInfo
     {
@@ -239,9 +244,16 @@ public:
 
 
     bool QueryDeviceP2pIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    
+    bool UploadUserCfgHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    bool QueryUserCfgHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryDeviceP2pIDAspHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
+
+    void WriteMsg(const std::string &strMsg, MsgWriter writer, const bool blResult = true);
 
 private:
 
@@ -384,6 +396,17 @@ private:
         std::string m_strP2pID;
         std::string m_strExtend;
     } DevP2pIDInfo;
+
+
+    typedef struct
+    {
+        unsigned int m_uiBusinessType;
+        std::string m_strUserID;
+        std::string m_strFileID;
+        std::string m_strExtend;
+        std::string m_strVersion;
+        std::string m_strCfgURL;
+    } UserCfg;
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
@@ -541,6 +564,12 @@ private:
     bool QueryAllDeviceCapacity(const std::string &strSid, const std::string &strUserID, std::list<DeviceCapacity> &devcaplist);
 
     bool QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDInfo &p2pinfo);
+
+    bool UploadUserCfg(const std::string &strSid, UserCfg &ucfg);
+
+    bool QueryUserCfg(const std::string &strSid, UserCfg &ucfg);
+
+    void GetDeviceP2pIDAspXMLReport(const DevP2pIDInfo &p2pinfo, std::string &strXMLReport);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

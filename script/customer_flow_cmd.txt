@@ -200,4 +200,10 @@ curl -F sid=D7E6EA8507848140A819BABB7F001AD5 -F deviceid=0018A978B9EB -F info='[
 curl -F sid=D7E6EA8507848140A819BABB7F001AD5 -F userid=02592BBEC0CF1D4EBCD820C9BB10DE1B -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F patrol_result=0 -F patrol_userid=02592BBEC0CF1D4EBCD820C9BB10DE1B -F begindate='2018-01-31 15:00:00' -F enddate='2018-02-05 23:00:00' http://xvripc.net:8988/passenger_flow.cgi?action=query_patrol_result_report
 
 
+传感器上报告警
+curl -F sid=871ACD015874B34A83B21828A3D5E9C2 -F deviceid=0018A978CA29 -F type=4 -F current_value=20 -F threshold_value=5 -F recover=0 -F fileid=xxx http://172.20.120.22:8988/passenger_flow.cgi?action=report_alarm_info
 
+查询告警阈值
+curl -F sid=A2E399FB6AF7C7499F030E286E4A7D84 -F deviceid=0018A978B9EB http://172.20.120.22:8988/passenger_flow.cgi?action=query_alarm_threshold
+
+curl -F sid=7D28969C6C55A74F93116D4A127EE9D1 -F userid=6989872A4E348C46BEBD3B0CF9DC0408 -F recordid='["3f071cf3-fcf3-11e7-b618-001d0966de29", "3f06b6a3-fcf3-11e7-b618-001d0966de29"]' http://172.20.120.22:8988/passenger_flow.cgi?action=remove_store_sensor_record

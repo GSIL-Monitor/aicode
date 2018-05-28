@@ -932,12 +932,27 @@ drop table if exists `t_sensor_value`;
 create table `t_sensor_value` (
     `id` varchar(36) not null,
     `sensor_id` varchar(36) not null                 comment '传感器ID',
-    `value` varchar(16) not null                     comment '数值',
+    `value` varchar(256) not null                     comment '数值',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',
     primary key (`id`),
     index index_ref1 (`sensor_id`)
 ) engine=innodb auto_increment=1 default charset=utf8 comment='传感器数值表';
+
+drop table if exists `t_sensor_alarm_value`;
+create table `t_sensor_alarm_value` (
+    `id` varchar(36) not null,
+    `sensor_id` varchar(36) not null                 comment '传感器ID',
+    `current_value` varchar(256) not null            comment '传感器当前值',
+    `threshold_value` varchar(256) not null          comment '告警阈值',
+    `fileid` varchar(256) DEFAULT ''                 comment '图片文件ID',
+    `recover` int default 0                          comment '0-告警产生，1-告警恢复',
+    `state` int default 0                            comment '0-正常，1-删除',
+    `create_date` datetime not null                  comment '创建日期',
+    `update_date` datetime default current_timestamp comment '更新日期',
+    primary key (`id`),
+    index index_ref1 (`sensor_id`)
+) engine=innodb auto_increment=1 default charset=utf8 comment='传感器告警表';
 
 

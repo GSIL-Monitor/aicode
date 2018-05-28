@@ -271,6 +271,11 @@ public:
 
     bool QueryDeviceP2pIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+
+    bool UploadUserCfgReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryUserCfgReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -516,6 +521,13 @@ private:
 
     bool QueryAccessDomainOfBusinessDevice(const std::string &strDevID, const unsigned int uiBussinessType, std::string &strAccessDomainInfo);
 
+    struct UserCfg;
+    bool UploadUsrCfg(const UserCfg &ucfg);
+
+    bool GetUsrCfgMaxVersion(const std::string &strUserID, const unsigned int uiBusinessType, unsigned int &uiMaxVersion);
+
+    bool QueryUsrCfg(const std::string &strUserID, const unsigned int uiBusinessType, UserCfg &ucfg);
+
 private:
     ParamInfo m_ParamInfo;
 
@@ -576,6 +588,18 @@ private:
         std::string m_strP2pID;
         std::string m_strExtend;
     };
+
+    struct UserCfg
+    {
+        unsigned int m_uiBusinessType;
+        std::string m_strUserID;
+        std::string m_strFileID;
+        std::string m_strExtend;
+        std::string m_strVersion;
+        std::string m_strCfgURL;
+    };
+
+    boost::mutex m_UserCfgMutex;
 
 };
 

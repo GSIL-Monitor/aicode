@@ -178,6 +178,12 @@ public:
         QueryDeviceP2pIDReq_USR_T = 20971,               //查询设备P2PID
         QueryDeviceP2pIDRsp_USR_T = 20972,
 
+        UploadUserCfgReq_USR_T = 20973,               //上传用户配置信息
+        UploadUserCfgRsp_USR_T = 20974,
+
+        QueryUserCfgReq_USR_T = 20975,                 //查询用户配置信息
+        QueryUserCfgRsp_USR_T = 20976,
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -1304,6 +1310,47 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct UploadUserCfgReq_USR : Req
+    {
+        unsigned int m_uiBusinessType;
+        std::string m_strUserID;
+        std::string m_strFileID;
+        std::string m_strExtend;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct UploadUserCfgRsp_USR : Rsp
+    {
+        std::string m_strVersion;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUserCfgReq_USR : Req
+    {
+        unsigned int m_uiBusinessType;
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryUserCfgRsp_USR : Rsp
+    {
+        std::string m_strCfgURL;
+        std::string m_strVersion;
+        std::string m_strExtend;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
 
     struct AddFileReq_DEV : Req
     {
@@ -2210,6 +2257,15 @@ private:
     bool QueryDeviceP2pIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryDeviceP2pIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
+    bool UploadUserCfgReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool UploadUserCfgReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool UploadUserCfgRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool UploadUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryUserCfgReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryUserCfgReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryUserCfgRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

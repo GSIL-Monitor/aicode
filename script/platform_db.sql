@@ -348,3 +348,18 @@ CREATE TABLE `t_access_device_business_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `t_user_config_info`;
+CREATE TABLE `t_user_config_info` (
+  `id` varchar(36) NOT NULL,
+  `userid` varchar(32) NOT NULL,                     #用户ID
+  `fileid` varchar(1024) NOT NULL DEFAULT '',        #配置文件ID
+  `business_type` int(11) NOT NULL DEFAULT '0',      #业务类型
+  `version` int(11) DEFAULT '0',                     #版本号信息
+  `createdate` DATETIME NULL DEFAULT CURRENT_TIMESTAMP, #创建日期
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(userid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+

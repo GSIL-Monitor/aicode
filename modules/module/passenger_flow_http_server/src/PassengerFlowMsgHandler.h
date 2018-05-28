@@ -109,6 +109,14 @@ public:
 
     static const std::string QUERY_PATROL_RESULT_REPORT;
 
+    static const std::string REPORT_STORE_SENSOR_ALARM;
+
+    static const std::string QUERY_SENSOR_ALARM_THRESHOLD;
+
+    static const std::string REMOVE_SENSOR_RECORDS;
+
+    static const std::string REMOVE_SENSOR_ALARM_RECORDS;
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -272,7 +280,18 @@ public:
 
 
     bool QueryPatrolResultReportHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool ReportSensorAlarmInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
     
+    bool QuerySensorAlarmThresholdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool RemoveSensorRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveSensorAlarmRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
 private:
@@ -622,7 +641,16 @@ private:
 
     bool ReportSensorInfo(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist);
 
+    bool ReportSensorAlarmInfo(const std::string &strSid, const Sensor &sr, const unsigned int uiRecover, const std::string &strFileID);
+
     bool QueryPatrolResult(const std::string &strSid, const std::string &strUserID, PatrolResultReportQueryParam &prqm, std::string &strReport);
+
+    bool QuerySensorAlarmThreshold(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist);
+
+    bool RemoveSensorRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList);
+
+    bool RemoveSensorAlarmRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList);
+
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);

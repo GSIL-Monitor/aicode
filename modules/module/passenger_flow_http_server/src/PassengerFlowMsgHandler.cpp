@@ -157,6 +157,14 @@ const std::string PassengerFlowMsgHandler::REPORT_STORE_SENSOR("report_sensor_in
 
 const std::string PassengerFlowMsgHandler::QUERY_PATROL_RESULT_REPORT("query_patrol_result_report");
 
+const std::string PassengerFlowMsgHandler::REPORT_STORE_SENSOR_ALARM("report_alarm_info");
+
+const std::string PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_THRESHOLD("query_alarm_threshold");
+
+const std::string PassengerFlowMsgHandler::REMOVE_SENSOR_RECORDS("remove_store_sensor_records");
+
+const std::string PassengerFlowMsgHandler::REMOVE_SENSOR_ALARM_RECORDS("remove_store_sensor_alarm_records");
+
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new PassengerFlowProtoHandler)
@@ -1726,13 +1734,13 @@ bool PassengerFlowMsgHandler::ReportEventHandler(boost::shared_ptr<MsgInfoMap> p
         ++itBegin;
     }
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!ReportEvent(strSid, einfo))
     {
         LOG_ERROR_RLD("Report event failed.");
         return blResult;
     }
-            
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Report event info received and session id is " << strSid << " and device id is " << strDevID << " and user id is " << strUserID
         << " and event id  is " << einfo.m_strEventID);
@@ -1791,17 +1799,17 @@ bool PassengerFlowMsgHandler::DeleteEventHandler(boost::shared_ptr<MsgInfoMap> p
         return blResult;
     }
     const std::string strEventID = itFind->second;
-    
+   
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete event info received and session id is " << strSid << " and user id is " << strUserID
+        << " and event id  is " << strEventID);
+
     if (!DeleteEvent(strSid, strUserID, strEventID))
     {
         LOG_ERROR_RLD("Delete event failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete event info received and session id is " << strSid << " and user id is " << strUserID
-        << " and event id  is " << strEventID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -1969,16 +1977,16 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
         ++itBegin;
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify event info received and session id is " << strSid << " and user id is " << strUserID
+        << " and event id  is " << einfo.m_strEventID);
+
     if (!ModifyEvent(strSid, einfo))
     {
         LOG_ERROR_RLD("Modify event failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify event info received and session id is " << strSid << " and user id is " << strUserID
-        << " and event id  is " << einfo.m_strEventID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2054,6 +2062,11 @@ bool PassengerFlowMsgHandler::QueryEventHandler(boost::shared_ptr<MsgInfoMap> pM
     einfo.m_strUserID = strUserID;
     einfo.m_strEventID = strEventID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query event info received and session id is " << strSid << " and user id is " << strUserID
+        << " and event id  is " << strEventID);
+
     if (!QueryEvent(strSid, einfo))
     {
         LOG_ERROR_RLD("Query event failed.");
@@ -2079,11 +2092,6 @@ bool PassengerFlowMsgHandler::QueryEventHandler(boost::shared_ptr<MsgInfoMap> pM
         return blResult;
     }
     
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query event info received and session id is " << strSid << " and user id is " << strUserID
-        << " and event id  is " << strEventID);
-
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("source", einfo.m_strSource));
@@ -2464,13 +2472,13 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlanHandler(boost::shared_ptr<MsgI
     plan.m_strStoreID = strStoreID;
     plan.m_strUserID = strUserID;
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreateGuardStorePlan(strSid, plan))
     {
         LOG_ERROR_RLD("Create guard store plan failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create guard store plan info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
         << " and plan name is " << strPlanName << " and plan id is " << plan.m_strPlanID);
@@ -2530,16 +2538,16 @@ bool PassengerFlowMsgHandler::DeleteGuardStorePlanHandler(boost::shared_ptr<MsgI
     }
     const std::string strPlanID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete guard plan info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
     if (!DeleteGuardStorePlan(strSid, strUserID, strPlanID))
     {
         LOG_ERROR_RLD("Delete plan failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete guard plan info received and session id is " << strSid << " and user id is " << strUserID
-        << " and plan id  is " << strPlanID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2688,16 +2696,16 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlanHandler(boost::shared_ptr<MsgI
     plan.m_strPlanID = strPlanID;
     plan.m_strUserID = strUserID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify guard store plan info received and session id is " << strSid << " and plan id is " << strPlanID << " and user id is " << strUserID
+        << " and plan name is " << strPlanName);
+
     if (!ModifyGuardStorePlan(strSid, plan))
     {
         LOG_ERROR_RLD("Modify guard store plan failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify guard store plan info received and session id is " << strSid << " and plan id is " << strPlanID << " and user id is " << strUserID
-        << " and plan name is " << strPlanName);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -2768,6 +2776,11 @@ bool PassengerFlowMsgHandler::QueryGuardStorePlanHandler(boost::shared_ptr<MsgIn
     plan.m_strUserID = strUserID;
     plan.m_strPlanID = strPlanID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query plan info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
     if (!QueryGuardStorePlan(strSid, plan))
     {
         LOG_ERROR_RLD("Query plan failed.");
@@ -2780,11 +2793,6 @@ bool PassengerFlowMsgHandler::QueryGuardStorePlanHandler(boost::shared_ptr<MsgIn
         jsEntranceList[i] = boost::lexical_cast<std::string>(*itBegin);
     }
     
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query plan info received and session id is " << strSid << " and user id is " << strUserID
-        << " and plan id  is " << strPlanID);
-
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("store_id", plan.m_strStoreID));
@@ -3045,13 +3053,13 @@ bool PassengerFlowMsgHandler::CreateRegularPatrolHandler(boost::shared_ptr<MsgIn
     pat.m_strExtend = strExtend;
     pat.m_SAEList.swap(saelist);
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreateRegularPatrol(strSid, pat))
     {
         LOG_ERROR_RLD("Create regular patrol failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
         << " and patrol name is " << strPatrolName << " and extend is " << strExtend);
@@ -3112,16 +3120,16 @@ bool PassengerFlowMsgHandler::DeleteRegularPatrolPlanHandler(boost::shared_ptr<M
     }
     const std::string strPlanID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete regular patrol info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
     if (!DeleteRegularPatrol(strSid, strUserID, strPlanID))
     {
         LOG_ERROR_RLD("Delete regular patrol failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete regular patrol info received and session id is " << strSid << " and user id is " << strUserID
-        << " and plan id  is " << strPlanID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -3262,16 +3270,16 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler(boost::shared_ptr<M
     pat.m_strExtend = strExtend;
     pat.m_SAEList.swap(saelist);
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
+        << " and patrol name is " << strPatrolName << " and extend is " << strExtend);
+
     if (!ModifyRegularPatrol(strSid, pat))
     {
         LOG_ERROR_RLD("Modify regular patrol failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify regular patrol info received and session id is " << strSid << " and patrol id is " << pat.m_strPatrolID << " and user id is " << strUserID
-        << " and patrol name is " << strPatrolName << " and extend is " << strExtend);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -3346,6 +3354,11 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
     pat.m_strUserID = strUserID;
     pat.m_strPatrolID = strPlanID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query regulan patrol info received and session id is " << strSid << " and user id is " << strUserID
+        << " and plan id  is " << strPlanID);
+
     if (!QueryRegularPatrolPlan(strSid, pat))
     {
         LOG_ERROR_RLD("Query regular patrol failed.");
@@ -3385,11 +3398,6 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler(boost::shared_ptr<Ms
     {
         jsPatrolHandlerList[i] = *itBegin;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query regulan patrol info received and session id is " << strSid << " and user id is " << strUserID
-        << " and plan id  is " << strPlanID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -3631,13 +3639,13 @@ bool PassengerFlowMsgHandler::CreateVIPHandler(boost::shared_ptr<MsgInfoMap> pMs
     vip.m_uiVisitTimes = uiVisitTimes;
     vip.m_strProfilePicture = strPicture;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreateVIP(strSid, vip))
     {
         LOG_ERROR_RLD("Create vip failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create vip info received and session id is " << strSid << " and vip id is " << vip.m_strVipID << " and user id is " << strUserID
         << " and vip name is " << strVipName);
@@ -3697,17 +3705,17 @@ bool PassengerFlowMsgHandler::DeleteVIPHandler(boost::shared_ptr<MsgInfoMap> pMs
     }
     const std::string strVipID = itFind->second;
 
-    if (!DeleteVIP(strSid, strUserID, strVipID))
-    {
-        LOG_ERROR_RLD("Delete vip failed.");
-        return blResult;
-    }
-
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Delete vip info received and session id is " << strSid << " and user id is " << strUserID
         << " and vip id  is " << strVipID);
 
+    if (!DeleteVIP(strSid, strUserID, strVipID))
+    {
+        LOG_ERROR_RLD("Delete vip failed.");
+        return blResult;
+    }
+    
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -3817,16 +3825,16 @@ bool PassengerFlowMsgHandler::ModifyVIPHandler(boost::shared_ptr<MsgInfoMap> pMs
     vip.m_uiVisitTimes = uiVisitTimes;
     vip.m_strProfilePicture = strPicture;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify vip info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
+        << " and vip name is " << strVipName);
+
     if (!ModifyVIP(strSid, vip))
     {
         LOG_ERROR_RLD("Modify vip failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify vip info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
-        << " and vip name is " << strVipName);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -3897,6 +3905,11 @@ bool PassengerFlowMsgHandler::QueryVIPHandler(boost::shared_ptr<MsgInfoMap> pMsg
     vip.m_strVipUserID = strUserID;
     vip.m_strVipID = strVipID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query vip info received and session id is " << strSid << " and user id is " << strUserID
+        << " and vip id  is " << strVipID);
+
     if (!QueryVIP(strSid, vip))
     {
         LOG_ERROR_RLD("Query vip failed.");
@@ -3915,11 +3928,6 @@ bool PassengerFlowMsgHandler::QueryVIPHandler(boost::shared_ptr<MsgInfoMap> pMsg
 
         jsComHisList[i] = jsComHis;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query vip info received and session id is " << strSid << " and user id is " << strUserID
-        << " and vip id  is " << strVipID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4155,16 +4163,16 @@ bool PassengerFlowMsgHandler::CreateVIPConsumeHistoryHandler(boost::shared_ptr<M
     vch.m_strSalesman = strSalesMan;
     vch.m_uiGoodNum = uiGoodsNumber;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create vip consume history info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
+        << " and goods name is " << strGoodsName);
+
     if (!CreateVIPConsumeHistory(strSid, strUserID, strVipID, vch))
     {
         LOG_ERROR_RLD("Create vip consume history failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Create vip consume history info received and session id is " << strSid << " and vip id is " << strVipID << " and user id is " << strUserID
-        << " and goods name is " << strGoodsName);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4221,16 +4229,16 @@ bool PassengerFlowMsgHandler::DeleteVIPConsumeHistoryHandler(boost::shared_ptr<M
     }
     const std::string strConsumeID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete vip consume info received and session id is " << strSid << " and user id is " << strUserID
+        << " and consume id  is " << strConsumeID);
+
     if (!DeleteVIPConsumeHistory(strSid, strUserID, strConsumeID))
     {
         LOG_ERROR_RLD("Delete consume failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete vip consume info received and session id is " << strSid << " and user id is " << strUserID
-        << " and consume id  is " << strConsumeID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4342,16 +4350,16 @@ bool PassengerFlowMsgHandler::ModifyVIPConsumeHistoryHandler(boost::shared_ptr<M
     vch.m_uiGoodNum = uiGoodsNumber;
     vch.m_strConsumeID = strConsumeID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify vip consume history info received and session id is " << strSid << " and consume id is " << strConsumeID << " and user id is " << strUserID
+        << " and goods name is " << strGoodsName);
+
     if (!ModifyVIPConsumeHistory(strSid, strUserID, vch))
     {
         LOG_ERROR_RLD("Modify vip consume history failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify vip consume history info received and session id is " << strSid << " and consume id is " << strConsumeID << " and user id is " << strUserID
-        << " and goods name is " << strGoodsName);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4438,6 +4446,8 @@ bool PassengerFlowMsgHandler::QueryVIPConsumeHistoryHandler(boost::shared_ptr<Ms
         }
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     std::list<VIP::ConsumeHistory> vphlist;    
     if (!QueryVIPConsumeHistory(strSid, strUserID, strVipID, uiBeginIndex, vphlist))
     {
@@ -4457,8 +4467,6 @@ bool PassengerFlowMsgHandler::QueryVIPConsumeHistoryHandler(boost::shared_ptr<Ms
 
         jsComHisList[i] = jsComHis;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query vip consume info received and session id is " << strSid << " and user id is " << strUserID
         << " and vip id  is " << strVipID << " and consume history record size is " << vphlist.size());
@@ -4539,16 +4547,16 @@ bool PassengerFlowMsgHandler::UserJoinStoreHandler(boost::shared_ptr<MsgInfoMap>
     us.m_strUserID = strUserID;
     us.m_strAdminID = strAdminID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("User join store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
+        << " and role is " << strRole);
+
     if (!UserJoinStore(strSid, us))
     {
         LOG_ERROR_RLD("User join store failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("User join store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
-        << " and role is " << strRole);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4616,16 +4624,16 @@ bool PassengerFlowMsgHandler::UserQuitStoreHandler(boost::shared_ptr<MsgInfoMap>
     us.m_strUserID = strUserID;
     us.m_strAdminID = strAdminID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("User quit store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
+        << " and admin id is " << strAdminID);
+
     if (!UserQuitStore(strSid, strAdminID, us))
     {
         LOG_ERROR_RLD("User quit store failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("User quit store info received and session id is " << strSid << " and store id is " << strStoreID << " and user id is " << strUserID
-        << " and admin id is " << strAdminID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4696,6 +4704,8 @@ bool PassengerFlowMsgHandler::QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoM
     us.m_strUserID = strUserID;
     us.m_strStoreID = strStoreID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     std::list<UserOfStore> uslist;
     if (!QueryUserOfStore(strSid, us, uslist))
     {
@@ -4713,8 +4723,6 @@ bool PassengerFlowMsgHandler::QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoM
 
         jsUserOfStoreList[i] = jsUserofStore;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query user of store info received and session id is " << strSid << " and user id is " << strUserID
         << " and store id  is " << strStoreID << " and user of store record size is " << uslist.size());
@@ -4776,6 +4784,8 @@ bool PassengerFlowMsgHandler::QueryAllUserListHandler(boost::shared_ptr<MsgInfoM
     }
     const std::string strUserID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     std::list<UserOfStore> uslist;
     if (!QueryAllUserList(strSid, strUserID, uslist))
     {
@@ -4792,8 +4802,6 @@ bool PassengerFlowMsgHandler::QueryAllUserListHandler(boost::shared_ptr<MsgInfoM
 
         jsAllUserList[i] = jsUser;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query all user list info received and session id is " << strSid << " and user id is " << strUserID
         << " and user of list size is " << uslist.size());
@@ -4874,6 +4882,11 @@ bool PassengerFlowMsgHandler::CreateEvaluationTemplateHandler(boost::shared_ptr<
         return blResult;
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Create evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
+        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
+
     EvaluationTemplate evt;
     evt.m_dEvaluationValue = dEvaluationValue;
     evt.m_strEvaluation = strEvaluation;
@@ -4885,11 +4898,6 @@ bool PassengerFlowMsgHandler::CreateEvaluationTemplateHandler(boost::shared_ptr<
         LOG_ERROR_RLD("Create evaluation template failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Create evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
-        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -4947,16 +4955,16 @@ bool PassengerFlowMsgHandler::DeleteEvaluationTemplateHandler(boost::shared_ptr<
     }
     const std::string strEvaluationID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete evaluation template info received and session id is " << strSid << " and user id is " << strUserID
+        << " and evaluation id  is " << strEvaluationID);
+
     if (!DeleteEvaluationTemplate(strSid, strUserID, strEvaluationID))
     {
         LOG_ERROR_RLD("Delete evaluation template failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete evaluation template info received and session id is " << strSid << " and user id is " << strUserID
-        << " and evaluation id  is " << strEvaluationID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5044,16 +5052,16 @@ bool PassengerFlowMsgHandler::ModifyEvaluationTemplateHandler(boost::shared_ptr<
     evt.m_strUserIDOfCreataion = strUserID;
     evt.m_strEvaluationTmpID = strEvaluationID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
+        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
+
     if (!ModifyEvaluationTemplate(strSid, evt))
     {
         LOG_ERROR_RLD("Modify evaluation template failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify evaluation template info received and session id is " << strSid << " and user id is " << strUserID << " and evaluation is " << strEvaluation
-        << " and evaluation desc is " << strEvaluationDesc << " and evaluation value is " << dEvaluationValue);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5112,6 +5120,8 @@ bool PassengerFlowMsgHandler::QueryEvaluationTemplateHandler(boost::shared_ptr<M
     }
     const std::string strUserID = itFind->second;
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     std::list<EvaluationTemplate> evtlist;
     if (!QueryEvalutaionTemplate(strSid, strUserID, evtlist))
     {
@@ -5130,8 +5140,6 @@ bool PassengerFlowMsgHandler::QueryEvaluationTemplateHandler(boost::shared_ptr<M
         
         jsEvaList[i] = jsEva;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query evaluation template info received and session id is " << strSid << " and user id is " << strUserID
         << " and evaluation record size is " << evtlist.size());
@@ -5299,13 +5307,13 @@ bool PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler(boost::shared_ptr<M
         return blResult;
     }
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreateEvaluation(strSid, ev))
     {
         LOG_ERROR_RLD("Create evaluation failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create evaluation info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
         << " and evaluation id is " << ev.m_strEvaluationID << " and evaluation info is " << strEvaluationInfo);
@@ -5365,16 +5373,16 @@ bool PassengerFlowMsgHandler::DeleteEvaluationOfStoreHandler(boost::shared_ptr<M
     }
     const std::string strEvaluationIDOfStore = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete evaluation info received and session id is " << strSid << " and user id is " << strUserID
+        << " and evaluation id of store is " << strEvaluationIDOfStore);
+
     if (!DeleteEvaluation(strSid, strUserID, strEvaluationIDOfStore))
     {
         LOG_ERROR_RLD("Delete evaluation failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete evaluation info received and session id is " << strSid << " and user id is " << strUserID
-        << " and evaluation id of store is " << strEvaluationIDOfStore);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5559,17 +5567,17 @@ bool PassengerFlowMsgHandler::ModifyEvaluationOfStoreHandler(boost::shared_ptr<M
         
     }
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify evaluation info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and evalutaion id is " << strEvaluationIDOfStore << " and evaluation info is " << strEvaluationInfo);
+
     if (!ModifyEvaluation(strSid, ev))
     {
         LOG_ERROR_RLD("Modify evaluation failed.");
         return blResult;
     }
     
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify evaluation info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
-        << " and evalutaion id is " << strEvaluationIDOfStore << " and evaluation info is " << strEvaluationInfo);
-
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -5650,6 +5658,12 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
     //ev.m_strStoreID = strStoreID;
     ev.m_strEvaluationID = strEvaluationIDOfStore;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query evaluation info received and session id is " << strSid << " and user id is " << strUserID
+        //<< " and store id is " << strStoreID 
+        << " and evaluation id of store is " << strEvaluationIDOfStore);
+
     if (!QueryEvaluation(strSid, strUserID, ev))
     {
         LOG_ERROR_RLD("Query evaluation failed.");
@@ -5683,12 +5697,6 @@ bool PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler(boost::shared_ptr<Ms
 
         jsEvaList[i] = jsEva;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query evaluation info received and session id is " << strSid << " and user id is " << strUserID
-        //<< " and store id is " << strStoreID 
-        << " and evaluation id of store is " << strEvaluationIDOfStore);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -5817,6 +5825,11 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
         }
     }
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all evaluation info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
     std::list<Evaluation> evlist;
     if (!QueryAllEvaluationOfStore(strSid, strUserID, strStoreID, uiCheckStatus, strBeginDate, strEndDate, uiBeginIndex, evlist))
     {
@@ -5838,11 +5851,6 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler(boost::shared_ptr
 
         jsEvaList[i] = jsEva;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query all evaluation info of store received and session id is " << strSid << " and user id is " << strUserID
-        << " and store id is " << strStoreID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6056,13 +6064,13 @@ bool PassengerFlowMsgHandler::CreatePatrolRecordHandler(boost::shared_ptr<MsgInf
     pr.m_strEntranceIDList.swap(strEntranceIDList);
     pr.m_PicList.swap(PicList);
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreatePatrolRecord(strSid, pr))
     {
         LOG_ERROR_RLD("Create patrol record failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create patrol record info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
         << " and ptrol record id is " << pr.m_strPatrolID);
@@ -6122,16 +6130,16 @@ bool PassengerFlowMsgHandler::DeletePatrolRecordHandler(boost::shared_ptr<MsgInf
     }
     const std::string strPatrolID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete patrol record info received and session id is " << strSid << " and user id is " << strUserID
+        << " and patrol id of store is " << strPatrolID);
+
     if (!DeletePatrolRecord(strSid, strUserID, strPatrolID))
     {
         LOG_ERROR_RLD("Delete patrol record failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete patrol record info received and session id is " << strSid << " and user id is " << strUserID
-        << " and patrol id of store is " << strPatrolID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6267,15 +6275,15 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecordHandler(boost::shared_ptr<MsgInf
     pr.m_strUserID = strUserID;
     pr.m_uiPatrolResult = uiPatrolResult;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify patrol record info received and session id is " << strSid << " and user id is " << strUserID << " and patrol id is " << strPatrolID);
+
     if (!ModifyPatrolRecord(strSid, pr))
     {
         LOG_ERROR_RLD("Modify patrol record failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify patrol record info received and session id is " << strSid << " and user id is " << strUserID << " and patrol id is " << strPatrolID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6348,6 +6356,11 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
     pr.m_strUserID = strUserID;
     pr.m_strPatrolID = strPatrolID;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query patrol record info received and session id is " << strSid << " and user id is " << strUserID
+        << " and patrol id is " << strPatrolID);
+
     if (!QueryPatrolRecord(strSid, pr))
     {
         LOG_ERROR_RLD("Query patrol record failed.");
@@ -6381,11 +6394,6 @@ bool PassengerFlowMsgHandler::QueryPatrolRecordHandler(boost::shared_ptr<MsgInfo
     {        
         jsEidList[i] = *itBegin;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query patrol record info received and session id is " << strSid << " and user id is " << strUserID
-        << " and patrol id is " << strPatrolID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6544,6 +6552,11 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
         }
     }
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all patrol info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
     std::list<PatrolRecord> prlist;
     if (!QueryAllPatrolRecord(strSid, strUserID, strStoreID, uiPatrolResult, uiPlanFlag, strPlanID, strBeginDate, strEndDate, uiBeginIndex, prlist))
     {
@@ -6601,11 +6614,6 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecordHandler(boost::shared_ptr<MsgI
 
         jsPatrolRecordList[ii] = jsPr;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query all patrol info of store received and session id is " << strSid << " and user id is " << strUserID
-        << " and store id is " << strStoreID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6784,13 +6792,13 @@ bool PassengerFlowMsgHandler::CreateStoreSensorHandler(boost::shared_ptr<MsgInfo
     sr.m_uiType = uiType;
     sr.m_strAlarmThreshold = strAlarmThreshold;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
     if (!CreateStoreSensor(strSid, strUserID, sr))
     {
         LOG_ERROR_RLD("Create store sensor failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Create store sensor info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
         << " and sensor id is " << sr.m_strID);
@@ -6858,16 +6866,16 @@ bool PassengerFlowMsgHandler::DeleteStoreSensorHandler(boost::shared_ptr<MsgInfo
     }
     const std::string strSensorID = itFind->second;
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete store sensor info received and session id is " << strSid << " and user id is " << strUserID
+        << " and sensor id of store is " << strSensorID);
+
     if (!DeleteStoreSensor(strSid, strUserID, strStoreID, strSensorID))
     {
         LOG_ERROR_RLD("Delete store sensor failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Delete store sensor info received and session id is " << strSid << " and user id is " << strUserID
-        << " and sensor id of store is " << strSensorID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -6973,16 +6981,16 @@ bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfo
     sr.m_strID = strSensorID;
     sr.m_strAlarmThreshold = strAlarmThreshold;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify store sensor info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
+        << " and sensor id is " << sr.m_strID);
+
     if (!ModifyStoreSensor(strSid, strUserID, sr))
     {
         LOG_ERROR_RLD("Modify store sensor failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Modify store sensor info received and session id is " << strSid << " and user id is " << strUserID << " and store id is " << strStoreID
-        << " and sensor id is " << sr.m_strID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -7041,17 +7049,17 @@ bool PassengerFlowMsgHandler::QueryStoreSensorHandler(boost::shared_ptr<MsgInfoM
     Sensor sr;
     sr.m_strID = strSensorID;
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query sensor info received and session id is " << strSid << " and user id is " << strUserID
+        << " and sensor id is " << strSensorID);
+
     if (!QueryStoreSensor(strSid, strUserID, sr))
     {
         LOG_ERROR_RLD("Query sensor info failed.");
         return blResult;
     }
     
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query sensor info received and session id is " << strSid << " and user id is " << strUserID
-        << " and sensor id is " << strSensorID);
-
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
@@ -7124,6 +7132,11 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensorHandler(boost::shared_ptr<MsgIn
     }
     const std::string strStoreID = itFind->second;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all sensor info of store received and session id is " << strSid << " and user id is " << strUserID
+        << " and store id is " << strStoreID);
+
     std::list<Sensor> srlist;
     if (!QueryAllStoreSensor(strSid, strUserID, strStoreID, srlist))
     {
@@ -7145,11 +7158,6 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensorHandler(boost::shared_ptr<MsgIn
 
         jsSensorInfoList[i] = jsSensor;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query all sensor info of store received and session id is " << strSid << " and user id is " << strUserID
-        << " and store id is " << strStoreID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -7250,15 +7258,15 @@ bool PassengerFlowMsgHandler::ReportSensorInfoHandler(boost::shared_ptr<MsgInfoM
         return blResult;
     }
     
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Report sensor info received and session id is " << strSid << " and device id is " << strDevID);
+
     if (!ReportSensorInfo(strSid, strDevID, srlist))
     {
         LOG_ERROR_RLD("Report sensor info failed.");
         return blResult;
     }
-
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Report sensor info received and session id is " << strSid << " and device id is " << strDevID);
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -7380,6 +7388,11 @@ bool PassengerFlowMsgHandler::QueryPatrolResultReportHandler(boost::shared_ptr<M
     prqm.m_strStoreID = strStoreID;
     prqm.m_uiPatrolResult = uiPatrolResult;
 
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query patrol result report info received and session id is " << strSid << " and user id is " << strUserID << " and begin date is " << strBeginDate
+        << " and end date is " << strEndDate << " and store id is " << strStoreID << " and patrol result is " << uiPatrolResult << " and patrol user id is " << strPatrolUserID);
+
     std::string strReport;
     if (!QueryPatrolResult(strSid, strUserID, prqm, strReport))
     {
@@ -7394,16 +7407,358 @@ bool PassengerFlowMsgHandler::QueryPatrolResultReportHandler(boost::shared_ptr<M
         return blResult;
     }
 
-    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
-
-    LOG_INFO_RLD("Query patrol result report info received and session id is " << strSid << " and user id is " << strUserID << " and begin date is " << strBeginDate
-        << " and end date is " << strEndDate << " and store id is " << strStoreID << " and patrol result is " << uiPatrolResult << " and patrol user id is " << strPatrolUserID);
-
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("chart_data", strReport));
 
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ReportSensorAlarmInfoHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type not found.");
+        return blResult;
+    }
+    const std::string strType = itFind->second;
+    unsigned int uiType = 0;
+
+    if (!ValidType<unsigned int>(strType, uiType))
+    {
+        LOG_ERROR_RLD("Type is invalid and value is " << strType);
+        return blResult;
+    }
+    
+    itFind = pMsgInfoMap->find("current_value");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Current value not found.");
+        return blResult;
+    }
+    const std::string strCurrentValue = itFind->second;
+
+    itFind = pMsgInfoMap->find("threshold_value");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Threshold value not found.");
+        return blResult;
+    }
+    const std::string strThresholdValue = itFind->second;
+
+    itFind = pMsgInfoMap->find("recover");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Recover not found.");
+        return blResult;
+    }
+    const std::string strRecover = itFind->second;
+    unsigned int uiRecover = 0;
+
+    if (!ValidType<unsigned int>(strRecover, uiRecover))
+    {
+        LOG_ERROR_RLD("Recover is invalid and value is " << strRecover);
+        return blResult;
+    }
+
+    std::string strFileID;
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strFileID = itFind->second;
+    }
+    
+    Sensor sr;
+    sr.m_strDevID = strDevID;
+    //sr.m_strName = strName;
+    //sr.m_strStoreID = strStoreID;
+    sr.m_uiType = uiType;
+    //sr.m_strID = strSensorID;
+    sr.m_strAlarmThreshold = strThresholdValue;
+    sr.m_strValue = strCurrentValue;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Report sensor alarm info received and session id is " << strSid << " and device id is " << strDevID
+        << " and type is " << uiType << " and recover flag is " << uiRecover << " and file id is " << strFileID);
+
+    if (!ReportSensorAlarmInfo(strSid, sr, uiRecover, strFileID))
+    {
+        LOG_ERROR_RLD("Report sensor alarm info failed.");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QuerySensorAlarmThresholdHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsAlarmThresholdList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsAlarmThresholdList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["alarm_threshold"] = jsAlarmThresholdList;                
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("deviceid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Device id not found.");
+        return blResult;
+    }
+    const std::string strDevID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query sensor alarm threshold info received and session id is " << strSid << " and device id is " << strDevID);
+
+    std::list<Sensor> srlist;
+    if (!QuerySensorAlarmThreshold(strSid, strDevID, srlist))
+    {
+        LOG_ERROR_RLD("Query sensor alarm failed and device id is " << strDevID);
+        return blResult;
+    }
+
+    unsigned int i = 0;
+    for (auto itBegin = srlist.begin(), itEnd = srlist.end(); itBegin != itEnd; ++itBegin, ++i)
+    {
+        Json::Value jsAlarmThreshold;
+        jsAlarmThreshold["type"] = boost::lexical_cast<std::string>(itBegin->m_uiType);
+        jsAlarmThreshold["threshold_value"] = itBegin->m_strAlarmThreshold;
+        
+        jsAlarmThresholdList[i] = jsAlarmThreshold;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::RemoveSensorRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("recordid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Record id not found.");
+        return blResult;
+    }
+    const std::string strRecordID = itFind->second;
+
+    std::list<std::string> strRecordIDList;
+    if (GetValueList(strRecordID, strRecordIDList))
+    {
+        LOG_INFO_RLD("Multiple record id is received.");
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Remove sensor records info received and sid is " << strSid << " and record id is " << strRecordID);
+
+    if (strRecordIDList.empty())
+    {
+        strRecordIDList.push_back(strRecordID);
+    }
+
+    if (!RemoveSensorRecords(strSid, strUserID, strRecordIDList))
+    {
+        LOG_ERROR_RLD("Remove sensor records handle failed and user id is " << strUserID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::RemoveSensorAlarmRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("recordid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Record id not found.");
+        return blResult;
+    }
+    const std::string strRecordID = itFind->second;
+
+    std::list<std::string> strRecordIDList;
+    if (GetValueList(strRecordID, strRecordIDList))
+    {
+        LOG_INFO_RLD("Multiple record id is received.");
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Remove sensor alarm records info received and sid is " << strSid << " and record id is " << strRecordID);
+
+    if (strRecordIDList.empty())
+    {
+        strRecordIDList.push_back(strRecordID);
+    }
+
+    if (!RemoveSensorAlarmRecords(strSid, strUserID, strRecordIDList))
+    {
+        LOG_ERROR_RLD("Remove sensor alarm records handle failed and user id is " << strUserID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
 
     blResult = true;
 
@@ -11571,15 +11926,75 @@ bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const 
         PassengerFlowProtoHandler::ReportSensorInfoRsp ReportSensorRsp;
         if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ReportSensorRsp))
         {
-            LOG_ERROR_RLD("Report store sensor unserialize failed.");
+            LOG_ERROR_RLD("Report sensor unserialize failed.");
             return iRet = CommMsgHandler::FAILED;
         }
 
         iRet = ReportSensorRsp.m_iRetcode;
 
-        LOG_INFO_RLD("Report store and session id is " << strSid << " and device id is " << strDevID <<
+        LOG_INFO_RLD("Report sensor and session id is " << strSid << " and device id is " << strDevID <<
             " and return code is " << ReportSensorRsp.m_iRetcode <<
             " and return msg is " << ReportSensorRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ReportSensorAlarmInfo(const std::string &strSid, const Sensor &sr, const unsigned int uiRecover, const std::string &strFileID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ReportSensorAlarmInfoReq ReportSensorAlarmReq;
+        ReportSensorAlarmReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorAlarmInfoReq_T;
+        ReportSensorAlarmReq.m_uiMsgSeq = 1;
+        ReportSensorAlarmReq.m_strSID = strSid;
+
+        ReportSensorAlarmReq.m_strFileID = strFileID;
+        ReportSensorAlarmReq.m_uiRecover = uiRecover;
+
+
+        ReportSensorAlarmReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
+        //sr.m_strName = strName;
+        //sr.m_strStoreID = strStoreID;
+        ReportSensorAlarmReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
+        //sr.m_strID = strSensorID;
+        ReportSensorAlarmReq.m_sensorInfo.m_strSensorAlarmThreshold = sr.m_strAlarmThreshold;
+        ReportSensorAlarmReq.m_sensorInfo.m_strValue = sr.m_strValue;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorAlarmReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Report sensor alarm req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp ReportSensorAlarmRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ReportSensorAlarmRsp))
+        {
+            LOG_ERROR_RLD("Report sensor alarm unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ReportSensorAlarmRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Report sensor alarm and session id is " << strSid << " and device id is " << sr.m_strDevID <<
+            " and return code is " << ReportSensorAlarmRsp.m_iRetcode <<
+            " and return msg is " << ReportSensorAlarmRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };
@@ -11638,6 +12053,174 @@ bool PassengerFlowMsgHandler::QueryPatrolResult(const std::string &strSid, const
             " and session id is " << strSid <<
             " and return code is " << QuerySensorInfoRsp.m_iRetcode <<
             " and return msg is " << QuerySensorInfoRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QuerySensorAlarmThreshold(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq QuerySensorAlarmThresholdReq;
+        QuerySensorAlarmThresholdReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorAlarmThresholdReq_T;
+        QuerySensorAlarmThresholdReq.m_uiMsgSeq = 1;
+        QuerySensorAlarmThresholdReq.m_strSID = strSid;
+
+        QuerySensorAlarmThresholdReq.m_strDeviceID = strDevID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorAlarmThresholdReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query sensor alarm threshold req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp QuerySensorAlarmThresholdRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorAlarmThresholdRsp))
+        {
+            LOG_ERROR_RLD("Query sensor alarm threshold rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QuerySensorAlarmThresholdRsp.m_sensorList.begin(), itEnd = QuerySensorAlarmThresholdRsp.m_sensorList.end(); itBegin != itEnd; ++itBegin)
+        {
+            Sensor sr;
+            sr.m_strAlarmThreshold = itBegin->m_strSensorAlarmThreshold;
+            sr.m_strDevID = itBegin->m_strDeviceID;
+            sr.m_strID = itBegin->m_strSensorID;
+            sr.m_strName = itBegin->m_strSensorName;
+            sr.m_strStoreID = itBegin->m_strStoreID;
+            sr.m_strValue = itBegin->m_strValue;
+            sr.m_uiType = boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
+
+            srlist.push_back(std::move(sr));
+        }
+
+        iRet = QuerySensorAlarmThresholdRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query sensor alarm threshold and session id is " << strSid << " and device id is " << strDevID <<
+            " and return code is " << QuerySensorAlarmThresholdRsp.m_iRetcode <<
+            " and return msg is " << QuerySensorAlarmThresholdRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::RemoveSensorRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::RemoveSensorRecordsReq RemoveSensorRecordsReq;
+        RemoveSensorRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorRecordsReq_T;
+        RemoveSensorRecordsReq.m_uiMsgSeq = 1;
+        RemoveSensorRecordsReq.m_strSID = strSid;
+
+        RemoveSensorRecordsReq.m_strUserID = strUserID;
+        
+        RemoveSensorRecordsReq.m_strRecordIDList.swap(strRecordIDList);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorRecordsReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove sensor records req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::RemoveSensorRecordsRsp RemoveSensorRecordsRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveSensorRecordsRsp))
+        {
+            LOG_ERROR_RLD("Remove sensor records rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = RemoveSensorRecordsRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Remove sensor records and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << RemoveSensorRecordsRsp.m_iRetcode <<
+            " and return msg is " << RemoveSensorRecordsRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::RemoveSensorAlarmRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq RemoveSensorAlarmRecordsReq;
+        RemoveSensorAlarmRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T;
+        RemoveSensorAlarmRecordsReq.m_uiMsgSeq = 1;
+        RemoveSensorAlarmRecordsReq.m_strSID = strSid;
+
+        RemoveSensorAlarmRecordsReq.m_strUserID = strUserID;
+
+        RemoveSensorAlarmRecordsReq.m_strRecordIDList.swap(strRecordIDList);
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorAlarmRecordsReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove sensor alarm records req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp RemoveSensorAlarmRecordsRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveSensorAlarmRecordsRsp))
+        {
+            LOG_ERROR_RLD("Remove sensor alarm records rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = RemoveSensorAlarmRecordsRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Remove sensor alarm records and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << RemoveSensorAlarmRecordsRsp.m_iRetcode <<
+            " and return msg is " << RemoveSensorAlarmRecordsRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

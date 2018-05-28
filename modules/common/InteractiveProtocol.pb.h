@@ -419,6 +419,12 @@ extern QueryUploadURLReq_MGRDefaultTypeInternal _QueryUploadURLReq_MGR_default_i
 class QueryUploadURLRsp_MGR;
 class QueryUploadURLRsp_MGRDefaultTypeInternal;
 extern QueryUploadURLRsp_MGRDefaultTypeInternal _QueryUploadURLRsp_MGR_default_instance_;
+class QueryUserCfgReq_USR;
+class QueryUserCfgReq_USRDefaultTypeInternal;
+extern QueryUserCfgReq_USRDefaultTypeInternal _QueryUserCfgReq_USR_default_instance_;
+class QueryUserCfgRsp_USR;
+class QueryUserCfgRsp_USRDefaultTypeInternal;
+extern QueryUserCfgRsp_USRDefaultTypeInternal _QueryUserCfgRsp_USR_default_instance_;
 class QueryUserReq_USR;
 class QueryUserReq_USRDefaultTypeInternal;
 extern QueryUserReq_USRDefaultTypeInternal _QueryUserReq_USR_default_instance_;
@@ -503,6 +509,12 @@ extern UnregisterCmsCallReq_USRDefaultTypeInternal _UnregisterCmsCallReq_USR_def
 class UnregisterCmsCallRsp_USR;
 class UnregisterCmsCallRsp_USRDefaultTypeInternal;
 extern UnregisterCmsCallRsp_USRDefaultTypeInternal _UnregisterCmsCallRsp_USR_default_instance_;
+class UploadUserCfgReq_USR;
+class UploadUserCfgReq_USRDefaultTypeInternal;
+extern UploadUserCfgReq_USRDefaultTypeInternal _UploadUserCfgReq_USR_default_instance_;
+class UploadUserCfgRsp_USR;
+class UploadUserCfgRsp_USRDefaultTypeInternal;
+extern UploadUserCfgRsp_USRDefaultTypeInternal _UploadUserCfgRsp_USR_default_instance_;
 class User;
 class UserDefaultTypeInternal;
 extern UserDefaultTypeInternal _User_default_instance_;
@@ -652,6 +664,10 @@ enum MsgType {
   QueryALLDeviceCapacityRsp_USR_T = 20970,
   QueryDeviceP2pIDReq_USR_T = 20971,
   QueryDeviceP2pIDRsp_USR_T = 20972,
+  UploadUserCfgReq_USR_T = 20973,
+  UploadUserCfgRsp_USR_T = 20974,
+  QueryUserCfgReq_USR_T = 20975,
+  QueryUserCfgRsp_USR_T = 20976,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -16940,6 +16956,444 @@ class QueryDeviceP2pIDRsp_USR : public ::google::protobuf::Message /* @@protoc_i
 };
 // -------------------------------------------------------------------
 
+class UploadUserCfgReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.UploadUserCfgReq_USR) */ {
+ public:
+  UploadUserCfgReq_USR();
+  virtual ~UploadUserCfgReq_USR();
+
+  UploadUserCfgReq_USR(const UploadUserCfgReq_USR& from);
+
+  inline UploadUserCfgReq_USR& operator=(const UploadUserCfgReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UploadUserCfgReq_USR& default_instance();
+
+  static inline const UploadUserCfgReq_USR* internal_default_instance() {
+    return reinterpret_cast<const UploadUserCfgReq_USR*>(
+               &_UploadUserCfgReq_USR_default_instance_);
+  }
+
+  void Swap(UploadUserCfgReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UploadUserCfgReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UploadUserCfgReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UploadUserCfgReq_USR& from);
+  void MergeFrom(const UploadUserCfgReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UploadUserCfgReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strFileID = 3;
+  void clear_strfileid();
+  static const int kStrFileIDFieldNumber = 3;
+  const ::std::string& strfileid() const;
+  void set_strfileid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strfileid(::std::string&& value);
+  #endif
+  void set_strfileid(const char* value);
+  void set_strfileid(const char* value, size_t size);
+  ::std::string* mutable_strfileid();
+  ::std::string* release_strfileid();
+  void set_allocated_strfileid(::std::string* strfileid);
+
+  // string strExtend = 4;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 4;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiBusinessType = 1;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 1;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.UploadUserCfgReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strfileid_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uibusinesstype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UploadUserCfgRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.UploadUserCfgRsp_USR) */ {
+ public:
+  UploadUserCfgRsp_USR();
+  virtual ~UploadUserCfgRsp_USR();
+
+  UploadUserCfgRsp_USR(const UploadUserCfgRsp_USR& from);
+
+  inline UploadUserCfgRsp_USR& operator=(const UploadUserCfgRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UploadUserCfgRsp_USR& default_instance();
+
+  static inline const UploadUserCfgRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const UploadUserCfgRsp_USR*>(
+               &_UploadUserCfgRsp_USR_default_instance_);
+  }
+
+  void Swap(UploadUserCfgRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UploadUserCfgRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UploadUserCfgRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UploadUserCfgRsp_USR& from);
+  void MergeFrom(const UploadUserCfgRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UploadUserCfgRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strVersion = 1;
+  void clear_strversion();
+  static const int kStrVersionFieldNumber = 1;
+  const ::std::string& strversion() const;
+  void set_strversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversion(::std::string&& value);
+  #endif
+  void set_strversion(const char* value);
+  void set_strversion(const char* value, size_t size);
+  ::std::string* mutable_strversion();
+  ::std::string* release_strversion();
+  void set_allocated_strversion(::std::string* strversion);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.UploadUserCfgRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strversion_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryUserCfgReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUserCfgReq_USR) */ {
+ public:
+  QueryUserCfgReq_USR();
+  virtual ~QueryUserCfgReq_USR();
+
+  QueryUserCfgReq_USR(const QueryUserCfgReq_USR& from);
+
+  inline QueryUserCfgReq_USR& operator=(const QueryUserCfgReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUserCfgReq_USR& default_instance();
+
+  static inline const QueryUserCfgReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryUserCfgReq_USR*>(
+               &_QueryUserCfgReq_USR_default_instance_);
+  }
+
+  void Swap(QueryUserCfgReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUserCfgReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryUserCfgReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryUserCfgReq_USR& from);
+  void MergeFrom(const QueryUserCfgReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryUserCfgReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // uint32 uiBusinessType = 1;
+  void clear_uibusinesstype();
+  static const int kUiBusinessTypeFieldNumber = 1;
+  ::google::protobuf::uint32 uibusinesstype() const;
+  void set_uibusinesstype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserCfgReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::uint32 uibusinesstype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryUserCfgRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUserCfgRsp_USR) */ {
+ public:
+  QueryUserCfgRsp_USR();
+  virtual ~QueryUserCfgRsp_USR();
+
+  QueryUserCfgRsp_USR(const QueryUserCfgRsp_USR& from);
+
+  inline QueryUserCfgRsp_USR& operator=(const QueryUserCfgRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryUserCfgRsp_USR& default_instance();
+
+  static inline const QueryUserCfgRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryUserCfgRsp_USR*>(
+               &_QueryUserCfgRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryUserCfgRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryUserCfgRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryUserCfgRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryUserCfgRsp_USR& from);
+  void MergeFrom(const QueryUserCfgRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryUserCfgRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strCfgURL = 1;
+  void clear_strcfgurl();
+  static const int kStrCfgURLFieldNumber = 1;
+  const ::std::string& strcfgurl() const;
+  void set_strcfgurl(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcfgurl(::std::string&& value);
+  #endif
+  void set_strcfgurl(const char* value);
+  void set_strcfgurl(const char* value, size_t size);
+  ::std::string* mutable_strcfgurl();
+  ::std::string* release_strcfgurl();
+  void set_allocated_strcfgurl(::std::string* strcfgurl);
+
+  // string strVersion = 2;
+  void clear_strversion();
+  static const int kStrVersionFieldNumber = 2;
+  const ::std::string& strversion() const;
+  void set_strversion(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strversion(::std::string&& value);
+  #endif
+  void set_strversion(const char* value);
+  void set_strversion(const char* value, size_t size);
+  ::std::string* mutable_strversion();
+  ::std::string* release_strversion();
+  void set_allocated_strversion(::std::string* strversion);
+
+  // string strExtend = 3;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 3;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryUserCfgRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strcfgurl_;
+  ::google::protobuf::internal::ArenaStringPtr strversion_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class QueryUploadURLReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUploadURLReq_MGR) */ {
  public:
   QueryUploadURLReq_MGR();
@@ -19417,6 +19871,24 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceP2pIDReq_USR* release_querydevicep2pidreq_usr_value();
   void set_allocated_querydevicep2pidreq_usr_value(::Interactive::Message::QueryDeviceP2pIDReq_USR* querydevicep2pidreq_usr_value);
 
+  // .Interactive.Message.UploadUserCfgReq_USR UploadUserCfgReq_USR_Value = 1107;
+  bool has_uploadusercfgreq_usr_value() const;
+  void clear_uploadusercfgreq_usr_value();
+  static const int kUploadUserCfgReqUSRValueFieldNumber = 1107;
+  const ::Interactive::Message::UploadUserCfgReq_USR& uploadusercfgreq_usr_value() const;
+  ::Interactive::Message::UploadUserCfgReq_USR* mutable_uploadusercfgreq_usr_value();
+  ::Interactive::Message::UploadUserCfgReq_USR* release_uploadusercfgreq_usr_value();
+  void set_allocated_uploadusercfgreq_usr_value(::Interactive::Message::UploadUserCfgReq_USR* uploadusercfgreq_usr_value);
+
+  // .Interactive.Message.QueryUserCfgReq_USR QueryUserCfgReq_USR_Value = 1108;
+  bool has_queryusercfgreq_usr_value() const;
+  void clear_queryusercfgreq_usr_value();
+  static const int kQueryUserCfgReqUSRValueFieldNumber = 1108;
+  const ::Interactive::Message::QueryUserCfgReq_USR& queryusercfgreq_usr_value() const;
+  ::Interactive::Message::QueryUserCfgReq_USR* mutable_queryusercfgreq_usr_value();
+  ::Interactive::Message::QueryUserCfgReq_USR* release_queryusercfgreq_usr_value();
+  void set_allocated_queryusercfgreq_usr_value(::Interactive::Message::QueryUserCfgReq_USR* queryusercfgreq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -19581,6 +20053,8 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceCapacityReq_USR* querydevicecapacityreq_usr_value_;
   ::Interactive::Message::QueryALLDeviceCapacityReq_USR* queryalldevicecapacityreq_usr_value_;
   ::Interactive::Message::QueryDeviceP2pIDReq_USR* querydevicep2pidreq_usr_value_;
+  ::Interactive::Message::UploadUserCfgReq_USR* uploadusercfgreq_usr_value_;
+  ::Interactive::Message::QueryUserCfgReq_USR* queryusercfgreq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -20227,6 +20701,24 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceP2pIDRsp_USR* release_querydevicep2pidrsp_usr_value();
   void set_allocated_querydevicep2pidrsp_usr_value(::Interactive::Message::QueryDeviceP2pIDRsp_USR* querydevicep2pidrsp_usr_value);
 
+  // .Interactive.Message.UploadUserCfgRsp_USR UploadUserCfgRsp_USR_Value = 1107;
+  bool has_uploadusercfgrsp_usr_value() const;
+  void clear_uploadusercfgrsp_usr_value();
+  static const int kUploadUserCfgRspUSRValueFieldNumber = 1107;
+  const ::Interactive::Message::UploadUserCfgRsp_USR& uploadusercfgrsp_usr_value() const;
+  ::Interactive::Message::UploadUserCfgRsp_USR* mutable_uploadusercfgrsp_usr_value();
+  ::Interactive::Message::UploadUserCfgRsp_USR* release_uploadusercfgrsp_usr_value();
+  void set_allocated_uploadusercfgrsp_usr_value(::Interactive::Message::UploadUserCfgRsp_USR* uploadusercfgrsp_usr_value);
+
+  // .Interactive.Message.QueryUserCfgRsp_USR QueryUserCfgRsp_USR_Value = 1108;
+  bool has_queryusercfgrsp_usr_value() const;
+  void clear_queryusercfgrsp_usr_value();
+  static const int kQueryUserCfgRspUSRValueFieldNumber = 1108;
+  const ::Interactive::Message::QueryUserCfgRsp_USR& queryusercfgrsp_usr_value() const;
+  ::Interactive::Message::QueryUserCfgRsp_USR* mutable_queryusercfgrsp_usr_value();
+  ::Interactive::Message::QueryUserCfgRsp_USR* release_queryusercfgrsp_usr_value();
+  void set_allocated_queryusercfgrsp_usr_value(::Interactive::Message::QueryUserCfgRsp_USR* queryusercfgrsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -20380,6 +20872,8 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceCapacityRsp_USR* querydevicecapacityrsp_usr_value_;
   ::Interactive::Message::QueryALLDeviceCapacityRsp_USR* queryalldevicecapacityrsp_usr_value_;
   ::Interactive::Message::QueryDeviceP2pIDRsp_USR* querydevicep2pidrsp_usr_value_;
+  ::Interactive::Message::UploadUserCfgRsp_USR* uploadusercfgrsp_usr_value_;
+  ::Interactive::Message::QueryUserCfgRsp_USR* queryusercfgrsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
@@ -40535,6 +41029,466 @@ inline void QueryDeviceP2pIDRsp_USR::set_allocated_strextend(::std::string* stre
 
 // -------------------------------------------------------------------
 
+// UploadUserCfgReq_USR
+
+// uint32 uiBusinessType = 1;
+inline void UploadUserCfgReq_USR::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 UploadUserCfgReq_USR::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UploadUserCfgReq_USR.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void UploadUserCfgReq_USR::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.UploadUserCfgReq_USR.uiBusinessType)
+}
+
+// string strUserID = 2;
+inline void UploadUserCfgReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UploadUserCfgReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void UploadUserCfgReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void UploadUserCfgReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+}
+#endif
+inline void UploadUserCfgReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+}
+inline void UploadUserCfgReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+}
+inline ::std::string* UploadUserCfgReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UploadUserCfgReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UploadUserCfgReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UploadUserCfgReq_USR.strUserID)
+}
+
+// string strFileID = 3;
+inline void UploadUserCfgReq_USR::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UploadUserCfgReq_USR::strfileid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+  return strfileid_.GetNoArena();
+}
+inline void UploadUserCfgReq_USR::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+}
+#if LANG_CXX11
+inline void UploadUserCfgReq_USR::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+}
+#endif
+inline void UploadUserCfgReq_USR::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+}
+inline void UploadUserCfgReq_USR::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+}
+inline ::std::string* UploadUserCfgReq_USR::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UploadUserCfgReq_USR::release_strfileid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UploadUserCfgReq_USR::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UploadUserCfgReq_USR.strFileID)
+}
+
+// string strExtend = 4;
+inline void UploadUserCfgReq_USR::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UploadUserCfgReq_USR::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void UploadUserCfgReq_USR::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+}
+#if LANG_CXX11
+inline void UploadUserCfgReq_USR::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+}
+#endif
+inline void UploadUserCfgReq_USR::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+}
+inline void UploadUserCfgReq_USR::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+}
+inline ::std::string* UploadUserCfgReq_USR::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UploadUserCfgReq_USR::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UploadUserCfgReq_USR::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UploadUserCfgReq_USR.strExtend)
+}
+
+// -------------------------------------------------------------------
+
+// UploadUserCfgRsp_USR
+
+// string strVersion = 1;
+inline void UploadUserCfgRsp_USR::clear_strversion() {
+  strversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UploadUserCfgRsp_USR::strversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+  return strversion_.GetNoArena();
+}
+inline void UploadUserCfgRsp_USR::set_strversion(const ::std::string& value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+}
+#if LANG_CXX11
+inline void UploadUserCfgRsp_USR::set_strversion(::std::string&& value) {
+  
+  strversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+}
+#endif
+inline void UploadUserCfgRsp_USR::set_strversion(const char* value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+}
+inline void UploadUserCfgRsp_USR::set_strversion(const char* value, size_t size) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+}
+inline ::std::string* UploadUserCfgRsp_USR::mutable_strversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+  return strversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UploadUserCfgRsp_USR::release_strversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+  
+  return strversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UploadUserCfgRsp_USR::set_allocated_strversion(::std::string* strversion) {
+  if (strversion != NULL) {
+    
+  } else {
+    
+  }
+  strversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.UploadUserCfgRsp_USR.strVersion)
+}
+
+// -------------------------------------------------------------------
+
+// QueryUserCfgReq_USR
+
+// uint32 uiBusinessType = 1;
+inline void QueryUserCfgReq_USR::clear_uibusinesstype() {
+  uibusinesstype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryUserCfgReq_USR::uibusinesstype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserCfgReq_USR.uiBusinessType)
+  return uibusinesstype_;
+}
+inline void QueryUserCfgReq_USR::set_uibusinesstype(::google::protobuf::uint32 value) {
+  
+  uibusinesstype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserCfgReq_USR.uiBusinessType)
+}
+
+// string strUserID = 2;
+inline void QueryUserCfgReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserCfgReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryUserCfgReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryUserCfgReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+}
+#endif
+inline void QueryUserCfgReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+}
+inline void QueryUserCfgReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+}
+inline ::std::string* QueryUserCfgReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserCfgReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserCfgReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserCfgReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryUserCfgRsp_USR
+
+// string strCfgURL = 1;
+inline void QueryUserCfgRsp_USR::clear_strcfgurl() {
+  strcfgurl_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserCfgRsp_USR::strcfgurl() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+  return strcfgurl_.GetNoArena();
+}
+inline void QueryUserCfgRsp_USR::set_strcfgurl(const ::std::string& value) {
+  
+  strcfgurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+}
+#if LANG_CXX11
+inline void QueryUserCfgRsp_USR::set_strcfgurl(::std::string&& value) {
+  
+  strcfgurl_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+}
+#endif
+inline void QueryUserCfgRsp_USR::set_strcfgurl(const char* value) {
+  
+  strcfgurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+}
+inline void QueryUserCfgRsp_USR::set_strcfgurl(const char* value, size_t size) {
+  
+  strcfgurl_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+}
+inline ::std::string* QueryUserCfgRsp_USR::mutable_strcfgurl() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+  return strcfgurl_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserCfgRsp_USR::release_strcfgurl() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+  
+  return strcfgurl_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserCfgRsp_USR::set_allocated_strcfgurl(::std::string* strcfgurl) {
+  if (strcfgurl != NULL) {
+    
+  } else {
+    
+  }
+  strcfgurl_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcfgurl);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserCfgRsp_USR.strCfgURL)
+}
+
+// string strVersion = 2;
+inline void QueryUserCfgRsp_USR::clear_strversion() {
+  strversion_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserCfgRsp_USR::strversion() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+  return strversion_.GetNoArena();
+}
+inline void QueryUserCfgRsp_USR::set_strversion(const ::std::string& value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+}
+#if LANG_CXX11
+inline void QueryUserCfgRsp_USR::set_strversion(::std::string&& value) {
+  
+  strversion_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+}
+#endif
+inline void QueryUserCfgRsp_USR::set_strversion(const char* value) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+}
+inline void QueryUserCfgRsp_USR::set_strversion(const char* value, size_t size) {
+  
+  strversion_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+}
+inline ::std::string* QueryUserCfgRsp_USR::mutable_strversion() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+  return strversion_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserCfgRsp_USR::release_strversion() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+  
+  return strversion_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserCfgRsp_USR::set_allocated_strversion(::std::string* strversion) {
+  if (strversion != NULL) {
+    
+  } else {
+    
+  }
+  strversion_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strversion);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserCfgRsp_USR.strVersion)
+}
+
+// string strExtend = 3;
+inline void QueryUserCfgRsp_USR::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryUserCfgRsp_USR::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void QueryUserCfgRsp_USR::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+}
+#if LANG_CXX11
+inline void QueryUserCfgRsp_USR::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+}
+#endif
+inline void QueryUserCfgRsp_USR::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+}
+inline void QueryUserCfgRsp_USR::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+}
+inline ::std::string* QueryUserCfgRsp_USR::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryUserCfgRsp_USR::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryUserCfgRsp_USR::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryUserCfgRsp_USR.strExtend)
+}
+
+// -------------------------------------------------------------------
+
 // QueryUploadURLReq_MGR
 
 // string strValue = 1;
@@ -44030,6 +44984,84 @@ inline void Req::set_allocated_querydevicep2pidreq_usr_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryDeviceP2pIDReq_USR_Value)
 }
 
+// .Interactive.Message.UploadUserCfgReq_USR UploadUserCfgReq_USR_Value = 1107;
+inline bool Req::has_uploadusercfgreq_usr_value() const {
+  return this != internal_default_instance() && uploadusercfgreq_usr_value_ != NULL;
+}
+inline void Req::clear_uploadusercfgreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && uploadusercfgreq_usr_value_ != NULL) delete uploadusercfgreq_usr_value_;
+  uploadusercfgreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::UploadUserCfgReq_USR& Req::uploadusercfgreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.UploadUserCfgReq_USR_Value)
+  return uploadusercfgreq_usr_value_ != NULL ? *uploadusercfgreq_usr_value_
+                         : *::Interactive::Message::UploadUserCfgReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::UploadUserCfgReq_USR* Req::mutable_uploadusercfgreq_usr_value() {
+  
+  if (uploadusercfgreq_usr_value_ == NULL) {
+    uploadusercfgreq_usr_value_ = new ::Interactive::Message::UploadUserCfgReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.UploadUserCfgReq_USR_Value)
+  return uploadusercfgreq_usr_value_;
+}
+inline ::Interactive::Message::UploadUserCfgReq_USR* Req::release_uploadusercfgreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.UploadUserCfgReq_USR_Value)
+  
+  ::Interactive::Message::UploadUserCfgReq_USR* temp = uploadusercfgreq_usr_value_;
+  uploadusercfgreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_uploadusercfgreq_usr_value(::Interactive::Message::UploadUserCfgReq_USR* uploadusercfgreq_usr_value) {
+  delete uploadusercfgreq_usr_value_;
+  uploadusercfgreq_usr_value_ = uploadusercfgreq_usr_value;
+  if (uploadusercfgreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.UploadUserCfgReq_USR_Value)
+}
+
+// .Interactive.Message.QueryUserCfgReq_USR QueryUserCfgReq_USR_Value = 1108;
+inline bool Req::has_queryusercfgreq_usr_value() const {
+  return this != internal_default_instance() && queryusercfgreq_usr_value_ != NULL;
+}
+inline void Req::clear_queryusercfgreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryusercfgreq_usr_value_ != NULL) delete queryusercfgreq_usr_value_;
+  queryusercfgreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserCfgReq_USR& Req::queryusercfgreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryUserCfgReq_USR_Value)
+  return queryusercfgreq_usr_value_ != NULL ? *queryusercfgreq_usr_value_
+                         : *::Interactive::Message::QueryUserCfgReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserCfgReq_USR* Req::mutable_queryusercfgreq_usr_value() {
+  
+  if (queryusercfgreq_usr_value_ == NULL) {
+    queryusercfgreq_usr_value_ = new ::Interactive::Message::QueryUserCfgReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryUserCfgReq_USR_Value)
+  return queryusercfgreq_usr_value_;
+}
+inline ::Interactive::Message::QueryUserCfgReq_USR* Req::release_queryusercfgreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryUserCfgReq_USR_Value)
+  
+  ::Interactive::Message::QueryUserCfgReq_USR* temp = queryusercfgreq_usr_value_;
+  queryusercfgreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryusercfgreq_usr_value(::Interactive::Message::QueryUserCfgReq_USR* queryusercfgreq_usr_value) {
+  delete queryusercfgreq_usr_value_;
+  queryusercfgreq_usr_value_ = queryusercfgreq_usr_value;
+  if (queryusercfgreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUserCfgReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -46908,6 +47940,84 @@ inline void Rsp::set_allocated_querydevicep2pidrsp_usr_value(::Interactive::Mess
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryDeviceP2pIDRsp_USR_Value)
 }
 
+// .Interactive.Message.UploadUserCfgRsp_USR UploadUserCfgRsp_USR_Value = 1107;
+inline bool Rsp::has_uploadusercfgrsp_usr_value() const {
+  return this != internal_default_instance() && uploadusercfgrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_uploadusercfgrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && uploadusercfgrsp_usr_value_ != NULL) delete uploadusercfgrsp_usr_value_;
+  uploadusercfgrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::UploadUserCfgRsp_USR& Rsp::uploadusercfgrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.UploadUserCfgRsp_USR_Value)
+  return uploadusercfgrsp_usr_value_ != NULL ? *uploadusercfgrsp_usr_value_
+                         : *::Interactive::Message::UploadUserCfgRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::UploadUserCfgRsp_USR* Rsp::mutable_uploadusercfgrsp_usr_value() {
+  
+  if (uploadusercfgrsp_usr_value_ == NULL) {
+    uploadusercfgrsp_usr_value_ = new ::Interactive::Message::UploadUserCfgRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.UploadUserCfgRsp_USR_Value)
+  return uploadusercfgrsp_usr_value_;
+}
+inline ::Interactive::Message::UploadUserCfgRsp_USR* Rsp::release_uploadusercfgrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.UploadUserCfgRsp_USR_Value)
+  
+  ::Interactive::Message::UploadUserCfgRsp_USR* temp = uploadusercfgrsp_usr_value_;
+  uploadusercfgrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_uploadusercfgrsp_usr_value(::Interactive::Message::UploadUserCfgRsp_USR* uploadusercfgrsp_usr_value) {
+  delete uploadusercfgrsp_usr_value_;
+  uploadusercfgrsp_usr_value_ = uploadusercfgrsp_usr_value;
+  if (uploadusercfgrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.UploadUserCfgRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryUserCfgRsp_USR QueryUserCfgRsp_USR_Value = 1108;
+inline bool Rsp::has_queryusercfgrsp_usr_value() const {
+  return this != internal_default_instance() && queryusercfgrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryusercfgrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryusercfgrsp_usr_value_ != NULL) delete queryusercfgrsp_usr_value_;
+  queryusercfgrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryUserCfgRsp_USR& Rsp::queryusercfgrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryUserCfgRsp_USR_Value)
+  return queryusercfgrsp_usr_value_ != NULL ? *queryusercfgrsp_usr_value_
+                         : *::Interactive::Message::QueryUserCfgRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryUserCfgRsp_USR* Rsp::mutable_queryusercfgrsp_usr_value() {
+  
+  if (queryusercfgrsp_usr_value_ == NULL) {
+    queryusercfgrsp_usr_value_ = new ::Interactive::Message::QueryUserCfgRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryUserCfgRsp_USR_Value)
+  return queryusercfgrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryUserCfgRsp_USR* Rsp::release_queryusercfgrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryUserCfgRsp_USR_Value)
+  
+  ::Interactive::Message::QueryUserCfgRsp_USR* temp = queryusercfgrsp_usr_value_;
+  queryusercfgrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryusercfgrsp_usr_value(::Interactive::Message::QueryUserCfgRsp_USR* queryusercfgrsp_usr_value) {
+  delete queryusercfgrsp_usr_value_;
+  queryusercfgrsp_usr_value_ = queryusercfgrsp_usr_value;
+  if (queryusercfgrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUserCfgRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -47422,6 +48532,14 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

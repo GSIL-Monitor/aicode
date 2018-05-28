@@ -41,6 +41,8 @@ public:
     void SetMsgHandler(const std::string &strKey, MsgHandler msghdr); //消息处理
 
     void SetMsgPreHandler(MsgHandler msghdr); //消息预处理
+
+    void SetActionName(const std::string &strActionName);
     
 private:
     void FCGILoopHandler();
@@ -70,6 +72,8 @@ private:
     std::string m_strUploadTmpPath;
 
     boost::shared_ptr<FileManager> m_pFileMgr;
+
+    std::string m_strActionName;
 
 public:
     static const std::string QUERY_STRING;

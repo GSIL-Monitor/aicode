@@ -94,6 +94,11 @@ void FCGIManager::SetMsgPreHandler(MsgHandler msghdr)
     m_MsgPreHandlerList.push_back(msghdr);
 }
 
+void FCGIManager::SetActionName(const std::string &strActionName)
+{
+    m_strActionName = strActionName;
+}
+
 void FCGIManager::FCGILoopHandler()
 {
     FCGX_Request	*pRequest = NULL;
@@ -168,7 +173,12 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
 
     std::string strAction;
     getURIRequestData(strQueryStr.c_str(), ACTION.c_str(), strAction);
-            
+    
+    if (strAction.empty() && !m_strActionName.empty())
+    {
+        getURIRequestData(strQueryStr.c_str(), m_strActionName.c_str(), strAction);
+    }
+    
     std::string strMethod = FCGX_GETPARAM(REQUEST_METHOD.c_str(), pRequest->envp);
     if (strMethod.empty())
     {
@@ -275,8 +285,12 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
     std::map<std::string, MsgHandler>::iterator itFindHandler;
     if (m_MsgHandlerMap.end() == (itFindHandler = m_MsgHandlerMap.find(strAction)))
     {
-        LOG_ERROR_RLD("Not found action handler, action error: " << strAction);
-        return;
+        //根据CGIName来获取处理器，允许根据CGIName来处理Action的值，类似URL为：http://dvsinfo.dvripc.net/getdevinfo.aspx?name=7174b3
+        if (m_MsgHandlerMap.end() == (itFindHandler = m_MsgHandlerMap.find(strCgiName)))
+        {
+            LOG_ERROR_RLD("Not found action handler, action error: " << strAction);
+            return;
+        }
     }
 
     itFindHandler->second(pMsgInfoMap, boost::bind(&FCGIManager::MsgWrite, this, _1, _2, _3, pRequest));

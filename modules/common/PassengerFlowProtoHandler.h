@@ -199,7 +199,22 @@ public:
         ReportCustomerFlowDataRsp_T = 30010,
 
         ReportSensorInfoReq_T = 30100,            //上报传感器信息
-        ReportSensorInfoRsp_T = 30110
+        ReportSensorInfoRsp_T = 30110,
+
+        ReportSensorAlarmInfoReq_T = 30120,       //告警上报
+        ReportSensorAlarmInfoRsp_T = 30130,
+
+        QuerySensorAlarmThresholdReq_T = 30140,    //查询告警阈值
+        QuerySensorAlarmThresholdRsp_T = 30150,
+
+        RemoveSensorRecordsReq_T = 30160,         //删除传感器监测记录
+        RemoveSensorRecordsRsp_T = 30170,
+
+        RemoveSensorAlarmRecordsReq_T = 30180,    //删除传感器告警记录
+        RemoveSensorAlarmRecordsRsp_T = 30190,
+
+        QuerySensorRecordsReq_T = 30200,          //查询传感器监测记录
+        QuerySensorRecordsRsp_T = 30210
     };
 
     struct Area                             //区域
@@ -1774,7 +1789,98 @@ public:
         virtual void UnSerializer(const CustomerFlowMessage &message);
     };
 
+    struct ReportSensorAlarmInfoReq : Request
+    {
+        Sensor m_sensorInfo;
+        unsigned int m_uiRecover;
+        std::string m_strFileID;
 
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ReportSensorAlarmInfoRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QuerySensorAlarmThresholdReq : Request
+    {
+        std::string m_strDeviceID;
+        
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QuerySensorAlarmThresholdRsp : Response
+    {
+        std::list<Sensor> m_sensorList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveSensorRecordsReq : Request
+    {
+        std::string m_strUserID;
+        std::list<std::string> m_strRecordIDList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveSensorRecordsRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveSensorAlarmRecordsReq : Request
+    {
+        std::string m_strUserID;
+        std::list<std::string> m_strRecordIDList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveSensorAlarmRecordsRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QuerySensorRecordsReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strStoreID;
+        std::string m_strSensorID;
+        std::string m_strSensorType;
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiBeginIndex;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QuerySensorRecordsRsp : Response
+    {
+        std::list<std::string> m_strRecordIDList;
+        std::list<Sensor> m_sensorList;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    
     bool GetCustomerFlowMsgType(const std::string &strData, CustomerFlowMsgType &msgtype);
 
     bool SerializeReq(const Request &req, std::string &strOutput);
@@ -2167,7 +2273,31 @@ private:
     bool ReportSensorInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool ReportSensorInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
+    bool ReportSensorAlarmInfoReq_Serializer(const Request &req, std::string &strOutput);
+    bool ReportSensorAlarmInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ReportSensorAlarmInfoRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ReportSensorAlarmInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
+    bool QuerySensorAlarmThresholdReq_Serializer(const Request &req, std::string &strOutput);
+    bool QuerySensorAlarmThresholdReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QuerySensorAlarmThresholdRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QuerySensorAlarmThresholdRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool RemoveSensorRecordsReq_Serializer(const Request &req, std::string &strOutput);
+    bool RemoveSensorRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool RemoveSensorRecordsRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool RemoveSensorRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool RemoveSensorAlarmRecordsReq_Serializer(const Request &req, std::string &strOutput);
+    bool RemoveSensorAlarmRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool RemoveSensorAlarmRecordsRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool RemoveSensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QuerySensorRecordsReq_Serializer(const Request &req, std::string &strOutput);
+    bool QuerySensorRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QuerySensorRecordsRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QuerySensorRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+        
     typedef boost::function<bool(const Request &req, std::string &strOutput)> Serializer;
     typedef boost::function<bool(const CustomerFlowMessage &message, Request &req)> UnSerializer;
 

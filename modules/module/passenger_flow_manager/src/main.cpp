@@ -532,6 +532,13 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorInfoReq_T, boost::bind(&PassengerFlowManager::ReportSensorInfoReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorAlarmInfoReq_T, boost::bind(&PassengerFlowManager::ReportSensorAlarmInfoReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorAlarmThresholdReq_T, boost::bind(&PassengerFlowManager::QuerySensorAlarmThresholdReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorRecordsReq_T, boost::bind(&PassengerFlowManager::RemoveSensorRecordsReq, &Umg, _1, _2, _3));
+
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T, boost::bind(&PassengerFlowManager::RemoveSensorAlarmRecordsReq, &Umg, _1, _2, _3));
 
     ccenter.Run(true);
 

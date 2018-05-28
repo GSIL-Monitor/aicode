@@ -355,6 +355,14 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RESULT_REPORT, boost::bind(&PassengerFlowMsgHandler::QueryPatrolResultReportHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_STORE_SENSOR_ALARM, boost::bind(&PassengerFlowMsgHandler::ReportSensorAlarmInfoHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_THRESHOLD, boost::bind(&PassengerFlowMsgHandler::QuerySensorAlarmThresholdHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_SENSOR_RECORDS, boost::bind(&PassengerFlowMsgHandler::RemoveSensorRecordsHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_SENSOR_ALARM_RECORDS, boost::bind(&PassengerFlowMsgHandler::RemoveSensorAlarmRecordsHandler, &filehdr, _1, _2));
+
     fcgimgr.Run(true);
     return 0;
 }

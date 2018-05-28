@@ -354,7 +354,7 @@ void UnSerializeSensorList(std::list<PassengerFlowProtoHandler::Sensor> &sensorI
 {
     for (int i = 0, sz = srcSensorInfoList.size(); i < sz; ++i)
     {
-        auto srcSensorInfo = srcSensorInfoList.Get(i);
+        const auto& srcSensorInfo = srcSensorInfoList.Get(i);
         PassengerFlowProtoHandler::Sensor sensorInfo;
         sensorInfo.m_strSensorID = srcSensorInfo.strsensorid();
         sensorInfo.m_strSensorName = srcSensorInfo.strsensorname();
@@ -1148,6 +1148,47 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoRsp_Serializer, this, _1, _2);
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportSensorInfoRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorInfoRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportSensorAlarmInfoReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportSensorAlarmInfoReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorAlarmInfoReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorAlarmInfoRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmThresholdReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmThresholdRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorRecordsReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorRecordsReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorRecordsReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorRecordsRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorRecordsRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorRecordsRsp_T, handler));
+    
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorAlarmRecordsRsp_T, handler));
+
 }
 
 PassengerFlowProtoHandler::~PassengerFlowProtoHandler()
@@ -2747,6 +2788,86 @@ bool PassengerFlowProtoHandler::ReportSensorInfoRsp_UnSerializer(const CustomerF
     return UnSerializerT<ReportSensorInfoRsp, Request>(message, rsp);
 }
 
+
+bool PassengerFlowProtoHandler::ReportSensorAlarmInfoReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ReportSensorAlarmInfoReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorAlarmInfoReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ReportSensorAlarmInfoReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ReportSensorAlarmInfoRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ReportSensorAlarmInfoRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QuerySensorAlarmThresholdReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QuerySensorAlarmThresholdReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QuerySensorAlarmThresholdRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QuerySensorAlarmThresholdRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorRecordsReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<RemoveSensorRecordsReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<RemoveSensorRecordsReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorRecordsRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<RemoveSensorRecordsRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<RemoveSensorRecordsRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<RemoveSensorAlarmRecordsReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<RemoveSensorAlarmRecordsReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<RemoveSensorAlarmRecordsRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<RemoveSensorAlarmRecordsRsp, Request>(message, rsp);
+}
 
 void PassengerFlowProtoHandler::Request::Serializer(CustomerFlowMessage &message) const
 {
@@ -6784,3 +6905,239 @@ void PassengerFlowProtoHandler::ReportSensorInfoRsp::UnSerializer(const Customer
     m_strValue = message.rspvalue().reportsensorinforsp_value().strvalue();
 }
 
+void PassengerFlowProtoHandler::ReportSensorAlarmInfoReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorAlarmInfoReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_reportsensoralarminforeq_value();
+    req->set_uirecover(m_uiRecover);
+    req->set_strfileid(m_strFileID);
+
+    auto sensor = req->mutable_sensorinfo();
+    sensor->set_strsensorid(m_sensorInfo.m_strSensorID);
+    sensor->set_strsensorname(m_sensorInfo.m_strSensorName);
+    sensor->set_strsensortype(m_sensorInfo.m_strSensorType);
+    sensor->set_strsensoralarmthreshold(m_sensorInfo.m_strSensorAlarmThreshold);
+    sensor->set_strstoreid(m_sensorInfo.m_strStoreID);
+    sensor->set_strdeviceid(m_sensorInfo.m_strDeviceID);
+    sensor->set_strvalue(m_sensorInfo.m_strValue);
+    sensor->set_uistate(m_sensorInfo.m_uiState);
+    sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+}
+
+void PassengerFlowProtoHandler::ReportSensorAlarmInfoReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().reportsensoralarminforeq_value();
+
+    m_strFileID = req.strfileid();
+    m_uiRecover = req.uirecover();
+
+    auto sensor = req.sensorinfo();
+    m_sensorInfo.m_strSensorID = sensor.strsensorid();
+    m_sensorInfo.m_strSensorName = sensor.strsensorname();
+    m_sensorInfo.m_strSensorType = sensor.strsensortype();
+    m_sensorInfo.m_strSensorAlarmThreshold = sensor.strsensoralarmthreshold();
+    m_sensorInfo.m_strStoreID = sensor.strstoreid();
+    m_sensorInfo.m_strDeviceID = sensor.strdeviceid();
+    m_sensorInfo.m_strValue = sensor.strvalue();
+    m_sensorInfo.m_uiState = sensor.uistate();
+    m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+}
+
+void PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ReportSensorAlarmInfoRsp_T);
+
+    message.mutable_rspvalue()->mutable_reportsensoralarminforsp_value()->set_strvalue(m_strValue);
+
+}
+
+void PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().reportsensoralarminforsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmThresholdReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querysensoralarmthresholdreq_value();
+    req->set_strdeviceid(m_strDeviceID);
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().querysensoralarmthresholdreq_value();
+
+    m_strDeviceID = req.strdeviceid();
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmThresholdRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_querysensoralarmthresholdrsp_value();
+    
+    SerializeSensorList(m_sensorList, rsp->mutable_sensorinfo());
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    auto rsp = message.rspvalue().querysensoralarmthresholdrsp_value();
+    
+    UnSerializeSensorList(m_sensorList, rsp.sensorinfo());
+}
+
+void PassengerFlowProtoHandler::RemoveSensorRecordsReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorRecordsReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_removesensorrecordsreq_value();
+    req->set_struserid(m_strUserID);
+
+
+    for (auto it = m_strRecordIDList.begin(), end = m_strRecordIDList.end(); it != end; ++it)
+    {
+        req->add_strrecordidlist(*it);
+    }
+}
+
+void PassengerFlowProtoHandler::RemoveSensorRecordsReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().removesensorrecordsreq_value();
+    m_strUserID = req.struserid();
+        
+    const auto &sensorList = req.strrecordidlist();
+    for (int i = 0, sz = sensorList.size(); i < sz; ++i)
+    {
+        m_strRecordIDList.push_back(sensorList.Get(i));
+    }
+}
+
+void PassengerFlowProtoHandler::RemoveSensorRecordsRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorRecordsRsp_T);
+
+    message.mutable_rspvalue()->mutable_removesensorrecordsrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::RemoveSensorRecordsRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().removesensorrecordsrsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_removesensoralarmrecordsreq_value();
+    req->set_struserid(m_strUserID);
+
+
+    for (auto it = m_strRecordIDList.begin(), end = m_strRecordIDList.end(); it != end; ++it)
+    {
+        req->add_strrecordidlist(*it);
+    }
+}
+
+void PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().removesensoralarmrecordsreq_value();
+    m_strUserID = req.struserid();
+
+    const auto &sensorList = req.strrecordidlist();
+    for (int i = 0, sz = sensorList.size(); i < sz; ++i)
+    {
+        m_strRecordIDList.push_back(sensorList.Get(i));
+    }
+}
+
+void PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorAlarmRecordsRsp_T);
+
+    message.mutable_rspvalue()->mutable_removesensoralarmrecordsrsp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().removesensoralarmrecordsrsp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::QuerySensorRecordsReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorRecordsReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querysensorrecordsreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strstoreid(m_strStoreID);
+    req->set_strsensorid(m_strSensorID);
+    req->set_strsensortype(m_strSensorType);
+    req->set_strbegindate(m_strBeginDate);
+    req->set_strenddate(m_strEndDate);
+    req->set_uibeginindex(m_uiBeginIndex);
+}
+
+void PassengerFlowProtoHandler::QuerySensorRecordsReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().querysensorrecordsreq_value();
+    m_strUserID = req.struserid();
+    m_strStoreID = req.strstoreid();
+    m_strSensorID = req.strsensorid();
+    m_strSensorType = req.strsensortype();
+    m_strBeginDate = req.strbegindate();
+    m_strEndDate = req.strenddate();
+    m_uiBeginIndex = req.uibeginindex();
+}
+
+void PassengerFlowProtoHandler::QuerySensorRecordsRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorRecordsRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_querysensorrecordsrsp_value();
+    
+    for (auto it = m_strRecordIDList.begin(), end = m_strRecordIDList.end(); it != end; ++it)
+    {
+        rsp->add_strrecordidlist(*it);
+    }
+
+    SerializeSensorList(m_sensorList, rsp->mutable_sensorinfo());
+}
+
+void PassengerFlowProtoHandler::QuerySensorRecordsRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    const auto &rsp = message.rspvalue().querysensorrecordsrsp_value();
+
+    const auto &sensorList = rsp.strrecordidlist();
+    for (int i = 0, sz = sensorList.size(); i < sz; ++i)
+    {
+        m_strRecordIDList.push_back(sensorList.Get(i));
+    }
+
+    UnSerializeSensorList(m_sensorList, rsp.sensorinfo());
+}

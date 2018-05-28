@@ -201,6 +201,12 @@ enum MsgType
   QueryDeviceP2pIDReq_USR_T = 20971;            //查询设备P2PID
   QueryDeviceP2pIDRsp_USR_T = 20972;
   
+  UploadUserCfgReq_USR_T = 20973;               //上传用户配置信息
+  UploadUserCfgRsp_USR_T = 20974;
+  
+  QueryUserCfgReq_USR_T = 20975;                //查询用户配置信息
+  QueryUserCfgRsp_USR_T = 20976;
+  
   
   ///////////////////////////////////////////////////////
   
@@ -1230,6 +1236,33 @@ message QueryDeviceP2pIDRsp_USR                 //查询设备P2PID响应
   string strExtend = 7;
 }
 
+message UploadUserCfgReq_USR                    //上传用户配置信息请求
+{
+  uint32 uiBusinessType = 1;
+  string strUserID = 2;
+  string strFileID = 3;
+  string strExtend = 4;
+}
+
+message UploadUserCfgRsp_USR                    //上传用户配置信息响应
+{
+  string strVersion = 1;
+}
+
+message QueryUserCfgReq_USR                     //查询用户配置信息请求
+{
+  uint32 uiBusinessType = 1;
+  string strUserID = 2;
+}
+
+message QueryUserCfgRsp_USR                     //查询用户配置信息响应
+{
+  string strCfgURL = 1;
+  string strVersion = 2;
+  string strExtend = 3;
+}
+
+
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
 
 message QueryUploadURLReq_MGR                   //查询文件上传URL请求
@@ -1437,6 +1470,10 @@ message Req
   
   QueryDeviceP2pIDReq_USR QueryDeviceP2pIDReq_USR_Value = 1106;               //查询设备P2PID请求
   
+  UploadUserCfgReq_USR UploadUserCfgReq_USR_Value = 1107;                     //上传用户配置信息请求
+  
+  QueryUserCfgReq_USR QueryUserCfgReq_USR_Value = 1108;                       //查询用户配置信息请求
+  
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1550,6 +1587,10 @@ message Rsp
   QueryALLDeviceCapacityRsp_USR QueryALLDeviceCapacityRsp_USR_Value = 1105;   //查询所有设备能力集响应
   
   QueryDeviceP2pIDRsp_USR QueryDeviceP2pIDRsp_USR_Value = 1106;               //查询设备P2PID响应
+  
+  UploadUserCfgRsp_USR UploadUserCfgRsp_USR_Value = 1107;                     //上传用户配置信息响应
+  
+  QueryUserCfgRsp_USR QueryUserCfgRsp_USR_Value = 1108;                       //查询用户配置信息响应
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -239,7 +239,17 @@ public:
 
     bool ReportCustomerFlowDataReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    
     bool ReportSensorInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    
+    bool ReportSensorAlarmInfoReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QuerySensorAlarmThresholdReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+
+    bool RemoveSensorRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool RemoveSensorAlarmRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
 private:
 
@@ -574,6 +584,18 @@ private:
     bool QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, std::string &strSensorID);
 
     void AddSensorInfo(const std::string &strDeviceID, const std::string &strSensorID, const PassengerFlowProtoHandler::Sensor &sensorInfo);
+
+
+    void ReportSensorAlarmInfo(const PassengerFlowProtoHandler::Sensor &sr, const unsigned int uiRecover, const std::string &strFileID);
+
+    void AddSensorAlarmInfo(const std::string &strSensorID, const PassengerFlowProtoHandler::Sensor &sr, const unsigned int uiRecover, const std::string &strFileID);
+
+    bool QuerySensorAlarmThreshold(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::Sensor> &sensorList);
+
+
+    void RemoveSensorRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
+
+    void RemoveSensorAlarmRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
 
 private:
     ParamInfo m_ParamInfo;

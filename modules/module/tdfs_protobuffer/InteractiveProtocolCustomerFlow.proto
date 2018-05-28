@@ -213,6 +213,22 @@ enum CustomerFlowMsgType
 
     ReportSensorInfoReq_T = 30100;            //上报传感器信息
     ReportSensorInfoRsp_T = 30110;
+    
+    ReportSensorAlarmInfoReq_T = 30120;       //告警上报
+    ReportSensorAlarmInfoRsp_T = 30130;
+    
+    QuerySensorAlarmThresholdReq_T = 30140;   //查询告警阈值
+    QuerySensorAlarmThresholdRsp_T = 30150;
+    
+    RemoveSensorRecordsReq_T = 30160;         //删除传感器监测记录
+    RemoveSensorRecordsRsp_T = 30170;
+    
+    RemoveSensorAlarmRecordsReq_T = 30180;    //删除传感器告警记录
+    RemoveSensorAlarmRecordsRsp_T = 30190;
+    
+    QuerySensorRecordsReq_T = 30200;          //查询传感器监测记录
+    QuerySensorRecordsRsp_T = 30210;    
+    
 }
 
 message Area                             //区域
@@ -1307,6 +1323,67 @@ message ReportSensorInfoRsp              //上报传感器信息响应
     string strValue = 1;
 }
 
+message ReportSensorAlarmInfoReq         //告警上报请求
+{
+    Sensor sensorInfo = 1;
+    uint32 uiRecover = 2;
+    string strFileID = 3;
+    
+}
+
+message ReportSensorAlarmInfoRsp         //告警上报响应
+{
+    string strValue = 1;
+}
+
+message QuerySensorAlarmThresholdReq     //查询告警阈值请求
+{
+    string strDeviceID = 1;
+}
+
+message QuerySensorAlarmThresholdRsp     //查询告警阈值响应
+{
+    repeated Sensor sensorInfo = 1;
+}
+
+message RemoveSensorRecordsReq           //删除传感器监测记录请求
+{
+    string strUserID = 1;
+    repeated string strRecordIDList = 2;
+}
+
+message RemoveSensorRecordsRsp           //删除传感器监测记录响应
+{
+    string strValue = 1;
+}
+
+message RemoveSensorAlarmRecordsReq      //删除传感器告警记录请求
+{
+    string strUserID = 1;
+    repeated string strRecordIDList = 2;
+}
+
+message RemoveSensorAlarmRecordsRsp      //删除传感器告警记录响应
+{
+    string strValue = 1;
+}
+
+message QuerySensorRecordsReq            //查询传感器监测记录请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strSensorID = 3;
+    string strSensorType = 4;
+    string strBeginDate = 5;
+    string strEndDate = 6;
+    uint32 uiBeginIndex = 7;
+}
+
+message QuerySensorRecordsRsp            //查询传感器监测记录响应
+{
+    repeated string strRecordIDList = 1;
+    repeated Sensor sensorInfo = 2;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1411,6 +1488,17 @@ message Request
     ReportCustomerFlowDataReq ReportCustomerFlowDataReq_Value = 5000;          //设备上报客流信息
 
     ReportSensorInfoReq ReportSensorInfoReq_Value = 5100;                      //上报传感器信息
+    
+    ReportSensorAlarmInfoReq ReportSensorAlarmInfoReq_Value = 5110;            //告警上报
+    
+    QuerySensorAlarmThresholdReq QuerySensorAlarmThresholdReq_Value = 5120;    //查询告警阈值
+    
+    RemoveSensorRecordsReq RemoveSensorRecordsReq_Value = 5130;                //删除传感器监测记录
+    
+    RemoveSensorAlarmRecordsReq RemoveSensorAlarmRecordsReq_Value = 5140;      //删除传感器告警记录
+    
+    QuerySensorRecordsReq QuerySensorRecordsReq_Value = 5150;                  //查询传感器监测记录请求
+    
 }
 
 //响应对象
@@ -1517,6 +1605,16 @@ message Response
     ReportCustomerFlowDataRsp ReportCustomerFlowDataRsp_Value = 5000;          //设备上报客流信息
 
     ReportSensorInfoRsp ReportSensorInfoRsp_Value = 5100;                      //上报传感器信息
+    
+    ReportSensorAlarmInfoRsp ReportSensorAlarmInfoRsp_Value = 5110;            //告警上报
+    
+    QuerySensorAlarmThresholdRsp QuerySensorAlarmThresholdRsp_Value = 5120;    //查询告警阈值
+    
+    RemoveSensorRecordsRsp RemoveSensorRecordsRsp_Value = 5130;                //删除传感器监测记录
+    
+    RemoveSensorAlarmRecordsRsp RemoveSensorAlarmRecordsRsp_Value = 5140;      //删除传感器告警记录
+    
+    QuerySensorRecordsRsp QuerySensorRecordsRsp_Value = 5150;                  //查询传感器监测记录响应
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理

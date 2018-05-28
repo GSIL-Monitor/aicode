@@ -14,6 +14,10 @@
 #include "ReturnCode.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 
+#define TIXML_USE_STL
+#include "tinyxml/tinyxml.h"
+#include "tinyxml/tinystr.h"
+
 const std::string HttpMsgHandler::SUCCESS_CODE = "0";
 const std::string HttpMsgHandler::SUCCESS_MSG = "Ok";
 const std::string HttpMsgHandler::FAILED_CODE = "-1";
@@ -138,6 +142,12 @@ const std::string HttpMsgHandler::QUERY_DEVICE_CAPACITY_ACTION("query_device_cap
 const std::string HttpMsgHandler::QUERY_ALL_DEVICE_CAPACITY_ACTION("query_all_device_capacity");
 
 const std::string HttpMsgHandler::QUERY_DEVICE_P2PID("query_device_p2pid");
+
+const std::string HttpMsgHandler::UPLOAD_USR_CFG_ACTION("upload_user_cfg");
+
+const std::string HttpMsgHandler::QUERY_USER_CFG_ACTION("query_user_cfg");
+
+const std::string HttpMsgHandler::QUERY_DEVICE_P2PID_ASP("getdevinfo.aspx");
 
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
@@ -5491,16 +5501,36 @@ bool HttpMsgHandler::DeleteDeviceEventHandler(boost::shared_ptr<MsgInfoMap> pMsg
         return blResult;
     }
     const std::string strEventID = itFind->second;
+
+    std::list<std::string> strEventIDList;
+    if (GetValueList(strEventID, strEventIDList))
+    {
+        LOG_INFO_RLD("Multiple event id is received.");
+    }
     
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Delete device event info received and sid is " << strSid << " and user id is " << strUserID << " and device id is " << strDevID
         << " and event id is " << strEventID);
 
-    if (!DeleteDeviceEvent(strSid, strUserID, strDevID, strEventID))
+    if (!strEventIDList.empty())
     {
-        LOG_ERROR_RLD("Delete device event handle failed");
-        return blResult;
+        for (auto itBegin = strEventIDList.begin(), itEnd = strEventIDList.end(); itBegin != itEnd; ++itBegin)
+        {
+            if (!DeleteDeviceEvent(strSid, strUserID, strDevID, *itBegin))
+            {
+                LOG_ERROR_RLD("Delete device event handle failed and device id is " << strDevID << " and event id is " << *itBegin);
+                return blResult;
+            }
+        }
+    }
+    else
+    {
+        if (!DeleteDeviceEvent(strSid, strUserID, strDevID, strEventID))
+        {
+            LOG_ERROR_RLD("Delete device event handle failed and device id is " << strDevID << " and event id is " << strEventID);
+            return blResult;
+        }
     }
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
@@ -6846,6 +6876,242 @@ bool HttpMsgHandler::QueryDeviceP2pIDHandler(boost::shared_ptr<MsgInfoMap> pMsgI
     return blResult;
 }
 
+bool HttpMsgHandler::UploadUserCfgHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+        
+    itFind = pMsgInfoMap->find("business_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Business type not found.");
+        return blResult;
+    }
+
+    unsigned int uiBussinessType = 0xFFFFFFFF;
+    
+    try
+    {
+        uiBussinessType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Business type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Business type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+    
+    itFind = pMsgInfoMap->find("fileid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("File id not found.");
+        return blResult;
+    }
+    const std::string strFileID = itFind->second;
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Upload user cfg received and business type is " << uiBussinessType << " and user id is " << strUserID << " and file id is " << strFileID
+        << " and extend is " << strExtend);
+
+    UserCfg ucfg;
+    ucfg.m_uiBusinessType = uiBussinessType;
+    ucfg.m_strUserID = strUserID;
+    ucfg.m_strFileID = strFileID;
+    ucfg.m_strExtend = strExtend;
+
+    if (!UploadUserCfg(strSid, ucfg))
+    {
+        LOG_ERROR_RLD("Upload user cfg handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version", ucfg.m_strVersion));
+    
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::QueryUserCfgHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("business_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Business type not found.");
+        return blResult;
+    }
+
+    unsigned int uiBussinessType = 0xFFFFFFFF;
+
+    try
+    {
+        uiBussinessType = boost::lexical_cast<unsigned int>(itFind->second);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Business type is invalid and error msg is " << e.what() << " and input is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Business type is invalid and input is " << itFind->second);
+        return blResult;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query user cfg received and business type is " << uiBussinessType << " and user id is " << strUserID);
+
+    UserCfg ucfg;
+    ucfg.m_uiBusinessType = uiBussinessType;
+    ucfg.m_strUserID = strUserID;
+
+    if (!QueryUserCfg(strSid, ucfg))
+    {
+        LOG_ERROR_RLD("Query user cfg handle failed");
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("version", ucfg.m_strVersion));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", ucfg.m_strExtend));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("cfg_url", ucfg.m_strCfgURL));
+
+    blResult = true;
+
+    return blResult;
+
+}
+
+bool HttpMsgHandler::QueryDeviceP2pIDAspHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    //根据CGIName来获取处理器，允许根据CGIName来处理Action的值，类似URL为：http://dvsinfo.dvripc.net/getdevinfo.aspx?name=7174b3
+
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    std::string strXMLReport;
+    bool blResult = true;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &strXMLReport)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        ResultInfoMap.clear();
+        this_->WriteMsg(strXMLReport, writer, blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find(FCGIManager::ACTION);
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Query device p2pid from asp action name value is not found.");
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Query device p2p id from asp received and domain name is " << itFind->second);
+
+    DevP2pIDInfo p2pinfo;
+    bool blQueryFlag = true;
+    if (!QueryDeviceP2pID(itFind->second, p2pinfo))
+    {
+        blQueryFlag = false;
+        LOG_ERROR_RLD("Query device p2p id from asp handle failed");
+    }
+
+    GetDeviceP2pIDAspXMLReport(p2pinfo, strXMLReport);
+
+    LOG_INFO_RLD("Query device p2p id from asp xml report is " << strXMLReport);
+        
+    return blQueryFlag;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -6887,6 +7153,24 @@ void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, 
     //writer("Content-type: text/*\r\n\r\n", 0, MsgWriterModel::PRINT_MODEL);
     //writer("<title>FastCGI Hello! (C, fcgi_stdio library)</title>\n", 0, MsgWriterModel::PRINT_MODEL);
 
+}
+
+void HttpMsgHandler::WriteMsg(const std::string &strMsg, MsgWriter writer, const bool blResult /*= true*/)
+{
+    std::string strOutputMsg;
+    if (!blResult)
+    {
+        strOutputMsg = "Status: 500  Error\r\nContent-Type: text/html\r\n\r\n";
+    }
+    else
+    {
+        strOutputMsg = "Status: 200 OK\r\nContent-Type: text/html\r\n\r\n";
+    }
+
+    strOutputMsg += strMsg;
+    strOutputMsg += "\r\n";
+
+    writer(strOutputMsg.c_str(), strOutputMsg.size(), MsgWriterModel::PRINT_MODEL);
 }
 
 bool HttpMsgHandler::PreCommonHandler(const std::string &strMsgReceived, int &iRetCode)
@@ -10807,6 +11091,222 @@ bool HttpMsgHandler::QueryDeviceP2pID(const std::string &strDomainName, DevP2pID
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::UploadUserCfg(const std::string &strSid, UserCfg &ucfg)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::UploadUserCfgReq_USR UploadUsrCfgReq;
+        UploadUsrCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::UploadUserCfgReq_USR_T;
+        UploadUsrCfgReq.m_uiMsgSeq = 1;
+        UploadUsrCfgReq.m_strSID = strSid;
+
+        UploadUsrCfgReq.m_strExtend = ucfg.m_strExtend;
+        UploadUsrCfgReq.m_strFileID = ucfg.m_strFileID;
+        UploadUsrCfgReq.m_strUserID = ucfg.m_strUserID;
+        UploadUsrCfgReq.m_uiBusinessType = ucfg.m_uiBusinessType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UploadUsrCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Upload user cfg req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::UploadUserCfgRsp_USR UploadUsrCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UploadUsrCfgRsp))
+        {
+            LOG_ERROR_RLD("Upload user cfg rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = UploadUsrCfgRsp.m_iRetcode;
+
+        ucfg.m_strVersion = UploadUsrCfgRsp.m_strVersion;
+
+        LOG_INFO_RLD("Upload user cfg and version is  " << ucfg.m_strVersion <<
+            " and return code is " << UploadUsrCfgRsp.m_iRetcode <<
+            " and return msg is " << UploadUsrCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryUserCfg(const std::string &strSid, UserCfg &ucfg)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryUserCfgReq_USR QueryUsrCfgReq;
+        QueryUsrCfgReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryUserCfgReq_USR_T;
+        QueryUsrCfgReq.m_uiMsgSeq = 1;
+        QueryUsrCfgReq.m_strSID = strSid;
+
+        QueryUsrCfgReq.m_strUserID = ucfg.m_strUserID;
+        QueryUsrCfgReq.m_uiBusinessType = ucfg.m_uiBusinessType;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUsrCfgReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user cfg req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryUserCfgRsp_USR QueryUsrCfgRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUsrCfgRsp))
+        {
+            LOG_ERROR_RLD("Query user cfg rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryUsrCfgRsp.m_iRetcode;
+
+        ucfg.m_strVersion = QueryUsrCfgRsp.m_strVersion;
+        ucfg.m_strCfgURL = QueryUsrCfgRsp.m_strCfgURL;
+        ucfg.m_strExtend = QueryUsrCfgRsp.m_strExtend;
+
+        LOG_INFO_RLD("Query user cfg and version is  " << ucfg.m_strVersion <<
+            " and return code is " << QueryUsrCfgRsp.m_iRetcode <<
+            " and return msg is " << QueryUsrCfgRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+void HttpMsgHandler::GetDeviceP2pIDAspXMLReport(const DevP2pIDInfo &p2pinfo, std::string &strXMLReport)
+{
+    /************************************************************************/
+    /* 成功的报文：
+     <?xml version="1.0" ?>
+     <DeviceInfo domainname='7174B3'>
+         <status>offline</status>
+         <updatetime>2018/3/23 14:45:51</updatetime>
+         <upnp>0</upnp>
+         <ip>157.61.210.40</ip>
+         <webport>80</webport>
+         <dataport>8200</dataport>
+         <mobileport>15961</mobileport>
+         <channelcount>1</channelcount>
+         <deviceSN>0018A97174B3</deviceSN>
+         <devsupportp2p>1</devsupportp2p>
+         <p2psupport>support</p2psupport>
+         <p2ptype>1</p2ptype>
+         <p2pid>bi18f3a3d5</p2pid>
+     </DeviceInfo>  
+     ------------------------------------------------------------------------
+       失败的报文：
+       <?xml version="1.0" ?>
+       <DeviceInfo domainname='7174B3MM'>
+           <status>domainnotexist</status>
+           <updatetime>NULL</updatetime>
+           <upnp>NULL</upnp>
+           <ip>NULL</ip>
+           <webport>NULL</webport>
+           <dataport>NULL</dataport>
+           <mobileport>NULL</mobileport>
+           <channelcount>NULL</channelcount>
+           <deviceSN>NULL</deviceSN>
+           <p2psupport>NULL</p2psupport>
+           <p2ptype>NULL</p2ptype>
+           <p2pid>NULL</p2pid>
+       </DeviceInfo>
+       */
+    
+    /************************************************************************/
+
+    ////
+    TiXmlDocument doc;
+    TiXmlElement* msg;
+    TiXmlDeclaration* decl = new TiXmlDeclaration(std::string("1.0"), std::string(""), std::string(""));
+    doc.LinkEndChild(decl);
+
+    TiXmlElement * root = new TiXmlElement(std::string("DeviceInfo"));    
+    root->SetAttribute(std::string("domainname"), p2pinfo.m_strP2pID);
+    doc.LinkEndChild(root);
+
+    //
+    msg = new TiXmlElement(std::string("status"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("domainnotexist")) : new TiXmlText(std::string("online")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("updatetime"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strUpdateTime));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("upnp"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(std::string("0")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("ip"));
+    msg->LinkEndChild(new TiXmlText(std::string("NULL")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("webport"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strMobilePort));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("dataport"));
+    msg->LinkEndChild(new TiXmlText(std::string("NULL")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("mobileport"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strMobilePort));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("channelcount"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strChannelCount));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("deviceSN"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strDeviceSN));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("p2psupport"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(std::string("support")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("p2ptype"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(std::string("1")));
+    root->LinkEndChild(msg);
+
+    msg = new TiXmlElement(std::string("p2pid"));
+    msg->LinkEndChild(p2pinfo.m_strP2pID.empty() ? new TiXmlText(std::string("NULL")) : new TiXmlText(p2pinfo.m_strP2pID));
+    root->LinkEndChild(msg);
+    
+    TiXmlPrinter printer;
+    doc.Accept(&printer);
+    strXMLReport = printer.CStr();
+
 }
 
 bool HttpMsgHandler::ValidDatetime(const std::string &strDatetime)

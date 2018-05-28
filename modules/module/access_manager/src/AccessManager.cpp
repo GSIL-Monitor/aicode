@@ -4702,6 +4702,129 @@ bool AccessManager::QueryDeviceP2pIDReq(const std::string &strMsg, const std::st
     return true;
 }
 
+bool AccessManager::UploadUserCfgReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    UserCfg ucfg;
+    InteractiveProtoHandler::UploadUserCfgReq_USR UploadUsrCfgReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &UploadUsrCfgReq, &writer, &strSrcID, &ucfg)
+    {
+        InteractiveProtoHandler::UploadUserCfgRsp_USR UploadUsrCfgRsp;
+        UploadUsrCfgRsp.m_MsgType = InteractiveProtoHandler::MsgType::UploadUserCfgRsp_USR_T;
+        UploadUsrCfgRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        UploadUsrCfgRsp.m_strSID = UploadUsrCfgReq.m_strSID;
+        UploadUsrCfgRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        UploadUsrCfgRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        UploadUsrCfgRsp.m_strVersion = ucfg.m_strVersion;
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(UploadUsrCfgRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Upload user cfg rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Upload user cfg already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, UploadUsrCfgReq))
+    {
+        LOG_ERROR_RLD("Upload user cfg req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    ucfg.m_strExtend = UploadUsrCfgReq.m_strExtend;
+    ucfg.m_strFileID = UploadUsrCfgReq.m_strFileID;
+    ucfg.m_strUserID = UploadUsrCfgReq.m_strUserID;
+    ucfg.m_uiBusinessType = UploadUsrCfgReq.m_uiBusinessType;
+
+    unsigned int uiMaxVersion = 0;
+    
+    boost::unique_lock<boost::mutex> lock(m_UserCfgMutex);
+    if (!GetUsrCfgMaxVersion(ucfg.m_strUserID, ucfg.m_uiBusinessType, uiMaxVersion))
+    {
+        LOG_ERROR_RLD("Get user max version failed and user id is " << ucfg.m_strUserID);
+        return false;
+    }
+    
+    ++uiMaxVersion;
+        
+    ucfg.m_strVersion = boost::lexical_cast<std::string>(uiMaxVersion);
+    if (!UploadUsrCfg(ucfg))
+    {
+        LOG_ERROR_RLD("Upload user cfg failed and  user id is " << ucfg.m_strUserID);
+        return false;
+    }
+    
+    blResult = true;
+    return true;
+}
+
+bool AccessManager::QueryUserCfgReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    UserCfg ucfg;
+    InteractiveProtoHandler::QueryUserCfgReq_USR QueryUsrCfgReq;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &QueryUsrCfgReq, &writer, &strSrcID, &ucfg)
+    {
+        InteractiveProtoHandler::QueryUserCfgRsp_USR QueryUsrCfgRsp;
+        QueryUsrCfgRsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryUserCfgRsp_USR_T;
+        QueryUsrCfgRsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        QueryUsrCfgRsp.m_strSID = QueryUsrCfgReq.m_strSID;
+        QueryUsrCfgRsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        QueryUsrCfgRsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        QueryUsrCfgRsp.m_strVersion = ucfg.m_strVersion;
+        QueryUsrCfgRsp.m_strCfgURL = ucfg.m_strCfgURL;
+        QueryUsrCfgRsp.m_strExtend = ucfg.m_strExtend;
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(QueryUsrCfgRsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query user cfg rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+
+        LOG_INFO_RLD("Query user cfg already send, dst id is " << strSrcID << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, QueryUsrCfgReq))
+    {
+        LOG_ERROR_RLD("Upload user cfg req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    ucfg.m_strUserID = QueryUsrCfgReq.m_strUserID;
+    ucfg.m_uiBusinessType = QueryUsrCfgReq.m_uiBusinessType;
+
+    boost::unique_lock<boost::mutex> lock(m_UserCfgMutex);    
+    if (!QueryUsrCfg(ucfg.m_strUserID, ucfg.m_uiBusinessType, ucfg))
+    {
+        LOG_ERROR_RLD("Query user cfg failed and  user id is " << ucfg.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+    return true;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -9801,13 +9924,14 @@ bool AccessManager::QueryAccessDomainOfBusiness(const std::string &strUserName, 
         return false;
     }
 
-    if (ResultList.empty())
-    {
-        LOG_ERROR_RLD("Query access domain of business result is empty.");
-        return true;
-    }
+    ////这里查询不需要以下动作
+    //if (ResultList.empty())
+    //{
+    //    LOG_ERROR_RLD("Query access domain of business result is empty.");
+    //    return true;
+    //}
 
-    strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
+    //strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
 
     return true;
 }
@@ -9831,13 +9955,94 @@ bool AccessManager::QueryAccessDomainOfBusinessDevice(const std::string &strDevI
         return false;
     }
 
-    if (ResultList.empty())
+    ////这里查询不需要以下动作
+    //if (ResultList.empty())
+    //{
+    //    LOG_ERROR_RLD("Query access domain of business result is empty.");
+    //    return true;
+    //}
+
+    //strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
+
+    return true;
+}
+
+bool AccessManager::UploadUsrCfg(const UserCfg &ucfg)
+{
+    char sql[2048] = { 0 };
+    const char* sqlfmt = "insert into t_user_config_info(id,userid,fileid, business_type, version) values(uuid(), '%s', '%s', %u, %u)";
+    snprintf(sql, sizeof(sql), sqlfmt, ucfg.m_strUserID.c_str(), ucfg.m_strFileID.c_str(), ucfg.m_uiBusinessType, boost::lexical_cast<unsigned int>(ucfg.m_strVersion));
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
     {
-        LOG_ERROR_RLD("Query access domain of business result is empty.");
-        return true;
+        LOG_ERROR_RLD("UploadUsrCfg failed, sql is " << sql);
+        return false;
     }
 
-    strAccessDomainInfo = boost::any_cast<std::string>(ResultList.front());
+    return true;
+}
+
+bool AccessManager::GetUsrCfgMaxVersion(const std::string &strUserID, const unsigned int uiBusinessType, unsigned int &uiMaxVersion)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select version from t_user_config_info where userid = '%s' and business_type = %u and "
+        "status = 0 order by version desc limit 0, 1";
+    snprintf(sql, size, sqlfmt, strUserID.c_str(), uiBusinessType);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiMaxVersion = boost::lexical_cast<unsigned int>(strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Get user cfg sql failed, sql is " << sql);
+        return false;
+    }
+    
+    return true;
+}
+
+bool AccessManager::QueryUsrCfg(const std::string &strUserID, const unsigned int uiBusinessType, UserCfg &ucfg)
+{
+    char sql[1024] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select version, fileid, extend from t_user_config_info where userid = '%s' and business_type = %u and "
+        "status = 0 order by version desc limit 0, 1";
+    snprintf(sql, size, sqlfmt, strUserID.c_str(), uiBusinessType);
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {        
+        switch (uiColumnNum)
+        {
+        case 0:
+            ucfg.m_strVersion = strColumn;
+            break;
+        case 1:
+            ucfg.m_strFileID = strColumn;
+            break;        
+        case 2:
+            ucfg.m_strExtend = strColumn;
+            break;
+        default:
+            LOG_ERROR_RLD("Query user cfg callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Get user cfg sql failed, sql is " << sql);
+        return false;
+    }
+
+    if (!ucfg.m_strFileID.empty())
+    {
+        ucfg.m_strCfgURL = m_ParamInfo.m_strFileServerURL + "download_file&fileid=" + ucfg.m_strFileID;
+    }
 
     return true;
 }

@@ -1370,6 +1370,38 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryDeviceP2pIDRsp_USR_T, handler));
+
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::UploadUserCfgReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::UploadUserCfgReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UploadUserCfgReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::UploadUserCfgRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::UploadUserCfgRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::UploadUserCfgRsp_USR_T, handler));
+
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUserCfgReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUserCfgReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUserCfgReq_USR_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryUserCfgRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryUserCfgRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUserCfgRsp_USR_T, handler));
+
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2773,6 +2805,46 @@ bool InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_Serializer(const Req &rsp,
 bool InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryDeviceP2pIDRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::UploadUserCfgReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<UploadUserCfgReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::UploadUserCfgReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<UploadUserCfgReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::UploadUserCfgRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<UploadUserCfgRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::UploadUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<UploadUserCfgRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryUserCfgReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryUserCfgReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUserCfgReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryUserCfgReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryUserCfgRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryUserCfgRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryUserCfgRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -5845,4 +5917,76 @@ void InteractiveProtoHandler::QueryDeviceP2pIDRsp_USR::Serializer(InteractiveMes
     InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strdevicesn(m_strDeviceSN);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strp2pid(m_strP2pID);
     InteractiveMsg.mutable_rspvalue()->mutable_querydevicep2pidrsp_usr_value()->set_strextend(m_strExtend);
+}
+
+void InteractiveProtoHandler::UploadUserCfgReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_uiBusinessType = InteractiveMsg.reqvalue().uploadusercfgreq_usr_value().uibusinesstype();
+    m_strUserID = InteractiveMsg.reqvalue().uploadusercfgreq_usr_value().struserid();
+    m_strFileID = InteractiveMsg.reqvalue().uploadusercfgreq_usr_value().strfileid();
+    m_strExtend = InteractiveMsg.reqvalue().uploadusercfgreq_usr_value().strextend();
+}
+
+void InteractiveProtoHandler::UploadUserCfgReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::UploadUserCfgReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_uploadusercfgreq_usr_value()->set_uibusinesstype(m_uiBusinessType);
+    InteractiveMsg.mutable_reqvalue()->mutable_uploadusercfgreq_usr_value()->set_struserid(m_strUserID);
+    InteractiveMsg.mutable_reqvalue()->mutable_uploadusercfgreq_usr_value()->set_strfileid(m_strFileID);
+    InteractiveMsg.mutable_reqvalue()->mutable_uploadusercfgreq_usr_value()->set_strextend(m_strExtend);
+
+}
+
+void InteractiveProtoHandler::UploadUserCfgRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strVersion = InteractiveMsg.rspvalue().uploadusercfgrsp_usr_value().strversion();
+    
+}
+
+void InteractiveProtoHandler::UploadUserCfgRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::UploadUserCfgRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_uploadusercfgrsp_usr_value()->set_strversion(m_strVersion);
+}
+
+void InteractiveProtoHandler::QueryUserCfgReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_uiBusinessType = InteractiveMsg.reqvalue().queryusercfgreq_usr_value().uibusinesstype();
+    m_strUserID = InteractiveMsg.reqvalue().queryusercfgreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::QueryUserCfgReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUserCfgReq_USR_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_queryusercfgreq_usr_value()->set_uibusinesstype(m_uiBusinessType);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryusercfgreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::QueryUserCfgRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strVersion = InteractiveMsg.rspvalue().queryusercfgrsp_usr_value().strversion();
+    m_strCfgURL = InteractiveMsg.rspvalue().queryusercfgrsp_usr_value().strcfgurl();
+    m_strExtend = InteractiveMsg.rspvalue().queryusercfgrsp_usr_value().strextend();
+}
+
+void InteractiveProtoHandler::QueryUserCfgRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryUserCfgRsp_USR_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strversion(m_strVersion);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strcfgurl(m_strCfgURL);
+    InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strextend(m_strExtend);
 }

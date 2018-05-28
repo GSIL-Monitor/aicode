@@ -263,6 +263,10 @@ int main(int argc, char *argv[])
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     fcgimgr.SetUploadTmpPath(UploadTmpPath);
 
+    fcgimgr.SetActionName("name"); //为了处理 http://dvsinfo.dvripc.net/getdevinfo.aspx?name=7174b3
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_P2PID_ASP, boost::bind(&HttpMsgHandler::QueryDeviceP2pIDAspHandler, &filehdr, _1, _2));
+
+
     fcgimgr.SetMsgPreHandler(boost::bind(&HttpMsgHandler::ParseMsgOfCompact, &filehdr, _1, _2));
 
     fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
@@ -342,6 +346,11 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_ALL_DEVICE_CAPACITY_ACTION, boost::bind(&HttpMsgHandler::QueryAllDeviceCapacityHandler, &filehdr, _1, _2));
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_DEVICE_P2PID, boost::bind(&HttpMsgHandler::QueryDeviceP2pIDHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(HttpMsgHandler::UPLOAD_USR_CFG_ACTION, boost::bind(&HttpMsgHandler::UploadUserCfgHandler, &filehdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_CFG_ACTION, boost::bind(&HttpMsgHandler::QueryUserCfgHandler, &filehdr, _1, _2));
+
 
     fcgimgr.Run(true);
     return 0;
