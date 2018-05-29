@@ -540,6 +540,9 @@ int main(int argc, char* argv[])
 
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T, boost::bind(&PassengerFlowManager::RemoveSensorAlarmRecordsReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorRecordsReq_T, boost::bind(&PassengerFlowManager::QuerySensorRecordsReq, &Umg, _1, _2, _3));
+
+
     ccenter.Run(true);
 
     return 0;

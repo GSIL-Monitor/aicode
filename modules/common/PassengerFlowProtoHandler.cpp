@@ -1189,6 +1189,17 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveSensorAlarmRecordsRsp_T, handler));
 
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorRecordsReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorRecordsReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorRecordsReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorRecordsRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorRecordsRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorRecordsRsp_T, handler));
+
+
 }
 
 PassengerFlowProtoHandler::~PassengerFlowProtoHandler()
@@ -2867,6 +2878,26 @@ bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_Serializer(const Req
 bool PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<RemoveSensorAlarmRecordsRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorRecordsReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QuerySensorRecordsReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QuerySensorRecordsReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorRecordsRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QuerySensorRecordsRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QuerySensorRecordsRsp, Request>(message, rsp);
 }
 
 void PassengerFlowProtoHandler::Request::Serializer(CustomerFlowMessage &message) const

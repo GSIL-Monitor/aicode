@@ -251,6 +251,8 @@ public:
 
     bool RemoveSensorAlarmRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool QuerySensorRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
 
     bool PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strPayload, const std::string &strUserID);
@@ -596,6 +598,9 @@ private:
     void RemoveSensorRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
 
     void RemoveSensorAlarmRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
+
+    bool QuerySensorRecords(const PassengerFlowProtoHandler::QuerySensorRecordsReq &req, std::list<PassengerFlowProtoHandler::Sensor> &srlist,
+        std::list<std::string> &strRecordIDList, const unsigned int uiPageSize = 10);
 
 private:
     ParamInfo m_ParamInfo;

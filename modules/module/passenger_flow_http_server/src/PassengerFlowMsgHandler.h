@@ -117,6 +117,8 @@ public:
 
     static const std::string REMOVE_SENSOR_ALARM_RECORDS;
 
+    static const std::string QUERY_SENSOR_RECORDS;
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -291,6 +293,8 @@ public:
 
     bool RemoveSensorAlarmRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+
+    bool QuerySensorRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
@@ -498,6 +502,25 @@ private:
         std::string m_strPatrolUserID;
     };
 
+    struct QuerySensorParam
+    {
+        std::string m_strBeginDate;
+        std::string m_strEndDate;
+        unsigned int m_uiBeginIndex;
+        std::string m_strStoreID;
+        std::string m_strUserID;
+        std::string m_strType;
+        std::string m_strSensorID;
+        unsigned int m_uiRecover;
+    };
+
+    struct SensorRecord
+    {
+        Sensor sr;
+        std::string m_strRecordID;
+        std::string m_strCreateDate;
+    };
+
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
@@ -651,6 +674,7 @@ private:
 
     bool RemoveSensorAlarmRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList);
 
+    bool QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);

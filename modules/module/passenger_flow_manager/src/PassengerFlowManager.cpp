@@ -4439,6 +4439,61 @@ bool PassengerFlowManager::RemoveSensorAlarmRecordsReq(const std::string &strMsg
     return blResult;
 }
 
+bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QuerySensorRecordsReq req;
+    std::list<PassengerFlowProtoHandler::Sensor> srlist;
+    std::list<std::string> strRecordIDList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &srlist, &strRecordIDList)
+    {
+        PassengerFlowProtoHandler::QuerySensorRecordsRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorRecordsRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_sensorList.swap(srlist);
+            rsp.m_strRecordIDList.swap(strRecordIDList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query sensor records rsp serialize failed");
+            return;
+        }
+        
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query sensor records rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID << " and store id is " << req.m_strStoreID << " and sensor id is " << req.m_strSensorID);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query sensor records req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QuerySensorRecords(req, srlist, strRecordIDList))
+    {
+        LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowManager::PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strPayload, const std::string &strUserID)
 {
     MessagePush_Getui::PushMessage message;
@@ -9684,4 +9739,115 @@ void PassengerFlowManager::RemoveSensorAlarmRecords(const std::string &strUserID
     {
         LOG_ERROR_RLD("RemoveSensorAlarmRecords exec sql failed, sql is " << sql);
     }
+}
+
+bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::QuerySensorRecordsReq &req, 
+    std::list<PassengerFlowProtoHandler::Sensor> &srlist, std::list<std::string> &strRecordIDList, const unsigned int uiPageSize)
+{
+    char sql[2048] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, b.value, "
+        " b.create_date, a.sensor_alarm_threshold, b.id from "
+        " t_store_sensor a join t_sensor_value b on a.sensor_id = b.sensor_id where 1 = 1";
+    int len = snprintf(sql, size, sqlfmt);
+
+    if (!req.m_strStoreID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.store_id = '%s'", req.m_strStoreID.c_str());
+    }
+
+    if (!req.m_strSensorID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.sensor_id = '%s'", req.m_strSensorID.c_str());
+    }
+
+    if (!req.m_strSensorType.empty())
+    {
+        len += snprintf(sql + len, size - len, " and a.sensor_type = '%s'", req.m_strSensorType.c_str());
+    }
+    
+    if (!req.m_strBeginDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and  b.create_date >= '%s'", req.m_strBeginDate.c_str());
+    }
+
+    if (!req.m_strEndDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and  b.create_date <= '%s'", req.m_strEndDate.c_str());
+    }
+        
+    snprintf(sql + len, size - len, " order by b.create_date desc limit %u, %u", 0xFFFFFFFF == req.m_uiBeginIndex ? 0 : req.m_uiBeginIndex, uiPageSize);
+
+    struct SensorRecord
+    {
+        PassengerFlowProtoHandler::Sensor sr;
+        std::string m_strRecordID;
+    };
+
+    SensorRecord srd;
+    PassengerFlowProtoHandler::Sensor sr;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            srd.sr.m_strStoreID = strColumn;
+            break;
+
+        case 1:
+            srd.sr.m_strSensorID = strColumn;
+            break;
+
+        case 2:
+            srd.sr.m_strDeviceID = strColumn;
+            break;
+
+        case 3:
+            srd.sr.m_strSensorName = strColumn;
+            break;
+
+        case 4:
+            srd.sr.m_strSensorType = strColumn;
+            break;
+        case 5:
+            srd.sr.m_strValue = strColumn;
+            break;
+
+        case 6:
+            srd.sr.m_strCreateDate = strColumn;
+            break;
+
+        case 7:
+            srd.sr.m_strSensorAlarmThreshold = strColumn;
+            break;
+
+        case 8:
+            srd.m_strRecordID = strColumn;
+            result = srd;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QuerySensorRecords sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QuerySensorRecords exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        const auto &srd = boost::any_cast<SensorRecord>(result);
+
+        srlist.push_back(srd.sr);
+        strRecordIDList.push_back(srd.m_strRecordID);
+    }
+
+    return true;
 }

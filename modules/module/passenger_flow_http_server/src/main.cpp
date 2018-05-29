@@ -363,6 +363,8 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_SENSOR_ALARM_RECORDS, boost::bind(&PassengerFlowMsgHandler::RemoveSensorAlarmRecordsHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_RECORDS, boost::bind(&PassengerFlowMsgHandler::QuerySensorRecordsHandler, &filehdr, _1, _2));
+
     fcgimgr.Run(true);
     return 0;
 }
