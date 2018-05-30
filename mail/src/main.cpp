@@ -1,13 +1,39 @@
 #include "CSmtp.h"
 #include <iostream>
 #include <stdlib.h>
+#include "LogRLD.h"
 
 //CSmtp *pmail = NULL;
 //CSmtp g_mail;
 
+static void InitLog()
+{
+    std::string strHost = "MailSender(127.0.0.1)";
+    std::string strLogPath = "./logs/";
+    std::string strLogFile = "./logs/MailSender.log";
+    std::string strLogInnerShowName = "MailSender";
+    int iLoglevel = LogRLD::INFO_LOG_LEVEL;
+    int iSchedule = LogRLD::DAILY_LOG_SCHEDULE;
+    int iMaxLogFileBackupNum = 2000;
+
+    LogRLD::GetInstance().Init(iLoglevel, strHost, strLogInnerShowName, strLogFile, iSchedule, iMaxLogFileBackupNum);
+
+}
+
+static std::string GetStr(char *pValue)
+{
+    return NULL == pValue ? "NULL" : std::string(pValue);
+}
+
 int SendMail(char *pMailServer, int uiSSLFlag, int iPort, char *pLoginName, char *pPwd, char *pSenderName, char *pSenderMail,
   char *pRecipient, char *pMsgTitle, char *pMsgContent, char *pAttach)
 {
+    LOG_INFO_RLD("Send mail info has received and mailserver is " << GetStr(pMailServer) << " and ssl flag is " << uiSSLFlag <<
+        " and port is " << iPort << " and login name is " << GetStr(pLoginName) << " and pwd is " << GetStr(pPwd) <<
+        " and sender name is " << GetStr(pSenderName) << " and sender mail is " << GetStr(pSenderMail) <<
+        " and recipient is " << GetStr(pRecipient) << " and msg title is " << GetStr(pMsgTitle) << " and msg content is " << GetStr(pMsgContent) <<
+        " and attach is " << GetStr(pAttach));
+
 	bool bError = false;
 
 	try
@@ -122,13 +148,16 @@ int SendMail(char *pMailServer, int uiSSLFlag, int iPort, char *pLoginName, char
 	}
 	catch(ECSmtp e)
 	{
-		std::cout << "Error: " << e.GetErrorText().c_str() << ".\n";
+        std::cout << "Error: " << e.GetErrorText().c_str() << ".\n";
+        LOG_ERROR_RLD("Send mail failed and error msg is " << e.GetErrorText());
+
 		bError = true;
 	}
 
     if (!bError)
     {
         std::cout << "Mail was send successfully." << std::endl;
+        LOG_INFO_RLD("Send mail success");
         exit(0);
     }		
     
@@ -159,6 +188,8 @@ int main(int uiCount, char *pInput[])
 		std::cout << "SSL flag is not correct, it must be a digit." << std::endl;
 		return 1;
 	}
+
+    InitLog();
     
     SendMail(pInput[1], atoi(pInput[2]), atoi(pInput[3]), pInput[4], pInput[5], pInput[6], 
 	pInput[7], pInput[8], pInput[9], pInput[10], uiCount >11 ? pInput[11] : NULL);
