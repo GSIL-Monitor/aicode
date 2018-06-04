@@ -3804,6 +3804,9 @@ bool PassengerFlowManager::DeleteStoreSensorReq(const std::string &strMsg, const
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::DeleteStoreSensor, this, req.m_strSensorID));
 
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::RemoveSensorRecordsBySensorID, this, req.m_strSensorID));
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::RemoveSensorAlarmRecordsBySensorID, this, req.m_strSensorID));
+
     blResult = true;
 
     return blResult;
@@ -9762,6 +9765,18 @@ void PassengerFlowManager::RemoveSensorRecords(const std::string &strUserID, std
     }
 }
 
+void PassengerFlowManager::RemoveSensorRecordsBySensorID(const std::string &strSensorID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_sensor_value where sensor_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("RemoveSensorRecordsBySensorID exec sql failed, sql is " << sql);
+    }
+}
+
 void PassengerFlowManager::RemoveSensorAlarmRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList)
 {
     char sql[1024] = { 0 };
@@ -9792,6 +9807,18 @@ void PassengerFlowManager::RemoveSensorAlarmRecords(const std::string &strUserID
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("RemoveSensorAlarmRecords exec sql failed, sql is " << sql);
+    }
+}
+
+void PassengerFlowManager::RemoveSensorAlarmRecordsBySensorID(const std::string &strSensorID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_sensor_alarm_value where sensor_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("RemoveSensorAlarmRecordsBySensorID exec sql failed, sql is " << sql);
     }
 }
 

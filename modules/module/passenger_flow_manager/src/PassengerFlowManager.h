@@ -599,7 +599,11 @@ private:
 
     void RemoveSensorRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
 
+    void RemoveSensorRecordsBySensorID(const std::string &strSensorID);
+
     void RemoveSensorAlarmRecords(const std::string &strUserID, std::list<std::string> &strRecordIDList);
+
+    void RemoveSensorAlarmRecordsBySensorID(const std::string &strSensorID);
 
     bool QuerySensorRecords(const PassengerFlowProtoHandler::QuerySensorRecordsReq &req, std::list<PassengerFlowProtoHandler::Sensor> &srlist,
         std::list<std::string> &strRecordIDList, const unsigned int uiPageSize = 10);
