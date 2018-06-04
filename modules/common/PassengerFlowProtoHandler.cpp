@@ -1,6 +1,7 @@
 #include "PassengerFlowProtoHandler.h"
 #include "InteractiveProtocolCustomerFlow.pb.h"
 #include <boost/bind.hpp>
+#include "boost/shared_ptr.hpp"
 
 template<typename T, typename TT> bool SerializerT(const TT &req, std::string &strOutput)
 {
@@ -21,7 +22,21 @@ template<typename T, typename TT> bool SerializerT(const TT &req, std::string &s
 
     pReq->Serializer(Msg);
 
-    Msg.SerializeToString(&strOutput);
+    int iSize = Msg.ByteSize();
+    if (0 >= iSize)
+    {
+        return false;
+    }
+
+    char *pMsgSerialize = new char[iSize];
+    boost::shared_array<char> pMsgGuard(pMsgSerialize);
+    if (!Msg.SerializeToArray((void*)pMsgSerialize, iSize))
+    {
+        return false;
+    }
+
+    strOutput.assign(pMsgSerialize, iSize);
+    //Msg.SerializeToString(&strOutput);
 
     return true;
 };
@@ -1199,6 +1214,15 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorRecordsRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorRecordsRsp_T, handler));
 
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmRecordsReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmRecordsRsp_T, handler));
 
 }
 
@@ -1211,7 +1235,7 @@ bool PassengerFlowProtoHandler::GetCustomerFlowMsgType(const std::string &strDat
 {
     CustomerFlowMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))
     {
         return false;
     }
@@ -1238,7 +1262,7 @@ bool PassengerFlowProtoHandler::UnSerializeReq(const std::string &strData, Reque
 {
     CustomerFlowMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))
     {
         return false;
     }
@@ -1269,7 +1293,7 @@ bool PassengerFlowProtoHandler::UnSerializeReqBase(const std::string &strData, R
 {
     CustomerFlowMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))
     {
         return false;
     }
@@ -2898,6 +2922,26 @@ bool PassengerFlowProtoHandler::QuerySensorRecordsRsp_Serializer(const Request &
 bool PassengerFlowProtoHandler::QuerySensorRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<QuerySensorRecordsRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QuerySensorAlarmRecordsReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QuerySensorAlarmRecordsReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QuerySensorAlarmRecordsRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QuerySensorAlarmRecordsRsp, Request>(message, rsp);
 }
 
 void PassengerFlowProtoHandler::Request::Serializer(CustomerFlowMessage &message) const
@@ -7171,4 +7215,94 @@ void PassengerFlowProtoHandler::QuerySensorRecordsRsp::UnSerializer(const Custom
     }
 
     UnSerializeSensorList(m_sensorList, rsp.sensorinfo());
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmRecordsReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_querysensoralarmrecordsreq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strstoreid(m_strStoreID);
+    req->set_strsensorid(m_strSensorID);
+    req->set_strsensortype(m_strSensorType);
+    req->set_uirecover(m_uiRecover);
+    req->set_strbegindate(m_strBeginDate);
+    req->set_strenddate(m_strEndDate);
+    req->set_uibeginindex(m_uiBeginIndex);
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().querysensoralarmrecordsreq_value();
+    m_strUserID = req.struserid();
+    m_strStoreID = req.strstoreid();
+    m_strSensorID = req.strsensorid();
+    m_strSensorType = req.strsensortype();
+    m_uiRecover = req.uirecover();
+    m_strBeginDate = req.strbegindate();
+    m_strEndDate = req.strenddate();
+    m_uiBeginIndex = req.uibeginindex();
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmRecordsRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_querysensoralarmrecordsrsp_value()->mutable_sard();
+
+    for (auto itBegin = m_sardList.begin(), itEnd = m_sardList.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto pDstSensorInfo = rsp->Add();
+        pDstSensorInfo->set_uirecover(itBegin->m_uiRecover);
+        pDstSensorInfo->set_strfileid(itBegin->m_strFileID);
+        pDstSensorInfo->set_strrecordid(itBegin->m_strRecordID);
+
+        auto pSensor = pDstSensorInfo->mutable_sensorinfo();
+        pSensor->set_strsensorid(itBegin->m_sensorInfo.m_strSensorID);
+        pSensor->set_strsensorname(itBegin->m_sensorInfo.m_strSensorName);
+        pSensor->set_strsensortype(itBegin->m_sensorInfo.m_strSensorType);
+        pSensor->set_strsensoralarmthreshold(itBegin->m_sensorInfo.m_strSensorAlarmThreshold);
+        pSensor->set_strstoreid(itBegin->m_sensorInfo.m_strStoreID);
+        pSensor->set_strdeviceid(itBegin->m_sensorInfo.m_strDeviceID);
+        pSensor->set_strvalue(itBegin->m_sensorInfo.m_strValue);
+        pSensor->set_uistate(itBegin->m_sensorInfo.m_uiState);
+        pSensor->set_strcreatedate(itBegin->m_sensorInfo.m_strCreateDate);
+    }
+
+}
+
+void PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    const auto &rsp = message.rspvalue().querysensoralarmrecordsrsp_value().sard();
+
+    for (int i = 0, sz = rsp.size(); i < sz; ++i)
+    {
+        const auto& srcSensorInfo = rsp.Get(i);
+
+        SensorAlarmRecord sard;
+        sard.m_uiRecover = srcSensorInfo.uirecover();
+        sard.m_strFileID = srcSensorInfo.strfileid();
+        sard.m_strRecordID = srcSensorInfo.strrecordid();
+        
+        const auto &sr = srcSensorInfo.sensorinfo();
+
+        sard.m_sensorInfo.m_strSensorID = sr.strsensorid();
+        sard.m_sensorInfo.m_strSensorName = sr.strsensorname();
+        sard.m_sensorInfo.m_strSensorType = sr.strsensortype();
+        sard.m_sensorInfo.m_strSensorAlarmThreshold = sr.strsensoralarmthreshold();
+        sard.m_sensorInfo.m_strStoreID = sr.strstoreid();
+        sard.m_sensorInfo.m_strDeviceID = sr.strdeviceid();
+        sard.m_sensorInfo.m_strValue = sr.strvalue();
+        sard.m_sensorInfo.m_uiState = sr.uistate();
+        sard.m_sensorInfo.m_strCreateDate = sr.strcreatedate();
+
+        m_sardList.push_back(std::move(sard));
+    }
+
 }

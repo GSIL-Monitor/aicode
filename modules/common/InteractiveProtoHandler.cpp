@@ -1,5 +1,7 @@
 #include "InteractiveProtoHandler.h"
 #include "InteractiveProtocol.pb.h"
+#include "boost/shared_ptr.hpp"
+#include "LogRLD.h"
 
 using namespace Interactive::Message;
 
@@ -14,6 +16,7 @@ template<typename T, typename TT> bool SerializerT(const TT &req, std::string &s
     }
     catch (std::bad_cast &bad)
     {
+        LOG_ERROR_RLD("Bad cast type");
         return false;
     }
 
@@ -22,7 +25,23 @@ template<typename T, typename TT> bool SerializerT(const TT &req, std::string &s
 
     pReq->Serializer(Msg);
 
-    Msg.SerializeToString(&strOutput);
+    int iSize = Msg.ByteSize();
+    if (0 >= iSize)
+    {
+        LOG_ERROR_RLD("Size error:" << iSize);
+        return false;
+    }
+
+    char *pMsgSerialize = new char[iSize];
+    boost::shared_array<char> pMsgGuard(pMsgSerialize); //boost::shared_array
+    if (!Msg.SerializeToArray((void*)pMsgSerialize, iSize))
+    {
+        LOG_ERROR_RLD("SerializeToArray error");
+        return false;
+    }
+    
+    strOutput.assign(pMsgSerialize, iSize);
+    //Msg.SerializeToString(&strOutput);
 
     return true;
 };
@@ -1413,7 +1432,8 @@ bool InteractiveProtoHandler::GetMsgType(const std::string &strData, MsgType &ms
 {
     InteractiveMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))    
     {
         return false;
     }
@@ -1440,7 +1460,7 @@ bool InteractiveProtoHandler::UnSerializeReq(const std::string &strData, Req &re
 {   
     InteractiveMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))
     {
         return false;
     }
@@ -1471,7 +1491,7 @@ bool InteractiveProtoHandler::UnSerializeReqBase(const std::string &strData, Req
 {
     InteractiveMessage Msg;
     Msg.Clear();
-    if (!Msg.ParseFromString(strData))
+    if (!Msg.ParseFromArray((void *)strData.data(), strData.size())) //if (!Msg.ParseFromString(strData))
     {
         return false;
     }

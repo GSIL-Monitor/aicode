@@ -227,7 +227,11 @@ enum CustomerFlowMsgType
     RemoveSensorAlarmRecordsRsp_T = 30190;
     
     QuerySensorRecordsReq_T = 30200;          //查询传感器监测记录
-    QuerySensorRecordsRsp_T = 30210;    
+    QuerySensorRecordsRsp_T = 30210;
+    
+    QuerySensorAlarmRecordsReq_T = 30220;     //查询传感器告警记录
+    QuerySensorAlarmRecordsRsp_T = 30230;
+    
     
 }
 
@@ -1385,6 +1389,32 @@ message QuerySensorRecordsRsp            //查询传感器监测记录响应
     repeated Sensor sensorInfo = 2;
 }
 
+message QuerySensorAlarmRecordsReq       //查询传感器告警记录请求
+{
+    string strUserID = 1;
+    string strStoreID = 2;
+    string strSensorID = 3;
+    string strSensorType = 4;
+    uint32 uiRecover = 5;
+    string strBeginDate = 6;
+    string strEndDate = 7;
+    uint32 uiBeginIndex = 8;
+}
+
+message SensorAlarmRecord
+{
+    Sensor sensorInfo = 1;
+    uint32 uiRecover = 2;
+    string strFileID = 3;
+    string strRecordID = 4;
+}
+
+message QuerySensorAlarmRecordsRsp       //查询传感器告警记录响应
+{
+    repeated SensorAlarmRecord sard = 1;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //请求对象
@@ -1498,6 +1528,8 @@ message Request
     RemoveSensorAlarmRecordsReq RemoveSensorAlarmRecordsReq_Value = 5140;      //删除传感器告警记录
     
     QuerySensorRecordsReq QuerySensorRecordsReq_Value = 5150;                  //查询传感器监测记录请求
+    
+    QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;        //查询传感器告警记录请求
     
 }
 
@@ -1615,6 +1647,9 @@ message Response
     RemoveSensorAlarmRecordsRsp RemoveSensorAlarmRecordsRsp_Value = 5140;      //删除传感器告警记录
     
     QuerySensorRecordsRsp QuerySensorRecordsRsp_Value = 5150;                  //查询传感器监测记录响应
+    
+    QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;        //查询传感器告警记录响应
+    
 }
 
 //主消息对象，包括了请求、响应，根据消息类型的不同来进行对应的处理

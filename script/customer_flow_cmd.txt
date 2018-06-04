@@ -207,3 +207,6 @@ curl -F sid=871ACD015874B34A83B21828A3D5E9C2 -F deviceid=0018A978CA29 -F type=4 
 curl -F sid=A2E399FB6AF7C7499F030E286E4A7D84 -F deviceid=0018A978B9EB http://172.20.120.22:8988/passenger_flow.cgi?action=query_alarm_threshold
 
 curl -F sid=7D28969C6C55A74F93116D4A127EE9D1 -F userid=6989872A4E348C46BEBD3B0CF9DC0408 -F recordid='["3f071cf3-fcf3-11e7-b618-001d0966de29", "3f06b6a3-fcf3-11e7-b618-001d0966de29"]' http://172.20.120.22:8988/passenger_flow.cgi?action=remove_store_sensor_record
+
+查询传感器告警记录
+curl -F sid=4C7965B8359C81419FCDD81CB08AB4D1 -F userid=6989872A4E348C46BEBD3B0CF9DC0408 -F storeid=125F9931C55EBA4693F35954F6DE95C1 -F type=4 -F sensorid=FE6445D1DF95D849A942FBB78A8A1244 -F recover=0 -F begindate="2017-01-01" -F enddate="2019-01-01" -F beginindex=0 http://172.20.120.22:8988/passenger_flow.cgi?action=query_store_sensor_alarm_records

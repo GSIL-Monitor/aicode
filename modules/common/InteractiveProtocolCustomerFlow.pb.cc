@@ -384,6 +384,12 @@ class QuerySensorRecordsReqDefaultTypeInternal : public ::google::protobuf::inte
 } _QuerySensorRecordsReq_default_instance_;
 class QuerySensorRecordsRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QuerySensorRecordsRsp> {
 } _QuerySensorRecordsRsp_default_instance_;
+class QuerySensorAlarmRecordsReqDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QuerySensorAlarmRecordsReq> {
+} _QuerySensorAlarmRecordsReq_default_instance_;
+class SensorAlarmRecordDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<SensorAlarmRecord> {
+} _SensorAlarmRecord_default_instance_;
+class QuerySensorAlarmRecordsRspDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<QuerySensorAlarmRecordsRsp> {
+} _QuerySensorAlarmRecordsRsp_default_instance_;
 class RequestDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Request> {
 } _Request_default_instance_;
 class ResponseDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Response> {
@@ -396,7 +402,7 @@ namespace protobuf_InteractiveProtocolCustomerFlow_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[185];
+::google::protobuf::Metadata file_level_metadata[188];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
@@ -1555,6 +1561,31 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorRecordsRsp, strrecordidlist_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorRecordsRsp, sensorinfo_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, struserid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, strstoreid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, strsensorid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, strsensortype_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, uirecover_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, strbegindate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, strenddate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsReq, uibeginindex_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SensorAlarmRecord, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SensorAlarmRecord, sensorinfo_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SensorAlarmRecord, uirecover_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SensorAlarmRecord, strfileid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SensorAlarmRecord, strrecordid_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsRsp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuerySensorAlarmRecordsRsp, sard_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -1639,6 +1670,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, removesensorrecordsreq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, removesensoralarmrecordsreq_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, querysensorrecordsreq_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, querysensoralarmrecordsreq_value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1726,6 +1758,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, removesensorrecordsrsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, removesensoralarmrecordsrsp_value_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, querysensorrecordsrsp_value_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, querysensoralarmrecordsrsp_value_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CustomerFlowMessage, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1920,9 +1953,12 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 1130, -1, sizeof(RemoveSensorAlarmRecordsRsp)},
   { 1135, -1, sizeof(QuerySensorRecordsReq)},
   { 1146, -1, sizeof(QuerySensorRecordsRsp)},
-  { 1152, -1, sizeof(Request)},
-  { 1237, -1, sizeof(Response)},
-  { 1324, -1, sizeof(CustomerFlowMessage)},
+  { 1152, -1, sizeof(QuerySensorAlarmRecordsReq)},
+  { 1164, -1, sizeof(SensorAlarmRecord)},
+  { 1172, -1, sizeof(QuerySensorAlarmRecordsRsp)},
+  { 1177, -1, sizeof(Request)},
+  { 1263, -1, sizeof(Response)},
+  { 1351, -1, sizeof(CustomerFlowMessage)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -2108,6 +2144,9 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_RemoveSensorAlarmRecordsRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QuerySensorRecordsReq_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_QuerySensorRecordsRsp_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QuerySensorAlarmRecordsReq_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_SensorAlarmRecord_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_QuerySensorAlarmRecordsRsp_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Request_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Response_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_CustomerFlowMessage_default_instance_),
@@ -2131,7 +2170,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 185);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 188);
 }
 
 }  // namespace
@@ -2501,12 +2540,18 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[180].reflection;
   _QuerySensorRecordsRsp_default_instance_.Shutdown();
   delete file_level_metadata[181].reflection;
-  _Request_default_instance_.Shutdown();
+  _QuerySensorAlarmRecordsReq_default_instance_.Shutdown();
   delete file_level_metadata[182].reflection;
-  _Response_default_instance_.Shutdown();
+  _SensorAlarmRecord_default_instance_.Shutdown();
   delete file_level_metadata[183].reflection;
-  _CustomerFlowMessage_default_instance_.Shutdown();
+  _QuerySensorAlarmRecordsRsp_default_instance_.Shutdown();
   delete file_level_metadata[184].reflection;
+  _Request_default_instance_.Shutdown();
+  delete file_level_metadata[185].reflection;
+  _Response_default_instance_.Shutdown();
+  delete file_level_metadata[186].reflection;
+  _CustomerFlowMessage_default_instance_.Shutdown();
+  delete file_level_metadata[187].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -2695,6 +2740,9 @@ void TableStruct::InitDefaultsImpl() {
   _RemoveSensorAlarmRecordsRsp_default_instance_.DefaultConstruct();
   _QuerySensorRecordsReq_default_instance_.DefaultConstruct();
   _QuerySensorRecordsRsp_default_instance_.DefaultConstruct();
+  _QuerySensorAlarmRecordsReq_default_instance_.DefaultConstruct();
+  _SensorAlarmRecord_default_instance_.DefaultConstruct();
+  _QuerySensorAlarmRecordsRsp_default_instance_.DefaultConstruct();
   _Request_default_instance_.DefaultConstruct();
   _Response_default_instance_.DefaultConstruct();
   _CustomerFlowMessage_default_instance_.DefaultConstruct();
@@ -2775,6 +2823,8 @@ void TableStruct::InitDefaultsImpl() {
   _QueryStoreSensorInfoRsp_default_instance_.get_mutable()->sensorinfo_ = const_cast< ::CustomerFlow::Interactive::Message::Sensor*>(
       ::CustomerFlow::Interactive::Message::Sensor::internal_default_instance());
   _ReportSensorAlarmInfoReq_default_instance_.get_mutable()->sensorinfo_ = const_cast< ::CustomerFlow::Interactive::Message::Sensor*>(
+      ::CustomerFlow::Interactive::Message::Sensor::internal_default_instance());
+  _SensorAlarmRecord_default_instance_.get_mutable()->sensorinfo_ = const_cast< ::CustomerFlow::Interactive::Message::Sensor*>(
       ::CustomerFlow::Interactive::Message::Sensor::internal_default_instance());
   _Request_default_instance_.get_mutable()->customerflowprehandlereq_value_ = const_cast< ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleReq*>(
       ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleReq::internal_default_instance());
@@ -2938,6 +2988,8 @@ void TableStruct::InitDefaultsImpl() {
       ::CustomerFlow::Interactive::Message::RemoveSensorAlarmRecordsReq::internal_default_instance());
   _Request_default_instance_.get_mutable()->querysensorrecordsreq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QuerySensorRecordsReq*>(
       ::CustomerFlow::Interactive::Message::QuerySensorRecordsReq::internal_default_instance());
+  _Request_default_instance_.get_mutable()->querysensoralarmrecordsreq_value_ = const_cast< ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq*>(
+      ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq::internal_default_instance());
   _Response_default_instance_.get_mutable()->customerflowprehandlersp_value_ = const_cast< ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleRsp*>(
       ::CustomerFlow::Interactive::Message::CustomerFlowPreHandleRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->shakehandrsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::ShakehandRsp*>(
@@ -3100,6 +3152,8 @@ void TableStruct::InitDefaultsImpl() {
       ::CustomerFlow::Interactive::Message::RemoveSensorAlarmRecordsRsp::internal_default_instance());
   _Response_default_instance_.get_mutable()->querysensorrecordsrsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QuerySensorRecordsRsp*>(
       ::CustomerFlow::Interactive::Message::QuerySensorRecordsRsp::internal_default_instance());
+  _Response_default_instance_.get_mutable()->querysensoralarmrecordsrsp_value_ = const_cast< ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp*>(
+      ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp::internal_default_instance());
   _CustomerFlowMessage_default_instance_.get_mutable()->reqvalue_ = const_cast< ::CustomerFlow::Interactive::Message::Request*>(
       ::CustomerFlow::Interactive::Message::Request::internal_default_instance());
   _CustomerFlowMessage_default_instance_.get_mutable()->rspvalue_ = const_cast< ::CustomerFlow::Interactive::Message::Response*>(
@@ -3513,522 +3567,540 @@ void AddDescriptorsImpl() {
       " \001(\t\022\022\n\nstrEndDate\030\006 \001(\t\022\024\n\014uiBeginIndex"
       "\030\007 \001(\r\"n\n\025QuerySensorRecordsRsp\022\027\n\017strRe"
       "cordIDList\030\001 \003(\t\022<\n\nsensorInfo\030\002 \003(\0132(.C"
-      "ustomerFlow.Interactive.Message.Sensor\"\307"
-      ";\n\007Request\022b\n\036CustomerFlowPreHandleReq_V"
-      "alue\030\n \001(\0132:.CustomerFlow.Interactive.Me"
-      "ssage.CustomerFlowPreHandleReq\022J\n\022Shakeh"
-      "andReq_Value\0302 \001(\0132..CustomerFlow.Intera"
-      "ctive.Message.ShakehandReq\022H\n\021AddGroupRe"
-      "q_Value\030d \001(\0132-.CustomerFlow.Interactive"
-      ".Message.AddGroupReq\022N\n\024DeleteGroupReq_V"
-      "alue\030n \001(\01320.CustomerFlow.Interactive.Me"
-      "ssage.DeleteGroupReq\022N\n\024ModifyGroupReq_V"
-      "alue\030x \001(\01320.CustomerFlow.Interactive.Me"
-      "ssage.ModifyGroupReq\022U\n\027QueryGroupInfoRe"
-      "q_Value\030\202\001 \001(\01323.CustomerFlow.Interactiv"
-      "e.Message.QueryGroupInfoReq\022S\n\026QueryAllG"
-      "roupReq_Value\030\214\001 \001(\01322.CustomerFlow.Inte"
-      "ractive.Message.QueryAllGroupReq\022I\n\021AddS"
-      "toreReq_Value\030\226\001 \001(\0132-.CustomerFlow.Inte"
-      "ractive.Message.AddStoreReq\022O\n\024DeleteSto"
-      "reReq_Value\030\240\001 \001(\01320.CustomerFlow.Intera"
-      "ctive.Message.DeleteStoreReq\022O\n\024ModifySt"
-      "oreReq_Value\030\252\001 \001(\01320.CustomerFlow.Inter"
-      "active.Message.ModifyStoreReq\022U\n\027QuerySt"
-      "oreInfoReq_Value\030\264\001 \001(\01323.CustomerFlow.I"
-      "nteractive.Message.QueryStoreInfoReq\022S\n\026"
-      "QueryAllStoreReq_Value\030\276\001 \001(\01322.Customer"
-      "Flow.Interactive.Message.QueryAllStoreRe"
-      "q\022O\n\024AddEntranceReq_Value\030\310\001 \001(\01320.Custo"
-      "merFlow.Interactive.Message.AddEntranceR"
-      "eq\022U\n\027DeleteEntranceReq_Value\030\322\001 \001(\01323.C"
-      "ustomerFlow.Interactive.Message.DeleteEn"
-      "tranceReq\022U\n\027ModifyEntranceReq_Value\030\334\001 "
-      "\001(\01323.CustomerFlow.Interactive.Message.M"
-      "odifyEntranceReq\022[\n\032AddEntranceDeviceReq"
-      "_Value\030\346\001 \001(\01326.CustomerFlow.Interactive"
-      ".Message.AddEntranceDeviceReq\022a\n\035DeleteE"
-      "ntranceDeviceReq_Value\030\360\001 \001(\01329.Customer"
-      "Flow.Interactive.Message.DeleteEntranceD"
-      "eviceReq\022I\n\021AddEventReq_Value\030\254\002 \001(\0132-.C"
-      "ustomerFlow.Interactive.Message.AddEvent"
-      "Req\022O\n\024DeleteEventReq_Value\030\266\002 \001(\01320.Cus"
-      "tomerFlow.Interactive.Message.DeleteEven"
-      "tReq\022O\n\024ModifyEventReq_Value\030\300\002 \001(\01320.Cu"
-      "stomerFlow.Interactive.Message.ModifyEve"
-      "ntReq\022U\n\027QueryEventInfoReq_Value\030\312\002 \001(\0132"
-      "3.CustomerFlow.Interactive.Message.Query"
-      "EventInfoReq\022S\n\026QueryAllEventReq_Value\030\324"
-      "\002 \001(\01322.CustomerFlow.Interactive.Message"
-      ".QueryAllEventReq\022]\n\033AddSmartGuardStoreR"
-      "eq_Value\030\336\002 \001(\01327.CustomerFlow.Interacti"
-      "ve.Message.AddSmartGuardStoreReq\022c\n\036Dele"
-      "teSmartGuardStoreReq_Value\030\350\002 \001(\0132:.Cust"
-      "omerFlow.Interactive.Message.DeleteSmart"
-      "GuardStoreReq\022c\n\036ModifySmartGuardStoreRe"
-      "q_Value\030\362\002 \001(\0132:.CustomerFlow.Interactiv"
-      "e.Message.ModifySmartGuardStoreReq\022i\n!Qu"
-      "erySmartGuardStoreInfoReq_Value\030\374\002 \001(\0132="
-      ".CustomerFlow.Interactive.Message.QueryS"
-      "martGuardStoreInfoReq\022g\n QueryAllSmartGu"
-      "ardStoreReq_Value\030\206\003 \001(\0132<.CustomerFlow."
-      "Interactive.Message.QueryAllSmartGuardSt"
-      "oreReq\022Y\n\031AddRegularPatrolReq_Value\030\220\003 \001"
-      "(\01325.CustomerFlow.Interactive.Message.Ad"
-      "dRegularPatrolReq\022_\n\034DeleteRegularPatrol"
-      "Req_Value\030\232\003 \001(\01328.CustomerFlow.Interact"
-      "ive.Message.DeleteRegularPatrolReq\022_\n\034Mo"
-      "difyRegularPatrolReq_Value\030\244\003 \001(\01328.Cust"
-      "omerFlow.Interactive.Message.ModifyRegul"
-      "arPatrolReq\022e\n\037QueryRegularPatrolInfoReq"
-      "_Value\030\256\003 \001(\0132;.CustomerFlow.Interactive"
-      ".Message.QueryRegularPatrolInfoReq\022c\n\036Qu"
-      "eryAllRegularPatrolReq_Value\030\270\003 \001(\0132:.Cu"
-      "stomerFlow.Interactive.Message.QueryAllR"
-      "egularPatrolReq\022S\n\026UserJoinStoreReq_Valu"
-      "e\030\364\003 \001(\01322.CustomerFlow.Interactive.Mess"
-      "age.UserJoinStoreReq\022S\n\026UserQuitStoreReq"
-      "_Value\030\376\003 \001(\01322.CustomerFlow.Interactive"
-      ".Message.UserQuitStoreReq\022[\n\032QueryStoreA"
-      "llUserReq_Value\030\210\004 \001(\01326.CustomerFlow.In"
-      "teractive.Message.QueryStoreAllUserReq\022_"
-      "\n\034QueryCompanyAllUserReq_Value\030\222\004 \001(\01328."
-      "CustomerFlow.Interactive.Message.QueryCo"
-      "mpanyAllUserReq\022U\n\027AddVIPCustomerReq_Val"
-      "ue\030\240\006 \001(\01323.CustomerFlow.Interactive.Mes"
-      "sage.AddVIPCustomerReq\022[\n\032DeleteVIPCusto"
-      "merReq_Value\030\252\006 \001(\01326.CustomerFlow.Inter"
-      "active.Message.DeleteVIPCustomerReq\022[\n\032M"
-      "odifyVIPCustomerReq_Value\030\264\006 \001(\01326.Custo"
-      "merFlow.Interactive.Message.ModifyVIPCus"
-      "tomerReq\022a\n\035QueryVIPCustomerInfoReq_Valu"
-      "e\030\276\006 \001(\01329.CustomerFlow.Interactive.Mess"
-      "age.QueryVIPCustomerInfoReq\022_\n\034QueryAllV"
-      "IPCustomerReq_Value\030\310\006 \001(\01328.CustomerFlo"
-      "w.Interactive.Message.QueryAllVIPCustome"
-      "rReq\022a\n\035AddVIPConsumeHistoryReq_Value\030\322\006"
-      " \001(\01329.CustomerFlow.Interactive.Message."
-      "AddVIPConsumeHistoryReq\022g\n DeleteVIPCons"
-      "umeHistoryReq_Value\030\334\006 \001(\0132<.CustomerFlo"
-      "w.Interactive.Message.DeleteVIPConsumeHi"
-      "storyReq\022g\n ModifyVIPConsumeHistoryReq_V"
-      "alue\030\346\006 \001(\0132<.CustomerFlow.Interactive.M"
-      "essage.ModifyVIPConsumeHistoryReq\022k\n\"Que"
-      "ryAllVIPConsumeHistoryReq_Value\030\360\006 \001(\0132>"
-      ".CustomerFlow.Interactive.Message.QueryA"
-      "llVIPConsumeHistoryReq\022c\n\036AddEvaluationT"
-      "emplateReq_Value\030\204\007 \001(\0132:.CustomerFlow.I"
-      "nteractive.Message.AddEvaluationTemplate"
-      "Req\022i\n!DeleteEvaluationTemplateReq_Value"
-      "\030\216\007 \001(\0132=.CustomerFlow.Interactive.Messa"
-      "ge.DeleteEvaluationTemplateReq\022i\n!Modify"
-      "EvaluationTemplateReq_Value\030\230\007 \001(\0132=.Cus"
-      "tomerFlow.Interactive.Message.ModifyEval"
-      "uationTemplateReq\022m\n#QueryAllEvaluationT"
-      "emplateReq_Value\030\242\007 \001(\0132\?.CustomerFlow.I"
-      "nteractive.Message.QueryAllEvaluationTem"
-      "plateReq\022]\n\033AddStoreEvaluationReq_Value\030"
-      "\266\007 \001(\01327.CustomerFlow.Interactive.Messag"
-      "e.AddStoreEvaluationReq\022c\n\036DeleteStoreEv"
-      "aluationReq_Value\030\300\007 \001(\0132:.CustomerFlow."
-      "Interactive.Message.DeleteStoreEvaluatio"
-      "nReq\022c\n\036ModifyStoreEvaluationReq_Value\030\312"
-      "\007 \001(\0132:.CustomerFlow.Interactive.Message"
-      ".ModifyStoreEvaluationReq\022i\n!QueryStoreE"
-      "valuationInfoReq_Value\030\324\007 \001(\0132=.Customer"
-      "Flow.Interactive.Message.QueryStoreEvalu"
-      "ationInfoReq\022g\n QueryAllStoreEvaluationR"
-      "eq_Value\030\336\007 \001(\0132<.CustomerFlow.Interacti"
-      "ve.Message.QueryAllStoreEvaluationReq\022a\n"
-      "\035AddRemotePatrolStoreReq_Value\030\350\007 \001(\01329."
-      "CustomerFlow.Interactive.Message.AddRemo"
-      "tePatrolStoreReq\022g\n DeleteRemotePatrolSt"
-      "oreReq_Value\030\362\007 \001(\0132<.CustomerFlow.Inter"
-      "active.Message.DeleteRemotePatrolStoreRe"
-      "q\022g\n ModifyRemotePatrolStoreReq_Value\030\374\007"
-      " \001(\0132<.CustomerFlow.Interactive.Message."
-      "ModifyRemotePatrolStoreReq\022m\n#QueryRemot"
-      "ePatrolStoreInfoReq_Value\030\206\010 \001(\0132\?.Custo"
-      "merFlow.Interactive.Message.QueryRemoteP"
-      "atrolStoreInfoReq\022k\n\"QueryAllRemotePatro"
-      "lStoreReq_Value\030\220\010 \001(\0132>.CustomerFlow.In"
-      "teractive.Message.QueryAllRemotePatrolSt"
-      "oreReq\022G\n\020AddAreaReq_Value\030\314\010 \001(\0132,.Cust"
-      "omerFlow.Interactive.Message.AddAreaReq\022"
-      "M\n\023DeleteAreaReq_Value\030\326\010 \001(\0132/.Customer"
-      "Flow.Interactive.Message.DeleteAreaReq\022M"
-      "\n\023ModifyAreaReq_Value\030\340\010 \001(\0132/.CustomerF"
-      "low.Interactive.Message.ModifyAreaReq\022S\n"
-      "\026QueryAreaInfoReq_Value\030\352\010 \001(\01322.Custome"
-      "rFlow.Interactive.Message.QueryAreaInfoR"
-      "eq\022Q\n\025QueryAllAreaReq_Value\030\364\010 \001(\01321.Cus"
-      "tomerFlow.Interactive.Message.QueryAllAr"
-      "eaReq\022Y\n\031BindPushClientIDReq_Value\030\376\010 \001("
-      "\01325.CustomerFlow.Interactive.Message.Bin"
-      "dPushClientIDReq\022]\n\033UnbindPushClientIDRe"
-      "q_Value\030\210\t \001(\01327.CustomerFlow.Interactiv"
-      "e.Message.UnbindPushClientIDReq\022U\n\027AddSt"
-      "oreSensorReq_Value\030\260\t \001(\01323.CustomerFlow"
-      ".Interactive.Message.AddStoreSensorReq\022["
-      "\n\032DeleteStoreSensorReq_Value\030\272\t \001(\01326.Cu"
-      "stomerFlow.Interactive.Message.DeleteSto"
-      "reSensorReq\022[\n\032ModifyStoreSensorReq_Valu"
-      "e\030\304\t \001(\01326.CustomerFlow.Interactive.Mess"
-      "age.ModifyStoreSensorReq\022a\n\035QueryStoreSe"
-      "nsorInfoReq_Value\030\316\t \001(\01329.CustomerFlow."
-      "Interactive.Message.QueryStoreSensorInfo"
-      "Req\022_\n\034QueryAllStoreSensorReq_Value\030\330\t \001"
-      "(\01328.CustomerFlow.Interactive.Message.Qu"
-      "eryAllStoreSensorReq\022S\n\026ImportPOSDataReq"
-      "_Value\030\320\017 \001(\01322.CustomerFlow.Interactive"
-      ".Message.ImportPOSDataReq\022m\n#QueryCustom"
-      "erFlowStatisticReq_Value\030\324\026 \001(\0132\?.Custom"
-      "erFlow.Interactive.Message.QueryCustomer"
-      "FlowStatisticReq\022g\n QueryPatrolResultRep"
-      "ortReq_Value\030\270\027 \001(\0132<.CustomerFlow.Inter"
-      "active.Message.QueryPatrolResultReportRe"
-      "q\022e\n\037ReportCustomerFlowDataReq_Value\030\210\' "
-      "\001(\0132;.CustomerFlow.Interactive.Message.R"
-      "eportCustomerFlowDataReq\022Y\n\031ReportSensor"
-      "InfoReq_Value\030\354\' \001(\01325.CustomerFlow.Inte"
-      "ractive.Message.ReportSensorInfoReq\022c\n\036R"
-      "eportSensorAlarmInfoReq_Value\030\366\' \001(\0132:.C"
-      "ustomerFlow.Interactive.Message.ReportSe"
-      "nsorAlarmInfoReq\022k\n\"QuerySensorAlarmThre"
-      "sholdReq_Value\030\200( \001(\0132>.CustomerFlow.Int"
-      "eractive.Message.QuerySensorAlarmThresho"
-      "ldReq\022_\n\034RemoveSensorRecordsReq_Value\030\212("
-      " \001(\01328.CustomerFlow.Interactive.Message."
-      "RemoveSensorRecordsReq\022i\n!RemoveSensorAl"
-      "armRecordsReq_Value\030\224( \001(\0132=.CustomerFlo"
-      "w.Interactive.Message.RemoveSensorAlarmR"
-      "ecordsReq\022]\n\033QuerySensorRecordsReq_Value"
-      "\030\236( \001(\01327.CustomerFlow.Interactive.Messa"
-      "ge.QuerySensorRecordsReq\"\355;\n\010Response\022\020\n"
-      "\010iRetcode\030\001 \001(\005\022\021\n\tstrRetMsg\030\002 \001(\t\022b\n\036Cu"
-      "stomerFlowPreHandleRsp_Value\030\n \001(\0132:.Cus"
-      "tomerFlow.Interactive.Message.CustomerFl"
-      "owPreHandleRsp\022J\n\022ShakehandRsp_Value\0302 \001"
-      "(\0132..CustomerFlow.Interactive.Message.Sh"
-      "akehandRsp\022H\n\021AddGroupRsp_Value\030d \001(\0132-."
-      "CustomerFlow.Interactive.Message.AddGrou"
-      "pRsp\022N\n\024DeleteGroupRsp_Value\030n \001(\01320.Cus"
-      "tomerFlow.Interactive.Message.DeleteGrou"
-      "pRsp\022N\n\024ModifyGroupRsp_Value\030x \001(\01320.Cus"
-      "tomerFlow.Interactive.Message.ModifyGrou"
-      "pRsp\022U\n\027QueryGroupInfoRsp_Value\030\202\001 \001(\01323"
-      ".CustomerFlow.Interactive.Message.QueryG"
-      "roupInfoRsp\022S\n\026QueryAllGroupRsp_Value\030\214\001"
-      " \001(\01322.CustomerFlow.Interactive.Message."
-      "QueryAllGroupRsp\022I\n\021AddStoreRsp_Value\030\226\001"
-      " \001(\0132-.CustomerFlow.Interactive.Message."
-      "AddStoreRsp\022O\n\024DeleteStoreRsp_Value\030\240\001 \001"
-      "(\01320.CustomerFlow.Interactive.Message.De"
-      "leteStoreRsp\022O\n\024ModifyStoreRsp_Value\030\252\001 "
-      "\001(\01320.CustomerFlow.Interactive.Message.M"
-      "odifyStoreRsp\022U\n\027QueryStoreInfoRsp_Value"
-      "\030\264\001 \001(\01323.CustomerFlow.Interactive.Messa"
-      "ge.QueryStoreInfoRsp\022S\n\026QueryAllStoreRsp"
-      "_Value\030\276\001 \001(\01322.CustomerFlow.Interactive"
-      ".Message.QueryAllStoreRsp\022O\n\024AddEntrance"
-      "Rsp_Value\030\310\001 \001(\01320.CustomerFlow.Interact"
-      "ive.Message.AddEntranceRsp\022U\n\027DeleteEntr"
-      "anceRsp_Value\030\322\001 \001(\01323.CustomerFlow.Inte"
-      "ractive.Message.DeleteEntranceRsp\022U\n\027Mod"
-      "ifyEntranceRsp_Value\030\334\001 \001(\01323.CustomerFl"
-      "ow.Interactive.Message.ModifyEntranceRsp"
-      "\022[\n\032AddEntranceDeviceRsp_Value\030\346\001 \001(\01326."
-      "CustomerFlow.Interactive.Message.AddEntr"
-      "anceDeviceRsp\022a\n\035DeleteEntranceDeviceRsp"
-      "_Value\030\360\001 \001(\01329.CustomerFlow.Interactive"
-      ".Message.DeleteEntranceDeviceRsp\022I\n\021AddE"
-      "ventRsp_Value\030\254\002 \001(\0132-.CustomerFlow.Inte"
-      "ractive.Message.AddEventRsp\022O\n\024DeleteEve"
-      "ntRsp_Value\030\266\002 \001(\01320.CustomerFlow.Intera"
-      "ctive.Message.DeleteEventRsp\022O\n\024ModifyEv"
-      "entRsp_Value\030\300\002 \001(\01320.CustomerFlow.Inter"
-      "active.Message.ModifyEventRsp\022U\n\027QueryEv"
-      "entInfoRsp_Value\030\312\002 \001(\01323.CustomerFlow.I"
-      "nteractive.Message.QueryEventInfoRsp\022S\n\026"
-      "QueryAllEventRsp_Value\030\324\002 \001(\01322.Customer"
-      "Flow.Interactive.Message.QueryAllEventRs"
-      "p\022]\n\033AddSmartGuardStoreRsp_Value\030\336\002 \001(\0132"
-      "7.CustomerFlow.Interactive.Message.AddSm"
-      "artGuardStoreRsp\022c\n\036DeleteSmartGuardStor"
-      "eRsp_Value\030\350\002 \001(\0132:.CustomerFlow.Interac"
-      "tive.Message.DeleteSmartGuardStoreRsp\022c\n"
-      "\036ModifySmartGuardStoreRsp_Value\030\362\002 \001(\0132:"
+      "ustomerFlow.Interactive.Message.Sensor\"\302"
+      "\001\n\032QuerySensorAlarmRecordsReq\022\021\n\tstrUser"
+      "ID\030\001 \001(\t\022\022\n\nstrStoreID\030\002 \001(\t\022\023\n\013strSenso"
+      "rID\030\003 \001(\t\022\025\n\rstrSensorType\030\004 \001(\t\022\021\n\tuiRe"
+      "cover\030\005 \001(\r\022\024\n\014strBeginDate\030\006 \001(\t\022\022\n\nstr"
+      "EndDate\030\007 \001(\t\022\024\n\014uiBeginIndex\030\010 \001(\r\"\214\001\n\021"
+      "SensorAlarmRecord\022<\n\nsensorInfo\030\001 \001(\0132(."
+      "CustomerFlow.Interactive.Message.Sensor\022"
+      "\021\n\tuiRecover\030\002 \001(\r\022\021\n\tstrFileID\030\003 \001(\t\022\023\n"
+      "\013strRecordID\030\004 \001(\t\"_\n\032QuerySensorAlarmRe"
+      "cordsRsp\022A\n\004sard\030\001 \003(\01323.CustomerFlow.In"
+      "teractive.Message.SensorAlarmRecord\"\260<\n\007"
+      "Request\022b\n\036CustomerFlowPreHandleReq_Valu"
+      "e\030\n \001(\0132:.CustomerFlow.Interactive.Messa"
+      "ge.CustomerFlowPreHandleReq\022J\n\022Shakehand"
+      "Req_Value\0302 \001(\0132..CustomerFlow.Interacti"
+      "ve.Message.ShakehandReq\022H\n\021AddGroupReq_V"
+      "alue\030d \001(\0132-.CustomerFlow.Interactive.Me"
+      "ssage.AddGroupReq\022N\n\024DeleteGroupReq_Valu"
+      "e\030n \001(\01320.CustomerFlow.Interactive.Messa"
+      "ge.DeleteGroupReq\022N\n\024ModifyGroupReq_Valu"
+      "e\030x \001(\01320.CustomerFlow.Interactive.Messa"
+      "ge.ModifyGroupReq\022U\n\027QueryGroupInfoReq_V"
+      "alue\030\202\001 \001(\01323.CustomerFlow.Interactive.M"
+      "essage.QueryGroupInfoReq\022S\n\026QueryAllGrou"
+      "pReq_Value\030\214\001 \001(\01322.CustomerFlow.Interac"
+      "tive.Message.QueryAllGroupReq\022I\n\021AddStor"
+      "eReq_Value\030\226\001 \001(\0132-.CustomerFlow.Interac"
+      "tive.Message.AddStoreReq\022O\n\024DeleteStoreR"
+      "eq_Value\030\240\001 \001(\01320.CustomerFlow.Interacti"
+      "ve.Message.DeleteStoreReq\022O\n\024ModifyStore"
+      "Req_Value\030\252\001 \001(\01320.CustomerFlow.Interact"
+      "ive.Message.ModifyStoreReq\022U\n\027QueryStore"
+      "InfoReq_Value\030\264\001 \001(\01323.CustomerFlow.Inte"
+      "ractive.Message.QueryStoreInfoReq\022S\n\026Que"
+      "ryAllStoreReq_Value\030\276\001 \001(\01322.CustomerFlo"
+      "w.Interactive.Message.QueryAllStoreReq\022O"
+      "\n\024AddEntranceReq_Value\030\310\001 \001(\01320.Customer"
+      "Flow.Interactive.Message.AddEntranceReq\022"
+      "U\n\027DeleteEntranceReq_Value\030\322\001 \001(\01323.Cust"
+      "omerFlow.Interactive.Message.DeleteEntra"
+      "nceReq\022U\n\027ModifyEntranceReq_Value\030\334\001 \001(\013"
+      "23.CustomerFlow.Interactive.Message.Modi"
+      "fyEntranceReq\022[\n\032AddEntranceDeviceReq_Va"
+      "lue\030\346\001 \001(\01326.CustomerFlow.Interactive.Me"
+      "ssage.AddEntranceDeviceReq\022a\n\035DeleteEntr"
+      "anceDeviceReq_Value\030\360\001 \001(\01329.CustomerFlo"
+      "w.Interactive.Message.DeleteEntranceDevi"
+      "ceReq\022I\n\021AddEventReq_Value\030\254\002 \001(\0132-.Cust"
+      "omerFlow.Interactive.Message.AddEventReq"
+      "\022O\n\024DeleteEventReq_Value\030\266\002 \001(\01320.Custom"
+      "erFlow.Interactive.Message.DeleteEventRe"
+      "q\022O\n\024ModifyEventReq_Value\030\300\002 \001(\01320.Custo"
+      "merFlow.Interactive.Message.ModifyEventR"
+      "eq\022U\n\027QueryEventInfoReq_Value\030\312\002 \001(\01323.C"
+      "ustomerFlow.Interactive.Message.QueryEve"
+      "ntInfoReq\022S\n\026QueryAllEventReq_Value\030\324\002 \001"
+      "(\01322.CustomerFlow.Interactive.Message.Qu"
+      "eryAllEventReq\022]\n\033AddSmartGuardStoreReq_"
+      "Value\030\336\002 \001(\01327.CustomerFlow.Interactive."
+      "Message.AddSmartGuardStoreReq\022c\n\036DeleteS"
+      "martGuardStoreReq_Value\030\350\002 \001(\0132:.Custome"
+      "rFlow.Interactive.Message.DeleteSmartGua"
+      "rdStoreReq\022c\n\036ModifySmartGuardStoreReq_V"
+      "alue\030\362\002 \001(\0132:.CustomerFlow.Interactive.M"
+      "essage.ModifySmartGuardStoreReq\022i\n!Query"
+      "SmartGuardStoreInfoReq_Value\030\374\002 \001(\0132=.Cu"
+      "stomerFlow.Interactive.Message.QuerySmar"
+      "tGuardStoreInfoReq\022g\n QueryAllSmartGuard"
+      "StoreReq_Value\030\206\003 \001(\0132<.CustomerFlow.Int"
+      "eractive.Message.QueryAllSmartGuardStore"
+      "Req\022Y\n\031AddRegularPatrolReq_Value\030\220\003 \001(\0132"
+      "5.CustomerFlow.Interactive.Message.AddRe"
+      "gularPatrolReq\022_\n\034DeleteRegularPatrolReq"
+      "_Value\030\232\003 \001(\01328.CustomerFlow.Interactive"
+      ".Message.DeleteRegularPatrolReq\022_\n\034Modif"
+      "yRegularPatrolReq_Value\030\244\003 \001(\01328.Custome"
+      "rFlow.Interactive.Message.ModifyRegularP"
+      "atrolReq\022e\n\037QueryRegularPatrolInfoReq_Va"
+      "lue\030\256\003 \001(\0132;.CustomerFlow.Interactive.Me"
+      "ssage.QueryRegularPatrolInfoReq\022c\n\036Query"
+      "AllRegularPatrolReq_Value\030\270\003 \001(\0132:.Custo"
+      "merFlow.Interactive.Message.QueryAllRegu"
+      "larPatrolReq\022S\n\026UserJoinStoreReq_Value\030\364"
+      "\003 \001(\01322.CustomerFlow.Interactive.Message"
+      ".UserJoinStoreReq\022S\n\026UserQuitStoreReq_Va"
+      "lue\030\376\003 \001(\01322.CustomerFlow.Interactive.Me"
+      "ssage.UserQuitStoreReq\022[\n\032QueryStoreAllU"
+      "serReq_Value\030\210\004 \001(\01326.CustomerFlow.Inter"
+      "active.Message.QueryStoreAllUserReq\022_\n\034Q"
+      "ueryCompanyAllUserReq_Value\030\222\004 \001(\01328.Cus"
+      "tomerFlow.Interactive.Message.QueryCompa"
+      "nyAllUserReq\022U\n\027AddVIPCustomerReq_Value\030"
+      "\240\006 \001(\01323.CustomerFlow.Interactive.Messag"
+      "e.AddVIPCustomerReq\022[\n\032DeleteVIPCustomer"
+      "Req_Value\030\252\006 \001(\01326.CustomerFlow.Interact"
+      "ive.Message.DeleteVIPCustomerReq\022[\n\032Modi"
+      "fyVIPCustomerReq_Value\030\264\006 \001(\01326.Customer"
+      "Flow.Interactive.Message.ModifyVIPCustom"
+      "erReq\022a\n\035QueryVIPCustomerInfoReq_Value\030\276"
+      "\006 \001(\01329.CustomerFlow.Interactive.Message"
+      ".QueryVIPCustomerInfoReq\022_\n\034QueryAllVIPC"
+      "ustomerReq_Value\030\310\006 \001(\01328.CustomerFlow.I"
+      "nteractive.Message.QueryAllVIPCustomerRe"
+      "q\022a\n\035AddVIPConsumeHistoryReq_Value\030\322\006 \001("
+      "\01329.CustomerFlow.Interactive.Message.Add"
+      "VIPConsumeHistoryReq\022g\n DeleteVIPConsume"
+      "HistoryReq_Value\030\334\006 \001(\0132<.CustomerFlow.I"
+      "nteractive.Message.DeleteVIPConsumeHisto"
+      "ryReq\022g\n ModifyVIPConsumeHistoryReq_Valu"
+      "e\030\346\006 \001(\0132<.CustomerFlow.Interactive.Mess"
+      "age.ModifyVIPConsumeHistoryReq\022k\n\"QueryA"
+      "llVIPConsumeHistoryReq_Value\030\360\006 \001(\0132>.Cu"
+      "stomerFlow.Interactive.Message.QueryAllV"
+      "IPConsumeHistoryReq\022c\n\036AddEvaluationTemp"
+      "lateReq_Value\030\204\007 \001(\0132:.CustomerFlow.Inte"
+      "ractive.Message.AddEvaluationTemplateReq"
+      "\022i\n!DeleteEvaluationTemplateReq_Value\030\216\007"
+      " \001(\0132=.CustomerFlow.Interactive.Message."
+      "DeleteEvaluationTemplateReq\022i\n!ModifyEva"
+      "luationTemplateReq_Value\030\230\007 \001(\0132=.Custom"
+      "erFlow.Interactive.Message.ModifyEvaluat"
+      "ionTemplateReq\022m\n#QueryAllEvaluationTemp"
+      "lateReq_Value\030\242\007 \001(\0132\?.CustomerFlow.Inte"
+      "ractive.Message.QueryAllEvaluationTempla"
+      "teReq\022]\n\033AddStoreEvaluationReq_Value\030\266\007 "
+      "\001(\01327.CustomerFlow.Interactive.Message.A"
+      "ddStoreEvaluationReq\022c\n\036DeleteStoreEvalu"
+      "ationReq_Value\030\300\007 \001(\0132:.CustomerFlow.Int"
+      "eractive.Message.DeleteStoreEvaluationRe"
+      "q\022c\n\036ModifyStoreEvaluationReq_Value\030\312\007 \001"
+      "(\0132:.CustomerFlow.Interactive.Message.Mo"
+      "difyStoreEvaluationReq\022i\n!QueryStoreEval"
+      "uationInfoReq_Value\030\324\007 \001(\0132=.CustomerFlo"
+      "w.Interactive.Message.QueryStoreEvaluati"
+      "onInfoReq\022g\n QueryAllStoreEvaluationReq_"
+      "Value\030\336\007 \001(\0132<.CustomerFlow.Interactive."
+      "Message.QueryAllStoreEvaluationReq\022a\n\035Ad"
+      "dRemotePatrolStoreReq_Value\030\350\007 \001(\01329.Cus"
+      "tomerFlow.Interactive.Message.AddRemoteP"
+      "atrolStoreReq\022g\n DeleteRemotePatrolStore"
+      "Req_Value\030\362\007 \001(\0132<.CustomerFlow.Interact"
+      "ive.Message.DeleteRemotePatrolStoreReq\022g"
+      "\n ModifyRemotePatrolStoreReq_Value\030\374\007 \001("
+      "\0132<.CustomerFlow.Interactive.Message.Mod"
+      "ifyRemotePatrolStoreReq\022m\n#QueryRemotePa"
+      "trolStoreInfoReq_Value\030\206\010 \001(\0132\?.Customer"
+      "Flow.Interactive.Message.QueryRemotePatr"
+      "olStoreInfoReq\022k\n\"QueryAllRemotePatrolSt"
+      "oreReq_Value\030\220\010 \001(\0132>.CustomerFlow.Inter"
+      "active.Message.QueryAllRemotePatrolStore"
+      "Req\022G\n\020AddAreaReq_Value\030\314\010 \001(\0132,.Custome"
+      "rFlow.Interactive.Message.AddAreaReq\022M\n\023"
+      "DeleteAreaReq_Value\030\326\010 \001(\0132/.CustomerFlo"
+      "w.Interactive.Message.DeleteAreaReq\022M\n\023M"
+      "odifyAreaReq_Value\030\340\010 \001(\0132/.CustomerFlow"
+      ".Interactive.Message.ModifyAreaReq\022S\n\026Qu"
+      "eryAreaInfoReq_Value\030\352\010 \001(\01322.CustomerFl"
+      "ow.Interactive.Message.QueryAreaInfoReq\022"
+      "Q\n\025QueryAllAreaReq_Value\030\364\010 \001(\01321.Custom"
+      "erFlow.Interactive.Message.QueryAllAreaR"
+      "eq\022Y\n\031BindPushClientIDReq_Value\030\376\010 \001(\01325"
+      ".CustomerFlow.Interactive.Message.BindPu"
+      "shClientIDReq\022]\n\033UnbindPushClientIDReq_V"
+      "alue\030\210\t \001(\01327.CustomerFlow.Interactive.M"
+      "essage.UnbindPushClientIDReq\022U\n\027AddStore"
+      "SensorReq_Value\030\260\t \001(\01323.CustomerFlow.In"
+      "teractive.Message.AddStoreSensorReq\022[\n\032D"
+      "eleteStoreSensorReq_Value\030\272\t \001(\01326.Custo"
+      "merFlow.Interactive.Message.DeleteStoreS"
+      "ensorReq\022[\n\032ModifyStoreSensorReq_Value\030\304"
+      "\t \001(\01326.CustomerFlow.Interactive.Message"
+      ".ModifyStoreSensorReq\022a\n\035QueryStoreSenso"
+      "rInfoReq_Value\030\316\t \001(\01329.CustomerFlow.Int"
+      "eractive.Message.QueryStoreSensorInfoReq"
+      "\022_\n\034QueryAllStoreSensorReq_Value\030\330\t \001(\0132"
+      "8.CustomerFlow.Interactive.Message.Query"
+      "AllStoreSensorReq\022S\n\026ImportPOSDataReq_Va"
+      "lue\030\320\017 \001(\01322.CustomerFlow.Interactive.Me"
+      "ssage.ImportPOSDataReq\022m\n#QueryCustomerF"
+      "lowStatisticReq_Value\030\324\026 \001(\0132\?.CustomerF"
+      "low.Interactive.Message.QueryCustomerFlo"
+      "wStatisticReq\022g\n QueryPatrolResultReport"
+      "Req_Value\030\270\027 \001(\0132<.CustomerFlow.Interact"
+      "ive.Message.QueryPatrolResultReportReq\022e"
+      "\n\037ReportCustomerFlowDataReq_Value\030\210\' \001(\013"
+      "2;.CustomerFlow.Interactive.Message.Repo"
+      "rtCustomerFlowDataReq\022Y\n\031ReportSensorInf"
+      "oReq_Value\030\354\' \001(\01325.CustomerFlow.Interac"
+      "tive.Message.ReportSensorInfoReq\022c\n\036Repo"
+      "rtSensorAlarmInfoReq_Value\030\366\' \001(\0132:.Cust"
+      "omerFlow.Interactive.Message.ReportSenso"
+      "rAlarmInfoReq\022k\n\"QuerySensorAlarmThresho"
+      "ldReq_Value\030\200( \001(\0132>.CustomerFlow.Intera"
+      "ctive.Message.QuerySensorAlarmThresholdR"
+      "eq\022_\n\034RemoveSensorRecordsReq_Value\030\212( \001("
+      "\01328.CustomerFlow.Interactive.Message.Rem"
+      "oveSensorRecordsReq\022i\n!RemoveSensorAlarm"
+      "RecordsReq_Value\030\224( \001(\0132=.CustomerFlow.I"
+      "nteractive.Message.RemoveSensorAlarmReco"
+      "rdsReq\022]\n\033QuerySensorRecordsReq_Value\030\236("
+      " \001(\01327.CustomerFlow.Interactive.Message."
+      "QuerySensorRecordsReq\022g\n QuerySensorAlar"
+      "mRecordsReq_Value\030\250( \001(\0132<.CustomerFlow."
+      "Interactive.Message.QuerySensorAlarmReco"
+      "rdsReq\"\326<\n\010Response\022\020\n\010iRetcode\030\001 \001(\005\022\021\n"
+      "\tstrRetMsg\030\002 \001(\t\022b\n\036CustomerFlowPreHandl"
+      "eRsp_Value\030\n \001(\0132:.CustomerFlow.Interact"
+      "ive.Message.CustomerFlowPreHandleRsp\022J\n\022"
+      "ShakehandRsp_Value\0302 \001(\0132..CustomerFlow."
+      "Interactive.Message.ShakehandRsp\022H\n\021AddG"
+      "roupRsp_Value\030d \001(\0132-.CustomerFlow.Inter"
+      "active.Message.AddGroupRsp\022N\n\024DeleteGrou"
+      "pRsp_Value\030n \001(\01320.CustomerFlow.Interact"
+      "ive.Message.DeleteGroupRsp\022N\n\024ModifyGrou"
+      "pRsp_Value\030x \001(\01320.CustomerFlow.Interact"
+      "ive.Message.ModifyGroupRsp\022U\n\027QueryGroup"
+      "InfoRsp_Value\030\202\001 \001(\01323.CustomerFlow.Inte"
+      "ractive.Message.QueryGroupInfoRsp\022S\n\026Que"
+      "ryAllGroupRsp_Value\030\214\001 \001(\01322.CustomerFlo"
+      "w.Interactive.Message.QueryAllGroupRsp\022I"
+      "\n\021AddStoreRsp_Value\030\226\001 \001(\0132-.CustomerFlo"
+      "w.Interactive.Message.AddStoreRsp\022O\n\024Del"
+      "eteStoreRsp_Value\030\240\001 \001(\01320.CustomerFlow."
+      "Interactive.Message.DeleteStoreRsp\022O\n\024Mo"
+      "difyStoreRsp_Value\030\252\001 \001(\01320.CustomerFlow"
+      ".Interactive.Message.ModifyStoreRsp\022U\n\027Q"
+      "ueryStoreInfoRsp_Value\030\264\001 \001(\01323.Customer"
+      "Flow.Interactive.Message.QueryStoreInfoR"
+      "sp\022S\n\026QueryAllStoreRsp_Value\030\276\001 \001(\01322.Cu"
+      "stomerFlow.Interactive.Message.QueryAllS"
+      "toreRsp\022O\n\024AddEntranceRsp_Value\030\310\001 \001(\01320"
+      ".CustomerFlow.Interactive.Message.AddEnt"
+      "ranceRsp\022U\n\027DeleteEntranceRsp_Value\030\322\001 \001"
+      "(\01323.CustomerFlow.Interactive.Message.De"
+      "leteEntranceRsp\022U\n\027ModifyEntranceRsp_Val"
+      "ue\030\334\001 \001(\01323.CustomerFlow.Interactive.Mes"
+      "sage.ModifyEntranceRsp\022[\n\032AddEntranceDev"
+      "iceRsp_Value\030\346\001 \001(\01326.CustomerFlow.Inter"
+      "active.Message.AddEntranceDeviceRsp\022a\n\035D"
+      "eleteEntranceDeviceRsp_Value\030\360\001 \001(\01329.Cu"
+      "stomerFlow.Interactive.Message.DeleteEnt"
+      "ranceDeviceRsp\022I\n\021AddEventRsp_Value\030\254\002 \001"
+      "(\0132-.CustomerFlow.Interactive.Message.Ad"
+      "dEventRsp\022O\n\024DeleteEventRsp_Value\030\266\002 \001(\013"
+      "20.CustomerFlow.Interactive.Message.Dele"
+      "teEventRsp\022O\n\024ModifyEventRsp_Value\030\300\002 \001("
+      "\01320.CustomerFlow.Interactive.Message.Mod"
+      "ifyEventRsp\022U\n\027QueryEventInfoRsp_Value\030\312"
+      "\002 \001(\01323.CustomerFlow.Interactive.Message"
+      ".QueryEventInfoRsp\022S\n\026QueryAllEventRsp_V"
+      "alue\030\324\002 \001(\01322.CustomerFlow.Interactive.M"
+      "essage.QueryAllEventRsp\022]\n\033AddSmartGuard"
+      "StoreRsp_Value\030\336\002 \001(\01327.CustomerFlow.Int"
+      "eractive.Message.AddSmartGuardStoreRsp\022c"
+      "\n\036DeleteSmartGuardStoreRsp_Value\030\350\002 \001(\0132"
+      ":.CustomerFlow.Interactive.Message.Delet"
+      "eSmartGuardStoreRsp\022c\n\036ModifySmartGuardS"
+      "toreRsp_Value\030\362\002 \001(\0132:.CustomerFlow.Inte"
+      "ractive.Message.ModifySmartGuardStoreRsp"
+      "\022i\n!QuerySmartGuardStoreInfoRsp_Value\030\374\002"
+      " \001(\0132=.CustomerFlow.Interactive.Message."
+      "QuerySmartGuardStoreInfoRsp\022g\n QueryAllS"
+      "martGuardStoreRsp_Value\030\206\003 \001(\0132<.Custome"
+      "rFlow.Interactive.Message.QueryAllSmartG"
+      "uardStoreRsp\022Y\n\031AddRegularPatrolRsp_Valu"
+      "e\030\220\003 \001(\01325.CustomerFlow.Interactive.Mess"
+      "age.AddRegularPatrolRsp\022_\n\034DeleteRegular"
+      "PatrolRsp_Value\030\232\003 \001(\01328.CustomerFlow.In"
+      "teractive.Message.DeleteRegularPatrolRsp"
+      "\022_\n\034ModifyRegularPatrolRsp_Value\030\244\003 \001(\0132"
+      "8.CustomerFlow.Interactive.Message.Modif"
+      "yRegularPatrolRsp\022e\n\037QueryRegularPatrolI"
+      "nfoRsp_Value\030\256\003 \001(\0132;.CustomerFlow.Inter"
+      "active.Message.QueryRegularPatrolInfoRsp"
+      "\022c\n\036QueryAllRegularPatrolRsp_Value\030\270\003 \001("
+      "\0132:.CustomerFlow.Interactive.Message.Que"
+      "ryAllRegularPatrolRsp\022S\n\026UserJoinStoreRs"
+      "p_Value\030\364\003 \001(\01322.CustomerFlow.Interactiv"
+      "e.Message.UserJoinStoreRsp\022S\n\026UserQuitSt"
+      "oreRsp_Value\030\376\003 \001(\01322.CustomerFlow.Inter"
+      "active.Message.UserQuitStoreRsp\022[\n\032Query"
+      "StoreAllUserRsp_Value\030\210\004 \001(\01326.CustomerF"
+      "low.Interactive.Message.QueryStoreAllUse"
+      "rRsp\022_\n\034QueryCompanyAllUserRsp_Value\030\222\004 "
+      "\001(\01328.CustomerFlow.Interactive.Message.Q"
+      "ueryCompanyAllUserRsp\022U\n\027AddVIPCustomerR"
+      "sp_Value\030\240\006 \001(\01323.CustomerFlow.Interacti"
+      "ve.Message.AddVIPCustomerRsp\022[\n\032DeleteVI"
+      "PCustomerRsp_Value\030\252\006 \001(\01326.CustomerFlow"
+      ".Interactive.Message.DeleteVIPCustomerRs"
+      "p\022[\n\032ModifyVIPCustomerRsp_Value\030\264\006 \001(\01326"
       ".CustomerFlow.Interactive.Message.Modify"
-      "SmartGuardStoreRsp\022i\n!QuerySmartGuardSto"
-      "reInfoRsp_Value\030\374\002 \001(\0132=.CustomerFlow.In"
-      "teractive.Message.QuerySmartGuardStoreIn"
-      "foRsp\022g\n QueryAllSmartGuardStoreRsp_Valu"
-      "e\030\206\003 \001(\0132<.CustomerFlow.Interactive.Mess"
-      "age.QueryAllSmartGuardStoreRsp\022Y\n\031AddReg"
-      "ularPatrolRsp_Value\030\220\003 \001(\01325.CustomerFlo"
-      "w.Interactive.Message.AddRegularPatrolRs"
-      "p\022_\n\034DeleteRegularPatrolRsp_Value\030\232\003 \001(\013"
-      "28.CustomerFlow.Interactive.Message.Dele"
-      "teRegularPatrolRsp\022_\n\034ModifyRegularPatro"
-      "lRsp_Value\030\244\003 \001(\01328.CustomerFlow.Interac"
-      "tive.Message.ModifyRegularPatrolRsp\022e\n\037Q"
-      "ueryRegularPatrolInfoRsp_Value\030\256\003 \001(\0132;."
-      "CustomerFlow.Interactive.Message.QueryRe"
-      "gularPatrolInfoRsp\022c\n\036QueryAllRegularPat"
-      "rolRsp_Value\030\270\003 \001(\0132:.CustomerFlow.Inter"
-      "active.Message.QueryAllRegularPatrolRsp\022"
-      "S\n\026UserJoinStoreRsp_Value\030\364\003 \001(\01322.Custo"
-      "merFlow.Interactive.Message.UserJoinStor"
-      "eRsp\022S\n\026UserQuitStoreRsp_Value\030\376\003 \001(\01322."
-      "CustomerFlow.Interactive.Message.UserQui"
-      "tStoreRsp\022[\n\032QueryStoreAllUserRsp_Value\030"
-      "\210\004 \001(\01326.CustomerFlow.Interactive.Messag"
-      "e.QueryStoreAllUserRsp\022_\n\034QueryCompanyAl"
-      "lUserRsp_Value\030\222\004 \001(\01328.CustomerFlow.Int"
-      "eractive.Message.QueryCompanyAllUserRsp\022"
-      "U\n\027AddVIPCustomerRsp_Value\030\240\006 \001(\01323.Cust"
-      "omerFlow.Interactive.Message.AddVIPCusto"
-      "merRsp\022[\n\032DeleteVIPCustomerRsp_Value\030\252\006 "
-      "\001(\01326.CustomerFlow.Interactive.Message.D"
-      "eleteVIPCustomerRsp\022[\n\032ModifyVIPCustomer"
-      "Rsp_Value\030\264\006 \001(\01326.CustomerFlow.Interact"
-      "ive.Message.ModifyVIPCustomerRsp\022a\n\035Quer"
-      "yVIPCustomerInfoRsp_Value\030\276\006 \001(\01329.Custo"
-      "merFlow.Interactive.Message.QueryVIPCust"
-      "omerInfoRsp\022_\n\034QueryAllVIPCustomerRsp_Va"
-      "lue\030\310\006 \001(\01328.CustomerFlow.Interactive.Me"
-      "ssage.QueryAllVIPCustomerRsp\022a\n\035AddVIPCo"
-      "nsumeHistoryRsp_Value\030\322\006 \001(\01329.CustomerF"
-      "low.Interactive.Message.AddVIPConsumeHis"
-      "toryRsp\022g\n DeleteVIPConsumeHistoryRsp_Va"
-      "lue\030\334\006 \001(\0132<.CustomerFlow.Interactive.Me"
-      "ssage.DeleteVIPConsumeHistoryRsp\022g\n Modi"
-      "fyVIPConsumeHistoryRsp_Value\030\346\006 \001(\0132<.Cu"
-      "stomerFlow.Interactive.Message.ModifyVIP"
-      "ConsumeHistoryRsp\022k\n\"QueryAllVIPConsumeH"
-      "istoryRsp_Value\030\360\006 \001(\0132>.CustomerFlow.In"
-      "teractive.Message.QueryAllVIPConsumeHist"
-      "oryRsp\022c\n\036AddEvaluationTemplateRsp_Value"
-      "\030\204\007 \001(\0132:.CustomerFlow.Interactive.Messa"
-      "ge.AddEvaluationTemplateRsp\022i\n!DeleteEva"
-      "luationTemplateRsp_Value\030\216\007 \001(\0132=.Custom"
-      "erFlow.Interactive.Message.DeleteEvaluat"
-      "ionTemplateRsp\022i\n!ModifyEvaluationTempla"
-      "teRsp_Value\030\230\007 \001(\0132=.CustomerFlow.Intera"
-      "ctive.Message.ModifyEvaluationTemplateRs"
-      "p\022m\n#QueryAllEvaluationTemplateRsp_Value"
-      "\030\242\007 \001(\0132\?.CustomerFlow.Interactive.Messa"
-      "ge.QueryAllEvaluationTemplateRsp\022]\n\033AddS"
-      "toreEvaluationRsp_Value\030\266\007 \001(\01327.Custome"
-      "rFlow.Interactive.Message.AddStoreEvalua"
-      "tionRsp\022c\n\036DeleteStoreEvaluationRsp_Valu"
-      "e\030\300\007 \001(\0132:.CustomerFlow.Interactive.Mess"
-      "age.DeleteStoreEvaluationRsp\022c\n\036ModifySt"
-      "oreEvaluationRsp_Value\030\312\007 \001(\0132:.Customer"
-      "Flow.Interactive.Message.ModifyStoreEval"
-      "uationRsp\022i\n!QueryStoreEvaluationInfoRsp"
-      "_Value\030\324\007 \001(\0132=.CustomerFlow.Interactive"
-      ".Message.QueryStoreEvaluationInfoRsp\022g\n "
-      "QueryAllStoreEvaluationRsp_Value\030\336\007 \001(\0132"
-      "<.CustomerFlow.Interactive.Message.Query"
-      "AllStoreEvaluationRsp\022a\n\035AddRemotePatrol"
-      "StoreRsp_Value\030\350\007 \001(\01329.CustomerFlow.Int"
-      "eractive.Message.AddRemotePatrolStoreRsp"
-      "\022g\n DeleteRemotePatrolStoreRsp_Value\030\362\007 "
-      "\001(\0132<.CustomerFlow.Interactive.Message.D"
-      "eleteRemotePatrolStoreRsp\022g\n ModifyRemot"
-      "ePatrolStoreRsp_Value\030\374\007 \001(\0132<.CustomerF"
-      "low.Interactive.Message.ModifyRemotePatr"
-      "olStoreRsp\022m\n#QueryRemotePatrolStoreInfo"
-      "Rsp_Value\030\206\010 \001(\0132\?.CustomerFlow.Interact"
-      "ive.Message.QueryRemotePatrolStoreInfoRs"
-      "p\022k\n\"QueryAllRemotePatrolStoreRsp_Value\030"
-      "\220\010 \001(\0132>.CustomerFlow.Interactive.Messag"
-      "e.QueryAllRemotePatrolStoreRsp\022G\n\020AddAre"
-      "aRsp_Value\030\314\010 \001(\0132,.CustomerFlow.Interac"
-      "tive.Message.AddAreaRsp\022M\n\023DeleteAreaRsp"
-      "_Value\030\326\010 \001(\0132/.CustomerFlow.Interactive"
-      ".Message.DeleteAreaRsp\022M\n\023ModifyAreaRsp_"
-      "Value\030\340\010 \001(\0132/.CustomerFlow.Interactive."
-      "Message.ModifyAreaRsp\022S\n\026QueryAreaInfoRs"
-      "p_Value\030\352\010 \001(\01322.CustomerFlow.Interactiv"
-      "e.Message.QueryAreaInfoRsp\022Q\n\025QueryAllAr"
-      "eaRsp_Value\030\364\010 \001(\01321.CustomerFlow.Intera"
-      "ctive.Message.QueryAllAreaRsp\022Y\n\031BindPus"
-      "hClientIDRsp_Value\030\376\010 \001(\01325.CustomerFlow"
-      ".Interactive.Message.BindPushClientIDRsp"
-      "\022]\n\033UnbindPushClientIDRsp_Value\030\210\t \001(\01327"
-      ".CustomerFlow.Interactive.Message.Unbind"
-      "PushClientIDRsp\022U\n\027AddStoreSensorRsp_Val"
-      "ue\030\260\t \001(\01323.CustomerFlow.Interactive.Mes"
-      "sage.AddStoreSensorRsp\022[\n\032DeleteStoreSen"
-      "sorRsp_Value\030\272\t \001(\01326.CustomerFlow.Inter"
-      "active.Message.DeleteStoreSensorRsp\022[\n\032M"
-      "odifyStoreSensorRsp_Value\030\304\t \001(\01326.Custo"
-      "merFlow.Interactive.Message.ModifyStoreS"
-      "ensorRsp\022a\n\035QueryStoreSensorInfoRsp_Valu"
-      "e\030\316\t \001(\01329.CustomerFlow.Interactive.Mess"
-      "age.QueryStoreSensorInfoRsp\022_\n\034QueryAllS"
-      "toreSensorRsp_Value\030\330\t \001(\01328.CustomerFlo"
-      "w.Interactive.Message.QueryAllStoreSenso"
-      "rRsp\022S\n\026ImportPOSDataRsp_Value\030\320\017 \001(\01322."
-      "CustomerFlow.Interactive.Message.ImportP"
-      "OSDataRsp\022m\n#QueryCustomerFlowStatisticR"
-      "sp_Value\030\324\026 \001(\0132\?.CustomerFlow.Interacti"
-      "ve.Message.QueryCustomerFlowStatisticRsp"
-      "\022g\n QueryPatrolResultReportRsp_Value\030\270\027 "
-      "\001(\0132<.CustomerFlow.Interactive.Message.Q"
-      "ueryPatrolResultReportRsp\022e\n\037ReportCusto"
-      "merFlowDataRsp_Value\030\210\' \001(\0132;.CustomerFl"
-      "ow.Interactive.Message.ReportCustomerFlo"
-      "wDataRsp\022Y\n\031ReportSensorInfoRsp_Value\030\354\'"
-      " \001(\01325.CustomerFlow.Interactive.Message."
-      "ReportSensorInfoRsp\022c\n\036ReportSensorAlarm"
-      "InfoRsp_Value\030\366\' \001(\0132:.CustomerFlow.Inte"
-      "ractive.Message.ReportSensorAlarmInfoRsp"
-      "\022k\n\"QuerySensorAlarmThresholdRsp_Value\030\200"
-      "( \001(\0132>.CustomerFlow.Interactive.Message"
-      ".QuerySensorAlarmThresholdRsp\022_\n\034RemoveS"
-      "ensorRecordsRsp_Value\030\212( \001(\01328.CustomerF"
-      "low.Interactive.Message.RemoveSensorReco"
-      "rdsRsp\022i\n!RemoveSensorAlarmRecordsRsp_Va"
-      "lue\030\224( \001(\0132=.CustomerFlow.Interactive.Me"
-      "ssage.RemoveSensorAlarmRecordsRsp\022]\n\033Que"
-      "rySensorRecordsRsp_Value\030\236( \001(\01327.Custom"
-      "erFlow.Interactive.Message.QuerySensorRe"
-      "cordsRsp\"\367\001\n\023CustomerFlowMessage\022C\n\004type"
-      "\030\001 \001(\01625.CustomerFlow.Interactive.Messag"
-      "e.CustomerFlowMsgType\022\020\n\010uiMsgSeq\030\002 \001(\004\022"
-      "\016\n\006strSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\0132).Cust"
-      "omerFlow.Interactive.Message.Request\022<\n\010"
-      "rspValue\030\005 \001(\0132*.CustomerFlow.Interactiv"
-      "e.Message.Response*\253&\n\023CustomerFlowMsgTy"
-      "pe\022\n\n\006Init_T\020\000\022\037\n\032CustomerFlowPreHandleR"
-      "eq_T\020\250F\022\037\n\032CustomerFlowPreHandleRsp_T\020\262F"
-      "\022\023\n\016ShakehandReq_T\020\214G\022\023\n\016ShakehandRsp_T\020"
-      "\226G\022\022\n\rAddGroupReq_T\020\220N\022\022\n\rAddGroupRsp_T\020"
-      "\232N\022\025\n\020DeleteGroupReq_T\020\244N\022\025\n\020DeleteGroup"
-      "Rsp_T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025\n\020Modif"
-      "yGroupRsp_T\020\302N\022\030\n\023QueryGroupInfoReq_T\020\314N"
-      "\022\030\n\023QueryGroupInfoRsp_T\020\326N\022\027\n\022QueryAllGr"
-      "oupReq_T\020\340N\022\027\n\022QueryAllGroupRsp_T\020\352N\022\022\n\r"
-      "AddStoreReq_T\020\364N\022\022\n\rAddStoreRsp_T\020\376N\022\025\n\020"
-      "DeleteStoreReq_T\020\210O\022\025\n\020DeleteStoreRsp_T\020"
-      "\222O\022\025\n\020ModifyStoreReq_T\020\234O\022\025\n\020ModifyStore"
-      "Rsp_T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260O\022\030\n\023Qu"
-      "eryStoreInfoRsp_T\020\272O\022\027\n\022QueryAllStoreReq"
-      "_T\020\304O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n\020AddEnt"
-      "ranceReq_T\020\330O\022\025\n\020AddEntranceRsp_T\020\342O\022\030\n\023"
-      "DeleteEntranceReq_T\020\354O\022\030\n\023DeleteEntrance"
-      "Rsp_T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200P\022\030\n\023Mo"
-      "difyEntranceRsp_T\020\212P\022\033\n\026AddEntranceDevic"
-      "eReq_T\020\224P\022\033\n\026AddEntranceDeviceRsp_T\020\236P\022\036"
-      "\n\031DeleteEntranceDeviceReq_T\020\250P\022\036\n\031Delete"
-      "EntranceDeviceRsp_T\020\262P\022\022\n\rAddEventReq_T\020"
-      "\344P\022\022\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteEventReq"
-      "_T\020\370P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020ModifyEv"
-      "entReq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226Q\022\030\n\023Qu"
-      "eryEventInfoReq_T\020\240Q\022\030\n\023QueryEventInfoRs"
-      "p_T\020\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027\n\022Query"
-      "AllEventRsp_T\020\276Q\022\034\n\027AddSmartGuardStoreRe"
-      "q_T\020\310Q\022\034\n\027AddSmartGuardStoreRsp_T\020\322Q\022\037\n\032"
-      "DeleteSmartGuardStoreReq_T\020\334Q\022\037\n\032DeleteS"
-      "martGuardStoreRsp_T\020\346Q\022\037\n\032ModifySmartGua"
-      "rdStoreReq_T\020\360Q\022\037\n\032ModifySmartGuardStore"
-      "Rsp_T\020\372Q\022\"\n\035QuerySmartGuardStoreInfoReq_"
-      "T\020\204R\022\"\n\035QuerySmartGuardStoreInfoRsp_T\020\216R"
-      "\022!\n\034QueryAllSmartGuardStoreReq_T\020\230R\022!\n\034Q"
-      "ueryAllSmartGuardStoreRsp_T\020\242R\022\032\n\025AddReg"
-      "ularPatrolReq_T\020\254R\022\032\n\025AddRegularPatrolRs"
-      "p_T\020\266R\022\035\n\030DeleteRegularPatrolReq_T\020\300R\022\035\n"
-      "\030DeleteRegularPatrolRsp_T\020\312R\022\035\n\030ModifyRe"
-      "gularPatrolReq_T\020\324R\022\035\n\030ModifyRegularPatr"
-      "olRsp_T\020\336R\022 \n\033QueryRegularPatrolInfoReq_"
-      "T\020\350R\022 \n\033QueryRegularPatrolInfoRsp_T\020\362R\022\037"
-      "\n\032QueryAllRegularPatrolReq_T\020\374R\022\037\n\032Query"
-      "AllRegularPatrolRsp_T\020\206S\022\027\n\022UserJoinStor"
-      "eReq_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326S\022\027\n\022Us"
-      "erQuitStoreReq_T\020\340S\022\027\n\022UserQuitStoreRsp_"
-      "T\020\352S\022\033\n\026QueryStoreAllUserReq_T\020\364S\022\033\n\026Que"
-      "ryStoreAllUserRsp_T\020\376S\022\035\n\030QueryCompanyAl"
-      "lUserReq_T\020\210T\022\035\n\030QueryCompanyAllUserRsp_"
-      "T\020\222T\022\031\n\023AddVIPCustomerReq_T\020\320\214\001\022\031\n\023AddVI"
-      "PCustomerRsp_T\020\332\214\001\022\034\n\026DeleteVIPCustomerR"
-      "eq_T\020\344\214\001\022\034\n\026DeleteVIPCustomerRsp_T\020\356\214\001\022\034"
-      "\n\026ModifyVIPCustomerReq_T\020\370\214\001\022\034\n\026ModifyVI"
-      "PCustomerRsp_T\020\202\215\001\022\037\n\031QueryVIPCustomerIn"
-      "foReq_T\020\214\215\001\022\037\n\031QueryVIPCustomerInfoRsp_T"
-      "\020\226\215\001\022\036\n\030QueryAllVIPCustomerReq_T\020\240\215\001\022\036\n\030"
-      "QueryAllVIPCustomerRsp_T\020\252\215\001\022\037\n\031AddVIPCo"
-      "nsumeHistoryReq_T\020\264\215\001\022\037\n\031AddVIPConsumeHi"
-      "storyRsp_T\020\276\215\001\022\"\n\034DeleteVIPConsumeHistor"
-      "yReq_T\020\310\215\001\022\"\n\034DeleteVIPConsumeHistoryRsp"
-      "_T\020\322\215\001\022\"\n\034ModifyVIPConsumeHistoryReq_T\020\334"
-      "\215\001\022\"\n\034ModifyVIPConsumeHistoryRsp_T\020\346\215\001\022$"
-      "\n\036QueryAllVIPConsumeHistoryReq_T\020\360\215\001\022$\n\036"
-      "QueryAllVIPConsumeHistoryRsp_T\020\372\215\001\022 \n\032Ad"
-      "dEvaluationTemplateReq_T\020\230\216\001\022 \n\032AddEvalu"
-      "ationTemplateRsp_T\020\242\216\001\022#\n\035DeleteEvaluati"
-      "onTemplateReq_T\020\254\216\001\022#\n\035DeleteEvaluationT"
-      "emplateRsp_T\020\266\216\001\022#\n\035ModifyEvaluationTemp"
-      "lateReq_T\020\300\216\001\022#\n\035ModifyEvaluationTemplat"
-      "eRsp_T\020\312\216\001\022%\n\037QueryAllEvaluationTemplate"
-      "Req_T\020\324\216\001\022%\n\037QueryAllEvaluationTemplateR"
-      "sp_T\020\336\216\001\022\035\n\027AddStoreEvaluationReq_T\020\374\216\001\022"
-      "\035\n\027AddStoreEvaluationRsp_T\020\206\217\001\022 \n\032Delete"
-      "StoreEvaluationReq_T\020\220\217\001\022 \n\032DeleteStoreE"
-      "valuationRsp_T\020\232\217\001\022 \n\032ModifyStoreEvaluat"
-      "ionReq_T\020\244\217\001\022 \n\032ModifyStoreEvaluationRsp"
-      "_T\020\256\217\001\022#\n\035QueryStoreEvaluationInfoReq_T\020"
-      "\270\217\001\022#\n\035QueryStoreEvaluationInfoRsp_T\020\302\217\001"
-      "\022\"\n\034QueryAllStoreEvaluationReq_T\020\314\217\001\022\"\n\034"
-      "QueryAllStoreEvaluationRsp_T\020\326\217\001\022\037\n\031AddR"
-      "emotePatrolStoreReq_T\020\340\217\001\022\037\n\031AddRemotePa"
-      "trolStoreRsp_T\020\352\217\001\022\"\n\034DeleteRemotePatrol"
-      "StoreReq_T\020\364\217\001\022\"\n\034DeleteRemotePatrolStor"
-      "eRsp_T\020\376\217\001\022\"\n\034ModifyRemotePatrolStoreReq"
-      "_T\020\210\220\001\022\"\n\034ModifyRemotePatrolStoreRsp_T\020\222"
-      "\220\001\022%\n\037QueryRemotePatrolStoreInfoReq_T\020\234\220"
-      "\001\022%\n\037QueryRemotePatrolStoreInfoRsp_T\020\246\220\001"
-      "\022$\n\036QueryAllRemotePatrolStoreReq_T\020\260\220\001\022$"
-      "\n\036QueryAllRemotePatrolStoreRsp_T\020\272\220\001\022\022\n\014"
-      "AddAreaReq_T\020\270\224\001\022\022\n\014AddAreaRsp_T\020\302\224\001\022\025\n\017"
-      "DeleteAreaReq_T\020\314\224\001\022\025\n\017DeleteAreaRsp_T\020\326"
-      "\224\001\022\025\n\017ModifyAreaReq_T\020\340\224\001\022\025\n\017ModifyAreaR"
-      "sp_T\020\352\224\001\022\030\n\022QueryAreaInfoReq_T\020\364\224\001\022\030\n\022Qu"
-      "eryAreaInfoRsp_T\020\376\224\001\022\027\n\021QueryAllAreaReq_"
-      "T\020\210\225\001\022\027\n\021QueryAllAreaRsp_T\020\222\225\001\022\033\n\025BindPu"
-      "shClientIDReq_T\020\234\225\001\022\033\n\025BindPushClientIDR"
-      "sp_T\020\246\225\001\022\035\n\027UnbindPushClientIDReq_T\020\260\225\001\022"
-      "\035\n\027UnbindPushClientIDRsp_T\020\272\225\001\022\031\n\023AddSto"
-      "reSensorReq_T\020\200\226\001\022\031\n\023AddStoreSensorRsp_T"
-      "\020\212\226\001\022\034\n\026DeleteStoreSensorReq_T\020\224\226\001\022\034\n\026De"
-      "leteStoreSensorRsp_T\020\236\226\001\022\034\n\026ModifyStoreS"
-      "ensorReq_T\020\250\226\001\022\034\n\026ModifyStoreSensorRsp_T"
-      "\020\262\226\001\022\037\n\031QueryStoreSensorInfoReq_T\020\274\226\001\022\037\n"
-      "\031QueryStoreSensorInfoRsp_T\020\306\226\001\022\036\n\030QueryA"
-      "llStoreSensorReq_T\020\320\226\001\022\036\n\030QueryAllStoreS"
-      "ensorRsp_T\020\332\226\001\022\030\n\022ImportPOSDataReq_T\020\240\234\001"
-      "\022\030\n\022ImportPOSDataRsp_T\020\252\234\001\022%\n\037QueryCusto"
-      "merFlowStatisticReq_T\020\244\243\001\022%\n\037QueryCustom"
-      "erFlowStatisticRsp_T\020\256\243\001\022\"\n\034QueryPatrolR"
-      "esultReportReq_T\020\210\244\001\022\"\n\034QueryPatrolResul"
-      "tReportRsp_T\020\222\244\001\022!\n\033ReportCustomerFlowDa"
-      "taReq_T\020\260\352\001\022!\n\033ReportCustomerFlowDataRsp"
-      "_T\020\272\352\001\022\033\n\025ReportSensorInfoReq_T\020\224\353\001\022\033\n\025R"
-      "eportSensorInfoRsp_T\020\236\353\001\022 \n\032ReportSensor"
-      "AlarmInfoReq_T\020\250\353\001\022 \n\032ReportSensorAlarmI"
-      "nfoRsp_T\020\262\353\001\022$\n\036QuerySensorAlarmThreshol"
-      "dReq_T\020\274\353\001\022$\n\036QuerySensorAlarmThresholdR"
-      "sp_T\020\306\353\001\022\036\n\030RemoveSensorRecordsReq_T\020\320\353\001"
-      "\022\036\n\030RemoveSensorRecordsRsp_T\020\332\353\001\022#\n\035Remo"
-      "veSensorAlarmRecordsReq_T\020\344\353\001\022#\n\035RemoveS"
-      "ensorAlarmRecordsRsp_T\020\356\353\001\022\035\n\027QuerySenso"
-      "rRecordsReq_T\020\370\353\001\022\035\n\027QuerySensorRecordsR"
-      "sp_T\020\202\354\001b\006proto3"
+      "VIPCustomerRsp\022a\n\035QueryVIPCustomerInfoRs"
+      "p_Value\030\276\006 \001(\01329.CustomerFlow.Interactiv"
+      "e.Message.QueryVIPCustomerInfoRsp\022_\n\034Que"
+      "ryAllVIPCustomerRsp_Value\030\310\006 \001(\01328.Custo"
+      "merFlow.Interactive.Message.QueryAllVIPC"
+      "ustomerRsp\022a\n\035AddVIPConsumeHistoryRsp_Va"
+      "lue\030\322\006 \001(\01329.CustomerFlow.Interactive.Me"
+      "ssage.AddVIPConsumeHistoryRsp\022g\n DeleteV"
+      "IPConsumeHistoryRsp_Value\030\334\006 \001(\0132<.Custo"
+      "merFlow.Interactive.Message.DeleteVIPCon"
+      "sumeHistoryRsp\022g\n ModifyVIPConsumeHistor"
+      "yRsp_Value\030\346\006 \001(\0132<.CustomerFlow.Interac"
+      "tive.Message.ModifyVIPConsumeHistoryRsp\022"
+      "k\n\"QueryAllVIPConsumeHistoryRsp_Value\030\360\006"
+      " \001(\0132>.CustomerFlow.Interactive.Message."
+      "QueryAllVIPConsumeHistoryRsp\022c\n\036AddEvalu"
+      "ationTemplateRsp_Value\030\204\007 \001(\0132:.Customer"
+      "Flow.Interactive.Message.AddEvaluationTe"
+      "mplateRsp\022i\n!DeleteEvaluationTemplateRsp"
+      "_Value\030\216\007 \001(\0132=.CustomerFlow.Interactive"
+      ".Message.DeleteEvaluationTemplateRsp\022i\n!"
+      "ModifyEvaluationTemplateRsp_Value\030\230\007 \001(\013"
+      "2=.CustomerFlow.Interactive.Message.Modi"
+      "fyEvaluationTemplateRsp\022m\n#QueryAllEvalu"
+      "ationTemplateRsp_Value\030\242\007 \001(\0132\?.Customer"
+      "Flow.Interactive.Message.QueryAllEvaluat"
+      "ionTemplateRsp\022]\n\033AddStoreEvaluationRsp_"
+      "Value\030\266\007 \001(\01327.CustomerFlow.Interactive."
+      "Message.AddStoreEvaluationRsp\022c\n\036DeleteS"
+      "toreEvaluationRsp_Value\030\300\007 \001(\0132:.Custome"
+      "rFlow.Interactive.Message.DeleteStoreEva"
+      "luationRsp\022c\n\036ModifyStoreEvaluationRsp_V"
+      "alue\030\312\007 \001(\0132:.CustomerFlow.Interactive.M"
+      "essage.ModifyStoreEvaluationRsp\022i\n!Query"
+      "StoreEvaluationInfoRsp_Value\030\324\007 \001(\0132=.Cu"
+      "stomerFlow.Interactive.Message.QueryStor"
+      "eEvaluationInfoRsp\022g\n QueryAllStoreEvalu"
+      "ationRsp_Value\030\336\007 \001(\0132<.CustomerFlow.Int"
+      "eractive.Message.QueryAllStoreEvaluation"
+      "Rsp\022a\n\035AddRemotePatrolStoreRsp_Value\030\350\007 "
+      "\001(\01329.CustomerFlow.Interactive.Message.A"
+      "ddRemotePatrolStoreRsp\022g\n DeleteRemotePa"
+      "trolStoreRsp_Value\030\362\007 \001(\0132<.CustomerFlow"
+      ".Interactive.Message.DeleteRemotePatrolS"
+      "toreRsp\022g\n ModifyRemotePatrolStoreRsp_Va"
+      "lue\030\374\007 \001(\0132<.CustomerFlow.Interactive.Me"
+      "ssage.ModifyRemotePatrolStoreRsp\022m\n#Quer"
+      "yRemotePatrolStoreInfoRsp_Value\030\206\010 \001(\0132\?"
+      ".CustomerFlow.Interactive.Message.QueryR"
+      "emotePatrolStoreInfoRsp\022k\n\"QueryAllRemot"
+      "ePatrolStoreRsp_Value\030\220\010 \001(\0132>.CustomerF"
+      "low.Interactive.Message.QueryAllRemotePa"
+      "trolStoreRsp\022G\n\020AddAreaRsp_Value\030\314\010 \001(\0132"
+      ",.CustomerFlow.Interactive.Message.AddAr"
+      "eaRsp\022M\n\023DeleteAreaRsp_Value\030\326\010 \001(\0132/.Cu"
+      "stomerFlow.Interactive.Message.DeleteAre"
+      "aRsp\022M\n\023ModifyAreaRsp_Value\030\340\010 \001(\0132/.Cus"
+      "tomerFlow.Interactive.Message.ModifyArea"
+      "Rsp\022S\n\026QueryAreaInfoRsp_Value\030\352\010 \001(\01322.C"
+      "ustomerFlow.Interactive.Message.QueryAre"
+      "aInfoRsp\022Q\n\025QueryAllAreaRsp_Value\030\364\010 \001(\013"
+      "21.CustomerFlow.Interactive.Message.Quer"
+      "yAllAreaRsp\022Y\n\031BindPushClientIDRsp_Value"
+      "\030\376\010 \001(\01325.CustomerFlow.Interactive.Messa"
+      "ge.BindPushClientIDRsp\022]\n\033UnbindPushClie"
+      "ntIDRsp_Value\030\210\t \001(\01327.CustomerFlow.Inte"
+      "ractive.Message.UnbindPushClientIDRsp\022U\n"
+      "\027AddStoreSensorRsp_Value\030\260\t \001(\01323.Custom"
+      "erFlow.Interactive.Message.AddStoreSenso"
+      "rRsp\022[\n\032DeleteStoreSensorRsp_Value\030\272\t \001("
+      "\01326.CustomerFlow.Interactive.Message.Del"
+      "eteStoreSensorRsp\022[\n\032ModifyStoreSensorRs"
+      "p_Value\030\304\t \001(\01326.CustomerFlow.Interactiv"
+      "e.Message.ModifyStoreSensorRsp\022a\n\035QueryS"
+      "toreSensorInfoRsp_Value\030\316\t \001(\01329.Custome"
+      "rFlow.Interactive.Message.QueryStoreSens"
+      "orInfoRsp\022_\n\034QueryAllStoreSensorRsp_Valu"
+      "e\030\330\t \001(\01328.CustomerFlow.Interactive.Mess"
+      "age.QueryAllStoreSensorRsp\022S\n\026ImportPOSD"
+      "ataRsp_Value\030\320\017 \001(\01322.CustomerFlow.Inter"
+      "active.Message.ImportPOSDataRsp\022m\n#Query"
+      "CustomerFlowStatisticRsp_Value\030\324\026 \001(\0132\?."
+      "CustomerFlow.Interactive.Message.QueryCu"
+      "stomerFlowStatisticRsp\022g\n QueryPatrolRes"
+      "ultReportRsp_Value\030\270\027 \001(\0132<.CustomerFlow"
+      ".Interactive.Message.QueryPatrolResultRe"
+      "portRsp\022e\n\037ReportCustomerFlowDataRsp_Val"
+      "ue\030\210\' \001(\0132;.CustomerFlow.Interactive.Mes"
+      "sage.ReportCustomerFlowDataRsp\022Y\n\031Report"
+      "SensorInfoRsp_Value\030\354\' \001(\01325.CustomerFlo"
+      "w.Interactive.Message.ReportSensorInfoRs"
+      "p\022c\n\036ReportSensorAlarmInfoRsp_Value\030\366\' \001"
+      "(\0132:.CustomerFlow.Interactive.Message.Re"
+      "portSensorAlarmInfoRsp\022k\n\"QuerySensorAla"
+      "rmThresholdRsp_Value\030\200( \001(\0132>.CustomerFl"
+      "ow.Interactive.Message.QuerySensorAlarmT"
+      "hresholdRsp\022_\n\034RemoveSensorRecordsRsp_Va"
+      "lue\030\212( \001(\01328.CustomerFlow.Interactive.Me"
+      "ssage.RemoveSensorRecordsRsp\022i\n!RemoveSe"
+      "nsorAlarmRecordsRsp_Value\030\224( \001(\0132=.Custo"
+      "merFlow.Interactive.Message.RemoveSensor"
+      "AlarmRecordsRsp\022]\n\033QuerySensorRecordsRsp"
+      "_Value\030\236( \001(\01327.CustomerFlow.Interactive"
+      ".Message.QuerySensorRecordsRsp\022g\n QueryS"
+      "ensorAlarmRecordsRsp_Value\030\250( \001(\0132<.Cust"
+      "omerFlow.Interactive.Message.QuerySensor"
+      "AlarmRecordsRsp\"\367\001\n\023CustomerFlowMessage\022"
+      "C\n\004type\030\001 \001(\01625.CustomerFlow.Interactive"
+      ".Message.CustomerFlowMsgType\022\020\n\010uiMsgSeq"
+      "\030\002 \001(\004\022\016\n\006strSID\030\003 \001(\t\022;\n\010reqValue\030\004 \001(\013"
+      "2).CustomerFlow.Interactive.Message.Requ"
+      "est\022<\n\010rspValue\030\005 \001(\0132*.CustomerFlow.Int"
+      "eractive.Message.Response*\363&\n\023CustomerFl"
+      "owMsgType\022\n\n\006Init_T\020\000\022\037\n\032CustomerFlowPre"
+      "HandleReq_T\020\250F\022\037\n\032CustomerFlowPreHandleR"
+      "sp_T\020\262F\022\023\n\016ShakehandReq_T\020\214G\022\023\n\016Shakehan"
+      "dRsp_T\020\226G\022\022\n\rAddGroupReq_T\020\220N\022\022\n\rAddGrou"
+      "pRsp_T\020\232N\022\025\n\020DeleteGroupReq_T\020\244N\022\025\n\020Dele"
+      "teGroupRsp_T\020\256N\022\025\n\020ModifyGroupReq_T\020\270N\022\025"
+      "\n\020ModifyGroupRsp_T\020\302N\022\030\n\023QueryGroupInfoR"
+      "eq_T\020\314N\022\030\n\023QueryGroupInfoRsp_T\020\326N\022\027\n\022Que"
+      "ryAllGroupReq_T\020\340N\022\027\n\022QueryAllGroupRsp_T"
+      "\020\352N\022\022\n\rAddStoreReq_T\020\364N\022\022\n\rAddStoreRsp_T"
+      "\020\376N\022\025\n\020DeleteStoreReq_T\020\210O\022\025\n\020DeleteStor"
+      "eRsp_T\020\222O\022\025\n\020ModifyStoreReq_T\020\234O\022\025\n\020Modi"
+      "fyStoreRsp_T\020\246O\022\030\n\023QueryStoreInfoReq_T\020\260"
+      "O\022\030\n\023QueryStoreInfoRsp_T\020\272O\022\027\n\022QueryAllS"
+      "toreReq_T\020\304O\022\027\n\022QueryAllStoreRsp_T\020\316O\022\025\n"
+      "\020AddEntranceReq_T\020\330O\022\025\n\020AddEntranceRsp_T"
+      "\020\342O\022\030\n\023DeleteEntranceReq_T\020\354O\022\030\n\023DeleteE"
+      "ntranceRsp_T\020\366O\022\030\n\023ModifyEntranceReq_T\020\200"
+      "P\022\030\n\023ModifyEntranceRsp_T\020\212P\022\033\n\026AddEntran"
+      "ceDeviceReq_T\020\224P\022\033\n\026AddEntranceDeviceRsp"
+      "_T\020\236P\022\036\n\031DeleteEntranceDeviceReq_T\020\250P\022\036\n"
+      "\031DeleteEntranceDeviceRsp_T\020\262P\022\022\n\rAddEven"
+      "tReq_T\020\344P\022\022\n\rAddEventRsp_T\020\356P\022\025\n\020DeleteE"
+      "ventReq_T\020\370P\022\025\n\020DeleteEventRsp_T\020\202Q\022\025\n\020M"
+      "odifyEventReq_T\020\214Q\022\025\n\020ModifyEventRsp_T\020\226"
+      "Q\022\030\n\023QueryEventInfoReq_T\020\240Q\022\030\n\023QueryEven"
+      "tInfoRsp_T\020\252Q\022\027\n\022QueryAllEventReq_T\020\264Q\022\027"
+      "\n\022QueryAllEventRsp_T\020\276Q\022\034\n\027AddSmartGuard"
+      "StoreReq_T\020\310Q\022\034\n\027AddSmartGuardStoreRsp_T"
+      "\020\322Q\022\037\n\032DeleteSmartGuardStoreReq_T\020\334Q\022\037\n\032"
+      "DeleteSmartGuardStoreRsp_T\020\346Q\022\037\n\032ModifyS"
+      "martGuardStoreReq_T\020\360Q\022\037\n\032ModifySmartGua"
+      "rdStoreRsp_T\020\372Q\022\"\n\035QuerySmartGuardStoreI"
+      "nfoReq_T\020\204R\022\"\n\035QuerySmartGuardStoreInfoR"
+      "sp_T\020\216R\022!\n\034QueryAllSmartGuardStoreReq_T\020"
+      "\230R\022!\n\034QueryAllSmartGuardStoreRsp_T\020\242R\022\032\n"
+      "\025AddRegularPatrolReq_T\020\254R\022\032\n\025AddRegularP"
+      "atrolRsp_T\020\266R\022\035\n\030DeleteRegularPatrolReq_"
+      "T\020\300R\022\035\n\030DeleteRegularPatrolRsp_T\020\312R\022\035\n\030M"
+      "odifyRegularPatrolReq_T\020\324R\022\035\n\030ModifyRegu"
+      "larPatrolRsp_T\020\336R\022 \n\033QueryRegularPatrolI"
+      "nfoReq_T\020\350R\022 \n\033QueryRegularPatrolInfoRsp"
+      "_T\020\362R\022\037\n\032QueryAllRegularPatrolReq_T\020\374R\022\037"
+      "\n\032QueryAllRegularPatrolRsp_T\020\206S\022\027\n\022UserJ"
+      "oinStoreReq_T\020\314S\022\027\n\022UserJoinStoreRsp_T\020\326"
+      "S\022\027\n\022UserQuitStoreReq_T\020\340S\022\027\n\022UserQuitSt"
+      "oreRsp_T\020\352S\022\033\n\026QueryStoreAllUserReq_T\020\364S"
+      "\022\033\n\026QueryStoreAllUserRsp_T\020\376S\022\035\n\030QueryCo"
+      "mpanyAllUserReq_T\020\210T\022\035\n\030QueryCompanyAllU"
+      "serRsp_T\020\222T\022\031\n\023AddVIPCustomerReq_T\020\320\214\001\022\031"
+      "\n\023AddVIPCustomerRsp_T\020\332\214\001\022\034\n\026DeleteVIPCu"
+      "stomerReq_T\020\344\214\001\022\034\n\026DeleteVIPCustomerRsp_"
+      "T\020\356\214\001\022\034\n\026ModifyVIPCustomerReq_T\020\370\214\001\022\034\n\026M"
+      "odifyVIPCustomerRsp_T\020\202\215\001\022\037\n\031QueryVIPCus"
+      "tomerInfoReq_T\020\214\215\001\022\037\n\031QueryVIPCustomerIn"
+      "foRsp_T\020\226\215\001\022\036\n\030QueryAllVIPCustomerReq_T\020"
+      "\240\215\001\022\036\n\030QueryAllVIPCustomerRsp_T\020\252\215\001\022\037\n\031A"
+      "ddVIPConsumeHistoryReq_T\020\264\215\001\022\037\n\031AddVIPCo"
+      "nsumeHistoryRsp_T\020\276\215\001\022\"\n\034DeleteVIPConsum"
+      "eHistoryReq_T\020\310\215\001\022\"\n\034DeleteVIPConsumeHis"
+      "toryRsp_T\020\322\215\001\022\"\n\034ModifyVIPConsumeHistory"
+      "Req_T\020\334\215\001\022\"\n\034ModifyVIPConsumeHistoryRsp_"
+      "T\020\346\215\001\022$\n\036QueryAllVIPConsumeHistoryReq_T\020"
+      "\360\215\001\022$\n\036QueryAllVIPConsumeHistoryRsp_T\020\372\215"
+      "\001\022 \n\032AddEvaluationTemplateReq_T\020\230\216\001\022 \n\032A"
+      "ddEvaluationTemplateRsp_T\020\242\216\001\022#\n\035DeleteE"
+      "valuationTemplateReq_T\020\254\216\001\022#\n\035DeleteEval"
+      "uationTemplateRsp_T\020\266\216\001\022#\n\035ModifyEvaluat"
+      "ionTemplateReq_T\020\300\216\001\022#\n\035ModifyEvaluation"
+      "TemplateRsp_T\020\312\216\001\022%\n\037QueryAllEvaluationT"
+      "emplateReq_T\020\324\216\001\022%\n\037QueryAllEvaluationTe"
+      "mplateRsp_T\020\336\216\001\022\035\n\027AddStoreEvaluationReq"
+      "_T\020\374\216\001\022\035\n\027AddStoreEvaluationRsp_T\020\206\217\001\022 \n"
+      "\032DeleteStoreEvaluationReq_T\020\220\217\001\022 \n\032Delet"
+      "eStoreEvaluationRsp_T\020\232\217\001\022 \n\032ModifyStore"
+      "EvaluationReq_T\020\244\217\001\022 \n\032ModifyStoreEvalua"
+      "tionRsp_T\020\256\217\001\022#\n\035QueryStoreEvaluationInf"
+      "oReq_T\020\270\217\001\022#\n\035QueryStoreEvaluationInfoRs"
+      "p_T\020\302\217\001\022\"\n\034QueryAllStoreEvaluationReq_T\020"
+      "\314\217\001\022\"\n\034QueryAllStoreEvaluationRsp_T\020\326\217\001\022"
+      "\037\n\031AddRemotePatrolStoreReq_T\020\340\217\001\022\037\n\031AddR"
+      "emotePatrolStoreRsp_T\020\352\217\001\022\"\n\034DeleteRemot"
+      "ePatrolStoreReq_T\020\364\217\001\022\"\n\034DeleteRemotePat"
+      "rolStoreRsp_T\020\376\217\001\022\"\n\034ModifyRemotePatrolS"
+      "toreReq_T\020\210\220\001\022\"\n\034ModifyRemotePatrolStore"
+      "Rsp_T\020\222\220\001\022%\n\037QueryRemotePatrolStoreInfoR"
+      "eq_T\020\234\220\001\022%\n\037QueryRemotePatrolStoreInfoRs"
+      "p_T\020\246\220\001\022$\n\036QueryAllRemotePatrolStoreReq_"
+      "T\020\260\220\001\022$\n\036QueryAllRemotePatrolStoreRsp_T\020"
+      "\272\220\001\022\022\n\014AddAreaReq_T\020\270\224\001\022\022\n\014AddAreaRsp_T\020"
+      "\302\224\001\022\025\n\017DeleteAreaReq_T\020\314\224\001\022\025\n\017DeleteArea"
+      "Rsp_T\020\326\224\001\022\025\n\017ModifyAreaReq_T\020\340\224\001\022\025\n\017Modi"
+      "fyAreaRsp_T\020\352\224\001\022\030\n\022QueryAreaInfoReq_T\020\364\224"
+      "\001\022\030\n\022QueryAreaInfoRsp_T\020\376\224\001\022\027\n\021QueryAllA"
+      "reaReq_T\020\210\225\001\022\027\n\021QueryAllAreaRsp_T\020\222\225\001\022\033\n"
+      "\025BindPushClientIDReq_T\020\234\225\001\022\033\n\025BindPushCl"
+      "ientIDRsp_T\020\246\225\001\022\035\n\027UnbindPushClientIDReq"
+      "_T\020\260\225\001\022\035\n\027UnbindPushClientIDRsp_T\020\272\225\001\022\031\n"
+      "\023AddStoreSensorReq_T\020\200\226\001\022\031\n\023AddStoreSens"
+      "orRsp_T\020\212\226\001\022\034\n\026DeleteStoreSensorReq_T\020\224\226"
+      "\001\022\034\n\026DeleteStoreSensorRsp_T\020\236\226\001\022\034\n\026Modif"
+      "yStoreSensorReq_T\020\250\226\001\022\034\n\026ModifyStoreSens"
+      "orRsp_T\020\262\226\001\022\037\n\031QueryStoreSensorInfoReq_T"
+      "\020\274\226\001\022\037\n\031QueryStoreSensorInfoRsp_T\020\306\226\001\022\036\n"
+      "\030QueryAllStoreSensorReq_T\020\320\226\001\022\036\n\030QueryAl"
+      "lStoreSensorRsp_T\020\332\226\001\022\030\n\022ImportPOSDataRe"
+      "q_T\020\240\234\001\022\030\n\022ImportPOSDataRsp_T\020\252\234\001\022%\n\037Que"
+      "ryCustomerFlowStatisticReq_T\020\244\243\001\022%\n\037Quer"
+      "yCustomerFlowStatisticRsp_T\020\256\243\001\022\"\n\034Query"
+      "PatrolResultReportReq_T\020\210\244\001\022\"\n\034QueryPatr"
+      "olResultReportRsp_T\020\222\244\001\022!\n\033ReportCustome"
+      "rFlowDataReq_T\020\260\352\001\022!\n\033ReportCustomerFlow"
+      "DataRsp_T\020\272\352\001\022\033\n\025ReportSensorInfoReq_T\020\224"
+      "\353\001\022\033\n\025ReportSensorInfoRsp_T\020\236\353\001\022 \n\032Repor"
+      "tSensorAlarmInfoReq_T\020\250\353\001\022 \n\032ReportSenso"
+      "rAlarmInfoRsp_T\020\262\353\001\022$\n\036QuerySensorAlarmT"
+      "hresholdReq_T\020\274\353\001\022$\n\036QuerySensorAlarmThr"
+      "esholdRsp_T\020\306\353\001\022\036\n\030RemoveSensorRecordsRe"
+      "q_T\020\320\353\001\022\036\n\030RemoveSensorRecordsRsp_T\020\332\353\001\022"
+      "#\n\035RemoveSensorAlarmRecordsReq_T\020\344\353\001\022#\n\035"
+      "RemoveSensorAlarmRecordsRsp_T\020\356\353\001\022\035\n\027Que"
+      "rySensorRecordsReq_T\020\370\353\001\022\035\n\027QuerySensorR"
+      "ecordsRsp_T\020\202\354\001\022\"\n\034QuerySensorAlarmRecor"
+      "dsReq_T\020\214\354\001\022\"\n\034QuerySensorAlarmRecordsRs"
+      "p_T\020\226\354\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 36496);
+      descriptor, 37215);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "InteractiveProtocolCustomerFlow.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -4216,6 +4288,8 @@ bool CustomerFlowMsgType_IsValid(int value) {
     case 30190:
     case 30200:
     case 30210:
+    case 30220:
+    case 30230:
       return true;
     default:
       return false;
@@ -77203,6 +77277,1706 @@ QuerySensorRecordsRsp::sensorinfo() const {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QuerySensorAlarmRecordsReq::kStrUserIDFieldNumber;
+const int QuerySensorAlarmRecordsReq::kStrStoreIDFieldNumber;
+const int QuerySensorAlarmRecordsReq::kStrSensorIDFieldNumber;
+const int QuerySensorAlarmRecordsReq::kStrSensorTypeFieldNumber;
+const int QuerySensorAlarmRecordsReq::kUiRecoverFieldNumber;
+const int QuerySensorAlarmRecordsReq::kStrBeginDateFieldNumber;
+const int QuerySensorAlarmRecordsReq::kStrEndDateFieldNumber;
+const int QuerySensorAlarmRecordsReq::kUiBeginIndexFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QuerySensorAlarmRecordsReq::QuerySensorAlarmRecordsReq()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+}
+QuerySensorAlarmRecordsReq::QuerySensorAlarmRecordsReq(const QuerySensorAlarmRecordsReq& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.struserid().size() > 0) {
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strstoreid().size() > 0) {
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  strsensorid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strsensorid().size() > 0) {
+    strsensorid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strsensorid_);
+  }
+  strsensortype_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strsensortype().size() > 0) {
+    strsensortype_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strsensortype_);
+  }
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strbegindate().size() > 0) {
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strenddate().size() > 0) {
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
+  ::memcpy(&uirecover_, &from.uirecover_,
+    reinterpret_cast<char*>(&uibeginindex_) -
+    reinterpret_cast<char*>(&uirecover_) + sizeof(uibeginindex_));
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+}
+
+void QuerySensorAlarmRecordsReq::SharedCtor() {
+  struserid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensorid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensortype_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&uirecover_, 0, reinterpret_cast<char*>(&uibeginindex_) -
+    reinterpret_cast<char*>(&uirecover_) + sizeof(uibeginindex_));
+  _cached_size_ = 0;
+}
+
+QuerySensorAlarmRecordsReq::~QuerySensorAlarmRecordsReq() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  SharedDtor();
+}
+
+void QuerySensorAlarmRecordsReq::SharedDtor() {
+  struserid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensorid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensortype_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void QuerySensorAlarmRecordsReq::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QuerySensorAlarmRecordsReq::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[182].descriptor;
+}
+
+const QuerySensorAlarmRecordsReq& QuerySensorAlarmRecordsReq::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QuerySensorAlarmRecordsReq* QuerySensorAlarmRecordsReq::New(::google::protobuf::Arena* arena) const {
+  QuerySensorAlarmRecordsReq* n = new QuerySensorAlarmRecordsReq;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QuerySensorAlarmRecordsReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strsensortype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&uirecover_, 0, reinterpret_cast<char*>(&uibeginindex_) -
+    reinterpret_cast<char*>(&uirecover_) + sizeof(uibeginindex_));
+}
+
+bool QuerySensorAlarmRecordsReq::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string strUserID = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_struserid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->struserid().data(), this->struserid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strStoreID = 2;
+      case 2: {
+        if (tag == 18u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strstoreid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strstoreid().data(), this->strstoreid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strSensorID = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strsensorid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strsensorid().data(), this->strsensorid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strSensorType = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strsensortype()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strsensortype().data(), this->strsensortype().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiRecover = 5;
+      case 5: {
+        if (tag == 40u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uirecover_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strBeginDate = 6;
+      case 6: {
+        if (tag == 50u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strbegindate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strbegindate().data(), this->strbegindate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strEndDate = 7;
+      case 7: {
+        if (tag == 58u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strenddate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strenddate().data(), this->strenddate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiBeginIndex = 8;
+      case 8: {
+        if (tag == 64u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uibeginindex_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  return false;
+#undef DO_
+}
+
+void QuerySensorAlarmRecordsReq::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->struserid(), output);
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->strstoreid(), output);
+  }
+
+  // string strSensorID = 3;
+  if (this->strsensorid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strsensorid().data(), this->strsensorid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strsensorid(), output);
+  }
+
+  // string strSensorType = 4;
+  if (this->strsensortype().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strsensortype().data(), this->strsensortype().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strsensortype(), output);
+  }
+
+  // uint32 uiRecover = 5;
+  if (this->uirecover() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->uirecover(), output);
+  }
+
+  // string strBeginDate = 6;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->strbegindate(), output);
+  }
+
+  // string strEndDate = 7;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->strenddate(), output);
+  }
+
+  // uint32 uiBeginIndex = 8;
+  if (this->uibeginindex() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->uibeginindex(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+}
+
+::google::protobuf::uint8* QuerySensorAlarmRecordsReq::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->struserid().data(), this->struserid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->struserid(), target);
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strstoreid().data(), this->strstoreid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->strstoreid(), target);
+  }
+
+  // string strSensorID = 3;
+  if (this->strsensorid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strsensorid().data(), this->strsensorid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strsensorid(), target);
+  }
+
+  // string strSensorType = 4;
+  if (this->strsensortype().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strsensortype().data(), this->strsensortype().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strsensortype(), target);
+  }
+
+  // uint32 uiRecover = 5;
+  if (this->uirecover() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->uirecover(), target);
+  }
+
+  // string strBeginDate = 6;
+  if (this->strbegindate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strbegindate().data(), this->strbegindate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->strbegindate(), target);
+  }
+
+  // string strEndDate = 7;
+  if (this->strenddate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strenddate().data(), this->strenddate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->strenddate(), target);
+  }
+
+  // uint32 uiBeginIndex = 8;
+  if (this->uibeginindex() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->uibeginindex(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  return target;
+}
+
+size_t QuerySensorAlarmRecordsReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  size_t total_size = 0;
+
+  // string strUserID = 1;
+  if (this->struserid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->struserid());
+  }
+
+  // string strStoreID = 2;
+  if (this->strstoreid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strstoreid());
+  }
+
+  // string strSensorID = 3;
+  if (this->strsensorid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strsensorid());
+  }
+
+  // string strSensorType = 4;
+  if (this->strsensortype().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strsensortype());
+  }
+
+  // string strBeginDate = 6;
+  if (this->strbegindate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strbegindate());
+  }
+
+  // string strEndDate = 7;
+  if (this->strenddate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strenddate());
+  }
+
+  // uint32 uiRecover = 5;
+  if (this->uirecover() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uirecover());
+  }
+
+  // uint32 uiBeginIndex = 8;
+  if (this->uibeginindex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uibeginindex());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QuerySensorAlarmRecordsReq::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QuerySensorAlarmRecordsReq* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QuerySensorAlarmRecordsReq>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+    MergeFrom(*source);
+  }
+}
+
+void QuerySensorAlarmRecordsReq::MergeFrom(const QuerySensorAlarmRecordsReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.struserid().size() > 0) {
+
+    struserid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.struserid_);
+  }
+  if (from.strstoreid().size() > 0) {
+
+    strstoreid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strstoreid_);
+  }
+  if (from.strsensorid().size() > 0) {
+
+    strsensorid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strsensorid_);
+  }
+  if (from.strsensortype().size() > 0) {
+
+    strsensortype_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strsensortype_);
+  }
+  if (from.strbegindate().size() > 0) {
+
+    strbegindate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strbegindate_);
+  }
+  if (from.strenddate().size() > 0) {
+
+    strenddate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strenddate_);
+  }
+  if (from.uirecover() != 0) {
+    set_uirecover(from.uirecover());
+  }
+  if (from.uibeginindex() != 0) {
+    set_uibeginindex(from.uibeginindex());
+  }
+}
+
+void QuerySensorAlarmRecordsReq::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QuerySensorAlarmRecordsReq::CopyFrom(const QuerySensorAlarmRecordsReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QuerySensorAlarmRecordsReq::IsInitialized() const {
+  return true;
+}
+
+void QuerySensorAlarmRecordsReq::Swap(QuerySensorAlarmRecordsReq* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QuerySensorAlarmRecordsReq::InternalSwap(QuerySensorAlarmRecordsReq* other) {
+  struserid_.Swap(&other->struserid_);
+  strstoreid_.Swap(&other->strstoreid_);
+  strsensorid_.Swap(&other->strsensorid_);
+  strsensortype_.Swap(&other->strsensortype_);
+  strbegindate_.Swap(&other->strbegindate_);
+  strenddate_.Swap(&other->strenddate_);
+  std::swap(uirecover_, other->uirecover_);
+  std::swap(uibeginindex_, other->uibeginindex_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QuerySensorAlarmRecordsReq::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[182];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QuerySensorAlarmRecordsReq
+
+// string strUserID = 1;
+void QuerySensorAlarmRecordsReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+  return struserid_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+}
+void QuerySensorAlarmRecordsReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strUserID)
+}
+
+// string strStoreID = 2;
+void QuerySensorAlarmRecordsReq::clear_strstoreid() {
+  strstoreid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::strstoreid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+  return strstoreid_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_strstoreid(const ::std::string& value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_strstoreid(::std::string&& value) {
+  
+  strstoreid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_strstoreid(const char* value) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+}
+void QuerySensorAlarmRecordsReq::set_strstoreid(const char* value, size_t size) {
+  
+  strstoreid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_strstoreid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+  return strstoreid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_strstoreid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+  
+  return strstoreid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_strstoreid(::std::string* strstoreid) {
+  if (strstoreid != NULL) {
+    
+  } else {
+    
+  }
+  strstoreid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strstoreid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strStoreID)
+}
+
+// string strSensorID = 3;
+void QuerySensorAlarmRecordsReq::clear_strsensorid() {
+  strsensorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::strsensorid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+  return strsensorid_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_strsensorid(const ::std::string& value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_strsensorid(::std::string&& value) {
+  
+  strsensorid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_strsensorid(const char* value) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+}
+void QuerySensorAlarmRecordsReq::set_strsensorid(const char* value, size_t size) {
+  
+  strsensorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_strsensorid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+  return strsensorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_strsensorid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+  
+  return strsensorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_strsensorid(::std::string* strsensorid) {
+  if (strsensorid != NULL) {
+    
+  } else {
+    
+  }
+  strsensorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorID)
+}
+
+// string strSensorType = 4;
+void QuerySensorAlarmRecordsReq::clear_strsensortype() {
+  strsensortype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::strsensortype() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+  return strsensortype_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_strsensortype(const ::std::string& value) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_strsensortype(::std::string&& value) {
+  
+  strsensortype_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_strsensortype(const char* value) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+}
+void QuerySensorAlarmRecordsReq::set_strsensortype(const char* value, size_t size) {
+  
+  strsensortype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_strsensortype() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+  return strsensortype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_strsensortype() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+  
+  return strsensortype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_strsensortype(::std::string* strsensortype) {
+  if (strsensortype != NULL) {
+    
+  } else {
+    
+  }
+  strsensortype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensortype);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strSensorType)
+}
+
+// uint32 uiRecover = 5;
+void QuerySensorAlarmRecordsReq::clear_uirecover() {
+  uirecover_ = 0u;
+}
+::google::protobuf::uint32 QuerySensorAlarmRecordsReq::uirecover() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.uiRecover)
+  return uirecover_;
+}
+void QuerySensorAlarmRecordsReq::set_uirecover(::google::protobuf::uint32 value) {
+  
+  uirecover_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.uiRecover)
+}
+
+// string strBeginDate = 6;
+void QuerySensorAlarmRecordsReq::clear_strbegindate() {
+  strbegindate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::strbegindate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+  return strbegindate_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_strbegindate(const ::std::string& value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_strbegindate(::std::string&& value) {
+  
+  strbegindate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_strbegindate(const char* value) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+}
+void QuerySensorAlarmRecordsReq::set_strbegindate(const char* value, size_t size) {
+  
+  strbegindate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_strbegindate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+  return strbegindate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_strbegindate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+  
+  return strbegindate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_strbegindate(::std::string* strbegindate) {
+  if (strbegindate != NULL) {
+    
+  } else {
+    
+  }
+  strbegindate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strbegindate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strBeginDate)
+}
+
+// string strEndDate = 7;
+void QuerySensorAlarmRecordsReq::clear_strenddate() {
+  strenddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& QuerySensorAlarmRecordsReq::strenddate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+  return strenddate_.GetNoArena();
+}
+void QuerySensorAlarmRecordsReq::set_strenddate(const ::std::string& value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+}
+#if LANG_CXX11
+void QuerySensorAlarmRecordsReq::set_strenddate(::std::string&& value) {
+  
+  strenddate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+}
+#endif
+void QuerySensorAlarmRecordsReq::set_strenddate(const char* value) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+}
+void QuerySensorAlarmRecordsReq::set_strenddate(const char* value, size_t size) {
+  
+  strenddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+}
+::std::string* QuerySensorAlarmRecordsReq::mutable_strenddate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+  return strenddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* QuerySensorAlarmRecordsReq::release_strenddate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+  
+  return strenddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void QuerySensorAlarmRecordsReq::set_allocated_strenddate(::std::string* strenddate) {
+  if (strenddate != NULL) {
+    
+  } else {
+    
+  }
+  strenddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strenddate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.strEndDate)
+}
+
+// uint32 uiBeginIndex = 8;
+void QuerySensorAlarmRecordsReq::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+::google::protobuf::uint32 QuerySensorAlarmRecordsReq::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.uiBeginIndex)
+  return uibeginindex_;
+}
+void QuerySensorAlarmRecordsReq::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq.uiBeginIndex)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SensorAlarmRecord::kSensorInfoFieldNumber;
+const int SensorAlarmRecord::kUiRecoverFieldNumber;
+const int SensorAlarmRecord::kStrFileIDFieldNumber;
+const int SensorAlarmRecord::kStrRecordIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+SensorAlarmRecord::SensorAlarmRecord()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+}
+SensorAlarmRecord::SensorAlarmRecord(const SensorAlarmRecord& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  strfileid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strfileid().size() > 0) {
+    strfileid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strfileid_);
+  }
+  strrecordid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.strrecordid().size() > 0) {
+    strrecordid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strrecordid_);
+  }
+  if (from.has_sensorinfo()) {
+    sensorinfo_ = new ::CustomerFlow::Interactive::Message::Sensor(*from.sensorinfo_);
+  } else {
+    sensorinfo_ = NULL;
+  }
+  uirecover_ = from.uirecover_;
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+}
+
+void SensorAlarmRecord::SharedCtor() {
+  strfileid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strrecordid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&sensorinfo_, 0, reinterpret_cast<char*>(&uirecover_) -
+    reinterpret_cast<char*>(&sensorinfo_) + sizeof(uirecover_));
+  _cached_size_ = 0;
+}
+
+SensorAlarmRecord::~SensorAlarmRecord() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  SharedDtor();
+}
+
+void SensorAlarmRecord::SharedDtor() {
+  strfileid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strrecordid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
+    delete sensorinfo_;
+  }
+}
+
+void SensorAlarmRecord::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SensorAlarmRecord::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[183].descriptor;
+}
+
+const SensorAlarmRecord& SensorAlarmRecord::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+SensorAlarmRecord* SensorAlarmRecord::New(::google::protobuf::Arena* arena) const {
+  SensorAlarmRecord* n = new SensorAlarmRecord;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void SensorAlarmRecord::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  strrecordid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == NULL && sensorinfo_ != NULL) {
+    delete sensorinfo_;
+  }
+  sensorinfo_ = NULL;
+  uirecover_ = 0u;
+}
+
+bool SensorAlarmRecord::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_sensorinfo()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 uiRecover = 2;
+      case 2: {
+        if (tag == 16u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &uirecover_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strFileID = 3;
+      case 3: {
+        if (tag == 26u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strfileid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strfileid().data(), this->strfileid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string strRecordID = 4;
+      case 4: {
+        if (tag == 34u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strrecordid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->strrecordid().data(), this->strrecordid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  return false;
+#undef DO_
+}
+
+void SensorAlarmRecord::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+  if (this->has_sensorinfo()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->sensorinfo_, output);
+  }
+
+  // uint32 uiRecover = 2;
+  if (this->uirecover() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->uirecover(), output);
+  }
+
+  // string strFileID = 3;
+  if (this->strfileid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strfileid().data(), this->strfileid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->strfileid(), output);
+  }
+
+  // string strRecordID = 4;
+  if (this->strrecordid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strrecordid().data(), this->strrecordid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->strrecordid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+}
+
+::google::protobuf::uint8* SensorAlarmRecord::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+  if (this->has_sensorinfo()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->sensorinfo_, false, target);
+  }
+
+  // uint32 uiRecover = 2;
+  if (this->uirecover() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->uirecover(), target);
+  }
+
+  // string strFileID = 3;
+  if (this->strfileid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strfileid().data(), this->strfileid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->strfileid(), target);
+  }
+
+  // string strRecordID = 4;
+  if (this->strrecordid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->strrecordid().data(), this->strrecordid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->strrecordid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  return target;
+}
+
+size_t SensorAlarmRecord::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  size_t total_size = 0;
+
+  // string strFileID = 3;
+  if (this->strfileid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strfileid());
+  }
+
+  // string strRecordID = 4;
+  if (this->strrecordid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->strrecordid());
+  }
+
+  // .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+  if (this->has_sensorinfo()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->sensorinfo_);
+  }
+
+  // uint32 uiRecover = 2;
+  if (this->uirecover() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->uirecover());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SensorAlarmRecord::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SensorAlarmRecord* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SensorAlarmRecord>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+    MergeFrom(*source);
+  }
+}
+
+void SensorAlarmRecord::MergeFrom(const SensorAlarmRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.strfileid().size() > 0) {
+
+    strfileid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strfileid_);
+  }
+  if (from.strrecordid().size() > 0) {
+
+    strrecordid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.strrecordid_);
+  }
+  if (from.has_sensorinfo()) {
+    mutable_sensorinfo()->::CustomerFlow::Interactive::Message::Sensor::MergeFrom(from.sensorinfo());
+  }
+  if (from.uirecover() != 0) {
+    set_uirecover(from.uirecover());
+  }
+}
+
+void SensorAlarmRecord::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SensorAlarmRecord::CopyFrom(const SensorAlarmRecord& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.SensorAlarmRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SensorAlarmRecord::IsInitialized() const {
+  return true;
+}
+
+void SensorAlarmRecord::Swap(SensorAlarmRecord* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SensorAlarmRecord::InternalSwap(SensorAlarmRecord* other) {
+  strfileid_.Swap(&other->strfileid_);
+  strrecordid_.Swap(&other->strrecordid_);
+  std::swap(sensorinfo_, other->sensorinfo_);
+  std::swap(uirecover_, other->uirecover_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata SensorAlarmRecord::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[183];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// SensorAlarmRecord
+
+// .CustomerFlow.Interactive.Message.Sensor sensorInfo = 1;
+bool SensorAlarmRecord::has_sensorinfo() const {
+  return this != internal_default_instance() && sensorinfo_ != NULL;
+}
+void SensorAlarmRecord::clear_sensorinfo() {
+  if (GetArenaNoVirtual() == NULL && sensorinfo_ != NULL) delete sensorinfo_;
+  sensorinfo_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::Sensor& SensorAlarmRecord::sensorinfo() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.SensorAlarmRecord.sensorInfo)
+  return sensorinfo_ != NULL ? *sensorinfo_
+                         : *::CustomerFlow::Interactive::Message::Sensor::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::Sensor* SensorAlarmRecord::mutable_sensorinfo() {
+  
+  if (sensorinfo_ == NULL) {
+    sensorinfo_ = new ::CustomerFlow::Interactive::Message::Sensor;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.SensorAlarmRecord.sensorInfo)
+  return sensorinfo_;
+}
+::CustomerFlow::Interactive::Message::Sensor* SensorAlarmRecord::release_sensorinfo() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.SensorAlarmRecord.sensorInfo)
+  
+  ::CustomerFlow::Interactive::Message::Sensor* temp = sensorinfo_;
+  sensorinfo_ = NULL;
+  return temp;
+}
+void SensorAlarmRecord::set_allocated_sensorinfo(::CustomerFlow::Interactive::Message::Sensor* sensorinfo) {
+  delete sensorinfo_;
+  sensorinfo_ = sensorinfo;
+  if (sensorinfo) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.SensorAlarmRecord.sensorInfo)
+}
+
+// uint32 uiRecover = 2;
+void SensorAlarmRecord::clear_uirecover() {
+  uirecover_ = 0u;
+}
+::google::protobuf::uint32 SensorAlarmRecord::uirecover() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.SensorAlarmRecord.uiRecover)
+  return uirecover_;
+}
+void SensorAlarmRecord::set_uirecover(::google::protobuf::uint32 value) {
+  
+  uirecover_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.SensorAlarmRecord.uiRecover)
+}
+
+// string strFileID = 3;
+void SensorAlarmRecord::clear_strfileid() {
+  strfileid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& SensorAlarmRecord::strfileid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+  return strfileid_.GetNoArena();
+}
+void SensorAlarmRecord::set_strfileid(const ::std::string& value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+}
+#if LANG_CXX11
+void SensorAlarmRecord::set_strfileid(::std::string&& value) {
+  
+  strfileid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+}
+#endif
+void SensorAlarmRecord::set_strfileid(const char* value) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+}
+void SensorAlarmRecord::set_strfileid(const char* value, size_t size) {
+  
+  strfileid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+}
+::std::string* SensorAlarmRecord::mutable_strfileid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+  return strfileid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* SensorAlarmRecord::release_strfileid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+  
+  return strfileid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void SensorAlarmRecord::set_allocated_strfileid(::std::string* strfileid) {
+  if (strfileid != NULL) {
+    
+  } else {
+    
+  }
+  strfileid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strfileid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.SensorAlarmRecord.strFileID)
+}
+
+// string strRecordID = 4;
+void SensorAlarmRecord::clear_strrecordid() {
+  strrecordid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& SensorAlarmRecord::strrecordid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+  return strrecordid_.GetNoArena();
+}
+void SensorAlarmRecord::set_strrecordid(const ::std::string& value) {
+  
+  strrecordid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+}
+#if LANG_CXX11
+void SensorAlarmRecord::set_strrecordid(::std::string&& value) {
+  
+  strrecordid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+}
+#endif
+void SensorAlarmRecord::set_strrecordid(const char* value) {
+  
+  strrecordid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+}
+void SensorAlarmRecord::set_strrecordid(const char* value, size_t size) {
+  
+  strrecordid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+}
+::std::string* SensorAlarmRecord::mutable_strrecordid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+  return strrecordid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* SensorAlarmRecord::release_strrecordid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+  
+  return strrecordid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void SensorAlarmRecord::set_allocated_strrecordid(::std::string* strrecordid) {
+  if (strrecordid != NULL) {
+    
+  } else {
+    
+  }
+  strrecordid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strrecordid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.SensorAlarmRecord.strRecordID)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int QuerySensorAlarmRecordsRsp::kSardFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+QuerySensorAlarmRecordsRsp::QuerySensorAlarmRecordsRsp()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+}
+QuerySensorAlarmRecordsRsp::QuerySensorAlarmRecordsRsp(const QuerySensorAlarmRecordsRsp& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      sard_(from.sard_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+}
+
+void QuerySensorAlarmRecordsRsp::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+QuerySensorAlarmRecordsRsp::~QuerySensorAlarmRecordsRsp() {
+  // @@protoc_insertion_point(destructor:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  SharedDtor();
+}
+
+void QuerySensorAlarmRecordsRsp::SharedDtor() {
+}
+
+void QuerySensorAlarmRecordsRsp::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* QuerySensorAlarmRecordsRsp::descriptor() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[184].descriptor;
+}
+
+const QuerySensorAlarmRecordsRsp& QuerySensorAlarmRecordsRsp::default_instance() {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+QuerySensorAlarmRecordsRsp* QuerySensorAlarmRecordsRsp::New(::google::protobuf::Arena* arena) const {
+  QuerySensorAlarmRecordsRsp* n = new QuerySensorAlarmRecordsRsp;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void QuerySensorAlarmRecordsRsp::Clear() {
+// @@protoc_insertion_point(message_clear_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  sard_.Clear();
+}
+
+bool QuerySensorAlarmRecordsRsp::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .CustomerFlow.Interactive.Message.SensorAlarmRecord sard = 1;
+      case 1: {
+        if (tag == 10u) {
+          DO_(input->IncrementRecursionDepth());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_sard()));
+        } else {
+          goto handle_unusual;
+        }
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  return false;
+#undef DO_
+}
+
+void QuerySensorAlarmRecordsRsp::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  // repeated .CustomerFlow.Interactive.Message.SensorAlarmRecord sard = 1;
+  for (unsigned int i = 0, n = this->sard_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->sard(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+}
+
+::google::protobuf::uint8* QuerySensorAlarmRecordsRsp::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  // repeated .CustomerFlow.Interactive.Message.SensorAlarmRecord sard = 1;
+  for (unsigned int i = 0, n = this->sard_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, this->sard(i), false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  return target;
+}
+
+size_t QuerySensorAlarmRecordsRsp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  size_t total_size = 0;
+
+  // repeated .CustomerFlow.Interactive.Message.SensorAlarmRecord sard = 1;
+  {
+    unsigned int count = this->sard_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->sard(i));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void QuerySensorAlarmRecordsRsp::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const QuerySensorAlarmRecordsRsp* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const QuerySensorAlarmRecordsRsp>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+    MergeFrom(*source);
+  }
+}
+
+void QuerySensorAlarmRecordsRsp::MergeFrom(const QuerySensorAlarmRecordsRsp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  sard_.MergeFrom(from.sard_);
+}
+
+void QuerySensorAlarmRecordsRsp::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void QuerySensorAlarmRecordsRsp::CopyFrom(const QuerySensorAlarmRecordsRsp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool QuerySensorAlarmRecordsRsp::IsInitialized() const {
+  return true;
+}
+
+void QuerySensorAlarmRecordsRsp::Swap(QuerySensorAlarmRecordsRsp* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void QuerySensorAlarmRecordsRsp::InternalSwap(QuerySensorAlarmRecordsRsp* other) {
+  sard_.UnsafeArenaSwap(&other->sard_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata QuerySensorAlarmRecordsRsp::GetMetadata() const {
+  protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[184];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// QuerySensorAlarmRecordsRsp
+
+// repeated .CustomerFlow.Interactive.Message.SensorAlarmRecord sard = 1;
+int QuerySensorAlarmRecordsRsp::sard_size() const {
+  return sard_.size();
+}
+void QuerySensorAlarmRecordsRsp::clear_sard() {
+  sard_.Clear();
+}
+const ::CustomerFlow::Interactive::Message::SensorAlarmRecord& QuerySensorAlarmRecordsRsp::sard(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp.sard)
+  return sard_.Get(index);
+}
+::CustomerFlow::Interactive::Message::SensorAlarmRecord* QuerySensorAlarmRecordsRsp::mutable_sard(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp.sard)
+  return sard_.Mutable(index);
+}
+::CustomerFlow::Interactive::Message::SensorAlarmRecord* QuerySensorAlarmRecordsRsp::add_sard() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp.sard)
+  return sard_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::SensorAlarmRecord >*
+QuerySensorAlarmRecordsRsp::mutable_sard() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp.sard)
+  return &sard_;
+}
+const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::SensorAlarmRecord >&
+QuerySensorAlarmRecordsRsp::sard() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp.sard)
+  return sard_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Request::kCustomerFlowPreHandleReqValueFieldNumber;
 const int Request::kShakehandReqValueFieldNumber;
 const int Request::kAddGroupReqValueFieldNumber;
@@ -77284,6 +79058,7 @@ const int Request::kQuerySensorAlarmThresholdReqValueFieldNumber;
 const int Request::kRemoveSensorRecordsReqValueFieldNumber;
 const int Request::kRemoveSensorAlarmRecordsReqValueFieldNumber;
 const int Request::kQuerySensorRecordsReqValueFieldNumber;
+const int Request::kQuerySensorAlarmRecordsReqValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Request::Request()
@@ -77704,12 +79479,17 @@ Request::Request(const Request& from)
   } else {
     querysensorrecordsreq_value_ = NULL;
   }
+  if (from.has_querysensoralarmrecordsreq_value()) {
+    querysensoralarmrecordsreq_value_ = new ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq(*from.querysensoralarmrecordsreq_value_);
+  } else {
+    querysensoralarmrecordsreq_value_ = NULL;
+  }
   // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.Request)
 }
 
 void Request::SharedCtor() {
-  ::memset(&customerflowprehandlereq_value_, 0, reinterpret_cast<char*>(&querysensorrecordsreq_value_) -
-    reinterpret_cast<char*>(&customerflowprehandlereq_value_) + sizeof(querysensorrecordsreq_value_));
+  ::memset(&customerflowprehandlereq_value_, 0, reinterpret_cast<char*>(&querysensoralarmrecordsreq_value_) -
+    reinterpret_cast<char*>(&customerflowprehandlereq_value_) + sizeof(querysensoralarmrecordsreq_value_));
   _cached_size_ = 0;
 }
 
@@ -77962,6 +79742,9 @@ void Request::SharedDtor() {
   if (this != internal_default_instance()) {
     delete querysensorrecordsreq_value_;
   }
+  if (this != internal_default_instance()) {
+    delete querysensoralarmrecordsreq_value_;
+  }
 }
 
 void Request::SetCachedSize(int size) const {
@@ -77971,7 +79754,7 @@ void Request::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Request::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[182].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[185].descriptor;
 }
 
 const Request& Request::default_instance() {
@@ -78313,6 +80096,10 @@ void Request::Clear() {
     delete querysensorrecordsreq_value_;
   }
   querysensorrecordsreq_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querysensoralarmrecordsreq_value_ != NULL) {
+    delete querysensoralarmrecordsreq_value_;
+  }
+  querysensoralarmrecordsreq_value_ = NULL;
 }
 
 bool Request::MergePartialFromCodedStream(
@@ -78321,7 +80108,7 @@ bool Request::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.Request)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(41202u);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(41282u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -79216,6 +81003,17 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
+      // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;
+      case 5160: {
+        if (tag == 41282u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querysensoralarmrecordsreq_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -79724,6 +81522,12 @@ void Request::SerializeWithCachedSizes(
   if (this->has_querysensorrecordsreq_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5150, *this->querysensorrecordsreq_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;
+  if (this->has_querysensoralarmrecordsreq_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5160, *this->querysensoralarmrecordsreq_value_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.Request)
@@ -80298,6 +82102,13 @@ void Request::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         5150, *this->querysensorrecordsreq_value_, false, target);
+  }
+
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;
+  if (this->has_querysensoralarmrecordsreq_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        5160, *this->querysensoralarmrecordsreq_value_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.Request)
@@ -80875,6 +82686,13 @@ size_t Request::ByteSizeLong() const {
         *this->querysensorrecordsreq_value_);
   }
 
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;
+  if (this->has_querysensoralarmrecordsreq_value()) {
+    total_size += 3 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querysensoralarmrecordsreq_value_);
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -81144,6 +82962,9 @@ void Request::MergeFrom(const Request& from) {
   if (from.has_querysensorrecordsreq_value()) {
     mutable_querysensorrecordsreq_value()->::CustomerFlow::Interactive::Message::QuerySensorRecordsReq::MergeFrom(from.querysensorrecordsreq_value());
   }
+  if (from.has_querysensoralarmrecordsreq_value()) {
+    mutable_querysensoralarmrecordsreq_value()->::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq::MergeFrom(from.querysensoralarmrecordsreq_value());
+  }
 }
 
 void Request::CopyFrom(const ::google::protobuf::Message& from) {
@@ -81250,12 +83071,13 @@ void Request::InternalSwap(Request* other) {
   std::swap(removesensorrecordsreq_value_, other->removesensorrecordsreq_value_);
   std::swap(removesensoralarmrecordsreq_value_, other->removesensoralarmrecordsreq_value_);
   std::swap(querysensorrecordsreq_value_, other->querysensorrecordsreq_value_);
+  std::swap(querysensoralarmrecordsreq_value_, other->querysensoralarmrecordsreq_value_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Request::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[182];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[185];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -84420,6 +86242,45 @@ void Request::set_allocated_querysensorrecordsreq_value(::CustomerFlow::Interact
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QuerySensorRecordsReq_Value)
 }
 
+// .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;
+bool Request::has_querysensoralarmrecordsreq_value() const {
+  return this != internal_default_instance() && querysensoralarmrecordsreq_value_ != NULL;
+}
+void Request::clear_querysensoralarmrecordsreq_value() {
+  if (GetArenaNoVirtual() == NULL && querysensoralarmrecordsreq_value_ != NULL) delete querysensoralarmrecordsreq_value_;
+  querysensoralarmrecordsreq_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq& Request::querysensoralarmrecordsreq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QuerySensorAlarmRecordsReq_Value)
+  return querysensoralarmrecordsreq_value_ != NULL ? *querysensoralarmrecordsreq_value_
+                         : *::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* Request::mutable_querysensoralarmrecordsreq_value() {
+  
+  if (querysensoralarmrecordsreq_value_ == NULL) {
+    querysensoralarmrecordsreq_value_ = new ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QuerySensorAlarmRecordsReq_Value)
+  return querysensoralarmrecordsreq_value_;
+}
+::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* Request::release_querysensoralarmrecordsreq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QuerySensorAlarmRecordsReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* temp = querysensoralarmrecordsreq_value_;
+  querysensoralarmrecordsreq_value_ = NULL;
+  return temp;
+}
+void Request::set_allocated_querysensoralarmrecordsreq_value(::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* querysensoralarmrecordsreq_value) {
+  delete querysensoralarmrecordsreq_value_;
+  querysensoralarmrecordsreq_value_ = querysensoralarmrecordsreq_value;
+  if (querysensoralarmrecordsreq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QuerySensorAlarmRecordsReq_Value)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -84508,6 +86369,7 @@ const int Response::kQuerySensorAlarmThresholdRspValueFieldNumber;
 const int Response::kRemoveSensorRecordsRspValueFieldNumber;
 const int Response::kRemoveSensorAlarmRecordsRspValueFieldNumber;
 const int Response::kQuerySensorRecordsRspValueFieldNumber;
+const int Response::kQuerySensorAlarmRecordsRspValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Response::Response()
@@ -84932,6 +86794,11 @@ Response::Response(const Response& from)
   } else {
     querysensorrecordsrsp_value_ = NULL;
   }
+  if (from.has_querysensoralarmrecordsrsp_value()) {
+    querysensoralarmrecordsrsp_value_ = new ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp(*from.querysensoralarmrecordsrsp_value_);
+  } else {
+    querysensoralarmrecordsrsp_value_ = NULL;
+  }
   iretcode_ = from.iretcode_;
   // @@protoc_insertion_point(copy_constructor:CustomerFlow.Interactive.Message.Response)
 }
@@ -85193,6 +87060,9 @@ void Response::SharedDtor() {
   if (this != internal_default_instance()) {
     delete querysensorrecordsrsp_value_;
   }
+  if (this != internal_default_instance()) {
+    delete querysensoralarmrecordsrsp_value_;
+  }
 }
 
 void Response::SetCachedSize(int size) const {
@@ -85202,7 +87072,7 @@ void Response::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* Response::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[183].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[186].descriptor;
 }
 
 const Response& Response::default_instance() {
@@ -85545,6 +87415,10 @@ void Response::Clear() {
     delete querysensorrecordsrsp_value_;
   }
   querysensorrecordsrsp_value_ = NULL;
+  if (GetArenaNoVirtual() == NULL && querysensoralarmrecordsrsp_value_ != NULL) {
+    delete querysensoralarmrecordsrsp_value_;
+  }
+  querysensoralarmrecordsrsp_value_ = NULL;
   iretcode_ = 0;
 }
 
@@ -85554,7 +87428,7 @@ bool Response::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:CustomerFlow.Interactive.Message.Response)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(41202u);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(41282u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -86477,6 +88351,17 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
+      // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;
+      case 5160: {
+        if (tag == 41282u) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_querysensoralarmrecordsrsp_value()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -87000,6 +88885,12 @@ void Response::SerializeWithCachedSizes(
   if (this->has_querysensorrecordsrsp_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       5150, *this->querysensorrecordsrsp_value_, output);
+  }
+
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;
+  if (this->has_querysensoralarmrecordsrsp_value()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      5160, *this->querysensoralarmrecordsrsp_value_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:CustomerFlow.Interactive.Message.Response)
@@ -87592,6 +89483,13 @@ void Response::SerializeWithCachedSizes(
         5150, *this->querysensorrecordsrsp_value_, false, target);
   }
 
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;
+  if (this->has_querysensoralarmrecordsrsp_value()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        5160, *this->querysensoralarmrecordsrsp_value_, false, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:CustomerFlow.Interactive.Message.Response)
   return target;
 }
@@ -88174,6 +90072,13 @@ size_t Response::ByteSizeLong() const {
         *this->querysensorrecordsrsp_value_);
   }
 
+  // .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;
+  if (this->has_querysensoralarmrecordsrsp_value()) {
+    total_size += 3 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->querysensoralarmrecordsrsp_value_);
+  }
+
   // int32 iRetcode = 1;
   if (this->iretcode() != 0) {
     total_size += 1 +
@@ -88454,6 +90359,9 @@ void Response::MergeFrom(const Response& from) {
   if (from.has_querysensorrecordsrsp_value()) {
     mutable_querysensorrecordsrsp_value()->::CustomerFlow::Interactive::Message::QuerySensorRecordsRsp::MergeFrom(from.querysensorrecordsrsp_value());
   }
+  if (from.has_querysensoralarmrecordsrsp_value()) {
+    mutable_querysensoralarmrecordsrsp_value()->::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp::MergeFrom(from.querysensoralarmrecordsrsp_value());
+  }
   if (from.iretcode() != 0) {
     set_iretcode(from.iretcode());
   }
@@ -88564,13 +90472,14 @@ void Response::InternalSwap(Response* other) {
   std::swap(removesensorrecordsrsp_value_, other->removesensorrecordsrsp_value_);
   std::swap(removesensoralarmrecordsrsp_value_, other->removesensoralarmrecordsrsp_value_);
   std::swap(querysensorrecordsrsp_value_, other->querysensorrecordsrsp_value_);
+  std::swap(querysensoralarmrecordsrsp_value_, other->querysensoralarmrecordsrsp_value_);
   std::swap(iretcode_, other->iretcode_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata Response::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[183];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[186];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -91801,6 +93710,45 @@ void Response::set_allocated_querysensorrecordsrsp_value(::CustomerFlow::Interac
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QuerySensorRecordsRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;
+bool Response::has_querysensoralarmrecordsrsp_value() const {
+  return this != internal_default_instance() && querysensoralarmrecordsrsp_value_ != NULL;
+}
+void Response::clear_querysensoralarmrecordsrsp_value() {
+  if (GetArenaNoVirtual() == NULL && querysensoralarmrecordsrsp_value_ != NULL) delete querysensoralarmrecordsrsp_value_;
+  querysensoralarmrecordsrsp_value_ = NULL;
+}
+const ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp& Response::querysensoralarmrecordsrsp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QuerySensorAlarmRecordsRsp_Value)
+  return querysensoralarmrecordsrsp_value_ != NULL ? *querysensoralarmrecordsrsp_value_
+                         : *::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp::internal_default_instance();
+}
+::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* Response::mutable_querysensoralarmrecordsrsp_value() {
+  
+  if (querysensoralarmrecordsrsp_value_ == NULL) {
+    querysensoralarmrecordsrsp_value_ = new ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QuerySensorAlarmRecordsRsp_Value)
+  return querysensoralarmrecordsrsp_value_;
+}
+::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* Response::release_querysensoralarmrecordsrsp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QuerySensorAlarmRecordsRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* temp = querysensoralarmrecordsrsp_value_;
+  querysensoralarmrecordsrsp_value_ = NULL;
+  return temp;
+}
+void Response::set_allocated_querysensoralarmrecordsrsp_value(::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* querysensoralarmrecordsrsp_value) {
+  delete querysensoralarmrecordsrsp_value_;
+  querysensoralarmrecordsrsp_value_ = querysensoralarmrecordsrsp_value;
+  if (querysensoralarmrecordsrsp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QuerySensorAlarmRecordsRsp_Value)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -91875,7 +93823,7 @@ void CustomerFlowMessage::SetCachedSize(int size) const {
 }
 const ::google::protobuf::Descriptor* CustomerFlowMessage::descriptor() {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[184].descriptor;
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[187].descriptor;
 }
 
 const CustomerFlowMessage& CustomerFlowMessage::default_instance() {
@@ -92199,7 +94147,7 @@ void CustomerFlowMessage::InternalSwap(CustomerFlowMessage* other) {
 
 ::google::protobuf::Metadata CustomerFlowMessage::GetMetadata() const {
   protobuf_InteractiveProtocolCustomerFlow_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[184];
+  return protobuf_InteractiveProtocolCustomerFlow_2eproto::file_level_metadata[187];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS

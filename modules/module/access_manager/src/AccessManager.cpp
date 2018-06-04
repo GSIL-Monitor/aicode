@@ -5327,7 +5327,7 @@ void AccessManager::SendUserEmailAction(const std::string &strUserName, const st
 
     system(cmd);
 
-    LOG_INFO_RLD("User reset password email has been sended, email address is " << strEmail << " and user name is " << strUserName);
+    LOG_INFO_RLD("User email has been sended, email address is " << strEmail << " and user name is " << strUserName << " and action is " << strAction);
 }
 
 bool AccessManager::QueryAccessDomainInfoByArea(const std::string &strCountryID, const std::string &strAreaID, AccessDomainInfo &DomainInfo)
