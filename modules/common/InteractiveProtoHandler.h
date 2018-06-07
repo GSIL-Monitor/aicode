@@ -71,6 +71,8 @@ public:
         DeviceEventReportReq_DEV_T = 10600,        //设备事件上报
         DeviceEventReportRsp_DEV_T = 10610,
 
+        ControlChannelReq_DEV_T = 10620,           //控制通道请求
+        ControlChannelRsp_DEV_T = 10630,
         ////////////////////////////////////////////////////////
 
         MsgPreHandlerReq_USR_T = 19990,       //消息预处理
@@ -1779,6 +1781,25 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct ControlChannelReq_DEV : Req
+    {
+        std::string m_strDeviceID;
+        unsigned int m_uiDeviceType;
+        std::string m_strExtend;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct ControlChannelRsp_DEV : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
 
     struct GetDeviceAccessRecordReq_INNER : Req
     {
@@ -2266,6 +2287,12 @@ private:
     bool QueryUserCfgReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool QueryUserCfgRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
     bool QueryUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool ControlChannelReq_DEV_Serializer(const Req &req, std::string &strOutput);
+    bool ControlChannelReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool ControlChannelRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
+    bool ControlChannelRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
 
 private:    
     typedef boost::function<bool(const Req &req, std::string &strOutput)> Serializer;

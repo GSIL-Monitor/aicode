@@ -1,6 +1,7 @@
 #include "InteractiveProtoHandler.h"
 #include "InteractiveProtocol.pb.h"
 #include "boost/shared_ptr.hpp"
+#include "boost/shared_array.hpp"
 #include "LogRLD.h"
 
 using namespace Interactive::Message;
@@ -1420,7 +1421,19 @@ InteractiveProtoHandler::InteractiveProtoHandler()
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryUserCfgRsp_USR_T, handler));
 
+    //////////////////////////////////////////////////
 
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ControlChannelReq_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ControlChannelReq_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ControlChannelReq_DEV_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::ControlChannelRsp_DEV_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::ControlChannelRsp_DEV_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ControlChannelRsp_DEV_T, handler));
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2865,6 +2878,26 @@ bool InteractiveProtoHandler::QueryUserCfgRsp_USR_Serializer(const Req &rsp, std
 bool InteractiveProtoHandler::QueryUserCfgRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<QueryUserCfgRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::ControlChannelReq_DEV_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<ControlChannelReq_DEV, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::ControlChannelReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<ControlChannelReq_DEV, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::ControlChannelRsp_DEV_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<ControlChannelRsp_DEV, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::ControlChannelRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<ControlChannelRsp_DEV, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -6009,4 +6042,37 @@ void InteractiveProtoHandler::QueryUserCfgRsp_USR::Serializer(InteractiveMessage
     InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strversion(m_strVersion);
     InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strcfgurl(m_strCfgURL);
     InteractiveMsg.mutable_rspvalue()->mutable_queryusercfgrsp_usr_value()->set_strextend(m_strExtend);
+}
+
+void InteractiveProtoHandler::ControlChannelReq_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    m_strDeviceID = InteractiveMsg.reqvalue().controlchannelreq_dev_value().strdeviceid();
+    m_uiDeviceType = InteractiveMsg.reqvalue().controlchannelreq_dev_value().uidevicetype();
+    m_strExtend = InteractiveMsg.reqvalue().controlchannelreq_dev_value().strextend();
+}
+
+void InteractiveProtoHandler::ControlChannelReq_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ControlChannelReq_DEV_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_controlchannelreq_dev_value()->set_strdeviceid(m_strDeviceID);
+    InteractiveMsg.mutable_reqvalue()->mutable_controlchannelreq_dev_value()->set_uidevicetype(m_uiDeviceType);
+    InteractiveMsg.mutable_reqvalue()->mutable_controlchannelreq_dev_value()->set_strextend(m_strExtend);    
+}
+
+void InteractiveProtoHandler::ControlChannelRsp_DEV::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strValue = InteractiveMsg.rspvalue().controlchannelrsp_dev_value().strvalue();
+}
+
+void InteractiveProtoHandler::ControlChannelRsp_DEV::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::ControlChannelRsp_DEV_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_controlchannelrsp_dev_value()->set_strvalue(m_strValue);
 }

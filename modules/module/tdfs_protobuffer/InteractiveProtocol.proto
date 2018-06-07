@@ -89,6 +89,9 @@ enum MsgType
 
   DeviceEventReportReq_DEV_T = 10600;        //设备事件上报
   DeviceEventReportRsp_DEV_T = 10610;
+  
+  ControlChannelReq_DEV_T = 10620;           //控制通道请求
+  ControlChannelRsp_DEV_T = 10630;
 
   ////////////////////////////////////////////////////////
   
@@ -659,6 +662,18 @@ message DeviceEventReportReq_DEV                //设备事件上报请求
 message DeviceEventReportRsp_DEV                //设备事件上报响应
 {
   string strEventID = 1;
+}
+
+message ControlChannelReq_DEV                   //控制通道请求
+{
+  string strDeviceID = 1;
+  uint32 uiDeviceType = 2;
+  string strExtend = 3;
+}
+
+message ControlChannelRsp_DEV                   //控制通道响应
+{
+  string strValue = 1;
 }
 
 
@@ -1405,6 +1420,8 @@ message Req
   QueryPlatformPushStatusReq_DEV QueryPlatformPushStatusReq_DEV_Value = 900;  //查询平台是否支持消息推送
 
   DeviceEventReportReq_DEV DeviceEventReportReq_DEV_Value = 1000;  //设备事件上报
+  
+  ControlChannelReq_DEV ControlChannelReq_DEV_Value = 1001;        //控制通道请求
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1523,6 +1540,8 @@ message Rsp
   QueryPlatformPushStatusRsp_DEV QueryPlatformPushStatusRsp_DEV_Value = 900;  //查询平台是否支持消息推送
 
   DeviceEventReportRsp_DEV DeviceEventReportRsp_DEV_Value = 1000;  //设备事件上报
+  
+  ControlChannelRsp_DEV ControlChannelRsp_DEV_Value = 1001;        //控制通道响应
 
  ////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -2,6 +2,7 @@
 #include "InteractiveProtocolCustomerFlow.pb.h"
 #include <boost/bind.hpp>
 #include "boost/shared_ptr.hpp"
+#include "boost/shared_array.hpp"
 
 template<typename T, typename TT> bool SerializerT(const TT &req, std::string &strOutput)
 {

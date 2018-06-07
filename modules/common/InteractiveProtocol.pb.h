@@ -89,6 +89,12 @@ extern ConfigInfoRsp_USRDefaultTypeInternal _ConfigInfoRsp_USR_default_instance_
 class Configuration;
 class ConfigurationDefaultTypeInternal;
 extern ConfigurationDefaultTypeInternal _Configuration_default_instance_;
+class ControlChannelReq_DEV;
+class ControlChannelReq_DEVDefaultTypeInternal;
+extern ControlChannelReq_DEVDefaultTypeInternal _ControlChannelReq_DEV_default_instance_;
+class ControlChannelRsp_DEV;
+class ControlChannelRsp_DEVDefaultTypeInternal;
+extern ControlChannelRsp_DEVDefaultTypeInternal _ControlChannelRsp_DEV_default_instance_;
 class DelDevReq_USR;
 class DelDevReq_USRDefaultTypeInternal;
 extern DelDevReq_USRDefaultTypeInternal _DelDevReq_USR_default_instance_;
@@ -572,6 +578,8 @@ enum MsgType {
   QueryPlatformPushStatusRsp_DEV_T = 10510,
   DeviceEventReportReq_DEV_T = 10600,
   DeviceEventReportRsp_DEV_T = 10610,
+  ControlChannelReq_DEV_T = 10620,
+  ControlChannelRsp_DEV_T = 10630,
   MsgPreHandlerReq_USR_T = 19990,
   MsgPreHandlerRsp_USR_T = 19991,
   GetAccessAddressReq_USR_T = 20000,
@@ -7325,6 +7333,210 @@ class DeviceEventReportRsp_DEV : public ::google::protobuf::Message /* @@protoc_
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr streventid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ControlChannelReq_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ControlChannelReq_DEV) */ {
+ public:
+  ControlChannelReq_DEV();
+  virtual ~ControlChannelReq_DEV();
+
+  ControlChannelReq_DEV(const ControlChannelReq_DEV& from);
+
+  inline ControlChannelReq_DEV& operator=(const ControlChannelReq_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ControlChannelReq_DEV& default_instance();
+
+  static inline const ControlChannelReq_DEV* internal_default_instance() {
+    return reinterpret_cast<const ControlChannelReq_DEV*>(
+               &_ControlChannelReq_DEV_default_instance_);
+  }
+
+  void Swap(ControlChannelReq_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ControlChannelReq_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ControlChannelReq_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ControlChannelReq_DEV& from);
+  void MergeFrom(const ControlChannelReq_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ControlChannelReq_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strDeviceID = 1;
+  void clear_strdeviceid();
+  static const int kStrDeviceIDFieldNumber = 1;
+  const ::std::string& strdeviceid() const;
+  void set_strdeviceid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdeviceid(::std::string&& value);
+  #endif
+  void set_strdeviceid(const char* value);
+  void set_strdeviceid(const char* value, size_t size);
+  ::std::string* mutable_strdeviceid();
+  ::std::string* release_strdeviceid();
+  void set_allocated_strdeviceid(::std::string* strdeviceid);
+
+  // string strExtend = 3;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 3;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiDeviceType = 2;
+  void clear_uidevicetype();
+  static const int kUiDeviceTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uidevicetype() const;
+  void set_uidevicetype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ControlChannelReq_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uidevicetype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ControlChannelRsp_DEV : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.ControlChannelRsp_DEV) */ {
+ public:
+  ControlChannelRsp_DEV();
+  virtual ~ControlChannelRsp_DEV();
+
+  ControlChannelRsp_DEV(const ControlChannelRsp_DEV& from);
+
+  inline ControlChannelRsp_DEV& operator=(const ControlChannelRsp_DEV& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ControlChannelRsp_DEV& default_instance();
+
+  static inline const ControlChannelRsp_DEV* internal_default_instance() {
+    return reinterpret_cast<const ControlChannelRsp_DEV*>(
+               &_ControlChannelRsp_DEV_default_instance_);
+  }
+
+  void Swap(ControlChannelRsp_DEV* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ControlChannelRsp_DEV* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ControlChannelRsp_DEV* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ControlChannelRsp_DEV& from);
+  void MergeFrom(const ControlChannelRsp_DEV& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ControlChannelRsp_DEV* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.ControlChannelRsp_DEV)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
 };
@@ -19466,6 +19678,15 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeviceEventReportReq_DEV* release_deviceeventreportreq_dev_value();
   void set_allocated_deviceeventreportreq_dev_value(::Interactive::Message::DeviceEventReportReq_DEV* deviceeventreportreq_dev_value);
 
+  // .Interactive.Message.ControlChannelReq_DEV ControlChannelReq_DEV_Value = 1001;
+  bool has_controlchannelreq_dev_value() const;
+  void clear_controlchannelreq_dev_value();
+  static const int kControlChannelReqDEVValueFieldNumber = 1001;
+  const ::Interactive::Message::ControlChannelReq_DEV& controlchannelreq_dev_value() const;
+  ::Interactive::Message::ControlChannelReq_DEV* mutable_controlchannelreq_dev_value();
+  ::Interactive::Message::ControlChannelReq_DEV* release_controlchannelreq_dev_value();
+  void set_allocated_controlchannelreq_dev_value(::Interactive::Message::ControlChannelReq_DEV* controlchannelreq_dev_value);
+
   // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
   bool has_msgprehandlerreq_usr_value() const;
   void clear_msgprehandlerreq_usr_value();
@@ -20008,6 +20229,7 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceParameterReq_DEV* querydeviceparameterreq_dev_value_;
   ::Interactive::Message::QueryPlatformPushStatusReq_DEV* queryplatformpushstatusreq_dev_value_;
   ::Interactive::Message::DeviceEventReportReq_DEV* deviceeventreportreq_dev_value_;
+  ::Interactive::Message::ControlChannelReq_DEV* controlchannelreq_dev_value_;
   ::Interactive::Message::MsgPreHandlerReq_USR* msgprehandlerreq_usr_value_;
   ::Interactive::Message::GetAccessAddressReq_USR* getaccessaddressreq_usr_value_;
   ::Interactive::Message::RegisterUserReq_USR* registeruserreq_usr_value_;
@@ -20295,6 +20517,15 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::DeviceEventReportRsp_DEV* mutable_deviceeventreportrsp_dev_value();
   ::Interactive::Message::DeviceEventReportRsp_DEV* release_deviceeventreportrsp_dev_value();
   void set_allocated_deviceeventreportrsp_dev_value(::Interactive::Message::DeviceEventReportRsp_DEV* deviceeventreportrsp_dev_value);
+
+  // .Interactive.Message.ControlChannelRsp_DEV ControlChannelRsp_DEV_Value = 1001;
+  bool has_controlchannelrsp_dev_value() const;
+  void clear_controlchannelrsp_dev_value();
+  static const int kControlChannelRspDEVValueFieldNumber = 1001;
+  const ::Interactive::Message::ControlChannelRsp_DEV& controlchannelrsp_dev_value() const;
+  ::Interactive::Message::ControlChannelRsp_DEV* mutable_controlchannelrsp_dev_value();
+  ::Interactive::Message::ControlChannelRsp_DEV* release_controlchannelrsp_dev_value();
+  void set_allocated_controlchannelrsp_dev_value(::Interactive::Message::ControlChannelRsp_DEV* controlchannelrsp_dev_value);
 
   // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
   bool has_msgprehandlerrsp_usr_value() const;
@@ -20827,6 +21058,7 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceParameterRsp_DEV* querydeviceparameterrsp_dev_value_;
   ::Interactive::Message::QueryPlatformPushStatusRsp_DEV* queryplatformpushstatusrsp_dev_value_;
   ::Interactive::Message::DeviceEventReportRsp_DEV* deviceeventreportrsp_dev_value_;
+  ::Interactive::Message::ControlChannelRsp_DEV* controlchannelrsp_dev_value_;
   ::Interactive::Message::MsgPreHandlerRsp_USR* msgprehandlerrsp_usr_value_;
   ::Interactive::Message::GetAccessAddressRsp_USR* getaccessaddressrsp_usr_value_;
   ::Interactive::Message::RegisterUserRsp_USR* registeruserrsp_usr_value_;
@@ -31491,6 +31723,184 @@ inline void DeviceEventReportRsp_DEV::set_allocated_streventid(::std::string* st
   }
   streventid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), streventid);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.DeviceEventReportRsp_DEV.strEventID)
+}
+
+// -------------------------------------------------------------------
+
+// ControlChannelReq_DEV
+
+// string strDeviceID = 1;
+inline void ControlChannelReq_DEV::clear_strdeviceid() {
+  strdeviceid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ControlChannelReq_DEV::strdeviceid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+  return strdeviceid_.GetNoArena();
+}
+inline void ControlChannelReq_DEV::set_strdeviceid(const ::std::string& value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+}
+#if LANG_CXX11
+inline void ControlChannelReq_DEV::set_strdeviceid(::std::string&& value) {
+  
+  strdeviceid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+}
+#endif
+inline void ControlChannelReq_DEV::set_strdeviceid(const char* value) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+}
+inline void ControlChannelReq_DEV::set_strdeviceid(const char* value, size_t size) {
+  
+  strdeviceid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+}
+inline ::std::string* ControlChannelReq_DEV::mutable_strdeviceid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+  return strdeviceid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ControlChannelReq_DEV::release_strdeviceid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+  
+  return strdeviceid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ControlChannelReq_DEV::set_allocated_strdeviceid(::std::string* strdeviceid) {
+  if (strdeviceid != NULL) {
+    
+  } else {
+    
+  }
+  strdeviceid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdeviceid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ControlChannelReq_DEV.strDeviceID)
+}
+
+// uint32 uiDeviceType = 2;
+inline void ControlChannelReq_DEV::clear_uidevicetype() {
+  uidevicetype_ = 0u;
+}
+inline ::google::protobuf::uint32 ControlChannelReq_DEV::uidevicetype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ControlChannelReq_DEV.uiDeviceType)
+  return uidevicetype_;
+}
+inline void ControlChannelReq_DEV::set_uidevicetype(::google::protobuf::uint32 value) {
+  
+  uidevicetype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.ControlChannelReq_DEV.uiDeviceType)
+}
+
+// string strExtend = 3;
+inline void ControlChannelReq_DEV::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ControlChannelReq_DEV::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ControlChannelReq_DEV.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void ControlChannelReq_DEV::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ControlChannelReq_DEV.strExtend)
+}
+#if LANG_CXX11
+inline void ControlChannelReq_DEV::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ControlChannelReq_DEV.strExtend)
+}
+#endif
+inline void ControlChannelReq_DEV::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ControlChannelReq_DEV.strExtend)
+}
+inline void ControlChannelReq_DEV::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ControlChannelReq_DEV.strExtend)
+}
+inline ::std::string* ControlChannelReq_DEV::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ControlChannelReq_DEV.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ControlChannelReq_DEV::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ControlChannelReq_DEV.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ControlChannelReq_DEV::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ControlChannelReq_DEV.strExtend)
+}
+
+// -------------------------------------------------------------------
+
+// ControlChannelRsp_DEV
+
+// string strValue = 1;
+inline void ControlChannelRsp_DEV::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ControlChannelRsp_DEV::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.ControlChannelRsp_DEV.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ControlChannelRsp_DEV::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.ControlChannelRsp_DEV.strValue)
+}
+#if LANG_CXX11
+inline void ControlChannelRsp_DEV::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.ControlChannelRsp_DEV.strValue)
+}
+#endif
+inline void ControlChannelRsp_DEV::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.ControlChannelRsp_DEV.strValue)
+}
+inline void ControlChannelRsp_DEV::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.ControlChannelRsp_DEV.strValue)
+}
+inline ::std::string* ControlChannelRsp_DEV::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.ControlChannelRsp_DEV.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ControlChannelRsp_DEV::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.ControlChannelRsp_DEV.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ControlChannelRsp_DEV::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.ControlChannelRsp_DEV.strValue)
 }
 
 // -------------------------------------------------------------------
@@ -43229,6 +43639,45 @@ inline void Req::set_allocated_deviceeventreportreq_dev_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.DeviceEventReportReq_DEV_Value)
 }
 
+// .Interactive.Message.ControlChannelReq_DEV ControlChannelReq_DEV_Value = 1001;
+inline bool Req::has_controlchannelreq_dev_value() const {
+  return this != internal_default_instance() && controlchannelreq_dev_value_ != NULL;
+}
+inline void Req::clear_controlchannelreq_dev_value() {
+  if (GetArenaNoVirtual() == NULL && controlchannelreq_dev_value_ != NULL) delete controlchannelreq_dev_value_;
+  controlchannelreq_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::ControlChannelReq_DEV& Req::controlchannelreq_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.ControlChannelReq_DEV_Value)
+  return controlchannelreq_dev_value_ != NULL ? *controlchannelreq_dev_value_
+                         : *::Interactive::Message::ControlChannelReq_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::ControlChannelReq_DEV* Req::mutable_controlchannelreq_dev_value() {
+  
+  if (controlchannelreq_dev_value_ == NULL) {
+    controlchannelreq_dev_value_ = new ::Interactive::Message::ControlChannelReq_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.ControlChannelReq_DEV_Value)
+  return controlchannelreq_dev_value_;
+}
+inline ::Interactive::Message::ControlChannelReq_DEV* Req::release_controlchannelreq_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.ControlChannelReq_DEV_Value)
+  
+  ::Interactive::Message::ControlChannelReq_DEV* temp = controlchannelreq_dev_value_;
+  controlchannelreq_dev_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_controlchannelreq_dev_value(::Interactive::Message::ControlChannelReq_DEV* controlchannelreq_dev_value) {
+  delete controlchannelreq_dev_value_;
+  controlchannelreq_dev_value_ = controlchannelreq_dev_value;
+  if (controlchannelreq_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.ControlChannelReq_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerReq_USR MsgPreHandlerReq_USR_Value = 65;
 inline bool Req::has_msgprehandlerreq_usr_value() const {
   return this != internal_default_instance() && msgprehandlerreq_usr_value_ != NULL;
@@ -46185,6 +46634,45 @@ inline void Rsp::set_allocated_deviceeventreportrsp_dev_value(::Interactive::Mes
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.DeviceEventReportRsp_DEV_Value)
 }
 
+// .Interactive.Message.ControlChannelRsp_DEV ControlChannelRsp_DEV_Value = 1001;
+inline bool Rsp::has_controlchannelrsp_dev_value() const {
+  return this != internal_default_instance() && controlchannelrsp_dev_value_ != NULL;
+}
+inline void Rsp::clear_controlchannelrsp_dev_value() {
+  if (GetArenaNoVirtual() == NULL && controlchannelrsp_dev_value_ != NULL) delete controlchannelrsp_dev_value_;
+  controlchannelrsp_dev_value_ = NULL;
+}
+inline const ::Interactive::Message::ControlChannelRsp_DEV& Rsp::controlchannelrsp_dev_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.ControlChannelRsp_DEV_Value)
+  return controlchannelrsp_dev_value_ != NULL ? *controlchannelrsp_dev_value_
+                         : *::Interactive::Message::ControlChannelRsp_DEV::internal_default_instance();
+}
+inline ::Interactive::Message::ControlChannelRsp_DEV* Rsp::mutable_controlchannelrsp_dev_value() {
+  
+  if (controlchannelrsp_dev_value_ == NULL) {
+    controlchannelrsp_dev_value_ = new ::Interactive::Message::ControlChannelRsp_DEV;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.ControlChannelRsp_DEV_Value)
+  return controlchannelrsp_dev_value_;
+}
+inline ::Interactive::Message::ControlChannelRsp_DEV* Rsp::release_controlchannelrsp_dev_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.ControlChannelRsp_DEV_Value)
+  
+  ::Interactive::Message::ControlChannelRsp_DEV* temp = controlchannelrsp_dev_value_;
+  controlchannelrsp_dev_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_controlchannelrsp_dev_value(::Interactive::Message::ControlChannelRsp_DEV* controlchannelrsp_dev_value) {
+  delete controlchannelrsp_dev_value_;
+  controlchannelrsp_dev_value_ = controlchannelrsp_dev_value;
+  if (controlchannelrsp_dev_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.ControlChannelRsp_DEV_Value)
+}
+
 // .Interactive.Message.MsgPreHandlerRsp_USR MsgPreHandlerRsp_USR_Value = 85;
 inline bool Rsp::has_msgprehandlerrsp_usr_value() const {
   return this != internal_default_instance() && msgprehandlerrsp_usr_value_ != NULL;
@@ -48532,6 +49020,10 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
