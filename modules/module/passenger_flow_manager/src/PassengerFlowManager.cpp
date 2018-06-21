@@ -5228,7 +5228,7 @@ void PassengerFlowManager::ModifyStore(const PassengerFlowProtoHandler::Store &s
 bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, PassengerFlowProtoHandler::Store &storeInfo)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.store_id, a.store_name, a.goods_category, a.address, a.area_id, a.open_state, a.telephone, a.create_date, b.area_name from"
+    const char *sqlfmt = "select a.store_id, a.store_name, a.goods_category, a.address, a.area_id, b.area_name, a.open_state, a.telephone, a.create_date, b.area_name from"
         " t_store_info a join t_area_info b on a.area_id = b.area_id where a.store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
@@ -5253,9 +5253,12 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
             rstStore.m_area.m_strAreaID = strColumn;
             break;
         case 5:
-            rstStore.m_uiOpenState = boost::lexical_cast<unsigned int>(strColumn);
+            rstStore.m_area.m_strAreaName = strColumn;
             break;
         case 6:
+            rstStore.m_uiOpenState = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 7:
         {
             if (!strColumn.empty())
             {
@@ -5265,10 +5268,10 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
             }
             break;
         }
-        case 7:
+        case 8:
             rstStore.m_strCreateDate = strColumn;
             break;
-        case 8:
+        case 9:
             rstStore.m_area.m_strAreaName = strColumn;
             result = rstStore;
             break;
@@ -5306,6 +5309,7 @@ bool PassengerFlowManager::QueryStoreInfo(const std::string &strStoreID, Passeng
     storeInfo.m_strGoodsCategory = store.m_strGoodsCategory;
     storeInfo.m_strAddress = store.m_strAddress;
     storeInfo.m_area.m_strAreaID = store.m_area.m_strAreaID;
+    storeInfo.m_area.m_strAreaName = store.m_area.m_strAreaName;
     storeInfo.m_uiOpenState = store.m_uiOpenState;
     storeInfo.m_strTelephoneList = store.m_strTelephoneList;
     storeInfo.m_strCreateDate = store.m_strCreateDate;

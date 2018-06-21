@@ -9153,7 +9153,7 @@ bool AccessManager::QueryDeviceInfoMultiToDB(const std::list<std::string> &strDe
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select deviceid, devicename, devicepassword, p2pid, domainname, innerinfo from t_device_info"
+    const char *sqlfmt = "select deviceid, devicename, devicepassword, p2pid, domainname, innerinfo, typeinfo from t_device_info"
         " where status = 0 and deviceid in (";
     int len = snprintf(sql, size, sqlfmt);
 
@@ -9186,10 +9186,12 @@ bool AccessManager::QueryDeviceInfoMultiToDB(const std::list<std::string> &strDe
             rstDevice.m_strDomainName = strColumn;
             break;
         case 5:
-            rstDevice.m_strInnerinfo = strColumn;
+            rstDevice.m_strInnerinfo = strColumn;            
+            break;
+        case 6:
+            rstDevice.m_uiTypeInfo = boost::lexical_cast<unsigned int>(strColumn);
             Result = rstDevice;
             break;
-
         default:
             LOG_ERROR_RLD("QueryDeviceInfoMultiToDB sql callback error, uiRowNum:" << uiRowNum << " uiColumnNum:" << uiColumnNum << " strColumn:" << strColumn);
             break;

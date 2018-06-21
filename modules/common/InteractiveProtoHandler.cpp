@@ -5700,6 +5700,7 @@ void InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR::UnSerializer(const In
         devStatus.m_deviceInfo.m_strDevName = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdevname();
         devStatus.m_deviceInfo.m_strDevPassword = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strdevpassword();
         devStatus.m_deviceInfo.m_strInnerinfo = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().strinnerinfo();
+        devStatus.m_deviceInfo.m_uiTypeInfo = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).deviceinfo().uitypeinfo();
         devStatus.m_strOnlineStatus = InteractiveMsg.rspvalue().querydeviceinfomultirsp_usr_value().devicestatus(i).stronlinestatus();
 
         m_deviceStatusList.push_back(devStatus);
@@ -5720,6 +5721,7 @@ void InteractiveProtoHandler::QueryDeviceInfoMultiRsp_USR::Serializer(Interactiv
         deviceStatus->mutable_deviceinfo()->set_strdevname(it->m_deviceInfo.m_strDevName);
         deviceStatus->mutable_deviceinfo()->set_strdevpassword(it->m_deviceInfo.m_strDevPassword);
         deviceStatus->mutable_deviceinfo()->set_strinnerinfo(it->m_deviceInfo.m_strInnerinfo);
+        deviceStatus->mutable_deviceinfo()->set_uitypeinfo(it->m_deviceInfo.m_uiTypeInfo);
         deviceStatus->set_stronlinestatus(it->m_strOnlineStatus);
     }
 }
