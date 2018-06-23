@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
     }
 
     //
-    strShakehandOfChannelInterval = "0";
+    //strShakehandOfChannelInterval = "0";
 
     const std::string &strSelfID = cfg.GetItem("General.SelfID");
     if (strSelfID.empty())
@@ -247,17 +247,17 @@ int main(int argc, char *argv[])
     }
 
     MsgTransportHandler msgtrans(pm, sgr);    
-    msgtrans.SetID("TestID2");
+    msgtrans.SetID("TestID1");
 
     boost::this_thread::sleep(boost::posix_time::milliseconds(8000));
 
     while (true)
     {
         boost::shared_ptr<MsgInfoMap> pMsgInfoMap(new MsgInfoMap);
-        pMsgInfoMap->insert(MsgInfoMap::value_type("dst_id", "TestID1"));
+        pMsgInfoMap->insert(MsgInfoMap::value_type("dst_id", "TestID2"));
         msgtrans.CtrlMsgHandler(pMsgInfoMap);
 
-        //boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+        boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
         LOG_INFO_RLD("loop======");
     }
     

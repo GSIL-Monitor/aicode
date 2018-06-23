@@ -1,5 +1,6 @@
 #include "ClientComm.h"
 #include "ProtoTxt.h"
+#include "LogRLD.h"
 
 typedef struct _StValue
 {
@@ -20,6 +21,7 @@ ClientComm::ClientComm() : m_ClientConnectedCB(NULL), m_ClientRCB(NULL), m_Clien
 ClientComm::~ClientComm()
 {
     printf("client comm destruct.\n");
+    LOG_INFO_RLD("Client comm destruct.");
 }
 
 boost::shared_ptr<ClientComm> ClientComm::Create(const char *pIPAddress, const char *pIPPort, const unsigned int uiSSLEnabled)

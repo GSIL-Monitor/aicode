@@ -1,24 +1,28 @@
 #include "ClientCommInterface.h"
 #include "ClientComm.h"
+#include "LogRLD.h"
 
 boost::shared_ptr<TimeOutHandlerEx> ClientCommInterface::sm_pTmEx;
 boost::mutex ClientCommInterface::sm_TmExMutex;
 
 ClientCommInterface::~ClientCommInterface()
 {
-    printf("client interface destruct.\n");
+    //printf("client interface destruct.\n");
+    LOG_INFO_RLD("Client comm interface destruct.");
 }
 
 ClientCommInterface::ClientCommInterface(boost::shared_ptr<ClientComm> pClientComm, const unsigned int uiShakehandInterval) :
 m_pClientComm(pClientComm)
 {
+    //
     if (0 != uiShakehandInterval && (NULL != sm_pTmEx.get()))
     {
         m_Shakehandler.reset(new ShakehandHandler);
         m_Shakehandler->m_pClientComm = m_pClientComm;
         m_Shakehandler->m_uiDoShakehanding = 0;
 
-        m_Shakehandler->m_pShakehandTM = sm_pTmEx->Create(boost::bind(&ShakehandHandler::ShakeHand, m_Shakehandler.get(), _1), uiShakehandInterval);
+        m_pShakehandTM = sm_pTmEx->Create(boost::bind(&ClientCommInterface::ShakehandHandler::ShakeHand, m_Shakehandler->shared_from_this(), _1), uiShakehandInterval);
+        LOG_INFO_RLD("Shakehandler timer was created and interval value is " << uiShakehandInterval);
     }
 }
 
@@ -30,6 +34,11 @@ ClientCommInterface * ClientCommInterface::Create(const char *pIPAddress, const 
         if (NULL == sm_pTmEx.get())
         {
             sm_pTmEx.reset(new TimeOutHandlerEx);
+            //if (NULL != sm_pTmEx.get())
+            {
+                sm_pTmEx->Run(1);
+                LOG_INFO_RLD("Timerout handler ext was run.");
+            }
         }
     }
 
@@ -42,10 +51,6 @@ void ClientCommInterface::Run(const unsigned int uiThreadNum)
 {
     ClientComm::Run(uiThreadNum);
 
-    if (NULL != sm_pTmEx.get())
-    {
-        sm_pTmEx->Run(1);
-    }
 }
 
 void ClientCommInterface::Stop()
@@ -81,9 +86,10 @@ void ClientCommInterface::AsyncRead(void *pValue)
 
 void ClientCommInterface::Close()
 {
-    if (NULL != m_Shakehandler.get())
+    if (NULL != m_pShakehandTM.get())
     {
-        m_Shakehandler->m_pShakehandTM->End();
+        m_pShakehandTM->End();
+        LOG_INFO_RLD("Shakehandler timer was ended.");
     }
 
     m_pClientComm->Close();
@@ -98,9 +104,9 @@ void ClientCommInterface::SetCallBack(ClientConnectedCB cccb, ClientReadCB rdcb,
         m_Shakehandler->m_ClientReadCB = rdcb;
         m_pClientComm->SetCallBack
             (
-            boost::bind(&ClientCommInterface::ShakehandHandler::ConnectedCBInner, m_Shakehandler, _1),
-            boost::bind(&ClientCommInterface::ShakehandHandler::ReadCBInner, m_Shakehandler, _1, _2, _3),
-            boost::bind(&ClientCommInterface::ShakehandHandler::WriteCBInner, m_Shakehandler, _1, _2)
+            boost::bind(&ClientCommInterface::ShakehandHandler::ConnectedCBInner, m_Shakehandler->shared_from_this(), _1, m_pShakehandTM),
+            boost::bind(&ClientCommInterface::ShakehandHandler::ReadCBInner, m_Shakehandler->shared_from_this(), _1, _2, _3, m_pShakehandTM),
+            boost::bind(&ClientCommInterface::ShakehandHandler::WriteCBInner, m_Shakehandler->shared_from_this(), _1, _2, m_pShakehandTM)
             );
     }
     else
@@ -113,20 +119,23 @@ void ClientCommInterface::SetCallBack(ClientConnectedCB cccb, ClientReadCB rdcb,
 
 ClientCommInterface::ShakehandHandler::ShakehandHandler()
 {
-
+    LOG_INFO_RLD("Shakehandler contruct.");
 }
 
 ClientCommInterface::ShakehandHandler::~ShakehandHandler()
 {    
-    printf("shake hanler destruct.\n");
-    
+    //printf("shake hanler destruct.\n");
+    LOG_INFO_RLD("Shakehandler destruct.");    
 }
 
 void ClientCommInterface::ShakehandHandler::ShakeHand(const boost::system::error_code &ec)
 {
+    LOG_INFO_RLD("Shakehandler was called");
     if (ec)
     {
-        printf("shake hand timer error : %s\n", ec.message().c_str());
+        //printf("shake hand timer error : %s\n", ec.message().c_str());
+        LOG_ERROR_RLD("Shakehandler timer error : " << ec.message());
+        //m_pShakehandTM.reset();
         return;
     }
 
@@ -147,12 +156,13 @@ void ClientCommInterface::ShakehandHandler::ShakeHand(const boost::system::error
     }
 }
 
-void ClientCommInterface::ShakehandHandler::ConnectedCBInner(const boost::system::error_code &ec)
+void ClientCommInterface::ShakehandHandler::ConnectedCBInner(const boost::system::error_code &ec, boost::shared_ptr<TimeOutHandler> pShakehandTM)
 {
-    if (!ec && (NULL != m_pShakehandTM.get()))
+    if (!ec && (NULL != pShakehandTM.get()))
     {
         //启动握手定时器
-        m_pShakehandTM->Begin();
+        pShakehandTM->Begin();
+        LOG_INFO_RLD("Shakehandler timer begin.");
     }
 
     if (NULL != m_ClientConnectedCB)
@@ -161,9 +171,10 @@ void ClientCommInterface::ShakehandHandler::ConnectedCBInner(const boost::system
     }
 }
 
-void ClientCommInterface::ShakehandHandler::WriteCBInner(const boost::system::error_code &ec, void *pValue)
+void ClientCommInterface::ShakehandHandler::WriteCBInner(const boost::system::error_code &ec, void *pValue, 
+    boost::shared_ptr<TimeOutHandler> pShakehandTM)
 {
-    if (NULL != m_pShakehandTM.get())
+    if (NULL != pShakehandTM.get())
     {
         if (m_uiDoShakehanding)
         {
@@ -181,9 +192,10 @@ void ClientCommInterface::ShakehandHandler::WriteCBInner(const boost::system::er
     }
 }
 
-void ClientCommInterface::ShakehandHandler::ReadCBInner(const boost::system::error_code &ec, std::list<ClientMsg> *pClientMsgList, void *pValue)
+void ClientCommInterface::ShakehandHandler::ReadCBInner(const boost::system::error_code &ec, std::list<ClientMsg> *pClientMsgList, void *pValue, 
+    boost::shared_ptr<TimeOutHandler> pShakehandTM)
 {
-    if (NULL != m_pShakehandTM.get() && !ec && (NULL != pClientMsgList) && !pClientMsgList->empty()) //fileter shakehand msg
+    if (NULL != pShakehandTM.get() && !ec && (NULL != pClientMsgList) && !pClientMsgList->empty()) //fileter shakehand msg
     {
         auto itBegin = pClientMsgList->begin();
         auto itEnd = pClientMsgList->end();
