@@ -219,9 +219,11 @@ void ClientCommInterface::ShakehandHandler::ReadCBInner(const boost::system::err
                 if (NULL != pClientComm.get())
                 {
                     pClientComm->AsyncRead(pValue);
+                    LOG_INFO_RLD("Receive msg is all shakehand msg, so to call async read again.");
                 }
             }
 
+            LOG_INFO_RLD("Receive msg is all shakehand msg.");
             return;
         }
     }

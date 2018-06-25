@@ -52,7 +52,7 @@ m_SidTimer(NULL, 5)
     };
     m_SidTimer.SetTimeOutCallBack(TmFunc);
 
-
+    //
     m_MsgReceiveRunner.Run();
 
     auto Receiver = [&]() -> void
@@ -117,6 +117,8 @@ m_SidTimer(NULL, 5)
 
                 LOG_INFO_RLD("Receive control req and  device id is  " << CtrlReq.m_strDeviceID << " and device type is " << CtrlReq.m_uiDeviceType <<
                     " and extend is " << CtrlReq.m_strExtend);
+
+                boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
 
                 return CommMsgHandler::SUCCEED;
             };

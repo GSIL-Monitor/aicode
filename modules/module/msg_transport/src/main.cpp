@@ -247,14 +247,16 @@ int main(int argc, char *argv[])
     }
 
     MsgTransportHandler msgtrans(pm, sgr);    
-    msgtrans.SetID("TestID1");
+    msgtrans.SetID("TestID2");
 
+    LOG_INFO_RLD("begin sleep...");
     boost::this_thread::sleep(boost::posix_time::milliseconds(8000));
+    LOG_INFO_RLD("end sleep...");
 
     while (true)
     {
         boost::shared_ptr<MsgInfoMap> pMsgInfoMap(new MsgInfoMap);
-        pMsgInfoMap->insert(MsgInfoMap::value_type("dst_id", "TestID2"));
+        pMsgInfoMap->insert(MsgInfoMap::value_type("dst_id", "TestID1"));
         msgtrans.CtrlMsgHandler(pMsgInfoMap);
 
         boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
