@@ -9,8 +9,8 @@
 static void InitLog()
 {
     std::string strHost = "MailSender(127.0.0.1)";
-    std::string strLogPath = "./logs/";
-    std::string strLogFile = "./logs/MailSender.log";
+    std::string strLogPath = "./mail_logs/";
+    std::string strLogFile = "./mail_logs/MailSender.log";
     std::string strLogInnerShowName = "MailSender";
     int iLoglevel = LogRLD::INFO_LOG_LEVEL;
     int iSchedule = LogRLD::DAILY_LOG_SCHEDULE;

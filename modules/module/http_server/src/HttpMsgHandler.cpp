@@ -1509,6 +1509,7 @@ bool HttpMsgHandler::QueryDeviceMultipleHandler(boost::shared_ptr<MsgInfoMap> pM
         jsDevInfo["devpwd"] = itBegin->m_strDevPwd;
         jsDevInfo["devinnerinfo"] = itBegin->m_strDevInnerInfo;
         jsDevInfo["devtype"] = itBegin->m_strDevType;
+        jsDevInfo["extend"] = itBegin->m_strDevExtend;
         
         jsDevInfoList.append(jsDevInfo);
 
@@ -8002,6 +8003,7 @@ bool HttpMsgHandler::QueryDeviceInfoMultiple(const std::string &strSid, std::lis
             devinfo.m_strDevPwd = itBegin->m_deviceInfo.m_strDevPassword;
             devinfo.m_strDevInnerInfo = itBegin->m_deviceInfo.m_strInnerinfo;
             devinfo.m_strDevType = boost::lexical_cast<std::string>(itBegin->m_deviceInfo.m_uiTypeInfo);
+            devinfo.m_strDevExtend = itBegin->m_deviceInfo.m_strExtend;
 
             DevInfoList.push_back(std::move(devinfo));
         }

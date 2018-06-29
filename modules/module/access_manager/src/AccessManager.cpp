@@ -2293,13 +2293,12 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
             break;
         }
 
-        boost::this_thread::sleep(boost::posix_time::seconds(1));
         ++iRetry;
         LOG_ERROR_RLD("Get device p2p info failed, device id is " << strDeviceID << " and ip is " << req.m_strDevIpAddress <<
             " and retry " << iRetry << " times");
-    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+    } while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
 
-    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
+    if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
         LOG_ERROR_RLD("Get device p2p info failed, device id is " << strDeviceID << " and ip is " << req.m_strDevIpAddress);
         return false;
@@ -2701,26 +2700,24 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     int iRetry = 0;
     do 
     {
-        if (!cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
-        {
-            LOG_ERROR_RLD("Get country timezone info failed, user ip is " << req.m_strUserIpAddress << " and retry " << ++iRetry << " times");
-
-            boost::this_thread::sleep(boost::posix_time::seconds(1));
-            continue;
-        }
-
-        if (QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+        if (cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
         {
             break;
         }
 
         ++iRetry;
         LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry << " times");
-    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+    } while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
 
-    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
+    if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
         LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress);
+        return false;
+    }
+
+    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    {
+        LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, user ip is " << req.m_strUserIpAddress);
         return false;
     }
 
@@ -2796,26 +2793,24 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
     int iRetry = 0;
     do 
     {
-        if (!cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
-        {
-            LOG_ERROR_RLD("Get country timezone info failed, device ip is " << req.m_strDevIpAddress << " and retry " << ++iRetry << " times");
-
-            boost::this_thread::sleep(boost::posix_time::seconds(1));
-            continue;
-        }
-
-        if (QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+        if (cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
         {
             break;
         }
 
         ++iRetry;
         LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry << " times");
-    } while (iRetry < GET_TIMEZONE_RETRY_TIMES);
+    } while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
 
-    if (GET_TIMEZONE_RETRY_TIMES == iRetry)
+    if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
     {
         LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress);
+        return false;
+    }
+
+    if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
+    {
+        LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, device ip is " << req.m_strDevIpAddress);
         return false;
     }
 
@@ -9153,7 +9148,7 @@ bool AccessManager::QueryDeviceInfoMultiToDB(const std::list<std::string> &strDe
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select deviceid, devicename, devicepassword, p2pid, domainname, innerinfo, typeinfo from t_device_info"
+    const char *sqlfmt = "select deviceid, devicename, devicepassword, p2pid, domainname, innerinfo, typeinfo, extend from t_device_info"
         " where status = 0 and deviceid in (";
     int len = snprintf(sql, size, sqlfmt);
 
@@ -9189,7 +9184,10 @@ bool AccessManager::QueryDeviceInfoMultiToDB(const std::list<std::string> &strDe
             rstDevice.m_strInnerinfo = strColumn;            
             break;
         case 6:
-            rstDevice.m_uiTypeInfo = boost::lexical_cast<unsigned int>(strColumn);
+            rstDevice.m_uiTypeInfo = boost::lexical_cast<unsigned int>(strColumn);            
+            break;
+        case 7:
+            rstDevice.m_strExtend = strColumn;
             Result = rstDevice;
             break;
         default:
