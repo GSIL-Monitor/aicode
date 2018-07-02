@@ -3143,7 +3143,8 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
             return false;
         }
 
-        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        //if (!QueryFirmwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, "0", doorbellParameter.m_strVersionNumber, firmwareUpgrade))
         {
             LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
                 " and sub category is " << doorbellParameter.m_strSubCategory <<

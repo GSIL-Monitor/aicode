@@ -1,5 +1,6 @@
 #include "ControlCenter.h"
 #include "LogRLD.h"
+#include "boost/scope_exit.hpp"
 
 std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t uiSize);
 
@@ -200,6 +201,19 @@ void ControlCenter::MsgWriteInner(const std::string &strDstID, const std::string
 
 bool ControlCenter::ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue)
 {
+    bool blResult = false;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &strData)
+    {
+        if (!blResult)
+        {
+            this_->m_MsgHandlerRunner.Post(boost::bind(&ControlCenter::ReceiveMsgHandlerInner, this_, MsgHandler(), strData, strSrcID, (int)0, (void*)0));
+
+            LOG_ERROR_RLD("Receive msg handler failed and data is " << strData << " src id is " << strSrcID);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
     if (NULL == m_MsgTypeHandler)
     {
         LOG_ERROR_RLD("Get msg type handle failed.");
@@ -229,6 +243,8 @@ bool ControlCenter::ReceiveMsgHandler(const std::string &strData, const std::str
     //    return false;
     //}
 
+    blResult = true;
+
     m_MsgHandlerRunner.Post(boost::bind(&ControlCenter::ReceiveMsgHandlerInner, this, itFind->second, strData, strSrcID, mtype, pValue));
 
     return true;
@@ -247,6 +263,12 @@ void ControlCenter::ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string 
         }
 
         ++itBegin;
+    }
+
+    if (NULL == MsgHdr)
+    {
+        LOG_ERROR_RLD("Msg handler is null");
+        return;
     }
 
     if (!MsgHdr(strData, strSrcID, boost::bind(&ControlCenter::MsgWrite, this, _1, _2)))

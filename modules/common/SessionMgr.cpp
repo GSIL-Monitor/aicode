@@ -118,6 +118,8 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
         return PARAM_ERROR;
     }
 
+    bool blNeedRstID = false;
+
     if (!strID.empty())
     {
         boost::unique_lock<boost::mutex> lock(m_UpdateCacheMutex);
@@ -195,6 +197,8 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
                     }
                 }
             }
+
+            blNeedRstID = true;
         }
     }
 
@@ -220,6 +224,16 @@ int SessionMgr::Create(const std::string &strSessionID, const std::string &strVa
         LOG_ERROR_RLD("Create session failed because memcache error.");
         return CACHE_ERROR;
     }
+
+    //更新id对应的有效sid
+    if (blNeedRstID)
+    {
+        LOG_INFO_RLD("Need reset id and id is " << strID);
+        if (!ResetID(strID))
+        {
+            LOG_ERROR_RLD("Reset id failed and id is " << strID);
+        }
+    }    
 
     boost::shared_ptr<SessionTimer> pSessionTimer(new SessionTimer);
 
