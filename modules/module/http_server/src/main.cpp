@@ -10,6 +10,7 @@
 #include "LogRLD.h"
 #include "boost/lexical_cast.hpp"
 #include "CommMsgHandler.h"
+#include "CacheMgr.h"
 
 #define CONFIG_FILE_NAME "http_server.ini"
 #define PROCESS_NAME     "access_cgi"
@@ -233,6 +234,12 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    std::string strUseBlacklist = cfg.GetItem("General.UseBlacklist");
+    if (strUseBlacklist.empty())
+    {
+        strUseBlacklist = "true";
+    }
+    
 
     ///////////////////////////////////////////////////
     HttpMsgHandler::ParamInfo pm;
@@ -246,7 +253,16 @@ int main(int argc, char *argv[])
     CommMsgHandler::SetCommRunningThreads(pm.m_uiThreadOfWorking);
     CommMsgHandler::SetTimeoutRunningThreads(pm.m_uiThreadOfWorking);
 
-    HttpMsgHandler filehdr(pm);
+    CacheMgr sgr;
+    sgr.SetMemCacheAddRess(strMemcachedAddress, strMemcachedPort);
+
+    if (!sgr.Init())
+    {
+        LOG_ERROR_RLD("Cache mgr init failed.");
+        return 0;
+    }
+
+    HttpMsgHandler filehdr(pm, sgr);
 
     ManagementAgent::ParamInfo pm2;
     pm2.m_strRemoteAddress = strRemoteAddress;
@@ -268,6 +284,10 @@ int main(int argc, char *argv[])
 
 
     fcgimgr.SetMsgPreHandler(boost::bind(&HttpMsgHandler::ParseMsgOfCompact, &filehdr, _1, _2));
+    if (strUseBlacklist == "true")
+    {
+        fcgimgr.SetMsgPreHandler(boost::bind(&HttpMsgHandler::BlacklistHandler, &filehdr, _1, _2));
+    }
 
     fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
     fcgimgr.SetMsgHandler(ManagementAgent::CLUSTER_SHAKEHAND__ACTION, boost::bind(&ManagementAgent::ClusterAgentShakehandHandler, &ma, _1, _2));

@@ -18,6 +18,8 @@ typedef boost::function<int(CommMsgHandler::Packet &pt)> RspFuncCommon;
 
 class InteractiveProtoHandler;
 
+class CacheMgr;
+
 class HttpMsgHandler : public boost::noncopyable
 {
 public:
@@ -112,8 +114,10 @@ public:
         unsigned int m_uiThreadOfWorking;
     } ParamInfo;
 
-    HttpMsgHandler(const ParamInfo &parminfo);
+    HttpMsgHandler(const ParamInfo &parminfo, CacheMgr &sgr);
     ~HttpMsgHandler();
+
+    bool BlacklistHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
@@ -571,6 +575,8 @@ private:
 
     void GetDeviceP2pIDAspXMLReport(const DevP2pIDInfo &p2pinfo, std::string &strXMLReport);
 
+    bool BlacklistCompare(const std::string &strKey, const std::string &strValue);
+
 private:
     bool ValidDatetime(const std::string &strDatetime);
 
@@ -579,6 +585,8 @@ private:
 private:
     ParamInfo m_ParamInfo;
     boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
+
+    CacheMgr &m_CacheMgr;
 
 private:
     static const std::string SUCCESS_CODE;

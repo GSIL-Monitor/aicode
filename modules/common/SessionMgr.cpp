@@ -535,7 +535,7 @@ bool SessionMgr::ResetIDInner(const std::string &strID)
         if (Exist(jsSid.asString()))
         {
             strSidValidList.push_back(jsSid.asString());
-            LOG_INFO_RLD("Sid of valid is  " << jsSid.asString() << " and ID is " << strID);
+            LOG_DEBUG_RLD("Sid of valid is  " << jsSid.asString() << " and ID is " << strID);
         }
     }
 

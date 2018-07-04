@@ -363,3 +363,17 @@ CREATE TABLE `t_user_config_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `t_user_device_blacklist`;
+CREATE TABLE `t_user_device_blacklist` (
+  `id` varchar(36) NOT NULL,
+  `black_id` varchar(32) NOT NULL,
+  `id_type` int(11) NOT NULL,                                 #0：用户，1：设备
+  `createdate` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) DEFAULT '0',
+  `extend` varchar(4000) DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(`black_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+

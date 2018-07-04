@@ -13,6 +13,7 @@
 #include "boost/regex.hpp"
 #include "ReturnCode.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
+#include "CacheMgr.h"
 
 #define TIXML_USE_STL
 #include "tinyxml/tinyxml.h"
@@ -149,9 +150,10 @@ const std::string HttpMsgHandler::QUERY_USER_CFG_ACTION("query_user_cfg");
 
 const std::string HttpMsgHandler::QUERY_DEVICE_P2PID_ASP("getdevinfo.aspx");
 
-HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo):
+HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo, CacheMgr &sgr) :
 m_ParamInfo(parminfo),
-m_pInteractiveProtoHandler(new InteractiveProtoHandler)
+m_pInteractiveProtoHandler(new InteractiveProtoHandler),
+m_CacheMgr(sgr)
 {
 
 }
@@ -159,6 +161,80 @@ m_pInteractiveProtoHandler(new InteractiveProtoHandler)
 HttpMsgHandler::~HttpMsgHandler()
 {
 
+}
+
+bool HttpMsgHandler::BlacklistHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        if (!blResult)
+        {
+            LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find(FCGIManager::ACTION);
+    if (pMsgInfoMap->end() != itFind)
+    {
+        const std::string &strValue = itFind->second;
+        if (strValue == "device_query_access_domain" || strValue == "device_login")
+        {
+            itFind = pMsgInfoMap->find("devid");
+            if (pMsgInfoMap->end() == itFind)
+            {
+                blResult = true;
+                return blResult;
+            }
+
+            const std::string strDevID = itFind->second;
+
+            blResult = !BlacklistCompare("device_blacklist", strDevID); //be found in the blacklist
+            
+            return blResult;
+        }
+        else if (strValue == "user_query_access_domain" || strValue == "user_login")
+        {
+            std::string strUserID;
+            std::string strUserName;
+            bool IsName = true;
+            itFind = pMsgInfoMap->find("username");
+            if (pMsgInfoMap->end() == itFind)
+            {
+                IsName = false;
+
+                itFind = pMsgInfoMap->find("userid");
+                if (pMsgInfoMap->end() == itFind)
+                {
+                    blResult = true;
+                    return blResult;
+                }
+            }
+
+            IsName ? (strUserName = itFind->second) : (strUserID = itFind->second);
+            
+            blResult = !BlacklistCompare("user_blacklist", IsName ? strUserName : strUserID);
+
+            return blResult;
+        }        
+        else
+        {
+            blResult = true;
+
+            return blResult;
+        }
+    }
+
+    blResult = true;
+    return blResult;
 }
 
 int HttpMsgHandler::RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc)
@@ -11311,6 +11387,56 @@ void HttpMsgHandler::GetDeviceP2pIDAspXMLReport(const DevP2pIDInfo &p2pinfo, std
     doc.Accept(&printer);
     strXMLReport = printer.CStr();
 
+}
+
+bool HttpMsgHandler::BlacklistCompare(const std::string &strKey, const std::string &strValue)
+{
+    std::string strBlacklist;
+    if (!m_CacheMgr.MemCacheGet(strKey, strBlacklist))
+    {
+        LOG_ERROR_RLD("Get blacklist failed.");
+        return false;
+    }
+
+    Json::Reader reader;
+    Json::Value root;
+    if (!reader.parse(strBlacklist, root, false))
+    {
+        LOG_ERROR_RLD("Blacklist parsed failed and value is " << strBlacklist);
+        return false;
+    }
+
+    if (root.isNull())
+    {
+        LOG_ERROR_RLD("Blacklist value is null and value is " << strBlacklist);
+        return false;
+    }
+
+    if (!root.isArray())
+    {
+        LOG_ERROR_RLD("Blacklist value is not array, raw data is : " << strBlacklist);
+        return false;
+    }
+
+    std::list<std::string> strIDList;
+    unsigned int uiSize = root.size();
+    for (unsigned int i = 0; i < uiSize; ++i)
+    {
+        auto jsID = root[i];
+        if (jsID.isNull() || !jsID.isString())
+        {
+            LOG_ERROR_RLD("ID info failed");
+            continue;
+        }
+
+        if (jsID.asString() == strValue)
+        {
+            LOG_INFO_RLD("Blacklist compare result is true and value is " << strValue);
+            return true;
+        }        
+    }
+
+    return false;
 }
 
 bool HttpMsgHandler::ValidDatetime(const std::string &strDatetime)
