@@ -1,0 +1,13 @@
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devid"
+
+0018A97EACCC
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devpwd"
+
+devpwd
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devtype"
+
+0
+------------------------------ff7546694428--

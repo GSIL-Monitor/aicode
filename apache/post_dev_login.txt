@@ -1,0 +1,37 @@
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devid"
+
+0018A97EACCC
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devpwd"
+
+0018A97EACCC
+------------------------------ff7546694428
+Content-Disposition: form-data; name="domain_name"
+
+7EACCC
+------------------------------ff7546694428
+Content-Disposition: form-data; name="p2pid"
+
+bi23bf2ccc
+------------------------------ff7546694428
+Content-Disposition: form-data; name="devtype"
+
+1
+------------------------------ff7546694428
+Content-Disposition: form-data; name="user_name"
+
+admin
+------------------------------ff7546694428
+Content-Disposition: form-data; name="user_password"
+
+admin
+------------------------------ff7546694428
+Content-Disposition: form-data; name="p2pid_buildin"
+
+1
+------------------------------ff7546694428
+Content-Disposition: form-data; name="p2ptype"
+
+0
+------------------------------ff7546694428--
