@@ -197,6 +197,14 @@ bool HttpMsgHandler::BlacklistHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
             const std::string strDevID = itFind->second;
 
+            LOG_INFO_RLD("Param info: key=[ACTION],value=[" << strValue << "]");
+            auto itFindAddr = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+            if (pMsgInfoMap->end() != itFindAddr)
+            {
+                LOG_INFO_RLD("Param info: key=[REMOTE_ADDR],value=[" << itFindAddr->second << "]");
+            }
+            LOG_INFO_RLD("Param info: key=[devid],value=[" << strDevID << "]");
+
             blResult = !BlacklistCompare("device_blacklist", strDevID); //be found in the blacklist
             
             return blResult;
@@ -220,7 +228,22 @@ bool HttpMsgHandler::BlacklistHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
             }
 
             IsName ? (strUserName = itFind->second) : (strUserID = itFind->second);
-            
+
+            LOG_INFO_RLD("Param info: key=[ACTION],value=[" << strValue << "]");
+            auto itFindAddr = pMsgInfoMap->find(FCGIManager::REMOTE_ADDR);
+            if (pMsgInfoMap->end() != itFindAddr)
+            {
+                LOG_INFO_RLD("Param info: key=[REMOTE_ADDR],value=[" << itFindAddr->second << "]");
+            }
+            if (IsName)
+            {
+                LOG_INFO_RLD("Param info: key=[username],value=[" << strUserName << "]");
+            }
+            else
+            {
+                LOG_INFO_RLD("Param info: key=[userid],value=[" << strUserID << "]");
+            }
+                        
             blResult = !BlacklistCompare("user_blacklist", IsName ? strUserName : strUserID);
 
             return blResult;
