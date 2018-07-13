@@ -85,6 +85,7 @@ public:
     static const std::string CONTENT_TYPE;
     static const std::string HTTP_RANGE;
     static const std::string REMOTE_ADDR;
+    static const std::string SERVER_NAME;
 
     static const unsigned int CGI_READ_BUFFER_SIZE;
 };
