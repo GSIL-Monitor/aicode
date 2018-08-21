@@ -2695,9 +2695,23 @@ class UserBrief : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_strusername();
   void set_allocated_strusername(::std::string* strusername);
 
-  // string strRole = 3;
+  // string strAliasName = 3;
+  void clear_straliasname();
+  static const int kStrAliasNameFieldNumber = 3;
+  const ::std::string& straliasname() const;
+  void set_straliasname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straliasname(::std::string&& value);
+  #endif
+  void set_straliasname(const char* value);
+  void set_straliasname(const char* value, size_t size);
+  ::std::string* mutable_straliasname();
+  ::std::string* release_straliasname();
+  void set_allocated_straliasname(::std::string* straliasname);
+
+  // string strRole = 4;
   void clear_strrole();
-  static const int kStrRoleFieldNumber = 3;
+  static const int kStrRoleFieldNumber = 4;
   const ::std::string& strrole() const;
   void set_strrole(const ::std::string& value);
   #if LANG_CXX11
@@ -2715,6 +2729,7 @@ class UserBrief : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strusername_;
+  ::google::protobuf::internal::ArenaStringPtr straliasname_;
   ::google::protobuf::internal::ArenaStringPtr strrole_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -26324,7 +26339,59 @@ inline void UserBrief::set_allocated_strusername(::std::string* strusername) {
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UserBrief.strUserName)
 }
 
-// string strRole = 3;
+// string strAliasName = 3;
+inline void UserBrief::clear_straliasname() {
+  straliasname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserBrief::straliasname() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+  return straliasname_.GetNoArena();
+}
+inline void UserBrief::set_straliasname(const ::std::string& value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+}
+#if LANG_CXX11
+inline void UserBrief::set_straliasname(::std::string&& value) {
+  
+  straliasname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+}
+#endif
+inline void UserBrief::set_straliasname(const char* value) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+}
+inline void UserBrief::set_straliasname(const char* value, size_t size) {
+  
+  straliasname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+}
+inline ::std::string* UserBrief::mutable_straliasname() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+  return straliasname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserBrief::release_straliasname() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+  
+  return straliasname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserBrief::set_allocated_straliasname(::std::string* straliasname) {
+  if (straliasname != NULL) {
+    
+  } else {
+    
+  }
+  straliasname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straliasname);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UserBrief.strAliasName)
+}
+
+// string strRole = 4;
 inline void UserBrief::clear_strrole() {
   strrole_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

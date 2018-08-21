@@ -354,7 +354,8 @@ message UserBrief                        //用户简要信息
 {
     string strUserID = 1;
     string strUserName = 2;
-    string strRole = 3;
+    string strAliasName = 3;
+    string strRole = 4;
 }
 
 message VIPConsumeHistory                //VIP客户消费记录

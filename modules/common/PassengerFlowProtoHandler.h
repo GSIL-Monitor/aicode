@@ -339,6 +339,7 @@ public:
     {
         std::string m_strUserID;
         std::string m_strUserName;
+        std::string m_strAliasName;
         std::string m_strRole;
     };
 

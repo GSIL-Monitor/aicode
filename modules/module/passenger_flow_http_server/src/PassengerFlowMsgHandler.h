@@ -429,6 +429,7 @@ private:
     {
         std::string m_strUserID;
         std::string m_strUserName;
+        std::string m_strAliasName;
         std::string m_strStoreID;
         std::string m_strStoreName;
         std::string m_strRole;

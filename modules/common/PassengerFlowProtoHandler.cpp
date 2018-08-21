@@ -5141,6 +5141,7 @@ void PassengerFlowProtoHandler::QueryStoreAllUserRsp::Serializer(CustomerFlowMes
         auto user = rsp->add_user();
         user->set_struserid(it->m_strUserID);
         user->set_strusername(it->m_strUserName);
+        user->set_straliasname(it->m_strAliasName);
         user->set_strrole(it->m_strRole);
     }
 }
@@ -5156,6 +5157,7 @@ void PassengerFlowProtoHandler::QueryStoreAllUserRsp::UnSerializer(const Custome
         PassengerFlowProtoHandler::UserBrief user;
         user.m_strUserID = rspUser.struserid();
         user.m_strUserName = rspUser.strusername();
+        user.m_strAliasName = rspUser.straliasname();
         user.m_strRole = rspUser.strrole();
 
         m_userList.push_back(user);
@@ -5189,6 +5191,7 @@ void PassengerFlowProtoHandler::QueryCompanyAllUserRsp::Serializer(CustomerFlowM
         auto user = rsp->add_user();
         user->set_struserid(it->m_strUserID);
         user->set_strusername(it->m_strUserName);
+        user->set_straliasname(it->m_strAliasName);
         user->set_strrole(it->m_strRole);
     }
 }
@@ -5204,6 +5207,7 @@ void PassengerFlowProtoHandler::QueryCompanyAllUserRsp::UnSerializer(const Custo
         PassengerFlowProtoHandler::UserBrief user;
         user.m_strUserID = rspUser.struserid();
         user.m_strUserName = rspUser.strusername();
+        user.m_strAliasName = rspUser.straliasname();
         user.m_strRole = rspUser.strrole();
 
         m_userList.push_back(user);

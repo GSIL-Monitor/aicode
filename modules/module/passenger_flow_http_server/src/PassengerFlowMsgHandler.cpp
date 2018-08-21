@@ -4803,6 +4803,7 @@ bool PassengerFlowMsgHandler::QueryAllUserListHandler(boost::shared_ptr<MsgInfoM
         Json::Value jsUser;
         jsUser["user_id"] = itBegin->m_strUserID;
         jsUser["user_name"] = itBegin->m_strUserName;
+        jsUser["aliasname"] = itBegin->m_strAliasName;
 
         jsAllUserList[i] = jsUser;
     }
@@ -11008,6 +11009,7 @@ bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const 
             us.m_strRole = itBegin->m_strRole;
             us.m_strUserID = itBegin->m_strUserID;
             us.m_strUserName = itBegin->m_strUserName;
+            us.m_strAliasName = itBegin->m_strAliasName;
 
             uslist.push_back(std::move(us));
         }

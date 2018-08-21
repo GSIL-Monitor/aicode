@@ -7410,7 +7410,7 @@ bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std:
 bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.user_id, b.aliasname from"
+    const char *sqlfmt = "select a.user_id, b.username, b.aliasname from"
         " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid"
         " where company_id = '%s' and b.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strCompanyID.c_str());
@@ -7423,8 +7423,13 @@ bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, 
         case 0:
             user.m_strUserID = strColumn;
             break;
+
         case 1:
             user.m_strUserName = strColumn;
+            break;
+
+        case 2:
+            user.m_strAliasName = strColumn;
             result = user;
             break;
 
