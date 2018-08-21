@@ -491,7 +491,13 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
         }
     }
 
-    m_SessionMgr.Remove(UnRegUsrReq.m_strSID);
+    std::string strCurrentLoginUserID;
+    
+    if (m_SessionMgr.GetIDBySessionID(UnRegUsrReq.m_strSID, strCurrentLoginUserID) &&
+        UnRegUsrReq.m_userInfo.m_strUserID == strCurrentLoginUserID)
+    {
+        m_SessionMgr.Remove(UnRegUsrReq.m_strSID);
+    }
 
     //广播消息表示用户注销
 
@@ -6102,12 +6108,12 @@ void AccessManager::UpdateUserInfoToDB(const InteractiveProtoHandler::User &UsrI
 void AccessManager::UnregisterUserToDB(const std::string &strUserID, const int iStatus)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_user_info set status = '%d' where userid = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, iStatus, strUserID.c_str());
+    const char *sqlfmt = "delete from t_user_info where userid = '%s'"; //"update t_user_info set status = '%d' where userid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
     
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
-        LOG_ERROR_RLD("Update t_user_info sql exec failed, sql is " << sql);
+        LOG_ERROR_RLD("Delete t_user_info sql exec failed, sql is " << sql);
     }
 
 }
