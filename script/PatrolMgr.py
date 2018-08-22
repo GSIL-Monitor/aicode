@@ -9,6 +9,12 @@ db_patrol = None
 DB_FAILED = 'DB_FAILED'
 PATROL_USER_TYPE = 2
 
+ACCESS_USER_STATUS = '1'
+COMPANY_USER_STATUS = '2'
+ROLE_USER_STATUS = '3'
+
+loop_status = ACCESS_USER_STATUS
+
 def ConnectDB(db_user, db_pwd, db_host, db_name):
     try:
         cnx = mysql.connector.connect(
@@ -43,14 +49,14 @@ def InitDB(IsPatrol=True):
             return False
         return True
 
-def GetIDList(sql):
-    cursor = db.cursor()
+def GetIDList(sql, db_local):
+    cursor = db_local.cursor()
 
     try:
         cursor.execute(sql)
     except mysql.connector.Error as err:
         print(err)
-        db.close()
+        db_local.close()
         return DB_FAILED
 
     if cursor.rowcount == 0:
@@ -69,11 +75,19 @@ def GetIDList(sql):
 
 def GetPatrolUserIDList():
     sql = "select userid from t_user_info where typeinfo = %d and status = 0" % PATROL_USER_TYPE
-    return GetIDList(sql)
+    return GetIDList(sql, db)
 
 def GetAccessPatrolUserIDList():
     sql = "select userid from t_access_user_business_info"
-    return GetIDList(sql)
+    return GetIDList(sql, db)
+
+def GetAllPatrolUserIDList():
+    sql = "select user_id from t_company_user_info"
+    return GetIDList(sql, db_patrol)
+
+def GetAllRoleUserIDList():
+    sql = "select user_id from t_user_role_association"
+    return GetIDList(sql, db_patrol)
 
 def GetPatrolIDlistInfinite():
     while True:
@@ -90,10 +104,27 @@ def GetPatrolIDlistInfinite():
                 exit(0)
             continue
 
-        AccessPatrolUidList = GetAccessPatrolUserIDList()
-        if AccessPatrolUidList is None or not AccessPatrolUidList:
-            print("Access patrol user id list is empty.")
-            continue
+        global loop_status
+        local_status = loop_status
+        AccessPatrolUidList = []
+        if ACCESS_USER_STATUS == loop_status:
+            AccessPatrolUidList = GetAccessPatrolUserIDList()
+            loop_status = COMPANY_USER_STATUS
+
+        elif COMPANY_USER_STATUS == loop_status:
+            AccessPatrolUidList = GetAllPatrolUserIDList()
+            loop_status = ROLE_USER_STATUS
+
+        elif ROLE_USER_STATUS == loop_status:
+            AccessPatrolUidList = GetAllRoleUserIDList()
+            loop_status = ACCESS_USER_STATUS
+
+        if AccessPatrolUidList is None:
+            AccessPatrolUidList = []
+
+        #if AccessPatrolUidList is None or not AccessPatrolUidList:
+        #    print("Access patrol user id list is empty.")
+        #    continue
 
         if DB_FAILED == AccessPatrolUidList:
             if not InitDB():
@@ -107,34 +138,25 @@ def GetPatrolIDlistInfinite():
         #In AccessPatrolUidList and not in PatrolUidList
         AccessPatrolUidListDiff = list(set(AccessPatrolUidList).difference(set(PatrolUidList)))
 
-        yield PatrolUidListDiff, AccessPatrolUidListDiff
+        yield PatrolUidListDiff, AccessPatrolUidListDiff, local_status
 
 def AddAccessPatrol(uid):
-    cursor = db.cursor()
-    sql = 'insert into t_access_user_business_info(id, userid, access_domain, business_type)' \
-          "values(uuid(), '%s', '%s', 0)" % (uid, 'http://xvripc.net:8988')
     try:
+        cursor = db.cursor()
+        sql = 'insert into t_access_user_business_info(id, userid, access_domain, business_type)' \
+              "values(uuid(), '%s', '%s', 0)" % (uid, 'http://xvripc.net:8988')
         cursor.execute(sql)
+        cursor.close()
     except mysql.connector.Error as err:
         print(err)
         db.close()
+
+        time.sleep(1.5)
+        if not InitDB():
+            print "Init db failed."
+            exit(0)
         return DB_FAILED
-
-    cursor.close()
-
-    cursor2 = db_patrol.cursor()
-    sql2 = 'insert into t_company_user_info(id, company_id, user_id, create_date)' \
-          "values(uuid(), 'annidev', '%s', CURRENT_TIMESTAMP())" % uid
-    try:
-        cursor2.execute(sql2)
-    except mysql.connector.Error as err:
-        print(err)
-        db_patrol.close()
-        return DB_FAILED
-
-    cursor2.close()
-
-    return True
+    return  True
 
 def RemoveAccessPatrol(uid):
     cursor = db.cursor()
@@ -148,9 +170,30 @@ def RemoveAccessPatrol(uid):
         return DB_FAILED
 
     cursor.close()
+    return True
 
+def AddCompanyUserInfo(uid):
+    try:
+        cursor2 = db_patrol.cursor()
+        sql2 = 'insert into t_company_user_info(id, company_id, user_id, create_date)' \
+               "values(uuid(), 'annidev', '%s', CURRENT_TIMESTAMP())" % uid
+        cursor2.execute(sql2)
+        cursor2.close()
+
+    except mysql.connector.Error as err:
+        print(err)
+        db_patrol.close()
+
+        time.sleep(1.5)
+        if not InitDB():
+            print "Init db failed."
+            exit(0)
+        return DB_FAILED
+    return True
+
+def RemoveCompanyUserInfo(uid):
     cursor2 = db_patrol.cursor()
-    sql2 = "delete from t_company_user_info where user_id = '%s'" %uid
+    sql2 = "delete from t_company_user_info where user_id = '%s'" % uid
     try:
         cursor2.execute(sql2)
     except mysql.connector.Error as err:
@@ -159,7 +202,38 @@ def RemoveAccessPatrol(uid):
         return DB_FAILED
 
     cursor2.close()
+    return True
 
+def AddRoleUserInfo(uid):
+    try:
+        cursor2 = db_patrol.cursor()
+        sql2 = 'insert into t_user_role_association(id, user_id, role_id, create_date)' \
+               "values(uuid(), '%s', 'administrator', CURRENT_TIMESTAMP())" % uid
+        cursor2.execute(sql2)
+        cursor2.close()
+
+    except mysql.connector.Error as err:
+        print(err)
+        db_patrol.close()
+
+        time.sleep(1.5)
+        if not InitDB():
+            print "Init db failed."
+            exit(0)
+        return DB_FAILED
+    return True
+
+def RemoveRoleUserInfo(uid):
+    cursor2 = db_patrol.cursor()
+    sql2 = "delete from t_user_role_association where user_id = '%s'" % uid
+    try:
+        cursor2.execute(sql2)
+    except mysql.connector.Error as err:
+        print(err)
+        db_patrol.close()
+        return DB_FAILED
+
+    cursor2.close()
     return True
 
 def main():
@@ -167,9 +241,16 @@ def main():
         print ('Init db failed')
         return  False
 
-    for PatrolUidListDiff, AccessPatrolUidListDiff in GetPatrolIDlistInfinite():
+    for PatrolUidListDiff, AccessPatrolUidListDiff, status in GetPatrolIDlistInfinite():
         for puid in PatrolUidListDiff:
-            result = AddAccessPatrol(puid)
+            result = None
+            if ACCESS_USER_STATUS == status:
+                result = AddAccessPatrol(puid)
+            elif COMPANY_USER_STATUS == status:
+                result = AddCompanyUserInfo(puid)
+            elif ROLE_USER_STATUS == status:
+                result = AddRoleUserInfo(puid)
+
             if DB_FAILED == result:
                 if not InitDB():
                     print "Init db failed."
@@ -179,7 +260,15 @@ def main():
                 print("Add access patrol success.")
 
         for apuid in AccessPatrolUidListDiff:
-            result = RemoveAccessPatrol(apuid)
+            result = None
+
+            if ACCESS_USER_STATUS == status:
+                result = RemoveAccessPatrol(apuid)
+            elif COMPANY_USER_STATUS == status:
+                result = RemoveCompanyUserInfo(apuid)
+            elif ROLE_USER_STATUS == status:
+                result = RemoveRoleUserInfo(apuid)
+
             if DB_FAILED == result:
                 if not InitDB():
                     print "Init db failed."
@@ -187,7 +276,6 @@ def main():
                 continue
             if result:
                 print("Remove access patrol success.")
-
 
 
 if __name__ == '__main__':
