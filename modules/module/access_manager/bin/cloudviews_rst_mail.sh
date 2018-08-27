@@ -5,6 +5,10 @@ then
     exit;
 fi
 
+date=`date +%Y%m%d-%H:%M:%S`
+msg_title="CloudViews-""$date"
+echo $msg_title
+
 Recipient=$1;
 UserName=$2;
 Pwd=$3
@@ -15,6 +19,6 @@ echo $Pwd
 msg1="<success><b><br>Hello,your CloudViews APP temporary login password is "
 msg3="$msg1""$Pwd"",Please reset your new password in your APP setting."
 msg4="$msg3""<br></b></success>   <success><b><br>您的云视APP应用临时登录密码是：""$Pwd""，请在APP应用程序中重置新密码。"
-msg5="$msg4""<br></b></success>"
-./mailsender 'smtp.163.com' 2 25 'cloudviews@163.com' 'cloudviews163' 'CloudViews' 'cloudviews@163.com' $Recipient 'CloudViews' "$msg5"
+msg5="$msg4""<br></b></success>   <success><b><br>""$msg_title""<br></b></success>"
+./mailsender 'smtp.163.com' 2 25 'cloudviews@163.com' 'cloudviews163' 'CloudViews' 'cloudviews@163.com' $Recipient "$msg_title" "$msg5"
 

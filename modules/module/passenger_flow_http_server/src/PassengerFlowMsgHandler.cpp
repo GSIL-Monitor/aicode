@@ -169,6 +169,18 @@ const std::string PassengerFlowMsgHandler::QUERY_SENSOR_RECORDS("query_store_sen
 
 const std::string PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_RECORDS("query_store_sensor_alarm_records");
 
+const std::string PassengerFlowMsgHandler::ADD_ROLE("add_role");
+
+const std::string PassengerFlowMsgHandler::REMOVE_ROLE("remove_role");
+
+const std::string PassengerFlowMsgHandler::MODIFY_ROLE("modify_role");
+
+const std::string PassengerFlowMsgHandler::QUERY_ROLE("query_role");
+
+const std::string PassengerFlowMsgHandler::QUERY_ALL_ROLE("query_all_role");
+
+const std::string PassengerFlowMsgHandler::USER_BIND_ROLE("user_bind_role");
+
 PassengerFlowMsgHandler::PassengerFlowMsgHandler(const ParamInfo &parminfo):
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new PassengerFlowProtoHandler)
@@ -4723,6 +4735,7 @@ bool PassengerFlowMsgHandler::QueryUserOfStoreHandler(boost::shared_ptr<MsgInfoM
         Json::Value jsUserofStore;
         jsUserofStore["user_id"] = itBegin->m_strUserID;
         jsUserofStore["user_name"] = itBegin->m_strUserName;
+        jsUserofStore["aliasname"] = itBegin->m_strAliasName;
         jsUserofStore["role"] = itBegin->m_strRole;
 
         jsUserOfStoreList[i] = jsUserofStore;
@@ -4804,6 +4817,7 @@ bool PassengerFlowMsgHandler::QueryAllUserListHandler(boost::shared_ptr<MsgInfoM
         jsUser["user_id"] = itBegin->m_strUserID;
         jsUser["user_name"] = itBegin->m_strUserName;
         jsUser["aliasname"] = itBegin->m_strAliasName;
+        jsUser["roleid"] = itBegin->m_strRole;
 
         jsAllUserList[i] = jsUser;
     }
@@ -8114,6 +8128,505 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecordsHandler(boost::shared_ptr<M
     return blResult;
 }
 
+bool PassengerFlowMsgHandler::AddRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid_new");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id of new not found.");
+        return blResult;
+    }
+    const std::string strRoleIDNew = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid_old");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id of old not found.");
+        return blResult;
+    }
+    const std::string strRoleIDOld = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    if (!AddRole(strSid, strUserID, strRoleIDNew, strRoleIDOld))
+    {
+        LOG_ERROR_RLD("Add role failed.");
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Add role info received and session id is " << strSid << " and user id is " << strUserID << " and new role id is " << strRoleIDNew
+        << " and old role id is " << strRoleIDOld);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::RemoveRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id not found.");
+        return blResult;
+    }
+    const std::string strRoleID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    if (!RemoveRole(strSid, strUserID, strRoleID))
+    {
+        LOG_ERROR_RLD("Remove role failed.");
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Remove role info received and session id is " << strSid << " and user id is " << strUserID << " and role id is " << strRoleID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::ModifyRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id not found.");
+        return blResult;
+    }
+    const std::string strRoleID = itFind->second;
+
+    bool blFlag = false;
+    std::list<unsigned int> uiAllowFuncIDList;
+    std::list<std::string> strAllowFuncIDList;
+    itFind = pMsgInfoMap->find("allow_func");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!GetValueList(itFind->second, strAllowFuncIDList))
+        {
+            LOG_ERROR_RLD("Allow func info is error.");
+            return blResult;
+        }
+
+        for (auto itBegin = strAllowFuncIDList.begin(), itEnd = strAllowFuncIDList.end(); itBegin != itEnd; ++itBegin)
+        {
+            unsigned int uiValue = 0;
+            if (!ValidType<unsigned int>(*itBegin, uiValue))
+            {
+                LOG_ERROR_RLD("Allow func info is invalid.");
+                return blResult;
+            }
+
+            uiAllowFuncIDList.push_back(uiValue);
+        }
+
+        blFlag = true;
+    }
+    
+    std::list<unsigned int> uiDisallowFuncIDList;
+    std::list<std::string> strDisallowFuncIDList;
+    itFind = pMsgInfoMap->find("disallow_func");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!GetValueList(itFind->second, strDisallowFuncIDList))
+        {
+            LOG_ERROR_RLD("Disallow func info is error.");
+            return blResult;
+        }
+
+        for (auto itBegin = strDisallowFuncIDList.begin(), itEnd = strDisallowFuncIDList.end(); itBegin != itEnd; ++itBegin)
+        {
+            unsigned int uiValue = 0;
+            if (!ValidType<unsigned int>(*itBegin, uiValue))
+            {
+                LOG_ERROR_RLD("Disallow func info is invalid.");
+                return blResult;
+            }
+
+            uiDisallowFuncIDList.push_back(uiValue);
+        }
+
+        blFlag = true;
+    }
+
+
+    if (!blFlag)
+    {
+        LOG_ERROR_RLD("Allow and disallow info not found and user id is " << strUserID << " role id is " << strRoleID);
+        return blResult;
+    }
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    if (!ModifyRole(strSid, strUserID, strRoleID, uiAllowFuncIDList, uiDisallowFuncIDList))
+    {
+        LOG_ERROR_RLD("Modify role failed.");
+        return blResult;
+    }
+
+    LOG_INFO_RLD("Modify role info received and session id is " << strSid << " and user id is " << strUserID << " and role id is " << strRoleID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsPermissionInfo;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPermissionInfo)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["permission_info"] = jsPermissionInfo;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id not found.");
+        return blResult;
+    }
+    const std::string strRoleID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    PassengerFlowProtoHandler::Role role;
+    if (!QueryRole<PassengerFlowProtoHandler::Role>(strSid, strUserID, strRoleID, role))
+    {
+        LOG_ERROR_RLD("Query role failed.");
+        return blResult;
+    }
+
+    for (auto itBegin = role.m_pmlist.begin(), itEnd = role.m_pmlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        Json::Value jsPm;
+        jsPm["func_id"] = boost::lexical_cast<std::string>(itBegin->m_uiFuncID);
+        jsPm["access"] = itBegin->m_strAccess;
+
+        jsPermissionInfo.append(jsPm);
+    }
+
+    LOG_INFO_RLD("Query role info received and session id is " << strSid << " and user id is " << strUserID << " and role id is " << strRoleID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("roleid", role.m_strRoleID));
+    
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::QueryAllRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsAllRoleInfo;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsAllRoleInfo)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["all_role_info"] = jsAllRoleInfo;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+    
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    std::list<PassengerFlowProtoHandler::Role> rolelist;
+    if (!QueryAllRole<PassengerFlowProtoHandler::Role>(strSid, strUserID, rolelist))
+    {
+        LOG_ERROR_RLD("Query all role failed.");
+        return blResult;
+    }
+
+    for (auto itB = rolelist.begin(), itE = rolelist.end(); itB != itE; ++itB)
+    {
+        Json::Value jsRoleInfo;
+        jsRoleInfo["role_id"] = itB->m_strRoleID;
+
+        Json::Value jsPermissionInfoList;
+        for (auto itBegin = itB->m_pmlist.begin(), itEnd = itB->m_pmlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            Json::Value jsPm;
+            jsPm["func_id"] = boost::lexical_cast<std::string>(itBegin->m_uiFuncID);
+            jsPm["access"] = itBegin->m_strAccess;
+
+            jsPermissionInfoList.append(jsPm);
+        }
+
+        jsRoleInfo["permission_info"] = jsPermissionInfoList;
+
+        jsAllRoleInfo.append(jsRoleInfo);
+    }
+    
+    LOG_INFO_RLD("Query all role info received and session id is " << strSid << " and user id is " << strUserID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowMsgHandler::UserBindRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("roleid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Role id not found.");
+        return blResult;
+    }
+    const std::string strRoleID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    if (!UserBindRole(strSid, strUserID, strRoleID))
+    {
+        LOG_ERROR_RLD("User bind role failed.");
+        return blResult;
+    }
+
+    LOG_INFO_RLD("User bind role info received and session id is " << strSid << " and user id is " << strUserID << " and role id is " << strRoleID);
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -10949,6 +11462,7 @@ bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const 
             us.m_strRole = itBegin->m_strRole;
             us.m_strUserID = itBegin->m_strUserID;
             us.m_strUserName = itBegin->m_strUserName;
+            us.m_strAliasName = itBegin->m_strAliasName;
 
             uslist.push_back(std::move(us));
         }
@@ -11010,6 +11524,7 @@ bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const 
             us.m_strUserID = itBegin->m_strUserID;
             us.m_strUserName = itBegin->m_strUserName;
             us.m_strAliasName = itBegin->m_strAliasName;
+            us.m_strRole = itBegin->m_strRole;
 
             uslist.push_back(std::move(us));
         }
@@ -12729,6 +13244,348 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecords(const std::string &strSid,
         LOG_INFO_RLD("Query sensor alarm records and session id is " << strSid << " and user id is " << pm.m_strUserID <<
             " and return code is " << QuerySensorAlarmRecordsRsp.m_iRetcode <<
             " and return msg is " << QuerySensorAlarmRecordsRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::AddRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleIDNew, const std::string &strRoleIDOld)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::AddRoleReq AddRoleReq;
+        AddRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRoleReq_T;
+        AddRoleReq.m_uiMsgSeq = 1;
+        AddRoleReq.m_strSID = strSid;
+
+        AddRoleReq.m_strUserID = strUserID;
+        AddRoleReq.m_strRoleIDNew = strRoleIDNew;
+        AddRoleReq.m_strRoleIDOld = strRoleIDOld;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::AddRoleRsp AddRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddRoleRsp))
+        {
+            LOG_ERROR_RLD("Add role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddRoleRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add role and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << AddRoleRsp.m_iRetcode <<
+            " and return msg is " << AddRoleRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::RemoveRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::RemoveRoleReq RemoveRoleReq;
+        RemoveRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveRoleReq_T;
+        RemoveRoleReq.m_uiMsgSeq = 1;
+        RemoveRoleReq.m_strSID = strSid;
+
+        RemoveRoleReq.m_strUserID = strUserID;
+        RemoveRoleReq.m_strRoleID = strRoleID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::RemoveRoleRsp RemoveRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveRoleRsp))
+        {
+            LOG_ERROR_RLD("Remove role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = RemoveRoleRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Remove role and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << RemoveRoleRsp.m_iRetcode <<
+            " and return msg is " << RemoveRoleRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::ModifyRole(const std::string &strSid, const std::string  &strUserID, const std::string &strRoleID, 
+    const std::list<unsigned int> &uiAllowFuncList, const std::list<unsigned int> &uiDisallowFuncList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::ModifyRoleReq ModifyRoleReq;
+        ModifyRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRoleReq_T;
+        ModifyRoleReq.m_uiMsgSeq = 1;
+        ModifyRoleReq.m_strSID = strSid;
+
+        ModifyRoleReq.m_strUserID = strUserID;
+        ModifyRoleReq.m_role.m_strRoleID = strRoleID;
+        
+        for (auto itBegin = uiAllowFuncList.begin(), itEnd = uiAllowFuncList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::Permission pm;
+            pm.m_strAccess = "allow";
+            pm.m_uiFuncID = *itBegin;
+            
+            ModifyRoleReq.m_role.m_pmlist.push_back(std::move(pm));
+        }
+
+        for (auto itBegin = uiDisallowFuncList.begin(), itEnd = uiDisallowFuncList.end(); itBegin != itEnd; ++itBegin)
+        {
+            PassengerFlowProtoHandler::Permission pm;
+            pm.m_strAccess = "disallow";
+            pm.m_uiFuncID = *itBegin;
+
+            ModifyRoleReq.m_role.m_pmlist.push_back(std::move(pm));
+        }
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Modify role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::ModifyRoleRsp ModifyRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyRoleRsp))
+        {
+            LOG_ERROR_RLD("Modify role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = ModifyRoleRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Modify role and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << ModifyRoleRsp.m_iRetcode <<
+            " and return msg is " << ModifyRoleRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+template<typename T>
+bool PassengerFlowMsgHandler::QueryRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID, T &Role)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryRoleReq QueryRoleReq;
+        QueryRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRoleReq_T;
+        QueryRoleReq.m_uiMsgSeq = 1;
+        QueryRoleReq.m_strSID = strSid;
+
+        QueryRoleReq.m_strUserID = strUserID;
+        QueryRoleReq.m_strRoleID = strRoleID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryRoleRsp QueryRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryRoleRsp))
+        {
+            LOG_ERROR_RLD("Query role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryRoleRsp.m_iRetcode;
+
+        Role.m_strCreateDate = QueryRoleRsp.m_role.m_strCreateDate;
+        Role.m_strRoleID = QueryRoleRsp.m_role.m_strRoleID;
+        Role.m_strUpdateDate = QueryRoleRsp.m_role.m_strUpdateDate;
+        Role.m_uiState = QueryRoleRsp.m_role.m_uiState;
+        Role.m_pmlist.swap(QueryRoleRsp.m_role.m_pmlist);
+
+        for (auto itBegin = Role.m_pmlist.begin(), itEnd = Role.m_pmlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            LOG_INFO_RLD("Role func id is " << itBegin->m_uiFuncID << " and access is " << itBegin->m_strAccess);
+        }
+
+        LOG_INFO_RLD("Query role and session id is " << strSid << " and user id is " << strUserID << " and role id is " << strRoleID <<
+            " and return code is " << QueryRoleRsp.m_iRetcode <<
+            " and return msg is " << QueryRoleRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+
+template<typename T>
+bool PassengerFlowMsgHandler::QueryAllRole(const std::string &strSid, const std::string &strUserID, std::list<T> &RoleList)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::QueryAllRoleReq QueryAllRoleReq;
+        QueryAllRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRoleReq_T;
+        QueryAllRoleReq.m_uiMsgSeq = 1;
+        QueryAllRoleReq.m_strSID = strSid;
+
+        QueryAllRoleReq.m_strUserID = strUserID;
+        
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::QueryAllRoleRsp QueryAllRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllRoleRsp))
+        {
+            LOG_ERROR_RLD("Query all role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = QueryAllRoleRsp.m_iRetcode;
+
+        RoleList.swap(QueryAllRoleRsp.m_rolelist);
+        
+        LOG_INFO_RLD("Query all role and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << QueryAllRoleRsp.m_iRetcode <<
+            " and return msg is " << QueryAllRoleRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+
+bool PassengerFlowMsgHandler::UserBindRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        PassengerFlowProtoHandler::UserBindRoleReq UserBindRoleReq;
+        UserBindRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserBindRoleReq_T;
+        UserBindRoleReq.m_uiMsgSeq = 1;
+        UserBindRoleReq.m_strSID = strSid;
+
+        UserBindRoleReq.m_strUserID = strUserID;
+        UserBindRoleReq.m_strRoleID = strRoleID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserBindRoleReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User bind role req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        PassengerFlowProtoHandler::UserBindRoleRsp UserBindRoleRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserBindRoleRsp))
+        {
+            LOG_ERROR_RLD("User bind role rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = UserBindRoleRsp.m_iRetcode;
+
+        LOG_INFO_RLD("User bind role and session id is " << strSid << " and user id is " << strUserID <<
+            " and return code is " << UserBindRoleRsp.m_iRetcode <<
+            " and return msg is " << UserBindRoleRsp.m_strRetMsg);
 
         return CommMsgHandler::SUCCEED;
     };

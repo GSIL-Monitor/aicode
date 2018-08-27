@@ -367,6 +367,13 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_RECORDS, boost::bind(&PassengerFlowMsgHandler::QuerySensorAlarmRecordsHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::ADD_ROLE, boost::bind(&PassengerFlowMsgHandler::AddRoleHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_ROLE, boost::bind(&PassengerFlowMsgHandler::RemoveRoleHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_ROLE, boost::bind(&PassengerFlowMsgHandler::ModifyRoleHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ROLE, boost::bind(&PassengerFlowMsgHandler::QueryRoleHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_ROLE, boost::bind(&PassengerFlowMsgHandler::QueryAllRoleHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_BIND_ROLE, boost::bind(&PassengerFlowMsgHandler::UserBindRoleHandler, &filehdr, _1, _2));
+
     fcgimgr.Run(true);
     return 0;
 }

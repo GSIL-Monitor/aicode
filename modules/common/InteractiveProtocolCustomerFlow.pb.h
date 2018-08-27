@@ -81,6 +81,12 @@ extern AddRemotePatrolStoreReqDefaultTypeInternal _AddRemotePatrolStoreReq_defau
 class AddRemotePatrolStoreRsp;
 class AddRemotePatrolStoreRspDefaultTypeInternal;
 extern AddRemotePatrolStoreRspDefaultTypeInternal _AddRemotePatrolStoreRsp_default_instance_;
+class AddRoleReq;
+class AddRoleReqDefaultTypeInternal;
+extern AddRoleReqDefaultTypeInternal _AddRoleReq_default_instance_;
+class AddRoleRsp;
+class AddRoleRspDefaultTypeInternal;
+extern AddRoleRspDefaultTypeInternal _AddRoleRsp_default_instance_;
 class AddSmartGuardStoreReq;
 class AddSmartGuardStoreReqDefaultTypeInternal;
 extern AddSmartGuardStoreReqDefaultTypeInternal _AddSmartGuardStoreReq_default_instance_;
@@ -285,6 +291,12 @@ extern ModifyRemotePatrolStoreReqDefaultTypeInternal _ModifyRemotePatrolStoreReq
 class ModifyRemotePatrolStoreRsp;
 class ModifyRemotePatrolStoreRspDefaultTypeInternal;
 extern ModifyRemotePatrolStoreRspDefaultTypeInternal _ModifyRemotePatrolStoreRsp_default_instance_;
+class ModifyRoleReq;
+class ModifyRoleReqDefaultTypeInternal;
+extern ModifyRoleReqDefaultTypeInternal _ModifyRoleReq_default_instance_;
+class ModifyRoleRsp;
+class ModifyRoleRspDefaultTypeInternal;
+extern ModifyRoleRspDefaultTypeInternal _ModifyRoleRsp_default_instance_;
 class ModifySmartGuardStoreReq;
 class ModifySmartGuardStoreReqDefaultTypeInternal;
 extern ModifySmartGuardStoreReqDefaultTypeInternal _ModifySmartGuardStoreReq_default_instance_;
@@ -324,6 +336,9 @@ extern ModifyVIPCustomerRspDefaultTypeInternal _ModifyVIPCustomerRsp_default_ins
 class PatrolStoreEntrance;
 class PatrolStoreEntranceDefaultTypeInternal;
 extern PatrolStoreEntranceDefaultTypeInternal _PatrolStoreEntrance_default_instance_;
+class Permission;
+class PermissionDefaultTypeInternal;
+extern PermissionDefaultTypeInternal _Permission_default_instance_;
 class QueryAllAreaReq;
 class QueryAllAreaReqDefaultTypeInternal;
 extern QueryAllAreaReqDefaultTypeInternal _QueryAllAreaReq_default_instance_;
@@ -360,6 +375,12 @@ extern QueryAllRemotePatrolStoreReqDefaultTypeInternal _QueryAllRemotePatrolStor
 class QueryAllRemotePatrolStoreRsp;
 class QueryAllRemotePatrolStoreRspDefaultTypeInternal;
 extern QueryAllRemotePatrolStoreRspDefaultTypeInternal _QueryAllRemotePatrolStoreRsp_default_instance_;
+class QueryAllRoleReq;
+class QueryAllRoleReqDefaultTypeInternal;
+extern QueryAllRoleReqDefaultTypeInternal _QueryAllRoleReq_default_instance_;
+class QueryAllRoleRsp;
+class QueryAllRoleRspDefaultTypeInternal;
+extern QueryAllRoleRspDefaultTypeInternal _QueryAllRoleRsp_default_instance_;
 class QueryAllSmartGuardStoreReq;
 class QueryAllSmartGuardStoreReqDefaultTypeInternal;
 extern QueryAllSmartGuardStoreReqDefaultTypeInternal _QueryAllSmartGuardStoreReq_default_instance_;
@@ -444,6 +465,12 @@ extern QueryRemotePatrolStoreInfoReqDefaultTypeInternal _QueryRemotePatrolStoreI
 class QueryRemotePatrolStoreInfoRsp;
 class QueryRemotePatrolStoreInfoRspDefaultTypeInternal;
 extern QueryRemotePatrolStoreInfoRspDefaultTypeInternal _QueryRemotePatrolStoreInfoRsp_default_instance_;
+class QueryRoleReq;
+class QueryRoleReqDefaultTypeInternal;
+extern QueryRoleReqDefaultTypeInternal _QueryRoleReq_default_instance_;
+class QueryRoleRsp;
+class QueryRoleRspDefaultTypeInternal;
+extern QueryRoleRspDefaultTypeInternal _QueryRoleRsp_default_instance_;
 class QuerySensorAlarmRecordsReq;
 class QuerySensorAlarmRecordsReqDefaultTypeInternal;
 extern QuerySensorAlarmRecordsReqDefaultTypeInternal _QuerySensorAlarmRecordsReq_default_instance_;
@@ -507,6 +534,12 @@ extern RegularPatrolDefaultTypeInternal _RegularPatrol_default_instance_;
 class RemotePatrolStore;
 class RemotePatrolStoreDefaultTypeInternal;
 extern RemotePatrolStoreDefaultTypeInternal _RemotePatrolStore_default_instance_;
+class RemoveRoleReq;
+class RemoveRoleReqDefaultTypeInternal;
+extern RemoveRoleReqDefaultTypeInternal _RemoveRoleReq_default_instance_;
+class RemoveRoleRsp;
+class RemoveRoleRspDefaultTypeInternal;
+extern RemoveRoleRspDefaultTypeInternal _RemoveRoleRsp_default_instance_;
 class RemoveSensorAlarmRecordsReq;
 class RemoveSensorAlarmRecordsReqDefaultTypeInternal;
 extern RemoveSensorAlarmRecordsReqDefaultTypeInternal _RemoveSensorAlarmRecordsReq_default_instance_;
@@ -543,6 +576,9 @@ extern RequestDefaultTypeInternal _Request_default_instance_;
 class Response;
 class ResponseDefaultTypeInternal;
 extern ResponseDefaultTypeInternal _Response_default_instance_;
+class Role;
+class RoleDefaultTypeInternal;
+extern RoleDefaultTypeInternal _Role_default_instance_;
 class Sensor;
 class SensorDefaultTypeInternal;
 extern SensorDefaultTypeInternal _Sensor_default_instance_;
@@ -570,6 +606,12 @@ extern UnbindPushClientIDReqDefaultTypeInternal _UnbindPushClientIDReq_default_i
 class UnbindPushClientIDRsp;
 class UnbindPushClientIDRspDefaultTypeInternal;
 extern UnbindPushClientIDRspDefaultTypeInternal _UnbindPushClientIDRsp_default_instance_;
+class UserBindRoleReq;
+class UserBindRoleReqDefaultTypeInternal;
+extern UserBindRoleReqDefaultTypeInternal _UserBindRoleReq_default_instance_;
+class UserBindRoleRsp;
+class UserBindRoleRspDefaultTypeInternal;
+extern UserBindRoleRspDefaultTypeInternal _UserBindRoleRsp_default_instance_;
 class UserBrief;
 class UserBriefDefaultTypeInternal;
 extern UserBriefDefaultTypeInternal _UserBrief_default_instance_;
@@ -782,12 +824,24 @@ enum CustomerFlowMsgType {
   QuerySensorRecordsRsp_T = 30210,
   QuerySensorAlarmRecordsReq_T = 30220,
   QuerySensorAlarmRecordsRsp_T = 30230,
+  AddRoleReq_T = 30240,
+  AddRoleRsp_T = 30250,
+  RemoveRoleReq_T = 30260,
+  RemoveRoleRsp_T = 30270,
+  ModifyRoleReq_T = 30280,
+  ModifyRoleRsp_T = 30290,
+  QueryRoleReq_T = 30300,
+  QueryRoleRsp_T = 30310,
+  QueryAllRoleReq_T = 30320,
+  QueryAllRoleRsp_T = 30330,
+  UserBindRoleReq_T = 30340,
+  UserBindRoleRsp_T = 30350,
   CustomerFlowMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   CustomerFlowMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool CustomerFlowMsgType_IsValid(int value);
 const CustomerFlowMsgType CustomerFlowMsgType_MIN = Init_T;
-const CustomerFlowMsgType CustomerFlowMsgType_MAX = QuerySensorAlarmRecordsRsp_T;
+const CustomerFlowMsgType CustomerFlowMsgType_MAX = UserBindRoleRsp_T;
 const int CustomerFlowMsgType_ARRAYSIZE = CustomerFlowMsgType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CustomerFlowMsgType_descriptor();
@@ -20827,6 +20881,1430 @@ class QuerySensorAlarmRecordsRsp : public ::google::protobuf::Message /* @@proto
 };
 // -------------------------------------------------------------------
 
+class Permission : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Permission) */ {
+ public:
+  Permission();
+  virtual ~Permission();
+
+  Permission(const Permission& from);
+
+  inline Permission& operator=(const Permission& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Permission& default_instance();
+
+  static inline const Permission* internal_default_instance() {
+    return reinterpret_cast<const Permission*>(
+               &_Permission_default_instance_);
+  }
+
+  void Swap(Permission* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Permission* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Permission* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Permission& from);
+  void MergeFrom(const Permission& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Permission* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strAccess = 2;
+  void clear_straccess();
+  static const int kStrAccessFieldNumber = 2;
+  const ::std::string& straccess() const;
+  void set_straccess(const ::std::string& value);
+  #if LANG_CXX11
+  void set_straccess(::std::string&& value);
+  #endif
+  void set_straccess(const char* value);
+  void set_straccess(const char* value, size_t size);
+  ::std::string* mutable_straccess();
+  ::std::string* release_straccess();
+  void set_allocated_straccess(::std::string* straccess);
+
+  // string strExtend = 3;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 3;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiFuncID = 1;
+  void clear_uifuncid();
+  static const int kUiFuncIDFieldNumber = 1;
+  ::google::protobuf::uint32 uifuncid() const;
+  void set_uifuncid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Permission)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr straccess_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uifuncid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class Role : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Role) */ {
+ public:
+  Role();
+  virtual ~Role();
+
+  Role(const Role& from);
+
+  inline Role& operator=(const Role& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Role& default_instance();
+
+  static inline const Role* internal_default_instance() {
+    return reinterpret_cast<const Role*>(
+               &_Role_default_instance_);
+  }
+
+  void Swap(Role* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Role* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  Role* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const Role& from);
+  void MergeFrom(const Role& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(Role* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.Permission pmlist = 5;
+  int pmlist_size() const;
+  void clear_pmlist();
+  static const int kPmlistFieldNumber = 5;
+  const ::CustomerFlow::Interactive::Message::Permission& pmlist(int index) const;
+  ::CustomerFlow::Interactive::Message::Permission* mutable_pmlist(int index);
+  ::CustomerFlow::Interactive::Message::Permission* add_pmlist();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Permission >*
+      mutable_pmlist();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Permission >&
+      pmlist() const;
+
+  // string strRoleID = 1;
+  void clear_strroleid();
+  static const int kStrRoleIDFieldNumber = 1;
+  const ::std::string& strroleid() const;
+  void set_strroleid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleid(::std::string&& value);
+  #endif
+  void set_strroleid(const char* value);
+  void set_strroleid(const char* value, size_t size);
+  ::std::string* mutable_strroleid();
+  ::std::string* release_strroleid();
+  void set_allocated_strroleid(::std::string* strroleid);
+
+  // string strCreateDate = 3;
+  void clear_strcreatedate();
+  static const int kStrCreateDateFieldNumber = 3;
+  const ::std::string& strcreatedate() const;
+  void set_strcreatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strcreatedate(::std::string&& value);
+  #endif
+  void set_strcreatedate(const char* value);
+  void set_strcreatedate(const char* value, size_t size);
+  ::std::string* mutable_strcreatedate();
+  ::std::string* release_strcreatedate();
+  void set_allocated_strcreatedate(::std::string* strcreatedate);
+
+  // string strUpdateDate = 4;
+  void clear_strupdatedate();
+  static const int kStrUpdateDateFieldNumber = 4;
+  const ::std::string& strupdatedate() const;
+  void set_strupdatedate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strupdatedate(::std::string&& value);
+  #endif
+  void set_strupdatedate(const char* value);
+  void set_strupdatedate(const char* value, size_t size);
+  ::std::string* mutable_strupdatedate();
+  ::std::string* release_strupdatedate();
+  void set_allocated_strupdatedate(::std::string* strupdatedate);
+
+  // uint32 uiState = 2;
+  void clear_uistate();
+  static const int kUiStateFieldNumber = 2;
+  ::google::protobuf::uint32 uistate() const;
+  void set_uistate(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Role)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Permission > pmlist_;
+  ::google::protobuf::internal::ArenaStringPtr strroleid_;
+  ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strupdatedate_;
+  ::google::protobuf::uint32 uistate_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddRoleReq) */ {
+ public:
+  AddRoleReq();
+  virtual ~AddRoleReq();
+
+  AddRoleReq(const AddRoleReq& from);
+
+  inline AddRoleReq& operator=(const AddRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddRoleReq& default_instance();
+
+  static inline const AddRoleReq* internal_default_instance() {
+    return reinterpret_cast<const AddRoleReq*>(
+               &_AddRoleReq_default_instance_);
+  }
+
+  void Swap(AddRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddRoleReq& from);
+  void MergeFrom(const AddRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strRoleIDNew = 2;
+  void clear_strroleidnew();
+  static const int kStrRoleIDNewFieldNumber = 2;
+  const ::std::string& strroleidnew() const;
+  void set_strroleidnew(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleidnew(::std::string&& value);
+  #endif
+  void set_strroleidnew(const char* value);
+  void set_strroleidnew(const char* value, size_t size);
+  ::std::string* mutable_strroleidnew();
+  ::std::string* release_strroleidnew();
+  void set_allocated_strroleidnew(::std::string* strroleidnew);
+
+  // string strRoleIDOld = 3;
+  void clear_strroleidold();
+  static const int kStrRoleIDOldFieldNumber = 3;
+  const ::std::string& strroleidold() const;
+  void set_strroleidold(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleidold(::std::string&& value);
+  #endif
+  void set_strroleidold(const char* value);
+  void set_strroleidold(const char* value, size_t size);
+  ::std::string* mutable_strroleidold();
+  ::std::string* release_strroleidold();
+  void set_allocated_strroleidold(::std::string* strroleidold);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strroleidnew_;
+  ::google::protobuf::internal::ArenaStringPtr strroleidold_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.AddRoleRsp) */ {
+ public:
+  AddRoleRsp();
+  virtual ~AddRoleRsp();
+
+  AddRoleRsp(const AddRoleRsp& from);
+
+  inline AddRoleRsp& operator=(const AddRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddRoleRsp& default_instance();
+
+  static inline const AddRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const AddRoleRsp*>(
+               &_AddRoleRsp_default_instance_);
+  }
+
+  void Swap(AddRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddRoleRsp& from);
+  void MergeFrom(const AddRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.AddRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RemoveRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.RemoveRoleReq) */ {
+ public:
+  RemoveRoleReq();
+  virtual ~RemoveRoleReq();
+
+  RemoveRoleReq(const RemoveRoleReq& from);
+
+  inline RemoveRoleReq& operator=(const RemoveRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemoveRoleReq& default_instance();
+
+  static inline const RemoveRoleReq* internal_default_instance() {
+    return reinterpret_cast<const RemoveRoleReq*>(
+               &_RemoveRoleReq_default_instance_);
+  }
+
+  void Swap(RemoveRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RemoveRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RemoveRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RemoveRoleReq& from);
+  void MergeFrom(const RemoveRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RemoveRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strRoleID = 3;
+  void clear_strroleid();
+  static const int kStrRoleIDFieldNumber = 3;
+  const ::std::string& strroleid() const;
+  void set_strroleid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleid(::std::string&& value);
+  #endif
+  void set_strroleid(const char* value);
+  void set_strroleid(const char* value, size_t size);
+  ::std::string* mutable_strroleid();
+  ::std::string* release_strroleid();
+  void set_allocated_strroleid(::std::string* strroleid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.RemoveRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strroleid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RemoveRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.RemoveRoleRsp) */ {
+ public:
+  RemoveRoleRsp();
+  virtual ~RemoveRoleRsp();
+
+  RemoveRoleRsp(const RemoveRoleRsp& from);
+
+  inline RemoveRoleRsp& operator=(const RemoveRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemoveRoleRsp& default_instance();
+
+  static inline const RemoveRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const RemoveRoleRsp*>(
+               &_RemoveRoleRsp_default_instance_);
+  }
+
+  void Swap(RemoveRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RemoveRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RemoveRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RemoveRoleRsp& from);
+  void MergeFrom(const RemoveRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RemoveRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.RemoveRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyRoleReq) */ {
+ public:
+  ModifyRoleReq();
+  virtual ~ModifyRoleReq();
+
+  ModifyRoleReq(const ModifyRoleReq& from);
+
+  inline ModifyRoleReq& operator=(const ModifyRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyRoleReq& default_instance();
+
+  static inline const ModifyRoleReq* internal_default_instance() {
+    return reinterpret_cast<const ModifyRoleReq*>(
+               &_ModifyRoleReq_default_instance_);
+  }
+
+  void Swap(ModifyRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyRoleReq& from);
+  void MergeFrom(const ModifyRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .CustomerFlow.Interactive.Message.Role role = 2;
+  bool has_role() const;
+  void clear_role();
+  static const int kRoleFieldNumber = 2;
+  const ::CustomerFlow::Interactive::Message::Role& role() const;
+  ::CustomerFlow::Interactive::Message::Role* mutable_role();
+  ::CustomerFlow::Interactive::Message::Role* release_role();
+  void set_allocated_role(::CustomerFlow::Interactive::Message::Role* role);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::CustomerFlow::Interactive::Message::Role* role_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ModifyRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.ModifyRoleRsp) */ {
+ public:
+  ModifyRoleRsp();
+  virtual ~ModifyRoleRsp();
+
+  ModifyRoleRsp(const ModifyRoleRsp& from);
+
+  inline ModifyRoleRsp& operator=(const ModifyRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyRoleRsp& default_instance();
+
+  static inline const ModifyRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const ModifyRoleRsp*>(
+               &_ModifyRoleRsp_default_instance_);
+  }
+
+  void Swap(ModifyRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ModifyRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ModifyRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ModifyRoleRsp& from);
+  void MergeFrom(const ModifyRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ModifyRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.ModifyRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryRoleReq) */ {
+ public:
+  QueryRoleReq();
+  virtual ~QueryRoleReq();
+
+  QueryRoleReq(const QueryRoleReq& from);
+
+  inline QueryRoleReq& operator=(const QueryRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRoleReq& default_instance();
+
+  static inline const QueryRoleReq* internal_default_instance() {
+    return reinterpret_cast<const QueryRoleReq*>(
+               &_QueryRoleReq_default_instance_);
+  }
+
+  void Swap(QueryRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRoleReq& from);
+  void MergeFrom(const QueryRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strRoleID = 2;
+  void clear_strroleid();
+  static const int kStrRoleIDFieldNumber = 2;
+  const ::std::string& strroleid() const;
+  void set_strroleid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleid(::std::string&& value);
+  #endif
+  void set_strroleid(const char* value);
+  void set_strroleid(const char* value, size_t size);
+  ::std::string* mutable_strroleid();
+  ::std::string* release_strroleid();
+  void set_allocated_strroleid(::std::string* strroleid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strroleid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryRoleRsp) */ {
+ public:
+  QueryRoleRsp();
+  virtual ~QueryRoleRsp();
+
+  QueryRoleRsp(const QueryRoleRsp& from);
+
+  inline QueryRoleRsp& operator=(const QueryRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryRoleRsp& default_instance();
+
+  static inline const QueryRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryRoleRsp*>(
+               &_QueryRoleRsp_default_instance_);
+  }
+
+  void Swap(QueryRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryRoleRsp& from);
+  void MergeFrom(const QueryRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .CustomerFlow.Interactive.Message.Role role = 1;
+  bool has_role() const;
+  void clear_role();
+  static const int kRoleFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::Role& role() const;
+  ::CustomerFlow::Interactive::Message::Role* mutable_role();
+  ::CustomerFlow::Interactive::Message::Role* release_role();
+  void set_allocated_role(::CustomerFlow::Interactive::Message::Role* role);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::CustomerFlow::Interactive::Message::Role* role_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllRoleReq) */ {
+ public:
+  QueryAllRoleReq();
+  virtual ~QueryAllRoleReq();
+
+  QueryAllRoleReq(const QueryAllRoleReq& from);
+
+  inline QueryAllRoleReq& operator=(const QueryAllRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllRoleReq& default_instance();
+
+  static inline const QueryAllRoleReq* internal_default_instance() {
+    return reinterpret_cast<const QueryAllRoleReq*>(
+               &_QueryAllRoleReq_default_instance_);
+  }
+
+  void Swap(QueryAllRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllRoleReq& from);
+  void MergeFrom(const QueryAllRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.QueryAllRoleRsp) */ {
+ public:
+  QueryAllRoleRsp();
+  virtual ~QueryAllRoleRsp();
+
+  QueryAllRoleRsp(const QueryAllRoleRsp& from);
+
+  inline QueryAllRoleRsp& operator=(const QueryAllRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllRoleRsp& default_instance();
+
+  static inline const QueryAllRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const QueryAllRoleRsp*>(
+               &_QueryAllRoleRsp_default_instance_);
+  }
+
+  void Swap(QueryAllRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllRoleRsp& from);
+  void MergeFrom(const QueryAllRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .CustomerFlow.Interactive.Message.Role rolelist = 1;
+  int rolelist_size() const;
+  void clear_rolelist();
+  static const int kRolelistFieldNumber = 1;
+  const ::CustomerFlow::Interactive::Message::Role& rolelist(int index) const;
+  ::CustomerFlow::Interactive::Message::Role* mutable_rolelist(int index);
+  ::CustomerFlow::Interactive::Message::Role* add_rolelist();
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Role >*
+      mutable_rolelist();
+  const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Role >&
+      rolelist() const;
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QueryAllRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Role > rolelist_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UserBindRoleReq : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.UserBindRoleReq) */ {
+ public:
+  UserBindRoleReq();
+  virtual ~UserBindRoleReq();
+
+  UserBindRoleReq(const UserBindRoleReq& from);
+
+  inline UserBindRoleReq& operator=(const UserBindRoleReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserBindRoleReq& default_instance();
+
+  static inline const UserBindRoleReq* internal_default_instance() {
+    return reinterpret_cast<const UserBindRoleReq*>(
+               &_UserBindRoleReq_default_instance_);
+  }
+
+  void Swap(UserBindRoleReq* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UserBindRoleReq* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UserBindRoleReq* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UserBindRoleReq& from);
+  void MergeFrom(const UserBindRoleReq& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UserBindRoleReq* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 1;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 1;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // string strRoleID = 2;
+  void clear_strroleid();
+  static const int kStrRoleIDFieldNumber = 2;
+  const ::std::string& strroleid() const;
+  void set_strroleid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strroleid(::std::string&& value);
+  #endif
+  void set_strroleid(const char* value);
+  void set_strroleid(const char* value, size_t size);
+  ::std::string* mutable_strroleid();
+  ::std::string* release_strroleid();
+  void set_allocated_strroleid(::std::string* strroleid);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.UserBindRoleReq)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strroleid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class UserBindRoleRsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.UserBindRoleRsp) */ {
+ public:
+  UserBindRoleRsp();
+  virtual ~UserBindRoleRsp();
+
+  UserBindRoleRsp(const UserBindRoleRsp& from);
+
+  inline UserBindRoleRsp& operator=(const UserBindRoleRsp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UserBindRoleRsp& default_instance();
+
+  static inline const UserBindRoleRsp* internal_default_instance() {
+    return reinterpret_cast<const UserBindRoleRsp*>(
+               &_UserBindRoleRsp_default_instance_);
+  }
+
+  void Swap(UserBindRoleRsp* other);
+
+  // implements Message ----------------------------------------------
+
+  inline UserBindRoleRsp* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  UserBindRoleRsp* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UserBindRoleRsp& from);
+  void MergeFrom(const UserBindRoleRsp& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UserBindRoleRsp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.UserBindRoleRsp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CustomerFlow.Interactive.Message.Request) */ {
  public:
   Request();
@@ -21632,6 +23110,60 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* release_querysensoralarmrecordsreq_value();
   void set_allocated_querysensoralarmrecordsreq_value(::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* querysensoralarmrecordsreq_value);
 
+  // .CustomerFlow.Interactive.Message.AddRoleReq AddRoleReq_Value = 5170;
+  bool has_addrolereq_value() const;
+  void clear_addrolereq_value();
+  static const int kAddRoleReqValueFieldNumber = 5170;
+  const ::CustomerFlow::Interactive::Message::AddRoleReq& addrolereq_value() const;
+  ::CustomerFlow::Interactive::Message::AddRoleReq* mutable_addrolereq_value();
+  ::CustomerFlow::Interactive::Message::AddRoleReq* release_addrolereq_value();
+  void set_allocated_addrolereq_value(::CustomerFlow::Interactive::Message::AddRoleReq* addrolereq_value);
+
+  // .CustomerFlow.Interactive.Message.RemoveRoleReq RemoveRoleReq_Value = 5180;
+  bool has_removerolereq_value() const;
+  void clear_removerolereq_value();
+  static const int kRemoveRoleReqValueFieldNumber = 5180;
+  const ::CustomerFlow::Interactive::Message::RemoveRoleReq& removerolereq_value() const;
+  ::CustomerFlow::Interactive::Message::RemoveRoleReq* mutable_removerolereq_value();
+  ::CustomerFlow::Interactive::Message::RemoveRoleReq* release_removerolereq_value();
+  void set_allocated_removerolereq_value(::CustomerFlow::Interactive::Message::RemoveRoleReq* removerolereq_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyRoleReq ModifyRoleReq_Value = 5190;
+  bool has_modifyrolereq_value() const;
+  void clear_modifyrolereq_value();
+  static const int kModifyRoleReqValueFieldNumber = 5190;
+  const ::CustomerFlow::Interactive::Message::ModifyRoleReq& modifyrolereq_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyRoleReq* mutable_modifyrolereq_value();
+  ::CustomerFlow::Interactive::Message::ModifyRoleReq* release_modifyrolereq_value();
+  void set_allocated_modifyrolereq_value(::CustomerFlow::Interactive::Message::ModifyRoleReq* modifyrolereq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryRoleReq QueryRoleReq_Value = 5200;
+  bool has_queryrolereq_value() const;
+  void clear_queryrolereq_value();
+  static const int kQueryRoleReqValueFieldNumber = 5200;
+  const ::CustomerFlow::Interactive::Message::QueryRoleReq& queryrolereq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryRoleReq* mutable_queryrolereq_value();
+  ::CustomerFlow::Interactive::Message::QueryRoleReq* release_queryrolereq_value();
+  void set_allocated_queryrolereq_value(::CustomerFlow::Interactive::Message::QueryRoleReq* queryrolereq_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllRoleReq QueryAllRoleReq_Value = 5210;
+  bool has_queryallrolereq_value() const;
+  void clear_queryallrolereq_value();
+  static const int kQueryAllRoleReqValueFieldNumber = 5210;
+  const ::CustomerFlow::Interactive::Message::QueryAllRoleReq& queryallrolereq_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllRoleReq* mutable_queryallrolereq_value();
+  ::CustomerFlow::Interactive::Message::QueryAllRoleReq* release_queryallrolereq_value();
+  void set_allocated_queryallrolereq_value(::CustomerFlow::Interactive::Message::QueryAllRoleReq* queryallrolereq_value);
+
+  // .CustomerFlow.Interactive.Message.UserBindRoleReq UserBindRoleReq_Value = 5220;
+  bool has_userbindrolereq_value() const;
+  void clear_userbindrolereq_value();
+  static const int kUserBindRoleReqValueFieldNumber = 5220;
+  const ::CustomerFlow::Interactive::Message::UserBindRoleReq& userbindrolereq_value() const;
+  ::CustomerFlow::Interactive::Message::UserBindRoleReq* mutable_userbindrolereq_value();
+  ::CustomerFlow::Interactive::Message::UserBindRoleReq* release_userbindrolereq_value();
+  void set_allocated_userbindrolereq_value(::CustomerFlow::Interactive::Message::UserBindRoleReq* userbindrolereq_value);
+
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.Request)
  private:
 
@@ -21718,6 +23250,12 @@ class Request : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::CustomerFlow::Interactive::Message::RemoveSensorAlarmRecordsReq* removesensoralarmrecordsreq_value_;
   ::CustomerFlow::Interactive::Message::QuerySensorRecordsReq* querysensorrecordsreq_value_;
   ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsReq* querysensoralarmrecordsreq_value_;
+  ::CustomerFlow::Interactive::Message::AddRoleReq* addrolereq_value_;
+  ::CustomerFlow::Interactive::Message::RemoveRoleReq* removerolereq_value_;
+  ::CustomerFlow::Interactive::Message::ModifyRoleReq* modifyrolereq_value_;
+  ::CustomerFlow::Interactive::Message::QueryRoleReq* queryrolereq_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllRoleReq* queryallrolereq_value_;
+  ::CustomerFlow::Interactive::Message::UserBindRoleReq* userbindrolereq_value_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -22542,6 +24080,60 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* release_querysensoralarmrecordsrsp_value();
   void set_allocated_querysensoralarmrecordsrsp_value(::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* querysensoralarmrecordsrsp_value);
 
+  // .CustomerFlow.Interactive.Message.AddRoleRsp AddRoleRsp_Value = 5170;
+  bool has_addrolersp_value() const;
+  void clear_addrolersp_value();
+  static const int kAddRoleRspValueFieldNumber = 5170;
+  const ::CustomerFlow::Interactive::Message::AddRoleRsp& addrolersp_value() const;
+  ::CustomerFlow::Interactive::Message::AddRoleRsp* mutable_addrolersp_value();
+  ::CustomerFlow::Interactive::Message::AddRoleRsp* release_addrolersp_value();
+  void set_allocated_addrolersp_value(::CustomerFlow::Interactive::Message::AddRoleRsp* addrolersp_value);
+
+  // .CustomerFlow.Interactive.Message.RemoveRoleRsp RemoveRoleRsp_Value = 5180;
+  bool has_removerolersp_value() const;
+  void clear_removerolersp_value();
+  static const int kRemoveRoleRspValueFieldNumber = 5180;
+  const ::CustomerFlow::Interactive::Message::RemoveRoleRsp& removerolersp_value() const;
+  ::CustomerFlow::Interactive::Message::RemoveRoleRsp* mutable_removerolersp_value();
+  ::CustomerFlow::Interactive::Message::RemoveRoleRsp* release_removerolersp_value();
+  void set_allocated_removerolersp_value(::CustomerFlow::Interactive::Message::RemoveRoleRsp* removerolersp_value);
+
+  // .CustomerFlow.Interactive.Message.ModifyRoleRsp ModifyRoleRsp_Value = 5190;
+  bool has_modifyrolersp_value() const;
+  void clear_modifyrolersp_value();
+  static const int kModifyRoleRspValueFieldNumber = 5190;
+  const ::CustomerFlow::Interactive::Message::ModifyRoleRsp& modifyrolersp_value() const;
+  ::CustomerFlow::Interactive::Message::ModifyRoleRsp* mutable_modifyrolersp_value();
+  ::CustomerFlow::Interactive::Message::ModifyRoleRsp* release_modifyrolersp_value();
+  void set_allocated_modifyrolersp_value(::CustomerFlow::Interactive::Message::ModifyRoleRsp* modifyrolersp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryRoleRsp QueryRoleRsp_Value = 5200;
+  bool has_queryrolersp_value() const;
+  void clear_queryrolersp_value();
+  static const int kQueryRoleRspValueFieldNumber = 5200;
+  const ::CustomerFlow::Interactive::Message::QueryRoleRsp& queryrolersp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryRoleRsp* mutable_queryrolersp_value();
+  ::CustomerFlow::Interactive::Message::QueryRoleRsp* release_queryrolersp_value();
+  void set_allocated_queryrolersp_value(::CustomerFlow::Interactive::Message::QueryRoleRsp* queryrolersp_value);
+
+  // .CustomerFlow.Interactive.Message.QueryAllRoleRsp QueryAllRoleRsp_Value = 5210;
+  bool has_queryallrolersp_value() const;
+  void clear_queryallrolersp_value();
+  static const int kQueryAllRoleRspValueFieldNumber = 5210;
+  const ::CustomerFlow::Interactive::Message::QueryAllRoleRsp& queryallrolersp_value() const;
+  ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* mutable_queryallrolersp_value();
+  ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* release_queryallrolersp_value();
+  void set_allocated_queryallrolersp_value(::CustomerFlow::Interactive::Message::QueryAllRoleRsp* queryallrolersp_value);
+
+  // .CustomerFlow.Interactive.Message.UserBindRoleRsp UserBindRoleRsp_Value = 5220;
+  bool has_userbindrolersp_value() const;
+  void clear_userbindrolersp_value();
+  static const int kUserBindRoleRspValueFieldNumber = 5220;
+  const ::CustomerFlow::Interactive::Message::UserBindRoleRsp& userbindrolersp_value() const;
+  ::CustomerFlow::Interactive::Message::UserBindRoleRsp* mutable_userbindrolersp_value();
+  ::CustomerFlow::Interactive::Message::UserBindRoleRsp* release_userbindrolersp_value();
+  void set_allocated_userbindrolersp_value(::CustomerFlow::Interactive::Message::UserBindRoleRsp* userbindrolersp_value);
+
   // int32 iRetcode = 1;
   void clear_iretcode();
   static const int kIRetcodeFieldNumber = 1;
@@ -22635,6 +24227,12 @@ class Response : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CustomerFlow::Interactive::Message::RemoveSensorAlarmRecordsRsp* removesensoralarmrecordsrsp_value_;
   ::CustomerFlow::Interactive::Message::QuerySensorRecordsRsp* querysensorrecordsrsp_value_;
   ::CustomerFlow::Interactive::Message::QuerySensorAlarmRecordsRsp* querysensoralarmrecordsrsp_value_;
+  ::CustomerFlow::Interactive::Message::AddRoleRsp* addrolersp_value_;
+  ::CustomerFlow::Interactive::Message::RemoveRoleRsp* removerolersp_value_;
+  ::CustomerFlow::Interactive::Message::ModifyRoleRsp* modifyrolersp_value_;
+  ::CustomerFlow::Interactive::Message::QueryRoleRsp* queryrolersp_value_;
+  ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* queryallrolersp_value_;
+  ::CustomerFlow::Interactive::Message::UserBindRoleRsp* userbindrolersp_value_;
   ::google::protobuf::int32 iretcode_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -43396,6 +44994,1268 @@ QuerySensorAlarmRecordsRsp::sard() const {
 
 // -------------------------------------------------------------------
 
+// Permission
+
+// uint32 uiFuncID = 1;
+inline void Permission::clear_uifuncid() {
+  uifuncid_ = 0u;
+}
+inline ::google::protobuf::uint32 Permission::uifuncid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Permission.uiFuncID)
+  return uifuncid_;
+}
+inline void Permission::set_uifuncid(::google::protobuf::uint32 value) {
+  
+  uifuncid_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Permission.uiFuncID)
+}
+
+// string strAccess = 2;
+inline void Permission::clear_straccess() {
+  straccess_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Permission::straccess() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Permission.strAccess)
+  return straccess_.GetNoArena();
+}
+inline void Permission::set_straccess(const ::std::string& value) {
+  
+  straccess_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Permission.strAccess)
+}
+#if LANG_CXX11
+inline void Permission::set_straccess(::std::string&& value) {
+  
+  straccess_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Permission.strAccess)
+}
+#endif
+inline void Permission::set_straccess(const char* value) {
+  
+  straccess_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Permission.strAccess)
+}
+inline void Permission::set_straccess(const char* value, size_t size) {
+  
+  straccess_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Permission.strAccess)
+}
+inline ::std::string* Permission::mutable_straccess() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Permission.strAccess)
+  return straccess_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Permission::release_straccess() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Permission.strAccess)
+  
+  return straccess_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Permission::set_allocated_straccess(::std::string* straccess) {
+  if (straccess != NULL) {
+    
+  } else {
+    
+  }
+  straccess_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), straccess);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Permission.strAccess)
+}
+
+// string strExtend = 3;
+inline void Permission::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Permission::strextend() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Permission.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void Permission::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Permission.strExtend)
+}
+#if LANG_CXX11
+inline void Permission::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Permission.strExtend)
+}
+#endif
+inline void Permission::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Permission.strExtend)
+}
+inline void Permission::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Permission.strExtend)
+}
+inline ::std::string* Permission::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Permission.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Permission::release_strextend() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Permission.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Permission::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Permission.strExtend)
+}
+
+// -------------------------------------------------------------------
+
+// Role
+
+// string strRoleID = 1;
+inline void Role::clear_strroleid() {
+  strroleid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Role::strroleid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Role.strRoleID)
+  return strroleid_.GetNoArena();
+}
+inline void Role::set_strroleid(const ::std::string& value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Role.strRoleID)
+}
+#if LANG_CXX11
+inline void Role::set_strroleid(::std::string&& value) {
+  
+  strroleid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Role.strRoleID)
+}
+#endif
+inline void Role::set_strroleid(const char* value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Role.strRoleID)
+}
+inline void Role::set_strroleid(const char* value, size_t size) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Role.strRoleID)
+}
+inline ::std::string* Role::mutable_strroleid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Role.strRoleID)
+  return strroleid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Role::release_strroleid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Role.strRoleID)
+  
+  return strroleid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Role::set_allocated_strroleid(::std::string* strroleid) {
+  if (strroleid != NULL) {
+    
+  } else {
+    
+  }
+  strroleid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Role.strRoleID)
+}
+
+// uint32 uiState = 2;
+inline void Role::clear_uistate() {
+  uistate_ = 0u;
+}
+inline ::google::protobuf::uint32 Role::uistate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Role.uiState)
+  return uistate_;
+}
+inline void Role::set_uistate(::google::protobuf::uint32 value) {
+  
+  uistate_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Role.uiState)
+}
+
+// string strCreateDate = 3;
+inline void Role::clear_strcreatedate() {
+  strcreatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Role::strcreatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Role.strCreateDate)
+  return strcreatedate_.GetNoArena();
+}
+inline void Role::set_strcreatedate(const ::std::string& value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Role.strCreateDate)
+}
+#if LANG_CXX11
+inline void Role::set_strcreatedate(::std::string&& value) {
+  
+  strcreatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Role.strCreateDate)
+}
+#endif
+inline void Role::set_strcreatedate(const char* value) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Role.strCreateDate)
+}
+inline void Role::set_strcreatedate(const char* value, size_t size) {
+  
+  strcreatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Role.strCreateDate)
+}
+inline ::std::string* Role::mutable_strcreatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Role.strCreateDate)
+  return strcreatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Role::release_strcreatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Role.strCreateDate)
+  
+  return strcreatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Role::set_allocated_strcreatedate(::std::string* strcreatedate) {
+  if (strcreatedate != NULL) {
+    
+  } else {
+    
+  }
+  strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Role.strCreateDate)
+}
+
+// string strUpdateDate = 4;
+inline void Role::clear_strupdatedate() {
+  strupdatedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Role::strupdatedate() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+  return strupdatedate_.GetNoArena();
+}
+inline void Role::set_strupdatedate(const ::std::string& value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+}
+#if LANG_CXX11
+inline void Role::set_strupdatedate(::std::string&& value) {
+  
+  strupdatedate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+}
+#endif
+inline void Role::set_strupdatedate(const char* value) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+}
+inline void Role::set_strupdatedate(const char* value, size_t size) {
+  
+  strupdatedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+}
+inline ::std::string* Role::mutable_strupdatedate() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+  return strupdatedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Role::release_strupdatedate() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+  
+  return strupdatedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Role::set_allocated_strupdatedate(::std::string* strupdatedate) {
+  if (strupdatedate != NULL) {
+    
+  } else {
+    
+  }
+  strupdatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strupdatedate);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Role.strUpdateDate)
+}
+
+// repeated .CustomerFlow.Interactive.Message.Permission pmlist = 5;
+inline int Role::pmlist_size() const {
+  return pmlist_.size();
+}
+inline void Role::clear_pmlist() {
+  pmlist_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::Permission& Role::pmlist(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Role.pmlist)
+  return pmlist_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::Permission* Role::mutable_pmlist(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Role.pmlist)
+  return pmlist_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::Permission* Role::add_pmlist() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.Role.pmlist)
+  return pmlist_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Permission >*
+Role::mutable_pmlist() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.Role.pmlist)
+  return &pmlist_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Permission >&
+Role::pmlist() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.Role.pmlist)
+  return pmlist_;
+}
+
+// -------------------------------------------------------------------
+
+// AddRoleReq
+
+// string strUserID = 1;
+inline void AddRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void AddRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void AddRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+}
+#endif
+inline void AddRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+}
+inline void AddRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+}
+inline ::std::string* AddRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRoleReq.strUserID)
+}
+
+// string strRoleIDNew = 2;
+inline void AddRoleReq::clear_strroleidnew() {
+  strroleidnew_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddRoleReq::strroleidnew() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+  return strroleidnew_.GetNoArena();
+}
+inline void AddRoleReq::set_strroleidnew(const ::std::string& value) {
+  
+  strroleidnew_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+}
+#if LANG_CXX11
+inline void AddRoleReq::set_strroleidnew(::std::string&& value) {
+  
+  strroleidnew_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+}
+#endif
+inline void AddRoleReq::set_strroleidnew(const char* value) {
+  
+  strroleidnew_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+}
+inline void AddRoleReq::set_strroleidnew(const char* value, size_t size) {
+  
+  strroleidnew_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+}
+inline ::std::string* AddRoleReq::mutable_strroleidnew() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+  return strroleidnew_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddRoleReq::release_strroleidnew() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+  
+  return strroleidnew_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddRoleReq::set_allocated_strroleidnew(::std::string* strroleidnew) {
+  if (strroleidnew != NULL) {
+    
+  } else {
+    
+  }
+  strroleidnew_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleidnew);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDNew)
+}
+
+// string strRoleIDOld = 3;
+inline void AddRoleReq::clear_strroleidold() {
+  strroleidold_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddRoleReq::strroleidold() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+  return strroleidold_.GetNoArena();
+}
+inline void AddRoleReq::set_strroleidold(const ::std::string& value) {
+  
+  strroleidold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+}
+#if LANG_CXX11
+inline void AddRoleReq::set_strroleidold(::std::string&& value) {
+  
+  strroleidold_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+}
+#endif
+inline void AddRoleReq::set_strroleidold(const char* value) {
+  
+  strroleidold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+}
+inline void AddRoleReq::set_strroleidold(const char* value, size_t size) {
+  
+  strroleidold_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+}
+inline ::std::string* AddRoleReq::mutable_strroleidold() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+  return strroleidold_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddRoleReq::release_strroleidold() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+  
+  return strroleidold_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddRoleReq::set_allocated_strroleidold(::std::string* strroleidold) {
+  if (strroleidold != NULL) {
+    
+  } else {
+    
+  }
+  strroleidold_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleidold);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRoleReq.strRoleIDOld)
+}
+
+// -------------------------------------------------------------------
+
+// AddRoleRsp
+
+// string strValue = 1;
+inline void AddRoleRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddRoleRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddRoleRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+}
+#if LANG_CXX11
+inline void AddRoleRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+}
+#endif
+inline void AddRoleRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+}
+inline void AddRoleRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+}
+inline ::std::string* AddRoleRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddRoleRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddRoleRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.AddRoleRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// RemoveRoleReq
+
+// string strUserID = 2;
+inline void RemoveRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void RemoveRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void RemoveRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+}
+#endif
+inline void RemoveRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+}
+inline void RemoveRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+}
+inline ::std::string* RemoveRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemoveRoleReq.strUserID)
+}
+
+// string strRoleID = 3;
+inline void RemoveRoleReq::clear_strroleid() {
+  strroleid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveRoleReq::strroleid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+  return strroleid_.GetNoArena();
+}
+inline void RemoveRoleReq::set_strroleid(const ::std::string& value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+}
+#if LANG_CXX11
+inline void RemoveRoleReq::set_strroleid(::std::string&& value) {
+  
+  strroleid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+}
+#endif
+inline void RemoveRoleReq::set_strroleid(const char* value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+}
+inline void RemoveRoleReq::set_strroleid(const char* value, size_t size) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+}
+inline ::std::string* RemoveRoleReq::mutable_strroleid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+  return strroleid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveRoleReq::release_strroleid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+  
+  return strroleid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveRoleReq::set_allocated_strroleid(::std::string* strroleid) {
+  if (strroleid != NULL) {
+    
+  } else {
+    
+  }
+  strroleid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemoveRoleReq.strRoleID)
+}
+
+// -------------------------------------------------------------------
+
+// RemoveRoleRsp
+
+// string strValue = 1;
+inline void RemoveRoleRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveRoleRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void RemoveRoleRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+}
+#if LANG_CXX11
+inline void RemoveRoleRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+}
+#endif
+inline void RemoveRoleRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+}
+inline void RemoveRoleRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+}
+inline ::std::string* RemoveRoleRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveRoleRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveRoleRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.RemoveRoleRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyRoleReq
+
+// string strUserID = 1;
+inline void ModifyRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void ModifyRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void ModifyRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+}
+#endif
+inline void ModifyRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+}
+inline void ModifyRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+}
+inline ::std::string* ModifyRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRoleReq.strUserID)
+}
+
+// .CustomerFlow.Interactive.Message.Role role = 2;
+inline bool ModifyRoleReq::has_role() const {
+  return this != internal_default_instance() && role_ != NULL;
+}
+inline void ModifyRoleReq::clear_role() {
+  if (GetArenaNoVirtual() == NULL && role_ != NULL) delete role_;
+  role_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Role& ModifyRoleReq::role() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRoleReq.role)
+  return role_ != NULL ? *role_
+                         : *::CustomerFlow::Interactive::Message::Role::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Role* ModifyRoleReq::mutable_role() {
+  
+  if (role_ == NULL) {
+    role_ = new ::CustomerFlow::Interactive::Message::Role;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRoleReq.role)
+  return role_;
+}
+inline ::CustomerFlow::Interactive::Message::Role* ModifyRoleReq::release_role() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRoleReq.role)
+  
+  ::CustomerFlow::Interactive::Message::Role* temp = role_;
+  role_ = NULL;
+  return temp;
+}
+inline void ModifyRoleReq::set_allocated_role(::CustomerFlow::Interactive::Message::Role* role) {
+  delete role_;
+  role_ = role;
+  if (role) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRoleReq.role)
+}
+
+// -------------------------------------------------------------------
+
+// ModifyRoleRsp
+
+// string strValue = 1;
+inline void ModifyRoleRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModifyRoleRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void ModifyRoleRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+}
+#if LANG_CXX11
+inline void ModifyRoleRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+}
+#endif
+inline void ModifyRoleRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+}
+inline void ModifyRoleRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+}
+inline ::std::string* ModifyRoleRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModifyRoleRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModifyRoleRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.ModifyRoleRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRoleReq
+
+// string strUserID = 1;
+inline void QueryRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+}
+#endif
+inline void QueryRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+}
+inline void QueryRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+}
+inline ::std::string* QueryRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRoleReq.strUserID)
+}
+
+// string strRoleID = 2;
+inline void QueryRoleReq::clear_strroleid() {
+  strroleid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryRoleReq::strroleid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+  return strroleid_.GetNoArena();
+}
+inline void QueryRoleReq::set_strroleid(const ::std::string& value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+}
+#if LANG_CXX11
+inline void QueryRoleReq::set_strroleid(::std::string&& value) {
+  
+  strroleid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+}
+#endif
+inline void QueryRoleReq::set_strroleid(const char* value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+}
+inline void QueryRoleReq::set_strroleid(const char* value, size_t size) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+}
+inline ::std::string* QueryRoleReq::mutable_strroleid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+  return strroleid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryRoleReq::release_strroleid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+  
+  return strroleid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryRoleReq::set_allocated_strroleid(::std::string* strroleid) {
+  if (strroleid != NULL) {
+    
+  } else {
+    
+  }
+  strroleid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRoleReq.strRoleID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryRoleRsp
+
+// .CustomerFlow.Interactive.Message.Role role = 1;
+inline bool QueryRoleRsp::has_role() const {
+  return this != internal_default_instance() && role_ != NULL;
+}
+inline void QueryRoleRsp::clear_role() {
+  if (GetArenaNoVirtual() == NULL && role_ != NULL) delete role_;
+  role_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::Role& QueryRoleRsp::role() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryRoleRsp.role)
+  return role_ != NULL ? *role_
+                         : *::CustomerFlow::Interactive::Message::Role::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::Role* QueryRoleRsp::mutable_role() {
+  
+  if (role_ == NULL) {
+    role_ = new ::CustomerFlow::Interactive::Message::Role;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryRoleRsp.role)
+  return role_;
+}
+inline ::CustomerFlow::Interactive::Message::Role* QueryRoleRsp::release_role() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryRoleRsp.role)
+  
+  ::CustomerFlow::Interactive::Message::Role* temp = role_;
+  role_ = NULL;
+  return temp;
+}
+inline void QueryRoleRsp::set_allocated_role(::CustomerFlow::Interactive::Message::Role* role) {
+  delete role_;
+  role_ = role;
+  if (role) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryRoleRsp.role)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllRoleReq
+
+// string strUserID = 1;
+inline void QueryAllRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryAllRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void QueryAllRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+}
+#endif
+inline void QueryAllRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+}
+inline void QueryAllRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+}
+inline ::std::string* QueryAllRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QueryAllRoleReq.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllRoleRsp
+
+// repeated .CustomerFlow.Interactive.Message.Role rolelist = 1;
+inline int QueryAllRoleRsp::rolelist_size() const {
+  return rolelist_.size();
+}
+inline void QueryAllRoleRsp::clear_rolelist() {
+  rolelist_.Clear();
+}
+inline const ::CustomerFlow::Interactive::Message::Role& QueryAllRoleRsp::rolelist(int index) const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QueryAllRoleRsp.rolelist)
+  return rolelist_.Get(index);
+}
+inline ::CustomerFlow::Interactive::Message::Role* QueryAllRoleRsp::mutable_rolelist(int index) {
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QueryAllRoleRsp.rolelist)
+  return rolelist_.Mutable(index);
+}
+inline ::CustomerFlow::Interactive::Message::Role* QueryAllRoleRsp::add_rolelist() {
+  // @@protoc_insertion_point(field_add:CustomerFlow.Interactive.Message.QueryAllRoleRsp.rolelist)
+  return rolelist_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Role >*
+QueryAllRoleRsp::mutable_rolelist() {
+  // @@protoc_insertion_point(field_mutable_list:CustomerFlow.Interactive.Message.QueryAllRoleRsp.rolelist)
+  return &rolelist_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Role >&
+QueryAllRoleRsp::rolelist() const {
+  // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QueryAllRoleRsp.rolelist)
+  return rolelist_;
+}
+
+// -------------------------------------------------------------------
+
+// UserBindRoleReq
+
+// string strUserID = 1;
+inline void UserBindRoleReq::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserBindRoleReq::struserid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void UserBindRoleReq::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+}
+#if LANG_CXX11
+inline void UserBindRoleReq::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+}
+#endif
+inline void UserBindRoleReq::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+}
+inline void UserBindRoleReq::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+}
+inline ::std::string* UserBindRoleReq::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserBindRoleReq::release_struserid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserBindRoleReq::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UserBindRoleReq.strUserID)
+}
+
+// string strRoleID = 2;
+inline void UserBindRoleReq::clear_strroleid() {
+  strroleid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserBindRoleReq::strroleid() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+  return strroleid_.GetNoArena();
+}
+inline void UserBindRoleReq::set_strroleid(const ::std::string& value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+}
+#if LANG_CXX11
+inline void UserBindRoleReq::set_strroleid(::std::string&& value) {
+  
+  strroleid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+}
+#endif
+inline void UserBindRoleReq::set_strroleid(const char* value) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+}
+inline void UserBindRoleReq::set_strroleid(const char* value, size_t size) {
+  
+  strroleid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+}
+inline ::std::string* UserBindRoleReq::mutable_strroleid() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+  return strroleid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserBindRoleReq::release_strroleid() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+  
+  return strroleid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserBindRoleReq::set_allocated_strroleid(::std::string* strroleid) {
+  if (strroleid != NULL) {
+    
+  } else {
+    
+  }
+  strroleid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strroleid);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UserBindRoleReq.strRoleID)
+}
+
+// -------------------------------------------------------------------
+
+// UserBindRoleRsp
+
+// string strValue = 1;
+inline void UserBindRoleRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserBindRoleRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void UserBindRoleRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+}
+#if LANG_CXX11
+inline void UserBindRoleRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+}
+#endif
+inline void UserBindRoleRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+}
+inline void UserBindRoleRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+}
+inline ::std::string* UserBindRoleRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserBindRoleRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserBindRoleRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.UserBindRoleRsp.strValue)
+}
+
+// -------------------------------------------------------------------
+
 // Request
 
 // .CustomerFlow.Interactive.Message.CustomerFlowPreHandleReq CustomerFlowPreHandleReq_Value = 10;
@@ -46594,6 +49454,240 @@ inline void Request::set_allocated_querysensoralarmrecordsreq_value(::CustomerFl
     
   }
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QuerySensorAlarmRecordsReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.AddRoleReq AddRoleReq_Value = 5170;
+inline bool Request::has_addrolereq_value() const {
+  return this != internal_default_instance() && addrolereq_value_ != NULL;
+}
+inline void Request::clear_addrolereq_value() {
+  if (GetArenaNoVirtual() == NULL && addrolereq_value_ != NULL) delete addrolereq_value_;
+  addrolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddRoleReq& Request::addrolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.AddRoleReq_Value)
+  return addrolereq_value_ != NULL ? *addrolereq_value_
+                         : *::CustomerFlow::Interactive::Message::AddRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddRoleReq* Request::mutable_addrolereq_value() {
+  
+  if (addrolereq_value_ == NULL) {
+    addrolereq_value_ = new ::CustomerFlow::Interactive::Message::AddRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.AddRoleReq_Value)
+  return addrolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddRoleReq* Request::release_addrolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.AddRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRoleReq* temp = addrolereq_value_;
+  addrolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_addrolereq_value(::CustomerFlow::Interactive::Message::AddRoleReq* addrolereq_value) {
+  delete addrolereq_value_;
+  addrolereq_value_ = addrolereq_value;
+  if (addrolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.AddRoleReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.RemoveRoleReq RemoveRoleReq_Value = 5180;
+inline bool Request::has_removerolereq_value() const {
+  return this != internal_default_instance() && removerolereq_value_ != NULL;
+}
+inline void Request::clear_removerolereq_value() {
+  if (GetArenaNoVirtual() == NULL && removerolereq_value_ != NULL) delete removerolereq_value_;
+  removerolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::RemoveRoleReq& Request::removerolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.RemoveRoleReq_Value)
+  return removerolereq_value_ != NULL ? *removerolereq_value_
+                         : *::CustomerFlow::Interactive::Message::RemoveRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::RemoveRoleReq* Request::mutable_removerolereq_value() {
+  
+  if (removerolereq_value_ == NULL) {
+    removerolereq_value_ = new ::CustomerFlow::Interactive::Message::RemoveRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.RemoveRoleReq_Value)
+  return removerolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::RemoveRoleReq* Request::release_removerolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.RemoveRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::RemoveRoleReq* temp = removerolereq_value_;
+  removerolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_removerolereq_value(::CustomerFlow::Interactive::Message::RemoveRoleReq* removerolereq_value) {
+  delete removerolereq_value_;
+  removerolereq_value_ = removerolereq_value;
+  if (removerolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.RemoveRoleReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRoleReq ModifyRoleReq_Value = 5190;
+inline bool Request::has_modifyrolereq_value() const {
+  return this != internal_default_instance() && modifyrolereq_value_ != NULL;
+}
+inline void Request::clear_modifyrolereq_value() {
+  if (GetArenaNoVirtual() == NULL && modifyrolereq_value_ != NULL) delete modifyrolereq_value_;
+  modifyrolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyRoleReq& Request::modifyrolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.ModifyRoleReq_Value)
+  return modifyrolereq_value_ != NULL ? *modifyrolereq_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRoleReq* Request::mutable_modifyrolereq_value() {
+  
+  if (modifyrolereq_value_ == NULL) {
+    modifyrolereq_value_ = new ::CustomerFlow::Interactive::Message::ModifyRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.ModifyRoleReq_Value)
+  return modifyrolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRoleReq* Request::release_modifyrolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.ModifyRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRoleReq* temp = modifyrolereq_value_;
+  modifyrolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_modifyrolereq_value(::CustomerFlow::Interactive::Message::ModifyRoleReq* modifyrolereq_value) {
+  delete modifyrolereq_value_;
+  modifyrolereq_value_ = modifyrolereq_value;
+  if (modifyrolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.ModifyRoleReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRoleReq QueryRoleReq_Value = 5200;
+inline bool Request::has_queryrolereq_value() const {
+  return this != internal_default_instance() && queryrolereq_value_ != NULL;
+}
+inline void Request::clear_queryrolereq_value() {
+  if (GetArenaNoVirtual() == NULL && queryrolereq_value_ != NULL) delete queryrolereq_value_;
+  queryrolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryRoleReq& Request::queryrolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryRoleReq_Value)
+  return queryrolereq_value_ != NULL ? *queryrolereq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryRoleReq* Request::mutable_queryrolereq_value() {
+  
+  if (queryrolereq_value_ == NULL) {
+    queryrolereq_value_ = new ::CustomerFlow::Interactive::Message::QueryRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryRoleReq_Value)
+  return queryrolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryRoleReq* Request::release_queryrolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRoleReq* temp = queryrolereq_value_;
+  queryrolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryrolereq_value(::CustomerFlow::Interactive::Message::QueryRoleReq* queryrolereq_value) {
+  delete queryrolereq_value_;
+  queryrolereq_value_ = queryrolereq_value;
+  if (queryrolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryRoleReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRoleReq QueryAllRoleReq_Value = 5210;
+inline bool Request::has_queryallrolereq_value() const {
+  return this != internal_default_instance() && queryallrolereq_value_ != NULL;
+}
+inline void Request::clear_queryallrolereq_value() {
+  if (GetArenaNoVirtual() == NULL && queryallrolereq_value_ != NULL) delete queryallrolereq_value_;
+  queryallrolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllRoleReq& Request::queryallrolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.QueryAllRoleReq_Value)
+  return queryallrolereq_value_ != NULL ? *queryallrolereq_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRoleReq* Request::mutable_queryallrolereq_value() {
+  
+  if (queryallrolereq_value_ == NULL) {
+    queryallrolereq_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.QueryAllRoleReq_Value)
+  return queryallrolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRoleReq* Request::release_queryallrolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.QueryAllRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRoleReq* temp = queryallrolereq_value_;
+  queryallrolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_queryallrolereq_value(::CustomerFlow::Interactive::Message::QueryAllRoleReq* queryallrolereq_value) {
+  delete queryallrolereq_value_;
+  queryallrolereq_value_ = queryallrolereq_value;
+  if (queryallrolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.QueryAllRoleReq_Value)
+}
+
+// .CustomerFlow.Interactive.Message.UserBindRoleReq UserBindRoleReq_Value = 5220;
+inline bool Request::has_userbindrolereq_value() const {
+  return this != internal_default_instance() && userbindrolereq_value_ != NULL;
+}
+inline void Request::clear_userbindrolereq_value() {
+  if (GetArenaNoVirtual() == NULL && userbindrolereq_value_ != NULL) delete userbindrolereq_value_;
+  userbindrolereq_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::UserBindRoleReq& Request::userbindrolereq_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Request.UserBindRoleReq_Value)
+  return userbindrolereq_value_ != NULL ? *userbindrolereq_value_
+                         : *::CustomerFlow::Interactive::Message::UserBindRoleReq::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::UserBindRoleReq* Request::mutable_userbindrolereq_value() {
+  
+  if (userbindrolereq_value_ == NULL) {
+    userbindrolereq_value_ = new ::CustomerFlow::Interactive::Message::UserBindRoleReq;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Request.UserBindRoleReq_Value)
+  return userbindrolereq_value_;
+}
+inline ::CustomerFlow::Interactive::Message::UserBindRoleReq* Request::release_userbindrolereq_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Request.UserBindRoleReq_Value)
+  
+  ::CustomerFlow::Interactive::Message::UserBindRoleReq* temp = userbindrolereq_value_;
+  userbindrolereq_value_ = NULL;
+  return temp;
+}
+inline void Request::set_allocated_userbindrolereq_value(::CustomerFlow::Interactive::Message::UserBindRoleReq* userbindrolereq_value) {
+  delete userbindrolereq_value_;
+  userbindrolereq_value_ = userbindrolereq_value;
+  if (userbindrolereq_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Request.UserBindRoleReq_Value)
 }
 
 // -------------------------------------------------------------------
@@ -49864,6 +52958,240 @@ inline void Response::set_allocated_querysensoralarmrecordsrsp_value(::CustomerF
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QuerySensorAlarmRecordsRsp_Value)
 }
 
+// .CustomerFlow.Interactive.Message.AddRoleRsp AddRoleRsp_Value = 5170;
+inline bool Response::has_addrolersp_value() const {
+  return this != internal_default_instance() && addrolersp_value_ != NULL;
+}
+inline void Response::clear_addrolersp_value() {
+  if (GetArenaNoVirtual() == NULL && addrolersp_value_ != NULL) delete addrolersp_value_;
+  addrolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::AddRoleRsp& Response::addrolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.AddRoleRsp_Value)
+  return addrolersp_value_ != NULL ? *addrolersp_value_
+                         : *::CustomerFlow::Interactive::Message::AddRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::AddRoleRsp* Response::mutable_addrolersp_value() {
+  
+  if (addrolersp_value_ == NULL) {
+    addrolersp_value_ = new ::CustomerFlow::Interactive::Message::AddRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.AddRoleRsp_Value)
+  return addrolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::AddRoleRsp* Response::release_addrolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.AddRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::AddRoleRsp* temp = addrolersp_value_;
+  addrolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_addrolersp_value(::CustomerFlow::Interactive::Message::AddRoleRsp* addrolersp_value) {
+  delete addrolersp_value_;
+  addrolersp_value_ = addrolersp_value;
+  if (addrolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.AddRoleRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.RemoveRoleRsp RemoveRoleRsp_Value = 5180;
+inline bool Response::has_removerolersp_value() const {
+  return this != internal_default_instance() && removerolersp_value_ != NULL;
+}
+inline void Response::clear_removerolersp_value() {
+  if (GetArenaNoVirtual() == NULL && removerolersp_value_ != NULL) delete removerolersp_value_;
+  removerolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::RemoveRoleRsp& Response::removerolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.RemoveRoleRsp_Value)
+  return removerolersp_value_ != NULL ? *removerolersp_value_
+                         : *::CustomerFlow::Interactive::Message::RemoveRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::RemoveRoleRsp* Response::mutable_removerolersp_value() {
+  
+  if (removerolersp_value_ == NULL) {
+    removerolersp_value_ = new ::CustomerFlow::Interactive::Message::RemoveRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.RemoveRoleRsp_Value)
+  return removerolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::RemoveRoleRsp* Response::release_removerolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.RemoveRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::RemoveRoleRsp* temp = removerolersp_value_;
+  removerolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_removerolersp_value(::CustomerFlow::Interactive::Message::RemoveRoleRsp* removerolersp_value) {
+  delete removerolersp_value_;
+  removerolersp_value_ = removerolersp_value;
+  if (removerolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.RemoveRoleRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.ModifyRoleRsp ModifyRoleRsp_Value = 5190;
+inline bool Response::has_modifyrolersp_value() const {
+  return this != internal_default_instance() && modifyrolersp_value_ != NULL;
+}
+inline void Response::clear_modifyrolersp_value() {
+  if (GetArenaNoVirtual() == NULL && modifyrolersp_value_ != NULL) delete modifyrolersp_value_;
+  modifyrolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::ModifyRoleRsp& Response::modifyrolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.ModifyRoleRsp_Value)
+  return modifyrolersp_value_ != NULL ? *modifyrolersp_value_
+                         : *::CustomerFlow::Interactive::Message::ModifyRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRoleRsp* Response::mutable_modifyrolersp_value() {
+  
+  if (modifyrolersp_value_ == NULL) {
+    modifyrolersp_value_ = new ::CustomerFlow::Interactive::Message::ModifyRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.ModifyRoleRsp_Value)
+  return modifyrolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::ModifyRoleRsp* Response::release_modifyrolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.ModifyRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::ModifyRoleRsp* temp = modifyrolersp_value_;
+  modifyrolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_modifyrolersp_value(::CustomerFlow::Interactive::Message::ModifyRoleRsp* modifyrolersp_value) {
+  delete modifyrolersp_value_;
+  modifyrolersp_value_ = modifyrolersp_value;
+  if (modifyrolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.ModifyRoleRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryRoleRsp QueryRoleRsp_Value = 5200;
+inline bool Response::has_queryrolersp_value() const {
+  return this != internal_default_instance() && queryrolersp_value_ != NULL;
+}
+inline void Response::clear_queryrolersp_value() {
+  if (GetArenaNoVirtual() == NULL && queryrolersp_value_ != NULL) delete queryrolersp_value_;
+  queryrolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryRoleRsp& Response::queryrolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryRoleRsp_Value)
+  return queryrolersp_value_ != NULL ? *queryrolersp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryRoleRsp* Response::mutable_queryrolersp_value() {
+  
+  if (queryrolersp_value_ == NULL) {
+    queryrolersp_value_ = new ::CustomerFlow::Interactive::Message::QueryRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryRoleRsp_Value)
+  return queryrolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryRoleRsp* Response::release_queryrolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryRoleRsp* temp = queryrolersp_value_;
+  queryrolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryrolersp_value(::CustomerFlow::Interactive::Message::QueryRoleRsp* queryrolersp_value) {
+  delete queryrolersp_value_;
+  queryrolersp_value_ = queryrolersp_value;
+  if (queryrolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryRoleRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.QueryAllRoleRsp QueryAllRoleRsp_Value = 5210;
+inline bool Response::has_queryallrolersp_value() const {
+  return this != internal_default_instance() && queryallrolersp_value_ != NULL;
+}
+inline void Response::clear_queryallrolersp_value() {
+  if (GetArenaNoVirtual() == NULL && queryallrolersp_value_ != NULL) delete queryallrolersp_value_;
+  queryallrolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::QueryAllRoleRsp& Response::queryallrolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.QueryAllRoleRsp_Value)
+  return queryallrolersp_value_ != NULL ? *queryallrolersp_value_
+                         : *::CustomerFlow::Interactive::Message::QueryAllRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* Response::mutable_queryallrolersp_value() {
+  
+  if (queryallrolersp_value_ == NULL) {
+    queryallrolersp_value_ = new ::CustomerFlow::Interactive::Message::QueryAllRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.QueryAllRoleRsp_Value)
+  return queryallrolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* Response::release_queryallrolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.QueryAllRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::QueryAllRoleRsp* temp = queryallrolersp_value_;
+  queryallrolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_queryallrolersp_value(::CustomerFlow::Interactive::Message::QueryAllRoleRsp* queryallrolersp_value) {
+  delete queryallrolersp_value_;
+  queryallrolersp_value_ = queryallrolersp_value;
+  if (queryallrolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.QueryAllRoleRsp_Value)
+}
+
+// .CustomerFlow.Interactive.Message.UserBindRoleRsp UserBindRoleRsp_Value = 5220;
+inline bool Response::has_userbindrolersp_value() const {
+  return this != internal_default_instance() && userbindrolersp_value_ != NULL;
+}
+inline void Response::clear_userbindrolersp_value() {
+  if (GetArenaNoVirtual() == NULL && userbindrolersp_value_ != NULL) delete userbindrolersp_value_;
+  userbindrolersp_value_ = NULL;
+}
+inline const ::CustomerFlow::Interactive::Message::UserBindRoleRsp& Response::userbindrolersp_value() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Response.UserBindRoleRsp_Value)
+  return userbindrolersp_value_ != NULL ? *userbindrolersp_value_
+                         : *::CustomerFlow::Interactive::Message::UserBindRoleRsp::internal_default_instance();
+}
+inline ::CustomerFlow::Interactive::Message::UserBindRoleRsp* Response::mutable_userbindrolersp_value() {
+  
+  if (userbindrolersp_value_ == NULL) {
+    userbindrolersp_value_ = new ::CustomerFlow::Interactive::Message::UserBindRoleRsp;
+  }
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Response.UserBindRoleRsp_Value)
+  return userbindrolersp_value_;
+}
+inline ::CustomerFlow::Interactive::Message::UserBindRoleRsp* Response::release_userbindrolersp_value() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Response.UserBindRoleRsp_Value)
+  
+  ::CustomerFlow::Interactive::Message::UserBindRoleRsp* temp = userbindrolersp_value_;
+  userbindrolersp_value_ = NULL;
+  return temp;
+}
+inline void Response::set_allocated_userbindrolersp_value(::CustomerFlow::Interactive::Message::UserBindRoleRsp* userbindrolersp_value) {
+  delete userbindrolersp_value_;
+  userbindrolersp_value_ = userbindrolersp_value;
+  if (userbindrolersp_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Response.UserBindRoleRsp_Value)
+}
+
 // -------------------------------------------------------------------
 
 // CustomerFlowMessage
@@ -50027,6 +53355,34 @@ inline void CustomerFlowMessage::set_allocated_rspvalue(::CustomerFlow::Interact
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

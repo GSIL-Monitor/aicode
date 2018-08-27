@@ -255,6 +255,19 @@ public:
 
     bool QuerySensorAlarmRecordsReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+
+    bool AddRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool RemoveRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool ModifyRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool QueryAllRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+    bool UserBindRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
 private:
 
     bool PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strPayload, const std::string &strUserID);
@@ -610,6 +623,18 @@ private:
 
     bool QuerySensorAlarmRecords(const PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq &req, std::list<PassengerFlowProtoHandler::SensorAlarmRecord> &sarlist,
         const unsigned int uiPageSize = 10);
+
+
+    bool ValidRoleID(const std::string &strRoleID, bool &blResult);
+    bool IsRoleInUsed(const std::string &strRoleID, bool &blResult);
+    bool IsUserBindRoleAlready(const std::string &strUserID, bool &blResult);
+
+    void AddRole(const std::string &strUserID, const std::string &strRoleIDNew, const std::string &strRoleIDOld);
+    void RemoveRole(const std::string &strUserID, const std::string &strRoleID);
+    void ModifyRole(const std::string &strUserID, const PassengerFlowProtoHandler::Role &role);
+    bool QueryRole(const std::string &strUserID, const std::string &strRoleID, PassengerFlowProtoHandler::Role &role);
+    bool QueryAllRole(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Role> &rolelist);
+    void UserBindRole(const std::string &strUserID, const std::string &strRoleID);
 
 private:
     ParamInfo m_ParamInfo;

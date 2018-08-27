@@ -233,6 +233,24 @@ enum CustomerFlowMsgType
     QuerySensorAlarmRecordsRsp_T = 30230;
     
     
+    AddRoleReq_T = 30240;                     //增加角色
+    AddRoleRsp_T = 30250;
+    
+    RemoveRoleReq_T = 30260;                  //删除角色
+    RemoveRoleRsp_T = 30270;
+    
+    ModifyRoleReq_T = 30280;                  //修改角色
+    ModifyRoleRsp_T = 30290;
+    
+    QueryRoleReq_T = 30300;                   //查询角色
+    QueryRoleRsp_T = 30310;
+    
+    QueryAllRoleReq_T = 30320;                //查询所有角色
+    QueryAllRoleRsp_T = 30330;
+    
+    UserBindRoleReq_T = 30340;                //用户绑定角色
+    UserBindRoleRsp_T = 30350;
+    
 }
 
 message Area                             //区域
@@ -1415,6 +1433,88 @@ message QuerySensorAlarmRecordsRsp       //查询传感器告警记录响应
     repeated SensorAlarmRecord sard = 1;
 }
 
+message Permission
+{
+    uint32 uiFuncID = 1;
+    string strAccess = 2;
+    string strExtend = 3;
+}
+
+message Role
+{
+    string strRoleID = 1;
+    uint32 uiState = 2;
+    string strCreateDate = 3;
+    string strUpdateDate = 4;
+    repeated Permission pmlist = 5;
+    
+}
+
+message AddRoleReq
+{
+    string strUserID = 1;
+    string strRoleIDNew = 2;
+    string strRoleIDOld = 3;
+}
+
+message AddRoleRsp
+{
+    string strValue = 1;
+}
+
+message RemoveRoleReq
+{
+    string strUserID = 2;
+    string strRoleID = 3;
+}
+
+message RemoveRoleRsp
+{
+    string strValue = 1;
+}
+
+message ModifyRoleReq
+{
+    string strUserID = 1;
+    Role role = 2;
+}
+
+message ModifyRoleRsp
+{
+    string strValue = 1;
+}
+
+message QueryRoleReq
+{
+    string strUserID = 1;
+    string strRoleID = 2;
+}
+
+message QueryRoleRsp
+{
+    Role role = 1;
+}
+
+message QueryAllRoleReq
+{
+    string strUserID = 1;
+}
+
+message QueryAllRoleRsp
+{
+    repeated Role rolelist = 1;
+}
+
+message UserBindRoleReq
+{
+    string strUserID = 1;
+    string strRoleID = 2;
+}
+
+message UserBindRoleRsp
+{
+    string strValue = 1;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1531,6 +1631,14 @@ message Request
     QuerySensorRecordsReq QuerySensorRecordsReq_Value = 5150;                  //查询传感器监测记录请求
     
     QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq_Value = 5160;        //查询传感器告警记录请求
+    
+    
+    AddRoleReq AddRoleReq_Value = 5170;                                        //增加角色请求
+    RemoveRoleReq RemoveRoleReq_Value = 5180;                                  //删除角色请求
+    ModifyRoleReq ModifyRoleReq_Value = 5190;                                  //修改角色请求
+    QueryRoleReq QueryRoleReq_Value = 5200;                                    //查询角色请求
+    QueryAllRoleReq QueryAllRoleReq_Value = 5210;                              //查询所有角色请求
+    UserBindRoleReq UserBindRoleReq_Value = 5220;                              //用户绑定角色请求
     
 }
 
@@ -1650,6 +1758,14 @@ message Response
     QuerySensorRecordsRsp QuerySensorRecordsRsp_Value = 5150;                  //查询传感器监测记录响应
     
     QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp_Value = 5160;        //查询传感器告警记录响应
+    
+    
+    AddRoleRsp AddRoleRsp_Value = 5170;                                        //增加角色请求
+    RemoveRoleRsp RemoveRoleRsp_Value = 5180;                                  //删除角色请求
+    ModifyRoleRsp ModifyRoleRsp_Value = 5190;                                  //修改角色请求
+    QueryRoleRsp QueryRoleRsp_Value = 5200;                                    //查询角色请求
+    QueryAllRoleRsp QueryAllRoleRsp_Value = 5210;                              //查询所有角色请求
+    UserBindRoleRsp UserBindRoleRsp_Value = 5220;                              //用户绑定角色请求
     
 }
 

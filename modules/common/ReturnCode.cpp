@@ -46,6 +46,8 @@ const int ReturnInfo::SENSOR_TYPE_DUPLICATE = 3000;
 
 const int ReturnInfo::CMS_P2PID_DUPLICATE = 3100;
 
+const int ReturnInfo::DEPEND_ON = 3200;
+
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;
 
 int ReturnInfo::RetCode()

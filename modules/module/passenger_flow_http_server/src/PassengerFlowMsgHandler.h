@@ -121,6 +121,13 @@ public:
 
     static const std::string QUERY_SENSOR_ALARM_RECORDS;
 
+    static const std::string ADD_ROLE;
+    static const std::string REMOVE_ROLE;
+    static const std::string MODIFY_ROLE;
+    static const std::string QUERY_ROLE;
+    static const std::string QUERY_ALL_ROLE;
+    static const std::string USER_BIND_ROLE;
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -299,6 +306,20 @@ public:
     bool QuerySensorRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool QuerySensorAlarmRecordsHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool AddRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool UserBindRoleHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
     
@@ -692,6 +713,19 @@ private:
 
     bool QuerySensorAlarmRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorAlarmRecord> &srdlist);
 
+    
+    bool AddRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleIDNew, const std::string &strRoleIDOld);
+    bool RemoveRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID);
+    bool ModifyRole(const std::string &strSid, const std::string  &strUserID, const std::string &strRoleID, const std::list<unsigned int> &uiAllowFuncList,
+        const std::list<unsigned int> &uiDisallowFuncList);
+
+    template<typename T>
+    bool QueryRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID, T &Role);
+    template<typename T>
+    bool QueryAllRole(const std::string &strSid, const std::string &strUserID, std::list<T> &RoleList);
+
+    bool UserBindRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID);
+
 private:
     bool ValidDatetime(const std::string &strDatetime, const bool IsTime = false);
 
@@ -723,6 +757,5 @@ private:
     static const std::string FAILED_MSG;
 
 };
-
 
 #endif

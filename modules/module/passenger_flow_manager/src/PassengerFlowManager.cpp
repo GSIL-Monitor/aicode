@@ -4551,6 +4551,342 @@ bool PassengerFlowManager::QuerySensorAlarmRecordsReq(const std::string &strMsg,
     return blResult;
 }
 
+bool PassengerFlowManager::AddRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::AddRoleReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::AddRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add role rsp already send, dst id is " << strSrcID
+            << " and role new id is " << req.m_strRoleIDNew << " and role old id is " << req.m_strRoleIDOld
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    bool IsValid = false;
+    if (!ValidRoleID(req.m_strRoleIDOld, IsValid))
+    {
+        LOG_ERROR_RLD("Role valid failed and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    if (!IsValid)
+    {
+        LOG_ERROR_RLD("Role is invalid and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddRole, this, req.m_strUserID, req.m_strRoleIDNew, req.m_strRoleIDOld));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::RemoveRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::RemoveRoleReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::RemoveRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Remove role rsp already send, dst id is " << strSrcID
+            << " and role id is " << req.m_strRoleID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Remove role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (req.m_strRoleID == "administrator")
+    {
+        LOG_ERROR_RLD("Can not remove administrator role.");
+        return false;
+    }
+
+    bool IsInUsed = false;
+    if (!IsRoleInUsed(req.m_strRoleID, IsInUsed))
+    {
+        LOG_ERROR_RLD("Role in used failed and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    if (IsInUsed)
+    {
+        ReturnInfo::RetCode(ReturnInfo::DEPEND_ON);
+        LOG_ERROR_RLD("Role in used so can not be removed and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::RemoveRole, this, req.m_strUserID, req.m_strRoleID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::ModifyRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::ModifyRoleReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::ModifyRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Modify role rsp already send, dst id is " << strSrcID
+            << " and role id is " << req.m_role.m_strRoleID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Modify role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (req.m_role.m_strRoleID == "administrator")
+    {
+        LOG_ERROR_RLD("Can not modify administrator role.");
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyRole, this, req.m_strUserID, req.m_role));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryRoleReq req;
+    PassengerFlowProtoHandler::Role role;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &role)
+    {
+        PassengerFlowProtoHandler::QueryRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        
+        rsp.m_role = role;
+        
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query role rsp already send, dst id is " << strSrcID
+            << " and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    role.m_strRoleID = req.m_strRoleID;
+
+    if (!QueryRole(req.m_strUserID, req.m_strRoleID, role))
+    {
+        LOG_ERROR_RLD("Query role failed and user id is " << req.m_strUserID << " and role id is " << req.m_strRoleID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::QueryAllRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::QueryAllRoleReq req;
+    std::list<PassengerFlowProtoHandler::Role> rolelist;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &rolelist)
+    {
+        PassengerFlowProtoHandler::QueryAllRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        rsp.m_rolelist.swap(rolelist);
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all role rsp already send, dst id is " << strSrcID
+            << " and user id is " << req.m_strUserID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+    
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query all role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    if (!QueryAllRole(req.m_strUserID, rolelist))
+    {
+        LOG_ERROR_RLD("Query all role failed and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool PassengerFlowManager::UserBindRoleReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    PassengerFlowProtoHandler::UserBindRoleReq req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req)
+    {
+        PassengerFlowProtoHandler::UserBindRoleRsp rsp;
+        rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserBindRoleRsp_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("User bind role rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("User bind role rsp already send, dst id is " << strSrcID
+            << " and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID
+            << " and result is " << blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("User bind role req unserialize failed, src id is " << strSrcID);
+        return false;
+    }
+
+    bool IsValid = false;
+    if (!ValidRoleID(req.m_strRoleID, IsValid))
+    {
+        LOG_ERROR_RLD("Role valid failed and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    if (!IsValid)
+    {        
+        LOG_ERROR_RLD("Role is invalid and role id is " << req.m_strRoleID << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::UserBindRole, this, req.m_strUserID, req.m_strRoleID));
+
+    blResult = true;
+
+    return blResult;
+}
+
 bool PassengerFlowManager::PushMessage(const std::string &strTitle, const std::string &strContent, const std::string &strPayload, const std::string &strUserID)
 {
     MessagePush_Getui::PushMessage message;
@@ -7363,7 +7699,7 @@ void PassengerFlowManager::UserQuitStore(const std::string &strUserID, const std
 bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.user_id, b.aliasname, a.user_role from"
+    const char *sqlfmt = "select a.user_id, b.username, b.aliasname, a.user_role from"
         " t_user_store_association a join PlatformDB.t_user_info b on a.user_id = b.userid"
         " where store_id = '%s' and b.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
@@ -7380,6 +7716,9 @@ bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std:
             user.m_strUserName = strColumn;
             break;
         case 2:
+            user.m_strAliasName = strColumn;
+            break;
+        case 3:
             user.m_strRole = strColumn;
             result = user;
             break;
@@ -7410,8 +7749,8 @@ bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std:
 bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.user_id, b.username, b.aliasname from"
-        " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid"
+    const char *sqlfmt = "select a.user_id, b.username, b.aliasname, c.role_id from"
+        " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid join t_user_role_association c on a.user_id = c.user_id"
         " where company_id = '%s' and b.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strCompanyID.c_str());
 
@@ -7429,7 +7768,11 @@ bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, 
             break;
 
         case 2:
-            user.m_strAliasName = strColumn;
+            user.m_strAliasName = strColumn;            
+            break;
+
+        case 3:
+            user.m_strRole = strColumn;
             result = user;
             break;
 
@@ -10058,4 +10401,293 @@ bool PassengerFlowManager::QuerySensorAlarmRecords(const PassengerFlowProtoHandl
     }
 
     return true;
+}
+
+bool PassengerFlowManager::ValidRoleID(const std::string &strRoleID, bool &blResult)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_role_info where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str());
+
+    int iResult = 0;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        result = iResult = boost::lexical_cast<int>(strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("ValidRoleID exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    blResult = (0 != iResult);
+
+    return true;
+}
+
+bool PassengerFlowManager::IsRoleInUsed(const std::string &strRoleID, bool &blResult)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_user_role_association where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str());
+
+    int iResult = 0;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        result = iResult = boost::lexical_cast<int>(strColumn);        
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsRoleInUsed exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    blResult = (0 != iResult);
+
+    return true;
+}
+
+bool PassengerFlowManager::IsUserBindRoleAlready(const std::string &strUserID, bool &blResult)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(id) from t_user_role_association where user_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
+
+    int iResult = 0;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        result = iResult = boost::lexical_cast<int>(strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("IsUserBindRoleAlready exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    blResult = (0 != iResult);
+
+    return true;
+}
+
+void PassengerFlowManager::AddRole(const std::string &strUserID, const std::string &strRoleIDNew, const std::string &strRoleIDOld)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_role_info (id, role_id, create_date) values (uuid(), '%s', CURRENT_TIMESTAMP())";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleIDNew.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Add role exec sql failed, sql is " << sql);
+        return;
+    }
+
+    sqlfmt = "insert into t_role_menu_association (id, role_id, menu_id, access_permission, create_date) "
+        "select uuid(), '%s', menu_id, access_permission, create_date from t_role_menu_association "
+        "where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleIDNew.c_str(), strRoleIDOld.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Add role exec sql failed, sql is " << sql);
+        return;
+    }
+}
+
+void PassengerFlowManager::RemoveRole(const std::string &strUserID, const std::string &strRoleID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_role_info where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str());
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Remove role exec sql failed, sql is " << sql);
+        return;
+    }
+
+    sqlfmt = "delete from t_role_menu_association where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str());
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Remove role exec sql failed, sql is " << sql);
+        return;
+    }
+}
+
+void PassengerFlowManager::ModifyRole(const std::string &strUserID, const PassengerFlowProtoHandler::Role &role)
+{
+    for (auto itBegin = role.m_pmlist.begin(), itEnd = role.m_pmlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        const std::string &strMenuID = boost::lexical_cast<std::string>(itBegin->m_uiFuncID);
+
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "update t_role_menu_association set access_permission = '%s' where role_id = '%s' and menu_id = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, itBegin->m_strAccess.c_str(), role.m_strRoleID.c_str(), strMenuID.c_str());
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("Update role exec sql failed, sql is " << sql);
+            return;
+        }
+    }    
+}
+
+bool PassengerFlowManager::QueryRole(const std::string &strUserID, const std::string &strRoleID, PassengerFlowProtoHandler::Role &role)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select access_permission, menu_id from t_role_menu_association where role_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str());
+    
+    PassengerFlowProtoHandler::Permission pm;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            pm.m_strAccess = strColumn;
+            break;
+
+        case 1:
+            pm.m_uiFuncID = boost::lexical_cast<unsigned int>(strColumn);
+            result = pm;
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query role sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query role exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        const auto &ppm = boost::any_cast<PassengerFlowProtoHandler::Permission>(result);
+        role.m_pmlist.push_back(std::move(ppm));
+    }
+
+    return true;
+}
+
+bool PassengerFlowManager::QueryAllRole(const std::string &strUserID, std::list<PassengerFlowProtoHandler::Role> &rolelist)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select role_id, access_permission, menu_id from t_role_menu_association order by role_id desc";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    PassengerFlowProtoHandler::Role role;
+    PassengerFlowProtoHandler::Permission pm;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            if (!role.m_strRoleID.empty() && role.m_strRoleID != strColumn)
+            {
+                result = role;
+                role.m_pmlist.clear();
+            }
+
+            role.m_strRoleID = strColumn;
+            
+            break;
+
+        case 1:
+            pm.m_strAccess = strColumn;
+            break;
+
+        case 2:
+            pm.m_uiFuncID = boost::lexical_cast<unsigned int>(strColumn);
+
+            role.m_pmlist.push_back(pm);
+                        
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query all role sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query all role exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    for (auto &result : ResultList)
+    {
+        const auto &ppm = boost::any_cast<PassengerFlowProtoHandler::Role>(result);
+
+        PassengerFlowProtoHandler::Role roletmp;
+        roletmp.m_strCreateDate = ppm.m_strCreateDate;
+        roletmp.m_strRoleID = ppm.m_strRoleID;
+        roletmp.m_strUpdateDate = ppm.m_strUpdateDate;
+        roletmp.m_uiState = ppm.m_uiState;
+
+        for (const auto &pm : ppm.m_pmlist)
+        {
+            roletmp.m_pmlist.push_back(pm);
+            LOG_INFO_RLD("Role id is " << roletmp.m_strRoleID << " and permission id is " << pm.m_uiFuncID << " and " << pm.m_strAccess);
+        }
+        
+        LOG_INFO_RLD("Query all role and role id is " << roletmp.m_strRoleID << " and role permission id size is " << roletmp.m_pmlist.size());
+
+        rolelist.push_back(std::move(roletmp));
+    }
+
+    return true;
+}
+
+void PassengerFlowManager::UserBindRole(const std::string &strUserID, const std::string &strRoleID)
+{
+    bool IsInUsed = false;
+    if (!IsUserBindRoleAlready(strUserID, IsInUsed))
+    {
+        LOG_ERROR_RLD("Role in used failed and role id is " << strRoleID << " and user id is " << strUserID);
+        return;
+    }
+    
+    if (!IsInUsed)
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "insert into t_user_role_association (id, user_id, role_id, create_date)"
+            " values (uuid(), '%s', '%s', CURRENT_TIMESTAMP()) ";
+        snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str(), strRoleID.c_str());
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("User bind role exec sql failed, sql is " << sql);
+            return;
+        }
+
+        LOG_INFO_RLD("Insert into user role association is done.");
+    }
+    else
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "update t_user_role_association set role_id = '%s' where user_id = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strRoleID.c_str(), strUserID.c_str());
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("User bind role exec sql failed, sql is " << sql);
+            return;
+        }
+
+        LOG_INFO_RLD("Update user role association is done.");
+    }
+
 }

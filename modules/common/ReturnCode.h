@@ -55,6 +55,8 @@ public:
 
     static const int CMS_P2PID_DUPLICATE;            //CMS注册的p2pid与现有的重复
 
+    static const int DEPEND_ON;                             //存在依赖关系
+
     static int RetCode();
 
     static void RetCode(const int iRetCode);

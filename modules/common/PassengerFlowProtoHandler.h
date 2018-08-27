@@ -219,6 +219,24 @@ public:
         QuerySensorAlarmRecordsReq_T = 30220,          //查询传感器告警记录
         QuerySensorAlarmRecordsRsp_T = 30230,
 
+        AddRoleReq_T = 30240,                     //增加角色
+        AddRoleRsp_T = 30250,
+
+        RemoveRoleReq_T = 30260,                  //删除角色
+        RemoveRoleRsp_T = 30270,
+
+        ModifyRoleReq_T = 30280,                  //修改角色
+        ModifyRoleRsp_T = 30290,
+
+        QueryRoleReq_T = 30300,                   //查询角色
+        QueryRoleRsp_T = 30310,
+
+        QueryAllRoleReq_T = 30320,                //查询所有角色
+        QueryAllRoleRsp_T = 30330,
+
+        UserBindRoleReq_T = 30340,                //用户绑定角色
+        UserBindRoleRsp_T = 30350
+
     };
 
     struct Area                             //区域
@@ -1916,6 +1934,124 @@ public:
         virtual void UnSerializer(const CustomerFlowMessage &message);
     };
 
+    struct Permission
+    {
+        unsigned int m_uiFuncID;
+        std::string m_strAccess;
+        std::string m_strExtend;
+    };
+
+    struct Role
+    {
+        std::string m_strRoleID;
+        unsigned int m_uiState;
+        std::string m_strCreateDate;
+        std::string m_strUpdateDate;
+        std::list<Permission> m_pmlist;
+    };
+
+    struct AddRoleReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strRoleIDNew;
+        std::string m_strRoleIDOld;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct AddRoleRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveRoleReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strRoleID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct RemoveRoleRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyRoleReq : Request
+    {
+        std::string m_strUserID;
+        Role m_role;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct ModifyRoleRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryRoleReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strRoleID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryRoleRsp : Response
+    {
+        Role m_role;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllRoleReq : Request
+    {
+        std::string m_strUserID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct QueryAllRoleRsp : Response
+    {
+        std::list<Role> m_rolelist;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct UserBindRoleReq : Request
+    {
+        std::string m_strUserID;
+        std::string m_strRoleID;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
+    struct UserBindRoleRsp : Response
+    {
+        std::string m_strValue;
+
+        virtual void Serializer(CustomerFlowMessage &message) const;
+        virtual void UnSerializer(const CustomerFlowMessage &message);
+    };
+
     
     bool GetCustomerFlowMsgType(const std::string &strData, CustomerFlowMsgType &msgtype);
 
@@ -2338,6 +2474,37 @@ private:
     bool QuerySensorAlarmRecordsReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
     bool QuerySensorAlarmRecordsRsp_Serializer(const Request &rsp, std::string &strOutput);
     bool QuerySensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+
+    bool AddRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool AddRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool AddRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool AddRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool RemoveRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool RemoveRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool RemoveRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool RemoveRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool ModifyRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool ModifyRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool ModifyRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool ModifyRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool QueryAllRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool QueryAllRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool QueryAllRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool QueryAllRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
+
+    bool UserBindRoleReq_Serializer(const Request &req, std::string &strOutput);
+    bool UserBindRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req);
+    bool UserBindRoleRsp_Serializer(const Request &rsp, std::string &strOutput);
+    bool UserBindRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp);
 
 
     typedef boost::function<bool(const Request &req, std::string &strOutput)> Serializer;

@@ -545,6 +545,14 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorAlarmRecordsReq_T, boost::bind(&PassengerFlowManager::QuerySensorAlarmRecordsReq, &Umg, _1, _2, _3));
 
 
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::AddRoleReq_T, boost::bind(&PassengerFlowManager::AddRoleReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveRoleReq_T, boost::bind(&PassengerFlowManager::RemoveRoleReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRoleReq_T, boost::bind(&PassengerFlowManager::ModifyRoleReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRoleReq_T, boost::bind(&PassengerFlowManager::QueryRoleReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRoleReq_T, boost::bind(&PassengerFlowManager::QueryAllRoleReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(PassengerFlowProtoHandler::CustomerFlowMsgType::UserBindRoleReq_T, boost::bind(&PassengerFlowManager::UserBindRoleReq, &Umg, _1, _2, _3));
+
+
     ccenter.Run(true);
 
     return 0;

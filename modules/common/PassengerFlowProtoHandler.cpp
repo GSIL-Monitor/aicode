@@ -1225,6 +1225,66 @@ PassengerFlowProtoHandler::PassengerFlowProtoHandler()
     handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_UnSerializer, this, _1, _2);
     m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QuerySensorAlarmRecordsRsp_T, handler));
 
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::AddRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::AddRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRoleRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::RemoveRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::RemoveRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveRoleRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::ModifyRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::ModifyRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRoleRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRoleRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::QueryAllRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::QueryAllRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRoleRsp_T, handler));
+
+    /////////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::UserBindRoleReq_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::UserBindRoleReq_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UserBindRoleReq_T, handler));
+
+    handler.Szr = boost::bind(&PassengerFlowProtoHandler::UserBindRoleRsp_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&PassengerFlowProtoHandler::UserBindRoleRsp_UnSerializer, this, _1, _2);
+    m_ReqAndRspHandlerMap.insert(std::make_pair(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UserBindRoleRsp_T, handler));
+    
 }
 
 PassengerFlowProtoHandler::~PassengerFlowProtoHandler()
@@ -2943,6 +3003,126 @@ bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_Serializer(const Requ
 bool PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
 {
     return UnSerializerT<QuerySensorAlarmRecordsRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::AddRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<AddRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<AddRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::AddRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<AddRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::AddRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<AddRoleRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::RemoveRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<RemoveRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<RemoveRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::RemoveRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<RemoveRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::RemoveRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<RemoveRoleRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::ModifyRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<ModifyRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<ModifyRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::ModifyRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<ModifyRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::ModifyRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<ModifyRoleRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryRoleRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<QueryAllRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::QueryAllRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<QueryAllRoleRsp, Request>(message, rsp);
+}
+
+bool PassengerFlowProtoHandler::UserBindRoleReq_Serializer(const Request &req, std::string &strOutput)
+{
+    return SerializerT<UserBindRoleReq, Request>(req, strOutput);
+}
+
+bool PassengerFlowProtoHandler::UserBindRoleReq_UnSerializer(const CustomerFlowMessage &message, Request &req)
+{
+    return UnSerializerT<UserBindRoleReq, Request>(message, req);
+}
+
+bool PassengerFlowProtoHandler::UserBindRoleRsp_Serializer(const Request &rsp, std::string &strOutput)
+{
+    return SerializerT<UserBindRoleRsp, Request>(rsp, strOutput);
+}
+
+bool PassengerFlowProtoHandler::UserBindRoleRsp_UnSerializer(const CustomerFlowMessage &message, Request &rsp)
+{
+    return UnSerializerT<UserBindRoleRsp, Request>(message, rsp);
 }
 
 void PassengerFlowProtoHandler::Request::Serializer(CustomerFlowMessage &message) const
@@ -7310,4 +7490,325 @@ void PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp::UnSerializer(const C
         m_sardList.push_back(std::move(sard));
     }
 
+}
+
+void PassengerFlowProtoHandler::AddRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_addrolereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strroleidnew(m_strRoleIDNew);
+    req->set_strroleidold(m_strRoleIDOld);
+}
+
+void PassengerFlowProtoHandler::AddRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().addrolereq_value();
+
+    m_strUserID = req.struserid();
+    m_strRoleIDNew = req.strroleidnew();
+    m_strRoleIDOld = req.strroleidold();
+}
+
+
+void PassengerFlowProtoHandler::AddRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::AddRoleRsp_T);
+
+    message.mutable_rspvalue()->mutable_addrolersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::AddRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().addrolersp_value().strvalue();
+}
+
+
+void PassengerFlowProtoHandler::RemoveRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_removerolereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strroleid(m_strRoleID);
+}
+
+void PassengerFlowProtoHandler::RemoveRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().removerolereq_value();
+
+    m_strUserID = req.struserid();
+    m_strRoleID = req.strroleid();
+}
+
+
+void PassengerFlowProtoHandler::RemoveRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::RemoveRoleRsp_T);
+
+    message.mutable_rspvalue()->mutable_removerolersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::RemoveRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().removerolersp_value().strvalue();
+}
+
+void PassengerFlowProtoHandler::ModifyRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_modifyrolereq_value();
+    req->set_struserid(m_strUserID);
+
+    auto role = req->mutable_role();
+    role->set_strroleid(m_role.m_strRoleID);
+    role->set_uistate(m_role.m_uiState);
+    role->set_strcreatedate(m_role.m_strCreateDate);
+    role->set_strupdatedate(m_role.m_strUpdateDate);
+
+    auto pmlist = role->mutable_pmlist();
+    for (auto itBegin = m_role.m_pmlist.begin(), itEnd = m_role.m_pmlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto pPermission = pmlist->Add();
+        pPermission->set_uifuncid(itBegin->m_uiFuncID);
+        pPermission->set_straccess(itBegin->m_strAccess);
+        pPermission->set_strextend(itBegin->m_strExtend);
+    }
+
+}
+
+void PassengerFlowProtoHandler::ModifyRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().modifyrolereq_value();
+
+    m_strUserID = req.struserid();
+
+    const auto &role = req.role();
+    m_role.m_strCreateDate = role.strcreatedate();
+    m_role.m_strRoleID = role.strroleid();
+    m_role.m_strUpdateDate = role.strupdatedate();
+    m_role.m_uiState = role.uistate();
+
+    const auto &pmlist = role.pmlist();
+    for (int i = 0, sz = pmlist.size(); i < sz; ++i)
+    {
+        const auto& pm = pmlist.Get(i);
+
+        PassengerFlowProtoHandler::Permission pms;
+        pms.m_strAccess = pm.straccess();
+        pms.m_strExtend = pm.strextend();
+        pms.m_uiFuncID = pm.uifuncid();
+
+        m_role.m_pmlist.push_back(std::move(pms));
+    }
+}
+
+void PassengerFlowProtoHandler::ModifyRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::ModifyRoleRsp_T);
+
+    message.mutable_rspvalue()->mutable_modifyrolersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::ModifyRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().modifyrolersp_value().strvalue();
+}
+
+
+void PassengerFlowProtoHandler::QueryRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_queryrolereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strroleid(m_strRoleID);
+}
+
+void PassengerFlowProtoHandler::QueryRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().queryrolereq_value();
+
+    m_strUserID = req.struserid();
+    m_strRoleID = req.strroleid();
+}
+
+void PassengerFlowProtoHandler::QueryRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryRoleRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_queryrolersp_value();
+   
+    auto role = rsp->mutable_role();
+    role->set_strroleid(m_role.m_strRoleID);
+    role->set_uistate(m_role.m_uiState);
+    role->set_strcreatedate(m_role.m_strCreateDate);
+    role->set_strupdatedate(m_role.m_strUpdateDate);
+
+    auto pmlist = role->mutable_pmlist();
+    for (auto itBegin = m_role.m_pmlist.begin(), itEnd = m_role.m_pmlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto pPermission = pmlist->Add();
+        pPermission->set_uifuncid(itBegin->m_uiFuncID);
+        pPermission->set_straccess(itBegin->m_strAccess);
+        pPermission->set_strextend(itBegin->m_strExtend);
+    }
+}
+
+void PassengerFlowProtoHandler::QueryRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+    const auto &rsp = message.rspvalue().queryrolersp_value();
+
+    const auto &role = rsp.role();
+    m_role.m_strCreateDate = role.strcreatedate();
+    m_role.m_strRoleID = role.strroleid();
+    m_role.m_strUpdateDate = role.strupdatedate();
+    m_role.m_uiState = role.uistate();
+
+    const auto &pmlist = role.pmlist();
+    for (int i = 0, sz = pmlist.size(); i < sz; ++i)
+    {
+        const auto& pm = pmlist.Get(i);
+
+        PassengerFlowProtoHandler::Permission pms;
+        pms.m_strAccess = pm.straccess();
+        pms.m_strExtend = pm.strextend();
+        pms.m_uiFuncID = pm.uifuncid();
+
+        m_role.m_pmlist.push_back(std::move(pms));
+    }
+}
+
+void PassengerFlowProtoHandler::QueryAllRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_queryallrolereq_value();
+    req->set_struserid(m_strUserID);
+}
+
+void PassengerFlowProtoHandler::QueryAllRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().queryallrolereq_value();
+
+    m_strUserID = req.struserid();
+}
+
+
+void PassengerFlowProtoHandler::QueryAllRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::QueryAllRoleRsp_T);
+
+    auto rsp = message.mutable_rspvalue()->mutable_queryallrolersp_value()->mutable_rolelist();
+
+    for (auto itBegin = m_rolelist.begin(), itEnd = m_rolelist.end(); itBegin != itEnd; ++itBegin)
+    {
+        auto role = rsp->Add();
+
+        role->set_strroleid(itBegin->m_strRoleID);
+        role->set_uistate(itBegin->m_uiState);
+        role->set_strcreatedate(itBegin->m_strCreateDate);
+        role->set_strupdatedate(itBegin->m_strUpdateDate);
+
+        auto pmlist = role->mutable_pmlist();
+        for (auto itBegin2 = itBegin->m_pmlist.begin(), itEnd2 = itBegin->m_pmlist.end(); itBegin2 != itEnd2; ++itBegin2)
+        {
+            auto pPermission = pmlist->Add();
+            pPermission->set_uifuncid(itBegin2->m_uiFuncID);
+            pPermission->set_straccess(itBegin2->m_strAccess);
+            pPermission->set_strextend(itBegin2->m_strExtend);
+        }
+    }
+
+}
+
+void PassengerFlowProtoHandler::QueryAllRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    const auto &rsp = message.rspvalue().queryallrolersp_value().rolelist();
+
+    for (int i = 0, sz = rsp.size(); i < sz; ++i)
+    {
+        const auto& role = rsp.Get(i);
+
+        Role re;
+        re.m_strCreateDate = role.strcreatedate();
+        re.m_strRoleID = role.strroleid();
+        re.m_strUpdateDate = role.strupdatedate();
+        re.m_uiState = role.uistate();
+
+        const auto &pmlist = role.pmlist();
+        for (int i = 0, sz = pmlist.size(); i < sz; ++i)
+        {
+            const auto& pm = pmlist.Get(i);
+
+            PassengerFlowProtoHandler::Permission pms;
+            pms.m_strAccess = pm.straccess();
+            pms.m_strExtend = pm.strextend();
+            pms.m_uiFuncID = pm.uifuncid();
+
+            re.m_pmlist.push_back(std::move(pms));
+        }
+        
+        m_rolelist.push_back(std::move(re));
+    }
+}
+
+void PassengerFlowProtoHandler::UserBindRoleReq::Serializer(CustomerFlowMessage &message) const
+{
+    Request::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UserBindRoleReq_T);
+
+    auto req = message.mutable_reqvalue()->mutable_userbindrolereq_value();
+    req->set_struserid(m_strUserID);
+    req->set_strroleid(m_strRoleID);
+}
+
+void PassengerFlowProtoHandler::UserBindRoleReq::UnSerializer(const CustomerFlowMessage &message)
+{
+    Request::UnSerializer(message);
+    const auto &req = message.reqvalue().userbindrolereq_value();
+
+    m_strUserID = req.struserid();
+    m_strRoleID = req.strroleid();
+}
+
+void PassengerFlowProtoHandler::UserBindRoleRsp::Serializer(CustomerFlowMessage &message) const
+{
+    Response::Serializer(message);
+    message.set_type(CustomerFlow::Interactive::Message::CustomerFlowMsgType::UserBindRoleRsp_T);
+
+    message.mutable_rspvalue()->mutable_userbindrolersp_value()->set_strvalue(m_strValue);
+}
+
+void PassengerFlowProtoHandler::UserBindRoleRsp::UnSerializer(const CustomerFlowMessage &message)
+{
+    Response::UnSerializer(message);
+
+    m_strValue = message.rspvalue().userbindrolersp_value().strvalue();
 }
