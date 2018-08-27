@@ -4592,15 +4592,28 @@ bool PassengerFlowManager::AddRoleReq(const std::string &strMsg, const std::stri
     bool IsValid = false;
     if (!ValidRoleID(req.m_strRoleIDOld, IsValid))
     {
-        LOG_ERROR_RLD("Role valid failed and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        LOG_ERROR_RLD("Role old valid failed and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        return false;
+    }
+    
+    if (!IsValid)
+    {
+        LOG_ERROR_RLD("Role old is invalid and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
         return false;
     }
 
-    if (!IsValid)
+    if (!ValidRoleID(req.m_strRoleIDNew, IsValid))
     {
-        LOG_ERROR_RLD("Role is invalid and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        LOG_ERROR_RLD("Role new valid failed and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
         return false;
     }
+
+    if (IsValid)
+    {
+        LOG_ERROR_RLD("Role new is already exist and role id is " << req.m_strRoleIDOld << " and user id is " << req.m_strUserID);
+        return false;
+    }
+
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddRole, this, req.m_strUserID, req.m_strRoleIDNew, req.m_strRoleIDOld));
 
