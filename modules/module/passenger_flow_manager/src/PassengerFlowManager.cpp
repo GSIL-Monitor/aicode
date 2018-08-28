@@ -10663,6 +10663,7 @@ bool PassengerFlowManager::QueryAllRole(const std::string &strUserID, std::list<
         rolelist.push_back(std::move(roletmp));
     }
 
+    rolelist.push_back(std::move(role));
     return true;
 }
 
