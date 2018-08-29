@@ -7673,6 +7673,7 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmThresholdHandler(boost::shared_ptr
         Json::Value jsAlarmThreshold;
         jsAlarmThreshold["type"] = boost::lexical_cast<std::string>(itBegin->m_uiType);
         jsAlarmThreshold["threshold_value"] = itBegin->m_strAlarmThreshold;
+        jsAlarmThreshold["sensor_key"] = itBegin->m_strSensorKey;
         
         jsAlarmThresholdList[i] = jsAlarmThreshold;
     }
@@ -13030,6 +13031,7 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmThreshold(const std::string &strSi
             sr.m_strStoreID = itBegin->m_strStoreID;
             sr.m_strValue = itBegin->m_strValue;
             sr.m_uiType = boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
+            sr.m_strSensorKey = itBegin->m_strSensorKey;
 
             srlist.push_back(std::move(sr));
         }

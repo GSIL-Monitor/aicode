@@ -10059,7 +10059,7 @@ void PassengerFlowManager::AddSensorAlarmInfo(const std::string &strSensorID, co
 bool PassengerFlowManager::QuerySensorAlarmThreshold(const std::string &strDeviceID, std::list<PassengerFlowProtoHandler::Sensor> &sensorList)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold from t_store_sensor"
+    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold, sensor_key from t_store_sensor"
         " where device_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str());
 
@@ -10087,7 +10087,10 @@ bool PassengerFlowManager::QuerySensorAlarmThreshold(const std::string &strDevic
             sr.m_strCreateDate = strColumn;
             break;
         case 6:
-            sr.m_strSensorAlarmThreshold = strColumn;
+            sr.m_strSensorAlarmThreshold = strColumn;            
+            break;
+        case 7:
+            sr.m_strSensorKey = strColumn;
             result = sr;
             break;
 
