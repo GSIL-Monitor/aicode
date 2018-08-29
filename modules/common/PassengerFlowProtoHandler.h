@@ -448,6 +448,7 @@ public:
         std::string m_strValue;
         unsigned int m_uiState;
         std::string m_strCreateDate;
+        std::string m_strSensorKey;
     };
 
     struct RawCustomerFlow                  //设备客流信息

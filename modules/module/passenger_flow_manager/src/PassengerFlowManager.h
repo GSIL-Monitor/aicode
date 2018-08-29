@@ -598,7 +598,7 @@ private:
 
     void ReportSensorInfo(const std::string &strDeviceID, const std::list<PassengerFlowProtoHandler::Sensor> &sensorList);
 
-    bool QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, std::string &strSensorID);
+    bool QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, const std::string &strSensorKey, std::string &strSensorID);
 
     void AddSensorInfo(const std::string &strDeviceID, const std::string &strSensorID, const PassengerFlowProtoHandler::Sensor &sensorInfo);
 

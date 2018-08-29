@@ -463,6 +463,7 @@ message Sensor                           //传感器
     string strValue = 7;
     uint32 uiState = 8;
     string strCreateDate = 9;
+    string strSensorKey = 10;
 }
 
 message RawCustomerFlow                  //设备客流信息

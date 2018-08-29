@@ -3740,12 +3740,13 @@ bool PassengerFlowManager::AddStoreSensorReq(const std::string &strMsg, const st
             return false;
         }
 
-    if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType)))
-    {
-        LOG_ERROR_RLD("Add store sensor req vaild failed because same type already exist on the same device");
-        ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
-        return false;
-    }
+    ////去除同一个设备只能添加一种类型的传感器限制。
+    //if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType)))
+    //{
+    //    LOG_ERROR_RLD("Add store sensor req vaild failed because same type already exist on the same device");
+    //    ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
+    //    return false;
+    //}
 
     PassengerFlowProtoHandler::Sensor sensorInfo;
     sensorInfo.m_strSensorID = strSensorID = CreateUUID();
@@ -3756,6 +3757,7 @@ bool PassengerFlowManager::AddStoreSensorReq(const std::string &strMsg, const st
     sensorInfo.m_strDeviceID = req.m_sensorInfo.m_strDeviceID;
     sensorInfo.m_strValue = req.m_sensorInfo.m_strValue;
     sensorInfo.m_strCreateDate = CurrentTime();
+    sensorInfo.m_strSensorKey = req.m_sensorInfo.m_strSensorKey;
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddStoreSensor, this, sensorInfo));
 
@@ -3852,12 +3854,13 @@ bool PassengerFlowManager::ModifyStoreSensorReq(const std::string &strMsg, const
             return false;
         }
 
-    if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType), true, req.m_sensorInfo.m_strSensorID))
-    {
-        LOG_ERROR_RLD("Modify store sensor req vaild failed because same type already exist on the same device");
-        ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
-        return false;
-    }
+    ////去除同一个设备只能添加一种类型的传感器限制。
+    //if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType), true, req.m_sensorInfo.m_strSensorID))
+    //{
+    //    LOG_ERROR_RLD("Modify store sensor req vaild failed because same type already exist on the same device");
+    //    ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
+    //    return false;
+    //}
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyStoreSensor, this, req.m_sensorInfo));
 
@@ -3894,6 +3897,7 @@ bool PassengerFlowManager::QueryStoreSensorInfoReq(const std::string &strMsg, co
             rsp.m_sensorInfo.m_strDeviceID = sensor.m_strDeviceID;
             rsp.m_sensorInfo.m_strValue = sensor.m_strValue;
             rsp.m_sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
+            rsp.m_sensorInfo.m_strSensorKey = sensor.m_strSensorKey;
         }
 
         std::string strSerializeOutPut;
@@ -9167,10 +9171,11 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
 void PassengerFlowManager::AddStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "insert into t_store_sensor (id, store_id, sensor_id, device_id, sensor_name, sensor_type, sensor_alarm_threshold, create_date)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+    const char *sqlfmt = "insert into t_store_sensor (id, store_id, sensor_id, device_id, sensor_name, sensor_type, sensor_alarm_threshold, create_date, sensor_key)"
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, sensorInfo.m_strStoreID.c_str(), sensorInfo.m_strSensorID.c_str(), sensorInfo.m_strDeviceID.c_str(),
-        sensorInfo.m_strSensorName.c_str(), sensorInfo.m_strSensorType.c_str(), sensorInfo.m_strSensorAlarmThreshold.c_str(), sensorInfo.m_strCreateDate.c_str());
+        sensorInfo.m_strSensorName.c_str(), sensorInfo.m_strSensorType.c_str(), sensorInfo.m_strSensorAlarmThreshold.c_str(), sensorInfo.m_strCreateDate.c_str(), 
+        sensorInfo.m_strSensorKey.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -9231,6 +9236,12 @@ void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Se
         blModified = true;
     }
 
+    if (!sensorInfo.m_strSensorKey.empty())
+    {
+        len += snprintf(sql + len, size - len, ", sensor_key = '%s'", sensorInfo.m_strSensorKey.c_str());
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("ModifyStoreSensor completed, sensor info is not changed");
@@ -9248,7 +9259,7 @@ void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Se
 bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, PassengerFlowProtoHandler::Sensor &sensorInfo)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, ifnull(b.value, ''), a.create_date, a.sensor_alarm_threshold from"
+    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, ifnull(b.value, ''), a.create_date, a.sensor_alarm_threshold, a.sensor_key from"
         " t_store_sensor a left join t_sensor_value b on a.sensor_id = b.sensor_id"
         " where a.sensor_id = '%s' order by b.create_date desc limit 0, 1";
     snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
@@ -9281,6 +9292,9 @@ bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, 
             break;
         case 7:
             rstStoreSensor.m_strSensorAlarmThreshold = strColumn;
+            break;
+        case 8:
+            rstStoreSensor.m_strSensorKey = strColumn;
             result = rstStoreSensor;
             break;
 
@@ -9314,6 +9328,7 @@ bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, 
     sensorInfo.m_strSensorAlarmThreshold = sensor.m_strSensorAlarmThreshold;
     sensorInfo.m_strValue = sensor.m_strValue;
     sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
+    sensorInfo.m_strSensorKey = sensor.m_strSensorKey;
 
     return true;
 }
@@ -9362,7 +9377,7 @@ bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, st
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold from t_store_sensor"
+    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold, sensor_key from t_store_sensor"
         " where store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
@@ -9391,6 +9406,9 @@ bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, st
             break;
         case 6:
             rstStoreSensor.m_strSensorAlarmThreshold = strColumn;
+            break;
+        case 7:
+            rstStoreSensor.m_strSensorKey = strColumn;
             result = rstStoreSensor;
             break;
 
@@ -9949,10 +9967,10 @@ void PassengerFlowManager::ReportSensorInfo(const std::string &strDeviceID, cons
     for (auto &sensor : sensorList)
     {
         std::string strSensorID;
-        if (!QueryDeviceSensor(strDeviceID, sensor.m_strSensorType, strSensorID) || strSensorID.empty())
+        if (!QueryDeviceSensor(strDeviceID, sensor.m_strSensorType, sensor.m_strSensorKey, strSensorID) || strSensorID.empty())
         {
             LOG_ERROR_RLD("ReportSensorInfo error, query device sensor error, device id is " << strDeviceID
-                << " and sensor type is " << sensor.m_strSensorType);
+                << " and sensor type is " << sensor.m_strSensorType << " and sensor key is " << sensor.m_strSensorKey);
             continue;
         }
 
@@ -9960,11 +9978,11 @@ void PassengerFlowManager::ReportSensorInfo(const std::string &strDeviceID, cons
     }
 }
 
-bool PassengerFlowManager::QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, std::string &strSensorID)
+bool PassengerFlowManager::QueryDeviceSensor(const std::string &strDeviceID, const std::string &strSensorType, const std::string &strSensorKey, std::string &strSensorID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select sensor_id from t_store_sensor where device_id = '%s' and sensor_type = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strSensorType.c_str());
+    const char *sqlfmt = "select sensor_id from t_store_sensor where device_id = '%s' and sensor_type = '%s' and sensor_key = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDeviceID.c_str(), strSensorType.c_str(), strSensorKey.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -10014,7 +10032,7 @@ void PassengerFlowManager::AddSensorInfo(const std::string &strDeviceID, const s
 void PassengerFlowManager::ReportSensorAlarmInfo(const PassengerFlowProtoHandler::Sensor &sr, const unsigned int uiRecover, const std::string &strFileID)
 {
     std::string strSensorID;
-    if (!QueryDeviceSensor(sr.m_strDeviceID, sr.m_strSensorType, strSensorID) || strSensorID.empty())
+    if (!QueryDeviceSensor(sr.m_strDeviceID, sr.m_strSensorType, sr.m_strSensorKey, strSensorID) || strSensorID.empty())
     {
         LOG_ERROR_RLD("ReportSensorAlarmInfo error, query device sensor error, device id is " << sr.m_strDeviceID
             << " and sensor type is " << sr.m_strSensorType);

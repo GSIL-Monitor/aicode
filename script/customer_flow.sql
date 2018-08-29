@@ -921,6 +921,7 @@ create table `t_store_sensor` (
     `sensor_name` varchar(256) not null              comment '传感器名称',
     `sensor_type` varchar(16) not null               comment '传感器类型',
     `sensor_alarm_threshold` varchar(256) NOT NULL DEFAULT ''  comment '传感器告警阈值',
+    `sensor_key` varchar(64) not null               comment '传感器KEY',
     `state` int default 0                            comment '0-正常，1-删除',
     `create_date` datetime not null                  comment '创建日期',
     `update_date` datetime default current_timestamp comment '更新日期',

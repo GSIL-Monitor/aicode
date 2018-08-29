@@ -516,7 +516,8 @@ private:
         std::string m_strAlarmThreshold;
         std::string m_strValue;
         std::string m_strStoreID;
-        std::string m_strDevID;        
+        std::string m_strDevID;
+        std::string m_strSensorKey;
     };
 
     struct PatrolResultReportQueryParam

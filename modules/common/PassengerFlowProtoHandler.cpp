@@ -362,6 +362,7 @@ void SerializeSensorList(const std::list<PassengerFlowProtoHandler::Sensor> &sen
         pDstSensorInfo->set_strvalue(itBegin->m_strValue);
         pDstSensorInfo->set_uistate(itBegin->m_uiState);
         pDstSensorInfo->set_strcreatedate(itBegin->m_strCreateDate);
+        pDstSensorInfo->set_strsensorkey(itBegin->m_strSensorKey);
     }
 }
 
@@ -381,6 +382,7 @@ void UnSerializeSensorList(std::list<PassengerFlowProtoHandler::Sensor> &sensorI
         sensorInfo.m_strValue = srcSensorInfo.strvalue();
         sensorInfo.m_uiState = srcSensorInfo.uistate();
         sensorInfo.m_strCreateDate = srcSensorInfo.strcreatedate();
+        sensorInfo.m_strSensorKey = srcSensorInfo.strsensorkey();
 
         sensorInfoList.push_back(std::move(sensorInfo));
     }
@@ -6769,6 +6771,7 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::Serializer(CustomerFlowMessag
     sensor->set_strvalue(m_sensorInfo.m_strValue);
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+    sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
 }
 
 void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
@@ -6787,6 +6790,7 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFl
     m_sensorInfo.m_strValue = sensor.strvalue();
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();    
+    m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
 }
 
 void PassengerFlowProtoHandler::AddStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
@@ -6855,6 +6859,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::Serializer(CustomerFlowMes
     sensor->set_strvalue(m_sensorInfo.m_strValue);
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+    sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
 }
 
 void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
@@ -6873,6 +6878,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const Custome
     m_sensorInfo.m_strValue = sensor.strvalue();
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+    m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
 }
 
 void PassengerFlowProtoHandler::ModifyStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
@@ -6923,6 +6929,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::Serializer(CustomerFlow
     sensor->set_strvalue(m_sensorInfo.m_strValue);
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+    sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
 }
 
 void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const CustomerFlowMessage &message)
@@ -6939,6 +6946,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const Cust
     m_sensorInfo.m_strValue = sensor.strvalue();
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+    m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreSensorReq::Serializer(CustomerFlowMessage &message) const
@@ -7184,6 +7192,7 @@ void PassengerFlowProtoHandler::ReportSensorAlarmInfoReq::Serializer(CustomerFlo
     sensor->set_strvalue(m_sensorInfo.m_strValue);
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
+    sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
 }
 
 void PassengerFlowProtoHandler::ReportSensorAlarmInfoReq::UnSerializer(const CustomerFlowMessage &message)
@@ -7204,6 +7213,7 @@ void PassengerFlowProtoHandler::ReportSensorAlarmInfoReq::UnSerializer(const Cus
     m_sensorInfo.m_strValue = sensor.strvalue();
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
+    m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
 }
 
 void PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp::Serializer(CustomerFlowMessage &message) const

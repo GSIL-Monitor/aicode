@@ -4140,6 +4140,20 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strcreatedate();
   void set_allocated_strcreatedate(::std::string* strcreatedate);
 
+  // string strSensorKey = 10;
+  void clear_strsensorkey();
+  static const int kStrSensorKeyFieldNumber = 10;
+  const ::std::string& strsensorkey() const;
+  void set_strsensorkey(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strsensorkey(::std::string&& value);
+  #endif
+  void set_strsensorkey(const char* value);
+  void set_strsensorkey(const char* value, size_t size);
+  ::std::string* mutable_strsensorkey();
+  ::std::string* release_strsensorkey();
+  void set_allocated_strsensorkey(::std::string* strsensorkey);
+
   // uint32 uiState = 8;
   void clear_uistate();
   static const int kUiStateFieldNumber = 8;
@@ -4158,6 +4172,7 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::internal::ArenaStringPtr strdeviceid_;
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
+  ::google::protobuf::internal::ArenaStringPtr strsensorkey_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -30553,6 +30568,58 @@ inline void Sensor::set_allocated_strcreatedate(::std::string* strcreatedate) {
   }
   strcreatedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strcreatedate);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strCreateDate)
+}
+
+// string strSensorKey = 10;
+inline void Sensor::clear_strsensorkey() {
+  strsensorkey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strsensorkey() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+  return strsensorkey_.GetNoArena();
+}
+inline void Sensor::set_strsensorkey(const ::std::string& value) {
+  
+  strsensorkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+}
+#if LANG_CXX11
+inline void Sensor::set_strsensorkey(::std::string&& value) {
+  
+  strsensorkey_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+}
+#endif
+inline void Sensor::set_strsensorkey(const char* value) {
+  
+  strsensorkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+}
+inline void Sensor::set_strsensorkey(const char* value, size_t size) {
+  
+  strsensorkey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+}
+inline ::std::string* Sensor::mutable_strsensorkey() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+  return strsensorkey_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strsensorkey() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+  
+  return strsensorkey_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strsensorkey(::std::string* strsensorkey) {
+  if (strsensorkey != NULL) {
+    
+  } else {
+    
+  }
+  strsensorkey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorkey);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
 }
 
 // -------------------------------------------------------------------
