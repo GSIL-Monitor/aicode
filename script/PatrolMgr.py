@@ -35,8 +35,8 @@ def ConnectDB(db_user, db_pwd, db_host, db_name):
         return cnx
 
 
-def InitDB(IsPatrol=True):
-    if IsPatrol:
+def InitDB(IsPatrol = False):
+    if not IsPatrol:
         global db
         db = ConnectDB('root', '1qaz@WSX', '47.91.178.4', 'PlatformDB')
         if db is None:
@@ -127,7 +127,7 @@ def GetPatrolIDlistInfinite():
         #    continue
 
         if DB_FAILED == AccessPatrolUidList:
-            if not InitDB():
+            if not InitDB() or not InitDB(True):
                 print "Init db failed."
                 exit(0)
             continue
@@ -150,11 +150,6 @@ def AddAccessPatrol(uid):
     except mysql.connector.Error as err:
         print(err)
         db.close()
-
-        time.sleep(1.5)
-        if not InitDB():
-            print "Init db failed."
-            exit(0)
         return DB_FAILED
     return  True
 
@@ -164,12 +159,11 @@ def RemoveAccessPatrol(uid):
 
     try:
         cursor.execute(sql)
+        cursor.close()
     except mysql.connector.Error as err:
         print(err)
         db.close()
         return DB_FAILED
-
-    cursor.close()
     return True
 
 def AddCompanyUserInfo(uid):
@@ -179,15 +173,9 @@ def AddCompanyUserInfo(uid):
                "values(uuid(), 'annidev', '%s', CURRENT_TIMESTAMP())" % uid
         cursor2.execute(sql2)
         cursor2.close()
-
     except mysql.connector.Error as err:
         print(err)
         db_patrol.close()
-
-        time.sleep(1.5)
-        if not InitDB():
-            print "Init db failed."
-            exit(0)
         return DB_FAILED
     return True
 
@@ -196,12 +184,11 @@ def RemoveCompanyUserInfo(uid):
     sql2 = "delete from t_company_user_info where user_id = '%s'" % uid
     try:
         cursor2.execute(sql2)
+        cursor2.close()
     except mysql.connector.Error as err:
         print(err)
         db_patrol.close()
         return DB_FAILED
-
-    cursor2.close()
     return True
 
 def AddRoleUserInfo(uid):
@@ -215,11 +202,6 @@ def AddRoleUserInfo(uid):
     except mysql.connector.Error as err:
         print(err)
         db_patrol.close()
-
-        time.sleep(1.5)
-        if not InitDB():
-            print "Init db failed."
-            exit(0)
         return DB_FAILED
     return True
 
@@ -228,16 +210,15 @@ def RemoveRoleUserInfo(uid):
     sql2 = "delete from t_user_role_association where user_id = '%s'" % uid
     try:
         cursor2.execute(sql2)
+        cursor2.close()
     except mysql.connector.Error as err:
         print(err)
         db_patrol.close()
         return DB_FAILED
-
-    cursor2.close()
     return True
 
 def main():
-    if not InitDB() or not InitDB(False):
+    if not InitDB() or not InitDB(True):
         print ('Init db failed')
         return  False
 
@@ -252,7 +233,7 @@ def main():
                 result = AddRoleUserInfo(puid)
 
             if DB_FAILED == result:
-                if not InitDB():
+                if not InitDB() or not InitDB(True):
                     print "Init db failed."
                     exit(0)
                 continue
@@ -270,7 +251,7 @@ def main():
                 result = RemoveRoleUserInfo(apuid)
 
             if DB_FAILED == result:
-                if not InitDB():
+                if not InitDB() or not InitDB(True):
                     print "Init db failed."
                     exit(0)
                 continue
