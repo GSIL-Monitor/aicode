@@ -4154,6 +4154,20 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::std::string* release_strsensorkey();
   void set_allocated_strsensorkey(::std::string* strsensorkey);
 
+  // string strLocation = 11;
+  void clear_strlocation();
+  static const int kStrLocationFieldNumber = 11;
+  const ::std::string& strlocation() const;
+  void set_strlocation(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strlocation(::std::string&& value);
+  #endif
+  void set_strlocation(const char* value);
+  void set_strlocation(const char* value, size_t size);
+  ::std::string* mutable_strlocation();
+  ::std::string* release_strlocation();
+  void set_allocated_strlocation(::std::string* strlocation);
+
   // uint32 uiState = 8;
   void clear_uistate();
   static const int kUiStateFieldNumber = 8;
@@ -4173,6 +4187,7 @@ class Sensor : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::internal::ArenaStringPtr strcreatedate_;
   ::google::protobuf::internal::ArenaStringPtr strsensorkey_;
+  ::google::protobuf::internal::ArenaStringPtr strlocation_;
   ::google::protobuf::uint32 uistate_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
@@ -30620,6 +30635,58 @@ inline void Sensor::set_allocated_strsensorkey(::std::string* strsensorkey) {
   }
   strsensorkey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strsensorkey);
   // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strSensorKey)
+}
+
+// string strLocation = 11;
+inline void Sensor::clear_strlocation() {
+  strlocation_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Sensor::strlocation() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.Sensor.strLocation)
+  return strlocation_.GetNoArena();
+}
+inline void Sensor::set_strlocation(const ::std::string& value) {
+  
+  strlocation_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.Sensor.strLocation)
+}
+#if LANG_CXX11
+inline void Sensor::set_strlocation(::std::string&& value) {
+  
+  strlocation_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.Sensor.strLocation)
+}
+#endif
+inline void Sensor::set_strlocation(const char* value) {
+  
+  strlocation_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.Sensor.strLocation)
+}
+inline void Sensor::set_strlocation(const char* value, size_t size) {
+  
+  strlocation_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.Sensor.strLocation)
+}
+inline ::std::string* Sensor::mutable_strlocation() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.Sensor.strLocation)
+  return strlocation_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Sensor::release_strlocation() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.Sensor.strLocation)
+  
+  return strlocation_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Sensor::set_allocated_strlocation(::std::string* strlocation) {
+  if (strlocation != NULL) {
+    
+  } else {
+    
+  }
+  strlocation_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strlocation);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.Sensor.strLocation)
 }
 
 // -------------------------------------------------------------------

@@ -363,6 +363,7 @@ void SerializeSensorList(const std::list<PassengerFlowProtoHandler::Sensor> &sen
         pDstSensorInfo->set_uistate(itBegin->m_uiState);
         pDstSensorInfo->set_strcreatedate(itBegin->m_strCreateDate);
         pDstSensorInfo->set_strsensorkey(itBegin->m_strSensorKey);
+        pDstSensorInfo->set_strlocation(itBegin->m_strLocation);
     }
 }
 
@@ -383,6 +384,7 @@ void UnSerializeSensorList(std::list<PassengerFlowProtoHandler::Sensor> &sensorI
         sensorInfo.m_uiState = srcSensorInfo.uistate();
         sensorInfo.m_strCreateDate = srcSensorInfo.strcreatedate();
         sensorInfo.m_strSensorKey = srcSensorInfo.strsensorkey();
+        sensorInfo.m_strLocation = srcSensorInfo.strlocation();
 
         sensorInfoList.push_back(std::move(sensorInfo));
     }
@@ -6772,6 +6774,7 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::Serializer(CustomerFlowMessag
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
     sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
+    sensor->set_strlocation(m_sensorInfo.m_strLocation);
 }
 
 void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
@@ -6791,6 +6794,7 @@ void PassengerFlowProtoHandler::AddStoreSensorReq::UnSerializer(const CustomerFl
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();    
     m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
+    m_sensorInfo.m_strLocation = sensor.strlocation();
 }
 
 void PassengerFlowProtoHandler::AddStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
@@ -6860,6 +6864,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::Serializer(CustomerFlowMes
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
     sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
+    sensor->set_strlocation(m_sensorInfo.m_strLocation);
 }
 
 void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const CustomerFlowMessage &message)
@@ -6879,6 +6884,7 @@ void PassengerFlowProtoHandler::ModifyStoreSensorReq::UnSerializer(const Custome
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
     m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
+    m_sensorInfo.m_strLocation = sensor.strlocation();
 }
 
 void PassengerFlowProtoHandler::ModifyStoreSensorRsp::Serializer(CustomerFlowMessage &message) const
@@ -6930,6 +6936,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::Serializer(CustomerFlow
     sensor->set_uistate(m_sensorInfo.m_uiState);
     sensor->set_strcreatedate(m_sensorInfo.m_strCreateDate);
     sensor->set_strsensorkey(m_sensorInfo.m_strSensorKey);
+    sensor->set_strlocation(m_sensorInfo.m_strLocation);
 }
 
 void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const CustomerFlowMessage &message)
@@ -6947,6 +6954,7 @@ void PassengerFlowProtoHandler::QueryStoreSensorInfoRsp::UnSerializer(const Cust
     m_sensorInfo.m_uiState = sensor.uistate();
     m_sensorInfo.m_strCreateDate = sensor.strcreatedate();
     m_sensorInfo.m_strSensorKey = sensor.strsensorkey();
+    m_sensorInfo.m_strLocation = sensor.strlocation();
 }
 
 void PassengerFlowProtoHandler::QueryAllStoreSensorReq::Serializer(CustomerFlowMessage &message) const
@@ -7466,6 +7474,8 @@ void PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp::Serializer(CustomerF
         pSensor->set_strvalue(itBegin->m_sensorInfo.m_strValue);
         pSensor->set_uistate(itBegin->m_sensorInfo.m_uiState);
         pSensor->set_strcreatedate(itBegin->m_sensorInfo.m_strCreateDate);
+        pSensor->set_strsensorkey(itBegin->m_sensorInfo.m_strSensorKey);
+        pSensor->set_strlocation(itBegin->m_sensorInfo.m_strLocation);
     }
 
 }
@@ -7496,6 +7506,8 @@ void PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp::UnSerializer(const C
         sard.m_sensorInfo.m_strValue = sr.strvalue();
         sard.m_sensorInfo.m_uiState = sr.uistate();
         sard.m_sensorInfo.m_strCreateDate = sr.strcreatedate();
+        sard.m_sensorInfo.m_strSensorKey = sr.strsensorkey();
+        sard.m_sensorInfo.m_strLocation = sr.strlocation();
 
         m_sardList.push_back(std::move(sard));
     }

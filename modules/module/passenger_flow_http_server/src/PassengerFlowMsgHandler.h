@@ -518,6 +518,7 @@ private:
         std::string m_strStoreID;
         std::string m_strDevID;
         std::string m_strSensorKey;
+        std::string m_strLocation;
     };
 
     struct PatrolResultReportQueryParam

@@ -3758,6 +3758,7 @@ bool PassengerFlowManager::AddStoreSensorReq(const std::string &strMsg, const st
     sensorInfo.m_strValue = req.m_sensorInfo.m_strValue;
     sensorInfo.m_strCreateDate = CurrentTime();
     sensorInfo.m_strSensorKey = req.m_sensorInfo.m_strSensorKey;
+    sensorInfo.m_strLocation = req.m_sensorInfo.m_strLocation;
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddStoreSensor, this, sensorInfo));
 
@@ -3898,6 +3899,7 @@ bool PassengerFlowManager::QueryStoreSensorInfoReq(const std::string &strMsg, co
             rsp.m_sensorInfo.m_strValue = sensor.m_strValue;
             rsp.m_sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
             rsp.m_sensorInfo.m_strSensorKey = sensor.m_strSensorKey;
+            rsp.m_sensorInfo.m_strLocation = sensor.m_strLocation;
         }
 
         std::string strSerializeOutPut;
@@ -4490,7 +4492,7 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
         return false;
     }
 
-    if (!QuerySensorRecords(req, srlist, strRecordIDList))
+    if (!QuerySensorRecords(req, srlist, strRecordIDList, 100))
     {
         LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
         return false;
@@ -9171,11 +9173,11 @@ bool PassengerFlowManager::QueryAllRemotePatrolStore(const std::string &strStore
 void PassengerFlowManager::AddStoreSensor(const PassengerFlowProtoHandler::Sensor &sensorInfo)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "insert into t_store_sensor (id, store_id, sensor_id, device_id, sensor_name, sensor_type, sensor_alarm_threshold, create_date, sensor_key)"
-        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+    const char *sqlfmt = "insert into t_store_sensor (id, store_id, sensor_id, device_id, sensor_name, sensor_type, sensor_alarm_threshold, create_date, sensor_key, location)"
+        " values (uuid(), '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, sensorInfo.m_strStoreID.c_str(), sensorInfo.m_strSensorID.c_str(), sensorInfo.m_strDeviceID.c_str(),
         sensorInfo.m_strSensorName.c_str(), sensorInfo.m_strSensorType.c_str(), sensorInfo.m_strSensorAlarmThreshold.c_str(), sensorInfo.m_strCreateDate.c_str(), 
-        sensorInfo.m_strSensorKey.c_str());
+        sensorInfo.m_strSensorKey.c_str(), sensorInfo.m_strLocation.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -9242,6 +9244,12 @@ void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Se
         blModified = true;
     }
 
+    if (!sensorInfo.m_strLocation.empty())
+    {
+        len += snprintf(sql + len, size - len, ", location = '%s'", sensorInfo.m_strLocation.c_str());
+        blModified = true;
+    }
+
     if (!blModified)
     {
         LOG_INFO_RLD("ModifyStoreSensor completed, sensor info is not changed");
@@ -9259,7 +9267,7 @@ void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Se
 bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, PassengerFlowProtoHandler::Sensor &sensorInfo)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, ifnull(b.value, ''), a.create_date, a.sensor_alarm_threshold, a.sensor_key from"
+    const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, ifnull(b.value, ''), a.create_date, a.sensor_alarm_threshold, a.sensor_key, a.location from"
         " t_store_sensor a left join t_sensor_value b on a.sensor_id = b.sensor_id"
         " where a.sensor_id = '%s' order by b.create_date desc limit 0, 1";
     snprintf(sql, sizeof(sql), sqlfmt, strSensorID.c_str());
@@ -9294,7 +9302,10 @@ bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, 
             rstStoreSensor.m_strSensorAlarmThreshold = strColumn;
             break;
         case 8:
-            rstStoreSensor.m_strSensorKey = strColumn;
+            rstStoreSensor.m_strSensorKey = strColumn;            
+            break;
+        case 9:
+            rstStoreSensor.m_strLocation = strColumn;
             result = rstStoreSensor;
             break;
 
@@ -9329,6 +9340,7 @@ bool PassengerFlowManager::QueryStoreSensorInfo(const std::string &strSensorID, 
     sensorInfo.m_strValue = sensor.m_strValue;
     sensorInfo.m_strCreateDate = sensor.m_strCreateDate;
     sensorInfo.m_strSensorKey = sensor.m_strSensorKey;
+    sensorInfo.m_strLocation = sensor.m_strLocation;
 
     return true;
 }
@@ -9377,7 +9389,7 @@ bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, st
     const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold, sensor_key from t_store_sensor"
+    const char *sqlfmt = "select store_id, sensor_id, device_id, sensor_name, sensor_type, create_date, sensor_alarm_threshold, sensor_key, location from t_store_sensor"
         " where store_id = '%s'";
     snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str());
 
@@ -9409,6 +9421,9 @@ bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, st
             break;
         case 7:
             rstStoreSensor.m_strSensorKey = strColumn;
+            break;
+        case 8:
+            rstStoreSensor.m_strLocation = strColumn;
             result = rstStoreSensor;
             break;
 
@@ -10214,7 +10229,7 @@ bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::Q
     char sql[2048] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, b.value, "
-        " b.create_date, a.sensor_alarm_threshold, b.id from "
+        " b.create_date, a.sensor_alarm_threshold, b.id, a.sensor_key, a.location from "
         " t_store_sensor a join t_sensor_value b on a.sensor_id = b.sensor_id where 1 = 1";
     int len = snprintf(sql, size, sqlfmt);
 
@@ -10290,8 +10305,17 @@ bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::Q
 
         case 8:
             srd.m_strRecordID = strColumn;
+            break;
+
+        case 9:
+            srd.sr.m_strSensorKey = strColumn;
+            break;
+
+        case 10:
+            srd.sr.m_strLocation = strColumn;
             result = srd;
             break;
+
 
         default:
             LOG_ERROR_RLD("QuerySensorRecords sql callback error, row num is " << uiRowNum
@@ -10325,7 +10349,7 @@ bool PassengerFlowManager::QuerySensorAlarmRecords(const PassengerFlowProtoHandl
     char sql[2048] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select a.store_id, a.sensor_id, a.device_id, a.sensor_name, a.sensor_type, b.current_value, b.threshold_value, b.fileid, "
-        "b.create_date, b.recover, b.id from "
+        "b.create_date, b.recover, b.id, a.sensor_key, a.location from "
         "t_store_sensor a join t_sensor_alarm_value b on a.sensor_id = b.sensor_id where 1 = 1"
         ;
     int len = snprintf(sql, size, sqlfmt);
@@ -10409,6 +10433,14 @@ bool PassengerFlowManager::QuerySensorAlarmRecords(const PassengerFlowProtoHandl
 
         case 10:
             sr.m_strRecordID = strColumn;
+            break;
+
+        case 11:
+            sr.m_sensorInfo.m_strSensorKey = strColumn;
+            break;
+
+        case 12:
+            sr.m_sensorInfo.m_strLocation = strColumn;
             result = sr;
             break;
 

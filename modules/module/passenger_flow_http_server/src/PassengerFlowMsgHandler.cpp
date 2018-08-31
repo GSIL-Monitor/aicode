@@ -6811,6 +6811,13 @@ bool PassengerFlowMsgHandler::CreateStoreSensorHandler(boost::shared_ptr<MsgInfo
         return blResult;
     }
     const std::string strSensorKey = itFind->second;
+
+    std::string strLocation;
+    itFind = pMsgInfoMap->find("location");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLocation = itFind->second;
+    }
     
     Sensor sr;
     sr.m_strDevID = strDevID;
@@ -6819,6 +6826,7 @@ bool PassengerFlowMsgHandler::CreateStoreSensorHandler(boost::shared_ptr<MsgInfo
     sr.m_uiType = uiType;
     sr.m_strAlarmThreshold = strAlarmThreshold;
     sr.m_strSensorKey = strSensorKey;
+    sr.m_strLocation = strLocation;
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
@@ -7008,6 +7016,13 @@ bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfo
         strSensorKey = itFind->second;
     }
 
+    std::string strLocation;
+    itFind = pMsgInfoMap->find("location");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strLocation = itFind->second;
+    }
+
     Sensor sr;
     sr.m_strDevID = strDevID;
     sr.m_strName = strName;
@@ -7016,6 +7031,7 @@ bool PassengerFlowMsgHandler::ModifyStoreSensorHandler(boost::shared_ptr<MsgInfo
     sr.m_strID = strSensorID;
     sr.m_strAlarmThreshold = strAlarmThreshold;
     sr.m_strSensorKey = strSensorKey;
+    sr.m_strLocation = strLocation;
 
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
@@ -7106,6 +7122,7 @@ bool PassengerFlowMsgHandler::QueryStoreSensorHandler(boost::shared_ptr<MsgInfoM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("deviceid", sr.m_strDevID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("alarm_threshold", sr.m_strAlarmThreshold));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("sensor_key", sr.m_strSensorKey));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("location", sr.m_strLocation));
 
     blResult = true;
 
@@ -7193,6 +7210,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensorHandler(boost::shared_ptr<MsgIn
         jsSensor["sensorid"] = itBegin->m_strID;
         jsSensor["alarm_threshold"] = itBegin->m_strAlarmThreshold;
         jsSensor["sensor_key"] = itBegin->m_strSensorKey;
+        jsSensor["location"] = itBegin->m_strLocation;
 
         jsSensorInfoList[i] = jsSensor;
     }
@@ -7986,7 +8004,9 @@ bool PassengerFlowMsgHandler::QuerySensorRecordsHandler(boost::shared_ptr<MsgInf
         jsSensorRecordInfo["sensorid"] = itBegin->sr.m_strID;
         jsSensorRecordInfo["alarm_threshold"] = itBegin->sr.m_strAlarmThreshold;
         jsSensorRecordInfo["create_date"] = itBegin->m_strCreateDate;
-
+        jsSensorRecordInfo["sensor_key"] = itBegin->sr.m_strSensorKey;
+        jsSensorRecordInfo["location"] = itBegin->sr.m_strLocation;
+        
         jsSensorRecordsList.append(jsSensorRecordInfo);
 
         ++itBegin;
@@ -8166,7 +8186,9 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecordsHandler(boost::shared_ptr<M
         jsSensorAlarmRecordInfo["create_date"] = itBegin->m_strCreateDate;
         jsSensorAlarmRecordInfo["recover"] = boost::lexical_cast<std::string>(itBegin->m_uiRecover);
         jsSensorAlarmRecordInfo["fileid"] = itBegin->m_strFileID;
-
+        jsSensorAlarmRecordInfo["sensor_key"] = itBegin->m_sr.m_strSensorKey;
+        jsSensorAlarmRecordInfo["location"] = itBegin->m_sr.m_strLocation;
+        
         jsSensorAlarmRecordsList.append(jsSensorAlarmRecordInfo);
 
         ++itBegin;
@@ -12527,6 +12549,7 @@ bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const
         AddStoreSensorReq.m_sensorInfo.m_strSensorAlarmThreshold = sr.m_strAlarmThreshold;
         AddStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
         AddStoreSensorReq.m_sensorInfo.m_strSensorKey = sr.m_strSensorKey;
+        AddStoreSensorReq.m_sensorInfo.m_strLocation = sr.m_strLocation;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreSensorReq, strSerializeOutPut))
@@ -12639,6 +12662,7 @@ bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const
         ModifyStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorID = sr.m_strID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorKey = sr.m_strSensorKey;
+        ModifyStoreSensorReq.m_sensorInfo.m_strLocation = sr.m_strLocation;
         
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(ModifyStoreSensorReq, strSerializeOutPut))
@@ -12721,6 +12745,7 @@ bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const 
         sr.m_uiType = QuerySensorInfoRsp.m_sensorInfo.m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(QuerySensorInfoRsp.m_sensorInfo.m_strSensorType);
         sr.m_strAlarmThreshold = QuerySensorInfoRsp.m_sensorInfo.m_strSensorAlarmThreshold;
         sr.m_strSensorKey = QuerySensorInfoRsp.m_sensorInfo.m_strSensorKey;
+        sr.m_strLocation = QuerySensorInfoRsp.m_sensorInfo.m_strLocation;
 
         iRet = QuerySensorInfoRsp.m_iRetcode;
 
@@ -12785,6 +12810,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, con
             sr.m_uiType = itBegin->m_strSensorType.empty() ? 0xFFFFFFFF : boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
             sr.m_strAlarmThreshold = itBegin->m_strSensorAlarmThreshold;
             sr.m_strSensorKey = itBegin->m_strSensorKey;
+            sr.m_strLocation = itBegin->m_strLocation;
 
             srlist.push_back(std::move(sr));
         }
@@ -13219,6 +13245,8 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
             srd.sr.m_strStoreID = itBegin->m_strStoreID;
             srd.sr.m_strValue = itBegin->m_strValue;
             srd.sr.m_uiType = boost::lexical_cast<unsigned int>(itBegin->m_strSensorType);
+            srd.sr.m_strSensorKey = itBegin->m_strSensorKey;
+            srd.sr.m_strLocation = itBegin->m_strLocation;
 
             srdlist.push_back(std::move(srd));
         }
@@ -13296,6 +13324,8 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecords(const std::string &strSid,
             srd.m_sr.m_strStoreID = itBegin->m_sensorInfo.m_strStoreID;
             srd.m_sr.m_strValue = itBegin->m_sensorInfo.m_strValue;
             srd.m_sr.m_uiType = boost::lexical_cast<unsigned int>(itBegin->m_sensorInfo.m_strSensorType);
+            srd.m_sr.m_strSensorKey = itBegin->m_sensorInfo.m_strSensorKey;
+            srd.m_sr.m_strLocation = itBegin->m_sensorInfo.m_strLocation;
 
             srdlist.push_back(std::move(srd));
         }
