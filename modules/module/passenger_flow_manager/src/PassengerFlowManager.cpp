@@ -1219,7 +1219,11 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
             return;
         }
 
-        writer(strSrcID, strSerializeOutPut);
+        if (NULL != writer)
+        {
+            writer(strSrcID, strSerializeOutPut);
+        }
+
         LOG_INFO_RLD("Add event rsp already send, dst id is " << strSrcID
             << " and event id is " << strEventID
             << " and source is " << req.m_eventInfo.m_strSource
@@ -1252,19 +1256,62 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
     eventInfo.m_strHandlerList = req.m_eventInfo.m_strHandlerList;
     eventInfo.m_strCreateDate = CurrentTime();
 
-    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddEvent, this, eventInfo));
-
+    std::string strSensorType;
+    std::string strSensorID;
+    std::string strSensorName;
     std::string strStoreID;
     std::string strStoreName;
     std::string strContent;
     const unsigned int eventType = req.m_eventInfo.m_uiTypeList.front();
-    if (!QueryStoreByEvent(req.m_eventInfo.m_strSource, eventType, strStoreName, strStoreID))
-    {
-        LOG_ERROR_RLD("QueryStoreByEvent failed and event id is " << eventInfo.m_strEventID);
 
-        blResult = true;
-        return blResult;
+    std::string strMsgTitle;
+    if (EVENT_ALARM_CREATED == eventType || EVENT_ALARM_RECOVERD == eventType)
+    {
+        auto ipos = req.m_eventInfo.m_strSource.find(':');
+        if (std::string::npos == ipos)
+        {
+            LOG_ERROR_RLD("Event source info is invalid");
+            return blResult;
+        }
+        const auto &strDevID = req.m_eventInfo.m_strSource.substr(0, ipos);
+        const auto &strSensorKey = req.m_eventInfo.m_strSource.substr(ipos + 1);
+
+        if (!QueryStoreAndSensorBySensorInfo(strDevID, strSensorKey, strStoreName, strSensorName, strSensorID, strSensorType))
+        {
+            LOG_ERROR_RLD("Query store and sensor info failed.");
+            return blResult;
+        }
+
+        eventInfo.m_strSource = strSensorID;
+                
+        std::list<PassengerFlowProtoHandler::UserBrief> userList;
+        if (!QueryCompanyAllUser("", userList))
+        {
+            LOG_ERROR_RLD("Query company all user failed, src id is " << strSrcID);
+            return blResult;
+        }
+        
+        eventInfo.m_strHandlerList.clear();
+        for (const auto &Uid : userList)
+        {
+            LOG_INFO_RLD("Alarm event handler is " << Uid.m_strUserID);
+            eventInfo.m_strHandlerList.push_back(std::move(Uid.m_strUserID));            
+        }
+
+        strMsgTitle = m_ParamInfo.m_strAlarmMessageTitle;
     }
+    else
+    {
+        if (!QueryStoreByEvent(req.m_eventInfo.m_strSource, eventType, strStoreName, strStoreID))
+        {
+            LOG_ERROR_RLD("QueryStoreByEvent failed and event id is " << eventInfo.m_strEventID);
+            return blResult;
+        }
+
+        strMsgTitle = m_ParamInfo.m_strMessageTitle;
+    }
+
+    m_DBRuner.Post(boost::bind(&PassengerFlowManager::AddEvent, this, eventInfo));
 
     if (eventType == EVENT_REMOTE_PATROL)
     {
@@ -1278,15 +1325,18 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
     {
         strContent = m_ParamInfo.m_strMessageContentEvaluation;
     }
+    else if (eventType == EVENT_ALARM_CREATED)
+    {
+        strContent = m_ParamInfo.m_strAlarmMessageContentCreated;
+    }
     else
     {
         LOG_ERROR_RLD("Add event error, push message error, event type is " << eventType
             << " and src id is " << strSrcID);
 
-        blResult = true;
         return blResult;
     }
-
+        
     Json::Value jsPayloadInfo;
     jsPayloadInfo["event_id"] = strEventID;
     Json::FastWriter fastwriter;
@@ -1294,9 +1344,20 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
 
     std::string var("$store");
     strContent.replace(strContent.find(var), var.size(), strStoreName);
-    for (auto user : req.m_eventInfo.m_strHandlerList)
+
+    if (EVENT_ALARM_CREATED == eventType || EVENT_ALARM_RECOVERD == eventType)
     {
-        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, m_ParamInfo.m_strMessageTitle, strContent, strPayloadInfo, user));
+        //std::string var("$sensor_type");
+        //strContent.replace(strContent.find(var), var.size(), strSensorType);
+        var = "$sensor_name";
+        strContent.replace(strContent.find(var), var.size(), strSensorName);
+    }    
+
+    LOG_INFO_RLD("Push msg is ready and msg title is " << strMsgTitle << " and content is " << strContent << " and payload is " << strPayloadInfo);
+
+    for (auto user : eventInfo.m_strHandlerList)
+    {
+        m_DBRuner.Post(boost::bind(&PassengerFlowManager::PushMessage, this, strMsgTitle, strContent, strPayloadInfo, user));
     }
 
     blResult = true;
@@ -4300,6 +4361,25 @@ bool PassengerFlowManager::ReportSensorAlarmInfoReq(const std::string &strMsg, c
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::ReportSensorAlarmInfo, this, req.m_sensorInfo, req.m_uiRecover, req.m_strFileID));
 
+    PassengerFlowProtoHandler::AddEventReq eventreq;
+    eventreq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEventReq_T;
+    eventreq.m_uiMsgSeq = 1;
+
+    eventreq.m_strSID = req.m_strSID;
+    eventreq.m_eventInfo.m_strDeviceID = req.m_sensorInfo.m_strDeviceID;    
+    eventreq.m_eventInfo.m_uiTypeList.push_back(req.m_uiRecover == 0 ? EVENT_ALARM_CREATED : EVENT_ALARM_RECOVERD);
+    eventreq.m_eventInfo.m_strSource = req.m_sensorInfo.m_strDeviceID + ":" + req.m_sensorInfo.m_strSensorKey;
+    eventreq.m_eventInfo.m_strSubmitDate = CurrentTime();
+
+    std::string strSerializeOutPut;
+    if (!m_pProtoHandler->SerializeReq(eventreq, strSerializeOutPut))
+    {
+        LOG_ERROR_RLD("Report event req serialize failed.");
+        return blResult;
+    }
+
+    AddEventReq(strSerializeOutPut, strSrcID, NULL);
+
     blResult = true;
 
     return blResult;
@@ -6137,6 +6217,53 @@ void PassengerFlowManager::AddEventRemark(const std::string &strEventID, const s
     }
 }
 
+bool PassengerFlowManager::QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, 
+    std::string &strStoreName, std::string &strSensorName, std::string &strSensorID, std::string &strSensorType)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select b.store_name, a.sensor_name, a.sensor_id, a.sensor_type from t_store_sensor a"
+        " join t_store_info b on a.store_id = b.store_id where a.device_id = '%s' and a.sensor_key = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), strSensorKey.c_str());
+
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            //result = strColumn;
+            strStoreName = strColumn;
+            break;
+
+        case 1:
+            strSensorName = strColumn;
+            break;
+
+        case 2:
+            strSensorID = strColumn;
+            break;
+
+        case 3:
+            strSensorType = strColumn;
+            break;
+
+        default:
+            LOG_ERROR_RLD("QueryStoreAndSensorBySensorInfo sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("QueryStoreByRegularPatrol exec sql failed, sql is " << sql);
+        return false;
+    }
+    
+    return true;
+}
+
 bool PassengerFlowManager::QueryStoreByEvent(const std::string &strSource, const unsigned int uiEventType, std::string &strStoreName, std::string &strStoreID)
 {
     if (uiEventType == EVENT_REMOTE_PATROL || uiEventType == EVENT_REGULAR_PATROL)
@@ -6146,7 +6273,7 @@ bool PassengerFlowManager::QueryStoreByEvent(const std::string &strSource, const
     else if (uiEventType == EVENT_STORE_EVALUATION)
     {
         return QueryStoreByStoreEvaluation(strSource, strStoreName, strStoreID);
-    }
+    }    
     else
     {
         LOG_ERROR_RLD("QueryStoreByEvent failed, event type error, type is " << uiEventType);
@@ -7768,11 +7895,24 @@ bool PassengerFlowManager::QueryStoreAllUser(const std::string &strStoreID, std:
 bool PassengerFlowManager::QueryCompanyAllUser(const std::string &strCompanyID, std::list<PassengerFlowProtoHandler::UserBrief> &userList)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select a.user_id, b.username, b.aliasname, c.role_id from"
+    const char *sqlfmt = strCompanyID.empty() ?
+        "select a.user_id, b.username, b.aliasname, c.role_id from"
+        " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid join t_user_role_association c on a.user_id = c.user_id"
+        " where b.status = 0"
+        : 
+        "select a.user_id, b.username, b.aliasname, c.role_id from"
         " t_company_user_info a join PlatformDB.t_user_info b on a.user_id = b.userid join t_user_role_association c on a.user_id = c.user_id"
         " where company_id = '%s' and b.status = 0";
-    snprintf(sql, sizeof(sql), sqlfmt, strCompanyID.c_str());
-
+    
+    if (!strCompanyID.empty())
+    {
+        snprintf(sql, sizeof(sql), sqlfmt, strCompanyID.c_str());
+    }
+    else
+    {
+        snprintf(sql, sizeof(sql), sqlfmt);
+    }
+    
     PassengerFlowProtoHandler::UserBrief user;
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {

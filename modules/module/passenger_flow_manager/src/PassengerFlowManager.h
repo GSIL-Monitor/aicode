@@ -34,6 +34,8 @@ public:
     static const int EVENT_REMOTE_PATROL = 0;
     static const int EVENT_REGULAR_PATROL = 1;
     static const int EVENT_STORE_EVALUATION = 2;
+    static const int EVENT_ALARM_CREATED = 3;
+    static const int EVENT_ALARM_RECOVERD = 4;
 
     static std::string ALLOW_ACCESS;
     static std::string DISALLOW_ACCESS;
@@ -69,6 +71,8 @@ public:
         std::string m_strMessageContentRegularPatrol;
         std::string m_strMessageContentRemotePatrol;
         std::string m_strMessageContentEvaluation;
+        std::string m_strAlarmMessageTitle;
+        std::string m_strAlarmMessageContentCreated;
     } ParamInfo;
 
     typedef struct _AccessDomainInfo
@@ -354,6 +358,9 @@ private:
     void AddEventUserAssociation(const std::string &strEventID, const std::string &strUserID, const std::string &strUserRole);
 
     void AddEventRemark(const std::string &strEventID, const std::string &strUserID, const std::string &strRemark);
+
+    bool QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, std::string &strStoreName, 
+        std::string &strSensorName, std::string &strSensorID, std::string &strSensorType);
 
     bool QueryStoreByEvent(const std::string &strSource, const unsigned int uiEventType, std::string &strStoreName, std::string &strStoreID);
 

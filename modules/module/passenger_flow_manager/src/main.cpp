@@ -390,6 +390,19 @@ int main(int argc, char* argv[])
         LOG_ERROR_RLD("MessageContentEvaluation config item not found.");
     }
 
+    const std::string &strAlarmMessageTitle = GetConfig("Push.AlarmMessageTitle");
+    if (strAlarmMessageTitle.empty())
+    {
+        LOG_ERROR_RLD("AlarmMessageTitle config item not found.");
+    }
+
+    const std::string &strAlarmMessageContentCreated = GetConfig("Push.AlarmMessageContentCreated");
+    if (strAlarmMessageContentCreated.empty())
+    {
+        LOG_ERROR_RLD("AlarmMessageContentCreated config item not found.");
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////
 
     PassengerFlowManager::ParamInfo UmgParam;
@@ -422,6 +435,8 @@ int main(int argc, char* argv[])
     UmgParam.m_strMessageContentRegularPatrol = strMessageContentRegularPatrol;
     UmgParam.m_strMessageContentRemotePatrol = strMessageContentRemotePatrol;
     UmgParam.m_strMessageContentEvaluation = strMessageContentEvaluation;
+    UmgParam.m_strAlarmMessageTitle = strAlarmMessageTitle;
+    UmgParam.m_strAlarmMessageContentCreated = strAlarmMessageContentCreated;
 
     PassengerFlowManager Umg(UmgParam);
     if (!Umg.Init())
