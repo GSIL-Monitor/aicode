@@ -1316,16 +1316,18 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
         }
         const auto &strDevID = req.m_eventInfo.m_strSource.substr(0, ipos);
         const auto &strSensorKey = req.m_eventInfo.m_strSource.substr(ipos + 1);
+        const auto &strSensorType = req.m_eventInfo.m_strExtend;
 
-        if (!QueryStoreAndSensorBySensorInfo(strDevID, strSensorKey, strStoreName, strSensorName, strSensorID, strSensorType))
+        if (!QueryStoreAndSensorBySensorInfo(strDevID, strSensorKey, strSensorType, strStoreName, strSensorName, strSensorID))
         {
             LOG_ERROR_RLD("Query store and sensor info failed.");
             return blResult;
         }
 
-        if (strSensorName.empty() || strSensorID.empty() || strSensorType.empty())
+        if (strSensorName.empty() || strSensorID.empty())
         {
-            LOG_ERROR_RLD("Query sensor info failed and sensor name is " << strSensorName << " and sensor id is " << strSensorID << " and sensor type is " << strSensorType);
+            LOG_ERROR_RLD("Query sensor info failed and sensor name is " << strSensorName << " and sensor id is " << strSensorID <<
+                " and device id is " << strDevID << " and sensor key is " << strSensorKey << " and sensor type is " << strSensorType);
             return blResult;
         }
 
@@ -4417,6 +4419,7 @@ bool PassengerFlowManager::ReportSensorAlarmInfoReq(const std::string &strMsg, c
     eventreq.m_eventInfo.m_uiTypeList.push_back(req.m_uiRecover == 0 ? EVENT_ALARM_CREATED : EVENT_ALARM_RECOVERD);
     eventreq.m_eventInfo.m_strSource = req.m_sensorInfo.m_strDeviceID + ":" + req.m_sensorInfo.m_strSensorKey;
     eventreq.m_eventInfo.m_strSubmitDate = CurrentTime();
+    eventreq.m_eventInfo.m_strExtend = req.m_sensorInfo.m_strSensorType;
 
     std::string strSerializeOutPut;
     if (!m_pProtoHandler->SerializeReq(eventreq, strSerializeOutPut))
@@ -6276,13 +6279,13 @@ void PassengerFlowManager::AddEventRemark(const std::string &strEventID, const s
     }
 }
 
-bool PassengerFlowManager::QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, 
-    std::string &strStoreName, std::string &strSensorName, std::string &strSensorID, std::string &strSensorType)
+bool PassengerFlowManager::QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, const std::string &strSensorType,
+    std::string &strStoreName, std::string &strSensorName, std::string &strSensorID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select b.store_name, a.sensor_name, a.sensor_id, a.sensor_type from t_store_sensor a"
-        " join t_store_info b on a.store_id = b.store_id where a.device_id = '%s' and a.sensor_key = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), strSensorKey.c_str());
+    const char *sqlfmt = "select b.store_name, a.sensor_name, a.sensor_id from t_store_sensor a"
+        " join t_store_info b on a.store_id = b.store_id where a.device_id = '%s' and a.sensor_key = '%s' and a.sensor_type = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), strSensorKey.c_str(), strSensorType.c_str());
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
@@ -6299,10 +6302,6 @@ bool PassengerFlowManager::QueryStoreAndSensorBySensorInfo(const std::string &st
 
         case 2:
             strSensorID = strColumn;
-            break;
-
-        case 3:
-            strSensorType = strColumn;
             break;
 
         default:

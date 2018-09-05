@@ -359,8 +359,8 @@ private:
 
     void AddEventRemark(const std::string &strEventID, const std::string &strUserID, const std::string &strRemark);
 
-    bool QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, std::string &strStoreName, 
-        std::string &strSensorName, std::string &strSensorID, std::string &strSensorType);
+    bool QueryStoreAndSensorBySensorInfo(const std::string &strDevID, const std::string &strSensorKey, const std::string &strSensorType, std::string &strStoreName,
+        std::string &strSensorName, std::string &strSensorID);
 
     bool QueryStoreByEvent(const std::string &strSource, const unsigned int uiEventType, std::string &strStoreName, std::string &strStoreID);
 
