@@ -1325,7 +1325,7 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
     {
         strContent = m_ParamInfo.m_strMessageContentEvaluation;
     }
-    else if (eventType == EVENT_ALARM_CREATED)
+    else if (eventType == EVENT_ALARM_CREATED || eventType == EVENT_ALARM_RECOVERD)
     {
         strContent = m_ParamInfo.m_strAlarmMessageContentCreated;
     }

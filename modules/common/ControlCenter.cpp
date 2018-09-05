@@ -21,6 +21,8 @@ void ControlCenter::Run(const bool isWaitRunFinished)
     ClientCommInterface *pClient = ClientCommInterface::Create(m_ParamInfo.strRemoteAddress.c_str(), 
         m_ParamInfo.strRemotePort.c_str(), 0, m_ParamInfo.uiShakehandOfChannelInterval);
 
+    m_pClient.reset(pClient); //一定要提前初始化好shared_ptr
+
     pClient->SetCallBack
         (
         boost::bind(&ControlCenter::ConnectCB, this, _1),
@@ -30,8 +32,7 @@ void ControlCenter::Run(const bool isWaitRunFinished)
 
     ClientCommInterface::Run(m_ParamInfo.uiThreadOfWorking);
     pClient->AsyncConnect();
-    m_pClient.reset(pClient);
-
+    
     LOG_INFO_RLD("Control center begin running...");
     m_MsgWriterRunner.Run();
     m_MsgHandlerRunner.Run(isWaitRunFinished);
