@@ -336,7 +336,7 @@ private:
 
     bool QuerySubArea(const std::string &strAreaID, std::list<std::string> &strSubAreaIDList);
 
-    bool IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName);
+    bool IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName, const std::string &strEntranceID = "", const bool blFlag = true);
 
     void AddEntrance(const std::string &strStoreID, const PassengerFlowProtoHandler::Entrance &entrance);
 

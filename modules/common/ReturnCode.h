@@ -57,6 +57,10 @@ public:
 
     static const int DEPEND_ON;                             //存在依赖关系
 
+    static const int ENTRANCE_DEVICE_ALREADY_BINDED; //出入口对应的设备已经被绑定过了，不能重复绑定
+
+    static const int ENTRANCE_NAME_DUPLICATE;      //出入口名称重复
+
     static int RetCode();
 
     static void RetCode(const int iRetCode);

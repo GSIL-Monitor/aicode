@@ -48,6 +48,10 @@ const int ReturnInfo::CMS_P2PID_DUPLICATE = 3100;
 
 const int ReturnInfo::DEPEND_ON = 3200;
 
+const int ReturnInfo::ENTRANCE_DEVICE_ALREADY_BINDED = 3300; //出入口对应的设备已经被绑定过了，不能重复绑定
+
+const int ReturnInfo::ENTRANCE_NAME_DUPLICATE = 3310;
+
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;
 
 int ReturnInfo::RetCode()

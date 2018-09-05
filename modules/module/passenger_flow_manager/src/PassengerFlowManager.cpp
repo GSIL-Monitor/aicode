@@ -958,6 +958,8 @@ bool PassengerFlowManager::AddEntranceReq(const std::string &strMsg, const std::
     if (!IsValidEntrance(req.m_strStoreID, req.m_entranceInfo.m_strEntranceName))
     {
         LOG_ERROR_RLD("Add entrance failed, the entrance name is not available, name is " << req.m_entranceInfo.m_strEntranceName);
+
+        ReturnInfo::RetCode(ReturnInfo::ENTRANCE_NAME_DUPLICATE);
         return false;
     }
 
@@ -968,6 +970,7 @@ bool PassengerFlowManager::AddEntranceReq(const std::string &strMsg, const std::
         {
             LOG_ERROR_RLD("Add entrance failed, query device bound entrance error, src id is " << strSrcID
                 << " and device id is " << device);
+
             return false;
         }
 
@@ -975,6 +978,8 @@ bool PassengerFlowManager::AddEntranceReq(const std::string &strMsg, const std::
         {
             LOG_ERROR_RLD("Add entrance failed, the device is bound, src id is " << strSrcID
                 << " and device id is " << device);
+
+            ReturnInfo::RetCode(ReturnInfo::ENTRANCE_DEVICE_ALREADY_BINDED);
             return false;
         }
     }
@@ -1051,7 +1056,7 @@ bool PassengerFlowManager::ModifyEntranceReq(const std::string &strMsg, const st
         rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEntranceRsp_T;
         rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
-        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strValue = "value";
 
@@ -1075,6 +1080,14 @@ bool PassengerFlowManager::ModifyEntranceReq(const std::string &strMsg, const st
             return false;
         }
 
+    if (!IsValidEntrance(req.m_strStoreID, req.m_entranceInfo.m_strEntranceName, req.m_entranceInfo.m_strEntranceID, false))
+    {
+        LOG_ERROR_RLD("Modify entrance failed, the entrance name is not available, name is " << req.m_entranceInfo.m_strEntranceName);
+
+        ReturnInfo::RetCode(ReturnInfo::ENTRANCE_NAME_DUPLICATE);
+        return false;
+    }
+
     for (auto &device : req.m_strAddedDeviceIDList)
     {
         std::string strEntranceID;
@@ -1089,6 +1102,8 @@ bool PassengerFlowManager::ModifyEntranceReq(const std::string &strMsg, const st
         {
             LOG_ERROR_RLD("Modify entrance failed, the device is bound, src id is " << strSrcID
                 << " and device id is " << device);
+
+            ReturnInfo::RetCode(ReturnInfo::ENTRANCE_DEVICE_ALREADY_BINDED);
             return false;
         }
     }
@@ -5961,12 +5976,24 @@ bool PassengerFlowManager::QuerySubArea(const std::string &strAreaID, std::list<
     return true;
 }
 
-bool PassengerFlowManager::IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName)
+bool PassengerFlowManager::IsValidEntrance(const std::string &strStoreID, const std::string &strEntranceName, const std::string &strEntranceID, const bool blFlag)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select entrance_name from t_entrance_info"
-        " where store_id = '%s' and entrance_name = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str(), strEntranceName.c_str());
+    const char *sqlfmt = blFlag ? 
+        "select entrance_name from t_entrance_info"
+        " where store_id = '%s' and entrance_name = '%s'"
+        : 
+        "select entrance_name from t_entrance_info"
+        " where store_id = '%s' and entrance_id != '%s' and entrance_name = '%s'";
+
+    if (blFlag)
+    {
+        snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str(), strEntranceName.c_str());
+    }
+    else
+    {
+        snprintf(sql, sizeof(sql), sqlfmt, strStoreID.c_str(), strEntranceID.c_str(), strEntranceName.c_str());
+    }
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {
