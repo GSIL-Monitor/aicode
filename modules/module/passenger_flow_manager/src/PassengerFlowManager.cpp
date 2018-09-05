@@ -1323,6 +1323,12 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
             return blResult;
         }
 
+        if (strSensorName.empty() || strSensorID.empty() || strSensorType.empty())
+        {
+            LOG_ERROR_RLD("Query sensor info failed and sensor name is " << strSensorName << " and sensor id is " << strSensorID << " and sensor type is " << strSensorType);
+            return blResult;
+        }
+
         eventInfo.m_strSource = strSensorID;
                 
         std::list<PassengerFlowProtoHandler::UserBrief> userList;
