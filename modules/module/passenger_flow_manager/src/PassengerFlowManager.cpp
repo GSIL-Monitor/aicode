@@ -1098,7 +1098,7 @@ bool PassengerFlowManager::ModifyEntranceReq(const std::string &strMsg, const st
             return false;
         }
 
-        if (!strEntranceID.empty())
+        if (!strEntranceID.empty() && req.m_entranceInfo.m_strEntranceID != strEntranceID)
         {
             LOG_ERROR_RLD("Modify entrance failed, the device is bound, src id is " << strSrcID
                 << " and device id is " << device);
@@ -1106,6 +1106,32 @@ bool PassengerFlowManager::ModifyEntranceReq(const std::string &strMsg, const st
             ReturnInfo::RetCode(ReturnInfo::ENTRANCE_DEVICE_ALREADY_BINDED);
             return false;
         }
+    }
+
+    auto itBegin = req.m_strAddedDeviceIDList.begin(), itEnd = req.m_strAddedDeviceIDList.end();
+    while (itBegin != itEnd)
+    {
+        bool blFlag = false;
+        auto itBeginDel = req.m_strDeletedDeviceIDList.begin(), itEndDel = req.m_strDeletedDeviceIDList.end();
+        while ( itBeginDel != itEndDel)
+        {
+            if (*itBegin == *itBeginDel)
+            {
+                blFlag = true;
+                req.m_strDeletedDeviceIDList.erase(itBeginDel++);
+                continue;
+            }                
+
+            ++itBeginDel;
+        }
+
+        if (blFlag)
+        {
+            req.m_strAddedDeviceIDList.erase(itBegin++);
+            continue;
+        }
+
+        ++itBegin;
     }
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyEntrance, this, req.m_entranceInfo,
