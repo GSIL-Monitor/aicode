@@ -3850,13 +3850,14 @@ bool PassengerFlowManager::AddStoreSensorReq(const std::string &strMsg, const st
             return false;
         }
 
-    ////去除同一个设备只能添加一种类型的传感器限制。
-    //if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType)))
-    //{
-    //    LOG_ERROR_RLD("Add store sensor req vaild failed because same type already exist on the same device");
-    //    ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
-    //    return false;
-    //}
+    //
+    if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType), 
+        req.m_sensorInfo.m_strSensorID, req.m_sensorInfo.m_strSensorKey))
+    {
+        LOG_ERROR_RLD("Add store sensor req vaild failed because same type already exist on the same device");
+        ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
+        return false;
+    }
 
     PassengerFlowProtoHandler::Sensor sensorInfo;
     sensorInfo.m_strSensorID = strSensorID = CreateUUID();
@@ -3965,13 +3966,14 @@ bool PassengerFlowManager::ModifyStoreSensorReq(const std::string &strMsg, const
             return false;
         }
 
-    ////去除同一个设备只能添加一种类型的传感器限制。
-    //if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType), true, req.m_sensorInfo.m_strSensorID))
-    //{
-    //    LOG_ERROR_RLD("Modify store sensor req vaild failed because same type already exist on the same device");
-    //    ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
-    //    return false;
-    //}
+    //去除同一个设备只能添加一种类型的传感器限制。
+    if (!ValidDeviceSensor(req.m_sensorInfo.m_strDeviceID, boost::lexical_cast<unsigned int>(req.m_sensorInfo.m_strSensorType), 
+        req.m_sensorInfo.m_strSensorID, req.m_sensorInfo.m_strSensorKey))
+    {
+        LOG_ERROR_RLD("Modify store sensor req vaild failed because same type already exist on the same device");
+        ReturnInfo::RetCode(ReturnInfo::SENSOR_TYPE_DUPLICATE);
+        return false;
+    }
 
     m_DBRuner.Post(boost::bind(&PassengerFlowManager::ModifyStoreSensor, this, req.m_sensorInfo));
 
@@ -9651,52 +9653,101 @@ bool PassengerFlowManager::QueryAllStoreSensor(const std::string &strStoreID, st
     return true;
 }
 
-bool PassengerFlowManager::ValidDeviceSensor(const std::string &strDevID, const unsigned int uiType, const bool IsModify, const std::string &strSensorID)
+bool PassengerFlowManager::ValidDeviceSensor(const std::string &strDevID, const unsigned int uiType, const std::string &strSensorID, 
+    const std::string &strSensorKey)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = !IsModify ? "select count(id) from t_store_sensor where device_id = '%s' and sensor_type = %u and state = 0" :
-        "select count(id) from t_store_sensor where device_id = '%s' and sensor_type = %u and state = 0 and sensor_id != '%s'";
-    if (!IsModify)
+
+    //增加传感器信息
+    if (strSensorID.empty())
     {
-        snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), uiType);
+        const char *sqlfmt = "select count(id) from t_store_sensor where device_id = '%s' and sensor_type = '%u' and sensor_key = '%s' and state = 0";
+
+        snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), uiType, strSensorKey.c_str());
+
+        unsigned int uiResult;
+        auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+        {
+            uiResult = boost::lexical_cast<unsigned int>(strColumn);
+            Result = uiResult;
+
+            LOG_INFO_RLD("Query sensor valid sql count(id) is " << uiResult);
+        };
+
+        std::list<boost::any> ResultList;
+        if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+        {
+            LOG_ERROR_RLD("ValidDeviceSensor sql failed, sql is " << sql);
+            return false;
+        }
+
+        if (ResultList.empty())
+        {
+            LOG_INFO_RLD("Not found sensor existed, device id is " << strDevID << " and type is " << uiType);
+            return true;
+        }
+
+        uiResult = boost::any_cast<unsigned int>(ResultList.front());
+
+        if (uiResult > 0)
+        {
+            LOG_ERROR_RLD("The sensor is invalid, device id is " << strDevID << " and type is " << uiType);
+            return false;
+        }
+
+        LOG_INFO_RLD("The sensor is valid, device id is " << strDevID << " and type is " << uiType);
+        return true;
     }
     else
     {
-        snprintf(sql, sizeof(sql), sqlfmt, strDevID.c_str(), uiType, strSensorID.c_str());
-    }
-    
-    unsigned int uiResult;
-    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
-    {
-        uiResult = boost::lexical_cast<unsigned int>(strColumn);
-        Result = uiResult;
+        PassengerFlowProtoHandler::Sensor sensorInfo;
+        if (!QueryStoreSensorInfo(strSensorID, sensorInfo))
+        {
+            LOG_ERROR_RLD("Vaild device sensor failed.");
+            return false;
+        }
 
-        LOG_INFO_RLD("Query sensor valid sql count(id) is " << uiResult);
-    };
+        const char *sqlfmt = "select sensor_id from t_store_sensor where device_id = '%s' and sensor_type = '%u' and sensor_key = '%s' and state = 0";
 
-    std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
-    {
-        LOG_ERROR_RLD("IsUserPasswordValid sql failed, sql is " << sql);
-        return false;
-    }
+        snprintf(sql, sizeof(sql), sqlfmt, 
+            strDevID.empty() ? sensorInfo.m_strDeviceID.c_str() : strDevID.c_str(), 
+            0xFFFFFFFF == uiType ? boost::lexical_cast<unsigned int>(sensorInfo.m_strSensorType) : uiType, 
+            strSensorKey.empty() ? sensorInfo.m_strSensorKey.c_str() : strSensorKey.c_str());
 
-    if (ResultList.empty())
-    {
-        LOG_INFO_RLD("Not found sensor existed, device id is " << strDevID << " and type is " << uiType);
+        //std::string strSensorIDFromDB;
+        auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+        {            
+            Result = strColumn;
+
+            LOG_INFO_RLD("Query sensor valid sql sensor id is " << strColumn);
+        };
+
+        std::list<boost::any> ResultList;
+        if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+        {
+            LOG_ERROR_RLD("ValidDeviceSensor sql failed, sql is " << sql);
+            return false;
+        }
+
+        if (ResultList.empty())
+        {
+            LOG_INFO_RLD("Not found sensor existed, device id is " << strDevID << " and type is " << uiType << " and sensor key is " << strSensorKey);
+            return true;
+        }
+
+        //strSensorIDFromDB = boost::any_cast<std::string>(ResultList.front());
+
+        if ((!strDevID.empty() && sensorInfo.m_strDeviceID != strDevID) || 
+            (0xFFFFFFFF != uiType && uiType != boost::lexical_cast<unsigned int>(sensorInfo.m_strSensorType)) || 
+            (!strSensorKey.empty() && sensorInfo.m_strSensorKey != strSensorKey))
+        {
+            LOG_ERROR_RLD("The sensor is invalid, device id is " << strDevID << " and type is " << uiType << " and sensor key is " << strSensorKey);
+            return false;
+        }
+
+        LOG_INFO_RLD("The sensor is valid, device id is " << strDevID << " and type is " << uiType << " and sensor key is " << strSensorKey);
         return true;
     }
-
-    uiResult = boost::any_cast<unsigned int>(ResultList.front());
-
-    if (uiResult > 0)
-    {
-        LOG_ERROR_RLD("The sensor is invalid, device id is " << strDevID << " and type is " << uiType);
-        return false;
-    }
-
-    LOG_INFO_RLD("The sensor is valid, device id is " << strDevID << " and type is " << uiType);
-    return true;
 }
 
 void PassengerFlowManager::ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount,

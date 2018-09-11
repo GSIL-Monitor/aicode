@@ -573,7 +573,8 @@ private:
     bool QueryAllStoreSensor(const std::string &strStoreID, std::list<PassengerFlowProtoHandler::Sensor> &sensorList,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool ValidDeviceSensor(const std::string &strDevID, const unsigned int uiType, const bool IsModify = false, const std::string &strSensorID = "");
+    bool ValidDeviceSensor(const std::string &strDevID, const unsigned int uiType, const std::string &strSensorID,
+        const std::string &strSensorKey);
 
     void ImportPOSData(const std::string &strStoreID, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount,
         const double dDealAmount, const std::string &strDealDate);
