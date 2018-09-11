@@ -9414,7 +9414,7 @@ void PassengerFlowManager::ModifyStoreSensor(const PassengerFlowProtoHandler::Se
         blModified = true;
     }
 
-    if (!sensorInfo.m_strSensorType.empty())
+    if (!sensorInfo.m_strSensorType.empty() && (0xFFFFFFFF != boost::lexical_cast<unsigned int>(sensorInfo.m_strSensorType)))
     {
         len += snprintf(sql + len, size - len, ", sensor_type = '%s'", sensorInfo.m_strSensorType.c_str());
         blModified = true;

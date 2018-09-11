@@ -12657,7 +12657,8 @@ bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const
         ModifyStoreSensorReq.m_strUserID = strUserID;
         ModifyStoreSensorReq.m_sensorInfo.m_strDeviceID = sr.m_strDevID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorName = sr.m_strName;
-        ModifyStoreSensorReq.m_sensorInfo.m_strSensorType = 0xFFFFFFFF == sr.m_uiType ? "" : boost::lexical_cast<std::string>(sr.m_uiType);
+        //ModifyStoreSensorReq.m_sensorInfo.m_strSensorType = 0xFFFFFFFF == sr.m_uiType ? "" : boost::lexical_cast<std::string>(sr.m_uiType);
+        ModifyStoreSensorReq.m_sensorInfo.m_strSensorType = boost::lexical_cast<std::string>(sr.m_uiType);
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorAlarmThreshold = sr.m_strAlarmThreshold;
         ModifyStoreSensorReq.m_sensorInfo.m_strStoreID = sr.m_strStoreID;
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorID = sr.m_strID;
