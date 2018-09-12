@@ -6818,13 +6818,23 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select * from"
-        " (select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
-        " from t_event_info a where a.user_id = '%s' and a.state = 0 union all"
-        " select b.event_id, b.source, b.submit_date, b.expire_date, b.user_id, b.device_id, b.process_state, b.view_state"
-        " from t_event_info b join t_event_user_association c on b.event_id = c.event_id where b.state = 0 and c.user_id = '%s') d"
-        " where 1 = 1";
-    int len = snprintf(sql, size, sqlfmt, strUserID.c_str(), strUserID.c_str());
+    
+    ////
+    //const char *sqlfmt = "select * from"
+    //    " (select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
+    //    " from t_event_info a where a.user_id = '%s' and a.state = 0 union all"
+    //    " select b.event_id, b.source, b.submit_date, b.expire_date, b.user_id, b.device_id, b.process_state, b.view_state"
+    //    " from t_event_info b join t_event_user_association c on b.event_id = c.event_id where b.state = 0 and c.user_id = '%s') d"
+    //    " where 1 = 1";
+
+    const char *sqlfmt = 
+        "select d.event_id, d.source, d.submit_date, d.expire_date, d.user_id, d.device_id, d.process_state, d.view_state"
+        " from t_event_info d where d.state = 0";
+
+
+    //int len = snprintf(sql, size, sqlfmt, strUserID.c_str(), strUserID.c_str());
+
+    int len = snprintf(sql, size, sqlfmt);
 
     if (strProcessState == "0" || strProcessState == "1")
     {
