@@ -1723,6 +1723,15 @@ bool PassengerFlowMsgHandler::ReportEventHandler(boost::shared_ptr<MsgInfoMap> p
     if (pMsgInfoMap->end() != itFind)
     {
         strRemark = itFind->second;
+
+        ////
+        //Json::Value jsRemark;
+        //Json::Reader reader;
+        //if (!reader.parse(strRemark, jsRemark, false))
+        //{
+        //    LOG_ERROR_RLD("Parsed failed and value is " << strRemark);
+        //    return blResult;
+        //}
     }
     
     EventInfo einfo;
@@ -1963,6 +1972,15 @@ bool PassengerFlowMsgHandler::ModifyEventHandler(boost::shared_ptr<MsgInfoMap> p
     if (pMsgInfoMap->end() != itFind)
     {
         strRemark = itFind->second;
+
+        ////
+        //Json::Value jsRemark;
+        //Json::Reader reader;
+        //if (!reader.parse(strRemark, jsRemark, false))
+        //{
+        //    LOG_ERROR_RLD("Parsed failed and value is " << strRemark);
+        //    return blResult;
+        //}
     }
 
     EventInfo einfo;
@@ -2300,13 +2318,13 @@ bool PassengerFlowMsgHandler::QueryAllEventHandler(boost::shared_ptr<MsgInfoMap>
         jsEventInfo["submit_date"] = itBegin->m_strSubmitDate;
         jsEventInfo["expire_date"] = itBegin->m_strExpireDate;
         jsEventInfo["process_state"] = itBegin->m_strProcessState;
-        //jsEventInfo["create_date"] = itBegin->m_strCreateDate;
+        jsEventInfo["create_date"] = itBegin->m_strCreateDate;
         
         jsEventInfo["userid"] = itBegin->m_strUserID;
-        //jsEventInfo["deviceid"] = itBegin->m_strDevID;
+        jsEventInfo["deviceid"] = itBegin->m_strDevID;
         jsEventInfo["view_state"] = itBegin->m_strViewState;
 
-        if (!itBegin->m_strRemark.empty())
+        //if (!itBegin->m_strRemark.empty())
         {
             jsEventInfo["remark"] = jsRemark;
         }

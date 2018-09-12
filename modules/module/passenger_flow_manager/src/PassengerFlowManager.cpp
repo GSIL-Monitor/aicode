@@ -1702,6 +1702,12 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
 
     for (auto &evt : eventList)
     {
+        if (!QueryEventRemark(evt.m_strEventID, evt.m_strRemark))
+        {
+            LOG_ERROR_RLD("QueryEventRemark failed, query event remark error, event id is " << evt.m_strEventID);
+            return false;
+        }
+
         if (!QueryStoreByEvent(evt.m_strSource, evt.m_uiTypeList.front(), evt.m_strStoreName, evt.m_strStoreID))
         {
             LOG_ERROR_RLD("QueryStoreByEvent failed, query store id and name error, event id is" << evt.m_strEventID);
