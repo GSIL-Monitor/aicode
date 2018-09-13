@@ -171,6 +171,13 @@ bool PassengerFlowManager::PreCommonHandler(const std::string &strMsg, const std
         return false;
     }
 
+    //普通命令（非握手命令）重置Session
+    if (PassengerFlowProtoHandler::CustomerFlowMsgType::CustomerFlowPreHandleReq_T != req.m_MsgType)
+    {
+        m_SessionMgr.Reset(req.m_strSID);
+    }
+
+
     //if (PassengerFlowProtoHandler::CustomerFlowMsgType::LoginReq_USR_T == req.m_MsgType ||
     //    PassengerFlowProtoHandler::CustomerFlowMsgType::RegisterUserReq_USR_T == req.m_MsgType ||
     //    PassengerFlowProtoHandler::CustomerFlowMsgType::RegisterUserRsp_USR_T == req.m_MsgType ||
@@ -1644,7 +1651,7 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
 
     if (req.m_uiRelation == 0)
     {
-        if (!QueryCreatedEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+        if (!QueryCreatedEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), req.m_uiEventType, eventList,
             req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
         {
             LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
@@ -1652,7 +1659,7 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
         }
     }
     else if (req.m_uiRelation == 1) {
-        if (!QueryHandledEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+        if (!QueryHandledEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), req.m_uiEventType, eventList,
             req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
         {
             LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
@@ -1661,7 +1668,7 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
     }
     else
     {
-        if (!QueryAllEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), eventList,
+        if (!QueryAllEvent(req.m_strUserID, boost::lexical_cast<std::string>(req.m_uiProcessState), req.m_uiEventType, eventList,
             req.m_strBeginDate, req.m_strEndDate, req.m_uiBeginIndex))
         {
             LOG_ERROR_RLD("Query all event failed, src id is " << strSrcID);
@@ -1669,35 +1676,42 @@ bool PassengerFlowManager::QueryAllEventReq(const std::string &strMsg, const std
         }
     }
 
-    //req的eventtype巡店消息0、考评消息1
-    //报文中的事件类型："远程巡店结果通知类型0、定时巡店结果通知类型1、考评结果通知类型2。
-    if (0xFFFFFFFF != req.m_uiEventType)
-    {
-        auto itBegin = eventList.begin();
-        auto itEnd = eventList.end();
+    ////req的eventtype巡店消息0、考评消息1
+    ////报文中的事件类型："远程巡店结果通知类型0、定时巡店结果通知类型1、考评结果通知类型2。
+    //if (0xFFFFFFFF != req.m_uiEventType)
+    //{
+    //    auto itBegin = eventList.begin();
+    //    auto itEnd = eventList.end();
 
-        while (itBegin != itEnd)
-        {
-            if (1 == req.m_uiEventType)
-            {
-                if (itBegin->m_uiTypeList.front() != 2) //删除巡店，剩下考评
-                {
-                    eventList.erase(itBegin++);
-                    continue;
-                }
-            }
-            else
-            {
-                if (itBegin->m_uiTypeList.front() == 2) //删除考评，剩下巡店
-                {
-                    eventList.erase(itBegin++);
-                    continue;
-                }
-            }
-                        
-            ++itBegin;
-        }
-    }
+    //    while (itBegin != itEnd)
+    //    {
+    //        if (req.m_uiEventType != itBegin->m_uiTypeList.front())
+    //        {
+    //            eventList.erase(itBegin++);
+    //            continue;
+    //        }
+
+    //        ////
+    //        //if (1 == req.m_uiEventType)
+    //        //{
+    //        //    if (itBegin->m_uiTypeList.front() != 2) //删除巡店，剩下考评
+    //        //    {
+    //        //        eventList.erase(itBegin++);
+    //        //        continue;
+    //        //    }
+    //        //}
+    //        //else
+    //        //{
+    //        //    if (itBegin->m_uiTypeList.front() == 2) //删除考评，剩下巡店
+    //        //    {
+    //        //        eventList.erase(itBegin++);
+    //        //        continue;
+    //        //    }
+    //        //}
+    //                    
+    //        ++itBegin;
+    //    }
+    //}
     
 
     for (auto &evt : eventList)
@@ -6836,7 +6850,8 @@ bool PassengerFlowManager::QueryEventRemark(const std::string &strEventID, std::
     return true;
 }
 
-bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType, 
+    std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[1024] = { 0 };
@@ -6852,7 +6867,7 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std
 
     const char *sqlfmt = 
         "select d.event_id, d.source, d.submit_date, d.expire_date, d.user_id, d.device_id, d.process_state, d.view_state"
-        " from t_event_info d where d.state = 0";
+        " from t_event_info d join t_event_type e on d.event_id = e.event_id  where d.state = 0";
 
 
     //int len = snprintf(sql, size, sqlfmt, strUserID.c_str(), strUserID.c_str());
@@ -6874,47 +6889,59 @@ bool PassengerFlowManager::QueryAllEvent(const std::string &strUserID, const std
         len += snprintf(sql + len, size - len, " and d.submit_date <= '%s'", strEndDate.c_str());
     }
 
+    if (0xFFFFFFFF != uiType)
+    {
+        len += snprintf(sql + len, size - len, " and e.event_type = '%u'", uiType);
+    }
+
     snprintf(sql + len, size - len, " order by d.submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);
 
     return QueryEventSub(std::string(sql), eventList);
 }
 
-bool PassengerFlowManager::QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+bool PassengerFlowManager::QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType,
+    std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select event_id, source, submit_date, expire_date, user_id, device_id, process_state, view_state"
-        " from t_event_info where user_id = '%s' and state = 0";
+    const char *sqlfmt = "select d.event_id, d.source, d.submit_date, d.expire_date, d.user_id, d.device_id, d.process_state, d.view_state"
+        " from t_event_info d join t_event_type e on d.event_id = e.event_id where d.user_id = '%s' and d.state = 0";
     int len = snprintf(sql, size, sqlfmt, strUserID.c_str());
 
     if (strProcessState == "0" || strProcessState == "1")
     {
-        len += snprintf(sql + len, size - len, " and process_state = '%s'", strProcessState.c_str());
+        len += snprintf(sql + len, size - len, " and d.process_state = '%s'", strProcessState.c_str());
     }
 
     if (!strBeginDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and submit_date >= '%s'", strBeginDate.c_str());
+        len += snprintf(sql + len, size - len, " and d.submit_date >= '%s'", strBeginDate.c_str());
     }
 
     if (!strEndDate.empty())
     {
-        len += snprintf(sql + len, size - len, " and submit_date <= '%s'", strEndDate.c_str());
+        len += snprintf(sql + len, size - len, " and d.submit_date <= '%s'", strEndDate.c_str());
     }
 
-    snprintf(sql + len, size - len, " order by submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);
+    if (0xFFFFFFFF != uiType)
+    {
+        len += snprintf(sql + len, size - len, " and e.event_type = '%u'", uiType);
+    }
+
+    snprintf(sql + len, size - len, " order by d.submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);
 
     return QueryEventSub(std::string(sql), eventList);
 }
 
-bool PassengerFlowManager::QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+bool PassengerFlowManager::QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType,
+    std::list<PassengerFlowProtoHandler::Event> &eventList,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex /*= 0*/, const unsigned int uiPageSize /*= 10*/)
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = " select a.event_id, a.source, a.submit_date, a.expire_date, a.user_id, a.device_id, a.process_state, a.view_state"
-        " from t_event_info a join t_event_user_association b on a.event_id = b.event_id"
+        " from t_event_info a join t_event_user_association b on a.event_id = b.event_id join t_event_type e on a.event_id = e.event_id "
         " where b.user_id = '%s' and a.state = 0";
     int len = snprintf(sql, size, sqlfmt, strUserID.c_str(), strUserID.c_str());
 
@@ -6931,6 +6958,11 @@ bool PassengerFlowManager::QueryHandledEvent(const std::string &strUserID, const
     if (!strEndDate.empty())
     {
         len += snprintf(sql + len, size - len, " and a.submit_date <= '%s'", strEndDate.c_str());
+    }
+
+    if (0xFFFFFFFF != uiType)
+    {
+        len += snprintf(sql + len, size - len, " and e.event_type = '%u'", uiType);
     }
 
     snprintf(sql + len, size - len, " order by a.submit_date desc limit %d, %d", uiBeginIndex, uiPageSize);

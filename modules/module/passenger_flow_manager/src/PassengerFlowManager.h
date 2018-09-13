@@ -392,13 +392,13 @@ private:
 
     bool QueryEventRemark(const std::string &strEventID, std::string &strRemark);
 
-    bool QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+    bool QueryAllEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType, std::list<PassengerFlowProtoHandler::Event> &eventList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+    bool QueryCreatedEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType, std::list<PassengerFlowProtoHandler::Event> &eventList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
-    bool QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, std::list<PassengerFlowProtoHandler::Event> &eventList,
+    bool QueryHandledEvent(const std::string &strUserID, const std::string &strProcessState, const unsigned int uiType, std::list<PassengerFlowProtoHandler::Event> &eventList,
         const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10);
 
     bool QueryEventSub(const std::string &strSql, std::list<PassengerFlowProtoHandler::Event> &eventList);
