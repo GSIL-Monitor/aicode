@@ -6452,20 +6452,43 @@ void PassengerFlowManager::DeleteEvent(const std::string &strEventID, const std:
 void PassengerFlowManager::DeleteCreatedEvent(const std::string &strEventID, const std::string &strUserID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str());
+    const char *sqlfmt = "delete from t_event_info where event_id = '%s'"; //"update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str()); // , strUserID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
         LOG_ERROR_RLD("DeleteCreatedEvent exec sql failed, sql is " << sql);
     }
+
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "delete from t_event_remark where event_id = '%s'"; //"update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str()); // , strUserID.c_str());
+
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("DeleteCreatedEvent exec sql failed, sql is " << sql);
+        }
+    }
+
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "delete from t_event_type where event_id = '%s'"; //"update t_event_info set state = 1 where event_id = '%s' and user_id = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str()); // , strUserID.c_str());
+
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("DeleteCreatedEvent exec sql failed, sql is " << sql);
+        }
+    }
+
 }
 
 void PassengerFlowManager::DeleteHandledEvent(const std::string &strEventID, const std::string &strUserID)
 {
     char sql[1024] = { 0 };
-    const char *sqlfmt = "delete from t_event_user_association where event_id = '%s' and user_id = '%s'";
-    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str(), strUserID.c_str());
+    const char *sqlfmt = "delete from t_event_user_association where event_id = '%s'"; // and user_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strEventID.c_str()); //, strUserID.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
