@@ -348,7 +348,7 @@ private:
         const unsigned int uiBusinessType, const std::string &strBeginDate, const std::string &strEndDate,
         const unsigned int uiBeginIndex = 0, const unsigned int uiPageSize = 10, const bool IsNeedCache = true);
 
-    bool QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, std::string *pstrUserName = NULL);
+    bool QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, std::string *pstrUserName = NULL, std::string *pDevType = NULL);
 
     bool IsUserPasswordValid(const std::string &strUserID, const std::string &strUserPassword);
 

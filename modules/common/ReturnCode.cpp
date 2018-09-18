@@ -19,6 +19,8 @@ const int ReturnInfo::DEVICE_NOT_BELONG_TO_USER = 1007;            //…Ë±∏≤ªπÈ Ù”
 const int ReturnInfo::DEVICE_NOT_RECORDED_USER = 1008;             //…Ë±∏Œ¥º«¬º
 const int ReturnInfo::DEVICE_P2PID_NOT_RECORDED_USER = 1009;       //…Ë±∏P2PIDŒ¥º«¬º
 const int ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER = 1010;         //µ±«∞”√ªß“—ÃÌº”¥À…Ë±∏
+const int ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER_TYPE = 1090; //µ±«∞”√ªß“—ÃÌº”¥À…Ë±∏≤¢«“¿‡–Õ≤ªÕ¨
+
 const int ReturnInfo::CLOUD_STORAGE_NOT_PAID_USER = 1011;          //”√ªßŒ¥ø™Õ®∏∂∑—‘∆¥Ê¥¢∑˛ŒÒ
 const int ReturnInfo::UNDELETED_DEVICE_EXISTED_USER = 1012;        //”√ªß»‘”–Œ¥…æ≥˝µƒ…Ë±∏
 const int ReturnInfo::ACCOUNT_LOGIN_AT_OTHER_TERMINAL = 1013;      //’Àªß‘⁄∆‰À˚÷’∂Àµ«¬º

@@ -7710,6 +7710,7 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmThresholdHandler(boost::shared_ptr
         jsAlarmThreshold["type"] = boost::lexical_cast<std::string>(itBegin->m_uiType);
         jsAlarmThreshold["threshold_value"] = itBegin->m_strAlarmThreshold;
         jsAlarmThreshold["sensor_key"] = itBegin->m_strSensorKey;
+        jsAlarmThreshold["sensorid"] = itBegin->m_strID;
         
         jsAlarmThresholdList[i] = jsAlarmThreshold;
     }

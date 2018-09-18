@@ -5924,8 +5924,10 @@ bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, const std
 {
     char sql[1024] = { 0 };
     int size = sizeof(sql);
-    const char *sqlfmt = "select a.store_id from"
-        " t_store_info a join t_user_store_association b on a.store_id = b.store_id";
+
+    const char *sqlfmt = "select a.store_id from t_store_info a where 1 = 1";
+    //const char *sqlfmt = "select a.store_id from"
+    //    " t_store_info a join t_user_store_association b on a.store_id = b.store_id";
     //" where b.user_id = '%s'";
     int len = snprintf(sql, sizeof(sql), sqlfmt);
     //int len = snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
@@ -5945,7 +5947,7 @@ bool PassengerFlowManager::QueryAllStore(const std::string &strUserID, const std
         len += snprintf(sql + len, size - len, " and a.open_state = %d", uiOpenState);
     }
 
-    snprintf(sql + len, size - len, " limit %d, %d", uiBeginIndex, uiPageSize);
+    snprintf(sql + len, size - len, " ORDER BY a.create_date DESC limit %d, %d", uiBeginIndex, uiPageSize);
 
     auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
     {

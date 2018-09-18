@@ -985,8 +985,9 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     InteractiveProtoHandler::AddDevReq_USR req;
     std::string strDeviceID;
     std::string strUserNameOfCurrent;
+    std::string strDevType;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID, &strUserNameOfCurrent)
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID, &strDeviceID, &strUserNameOfCurrent, &strDevType)
     {
         InteractiveProtoHandler::AddDevRsp_USR rsp;
         rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddDevRsp_USR_T;
@@ -995,7 +996,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::RetCode();
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
         rsp.m_strDeviceID = blResult ? strDeviceID : "";
-        rsp.m_strValue = strUserNameOfCurrent;
+        rsp.m_strValue = blResult ? "" : strUserNameOfCurrent + ":" +strDevType;
 
         std::string strSerializeOutPut;
         if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
@@ -1042,12 +1043,31 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     strCurrentTime.replace(pos, 1, std::string(" "));
 
     std::string strUserID;
-    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID, &strUserNameOfCurrent))
+    if (!QueryOwnerUserIDByDeviceID(strDeviceID, strUserID, &strUserNameOfCurrent, &strDevType))
     {
         LOG_ERROR_RLD("Add device query added device owner failed, src id is " << strSrcID);
         return false;
     }
-    
+
+    unsigned int uiTypeInfo = 0xFFFFFFFF;
+    if (!strDevType.empty())
+    {
+        try
+        {
+            uiTypeInfo = boost::lexical_cast<unsigned int>(strDevType);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device type info is invalid and error msg is " << e.what() << " and input type is " << strDevType);
+            return false;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device type info is invalid" << " and input type is " << strDevType);
+            return false;
+        }
+    }
+
     if (strUserID.empty())
     {
         std::string strUuid;
@@ -1089,8 +1109,20 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     }
     else if (strUserID == req.m_strUserID)
     {
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER);
-        LOG_ERROR_RLD("Add device failed, the device has been added by current user, user id is" << strUserID);
+        //ReturnInfo::RetCode(ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER);
+        //LOG_ERROR_RLD("Add device failed, the device has been added by current user, user id is" << strUserID);
+        
+        //当已经添加的设备类型是与待添加的设备类型相同时，允许重复添加成功，反之，则返回错误码
+        if (req.m_devInfo.m_uiTypeInfo == uiTypeInfo)
+        {
+            LOG_INFO_RLD("Add device duplicated and user id is " << strUserID << " and device type is " << uiTypeInfo); //允许重复添加成功
+            blResult = true;
+        }
+        else
+        {
+            ReturnInfo::RetCode(ReturnInfo::DEVICE_ADDED_BY_CURRENT_USER_TYPE);
+            LOG_ERROR_RLD("Add device failed, the device has been added by current user, user id is" << strUserID << " and device type is " << uiTypeInfo);
+        }
     } 
     else
     {
@@ -5080,7 +5112,7 @@ bool AccessManager::QueryFileToDB(const std::string &strUserID, const std::strin
     return true;
 }
 
-bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, std::string *pstrUserName)
+bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std::string &strUserID, std::string *pstrUserName, std::string *pDevType)
 {
     std::string strUserNameTmp;
     if (NULL == pstrUserName)
@@ -5088,8 +5120,14 @@ bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std:
         pstrUserName = &strUserNameTmp;
     }
 
+    std::string strDevType;
+    if (NULL == pDevType)
+    {
+        pDevType = &strDevType;
+    }
+
     char sql[1024] = { 0 };
-    const char* sqlfmt = "select rel.userid, usr.username from"
+    const char* sqlfmt = "select rel.userid, usr.username, dev.typeinfo from"
         " t_user_info usr, t_device_info dev, t_user_device_relation rel"
         " where usr.userid = rel.userid and usr.status = 0 and"
         " dev.deviceid = '%s' and dev.id = rel.devicekeyid and dev.status = 0 and"
@@ -5099,6 +5137,7 @@ bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std:
 
     strUserID.clear();
     pstrUserName->clear();
+    pDevType->clear();
 
     auto FuncTmp = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn)
     {
@@ -5110,6 +5149,10 @@ bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std:
             
         case 1:
             *pstrUserName = strColumn;
+            break;
+
+        case 2:
+            *pDevType = strColumn;
             break;
 
         default:
@@ -5130,6 +5173,8 @@ bool AccessManager::QueryOwnerUserIDByDeviceID(const std::string &strDevID, std:
     {
         LOG_INFO_RLD("Query user id by device id is empty and device id is " << strDevID);
     }
+
+    LOG_INFO_RLD("QueryOwnerUserIDByDeviceID user id is " << strUserID << " and user name is " << *pstrUserName << " and device type is " << *pDevType);
 
     return true;
 }
