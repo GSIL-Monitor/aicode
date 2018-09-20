@@ -422,7 +422,7 @@ private:
     bool UnRegisterUser(const std::string &strSid, const std::string &strUserID, const std::string &strUserName, const std::string &strUserPwd);
     
     template<typename T>
-    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, 
+    bool UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, const unsigned int uiDevIsolation,
         const unsigned int uiTerminalType, std::list<T> &RelationList,
         std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList);
 
@@ -449,7 +449,7 @@ private:
     bool QueryDeviceInfoMultiple(const std::string &strSid, std::list<std::string> &strDevIDList, std::list<DeviceIf> &DevInfoList);
 
     template<typename T>
-    bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList, 
+    bool QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, const unsigned int uiDevIsolation, std::list<T> &RelationList,
         std::list<std::string> &strDevNameList);
     
     template<typename T>

@@ -856,6 +856,32 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         LOG_ERROR_RLD("Terminal Type info is invalid and input index is " << itFind->second);
         return blResult;
     }
+
+    unsigned int uiDevIsolation = 1; //设备隔离，默认为启用
+    itFind = pMsgInfoMap->find("device_isolation");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDevIsolation = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+
+        if (1 != uiDevIsolation && 0 != uiDevIsolation)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and value is " << uiDevIsolation);
+            return blResult;
+        }
+    }
     
     strUserID = pMsgInfoMap->end() == itFind2 ? "" : itFind2->second;
 
@@ -869,7 +895,7 @@ bool HttpMsgHandler::UserLoginHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
     
     std::list<InteractiveProtoHandler::Relation> relist;
     std::list<std::string> strDevNameList;
-    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiType, uiTerminalType, relist, strUserID, strSid, strDevNameList))
+    if (!UserLogin<InteractiveProtoHandler::Relation>(strUsername, strUserpwd, uiType, uiDevIsolation, uiTerminalType, relist, strUserID, strSid, strDevNameList))
     {
         LOG_ERROR_RLD("Login user handle failed and user name is " << strUsername << " and user pwd is " << strUserpwd);
         return blResult;
@@ -1693,7 +1719,33 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
             return blResult;
         }
     }
-                  
+    
+    unsigned int uiDevIsolation = 1; //设备隔离，默认为启用
+    itFind = pMsgInfoMap->find("device_isolation");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        try
+        {
+            uiDevIsolation = boost::lexical_cast<unsigned int>(itFind->second);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+
+        if (1 != uiDevIsolation && 0 != uiDevIsolation)
+        {
+            LOG_ERROR_RLD("Device isolation info is invalid and value is " << uiDevIsolation);
+            return blResult;
+        }
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query devices of user info received and  user id is " << strUserID
@@ -1702,7 +1754,7 @@ bool HttpMsgHandler::QueryDevicesOfUserHandler(boost::shared_ptr<MsgInfoMap> pMs
 
     std::list<InteractiveProtoHandler::Relation> relist;
     std::list<std::string> strDevNameList;
-    if (!QueryDevicesOfUser<InteractiveProtoHandler::Relation>(strSid, strUserID, uiBeginIndex, relist, strDevNameList))
+    if (!QueryDevicesOfUser<InteractiveProtoHandler::Relation>(strSid, strUserID, uiBeginIndex, uiDevIsolation, relist, strDevNameList))
     {
         LOG_ERROR_RLD("Query devices of user handle failed and user id is " << strUserID << " and session id is " << strSid);
         return blResult;
@@ -7458,7 +7510,7 @@ bool HttpMsgHandler::UnRegisterUser(const std::string &strSid, const std::string
 }
 
 template<typename T>
-bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, 
+bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string &strUserPwd, const unsigned int uiType, const unsigned int uiDevIsolation,
     const unsigned int uiTerminalType, std::list<T> &RelationList,
     std::string &strUserID, std::string &strSid, std::list<std::string> &strDevNameList)
 {
@@ -7485,6 +7537,7 @@ bool HttpMsgHandler::UserLogin(const std::string &strUserName, const std::string
         UsrLoginReq.m_userInfo.m_strEmail = "";
         UsrLoginReq.m_uiTerminalType = uiTerminalType;
         UsrLoginReq.m_uiType = uiType;
+        UsrLoginReq.m_strValue = boost::lexical_cast<std::string>(uiDevIsolation);
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(UsrLoginReq, strSerializeOutPut))
@@ -8139,8 +8192,8 @@ bool HttpMsgHandler::QueryDeviceInfoMultiple(const std::string &strSid, std::lis
 }
 
 template<typename T>
-bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<T> &RelationList,
-    std::list<std::string> &strDevNameList)
+bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, const unsigned int uiDevIsolation,
+    std::list<T> &RelationList, std::list<std::string> &strDevNameList)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {        
@@ -8148,9 +8201,10 @@ bool HttpMsgHandler::QueryDevicesOfUser(const std::string &strSid, const std::st
         QueryDevReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryDevReq_USR_T;
         QueryDevReq.m_uiMsgSeq = 1;
         QueryDevReq.m_strSID = strSid;
-        QueryDevReq.m_strValue = "";
+        //QueryDevReq.m_strValue = "";
         QueryDevReq.m_strUserID = strUserID;
         QueryDevReq.m_uiBeginIndex = uiBeginIndex;
+        QueryDevReq.m_strValue = boost::lexical_cast<std::string>(uiDevIsolation);
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QueryDevReq, strSerializeOutPut))

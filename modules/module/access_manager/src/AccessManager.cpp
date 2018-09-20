@@ -474,7 +474,7 @@ bool AccessManager::UnRegisterUserReq(const std::string &strMsg, const std::stri
 
     std::list<InteractiveProtoHandler::Relation> relationList;
     std::list<std::string> strDevNameList;
-    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList, 9))
+    if (!QueryRelationByUserID(UnRegUsrReq.m_userInfo.m_strUserID, relationList, strDevNameList, 9, 0))
     {
         LOG_ERROR_RLD("Unregister user failed, query usr device realtion error, user id is " << UnRegUsrReq.m_userInfo.m_strUserID);
         return false;
@@ -806,7 +806,8 @@ bool AccessManager::LoginReq(const std::string &strMsg, const std::string &strSr
         return false;
     }
 
-    if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList, LoginReqUsr.m_uiType))
+    if (!QueryRelationByUserID(LoginReqUsr.m_userInfo.m_strUserID, RelationList, strDevNameList, LoginReqUsr.m_uiType,
+        boost::lexical_cast<unsigned int>(LoginReqUsr.m_strValue), 0, 100))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << LoginReqUsr.m_userInfo.m_strUserID);
         return false;
@@ -1400,7 +1401,7 @@ bool AccessManager::QueryDeviceReq(const std::string &strMsg, const std::string 
 
 	unsigned int uiAppType;
 	m_SessionMgr.GetSessionLoginType(req.m_strSID, uiAppType);
-	if (!QueryRelationByUserID(req.m_strUserID, RelationList, strDevNameList, uiAppType, req.m_uiBeginIndex))
+    if (!QueryRelationByUserID(req.m_strUserID, RelationList, strDevNameList, uiAppType, boost::lexical_cast<unsigned int>(req.m_strValue), req.m_uiBeginIndex))
     {
         LOG_ERROR_RLD("Query device info failed and user id is " << req.m_strUserID);
         return false;
@@ -6211,7 +6212,7 @@ bool AccessManager::QueryRelationExist(const std::string &strUserID, const std::
 }
 
 bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::list<InteractiveProtoHandler::Relation> &RelationList,
-    std::list<std::string> &strDevNameList, const unsigned int uiAppType, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
+    std::list<std::string> &strDevNameList, const unsigned int uiAppType, const unsigned int uiDevIsolation, const unsigned int uiBeginIndex, const unsigned int uiPageSize)
 {
     char sql[1024] = { 0 };
     const char* sqlfmt = "select rel.userid, rel.deviceid, rel.relation, rel.begindate, rel.enddate, rel.createdate, rel.status, rel.extend, dev.devicename, rel.devicename"
@@ -6219,7 +6220,7 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
         " where dev.id = rel.devicekeyid and usr.userid = rel.userid and rel.userid = '%s' and rel.status = 0 and dev.status = 0 and usr.status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strUserID.c_str());
 
-	if (uiAppType != 9)
+	if (uiAppType != 9 && 1 == uiDevIsolation)
 	{
 		int len = strlen(sql);
 		snprintf(sql + len, sizeof(sql) - len, " and dev.typeinfo = %d", uiAppType);
@@ -6231,75 +6232,82 @@ bool AccessManager::QueryRelationByUserID(const std::string &strUserID, std::lis
     strSql = std::string(sql) + std::string(cTmp);
     
     std::list<boost::any> ResultList;
-    if (0) // (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+
+    //if (0) // (m_DBCache.GetResult(strSql, ResultList) && !ResultList.empty())
+    //{
+    //    boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList;
+    //    pRelationList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > >(ResultList.front());
+
+    //    boost::shared_ptr<std::list<std::string> > pStrDevNameList;
+    //    pStrDevNameList = boost::any_cast<boost::shared_ptr<std::list<std::string> >>(ResultList.back());
+    //    
+    //    auto itBegin = pRelationList->begin();
+    //    auto itEnd = pRelationList->end();
+    //    while (itBegin != itEnd)
+    //    {
+    //        RelationList.push_back(*itBegin);
+    //        ++itBegin;
+    //    }
+
+    //    auto itBeginDevName = pStrDevNameList->begin();
+    //    auto itEndDevName = pStrDevNameList->end();
+    //    while (itBeginDevName != itEndDevName)
+    //    {
+    //        strDevNameList.push_back(*itBeginDevName);
+    //        ++itBeginDevName;
+    //    }
+
+    //    LOG_INFO_RLD("Query relation get result from cache and sql is " << strSql);
+    //}
+    //else
+    //{        
+    if (!m_pMysql->QueryExec(strSql, boost::bind(&AccessManager::DevInfoRelationSqlCB, this, _1, _2, _3, &RelationList, &strDevNameList)))
     {
-        boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList;
-        pRelationList = boost::any_cast<boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > >(ResultList.front());
-
-        boost::shared_ptr<std::list<std::string> > pStrDevNameList;
-        pStrDevNameList = boost::any_cast<boost::shared_ptr<std::list<std::string> >>(ResultList.back());
-        
-        auto itBegin = pRelationList->begin();
-        auto itEnd = pRelationList->end();
-        while (itBegin != itEnd)
-        {
-            RelationList.push_back(*itBegin);
-            ++itBegin;
-        }
-
-        auto itBeginDevName = pStrDevNameList->begin();
-        auto itEndDevName = pStrDevNameList->end();
-        while (itBeginDevName != itEndDevName)
-        {
-            strDevNameList.push_back(*itBeginDevName);
-            ++itBeginDevName;
-        }
-
-        LOG_INFO_RLD("Query relation get result from cache and sql is " << strSql);
-    }
-    else
-    {        
-        if (!m_pMysql->QueryExec(strSql, boost::bind(&AccessManager::DevInfoRelationSqlCB, this, _1, _2, _3, &RelationList, &strDevNameList)))
-        {
-            LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
-            return false;
-        }
-
-        if (RelationList.empty())
-        {
-            LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
-            return true;
-        }
-        
-
-        boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList(new std::list<InteractiveProtoHandler::Relation>);
-        auto itBeginRel = RelationList.begin();
-        auto itEndRel = RelationList.end();
-        while (itBeginRel != itEndRel)
-        {
-            pRelationList->push_back(*itBeginRel);
-            ++itBeginRel;
-        }
-
-        boost::shared_ptr<std::list<std::string> > pStrDevNameList(new std::list<std::string>);
-        auto itBeginDevName = strDevNameList.begin();
-        auto itEndDevName = strDevNameList.end();
-        while (itBeginDevName != itEndDevName)
-        {
-            pStrDevNameList->push_back(*itBeginDevName);
-            ++itBeginDevName;
-        }
-
-        boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
-        pResultList->push_back(pRelationList);
-        pResultList->push_back(pStrDevNameList);
-
-        m_DBCache.SetResult(strSql, pResultList);
-
-        LOG_INFO_RLD("Query relation get result from db and sql is " << strSql);
+        LOG_ERROR_RLD("Query relation failed and user id is " << strUserID);
+        return false;
     }
 
+    if (RelationList.empty())
+    {
+        LOG_INFO_RLD("QueryRelationByUserID result is empty and user id is " << strUserID);
+        return true;
+    }
+        
+
+    boost::shared_ptr<std::list<InteractiveProtoHandler::Relation> > pRelationList(new std::list<InteractiveProtoHandler::Relation>);
+    auto itBeginRel = RelationList.begin();
+    auto itEndRel = RelationList.end();
+    while (itBeginRel != itEndRel)
+    {
+        pRelationList->push_back(*itBeginRel);
+        ++itBeginRel;
+    }
+
+    boost::shared_ptr<std::list<std::string> > pStrDevNameList(new std::list<std::string>);
+    auto itBeginDevName = strDevNameList.begin();
+    auto itEndDevName = strDevNameList.end();
+    while (itBeginDevName != itEndDevName)
+    {
+        pStrDevNameList->push_back(*itBeginDevName);
+        ++itBeginDevName;
+    }
+
+    LOG_INFO_RLD("QueryRelationByUserID success and user id is " << strUserID);
     return true;
+
+    ////
+    //boost::shared_ptr<std::list<boost::any> > pResultList(new std::list<boost::any>);
+    //pResultList->push_back(pRelationList);
+    //pResultList->push_back(pStrDevNameList);
+
+    //m_DBCache.SetResult(strSql, pResultList);
+
+    
+    //LOG_INFO_RLD("Query relation get result from db and sql is " << strSql);
+    
+    //}
+
+    //return true;
 }
 
 bool AccessManager::QueryRelationByDevID(const std::string &strDevID, std::list<InteractiveProtoHandler::Relation> &RelationList,
