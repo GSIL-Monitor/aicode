@@ -57,7 +57,7 @@ bool FileManager::OpenFile(const std::string &strFileName, std::string &strFileI
 
 }
 
-bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq)
+bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq, unsigned int uiBlockSize)
 {
     if (strFileID.empty())
     {
@@ -88,7 +88,7 @@ bool FileManager::OpenFile(const std::string &strFileID, unsigned int &uiFileSiz
     LOG_INFO_RLD("Open file path is " << strStoragePath << " and file id is " << strFileID << " and file size is " << uiFileSize
         << " and file id of seq is " << strFileIDSeq);
 
-    if (!AddFileHandler((strFileIDSeq.empty() ? strFileID : strFileIDSeq), strStoragePath))
+    if (!AddFileHandler((strFileIDSeq.empty() ? strFileID : strFileIDSeq), strStoragePath, uiBlockSize))
     {
         LOG_ERROR_RLD("Add file handler failed and file id is " << strFileID << " and path is " << strStoragePath);
         return false;
@@ -260,6 +260,65 @@ bool FileManager::ReadFile(const std::string &strFileID, ReadFileCB rfcb)
     return true;
 }
 
+bool FileManager::ReadFileRange(const std::string &strFileID, ReadFileCBRange rfcb, unsigned int uiBegin, unsigned int uiEnd)
+{
+    const unsigned int  uiMax = 0xFFFFFFFF;
+    if ((uiMax != uiBegin) && (uiMax != uiEnd) && (uiEnd < uiBegin))
+    {
+        LOG_ERROR_RLD("Read file range param is invalid and begin is " << uiBegin << " and end is " << uiEnd);
+        return false;
+    }
+
+    const std::string &strFileIDSeq = boost::lexical_cast<std::string>(m_uiMsgSeq++) + "_" + strFileID;
+
+    unsigned int uiFileSize = 0;
+    if (!OpenFile(strFileID, uiFileSize, strFileIDSeq, 1)) //这里定义块大小为1，以便于计算读取范围
+    {
+        LOG_ERROR_RLD("Open file failed and file id is " << strFileID);
+        return false;
+    }
+
+    unsigned int uiContentLen = 0;
+    unsigned int uiBlockID = 0;
+
+    if (uiMax == uiBegin && uiMax != uiEnd) //格式为 -xx
+    {
+        uiContentLen = uiEnd;
+        uiBlockID = uiFileSize - uiEnd;
+    }
+    else if (uiMax != uiBegin && uiMax == uiEnd) //格式为 xx-
+    {
+        uiContentLen = uiFileSize - uiBegin;
+        uiBlockID = uiBegin;
+    }
+    else if (uiMax != uiBegin && uiMax != uiEnd) //格式为 xx-xx
+    {
+        uiContentLen = uiEnd - uiBegin + 1;
+        uiBlockID = uiBegin;
+    }
+
+    const unsigned int uiBufferSize = uiContentLen;
+    boost::shared_ptr<char> pReadBuffer(new char[uiBufferSize]);
+    unsigned int uiReadSize = 0;
+
+    if (!ReadBuffer(strFileIDSeq, pReadBuffer.get(), uiBufferSize, uiReadSize, uiBlockID))
+    {
+        LOG_ERROR_RLD("Read file range buffer failed and file id is " << strFileID << " and current block id is " << uiBegin);
+        return false;
+    }
+
+    if (!rfcb(pReadBuffer.get(), uiReadSize, 0, uiFileSize, uiContentLen))
+    {
+        LOG_ERROR_RLD("Read file range buffer callback error and file id is " << strFileID << " and current block id is " << uiBegin);
+        return false;
+    }
+
+    CloseFile(strFileIDSeq);
+
+    return true;
+    
+}
+
 bool FileManager::DeleteFile(const std::string &strFileID)
 {
     if (strFileID.empty())
@@ -411,14 +470,14 @@ bool FileManager::GetStoragePath(std::string &strOutputPath, std::string &strFil
     return true;
 }
 
-bool FileManager::AddFileHandler(const std::string &strFileID, const std::string &strFilePath)
+bool FileManager::AddFileHandler(const std::string &strFileID, const std::string &strFilePath, unsigned int uiBlockSize)
 {
     FileHdr fh;
     boost::unique_lock<boost::mutex> lock(m_FileMapMutex);
     auto itFind = m_FileMap.find(strFileID);
     if (m_FileMap.end() == itFind)
     {
-        boost::shared_ptr<FileRWHandler> pFileHandler(new FileRWHandler(strFilePath.c_str(), 0, m_uiBlockSize, 0));
+        boost::shared_ptr<FileRWHandler> pFileHandler(new FileRWHandler(strFilePath.c_str(), 0, (uiBlockSize == 0) ? m_uiBlockSize : uiBlockSize, 0));
 
         if (!pFileHandler->Init())
         {

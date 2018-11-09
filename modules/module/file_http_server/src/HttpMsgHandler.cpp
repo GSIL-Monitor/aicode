@@ -177,14 +177,32 @@ bool HttpMsgHandler::DownloadFileHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     }
     const std::string strFileID = itFind->second;
     
+    std::string strRange;
+    itFind = pMsgInfoMap->find(FCGIManager::HTTP_RANGE);
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strRange = itFind->second;        
+    }
+    
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Download file info received and file id is " << strFileID);
+    LOG_INFO_RLD("Download file info received and file id is " << strFileID << " and file range is " << strRange);
 
-    if (!DownloadFile(strFileID, writer))
+    if (strRange.empty())
     {
-        LOG_ERROR_RLD("Download file handle failed");
-        return blResult;
+        if (!DownloadFile(strFileID, writer))
+        {
+            LOG_ERROR_RLD("Download file handle failed");
+            return blResult;
+        }
+    }
+    else
+    {
+        if (!DownloadFileRange(strFileID, strRange, writer))
+        {
+            LOG_ERROR_RLD("Download file range handle failed");
+            return blResult;
+        }
     }
 
     blResult = true;
@@ -377,6 +395,148 @@ bool HttpMsgHandler::DownloadFile(const std::string &strFileID, MsgWriter writer
     return true;
 }
 
+bool HttpMsgHandler::DownloadFileRange(const std::string &strFileID, const std::string &strRange, MsgWriter writer)
+{
+    std::string strExt;
+    std::string::size_type pos = strFileID.find_last_of('.');
+    if (std::string::npos != pos)
+    {
+        strExt = strFileID.substr(pos + 1);
+    }
+
+    const std::string& strContentType = strExt.empty() ? "application/octet-stream" : find_mime_type(strExt.c_str());
+
+    std::string::size_type p1 = strRange.find('=');
+    if (std::string::npos == p1)
+    {
+        LOG_ERROR_RLD("File range info is invalid and value is " << strRange);
+        return false;
+    }
+
+    std::string strBeginEnd = strRange.substr(p1 + 1);
+    
+    unsigned int uiBegin = 0;
+    unsigned int uiEnd = 0;
+    const unsigned int uiMax = 0xFFFFFFFF;
+    try
+    {
+        if ('-' == strBeginEnd.front() && '-' != strBeginEnd.back()) //格式为 -xx
+        {
+            uiBegin = uiMax;
+            std::string strEnd = strBeginEnd.substr(1);
+            uiEnd = boost::lexical_cast<unsigned int>(strEnd);
+
+        }
+        else if ('-' != strBeginEnd.front() && '-' == strBeginEnd.back()) //格式为 xx-
+        {
+            std::string strBegin = strBeginEnd.substr(0, strBeginEnd.size() - 1);
+            uiBegin = boost::lexical_cast<unsigned int>(strBegin);
+            uiEnd = uiMax;
+
+        }
+        else if ('-' == strBeginEnd.front() && '-' == strBeginEnd.back()) //格式错误，只有字符 -
+        {
+            LOG_ERROR_RLD("File range info is invalid and value is " << strRange);
+            return false;
+        }
+        else if ('-' != strBeginEnd.front() && '-' != strBeginEnd.back()) //格式为 xx-xx
+        {
+            std::string::size_type p2 = strBeginEnd.find('-');
+            if (std::string::npos == p2)
+            {
+                LOG_ERROR_RLD("File range info is invalid and value is " << strBeginEnd);
+                return false;
+            }
+
+            std::string strBegin = strBeginEnd.substr(0, p2);
+            std::string strEnd = strBeginEnd.substr(p2 + 1);
+
+            LOG_INFO_RLD("File range begin is " << strBegin << " and end is " << strEnd);
+
+            uiBegin = boost::lexical_cast<unsigned int>(strBegin);
+            uiEnd = boost::lexical_cast<unsigned int>(strEnd);
+        }
+        else
+        {
+            LOG_ERROR_RLD("File range info is valid and value is " << strRange);
+            return false;
+        }
+
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("File range info is invalid and error msg is " << e.what() << " and input is " << strRange);
+        return false;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("File range info is invalid and input is " << strRange);
+        return false;
+    }
+
+    std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
+    std::string::size_type pt = strCurrentTime.find('T');
+    strCurrentTime.replace(pt, 1, std::string(" "));
+        
+    auto FuncTmp = [&](const char *pBuffer, const unsigned int uiBufferSize, const unsigned int uiBlockStatus, const unsigned int uiFileSize, 
+        const unsigned int uiContentLen) ->bool
+    {
+        if (0 == uiBlockStatus)
+        {
+            std::string strContentRange = strBeginEnd + "/" + boost::lexical_cast<std::string>(uiFileSize);
+
+            char cBuffer[2048] = { 0 };
+            snprintf(cBuffer, sizeof(cBuffer), 
+                "Status: 206 Partial Content\r\n"
+                "Content-Type: %s\r\n"
+                "Accept-Ranges: bytes\r\n"
+                "Content-Length: %u\r\n"
+                "ETag: \"%s\"\r\n"
+                "Last-Modified: %s\r\n"
+                "Content-Range: bytes %s\r\n"
+                "Cache-Control: max-age=21600\r\n\r\n"                 
+                , strContentType.c_str(),
+                uiContentLen,
+                strFileID.c_str(),
+                strCurrentTime.c_str(),
+                strContentRange.c_str()
+                );
+
+            const std::string strHeader = cBuffer;
+
+            WriteMsg(writer, pBuffer, uiBufferSize, true, strHeader);
+        }
+        else
+        {
+            LOG_ERROR_RLD("File block status is error " << uiBlockStatus);
+        }
+
+        return true;
+    };
+
+    auto pFileMgr = m_pFileMgrGex->GetFileMgr(strFileID);
+    if (NULL == pFileMgr.get())
+    {
+        LOG_ERROR_RLD("Get file mgr failed and file id is " << strFileID);
+        return false;
+    }
+
+    std::string strFileIDInner;
+    if (!m_pFileMgrGex->GroupFileID2FileID(strFileID, strFileIDInner))
+    {
+        LOG_ERROR_RLD("Get file id by group file id failed and group file id is " << strFileID);
+        return false;
+    }
+
+    if (!pFileMgr->ReadFileRange(strFileIDInner, FuncTmp, uiBegin, uiEnd))
+    {
+        LOG_ERROR_RLD("Read file failed and file id is " << strFileID);
+        return false;
+    }
+
+    return true;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -425,7 +585,7 @@ void HttpMsgHandler::WriteMsg(MsgWriter writer, const char *pBuffer, const unsig
     if (IsNeedWriteHead)
     {
         writer(strHeaderMsg.data(), strHeaderMsg.size(), MsgWriterModel::PRINT_MODEL);
-        LOG_INFO_RLD("Write header\r\n[\r\n\r\n" << strHeaderMsg << "]");
+        LOG_INFO_RLD("Write header\r\n[\r\n" << strHeaderMsg << "]");
     }
 
     writer(pBuffer, uiBufferSize, MsgWriterModel::STREAM_MODEL);

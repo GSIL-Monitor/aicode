@@ -8,6 +8,7 @@
 class FileRWHandler;
 
 typedef boost::function<bool(const char *, const unsigned int, const unsigned int, const unsigned int)> ReadFileCB;
+typedef boost::function<bool(const char *, const unsigned int, const unsigned int, const unsigned int, const unsigned int)> ReadFileCBRange;
 
 class FileManager
 {
@@ -27,7 +28,7 @@ public:
 
     bool OpenFile(const std::string &strFileName, std::string &strFileID);
 
-    bool OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq = "");
+    bool OpenFile(const std::string &strFileID, unsigned int &uiFileSize, const std::string &strFileIDSeq = "", unsigned int uiBlockSize = 0);
 
     bool WriteBuffer(const std::string &strFileID, const char *pBuffer, const unsigned int uiBufferSize, const unsigned int uiBlockID);
 
@@ -36,6 +37,8 @@ public:
     void CloseFile(const std::string &strFileID);
 
     bool ReadFile(const std::string &strFileID, ReadFileCB rfcb);
+
+    bool ReadFileRange(const std::string &strFileID, ReadFileCBRange rfcb, unsigned int uiBegin, unsigned int uiEnd);
 
     bool DeleteFile(const std::string &strFileID);
 
@@ -55,7 +58,7 @@ private:
 
     bool GetStoragePath(std::string &strOutputPath, std::string &strFileID);
 
-    bool AddFileHandler(const std::string &strFileID, const std::string &strFilePath);
+    bool AddFileHandler(const std::string &strFileID, const std::string &strFilePath, unsigned int uiBlockSize = 0);
 
     bool GetFileSize(const std::string &strStoragePath, unsigned int &uiFileSize);
 

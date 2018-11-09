@@ -231,6 +231,14 @@ void FCGIManager::ParseAndHandleMsg(FCGX_Request *pRequest)
 
         ++itBegin;
     }
+
+    char **environment = NULL;
+    environment = pRequest->envp;
+    for (; *environment != NULL; environment++)
+    {
+        //fcgi_printf(r, "%s\n", *environment);
+        LOG_INFO_RLD("Param info from environment : " << *environment);
+    }
             
     //根据具体业务调用对应的Handler来进行处理。
     std::map<std::string, MsgHandler>::iterator itFindHandler;

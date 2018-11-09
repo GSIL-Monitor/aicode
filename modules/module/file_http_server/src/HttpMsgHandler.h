@@ -57,6 +57,8 @@ private:
 
     bool DownloadFile(const std::string &strFileID, MsgWriter writer);
 
+    bool DownloadFileRange(const std::string &strFileID, const std::string &strRange, MsgWriter writer);
+
 private:
     ParamInfo m_ParamInfo;
     boost::shared_ptr<InteractiveProtoHandler> m_pInteractiveProtoHandler;
