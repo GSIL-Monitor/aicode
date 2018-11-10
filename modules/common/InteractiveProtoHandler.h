@@ -665,6 +665,7 @@ public:
     {
         std::string m_strUserID;
         Device m_devInfo;
+        std::string m_strDevReportCheck;
 
         virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
 

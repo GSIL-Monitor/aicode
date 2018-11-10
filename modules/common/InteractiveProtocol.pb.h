@@ -9903,6 +9903,20 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_struserid();
   void set_allocated_struserid(::std::string* struserid);
 
+  // string strDevReportCheck = 3;
+  void clear_strdevreportcheck();
+  static const int kStrDevReportCheckFieldNumber = 3;
+  const ::std::string& strdevreportcheck() const;
+  void set_strdevreportcheck(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strdevreportcheck(::std::string&& value);
+  #endif
+  void set_strdevreportcheck(const char* value);
+  void set_strdevreportcheck(const char* value, size_t size);
+  ::std::string* mutable_strdevreportcheck();
+  ::std::string* release_strdevreportcheck();
+  void set_allocated_strdevreportcheck(::std::string* strdevreportcheck);
+
   // .Interactive.Message.Device devInfo = 2;
   bool has_devinfo() const;
   void clear_devinfo();
@@ -9917,6 +9931,7 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::internal::ArenaStringPtr strdevreportcheck_;
   ::Interactive::Message::Device* devinfo_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -34164,6 +34179,58 @@ inline void AddDevReq_USR::set_allocated_devinfo(::Interactive::Message::Device*
     
   }
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.devInfo)
+}
+
+// string strDevReportCheck = 3;
+inline void AddDevReq_USR::clear_strdevreportcheck() {
+  strdevreportcheck_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddDevReq_USR::strdevreportcheck() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+  return strdevreportcheck_.GetNoArena();
+}
+inline void AddDevReq_USR::set_strdevreportcheck(const ::std::string& value) {
+  
+  strdevreportcheck_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+}
+#if LANG_CXX11
+inline void AddDevReq_USR::set_strdevreportcheck(::std::string&& value) {
+  
+  strdevreportcheck_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+}
+#endif
+inline void AddDevReq_USR::set_strdevreportcheck(const char* value) {
+  
+  strdevreportcheck_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+}
+inline void AddDevReq_USR::set_strdevreportcheck(const char* value, size_t size) {
+  
+  strdevreportcheck_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+}
+inline ::std::string* AddDevReq_USR::mutable_strdevreportcheck() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+  return strdevreportcheck_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddDevReq_USR::release_strdevreportcheck() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+  
+  return strdevreportcheck_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddDevReq_USR::set_allocated_strdevreportcheck(::std::string* strdevreportcheck) {
+  if (strdevreportcheck != NULL) {
+    
+  } else {
+    
+  }
+  strdevreportcheck_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevreportcheck);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strDevReportCheck)
 }
 
 // -------------------------------------------------------------------

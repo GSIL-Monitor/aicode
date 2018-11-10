@@ -817,6 +817,7 @@ message AddDevReq_USR                           //添加设备请求，同时建
 {
   string strUserID = 1;
   Device devInfo = 2;
+  string strDevReportCheck = 3;
 }
 
 message AddDevRsp_USR                           //添加设备响应。

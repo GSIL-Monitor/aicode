@@ -1021,7 +1021,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
     }
 
     //检查设备是否已经向平台上报过数据
-    if (DEVICE_TYPE_GATEWAY != req.m_devInfo.m_uiTypeInfo) //网关设备不需要上报
+    if ((DEVICE_TYPE_GATEWAY != req.m_devInfo.m_uiTypeInfo) && (req.m_strDevReportCheck == "1")) //网关设备不需要上报
     {
         if (!req.m_devInfo.m_strP2pID.empty() && !QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
         {
@@ -2251,7 +2251,7 @@ bool AccessManager::P2pInfoReqDevice(const std::string &strMsg, const std::strin
     BOOST_SCOPE_EXIT_END
 
     if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
-    {
+    { 
         LOG_ERROR_RLD("P2p info of device req unserialize failed, src id is " << strSrcID);
         return false;
     }
