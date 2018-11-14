@@ -1402,12 +1402,17 @@ message QuerySensorRecordsReq            //查询传感器监测记录请求
     string strBeginDate = 5;
     string strEndDate = 6;
     uint32 uiBeginIndex = 7;
+    uint32 uiTimeRangeType = 8;
+    uint32 uiTimeRangeBase = 9;
+    string strValue = 10;
 }
 
 message QuerySensorRecordsRsp            //查询传感器监测记录响应
 {
     repeated string strRecordIDList = 1;
     repeated Sensor sensorInfo = 2;
+    uint32 uiRealRecordNum = 3;
+    string strValue = 4;
 }
 
 message QuerySensorAlarmRecordsReq       //查询传感器告警记录请求

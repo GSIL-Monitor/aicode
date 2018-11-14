@@ -7986,12 +7986,45 @@ bool PassengerFlowMsgHandler::QuerySensorRecordsHandler(boost::shared_ptr<MsgInf
             return blResult;
         }
     }
-    
+
+	std::string strRangeType;
+	unsigned int uiRangeType = 0xFFFFFFFF;
+	itFind = pMsgInfoMap->find("range_type");
+	if (pMsgInfoMap->end() != itFind)
+	{
+		strRangeType = itFind->second;
+		if (!ValidType<unsigned int>(strRangeType, uiRangeType))
+		{
+			LOG_ERROR_RLD("Range type is invalid and value is " << strRangeType);
+			return blResult;
+		}
+	}
+
+	std::string strRangeBase;
+	unsigned int uiRangeBase = 0xFFFFFFFF;
+	itFind = pMsgInfoMap->find("range_base");
+	if (pMsgInfoMap->end() != itFind)
+	{
+		strRangeBase = itFind->second;
+		if (!ValidType<unsigned int>(strRangeBase, uiRangeBase))
+		{
+			LOG_ERROR_RLD("Range base is invalid and value is " << strRangeBase);
+			return blResult;
+		}
+
+		if (64 < uiRangeBase)
+		{
+			LOG_ERROR_RLD("Range base value is too large " << uiRangeBase);
+			return blResult;
+		}
+	}
+		    
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Query sensor records info received and session id is " << strSid << " and user id is " << strUserID
         << " and store id is " << strStoreID << " and type is " << strType << " and begin date is " << strBeginDate
-        << " and end date is " << strEndDate << " and begin index is " << strBeginIndex);
+        << " and end date is " << strEndDate << " and begin index is " << strBeginIndex 
+		<< " and range type is " << strRangeType  << " and range base is " << strRangeBase);
 
     QuerySensorParam qsr;
     qsr.m_strBeginDate = strBeginDate;
@@ -8001,9 +8034,12 @@ bool PassengerFlowMsgHandler::QuerySensorRecordsHandler(boost::shared_ptr<MsgInf
     qsr.m_strType = strType;
     qsr.m_strUserID = strUserID;
     qsr.m_uiBeginIndex = uiBeginIndex;
+	qsr.m_uiRangeType = uiRangeType;
+	qsr.m_uiRangeBase = uiRangeBase;
 
+	unsigned int uiRealRecordNum = 0;
     std::list<SensorRecord> srdlist;
-    if (!QuerySensorRecords(strSid, qsr, srdlist))
+    if (!QuerySensorRecords(strSid, qsr, srdlist, uiRealRecordNum))
     {
         LOG_ERROR_RLD("Query sensor records failed.");
         return blResult;
@@ -8030,6 +8066,11 @@ bool PassengerFlowMsgHandler::QuerySensorRecordsHandler(boost::shared_ptr<MsgInf
 
         ++itBegin;
     }
+
+	if (!strRangeType.empty()) //启用了范围过滤查询
+	{
+		ResultInfoMap.insert(std::map<std::string, std::string>::value_type("real_record_num", boost::lexical_cast<std::string>(uiRealRecordNum)));
+	}
     
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
@@ -13203,7 +13244,8 @@ bool PassengerFlowMsgHandler::RemoveSensorAlarmRecords(const std::string &strSid
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist)
+bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist,
+	unsigned int &uiRealRecordNum)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
     {
@@ -13219,6 +13261,8 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
         QuerySensorRecordsReq.m_strStoreID = pm.m_strStoreID;
         QuerySensorRecordsReq.m_strUserID = pm.m_strUserID;
         QuerySensorRecordsReq.m_uiBeginIndex = pm.m_uiBeginIndex;
+		QuerySensorRecordsReq.m_uiTimeRangeType = pm.m_uiRangeType;
+		QuerySensorRecordsReq.m_uiTimeRangeBase = pm.m_uiRangeBase;
 
         std::string strSerializeOutPut;
         if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorRecordsReq, strSerializeOutPut))
@@ -13271,7 +13315,10 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
             srdlist.push_back(std::move(srd));
         }
 
+		uiRealRecordNum = QuerySensorRecordsRsp.m_uiRealRecordNum;
+
         LOG_INFO_RLD("Query sensor records and session id is " << strSid << " and user id is " << pm.m_strUserID <<
+			" and real record number is " << uiRealRecordNum <<
             " and return code is " << QuerySensorRecordsRsp.m_iRetcode <<
             " and return msg is " << QuerySensorRecordsRsp.m_strRetMsg);
 

@@ -7375,6 +7375,9 @@ void PassengerFlowProtoHandler::QuerySensorRecordsReq::Serializer(CustomerFlowMe
     req->set_strbegindate(m_strBeginDate);
     req->set_strenddate(m_strEndDate);
     req->set_uibeginindex(m_uiBeginIndex);
+	req->set_uitimerangetype(m_uiTimeRangeType);
+	req->set_uitimerangebase(m_uiTimeRangeBase);
+	req->set_strvalue(m_strValue);
 }
 
 void PassengerFlowProtoHandler::QuerySensorRecordsReq::UnSerializer(const CustomerFlowMessage &message)
@@ -7388,6 +7391,9 @@ void PassengerFlowProtoHandler::QuerySensorRecordsReq::UnSerializer(const Custom
     m_strBeginDate = req.strbegindate();
     m_strEndDate = req.strenddate();
     m_uiBeginIndex = req.uibeginindex();
+	m_uiTimeRangeType = req.uitimerangetype();
+	m_uiTimeRangeBase = req.uitimerangebase();
+	m_strValue = req.strvalue();
 }
 
 void PassengerFlowProtoHandler::QuerySensorRecordsRsp::Serializer(CustomerFlowMessage &message) const
@@ -7403,6 +7409,9 @@ void PassengerFlowProtoHandler::QuerySensorRecordsRsp::Serializer(CustomerFlowMe
     }
 
     SerializeSensorList(m_sensorList, rsp->mutable_sensorinfo());
+
+	rsp->set_uirealrecordnum(m_uiRealRecordNum);
+	rsp->set_strvalue(m_strValue);
 }
 
 void PassengerFlowProtoHandler::QuerySensorRecordsRsp::UnSerializer(const CustomerFlowMessage &message)
@@ -7418,6 +7427,9 @@ void PassengerFlowProtoHandler::QuerySensorRecordsRsp::UnSerializer(const Custom
     }
 
     UnSerializeSensorList(m_sensorList, rsp.sensorinfo());
+
+	m_uiRealRecordNum = rsp.uirealrecordnum();
+	m_strValue = rsp.strvalue();
 }
 
 void PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq::Serializer(CustomerFlowMessage &message) const

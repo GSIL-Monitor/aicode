@@ -9,6 +9,7 @@
 #include "boost/lexical_cast.hpp"
 #include "json/json.h"
 #include "HttpClient.h"
+#include <vector>
 
 std::string PassengerFlowManager::ALLOW_ACCESS = "allow";
 std::string PassengerFlowManager::DISALLOW_ACCESS = "disallow";
@@ -4609,8 +4610,9 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
     PassengerFlowProtoHandler::QuerySensorRecordsReq req;
     std::list<PassengerFlowProtoHandler::Sensor> srlist;
     std::list<std::string> strRecordIDList;
+	unsigned int uiRealRecordNum = 0;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &srlist, &strRecordIDList)
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &srlist, &strRecordIDList, &uiRealRecordNum)
     {
         PassengerFlowProtoHandler::QuerySensorRecordsRsp rsp;
         rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorRecordsRsp_T;
@@ -4618,6 +4620,7 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+		rsp.m_uiRealRecordNum = uiRealRecordNum;
 
         if (blResult)
         {
@@ -4643,8 +4646,8 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
         LOG_ERROR_RLD("Query sensor records req unserialize failed, src id is " << strSrcID);
         return false;
     }
-
-    if (!QuerySensorRecords(req, srlist, strRecordIDList, 100))
+		
+    if (!QuerySensorRecords(req, srlist, strRecordIDList, uiRealRecordNum, 100))
     {
         LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
         return false;
@@ -10546,7 +10549,7 @@ void PassengerFlowManager::RemoveSensorAlarmRecordsBySensorID(const std::string 
 }
 
 bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::QuerySensorRecordsReq &req, 
-    std::list<PassengerFlowProtoHandler::Sensor> &srlist, std::list<std::string> &strRecordIDList, const unsigned int uiPageSize)
+    std::list<PassengerFlowProtoHandler::Sensor> &srlist, std::list<std::string> &strRecordIDList, unsigned int &uiRealRecordNum, const unsigned int uiPageSize)
 {
     char sql[2048] = { 0 };
     int size = sizeof(sql);
@@ -10581,12 +10584,6 @@ bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::Q
     }
         
     snprintf(sql + len, size - len, " order by b.create_date desc limit %u, %u", 0xFFFFFFFF == req.m_uiBeginIndex ? 0 : req.m_uiBeginIndex, uiPageSize);
-
-    struct SensorRecord
-    {
-        PassengerFlowProtoHandler::Sensor sr;
-        std::string m_strRecordID;
-    };
 
     SensorRecord srd;
     PassengerFlowProtoHandler::Sensor sr;
@@ -10647,22 +10644,176 @@ bool PassengerFlowManager::QuerySensorRecords(const PassengerFlowProtoHandler::Q
         }
     };
 
-    std::list<boost::any> ResultList;
-    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
-    {
-        LOG_ERROR_RLD("QuerySensorRecords exec sql failed, sql is " << sql);
-        return false;
-    }
+	std::list<boost::any> ResultList;
+	if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+	{
+		LOG_ERROR_RLD("QuerySensorRecords exec sql failed, sql is " << sql);
+		return false;
+	}
 
-    for (auto &result : ResultList)
-    {
-        const auto &srd = boost::any_cast<SensorRecord>(result);
+	if (0xFFFFFFFF == req.m_uiTimeRangeType)
+	{
+		for (auto &result : ResultList)
+		{
+			const auto &srd = boost::any_cast<SensorRecord>(result);
 
-        srlist.push_back(srd.sr);
-        strRecordIDList.push_back(srd.m_strRecordID);
-    }
+			srlist.push_back(srd.sr);
+			strRecordIDList.push_back(srd.m_strRecordID);
+		}
+	}
+	else
+	{
+		uiRealRecordNum = ResultList.size();
+
+		std::list<SensorRecord> srdlist;
+		for (auto &result : ResultList)
+		{
+			srdlist.push_front(std::move(boost::any_cast<SensorRecord>(result)));
+		}
+
+		const unsigned int uiTimeRangeBase = (0xFFFFFFFF == req.m_uiTimeRangeBase) ? 1 : req.m_uiTimeRangeBase;
+		std::list<SensorRecord> filetersrlist;
+		SensorRecordStaticFilter(req.m_uiTimeRangeType, uiTimeRangeBase, srdlist, filetersrlist);
+
+		for (auto &result : filetersrlist)
+		{
+			srlist.push_back(result.sr);
+			strRecordIDList.push_back(result.m_strRecordID);
+		}
+	}
 
     return true;
+}
+
+void PassengerFlowManager::SensorRecordStaticFilter(const unsigned int uiTimeRangeType, const unsigned int uiTimeRangeBase, 
+	const std::list<SensorRecord> &srlist, std::list<SensorRecord> &filetersrlist)
+{
+	if (srlist.empty())
+	{
+		LOG_INFO_RLD("Sensor record static filter record is empty.");
+		return;
+	}
+
+	unsigned int uiTimeBaseRange = 1;
+	if (0 == uiTimeRangeType) //分钟范围
+	{
+		uiTimeBaseRange = uiTimeRangeBase * 60; //统计多少分钟范围
+	}
+	else if (1 == uiTimeRangeType) //小时范围
+	{
+		uiTimeBaseRange = uiTimeRangeBase * 60 * 60;
+	}
+	else if (2 == uiTimeRangeType) //天范围
+	{
+		uiTimeBaseRange = uiTimeRangeBase * 60 * 60 * 24;
+	}
+	else
+	{
+		LOG_ERROR_RLD("Sensor record static filter time range type is unknown and type is " << uiTimeRangeType);
+		return;
+	}
+	
+	std::list<SensorRecord> sublist;
+	boost::posix_time::ptime epoch = boost::posix_time::time_from_string("1970-01-01 00:00:00");
+	boost::posix_time::ptime date = boost::posix_time::time_from_string(srlist.front().sr.m_strCreateDate);
+	unsigned int uiCurrentValue = (date - epoch).total_seconds();
+
+	auto itBegin = srlist.begin();
+	auto itEnd = srlist.end();
+	while (itBegin != itEnd)
+	{
+		date = boost::posix_time::time_from_string(itBegin->sr.m_strCreateDate);
+		unsigned int uiValue = (date - epoch).total_seconds();
+		unsigned int uiRange = uiValue - uiCurrentValue;
+
+		LOG_INFO_RLD("Filter range is " << uiRange << " and time range type is " << uiTimeBaseRange << " and current value is " << uiCurrentValue);
+
+		if (uiTimeBaseRange >= uiRange)
+		{
+			sublist.push_back(*itBegin);
+		}
+		else
+		{
+			uiCurrentValue = uiValue;
+
+			LOG_INFO_RLD("Begin static filter and current value is " << uiCurrentValue);
+
+			//开始计算sublist
+			StaticFilter(sublist, filetersrlist);
+			sublist.clear();
+
+			continue;			
+		}
+		
+		++itBegin;
+	}
+
+	LOG_INFO_RLD("Last static filter is beginning.");
+
+	//开始计算sublist
+	StaticFilter(sublist, filetersrlist);
+	sublist.clear();
+
+}
+
+void PassengerFlowManager::StaticFilter(const std::list<SensorRecord> &srlist, std::list<SensorRecord> &filetersrlist)
+{
+	std::map<std::string, std::vector<SensorRecord> > srmap;
+	
+	for (const auto &sr : srlist)
+	{
+		auto itFind = srmap.find(sr.sr.m_strSensorID);
+		if (srmap.end() == itFind)
+		{
+			std::vector<SensorRecord> srlistvalue;
+			srlistvalue.push_back(sr);
+			srmap.insert(std::map<std::string, std::vector<SensorRecord>>::value_type(sr.sr.m_strSensorID, srlistvalue));
+		}
+		else
+		{
+			itFind->second.push_back(sr);
+		}
+	}
+
+	auto itBegin = srmap.begin();
+	auto itEnd = srmap.end();
+
+	while (itBegin != itEnd)
+	{
+
+		auto SortFunc = [](const SensorRecord &sr1, const SensorRecord &sr2) -> bool
+		{
+			try
+			{
+				float uiS1 = boost::lexical_cast<float>(sr1.sr.m_strValue);
+				float uiS2 = boost::lexical_cast<float>(sr2.sr.m_strValue);
+
+				return uiS1 < uiS2;
+
+			}
+			catch (boost::bad_lexical_cast & e)
+			{
+				LOG_ERROR_RLD("Sensor value is invalid and error msg is " << e.what() << " and input is " << sr1.sr.m_strValue << " and " << sr2.sr.m_strValue);
+				return false;
+			}
+			catch (...)
+			{
+				LOG_ERROR_RLD("Sensor value is invalid and input is " << " and input is " << sr1.sr.m_strValue << " and " << sr2.sr.m_strValue);
+				return false;
+			}
+		};
+
+		std::sort(itBegin->second.begin(), itBegin->second.end(), SortFunc);
+
+		filetersrlist.push_back(itBegin->second.front());
+		filetersrlist.push_back(itBegin->second.back());
+
+		LOG_INFO_RLD("Filter first sensor value is " << itBegin->second.front().sr.m_strValue << " and type is " << itBegin->second.front().sr.m_strSensorType
+		<< " second sensor value is " << itBegin->second.back().sr.m_strValue << " and type is " << itBegin->second.back().sr.m_strSensorType
+		<< " original filter list size is " << itBegin->second.size() << " and sensor id is " << itBegin->first);
+		
+		++itBegin;
+	}
 }
 
 bool PassengerFlowManager::QuerySensorAlarmRecords(const PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq &req, 

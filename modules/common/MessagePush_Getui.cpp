@@ -205,6 +205,7 @@ bool MessagePush_Getui::FormatMessage(const Message &source, string &strMessage,
         aps["alert"] = alert;
         aps["autoBadge"] = source.pushInfo.aps.strBadge;
         aps["content-available"] = source.pushInfo.aps.iContentAvailable;
+		aps["sound"] = "pushAlarmSoundStyleOne.wav"; //"default"; //为了iosapp在前后台的时候声音能够保持一致。
         push["aps"] = aps;
 
         root["push_info"] = push;

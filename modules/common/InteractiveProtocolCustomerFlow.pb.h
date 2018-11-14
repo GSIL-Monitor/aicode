@@ -20391,11 +20391,37 @@ class QuerySensorRecordsReq : public ::google::protobuf::Message /* @@protoc_ins
   ::std::string* release_strenddate();
   void set_allocated_strenddate(::std::string* strenddate);
 
+  // string strValue = 10;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 10;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
   // uint32 uiBeginIndex = 7;
   void clear_uibeginindex();
   static const int kUiBeginIndexFieldNumber = 7;
   ::google::protobuf::uint32 uibeginindex() const;
   void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // uint32 uiTimeRangeType = 8;
+  void clear_uitimerangetype();
+  static const int kUiTimeRangeTypeFieldNumber = 8;
+  ::google::protobuf::uint32 uitimerangetype() const;
+  void set_uitimerangetype(::google::protobuf::uint32 value);
+
+  // uint32 uiTimeRangeBase = 9;
+  void clear_uitimerangebase();
+  static const int kUiTimeRangeBaseFieldNumber = 9;
+  ::google::protobuf::uint32 uitimerangebase() const;
+  void set_uitimerangebase(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QuerySensorRecordsReq)
  private:
@@ -20407,7 +20433,10 @@ class QuerySensorRecordsReq : public ::google::protobuf::Message /* @@protoc_ins
   ::google::protobuf::internal::ArenaStringPtr strsensortype_;
   ::google::protobuf::internal::ArenaStringPtr strbegindate_;
   ::google::protobuf::internal::ArenaStringPtr strenddate_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
   ::google::protobuf::uint32 uibeginindex_;
+  ::google::protobuf::uint32 uitimerangetype_;
+  ::google::protobuf::uint32 uitimerangebase_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -20508,12 +20537,34 @@ class QuerySensorRecordsRsp : public ::google::protobuf::Message /* @@protoc_ins
   const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor >&
       sensorinfo() const;
 
+  // string strValue = 4;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 4;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // uint32 uiRealRecordNum = 3;
+  void clear_uirealrecordnum();
+  static const int kUiRealRecordNumFieldNumber = 3;
+  ::google::protobuf::uint32 uirealrecordnum() const;
+  void set_uirealrecordnum(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::std::string> strrecordidlist_;
   ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::Message::Sensor > sensorinfo_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  ::google::protobuf::uint32 uirealrecordnum_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocolCustomerFlow_2eproto::TableStruct;
 };
@@ -44498,6 +44549,86 @@ inline void QuerySensorRecordsReq::set_uibeginindex(::google::protobuf::uint32 v
   // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.uiBeginIndex)
 }
 
+// uint32 uiTimeRangeType = 8;
+inline void QuerySensorRecordsReq::clear_uitimerangetype() {
+  uitimerangetype_ = 0u;
+}
+inline ::google::protobuf::uint32 QuerySensorRecordsReq::uitimerangetype() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.uiTimeRangeType)
+  return uitimerangetype_;
+}
+inline void QuerySensorRecordsReq::set_uitimerangetype(::google::protobuf::uint32 value) {
+  
+  uitimerangetype_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.uiTimeRangeType)
+}
+
+// uint32 uiTimeRangeBase = 9;
+inline void QuerySensorRecordsReq::clear_uitimerangebase() {
+  uitimerangebase_ = 0u;
+}
+inline ::google::protobuf::uint32 QuerySensorRecordsReq::uitimerangebase() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.uiTimeRangeBase)
+  return uitimerangebase_;
+}
+inline void QuerySensorRecordsReq::set_uitimerangebase(::google::protobuf::uint32 value) {
+  
+  uitimerangebase_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.uiTimeRangeBase)
+}
+
+// string strValue = 10;
+inline void QuerySensorRecordsReq::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QuerySensorRecordsReq::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QuerySensorRecordsReq::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+}
+#if LANG_CXX11
+inline void QuerySensorRecordsReq::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+}
+#endif
+inline void QuerySensorRecordsReq::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+}
+inline void QuerySensorRecordsReq::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+}
+inline ::std::string* QuerySensorRecordsReq::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QuerySensorRecordsReq::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QuerySensorRecordsReq::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorRecordsReq.strValue)
+}
+
 // -------------------------------------------------------------------
 
 // QuerySensorRecordsRsp
@@ -44585,6 +44716,72 @@ inline const ::google::protobuf::RepeatedPtrField< ::CustomerFlow::Interactive::
 QuerySensorRecordsRsp::sensorinfo() const {
   // @@protoc_insertion_point(field_list:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.sensorInfo)
   return sensorinfo_;
+}
+
+// uint32 uiRealRecordNum = 3;
+inline void QuerySensorRecordsRsp::clear_uirealrecordnum() {
+  uirealrecordnum_ = 0u;
+}
+inline ::google::protobuf::uint32 QuerySensorRecordsRsp::uirealrecordnum() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.uiRealRecordNum)
+  return uirealrecordnum_;
+}
+inline void QuerySensorRecordsRsp::set_uirealrecordnum(::google::protobuf::uint32 value) {
+  
+  uirealrecordnum_ = value;
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.uiRealRecordNum)
+}
+
+// string strValue = 4;
+inline void QuerySensorRecordsRsp::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QuerySensorRecordsRsp::strvalue() const {
+  // @@protoc_insertion_point(field_get:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void QuerySensorRecordsRsp::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+}
+#if LANG_CXX11
+inline void QuerySensorRecordsRsp::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+}
+#endif
+inline void QuerySensorRecordsRsp::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+}
+inline void QuerySensorRecordsRsp::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+}
+inline ::std::string* QuerySensorRecordsRsp::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QuerySensorRecordsRsp::release_strvalue() {
+  // @@protoc_insertion_point(field_release:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QuerySensorRecordsRsp::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:CustomerFlow.Interactive.Message.QuerySensorRecordsRsp.strValue)
 }
 
 // -------------------------------------------------------------------

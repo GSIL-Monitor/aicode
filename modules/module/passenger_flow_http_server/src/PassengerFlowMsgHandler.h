@@ -540,6 +540,8 @@ private:
         std::string m_strType;
         std::string m_strSensorID;
         unsigned int m_uiRecover;
+		unsigned int m_uiRangeType;
+		unsigned int m_uiRangeBase;
     };
 
     struct SensorRecord
@@ -711,7 +713,7 @@ private:
 
     bool RemoveSensorAlarmRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList);
 
-    bool QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist);
+    bool QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist, unsigned int &uiRealRecordNum);
 
     bool QuerySensorAlarmRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorAlarmRecord> &srdlist);
 

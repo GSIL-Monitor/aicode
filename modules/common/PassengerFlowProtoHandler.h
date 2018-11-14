@@ -1891,6 +1891,9 @@ public:
         std::string m_strBeginDate;
         std::string m_strEndDate;
         unsigned int m_uiBeginIndex;
+		unsigned int m_uiTimeRangeType;
+		unsigned int m_uiTimeRangeBase;
+		std::string m_strValue;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);
@@ -1900,6 +1903,8 @@ public:
     {
         std::list<std::string> m_strRecordIDList;
         std::list<Sensor> m_sensorList;
+		unsigned int m_uiRealRecordNum;
+		std::string m_strValue;
 
         virtual void Serializer(CustomerFlowMessage &message) const;
         virtual void UnSerializer(const CustomerFlowMessage &message);

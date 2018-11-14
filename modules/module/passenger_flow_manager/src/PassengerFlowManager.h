@@ -626,8 +626,19 @@ private:
 
     void RemoveSensorAlarmRecordsBySensorID(const std::string &strSensorID);
 
+	struct SensorRecord
+	{
+		PassengerFlowProtoHandler::Sensor sr;
+		std::string m_strRecordID;
+	};
+
     bool QuerySensorRecords(const PassengerFlowProtoHandler::QuerySensorRecordsReq &req, std::list<PassengerFlowProtoHandler::Sensor> &srlist,
-        std::list<std::string> &strRecordIDList, const unsigned int uiPageSize = 10);
+        std::list<std::string> &strRecordIDList, unsigned int &uiRealRecordNum, const unsigned int uiPageSize = 10);
+
+	void SensorRecordStaticFilter(const unsigned int uiTimeRangeType, const unsigned int uiTimeRangeBase, 
+		const std::list<SensorRecord> &srlist, std::list<SensorRecord> &filetersrlist);
+
+	void StaticFilter(const std::list<SensorRecord> &srlist, std::list<SensorRecord> &filetersrlist);
 
     bool QuerySensorAlarmRecords(const PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq &req, std::list<PassengerFlowProtoHandler::SensorAlarmRecord> &sarlist,
         const unsigned int uiPageSize = 10);
