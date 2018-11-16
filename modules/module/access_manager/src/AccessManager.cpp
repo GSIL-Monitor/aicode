@@ -2738,24 +2738,27 @@ bool AccessManager::QueryAccessDomainNameReqUser(const std::string &strMsg, cons
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
 
     AccessDomainInfo DomainInfo;
-    int iRetry = 0;
-    do 
-    {
-        if (cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
-        {
-            break;
-        }
 
-        ++iRetry;
-        LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry << " times");
-    } while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
+    ////由于阿里云查询ip地址的接口已经到期，而且目前没有业务使用这个，所以不在执行查询ip地址动作。
+    //int iRetry = 0;
+    //do 
+    //{
+    //    if (cTimeZone.GetCountryTime(req.m_strUserIpAddress, timezone))
+    //    {
+    //        break;
+    //    }
 
-    if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
-    {
-        LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress);
-        return false;
-    }
+    //    ++iRetry;
+    //    LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress << " and retry " << iRetry << " times");
+    //} while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
 
+    //if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
+    //{
+    //    LOG_ERROR_RLD("Query user access domain name failed, user ip is " << req.m_strUserIpAddress);
+    //    return false;
+    //}
+
+    timezone.sCode = "CN"; //缺省值
     if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
     {
         LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, user ip is " << req.m_strUserIpAddress);
@@ -2830,25 +2833,29 @@ bool AccessManager::QueryAccessDomainNameReqDevice(const std::string &strMsg, co
     cTimeZone.setpostUrl(m_ParamInfo.m_strGetIpInfoSite);
     cTimeZone.SetDBManager(&m_DBCache, m_pMysql);
 
+
     AccessDomainInfo DomainInfo;
-    int iRetry = 0;
-    do 
-    {
-        if (cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
-        {
-            break;
-        }
 
-        ++iRetry;
-        LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry << " times");
-    } while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
+    ////由于阿里云查询ip地址的接口已经到期，而且目前没有业务使用这个，所以不在执行查询ip地址动作。
+    //int iRetry = 0;
+    //do 
+    //{
+    //    if (cTimeZone.GetCountryTime(req.m_strDevIpAddress, timezone))
+    //    {
+    //        break;
+    //    }
 
-    if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
-    {
-        LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress);
-        return false;
-    }
+    //    ++iRetry;
+    //    LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress << " and retry " << iRetry << " times");
+    //} while (0); //(iRetry < GET_TIMEZONE_RETRY_TIMES);
 
+    //if (0 < iRetry) //(GET_TIMEZONE_RETRY_TIMES == iRetry)
+    //{
+    //    LOG_ERROR_RLD("Query device access domain name failed, device ip is " << req.m_strDevIpAddress);
+    //    return false;
+    //}
+
+    timezone.sCode = "CN"; //缺省值
     if (!QueryAccessDomainInfoByArea(timezone.sCode, "", DomainInfo))
     {
         LOG_ERROR_RLD("QueryAccessDomainInfoByArea failed, device ip is " << req.m_strDevIpAddress);

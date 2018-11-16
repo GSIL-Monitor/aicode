@@ -22,8 +22,9 @@ bool P2PServerManager::DeviceRequestP2PConnectParam(P2PConnectParam &p2pparams, 
     TimeZone timezone;
     if (sUserID == "")
     {
-        //查找该IP所属区域
-        bRet = m_timezone.GetCountryTime(sIP, timezone);
+        ////由于阿里云查询ip地址的接口已经到期，而且目前没有业务使用这个，所以不在执行查询ip地址动作。
+        ////查找该IP所属区域
+        //bRet = m_timezone.GetCountryTime(sIP, timezone);
 
         //给该设备分配一个属于该集群的p2pid
         if (bRet)

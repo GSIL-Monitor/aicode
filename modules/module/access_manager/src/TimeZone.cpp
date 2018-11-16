@@ -30,17 +30,20 @@ bool CTimeZone::GetCountryTime( string sIP, TimeZone &timezone)
     bRet = GetCountryTimeFromDataBase(sIP, timezone);
     if (!bRet)
     {
-        //调用第三方接口获取时区信息，http://ip.taobao.com/service/getIpInfo.php?ip=sIP
-        string sCountryInfo;
-        bRet = GetCountryTimeFromThirdInterface(m_sUrl, sIP, sCountryInfo);
-        if (bRet)
-        {
-            if (ParseTimezoneString(sCountryInfo, timezone))
-            {
-                bRet = GetTimezoneFromCountryCode(timezone);
-                UpdateCountryTime(sIP, timezone.sCode);
-            }
-        }
+        bRet = GetTimezoneFromCountryCode(timezone);
+
+        //////由于阿里云查询ip地址的接口已经到期，而且目前没有业务使用这个，所以不在执行查询ip地址动作。
+        ////调用第三方接口获取时区信息，http://ip.taobao.com/service/getIpInfo.php?ip=sIP
+        //string sCountryInfo;
+        //bRet = GetCountryTimeFromThirdInterface(m_sUrl, sIP, sCountryInfo);
+        //if (bRet)
+        //{
+        //    if (ParseTimezoneString(sCountryInfo, timezone))
+        //    {
+        //        bRet = GetTimezoneFromCountryCode(timezone);
+        //        UpdateCountryTime(sIP, timezone.sCode);
+        //    }
+        //}
     }
  
     return bRet;
