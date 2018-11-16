@@ -13322,7 +13322,7 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
             " and return code is " << QuerySensorRecordsRsp.m_iRetcode <<
             " and return msg is " << QuerySensorRecordsRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return (100 == uiRealRecordNum)  ? CommMsgHandler::CONTINUE : CommMsgHandler::SUCCEED;
     };
 
     boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));

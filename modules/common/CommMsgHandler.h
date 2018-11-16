@@ -21,6 +21,7 @@ public:
         ~Packet(){};
     };
 
+	static const int CONTINUE = 2;
     static const int SUCCEED = 0;
     static const int FAILED = -1;
     static const int TIMEOUT_FAILED = 1;

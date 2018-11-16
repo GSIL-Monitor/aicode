@@ -4612,15 +4612,16 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
     std::list<std::string> strRecordIDList;
 	unsigned int uiRealRecordNum = 0;
 
-    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &srlist, &strRecordIDList, &uiRealRecordNum)
+    auto ActionFunc = [&](bool blResult, const std::string &strSrcID, MsgWriter writer, const PassengerFlowProtoHandler::QuerySensorRecordsReq &req,
+        std::list<PassengerFlowProtoHandler::Sensor> &srlist, std::list<std::string> &strRecordIDList, unsigned int uiRealRecordNum) ->void
     {
         PassengerFlowProtoHandler::QuerySensorRecordsRsp rsp;
         rsp.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorRecordsRsp_T;
-        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_uiMsgSeq = ++m_uiMsgSeq; //++this_->m_uiMsgSeq;
         rsp.m_strSID = req.m_strSID;
         rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
         rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
-		rsp.m_uiRealRecordNum = uiRealRecordNum;
+        rsp.m_uiRealRecordNum = uiRealRecordNum;
 
         if (blResult)
         {
@@ -4629,32 +4630,94 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
         }
 
         std::string strSerializeOutPut;
-        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        //if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        if (!m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
         {
             LOG_ERROR_RLD("Query sensor records rsp serialize failed");
             return;
         }
-        
+
         writer(strSrcID, strSerializeOutPut);
         LOG_INFO_RLD("Query sensor records rsp already send, dst id is " << strSrcID
             << " and user id is " << req.m_strUserID << " and store id is " << req.m_strStoreID << " and sensor id is " << req.m_strSensorID);
+    };
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &srlist, &strRecordIDList, &uiRealRecordNum, &ActionFunc)
+    {
+        if (0xFFFFFFFF == req.m_uiTimeRangeType) //没有启用范围统计查询
+        {
+            ActionFunc(blResult, strSrcID, writer, req, srlist, strRecordIDList, uiRealRecordNum);
+        }
     }
     BOOST_SCOPE_EXIT_END
-
+    
     if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
     {
         LOG_ERROR_RLD("Query sensor records req unserialize failed, src id is " << strSrcID);
         return false;
     }
-		
-    if (!QuerySensorRecords(req, srlist, strRecordIDList, uiRealRecordNum, 100))
+	
+    if (0xFFFFFFFF == req.m_uiTimeRangeType) //没有启用范围统计查询
     {
-        LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
-        return false;
+        if (!QuerySensorRecords(req, srlist, strRecordIDList, uiRealRecordNum, 100))
+        {
+            LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
+            return false;
+        }
+    }
+    else
+    {
+        if (!QuerySensorRecords(req, srlist, strRecordIDList, uiRealRecordNum, 0xFFFFFFFF)) //100))
+        {
+            LOG_ERROR_RLD("Query sensor records failed,  user id is " << req.m_strUserID);
+            return false;
+        }
+
+        blResult = true;
+
+        if (0 == uiRealRecordNum)
+        {
+            ActionFunc(blResult, strSrcID, writer, req, srlist, strRecordIDList, uiRealRecordNum);
+
+            LOG_INFO_RLD("Query sensor recodrs empty.");
+            return blResult;
+        }
+
+        unsigned int i = 0;
+        unsigned int uiLoop = 100;
+        auto itBegin = srlist.begin();
+        auto itBegin2 = strRecordIDList.begin();
+        auto itEnd = srlist.end();
+        //auto itEnd2 = strRecordIDList.end();
+        
+        std::list<PassengerFlowProtoHandler::Sensor> srlistPending;
+        std::list<std::string> strRecordIDListPending;
+        while (itBegin != itEnd)
+        {
+            srlistPending.push_back(*itBegin);
+            strRecordIDListPending.push_back(*itBegin2);
+
+            if (++i >= uiLoop)
+            {
+                ActionFunc(blResult, strSrcID, writer, req, srlistPending, strRecordIDListPending, i);
+                i = 0;
+                srlistPending.clear();
+                strRecordIDListPending.clear();
+            }
+
+            ++itBegin;
+            ++itBegin2;
+        }
+
+        if (!srlistPending.empty())
+        {
+            ActionFunc(blResult, strSrcID, writer, req, srlistPending, strRecordIDListPending, srlistPending.size());            
+            srlistPending.clear();
+            strRecordIDListPending.clear();
+        }
     }
 
     blResult = true;
-
     return blResult;
 }
 

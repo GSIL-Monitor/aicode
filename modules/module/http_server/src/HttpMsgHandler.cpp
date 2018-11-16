@@ -1214,7 +1214,7 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         << " and device pwd is [" << strDevPwd << "]" << " and device type is " << strDevType << " and device extend is [" << strDevExtend << "]"
         << " and device inner info is [" << strDevInnerInfo << "]" << " and p2pid is " << strP2pid << " and domain name is " << strDomainname
         << " and ip address is " << strIpaddress
-        << " and session id is " << strSid);
+        << " and session id is " << strSid << " and device report check is " << strDevReportCheck);
 
     
     std::string strDevIDOut;

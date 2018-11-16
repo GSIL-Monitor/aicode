@@ -1020,6 +1020,8 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         return false;
     }
 
+    LOG_INFO_RLD("Add device type is " << req.m_devInfo.m_uiTypeInfo << " and device report check is " << req.m_strDevReportCheck);
+
     //检查设备是否已经向平台上报过数据
     if ((DEVICE_TYPE_GATEWAY != req.m_devInfo.m_uiTypeInfo) && (req.m_strDevReportCheck == "1")) //网关设备不需要上报
     {

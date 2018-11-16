@@ -141,12 +141,23 @@ int CommMsgHandler::SyncSession(FuncRequest req, FuncReply rsp)
     int errcode = req(boost::bind(&CommMsgHandler::SyncWrite, this, (m_strSessionID.empty() ? m_strID : m_strSessionID), _1, _2, _3, _4));
     if (errcode == SUCCEED && NULL != rsp) //处理只有req，没有rsp的场景
     {
-        Packet pkt;
-        errcode = SyncRead(pkt);
-        if (errcode == SUCCEED)
-        {
-            errcode = rsp(pkt);
-        }
+		while (true)
+		{
+			Packet pkt;
+			errcode = SyncRead(pkt);
+			if (errcode == SUCCEED)
+			{
+				errcode = rsp(pkt);
+				if (CONTINUE != errcode)
+				{
+                    break;
+				}
+			}
+			else
+			{
+				break;                
+			}
+		}        
     }
 
     return errcode;
