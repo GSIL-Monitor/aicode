@@ -136,12 +136,12 @@ bool MessagePush_Getui::FillMessage(const PushMessage &source, Message &message,
     message.bIsOffline = source.bIsOffline;
     message.iOfflineExpireTime = source.iOfflineExpireTime;
     message.iPushNetworkType = 0;
-    message.strMessageType = "notification";
+    message.strMessageType = "transmission"; //"notification";
     message.strClientID = source.strClientID;
     message.strAlias = source.strAlias;
     message.strRequestID = boost::lexical_cast<string>(++m_reqSequence) + CurrentTimestamp();
 
-    message.notification.bTransmissionType = true;
+    message.notification.bTransmissionType = false; //true;
     message.notification.strTransmissionContent = source.strPayloadContent;
 
     boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
@@ -171,6 +171,7 @@ bool MessagePush_Getui::FormatMessage(const Message &source, string &strMessage,
     Json::Value message;
     Json::Value notification;
     Json::Value style;
+    Json::Value transmission;
 
     style["type"] = 0;
     style["title"] = source.notification.style.strTitle;
@@ -183,13 +184,17 @@ bool MessagePush_Getui::FormatMessage(const Message &source, string &strMessage,
     //notification["duration_begin"] = source.notification.strDurationBegin;
     //notification["duration_end"] = source.notification.strDurationEnd;
 
+    transmission["transmission_type"] = source.notification.bTransmissionType;;
+    transmission["transmission_content"] = source.notification.strTransmissionContent;
+
     message["appkey"] = m_strAppKey;
     message["msgtype"] = source.strMessageType;
     message["is_offline"] = source.bIsOffline;
     if (source.bIsOffline) message["offline_expire_time"] = source.iOfflineExpireTime;
 
     root["message"] = message;
-    root["notification"] = notification;
+    //root["notification"] = notification;
+    root["transmission"] = transmission;
     if (!source.strClientID.empty()) root["cid"] = source.strClientID;
     if (!source.strAlias.empty()) root["alias"] = source.strAlias;
     root["requestid"] = source.strRequestID;

@@ -1393,12 +1393,7 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
 
         return blResult;
     }
-        
-    Json::Value jsPayloadInfo;
-    jsPayloadInfo["event_id"] = strEventID;
-    Json::FastWriter fastwriter;
-    const std::string &strPayloadInfo = fastwriter.write(jsPayloadInfo);
-
+    
     std::string var("$store");
     strContent.replace(strContent.find(var), var.size(), strStoreName);
 
@@ -1408,7 +1403,15 @@ bool PassengerFlowManager::AddEventReq(const std::string &strMsg, const std::str
         //strContent.replace(strContent.find(var), var.size(), strSensorType);
         var = "$sensor_name";
         strContent.replace(strContent.find(var), var.size(), strSensorName);
-    }    
+    }
+
+    Json::Value jsPayloadInfo;
+    jsPayloadInfo["event_id"] = strEventID;
+    Json::FastWriter fastwriter;
+    jsPayloadInfo["text"] = strContent;
+    jsPayloadInfo["title"] = strMsgTitle;
+
+    const std::string &strPayloadInfo = fastwriter.write(jsPayloadInfo);
 
     LOG_INFO_RLD("Push msg is ready and msg title is " << strMsgTitle << " and content is " << strContent << " and payload is " << strPayloadInfo);
 
@@ -5131,7 +5134,7 @@ bool PassengerFlowManager::PushMessage(const std::string &strTitle, const std::s
     message.strNotyContent = strContent;
     message.strPayloadContent = strPayload; //strContent;
     message.bIsOffline = true;
-    message.iOfflineExpireTime = 3600;
+    message.iOfflineExpireTime = 10000000;//3600;
     //message.strClientID = "9fff548fac1537a7963a49a9b191e195";
     message.strAlias = strUserID;
 
