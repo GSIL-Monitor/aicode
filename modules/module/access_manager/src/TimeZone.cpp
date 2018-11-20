@@ -347,7 +347,7 @@ bool CTimeZone::GetTimezoneFromCountryCode( TimeZone &timezone )
     };
 
     std::list<boost::any> ResultList;
-    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc))
+    if (!m_pDBCache->QuerySql(std::string(sql), ResultList, SqlFunc, true))
     {
         LOG_ERROR_RLD("GetCountryInfoByDevID sql failed, sql is " << sql);
         return false;

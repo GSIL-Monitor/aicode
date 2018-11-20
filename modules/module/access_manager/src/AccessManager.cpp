@@ -2140,6 +2140,10 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
         Json::FastWriter fastwriter;
         const std::string &strBody = fastwriter.write(jsBody);
         strValue = strBody;
+
+        LOG_INFO_RLD("Device login time zone info is :" << strValue << 
+            " country code is " << strCountryCode << " and country name en is " << strCountryNameEn <<
+            " and country name zh is " << strCountryNameZh);
     }
     //目前暂不对设备进行校验
     //登录之后，对应的Session信息就保存在memcached中去，key是SessionID，value是信息，json格式字符串，格式如下：
