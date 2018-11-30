@@ -1,6 +1,7 @@
 #include "ControlCenter.h"
 #include "LogRLD.h"
 #include "boost/scope_exit.hpp"
+#include "boost/lexical_cast.hpp"
 
 std::string ConvertCharValueToLex(unsigned char *pInValue, const boost::uint32_t uiSize);
 
@@ -35,8 +36,30 @@ void ControlCenter::Run(const bool isWaitRunFinished)
     
     LOG_INFO_RLD("Control center begin running...");
     m_MsgWriterRunner.Run();
-    m_MsgHandlerRunner.Run(isWaitRunFinished);
-        
+    m_MsgHandlerRunner.Run(); //(isWaitRunFinished);
+
+    ////////////////////////////////////////////////////////////////////////////
+    TransServer::Param pam;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.strRemotePort) + 15;
+    pam.m_uiThreadNum = m_ParamInfo.uiThreadOfWorking;
+    m_pServer.Init(pam);
+
+    auto ReqHandler = [&](const std::string &strBinaryContent, std::string &strResult) -> bool
+    {
+        auto RetMsgHandler = [&](const std::string &strDstID, const std::string &strDataToBeWriting) -> void
+        {
+            strResult = strDataToBeWriting;
+        };
+
+        MsgProcess(strBinaryContent, RetMsgHandler);
+
+        return true;
+    };
+
+    m_pServer.GetHandler()->SetReqHandler(ReqHandler);
+
+    m_pServer.Run();
+
 }
 
 void ControlCenter::Stop()
@@ -282,5 +305,53 @@ void ControlCenter::ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string 
         LOG_INFO_RLD("Receive msg handler success and type is " << iMsgType << " src id is " << strSrcID);
     }
 
+}
+
+void ControlCenter::MsgProcess(const std::string &strData, MsgWriter msgwriter)
+{
+    if (NULL == m_MsgTypeHandler)
+    {
+        LOG_ERROR_RLD("Get msg type handle failed.");
+        return;
+    }
+
+    auto itBegin = m_MsgPreHandlerList.begin();
+    auto itEnd = m_MsgPreHandlerList.end();
+    while (itBegin != itEnd)
+    {
+        if (!(*itBegin)(strData, "x", msgwriter))
+        {
+            LOG_ERROR_RLD("Receive msg prehandler failed");
+            return;
+        }
+
+        ++itBegin;
+    }
+
+    int mtype = 0;
+    if (!m_MsgTypeHandler(strData, mtype))
+    {
+        LOG_ERROR_RLD("Get msg type failed.");
+        return;
+    }
+
+    LOG_INFO_RLD("Receive msg type is " << mtype);
+
+    auto itFind = m_MsgHandlerMap.find(mtype);
+    if (m_MsgHandlerMap.end() == itFind)
+    {
+        LOG_ERROR_RLD("Not found msg handler and type is " << mtype);
+        return;
+    }
+    
+    if (!itFind->second(strData, "x", msgwriter))
+    {
+        LOG_ERROR_RLD("Receive msg handler failed and type is " << mtype);
+        //m_pClient->AsyncRead(pValue); //当处理失败时需要考虑是否需要继续接收消息
+    }
+    else
+    {
+        LOG_INFO_RLD("Receive msg handler success and type is " << mtype);
+    }
 }
 

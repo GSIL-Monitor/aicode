@@ -14,6 +14,8 @@
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "PassengerFlowProtoHandler.h"
 
+#include "TransClient.h"
+
 const std::string PassengerFlowMsgHandler::SUCCESS_CODE = "0";
 const std::string PassengerFlowMsgHandler::SUCCESS_MSG = "Ok";
 const std::string PassengerFlowMsgHandler::FAILED_CODE = "-1";
@@ -214,6 +216,28 @@ int PassengerFlowMsgHandler::RspFuncCommonAction(CommMsgHandler::Packet &pt, int
     ReturnInfo::RetCode(*piRetCode);
 
     return iRspfuncRet;
+}
+
+bool PassengerFlowMsgHandler::RspFuncCommonActionT(const std::string &strBinaryContent, unsigned int uiRetCode, int *piRetCode, RspFuncCommonT rspfunc)
+{
+    int iPreCode = 0;
+    if (!PreCommonHandler(strBinaryContent, iPreCode))
+    {
+        ReturnInfo::RetCode(iPreCode);
+        return false;
+    }
+
+    if (NULL == rspfunc)
+    {
+        LOG_ERROR_RLD("Rsp function is null");
+        return false;
+    }
+
+    bool blRspfuncRet = rspfunc(strBinaryContent, uiRetCode);
+
+    ReturnInfo::RetCode(*piRetCode);
+
+    return blRspfuncRet;
 }
 
 bool PassengerFlowMsgHandler::PreCommonHandler(const std::string &strMsgReceived, int &iRetCode)
@@ -819,7 +843,7 @@ bool PassengerFlowMsgHandler::QueryAllStoreHandler(boost::shared_ptr<MsgInfoMap>
 
     std::list<StoreAndEntranceInfo> storelist;
 
-    if (!QueryAllStore(strSid, strUserID, uiBeginIndex, strDomainID, uiOpenState, storelist))
+    if (!QueryAllStoreT(strSid, strUserID, uiBeginIndex, strDomainID, uiOpenState, storelist))
     {
         LOG_ERROR_RLD("Query all store handle failed");
         return blResult;
@@ -9404,6 +9428,115 @@ bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std
     return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
         m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
         CommMsgHandler::SUCCEED == iRet;
+}
+
+bool PassengerFlowMsgHandler::QueryAllStoreT(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex,
+    const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist)
+{
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000 * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) + 15;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Query all store and trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
+    {
+        PassengerFlowProtoHandler::QueryAllStoreReq QueryAllStoreReq;
+        QueryAllStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreReq_T;
+        QueryAllStoreReq.m_uiMsgSeq = 1;
+        QueryAllStoreReq.m_strSID = strSid;
+
+        QueryAllStoreReq.m_strUserID = strUserID;
+        QueryAllStoreReq.m_uiBeginIndex = uiBeginIndex;
+        QueryAllStoreReq.m_strAreaID = strDomainID;
+        QueryAllStoreReq.m_uiOpenState = uiOpenState;
+
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllStoreReq, strBinaryContent))
+        {
+            LOG_ERROR_RLD("Query all store req serialize failed.");
+            return false;
+        }
+
+        return true;
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
+    {
+        PassengerFlowProtoHandler::QueryAllStoreRsp QueryAllStoreRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllStoreRsp))
+        {
+            LOG_ERROR_RLD("Query all store rsp unserialize failed.");
+            iRet = CommMsgHandler::FAILED;
+            return false;
+        }
+
+        auto itBegin = QueryAllStoreRsp.m_storeList.begin();
+        auto itEnd = QueryAllStoreRsp.m_storeList.end();
+        while (itBegin != itEnd)
+        {
+            StoreAndEntranceInfo store;
+            store.stinfo.m_strStoreID = itBegin->m_strStoreID;
+            store.stinfo.m_strStoreName = itBegin->m_strStoreName;
+            store.stinfo.m_uiOpenState = itBegin->m_uiOpenState;
+            store.stinfo.m_strAddress = itBegin->m_strAddress;
+            store.stinfo.m_strDomainID = itBegin->m_area.m_strAreaID;
+            store.stinfo.m_strDomainName = itBegin->m_area.m_strAreaName;
+
+            store.stinfo.m_strPhoneList.swap(itBegin->m_strTelephoneList);
+
+            for (auto itB = itBegin->m_entranceList.begin(), itE = itBegin->m_entranceList.end(); itB != itE; ++itB)
+            {
+                EntranceInfo einfo;
+                einfo.m_strID = itB->m_strEntranceID;
+                einfo.m_strName = itB->m_strEntranceName;
+                einfo.m_strPicture = itB->m_strPicture;
+
+                auto itB2 = itB->m_strDeviceIDList.begin();
+                auto itE2 = itB->m_strDeviceIDList.end();
+                while (itB2 != itE2)
+                {
+                    einfo.m_DeviceIDList.push_back(*itB2);
+                    ++itB2;
+                }
+
+                store.etinfolist.push_back(std::move(einfo));
+            }
+
+            storelist.push_back(std::move(store));
+
+            LOG_INFO_RLD("Query all store info received and store id is " << itBegin->m_strStoreID <<
+                " and store name is " << itBegin->m_strStoreName << " and open state is " << itBegin->m_uiOpenState << " and address is " <<
+                itBegin->m_strAddress << " and entrance list size is " << itBegin->m_entranceList.size());
+
+            ++itBegin;
+        }
+
+        iRet = QueryAllStoreRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all store and user id is " << strUserID << " and begin index is " << uiBeginIndex <<
+            " and return code is " << QueryAllStoreRsp.m_iRetcode <<
+            " and return msg is " << QueryAllStoreRsp.m_strRetMsg);
+
+        return true;
+    };
+
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
+
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::AddEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, EntranceInfo &einfo)

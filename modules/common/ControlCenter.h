@@ -10,6 +10,8 @@
 #include "boost/atomic.hpp"
 #include "LogRLD.h"
 
+#include "TransServer.h"
+
 /************************************************************************/
 /* 实现了通用的协议数据包的发送、接收消息事件处理循环，
  * 通过提供注册消息处理函数接口来与外部业务进行交互。
@@ -84,9 +86,13 @@ private:
 
     MsgTypeHandler m_MsgTypeHandler;
 
+    TransServer m_pServer;
+
 private:
     bool ReceiveMsgHandler(const std::string &strData, const std::string &strSrcID, void *pValue);
     void ReceiveMsgHandlerInner(MsgHandler MsgHdr, const std::string &strData, const std::string &strSrcID, const int iMsgType, void *pValue);
+
+    void MsgProcess(const std::string &strData, MsgWriter msgwriter);
 
 };
 

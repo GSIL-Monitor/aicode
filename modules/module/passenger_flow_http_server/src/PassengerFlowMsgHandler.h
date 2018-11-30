@@ -16,6 +16,8 @@
 /************************************************************************/
 
 typedef boost::function<int(CommMsgHandler::Packet &pt)> RspFuncCommon;
+typedef boost::function<bool(const std::string &strBinaryContent, unsigned int uiRetCode)> RspFuncCommonT;
+
 
 class PassengerFlowProtoHandler;
 
@@ -562,6 +564,8 @@ private:
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
+    bool RspFuncCommonActionT(const std::string &strBinaryContent, unsigned int uiRetCode, int *piRetCode, RspFuncCommonT rspfunc);
+
     bool PreCommonHandler(const std::string &strMsgReceived, int &iRetCode);
 
     bool CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi);
@@ -587,7 +591,10 @@ private:
     bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
         const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist);
 
-    
+    bool QueryAllStoreT(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex,
+        const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist);
+
+
     bool AddEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, EntranceInfo &einfo);
 
     bool DelEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strEntranceID);

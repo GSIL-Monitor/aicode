@@ -20,7 +20,7 @@ LINK_DIRECTORIES(${basedir}/lib)
 #add_subdirectory(intf)
 aux_source_directory(./src  dir_srcs)
 add_executable(passenger_flow_manager ${dir_srcs})
-target_link_libraries(passenger_flow_manager libcommon.a libcomponent.a libcurl.a libSimpleAmqpClient.a librabbitmq.a 
+target_link_libraries(passenger_flow_manager libcommon.a libcomponent.a libthriftnb.a libthriftz.a libthrift.a libevent.a libevent_core.a libevent_extra.a libevent_pthreads.a libcurl.a libSimpleAmqpClient.a librabbitmq.a 
 liblog4cplus.a libboost_chrono.a libboost_system.a 
 libboost_thread.a libboost_filesystem.a libboost_date_time.a libjsoncpp.a libuuid.a libprotobuf.a libssl.a libcrypto.a 
 libmysqlclient.a libfdfsclient.a libfastcommon.a libmemcached.a libmemcachedutil.a)
