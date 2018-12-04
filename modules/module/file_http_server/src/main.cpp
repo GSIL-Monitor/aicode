@@ -10,6 +10,7 @@
 #include "boost/lexical_cast.hpp"
 #include "CommMsgHandler.h"
 #include "FileManager.h"
+#include "mime_types.h"
 
 #define CONFIG_FILE_NAME "file_http_server.ini"
 #define PROCESS_NAME     "filemgr_cgi"
@@ -271,7 +272,11 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(HttpMsgHandler::DOWNLOAD_FILE_ACTION, boost::bind(&HttpMsgHandler::DownloadFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::DELETE_FILE_ACTION, boost::bind(&HttpMsgHandler::DeleteFileHandler, &filehdr, _1, _2));
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_FILE_ACTION, boost::bind(&HttpMsgHandler::QueryFileHandler, &filehdr, _1, _2));
-        
+    
+    bool blRet = load_mime_types("mime.types");
+
+    LOG_INFO_RLD("Load mime type result is " << blRet);
+
     fcgimgr.Run(true);
     return 0;
 }
