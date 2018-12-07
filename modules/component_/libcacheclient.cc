@@ -61,11 +61,11 @@ int MemcacheClientImpl::addServer(const char* ip,
 	//使用cas
 	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_SUPPORT_CAS, true);
 	//连接超时ms
-	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_CONNECT_TIMEOUT, 300);
+	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_CONNECT_TIMEOUT, 500);
 	//读超时us
-	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_RCV_TIMEOUT, 300*1000);
+	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_RCV_TIMEOUT, 2*1000*1000);
 	//写超时us
-	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_SND_TIMEOUT, 300*1000);
+	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_SND_TIMEOUT, 2*1000*1000);
 	
 	memcached_behavior_set((memcached_st*)memc_, MEMCACHED_BEHAVIOR_POLL_TIMEOUT, 300);
 	

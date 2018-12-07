@@ -130,7 +130,7 @@ ClientCommInterface::ShakehandHandler::~ShakehandHandler()
 
 void ClientCommInterface::ShakehandHandler::ShakeHand(const boost::system::error_code &ec)
 {
-    LOG_INFO_RLD("Shakehandler was called");
+    LOG_DEBUG_RLD("Shakehandler was called");
     if (ec)
     {
         //printf("shake hand timer error : %s\n", ec.message().c_str());
@@ -219,11 +219,11 @@ void ClientCommInterface::ShakehandHandler::ReadCBInner(const boost::system::err
                 if (NULL != pClientComm.get())
                 {
                     pClientComm->AsyncRead(pValue);
-                    LOG_INFO_RLD("Receive msg is all shakehand msg, so to call async read again.");
+                    LOG_DEBUG_RLD("Receive msg is all shakehand msg, so to call async read again.");
                 }
             }
 
-            LOG_INFO_RLD("Receive msg is all shakehand msg.");
+            LOG_DEBUG_RLD("Receive msg is all shakehand msg.");
             return;
         }
     }

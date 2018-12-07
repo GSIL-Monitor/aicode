@@ -49,13 +49,12 @@ public:
 
     void SetCallBack(ClientConnectedCB cccb, ClientReadCB rdcb, ClientWriteCB wtcb);
 
-    
 private:
     ClientCommInterface(boost::shared_ptr<ClientComm> pClientComm, const unsigned int uiShakehandInterval = 0);
 
     boost::shared_ptr<ClientComm> m_pClientComm;
 
-    struct ShakehandHandler
+    struct ShakehandHandler : boost::enable_shared_from_this<ShakehandHandler>
     {
         ShakehandHandler();
         ~ShakehandHandler();
@@ -64,7 +63,6 @@ private:
         ClientWriteCB m_ClientWriteCB;
         ClientReadCB m_ClientReadCB;
 
-        boost::shared_ptr<TimeOutHandler> m_pShakehandTM;
         boost::mutex m_ChannelCommMutex;
         boost::uint32_t m_uiDoShakehanding;
         //boost::shared_ptr<ClientComm> m_pClientComm;
@@ -72,12 +70,14 @@ private:
 
         void ShakeHand(const boost::system::error_code &ec);
 
-        void ConnectedCBInner(const boost::system::error_code &ec);
+        void ConnectedCBInner(const boost::system::error_code &ec, boost::shared_ptr<TimeOutHandler> pShakehandTM);
 
-        void WriteCBInner(const boost::system::error_code &ec, void *pValue);
+        void WriteCBInner(const boost::system::error_code &ec, void *pValue, boost::shared_ptr<TimeOutHandler> pShakehandTM);
 
-        void ReadCBInner(const boost::system::error_code &ec, std::list<ClientMsg> *pClientMsgList, void *pValue);
+        void ReadCBInner(const boost::system::error_code &ec, std::list<ClientMsg> *pClientMsgList, void *pValue, boost::shared_ptr<TimeOutHandler> pShakehandTM);
     };
+
+    boost::shared_ptr<TimeOutHandler> m_pShakehandTM;
 
     boost::shared_ptr<ShakehandHandler> m_Shakehandler;
 
