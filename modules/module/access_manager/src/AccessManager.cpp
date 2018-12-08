@@ -270,7 +270,7 @@ bool AccessManager::PreCommonHandler(const std::string &strMsg, const std::strin
         LOG_ERROR_RLD("PreCommonHandler req unserialize failed, src id is " << strSrcID);
         return false;
     }
-    
+    //
     if (InteractiveProtoHandler::MsgType::LoginReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::RegisterUserReq_USR_T == req.m_MsgType ||
         InteractiveProtoHandler::MsgType::RegisterUserRsp_USR_T == req.m_MsgType ||
@@ -1022,7 +1022,7 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
 
     LOG_INFO_RLD("Add device type is " << req.m_devInfo.m_uiTypeInfo << " and device report check is " << req.m_strDevReportCheck);
 
-    //检查设备是否已经向平台上报过数据
+    //检查设备是否已经向平台上报过数据，网关设备类型不校验
     if ((DEVICE_TYPE_GATEWAY != req.m_devInfo.m_uiTypeInfo) && (req.m_strDevReportCheck == "1")) //网关设备不需要上报
     {
         if (!req.m_devInfo.m_strP2pID.empty() && !QueryIfDeviceReportedToDB(req.m_devInfo.m_strP2pID, req.m_devInfo.m_uiTypeInfo, strDeviceID))
@@ -1035,7 +1035,13 @@ bool AccessManager::AddDeviceReq(const std::string &strMsg, const std::string &s
         }
     }
 
-    if (req.m_devInfo.m_strP2pID.empty() || DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
+    if (req.m_strAllowDuplicate == "1")
+    {
+        strDeviceID = CreateUUID();
+    }
+
+    //if (req.m_devInfo.m_strP2pID.empty() || DEVICE_TYPE_IPC != req.m_devInfo.m_uiTypeInfo)
+    if (strDeviceID.empty())
     {
         strDeviceID = req.m_devInfo.m_strDevID;
     }
@@ -2159,23 +2165,24 @@ bool AccessManager::LoginReqDevice(const std::string &strMsg, const std::string 
     Json::FastWriter fastwriter;
     const std::string &strBody = fastwriter.write(jsBody); //jsBody.toStyledString();
 
-    if (!LoginReqDev.m_strDomainName.empty() && !IsValidDeviceDomain(LoginReqDev.m_strDevID, LoginReqDev.m_strDomainName))
-    {
-        LOG_ERROR_RLD("Device login vefiry device domain name failed, device id is " << LoginReqDev.m_strDevID <<
-            " and domain name is " << LoginReqDev.m_strDomainName);
+    ////由于设备IPC的设备ID修改为p2pid，考虑到现有数据库中老数据兼容，故注释下面这段校验。
+    //if (!LoginReqDev.m_strDomainName.empty() && !IsValidDeviceDomain(LoginReqDev.m_strDevID, LoginReqDev.m_strDomainName))
+    //{
+    //    LOG_ERROR_RLD("Device login vefiry device domain name failed, device id is " << LoginReqDev.m_strDevID <<
+    //        " and domain name is " << LoginReqDev.m_strDomainName);
 
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
-        return false;
-    }
+    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
+    //    return false;
+    //}
+    ////
+    //if (!LoginReqDev.m_strP2pID.empty() && !IsValidP2pIDProperty(LoginReqDev.m_strDevID, LoginReqDev.m_strP2pID))
+    //{
+    //    LOG_ERROR_RLD("Device login vefiry device p2p id failed, device id is " << LoginReqDev.m_strDevID <<
+    //        " and p2p id is " << LoginReqDev.m_strP2pID);
 
-    if (!LoginReqDev.m_strP2pID.empty() && !IsValidP2pIDProperty(LoginReqDev.m_strDevID, LoginReqDev.m_strP2pID))
-    {
-        LOG_ERROR_RLD("Device login vefiry device p2p id failed, device id is " << LoginReqDev.m_strDevID <<
-            " and p2p id is " << LoginReqDev.m_strP2pID);
-
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
-        return false;
-    }
+    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
+    //    return false;
+    //}
 
     //烧录了P2P信息的设备登录时，同时上报P2P信息，平台记入数据库
     if (P2P_DEVICE_BUILDIN == LoginReqDev.m_uiP2pBuildin)
@@ -3195,8 +3202,8 @@ bool AccessManager::QueryFirmwareUpgradeReqDevice(const std::string &strMsg, con
             return false;
         }
 
-        //if (!QueryFirmwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
-        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, "0", doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        if (!QueryFirmwareUpgradeToDB(req.m_strCategory, doorbellParameter.m_strSubCategory, doorbellParameter.m_strVersionNumber, firmwareUpgrade))
+        //if (!QueryFirmwareUpgradeToDB(req.m_strCategory, "0", doorbellParameter.m_strVersionNumber, firmwareUpgrade))
         {
             LOG_ERROR_RLD("Query firmware upgrade from db failed, category is " << req.m_strCategory <<
                 " and sub category is " << doorbellParameter.m_strSubCategory <<
@@ -3544,23 +3551,24 @@ bool AccessManager::ModifyDevicePropertyReqDevice(const std::string &strMsg, con
         return false;
     }
 
-    if (!req.m_strDomainName.empty() && !IsValidDeviceDomain(req.m_strDeviceID, req.m_strDomainName))
-    {
-        LOG_ERROR_RLD("Modify device property vefiry device domain name failed, device id is " << req.m_strDeviceID <<
-            " and domain name is " << req.m_strDomainName);
+    ////由于设备IPC的设备ID修改为p2pid，考虑到现有数据库中老数据兼容，故注释下面这段校验。
+    //if (!req.m_strDomainName.empty() && !IsValidDeviceDomain(req.m_strDeviceID, req.m_strDomainName))
+    //{
+    //    LOG_ERROR_RLD("Modify device property vefiry device domain name failed, device id is " << req.m_strDeviceID <<
+    //        " and domain name is " << req.m_strDomainName);
 
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
-        return false;
-    }
+    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_DOMAIN_USED_DEV);
+    //    return false;
+    //}
 
-    if (!req.m_strP2pID.empty() && !IsValidP2pIDProperty(req.m_strDeviceID, req.m_strP2pID))
-    {
-        LOG_ERROR_RLD("Modify device property vefiry device p2p id failed, device id is " << req.m_strDeviceID <<
-            " and p2p id is " << req.m_strP2pID);
+    //if (!req.m_strP2pID.empty() && !IsValidP2pIDProperty(req.m_strDeviceID, req.m_strP2pID))
+    //{
+    //    LOG_ERROR_RLD("Modify device property vefiry device p2p id failed, device id is " << req.m_strDeviceID <<
+    //        " and p2p id is " << req.m_strP2pID);
 
-        ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
-        return false;
-    }
+    //    ReturnInfo::RetCode(ReturnInfo::DEVICE_P2PID_USED_DEV);
+    //    return false;
+    //}
 
     if (DEVICE_TYPE_DOORBELL == req.m_uiDeviceType)
     {

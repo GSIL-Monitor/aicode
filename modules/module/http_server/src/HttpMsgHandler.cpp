@@ -1197,6 +1197,13 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
         strDevReportCheck = itFind->second;
     }
 
+    std::string strAllowDuplicate = "0";
+    itFind = pMsgInfoMap->find("allow_duplicate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strAllowDuplicate = itFind->second;
+    }
+
     DeviceIf devif;
     devif.m_strDevExtend = strDevExtend;
     devif.m_strDevID = strDevID;
@@ -1218,7 +1225,7 @@ bool HttpMsgHandler::AddDeviceHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
 
     
     std::string strDevIDOut;
-    if (!AddDevice(strSid, strDevReportCheck, strUserID, devif, strDevIDOut, strUserName, strDevTypeExist))
+    if (!AddDevice(strSid, strDevReportCheck, strAllowDuplicate, strUserID, devif, strDevIDOut, strUserName, strDevTypeExist))
     {
         LOG_ERROR_RLD("Add device handle failed and user id is " << strUserID << " and sid is " << strSid << " and device id is " << strDevID);
         return blResult;
@@ -7838,7 +7845,8 @@ bool HttpMsgHandler::Shakehand(const std::string &strSid, const std::string &str
         CommMsgHandler::SUCCEED == iRet;
 }
 
-bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strDevReportCheck, const std::string &strUserID, const DeviceIf &devif, std::string &strDevID,
+bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &strDevReportCheck, const std::string &strAllowDuplicate, 
+    const std::string &strUserID, const DeviceIf &devif, std::string &strDevID,
     std::string &strUserName, std::string &strDevType)
 {
     auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
@@ -7869,6 +7877,7 @@ bool HttpMsgHandler::AddDevice(const std::string &strSid, const std::string &str
         AddDevReq.m_strSID = strSid;
         AddDevReq.m_strUserID = strUserID;
         AddDevReq.m_strDevReportCheck = strDevReportCheck;
+        AddDevReq.m_strAllowDuplicate = strAllowDuplicate;
         AddDevReq.m_devInfo.m_strCreatedate = strCurrentTime;
         AddDevReq.m_devInfo.m_strDevID = devif.m_strDevID;
         AddDevReq.m_devInfo.m_strDevName = devif.m_strDevName;

@@ -9917,6 +9917,20 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::std::string* release_strdevreportcheck();
   void set_allocated_strdevreportcheck(::std::string* strdevreportcheck);
 
+  // string strAllowDuplicate = 4;
+  void clear_strallowduplicate();
+  static const int kStrAllowDuplicateFieldNumber = 4;
+  const ::std::string& strallowduplicate() const;
+  void set_strallowduplicate(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strallowduplicate(::std::string&& value);
+  #endif
+  void set_strallowduplicate(const char* value);
+  void set_strallowduplicate(const char* value, size_t size);
+  ::std::string* mutable_strallowduplicate();
+  ::std::string* release_strallowduplicate();
+  void set_allocated_strallowduplicate(::std::string* strallowduplicate);
+
   // .Interactive.Message.Device devInfo = 2;
   bool has_devinfo() const;
   void clear_devinfo();
@@ -9932,6 +9946,7 @@ class AddDevReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr struserid_;
   ::google::protobuf::internal::ArenaStringPtr strdevreportcheck_;
+  ::google::protobuf::internal::ArenaStringPtr strallowduplicate_;
   ::Interactive::Message::Device* devinfo_;
   mutable int _cached_size_;
   friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
@@ -34231,6 +34246,58 @@ inline void AddDevReq_USR::set_allocated_strdevreportcheck(::std::string* strdev
   }
   strdevreportcheck_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strdevreportcheck);
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strDevReportCheck)
+}
+
+// string strAllowDuplicate = 4;
+inline void AddDevReq_USR::clear_strallowduplicate() {
+  strallowduplicate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddDevReq_USR::strallowduplicate() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+  return strallowduplicate_.GetNoArena();
+}
+inline void AddDevReq_USR::set_strallowduplicate(const ::std::string& value) {
+  
+  strallowduplicate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+}
+#if LANG_CXX11
+inline void AddDevReq_USR::set_strallowduplicate(::std::string&& value) {
+  
+  strallowduplicate_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+}
+#endif
+inline void AddDevReq_USR::set_strallowduplicate(const char* value) {
+  
+  strallowduplicate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+}
+inline void AddDevReq_USR::set_strallowduplicate(const char* value, size_t size) {
+  
+  strallowduplicate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+}
+inline ::std::string* AddDevReq_USR::mutable_strallowduplicate() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+  return strallowduplicate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddDevReq_USR::release_strallowduplicate() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
+  
+  return strallowduplicate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddDevReq_USR::set_allocated_strallowduplicate(::std::string* strallowduplicate) {
+  if (strallowduplicate != NULL) {
+    
+  } else {
+    
+  }
+  strallowduplicate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strallowduplicate);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddDevReq_USR.strAllowDuplicate)
 }
 
 // -------------------------------------------------------------------

@@ -3386,6 +3386,7 @@ void InteractiveProtoHandler::AddDevReq_USR::UnSerializer(const InteractiveMessa
     Req::UnSerializer(InteractiveMsg);
     m_strUserID = InteractiveMsg.reqvalue().adddevreq_usr_value().struserid();
     m_strDevReportCheck = InteractiveMsg.reqvalue().adddevreq_usr_value().strdevreportcheck();
+    m_strAllowDuplicate = InteractiveMsg.reqvalue().adddevreq_usr_value().strallowduplicate();
     
     m_devInfo.m_strDevID = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strdevid();
     m_devInfo.m_strDevName = InteractiveMsg.reqvalue().adddevreq_usr_value().devinfo().strdevname();
@@ -3405,6 +3406,7 @@ void InteractiveProtoHandler::AddDevReq_USR::Serializer(InteractiveMessage &Inte
     InteractiveMsg.set_type(Interactive::Message::MsgType::AddDevReq_USR_T);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_struserid(m_strUserID);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strdevreportcheck(m_strDevReportCheck);
+    InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->set_strallowduplicate(m_strAllowDuplicate);
     
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strdevid(m_devInfo.m_strDevID);
     InteractiveMsg.mutable_reqvalue()->mutable_adddevreq_usr_value()->mutable_devinfo()->set_strdevname(m_devInfo.m_strDevName);
