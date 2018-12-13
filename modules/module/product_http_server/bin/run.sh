@@ -1,7 +1,7 @@
 #!/bin/bash
 
-killall -9 nginx
-killall -9 product.cgi
+#killall -9 nginx
+#killall -9 product.cgi
 
 LOGS="./logs"
 if [ ! -d "$LOGS" ]; then

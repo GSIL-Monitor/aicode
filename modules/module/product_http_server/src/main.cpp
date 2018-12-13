@@ -4,7 +4,7 @@
 #include <boost/filesystem.hpp> 
 #include "fcgiapp.h"
 #include "FCGIManager.h"
-#include "PassengerFlowMsgHandler.h"
+#include "ProductHandler.h"
 #include "ManagementAgent.h"
 #include "ConfigSt.h"
 #include "LogRLD.h"
@@ -12,12 +12,12 @@
 #include "CommMsgHandler.h"
 
 #define CONFIG_FILE_NAME "http_server.ini"
-#define PROCESS_NAME     "passenger_flow"
+#define PROCESS_NAME     "product"
 #define FILE_VERSION     "v[1.0.0] "
 
 void InitLog(ConfigSt& cfg)
 {
-    std::string strHost = "passenger_flow(127.0.0.1)";
+    std::string strHost = "product(127.0.0.1)";
     std::string strLogPath = "./logs/";
     std::string strLogInnerShowName = PROCESS_NAME;
     int iLoglevel = LogRLD::INFO_LOG_LEVEL;
@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 
 
     ///////////////////////////////////////////////////
-    PassengerFlowMsgHandler::ParamInfo pm;
+    ProductHandler::ParamInfo pm;
     pm.m_strRemoteAddress = strRemoteAddress;
     pm.m_strRemotePort = strRemotePort;
     pm.m_strSelfID = strSelfID;
@@ -246,133 +246,22 @@ int main(int argc, char *argv[])
     CommMsgHandler::SetCommRunningThreads(pm.m_uiThreadOfWorking);
     CommMsgHandler::SetTimeoutRunningThreads(pm.m_uiThreadOfWorking);
 
-    PassengerFlowMsgHandler filehdr(pm);
+    ProductHandler pdthdr(pm);
 
-    ManagementAgent::ParamInfo pm2;
-    pm2.m_strRemoteAddress = strRemoteAddress;
-    pm2.m_strRemotePort = strRemotePort;
-    pm2.m_strSelfID = strSelfID;
-    pm2.m_uiCallFuncTimeout = boost::lexical_cast<unsigned int>(CallFuncTimeout);
-    pm2.m_uiShakehandOfChannelInterval = boost::lexical_cast<unsigned int>(strShakehandOfChannelInterval);
-    pm2.m_uiThreadOfWorking = boost::lexical_cast<unsigned int>(strThreadOfWorking);
-    pm2.m_uiCollectInfoTimeout = boost::lexical_cast<unsigned int>(strCollectInfoTimeout);
-    
-    ManagementAgent ma(pm2);
-    ma.SetMsgWriter(boost::bind(&PassengerFlowMsgHandler::WriteMsg, &filehdr, _1, _2, _3, _4));
-        
     FCGIManager fcgimgr(boost::lexical_cast<unsigned int>(strThreadOfWorking));
     fcgimgr.SetUploadTmpPath(UploadTmpPath);
 
-    fcgimgr.SetMsgPreHandler(boost::bind(&PassengerFlowMsgHandler::ParseMsgOfCompact, &filehdr, _1, _2));
+    fcgimgr.SetMsgPreHandler(boost::bind(&ProductHandler::ParseMsgOfCompact, &pdthdr, _1, _2));
+    
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_PRODUCT_ACTION, boost::bind(&ProductHandler::AddProductHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_PRODUCT_ACTION, boost::bind(&ProductHandler::RemoveProductHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::MOD_PRODUCT_ACTION, boost::bind(&ProductHandler::ModifyProductHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_PRODUCT_ACTION, boost::bind(&ProductHandler::QueryProductHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_ALL_PRODUCT_ACTION, boost::bind(&ProductHandler::QueryAllProductHandler, &pdthdr, _1, _2));
 
-    fcgimgr.SetMsgHandler(ManagementAgent::ADD_CLUSTER_ACTION, boost::bind(&ManagementAgent::AddClusterAgentHandler, &ma, _1, _2));
-    fcgimgr.SetMsgHandler(ManagementAgent::CLUSTER_SHAKEHAND__ACTION, boost::bind(&ManagementAgent::ClusterAgentShakehandHandler, &ma, _1, _2));
-    fcgimgr.SetMsgHandler(ManagementAgent::DELETE_CLUSTER_ACTION, boost::bind(&ManagementAgent::DeleteClusterAgentHandler, &ma, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_PRODUCT_PROPERTY_ACTION, boost::bind(&ProductHandler::AddProductPropertyHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_PRODUCT_PROPERTY_ACTION, boost::bind(&ProductHandler::RemoveProductPropertyHandler, &pdthdr, _1, _2));
 
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::CreateDomainHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_DOMAIN, boost::bind(&PassengerFlowMsgHandler::RemoveDomainHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_DOMAIN, boost::bind(&PassengerFlowMsgHandler::ModifyDomainHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_DOMAIN, boost::bind(&PassengerFlowMsgHandler::QueryDomainHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_DOMAIN, boost::bind(&PassengerFlowMsgHandler::QueryAllDomainHandler, &filehdr, _1, _2));
-
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::ADD_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::AddStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DEL_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::DelStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MOD_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::ModifyStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::QueryStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_STORE_ACTION, boost::bind(&PassengerFlowMsgHandler::QueryAllStoreHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_ENTRANCE_ACTION, boost::bind(&PassengerFlowMsgHandler::AddEntranceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_ENTRANCE_ACTION, boost::bind(&PassengerFlowMsgHandler::DelEntranceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_ENTRANCE_ACTION, boost::bind(&PassengerFlowMsgHandler::ModifyEntranceHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::UPLOAD_PASSENGER_FLOW_ACTION, boost::bind(&PassengerFlowMsgHandler::UploadPassengerFlowHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::BIND_ENTRANCE_DEVICE, boost::bind(&PassengerFlowMsgHandler::BindEntranceDeviceHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::UNBIND_ENTRANCE_DEVICE, boost::bind(&PassengerFlowMsgHandler::UnBindEntranceDeviceHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::IMPORT_POS_DATA, boost::bind(&PassengerFlowMsgHandler::ImportPosDataHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PASSENGER_FLOW_REPORT, boost::bind(&PassengerFlowMsgHandler::QueryPassengerFlowReportHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_EVENT, boost::bind(&PassengerFlowMsgHandler::ReportEventHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_EVENT, boost::bind(&PassengerFlowMsgHandler::DeleteEventHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_EVENT, boost::bind(&PassengerFlowMsgHandler::ModifyEventHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_EVENT, boost::bind(&PassengerFlowMsgHandler::QueryEventHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_EVENT, boost::bind(&PassengerFlowMsgHandler::QueryAllEventHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::CreateGuardStorePlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::DeleteGuardStorePlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::ModifyGuardStorePlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryGuardStorePlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_GUARD_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryAllGuardStorePlanHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_PATROL_PLAN, boost::bind(&PassengerFlowMsgHandler::CreateRegularPatrolHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_PATROL_PLAN, boost::bind(&PassengerFlowMsgHandler::DeleteRegularPatrolPlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_PATROL_PLAN, boost::bind(&PassengerFlowMsgHandler::ModifyRegularPatrolPlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryRegularPatrolPlanHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_PATROL_PLAN, boost::bind(&PassengerFlowMsgHandler::QueryAllRegularPatrolPlanHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_VIP, boost::bind(&PassengerFlowMsgHandler::CreateVIPHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_VIP, boost::bind(&PassengerFlowMsgHandler::DeleteVIPHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_VIP, boost::bind(&PassengerFlowMsgHandler::ModifyVIPHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_VIP, boost::bind(&PassengerFlowMsgHandler::QueryVIPHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_VIP, boost::bind(&PassengerFlowMsgHandler::QueryAllVIPHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_VIP_CONSUME, boost::bind(&PassengerFlowMsgHandler::CreateVIPConsumeHistoryHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_VIP_CONSUME, boost::bind(&PassengerFlowMsgHandler::DeleteVIPConsumeHistoryHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_VIP_CONSUME, boost::bind(&PassengerFlowMsgHandler::ModifyVIPConsumeHistoryHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_VIP_CONSUME, boost::bind(&PassengerFlowMsgHandler::QueryVIPConsumeHistoryHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_JOIN_STORE, boost::bind(&PassengerFlowMsgHandler::UserJoinStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_QUIT_STORE, boost::bind(&PassengerFlowMsgHandler::UserQuitStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_USER_STORE, boost::bind(&PassengerFlowMsgHandler::QueryUserOfStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_USER_LIST, boost::bind(&PassengerFlowMsgHandler::QueryAllUserListHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::CreateEvaluationTemplateHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::DeleteEvaluationTemplateHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::ModifyEvaluationTemplateHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_EVALUATION_TEMPLATE, boost::bind(&PassengerFlowMsgHandler::QueryEvaluationTemplateHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::CreateEvaluationOfStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::DeleteEvaluationOfStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::ModifyEvaluationOfStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::QueryEvaluationOfStoreHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_EVALUATION_OF_STORE, boost::bind(&PassengerFlowMsgHandler::QueryAllEvaluationOfStoreHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::CreatePatrolRecordHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::DeletePatrolRecordHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::ModifyPatrolRecordHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryPatrolRecordHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_PATROL_RECORD, boost::bind(&PassengerFlowMsgHandler::QueryAllPatrolRecordHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::CREATE_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::CreateStoreSensorHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::DELETE_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::DeleteStoreSensorHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::ModifyStoreSensorHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::QueryStoreSensorHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::QueryAllStoreSensorHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_STORE_SENSOR, boost::bind(&PassengerFlowMsgHandler::ReportSensorInfoHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_PATROL_RESULT_REPORT, boost::bind(&PassengerFlowMsgHandler::QueryPatrolResultReportHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REPORT_STORE_SENSOR_ALARM, boost::bind(&PassengerFlowMsgHandler::ReportSensorAlarmInfoHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_THRESHOLD, boost::bind(&PassengerFlowMsgHandler::QuerySensorAlarmThresholdHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_SENSOR_RECORDS, boost::bind(&PassengerFlowMsgHandler::RemoveSensorRecordsHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_SENSOR_ALARM_RECORDS, boost::bind(&PassengerFlowMsgHandler::RemoveSensorAlarmRecordsHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_RECORDS, boost::bind(&PassengerFlowMsgHandler::QuerySensorRecordsHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_SENSOR_ALARM_RECORDS, boost::bind(&PassengerFlowMsgHandler::QuerySensorAlarmRecordsHandler, &filehdr, _1, _2));
-
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::ADD_ROLE, boost::bind(&PassengerFlowMsgHandler::AddRoleHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::REMOVE_ROLE, boost::bind(&PassengerFlowMsgHandler::RemoveRoleHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::MODIFY_ROLE, boost::bind(&PassengerFlowMsgHandler::ModifyRoleHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ROLE, boost::bind(&PassengerFlowMsgHandler::QueryRoleHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::QUERY_ALL_ROLE, boost::bind(&PassengerFlowMsgHandler::QueryAllRoleHandler, &filehdr, _1, _2));
-    fcgimgr.SetMsgHandler(PassengerFlowMsgHandler::USER_BIND_ROLE, boost::bind(&PassengerFlowMsgHandler::UserBindRoleHandler, &filehdr, _1, _2));
 
     fcgimgr.Run(true);
     return 0;

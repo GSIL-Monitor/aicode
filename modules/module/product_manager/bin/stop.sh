@@ -10,7 +10,7 @@ do
   #tmp=`echo "${pd}" | awk '{print $2}'`
   #echo $tmp
 
-  a='passenger'
+  a='product'
   if [[ $pd =~ $a ]]
   then
     #echo 'mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm: '$pd
