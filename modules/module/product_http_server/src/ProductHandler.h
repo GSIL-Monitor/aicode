@@ -32,7 +32,15 @@ public:
     static const std::string QUERY_ALL_PRODUCT_ACTION;
     static const std::string ADD_PRODUCT_PROPERTY_ACTION;
     static const std::string REMOVE_PRODUCT_PROPERTY_ACTION;
-    
+
+    static const std::string ADD_ORDER_ACTION;
+    static const std::string REMOVE_ORDER_ACTION;
+    static const std::string MODIFY_ORDER_ACTION;
+    static const std::string ADD_ORDER_DETAIL_ACTION;
+    static const std::string REMOVE_ORDER_DETAIL_ACTION;
+    static const std::string QUERY_ORDER_ACTION;
+    static const std::string QUERY_ALL_ORDER_ACTION;
+        
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -63,6 +71,22 @@ public:
     bool AddProductPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     bool RemoveProductPropertyHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool AddOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool AddOrderDetailHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveOrderDetailHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);

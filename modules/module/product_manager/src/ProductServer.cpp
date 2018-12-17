@@ -344,6 +344,55 @@ void OrderServerHandler::QueryAllOrd(QueryAllOrdRT& _return, const std::string& 
 }
 
 
+void OrderServerHandler::AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt)
+{
+    if (NULL != m_bh)
+    {
+        int iRet = 0;
+        if (!m_bh(QUERY_ALL_ORDER, strSid, &iRet))
+        {
+            LOG_ERROR_RLD("Add order detail before handler failed and sid is " << strSid);
+
+            ProductRTInfo rtd;
+            rtd.__set_iRtCode(iRet);
+            rtd.__set_strRtMsg("Before handler failed.");
+            _return.__set_rtcode(rtd);
+
+            return;
+        }
+    }
+
+    m_pImpl->AddOrdDetail(_return, strSid, strUserID, orddt);
+
+    if (NULL != m_ah)
+    {
+        m_ah(QUERY_ALL_ORDER, strSid);
+    }
+}
+
+void OrderServerHandler::RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID)
+{
+    if (NULL != m_bh)
+    {
+        int iRet = 0;
+        if (!m_bh(QUERY_ALL_ORDER, strSid, &iRet))
+        {
+            LOG_ERROR_RLD("Add order detail before handler failed and sid is " << strSid);
+
+            _return.__set_iRtCode(iRet);
+            _return.__set_strRtMsg("Before handler failed.");
+            return;
+        }
+    }
+
+    m_pImpl->RemoveOrdDetail(_return, strSid, strUserID, strOrdID, strOrddtID);
+
+    if (NULL != m_ah)
+    {
+        m_ah(QUERY_ALL_ORDER, strSid);
+    }
+}
+
 ProductServer::ProductServer(boost::shared_ptr<ProductManager> pImpl) : m_pImpl(pImpl)
 {
 

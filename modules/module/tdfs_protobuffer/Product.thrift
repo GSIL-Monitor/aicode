@@ -123,6 +123,12 @@ struct AddOrdRT
     2: optional string strOrdID;
 }
 
+struct AddOrdDetailRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional string strOrddtID;
+}
+
 struct QueryOrdRT
 {
     1: optional ProductRTInfo rtcode;
@@ -152,6 +158,9 @@ service OrderService
     AddOrdRT AddOrd(1: string strSid, 2: string strUserID, 3: OrderInfo ord);
     ProductRTInfo RemoveOrd(1: string strSid, 2: string strUserID, 3: string strOrdID);
     ProductRTInfo ModifyOrd(1: string strSid, 2: string strUserID, 3: string strOrdID, 4: OrderInfo ord);
+    
+    AddOrdDetailRT AddOrdDetail(1: string strSid, 2: string strUserID, 3: OrderDetail orddt);
+    ProductRTInfo RemoveOrdDetail(1: string strSid, 2: string strUserID, 3: string strOrdID, 4: string strOrddtID);
     
     QueryOrdRT QueryOrd(1: string strSid, 2: string strUserID, 3: string strOrdID);
     QueryAllOrdRT QueryAllOrd(1: string strSid, 2: string strUserID, 3: QueryAllOrdParam qryparam);

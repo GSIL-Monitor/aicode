@@ -277,3 +277,39 @@ void ProductClient::QueryAllOrd(QueryAllOrdRT& _return, const std::string& strSi
         return;
     }
 }
+
+void ProductClient::AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt)
+{
+    try
+    {
+        m_pOrderClient->AddOrdDetail(_return, strSid, strUserID, orddt);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("AddOrdDetail call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("AddOrdDetail call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID)
+{
+    try
+    {
+        m_pOrderClient->RemoveOrdDetail(_return, strSid, strUserID, strOrdID, strOrddtID);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("RemoveOrdDetail call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("RemoveOrdDetail call was failed and error is unknown");
+        return;
+    }
+}

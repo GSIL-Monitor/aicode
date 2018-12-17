@@ -262,6 +262,15 @@ int main(int argc, char *argv[])
     fcgimgr.SetMsgHandler(ProductHandler::ADD_PRODUCT_PROPERTY_ACTION, boost::bind(&ProductHandler::AddProductPropertyHandler, &pdthdr, _1, _2));
     fcgimgr.SetMsgHandler(ProductHandler::REMOVE_PRODUCT_PROPERTY_ACTION, boost::bind(&ProductHandler::RemoveProductPropertyHandler, &pdthdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_ORDER_ACTION, boost::bind(&ProductHandler::AddOrderHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_ORDER_ACTION, boost::bind(&ProductHandler::RemoveOrderHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::MODIFY_ORDER_ACTION, boost::bind(&ProductHandler::ModifyOrderHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_ORDER_ACTION, boost::bind(&ProductHandler::QueryOrderHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_ALL_ORDER_ACTION, boost::bind(&ProductHandler::QueryAllOrderHandler, &pdthdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_ORDER_DETAIL_ACTION, boost::bind(&ProductHandler::AddOrderDetailHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_ORDER_DETAIL_ACTION, boost::bind(&ProductHandler::RemoveOrderDetailHandler, &pdthdr, _1, _2));
+
 
     fcgimgr.Run(true);
     return 0;

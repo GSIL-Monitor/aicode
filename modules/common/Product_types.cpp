@@ -2116,6 +2116,122 @@ void AddOrdRT::printTo(std::ostream& out) const {
 }
 
 
+AddOrdDetailRT::~AddOrdDetailRT() throw() {
+}
+
+
+void AddOrdDetailRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void AddOrdDetailRT::__set_strOrddtID(const std::string& val) {
+  this->strOrddtID = val;
+__isset.strOrddtID = true;
+}
+std::ostream& operator<<(std::ostream& out, const AddOrdDetailRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t AddOrdDetailRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strOrddtID);
+          this->__isset.strOrddtID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t AddOrdDetailRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("AddOrdDetailRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strOrddtID) {
+    xfer += oprot->writeFieldBegin("strOrddtID", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strOrddtID);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(AddOrdDetailRT &a, AddOrdDetailRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.strOrddtID, b.strOrddtID);
+  swap(a.__isset, b.__isset);
+}
+
+AddOrdDetailRT::AddOrdDetailRT(const AddOrdDetailRT& other40) {
+  rtcode = other40.rtcode;
+  strOrddtID = other40.strOrddtID;
+  __isset = other40.__isset;
+}
+AddOrdDetailRT& AddOrdDetailRT::operator=(const AddOrdDetailRT& other41) {
+  rtcode = other41.rtcode;
+  strOrddtID = other41.strOrddtID;
+  __isset = other41.__isset;
+  return *this;
+}
+void AddOrdDetailRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "AddOrdDetailRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "strOrddtID="; (__isset.strOrddtID ? (out << to_string(strOrddtID)) : (out << "<null>"));
+  out << ")";
+}
+
+
 QueryOrdRT::~QueryOrdRT() throw() {
 }
 
@@ -2212,15 +2328,15 @@ void swap(QueryOrdRT &a, QueryOrdRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryOrdRT::QueryOrdRT(const QueryOrdRT& other40) {
-  rtcode = other40.rtcode;
-  ord = other40.ord;
-  __isset = other40.__isset;
+QueryOrdRT::QueryOrdRT(const QueryOrdRT& other42) {
+  rtcode = other42.rtcode;
+  ord = other42.ord;
+  __isset = other42.__isset;
 }
-QueryOrdRT& QueryOrdRT::operator=(const QueryOrdRT& other41) {
-  rtcode = other41.rtcode;
-  ord = other41.ord;
-  __isset = other41.__isset;
+QueryOrdRT& QueryOrdRT::operator=(const QueryOrdRT& other43) {
+  rtcode = other43.rtcode;
+  ord = other43.ord;
+  __isset = other43.__isset;
   return *this;
 }
 void QueryOrdRT::printTo(std::ostream& out) const {
@@ -2285,14 +2401,14 @@ uint32_t QueryAllOrdRT::read(::apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->ordlist.clear();
-            uint32_t _size42;
-            ::apache::thrift::protocol::TType _etype45;
-            xfer += iprot->readListBegin(_etype45, _size42);
-            this->ordlist.resize(_size42);
-            uint32_t _i46;
-            for (_i46 = 0; _i46 < _size42; ++_i46)
+            uint32_t _size44;
+            ::apache::thrift::protocol::TType _etype47;
+            xfer += iprot->readListBegin(_etype47, _size44);
+            this->ordlist.resize(_size44);
+            uint32_t _i48;
+            for (_i48 = 0; _i48 < _size44; ++_i48)
             {
-              xfer += this->ordlist[_i46].read(iprot);
+              xfer += this->ordlist[_i48].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -2327,10 +2443,10 @@ uint32_t QueryAllOrdRT::write(::apache::thrift::protocol::TProtocol* oprot) cons
     xfer += oprot->writeFieldBegin("ordlist", ::apache::thrift::protocol::T_LIST, 2);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->ordlist.size()));
-      std::vector<OrderInfo> ::const_iterator _iter47;
-      for (_iter47 = this->ordlist.begin(); _iter47 != this->ordlist.end(); ++_iter47)
+      std::vector<OrderInfo> ::const_iterator _iter49;
+      for (_iter49 = this->ordlist.begin(); _iter49 != this->ordlist.end(); ++_iter49)
       {
-        xfer += (*_iter47).write(oprot);
+        xfer += (*_iter49).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -2348,15 +2464,15 @@ void swap(QueryAllOrdRT &a, QueryAllOrdRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryAllOrdRT::QueryAllOrdRT(const QueryAllOrdRT& other48) {
-  rtcode = other48.rtcode;
-  ordlist = other48.ordlist;
-  __isset = other48.__isset;
+QueryAllOrdRT::QueryAllOrdRT(const QueryAllOrdRT& other50) {
+  rtcode = other50.rtcode;
+  ordlist = other50.ordlist;
+  __isset = other50.__isset;
 }
-QueryAllOrdRT& QueryAllOrdRT::operator=(const QueryAllOrdRT& other49) {
-  rtcode = other49.rtcode;
-  ordlist = other49.ordlist;
-  __isset = other49.__isset;
+QueryAllOrdRT& QueryAllOrdRT::operator=(const QueryAllOrdRT& other51) {
+  rtcode = other51.rtcode;
+  ordlist = other51.ordlist;
+  __isset = other51.__isset;
   return *this;
 }
 void QueryAllOrdRT::printTo(std::ostream& out) const {
@@ -2578,27 +2694,27 @@ void swap(QueryAllOrdParam &a, QueryAllOrdParam &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryAllOrdParam::QueryAllOrdParam(const QueryAllOrdParam& other50) {
-  iType = other50.iType;
-  iOrdStatus = other50.iOrdStatus;
-  strReceiver = other50.strReceiver;
-  strPhone = other50.strPhone;
-  strPdtID = other50.strPdtID;
-  strBeginDate = other50.strBeginDate;
-  strEndDate = other50.strEndDate;
-  strBeginIndex = other50.strBeginIndex;
-  __isset = other50.__isset;
+QueryAllOrdParam::QueryAllOrdParam(const QueryAllOrdParam& other52) {
+  iType = other52.iType;
+  iOrdStatus = other52.iOrdStatus;
+  strReceiver = other52.strReceiver;
+  strPhone = other52.strPhone;
+  strPdtID = other52.strPdtID;
+  strBeginDate = other52.strBeginDate;
+  strEndDate = other52.strEndDate;
+  strBeginIndex = other52.strBeginIndex;
+  __isset = other52.__isset;
 }
-QueryAllOrdParam& QueryAllOrdParam::operator=(const QueryAllOrdParam& other51) {
-  iType = other51.iType;
-  iOrdStatus = other51.iOrdStatus;
-  strReceiver = other51.strReceiver;
-  strPhone = other51.strPhone;
-  strPdtID = other51.strPdtID;
-  strBeginDate = other51.strBeginDate;
-  strEndDate = other51.strEndDate;
-  strBeginIndex = other51.strBeginIndex;
-  __isset = other51.__isset;
+QueryAllOrdParam& QueryAllOrdParam::operator=(const QueryAllOrdParam& other53) {
+  iType = other53.iType;
+  iOrdStatus = other53.iOrdStatus;
+  strReceiver = other53.strReceiver;
+  strPhone = other53.strPhone;
+  strPdtID = other53.strPdtID;
+  strBeginDate = other53.strBeginDate;
+  strEndDate = other53.strEndDate;
+  strBeginIndex = other53.strBeginIndex;
+  __isset = other53.__isset;
   return *this;
 }
 void QueryAllOrdParam::printTo(std::ostream& out) const {

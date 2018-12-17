@@ -24,6 +24,8 @@ class OrderServiceIf {
   virtual void AddOrd(AddOrdRT& _return, const std::string& strSid, const std::string& strUserID, const OrderInfo& ord) = 0;
   virtual void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID) = 0;
   virtual void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord) = 0;
+  virtual void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt) = 0;
+  virtual void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID) = 0;
   virtual void QueryOrd(QueryOrdRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID) = 0;
   virtual void QueryAllOrd(QueryAllOrdRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOrdParam& qryparam) = 0;
 };
@@ -62,6 +64,12 @@ class OrderServiceNull : virtual public OrderServiceIf {
     return;
   }
   void ModifyOrd(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */, const OrderInfo& /* ord */) {
+    return;
+  }
+  void AddOrdDetail(AddOrdDetailRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const OrderDetail& /* orddt */) {
+    return;
+  }
+  void RemoveOrdDetail(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */, const std::string& /* strOrddtID */) {
     return;
   }
   void QueryOrd(QueryOrdRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */) {
@@ -433,6 +441,249 @@ class OrderService_ModifyOrd_presult {
 
 };
 
+typedef struct _OrderService_AddOrdDetail_args__isset {
+  _OrderService_AddOrdDetail_args__isset() : strSid(false), strUserID(false), orddt(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool orddt :1;
+} _OrderService_AddOrdDetail_args__isset;
+
+class OrderService_AddOrdDetail_args {
+ public:
+
+  OrderService_AddOrdDetail_args(const OrderService_AddOrdDetail_args&);
+  OrderService_AddOrdDetail_args& operator=(const OrderService_AddOrdDetail_args&);
+  OrderService_AddOrdDetail_args() : strSid(), strUserID() {
+  }
+
+  virtual ~OrderService_AddOrdDetail_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  OrderDetail orddt;
+
+  _OrderService_AddOrdDetail_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_orddt(const OrderDetail& val);
+
+  bool operator == (const OrderService_AddOrdDetail_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(orddt == rhs.orddt))
+      return false;
+    return true;
+  }
+  bool operator != (const OrderService_AddOrdDetail_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const OrderService_AddOrdDetail_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class OrderService_AddOrdDetail_pargs {
+ public:
+
+
+  virtual ~OrderService_AddOrdDetail_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const OrderDetail* orddt;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _OrderService_AddOrdDetail_result__isset {
+  _OrderService_AddOrdDetail_result__isset() : success(false) {}
+  bool success :1;
+} _OrderService_AddOrdDetail_result__isset;
+
+class OrderService_AddOrdDetail_result {
+ public:
+
+  OrderService_AddOrdDetail_result(const OrderService_AddOrdDetail_result&);
+  OrderService_AddOrdDetail_result& operator=(const OrderService_AddOrdDetail_result&);
+  OrderService_AddOrdDetail_result() {
+  }
+
+  virtual ~OrderService_AddOrdDetail_result() throw();
+  AddOrdDetailRT success;
+
+  _OrderService_AddOrdDetail_result__isset __isset;
+
+  void __set_success(const AddOrdDetailRT& val);
+
+  bool operator == (const OrderService_AddOrdDetail_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const OrderService_AddOrdDetail_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const OrderService_AddOrdDetail_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _OrderService_AddOrdDetail_presult__isset {
+  _OrderService_AddOrdDetail_presult__isset() : success(false) {}
+  bool success :1;
+} _OrderService_AddOrdDetail_presult__isset;
+
+class OrderService_AddOrdDetail_presult {
+ public:
+
+
+  virtual ~OrderService_AddOrdDetail_presult() throw();
+  AddOrdDetailRT* success;
+
+  _OrderService_AddOrdDetail_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _OrderService_RemoveOrdDetail_args__isset {
+  _OrderService_RemoveOrdDetail_args__isset() : strSid(false), strUserID(false), strOrdID(false), strOrddtID(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool strOrdID :1;
+  bool strOrddtID :1;
+} _OrderService_RemoveOrdDetail_args__isset;
+
+class OrderService_RemoveOrdDetail_args {
+ public:
+
+  OrderService_RemoveOrdDetail_args(const OrderService_RemoveOrdDetail_args&);
+  OrderService_RemoveOrdDetail_args& operator=(const OrderService_RemoveOrdDetail_args&);
+  OrderService_RemoveOrdDetail_args() : strSid(), strUserID(), strOrdID(), strOrddtID() {
+  }
+
+  virtual ~OrderService_RemoveOrdDetail_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  std::string strOrdID;
+  std::string strOrddtID;
+
+  _OrderService_RemoveOrdDetail_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_strOrdID(const std::string& val);
+
+  void __set_strOrddtID(const std::string& val);
+
+  bool operator == (const OrderService_RemoveOrdDetail_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(strOrdID == rhs.strOrdID))
+      return false;
+    if (!(strOrddtID == rhs.strOrddtID))
+      return false;
+    return true;
+  }
+  bool operator != (const OrderService_RemoveOrdDetail_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const OrderService_RemoveOrdDetail_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class OrderService_RemoveOrdDetail_pargs {
+ public:
+
+
+  virtual ~OrderService_RemoveOrdDetail_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const std::string* strOrdID;
+  const std::string* strOrddtID;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _OrderService_RemoveOrdDetail_result__isset {
+  _OrderService_RemoveOrdDetail_result__isset() : success(false) {}
+  bool success :1;
+} _OrderService_RemoveOrdDetail_result__isset;
+
+class OrderService_RemoveOrdDetail_result {
+ public:
+
+  OrderService_RemoveOrdDetail_result(const OrderService_RemoveOrdDetail_result&);
+  OrderService_RemoveOrdDetail_result& operator=(const OrderService_RemoveOrdDetail_result&);
+  OrderService_RemoveOrdDetail_result() {
+  }
+
+  virtual ~OrderService_RemoveOrdDetail_result() throw();
+  ProductRTInfo success;
+
+  _OrderService_RemoveOrdDetail_result__isset __isset;
+
+  void __set_success(const ProductRTInfo& val);
+
+  bool operator == (const OrderService_RemoveOrdDetail_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const OrderService_RemoveOrdDetail_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const OrderService_RemoveOrdDetail_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _OrderService_RemoveOrdDetail_presult__isset {
+  _OrderService_RemoveOrdDetail_presult__isset() : success(false) {}
+  bool success :1;
+} _OrderService_RemoveOrdDetail_presult__isset;
+
+class OrderService_RemoveOrdDetail_presult {
+ public:
+
+
+  virtual ~OrderService_RemoveOrdDetail_presult() throw();
+  ProductRTInfo* success;
+
+  _OrderService_RemoveOrdDetail_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 typedef struct _OrderService_QueryOrd_args__isset {
   _OrderService_QueryOrd_args__isset() : strSid(false), strUserID(false), strOrdID(false) {}
   bool strSid :1;
@@ -703,6 +954,12 @@ class OrderServiceClient : virtual public OrderServiceIf {
   void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   void send_ModifyOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   void recv_ModifyOrd(ProductRTInfo& _return);
+  void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt);
+  void send_AddOrdDetail(const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt);
+  void recv_AddOrdDetail(AddOrdDetailRT& _return);
+  void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID);
+  void send_RemoveOrdDetail(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID);
+  void recv_RemoveOrdDetail(ProductRTInfo& _return);
   void QueryOrd(QueryOrdRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
   void send_QueryOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
   void recv_QueryOrd(QueryOrdRT& _return);
@@ -727,6 +984,8 @@ class OrderServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_AddOrd(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_RemoveOrd(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ModifyOrd(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_AddOrdDetail(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveOrdDetail(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_QueryOrd(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_QueryAllOrd(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
@@ -735,6 +994,8 @@ class OrderServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["AddOrd"] = &OrderServiceProcessor::process_AddOrd;
     processMap_["RemoveOrd"] = &OrderServiceProcessor::process_RemoveOrd;
     processMap_["ModifyOrd"] = &OrderServiceProcessor::process_ModifyOrd;
+    processMap_["AddOrdDetail"] = &OrderServiceProcessor::process_AddOrdDetail;
+    processMap_["RemoveOrdDetail"] = &OrderServiceProcessor::process_RemoveOrdDetail;
     processMap_["QueryOrd"] = &OrderServiceProcessor::process_QueryOrd;
     processMap_["QueryAllOrd"] = &OrderServiceProcessor::process_QueryAllOrd;
   }
@@ -792,6 +1053,26 @@ class OrderServiceMultiface : virtual public OrderServiceIf {
       ifaces_[i]->ModifyOrd(_return, strSid, strUserID, strOrdID, ord);
     }
     ifaces_[i]->ModifyOrd(_return, strSid, strUserID, strOrdID, ord);
+    return;
+  }
+
+  void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->AddOrdDetail(_return, strSid, strUserID, orddt);
+    }
+    ifaces_[i]->AddOrdDetail(_return, strSid, strUserID, orddt);
+    return;
+  }
+
+  void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveOrdDetail(_return, strSid, strUserID, strOrdID, strOrddtID);
+    }
+    ifaces_[i]->RemoveOrdDetail(_return, strSid, strUserID, strOrdID, strOrddtID);
     return;
   }
 
@@ -854,6 +1135,12 @@ class OrderServiceConcurrentClient : virtual public OrderServiceIf {
   void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   int32_t send_ModifyOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   void recv_ModifyOrd(ProductRTInfo& _return, const int32_t seqid);
+  void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt);
+  int32_t send_AddOrdDetail(const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt);
+  void recv_AddOrdDetail(AddOrdDetailRT& _return, const int32_t seqid);
+  void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID);
+  int32_t send_RemoveOrdDetail(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID);
+  void recv_RemoveOrdDetail(ProductRTInfo& _return, const int32_t seqid);
   void QueryOrd(QueryOrdRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
   int32_t send_QueryOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
   void recv_QueryOrd(QueryOrdRT& _return, const int32_t seqid);

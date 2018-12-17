@@ -42,6 +42,8 @@ class AddProductPropertyRT;
 
 class AddOrdRT;
 
+class AddOrdDetailRT;
+
 class QueryOrdRT;
 
 class QueryAllOrdRT;
@@ -895,6 +897,58 @@ class AddOrdRT : public virtual ::apache::thrift::TBase {
 void swap(AddOrdRT &a, AddOrdRT &b);
 
 std::ostream& operator<<(std::ostream& out, const AddOrdRT& obj);
+
+typedef struct _AddOrdDetailRT__isset {
+  _AddOrdDetailRT__isset() : rtcode(false), strOrddtID(false) {}
+  bool rtcode :1;
+  bool strOrddtID :1;
+} _AddOrdDetailRT__isset;
+
+class AddOrdDetailRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  AddOrdDetailRT(const AddOrdDetailRT&);
+  AddOrdDetailRT& operator=(const AddOrdDetailRT&);
+  AddOrdDetailRT() : strOrddtID() {
+  }
+
+  virtual ~AddOrdDetailRT() throw();
+  ProductRTInfo rtcode;
+  std::string strOrddtID;
+
+  _AddOrdDetailRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_strOrddtID(const std::string& val);
+
+  bool operator == (const AddOrdDetailRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.strOrddtID != rhs.__isset.strOrddtID)
+      return false;
+    else if (__isset.strOrddtID && !(strOrddtID == rhs.strOrddtID))
+      return false;
+    return true;
+  }
+  bool operator != (const AddOrdDetailRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const AddOrdDetailRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(AddOrdDetailRT &a, AddOrdDetailRT &b);
+
+std::ostream& operator<<(std::ostream& out, const AddOrdDetailRT& obj);
 
 typedef struct _QueryOrdRT__isset {
   _QueryOrdRT__isset() : rtcode(false), ord(false) {}
