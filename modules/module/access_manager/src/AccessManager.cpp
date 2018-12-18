@@ -9987,6 +9987,28 @@ bool AccessManager::QueryDeviceP2pID(const std::string &strDomainName, DevP2pIDI
 
 bool AccessManager::QueryAccessDomainOfBusiness(const std::string &strUserName, const unsigned int uiBussinessType, std::string &strAccessDomainInfo)
 {
+    if (1 == uiBussinessType)
+    {
+        char sql[1024] = { 0 };
+        int size = sizeof(sql);
+        const char *sqlfmt = "select description from t_configuration_info where category = 'Business' and subcategory = 'ProductAddress'";
+        snprintf(sql, size, sqlfmt);
+
+        auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+        {
+            strAccessDomainInfo = strColumn;
+        };
+
+        std::list<boost::any> ResultList;
+        if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+        {
+            LOG_ERROR_RLD("Query access domain of business exec sql failed, sql is " << sql);
+            return false;
+        }
+
+        return true;
+    }
+
     char sql[1024] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select a.access_domain from t_access_user_business_info a , t_user_info b where a.userid = b.userid"
