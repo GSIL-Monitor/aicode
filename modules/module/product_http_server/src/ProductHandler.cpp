@@ -586,7 +586,8 @@ bool ProductHandler::QueryProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("aliasname", qrypdtrt.pdt.strAliasName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("price", std::string(cPrice)));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", qrypdtrt.pdt.strExtend));
-    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pic", qrypdtrt.pdt.strPic));
+        
     blResult = true;
 
     return blResult;
@@ -682,6 +683,7 @@ bool ProductHandler::QueryAllProductHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
         jsProduct["aliasname"] = itBegin->strAliasName;
         jsProduct["price"] = std::string(cPrice);
         jsProduct["extend"] = itBegin->strExtend;
+        jsProduct["pic"] = itBegin->strPic;
 
         Json::Value jsPropertyList;
         for (auto itB1 = itBegin->pptList.begin(), itE1 = itBegin->pptList.end(); itB1 != itE1; ++itB1)
