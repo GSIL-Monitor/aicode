@@ -40,11 +40,12 @@ struct ProductInfo
     1: optional string strID;
     2: optional string strName;
     3: optional i32    iType;
-    4: optional string strAliasName;
-    5: optional double dlPrice;
-    6: optional string strPic;
-    7: optional string strExtend;
-    8: list<ProductProperty> pptList;
+    4: optional string strTypeName;
+    5: optional string strAliasName;
+    6: optional double dlPrice;
+    7: optional string strPic;
+    8: optional string strExtend;
+    9: list<ProductProperty> pptList;
 }
 
 struct OrderDetail

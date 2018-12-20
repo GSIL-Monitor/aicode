@@ -175,7 +175,7 @@ bool HttpMsgHandler::BlacklistHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap,
             LOG_INFO_RLD("Return msg is writed and result is " << blResult);
 
             ResultInfoMap.clear();
-            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", FAILED_CODE));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::DEVICE_LONGIN_REFUSED)));
             ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
             this_->WriteMsg(ResultInfoMap, writer, blResult);
         }

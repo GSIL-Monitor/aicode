@@ -35,6 +35,9 @@ const int ReturnInfo::DEVICE_DOMAIN_USED_DEV = 2000;               //…Ë±∏∂˛º∂”Ú√
 const int ReturnInfo::DEVICE_P2PID_USED_DEV = 2001;                //…Ë±∏P2PID“—±ª π”√
 const int ReturnInfo::DEVICE_DOMAINNAME_INVALID = 2002;            //…Ë±∏∂˛º∂”Ú√˚≤ªø…”√
 const int ReturnInfo::DEVICE_NOT_ADDED_BY_USER = 2003;             //…Ë±∏…–Œ¥±ª”√ªßÃÌº”
+
+const int ReturnInfo::DEVICE_LONGIN_REFUSED = 3320;          //…Ë±∏µ«¬Ω±ªæ‹æ¯
+
 //Œ¥ π”√£¨’ºŒª
 const int ReturnInfo::DEVICEID_NOT_EXISTED_DEV = 2998;             //…Ë±∏ID≤ª¥Ê‘⁄
 const int ReturnInfo::PASSWORD_INVALID_DEV = 2999;                 //…Ë±∏√‹¬Î≤ª’˝»∑

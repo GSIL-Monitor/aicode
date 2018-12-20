@@ -24,6 +24,7 @@ CREATE TABLE `t_product_info` (
   `pdtid` varchar(100) NOT NULL                      COMMENT '产品ID',
   `pdtname` varchar(200) NOT NULL                    COMMENT '产品名称',
   `typeinfo` int(11) NOT NULL DEFAULT '0'            COMMENT '产品类型',
+  `typename` varchar(200) NOT NULL DEFAULT ''        COMMENT '类型名称',
   `aliasname` varchar(200) DEFAULT ''                COMMENT '产品别名',
   `pdtprice` DOUBLE NOT NULL DEFAULT '0'             COMMENT '产品单价',
   `pic` varchar(300) DEFAULT ''                      COMMENT '产品图片http地址',

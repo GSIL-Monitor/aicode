@@ -279,10 +279,11 @@ void swap(ProductProperty &a, ProductProperty &b);
 std::ostream& operator<<(std::ostream& out, const ProductProperty& obj);
 
 typedef struct _ProductInfo__isset {
-  _ProductInfo__isset() : strID(false), strName(false), iType(false), strAliasName(false), dlPrice(false), strPic(false), strExtend(false), pptList(false) {}
+  _ProductInfo__isset() : strID(false), strName(false), iType(false), strTypeName(false), strAliasName(false), dlPrice(false), strPic(false), strExtend(false), pptList(false) {}
   bool strID :1;
   bool strName :1;
   bool iType :1;
+  bool strTypeName :1;
   bool strAliasName :1;
   bool dlPrice :1;
   bool strPic :1;
@@ -295,13 +296,14 @@ class ProductInfo : public virtual ::apache::thrift::TBase {
 
   ProductInfo(const ProductInfo&);
   ProductInfo& operator=(const ProductInfo&);
-  ProductInfo() : strID(), strName(), iType(0), strAliasName(), dlPrice(0), strPic(), strExtend() {
+  ProductInfo() : strID(), strName(), iType(0), strTypeName(), strAliasName(), dlPrice(0), strPic(), strExtend() {
   }
 
   virtual ~ProductInfo() throw();
   std::string strID;
   std::string strName;
   int32_t iType;
+  std::string strTypeName;
   std::string strAliasName;
   double dlPrice;
   std::string strPic;
@@ -315,6 +317,8 @@ class ProductInfo : public virtual ::apache::thrift::TBase {
   void __set_strName(const std::string& val);
 
   void __set_iType(const int32_t val);
+
+  void __set_strTypeName(const std::string& val);
 
   void __set_strAliasName(const std::string& val);
 
@@ -339,6 +343,10 @@ class ProductInfo : public virtual ::apache::thrift::TBase {
     if (__isset.iType != rhs.__isset.iType)
       return false;
     else if (__isset.iType && !(iType == rhs.iType))
+      return false;
+    if (__isset.strTypeName != rhs.__isset.strTypeName)
+      return false;
+    else if (__isset.strTypeName && !(strTypeName == rhs.strTypeName))
       return false;
     if (__isset.strAliasName != rhs.__isset.strAliasName)
       return false;

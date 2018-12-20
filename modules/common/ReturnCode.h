@@ -45,6 +45,7 @@ public:
     static const int DEVICE_P2PID_USED_DEV;              //设备P2PID已被使用
     static const int DEVICE_DOMAINNAME_INVALID;          //设备二级域名不可用
     static const int DEVICE_NOT_ADDED_BY_USER;           //设备尚未被用户添加
+    static const int DEVICE_LONGIN_REFUSED;           //设备登陆被拒绝
 
     //其他错误代码
     static const int SESSION_TIMEOUT;                    //会话超时

@@ -113,9 +113,10 @@ void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid
     BOOST_SCOPE_EXIT_END
 
     char sql[1024] = { 0 };
-    const char *sqlfmt = "insert into t_product_info (id, pdtid, pdtname, typeinfo, aliasname, pdtprice, pic, extend)"
+    const char *sqlfmt = "insert into t_product_info (id, pdtid, pdtname, typeinfo, typename, aliasname, pdtprice, pic, extend)"
         " values (uuid(), '%s', '%s', %d, '%s', %f, '%s', '%s')";
-    snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str(), pdt.strName.c_str(), pdt.iType, pdt.strAliasName.c_str(), pdt.dlPrice, pdt.strPic.c_str(), pdt.strExtend.c_str());
+    snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str(), pdt.strName.c_str(), pdt.iType, pdt.strTypeName.c_str(), pdt.strAliasName.c_str(), 
+        pdt.dlPrice, pdt.strPic.c_str(), pdt.strExtend.c_str());
 
     if (!m_pMysql->QueryExec(std::string(sql)))
     {
@@ -187,6 +188,12 @@ void ProductManager::ModifyProduct(ProductRTInfo& _return, const std::string& st
         blModified = true;
     }
 
+    if (!pdt.strTypeName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", typename = '%s'", pdt.strTypeName.c_str());
+        blModified = true;
+    }
+
     if (!pdt.strPic.empty())
     {
         len += snprintf(sql + len, size - len, ", pic = '%s'", pdt.strPic.c_str());
@@ -229,7 +236,7 @@ void ProductManager::QueryProduct(QueryProductRT& _return, const std::string& st
     BOOST_SCOPE_EXIT_END
 
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select pdtid, pdtname, typeinfo, aliasname, pdtprice, pic, extend from"
+    const char *sqlfmt = "select pdtid, pdtname, typeinfo, typename, aliasname, pdtprice, pic, extend from"
         " t_product_info where pdtid = '%s' and status = 0";
     snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str());
     
@@ -248,15 +255,18 @@ void ProductManager::QueryProduct(QueryProductRT& _return, const std::string& st
             pdt.__set_iType(boost::lexical_cast<int>(strColumn));            
             break;
         case 3:
+            pdt.__set_strTypeName(strColumn);
+            break;
+        case 4:
             pdt.__set_strAliasName(strColumn);            
             break;
-        case 4:            
+        case 5:            
             pdt.__set_dlPrice(boost::lexical_cast<double>(strColumn));            
             break;
-        case 5:
+        case 6:
             pdt.__set_strPic(strColumn);            
             break;
-        case 6:
+        case 7:
             pdt.__set_strExtend(strColumn);            
             break;
 
@@ -301,7 +311,7 @@ void ProductManager::QueryAllProduct(QueryAllProductRT& _return, const std::stri
     BOOST_SCOPE_EXIT_END
 
     char sql[1024] = { 0 };
-    const char *sqlfmt = "select pdtid, pdtname, typeinfo, aliasname, pdtprice, pic, extend from"
+    const char *sqlfmt = "select pdtid, pdtname, typeinfo, typename, aliasname, pdtprice, pic, extend from"
         " t_product_info where status = 0";
     snprintf(sql, sizeof(sql), sqlfmt);
 
@@ -321,15 +331,18 @@ void ProductManager::QueryAllProduct(QueryAllProductRT& _return, const std::stri
             pdt.__set_iType(boost::lexical_cast<int>(strColumn));
             break;
         case 3:
-            pdt.__set_strAliasName(strColumn);
+            pdt.__set_strTypeName(strColumn);
             break;
         case 4:
-            pdt.__set_dlPrice(boost::lexical_cast<double>(strColumn));
+            pdt.__set_strAliasName(strColumn);
             break;
         case 5:
-            pdt.__set_strPic(strColumn);
+            pdt.__set_dlPrice(boost::lexical_cast<double>(strColumn));
             break;
         case 6:
+            pdt.__set_strPic(strColumn);
+            break;
+        case 7:
             pdt.__set_strExtend(strColumn);
             pdtlist.push_back(pdt);
 

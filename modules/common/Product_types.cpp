@@ -579,6 +579,11 @@ void ProductInfo::__set_iType(const int32_t val) {
 __isset.iType = true;
 }
 
+void ProductInfo::__set_strTypeName(const std::string& val) {
+  this->strTypeName = val;
+__isset.strTypeName = true;
+}
+
 void ProductInfo::__set_strAliasName(const std::string& val) {
   this->strAliasName = val;
 __isset.strAliasName = true;
@@ -656,13 +661,21 @@ uint32_t ProductInfo::read(::apache::thrift::protocol::TProtocol* iprot) {
         break;
       case 4:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strTypeName);
+          this->__isset.strTypeName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->strAliasName);
           this->__isset.strAliasName = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->dlPrice);
           this->__isset.dlPrice = true;
@@ -670,7 +683,7 @@ uint32_t ProductInfo::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 7:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->strPic);
           this->__isset.strPic = true;
@@ -678,7 +691,7 @@ uint32_t ProductInfo::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
+      case 8:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->strExtend);
           this->__isset.strExtend = true;
@@ -686,7 +699,7 @@ uint32_t ProductInfo::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 8:
+      case 9:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->pptList.clear();
@@ -738,27 +751,32 @@ uint32_t ProductInfo::write(::apache::thrift::protocol::TProtocol* oprot) const 
     xfer += oprot->writeI32(this->iType);
     xfer += oprot->writeFieldEnd();
   }
+  if (this->__isset.strTypeName) {
+    xfer += oprot->writeFieldBegin("strTypeName", ::apache::thrift::protocol::T_STRING, 4);
+    xfer += oprot->writeString(this->strTypeName);
+    xfer += oprot->writeFieldEnd();
+  }
   if (this->__isset.strAliasName) {
-    xfer += oprot->writeFieldBegin("strAliasName", ::apache::thrift::protocol::T_STRING, 4);
+    xfer += oprot->writeFieldBegin("strAliasName", ::apache::thrift::protocol::T_STRING, 5);
     xfer += oprot->writeString(this->strAliasName);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.dlPrice) {
-    xfer += oprot->writeFieldBegin("dlPrice", ::apache::thrift::protocol::T_DOUBLE, 5);
+    xfer += oprot->writeFieldBegin("dlPrice", ::apache::thrift::protocol::T_DOUBLE, 6);
     xfer += oprot->writeDouble(this->dlPrice);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.strPic) {
-    xfer += oprot->writeFieldBegin("strPic", ::apache::thrift::protocol::T_STRING, 6);
+    xfer += oprot->writeFieldBegin("strPic", ::apache::thrift::protocol::T_STRING, 7);
     xfer += oprot->writeString(this->strPic);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.strExtend) {
-    xfer += oprot->writeFieldBegin("strExtend", ::apache::thrift::protocol::T_STRING, 7);
+    xfer += oprot->writeFieldBegin("strExtend", ::apache::thrift::protocol::T_STRING, 8);
     xfer += oprot->writeString(this->strExtend);
     xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldBegin("pptList", ::apache::thrift::protocol::T_LIST, 8);
+  xfer += oprot->writeFieldBegin("pptList", ::apache::thrift::protocol::T_LIST, 9);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->pptList.size()));
     std::vector<ProductProperty> ::const_iterator _iter11;
@@ -780,6 +798,7 @@ void swap(ProductInfo &a, ProductInfo &b) {
   swap(a.strID, b.strID);
   swap(a.strName, b.strName);
   swap(a.iType, b.iType);
+  swap(a.strTypeName, b.strTypeName);
   swap(a.strAliasName, b.strAliasName);
   swap(a.dlPrice, b.dlPrice);
   swap(a.strPic, b.strPic);
@@ -792,6 +811,7 @@ ProductInfo::ProductInfo(const ProductInfo& other12) {
   strID = other12.strID;
   strName = other12.strName;
   iType = other12.iType;
+  strTypeName = other12.strTypeName;
   strAliasName = other12.strAliasName;
   dlPrice = other12.dlPrice;
   strPic = other12.strPic;
@@ -803,6 +823,7 @@ ProductInfo& ProductInfo::operator=(const ProductInfo& other13) {
   strID = other13.strID;
   strName = other13.strName;
   iType = other13.iType;
+  strTypeName = other13.strTypeName;
   strAliasName = other13.strAliasName;
   dlPrice = other13.dlPrice;
   strPic = other13.strPic;
@@ -817,6 +838,7 @@ void ProductInfo::printTo(std::ostream& out) const {
   out << "strID="; (__isset.strID ? (out << to_string(strID)) : (out << "<null>"));
   out << ", " << "strName="; (__isset.strName ? (out << to_string(strName)) : (out << "<null>"));
   out << ", " << "iType="; (__isset.iType ? (out << to_string(iType)) : (out << "<null>"));
+  out << ", " << "strTypeName="; (__isset.strTypeName ? (out << to_string(strTypeName)) : (out << "<null>"));
   out << ", " << "strAliasName="; (__isset.strAliasName ? (out << to_string(strAliasName)) : (out << "<null>"));
   out << ", " << "dlPrice="; (__isset.dlPrice ? (out << to_string(dlPrice)) : (out << "<null>"));
   out << ", " << "strPic="; (__isset.strPic ? (out << to_string(strPic)) : (out << "<null>"));

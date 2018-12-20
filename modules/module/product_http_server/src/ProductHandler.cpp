@@ -174,6 +174,14 @@ bool ProductHandler::AddProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
         return blResult;
     }
 
+    itFind = pMsgInfoMap->find("type_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type name not found.");
+        return blResult;
+    }
+    const std::string strTypeName = itFind->second;
+
     itFind = pMsgInfoMap->find("price");
     if (pMsgInfoMap->end() == itFind)
     {
@@ -211,7 +219,7 @@ bool ProductHandler::AddProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Add product info received and session id is " << strSid << " and user id is " << strUserID << " and product name is " << strProductName 
-        << " and type is " << iType << " and price id is " << dlPrice
+        << " and type is " << iType << " and type name is " << strTypeName << " and price id is " << dlPrice
         << " and extend is " << strExtend << " and pic is " << strPic << " and alias name is " << strAliasName);
         
     ProductClient pclient;
@@ -228,6 +236,7 @@ bool ProductHandler::AddProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap
     ProductInfo pdt;
     pdt.__set_dlPrice(dlPrice);
     pdt.__set_iType(iType);
+    pdt.__set_strTypeName(strTypeName);
     pdt.__set_strAliasName(strAliasName);
     pdt.__set_strExtend(strExtend);
     pdt.__set_strName(strProductName);
@@ -399,6 +408,13 @@ bool ProductHandler::ModifyProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
             return blResult;
         }
     }
+
+    std::string strTypeName;
+    itFind = pMsgInfoMap->find("type_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strTypeName = itFind->second;
+    }
     
     double dlPrice = 0xFFFFFFFF;
     itFind = pMsgInfoMap->find("price");
@@ -435,7 +451,7 @@ bool ProductHandler::ModifyProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
     LOG_INFO_RLD("Modify product info received and session id is " << strSid << " and user id is " << strUserID << " and product name is " << strProductName
-        << " and type is " << iType << " and price id is " << dlPrice
+        << " and type is " << iType << " and type name is " << strTypeName << " and price id is " << dlPrice
         << " and extend is " << strExtend << " and pic is " << strPic << " and alias name is " << strAliasName);
 
     ProductClient pclient;
@@ -452,6 +468,7 @@ bool ProductHandler::ModifyProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     ProductInfo pdt;
     pdt.__set_dlPrice(dlPrice);
     pdt.__set_iType(iType);
+    pdt.__set_strTypeName(strTypeName);
     pdt.__set_strAliasName(strAliasName);
     pdt.__set_strExtend(strExtend);
     pdt.__set_strName(strProductName);
@@ -583,6 +600,7 @@ bool ProductHandler::QueryProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoM
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pdtid", qrypdtrt.pdt.strID));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("name", qrypdtrt.pdt.strName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", boost::lexical_cast<std::string>(qrypdtrt.pdt.iType)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type_name", qrypdtrt.pdt.strTypeName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("aliasname", qrypdtrt.pdt.strAliasName));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("price", std::string(cPrice)));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", qrypdtrt.pdt.strExtend));
@@ -680,6 +698,7 @@ bool ProductHandler::QueryAllProductHandler(boost::shared_ptr<MsgInfoMap> pMsgIn
         jsProduct["pdtid"] = itBegin->strID;
         jsProduct["name"] = itBegin->strName;
         jsProduct["type"] = boost::lexical_cast<std::string>(itBegin->iType);
+        jsProduct["type_name"] = itBegin->strTypeName;
         jsProduct["aliasname"] = itBegin->strAliasName;
         jsProduct["price"] = std::string(cPrice);
         jsProduct["extend"] = itBegin->strExtend;
