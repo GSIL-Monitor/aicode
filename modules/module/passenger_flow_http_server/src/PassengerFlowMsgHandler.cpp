@@ -8787,7 +8787,18 @@ bool PassengerFlowMsgHandler::UserBindRoleHandler(boost::shared_ptr<MsgInfoMap> 
 
 bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddAreaReq AddAreaReq;
         AddAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddAreaReq_T;
@@ -8800,26 +8811,24 @@ bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std:
         AddAreaReq.m_areaInfo.m_strParentAreaID = dmi.m_strParentDomainID;
         AddAreaReq.m_areaInfo.m_uiLevel = dmi.m_uiLevel;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddAreaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddAreaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create domain req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddAreaRsp AddAreaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddAreaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddAreaRsp))
         {
             LOG_ERROR_RLD("Create domain rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         dmi.m_strDomainID = AddAreaRsp.m_strAreaID;
@@ -8829,20 +8838,36 @@ bool PassengerFlowMsgHandler::CreateDomain(const std::string &strSid, const std:
         LOG_INFO_RLD("Create domain and domain id is " << dmi.m_strDomainID << " and return code is " << AddAreaRsp.m_iRetcode <<
             " and return msg is " << AddAreaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::RemoveDomain(const std::string &strSid, const std::string &strUserID, const std::string &strDomainID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteAreaReq DelAreaReq;
         DelAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteAreaReq_T;
@@ -8852,26 +8877,24 @@ bool PassengerFlowMsgHandler::RemoveDomain(const std::string &strSid, const std:
         DelAreaReq.m_strUserID = strUserID;
         DelAreaReq.m_strAreaID = strDomainID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelAreaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelAreaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Remove domain req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteAreaRsp DelAreaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelAreaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelAreaRsp))
         {
             LOG_ERROR_RLD("Remove domain rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelAreaRsp.m_iRetcode;
@@ -8880,20 +8903,36 @@ bool PassengerFlowMsgHandler::RemoveDomain(const std::string &strSid, const std:
             " and return code is " << DelAreaRsp.m_iRetcode <<
             " and return msg is " << DelAreaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyDomain(const std::string &strSid, const std::string &strUserID, DomainInfo &dmi)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyAreaReq ModifyAreaReq;
         ModifyAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyAreaReq_T;
@@ -8905,26 +8944,24 @@ bool PassengerFlowMsgHandler::ModifyDomain(const std::string &strSid, const std:
         ModifyAreaReq.m_areaInfo.m_strExtend = dmi.m_strExtend;
         ModifyAreaReq.m_areaInfo.m_strAreaID = dmi.m_strDomainID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyAreaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyAreaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify domain req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyAreaRsp ModifyAreaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyAreaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModifyAreaRsp))
         {
             LOG_ERROR_RLD("Modify domain rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModifyAreaRsp.m_iRetcode;
@@ -8932,20 +8969,36 @@ bool PassengerFlowMsgHandler::ModifyDomain(const std::string &strSid, const std:
         LOG_INFO_RLD("Modify domain and domain id is " << dmi.m_strDomainID << " and return code is " << ModifyAreaRsp.m_iRetcode <<
             " and return msg is " << ModifyAreaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryDomain(const std::string &strSid, const std::string &strUserID, const std::string &strDomainID, DomainInfo &dmi)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAreaInfoReq QueryAreaReq;
         QueryAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAreaInfoReq_T;
@@ -8954,27 +9007,25 @@ bool PassengerFlowMsgHandler::QueryDomain(const std::string &strSid, const std::
 
         QueryAreaReq.m_strUserID = strUserID;
         QueryAreaReq.m_strAreaID = strDomainID;
-        
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAreaReq, strSerializeOutPut))
+
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAreaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query domain req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAreaInfoRsp QueryAreaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAreaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAreaRsp))
         {
             LOG_ERROR_RLD("Query domain rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         dmi.m_strDomainID = QueryAreaRsp.m_areaInfo.m_strAreaID;
@@ -8988,20 +9039,36 @@ bool PassengerFlowMsgHandler::QueryDomain(const std::string &strSid, const std::
         LOG_INFO_RLD("Query domain and domain id is " << dmi.m_strDomainID << " and return code is " << QueryAreaRsp.m_iRetcode <<
             " and return msg is " << QueryAreaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllDomain(const std::string &strSid, const std::string &strUserID, std::list<DomainInfo> &dmilist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllAreaReq QueryAllAreaReq;
         QueryAllAreaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllAreaReq_T;
@@ -9009,27 +9076,25 @@ bool PassengerFlowMsgHandler::QueryAllDomain(const std::string &strSid, const st
         QueryAllAreaReq.m_strSID = strSid;
 
         QueryAllAreaReq.m_strUserID = strUserID;
-        
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllAreaReq, strSerializeOutPut))
+
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllAreaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all domain req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllAreaRsp QueryAllAreaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllAreaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllAreaRsp))
         {
             LOG_ERROR_RLD("Query all domain rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         auto itBegin = QueryAllAreaRsp.m_areaList.begin();
@@ -9053,20 +9118,36 @@ bool PassengerFlowMsgHandler::QueryAllDomain(const std::string &strSid, const st
         LOG_INFO_RLD("Query all domain and return code is " << QueryAllAreaRsp.m_iRetcode <<
             " and return msg is " << QueryAllAreaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         std::string strCurrentTime = boost::posix_time::to_iso_extended_string(boost::posix_time::second_clock::local_time());
         std::string::size_type pos = strCurrentTime.find('T');
@@ -9088,26 +9169,24 @@ bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::str
         AddStoreReq.m_storeInfo.m_area.m_strAreaID = store.m_strDomainID;
         AddStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Add store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddStoreRsp AddStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddStoreRsp))
         {
             LOG_ERROR_RLD("Add store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         store.m_strStoreID = AddStoreRsp.m_strStoreID;
@@ -9116,20 +9195,36 @@ bool PassengerFlowMsgHandler::AddStore(const std::string &strSid, const std::str
         LOG_INFO_RLD("Add store and store id is " << store.m_strStoreID << " and return code is " << AddStoreRsp.m_iRetcode <<
             " and return msg is " << AddStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DelStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteStoreReq DelStoreReq;
         DelStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreReq_T;
@@ -9139,26 +9234,24 @@ bool PassengerFlowMsgHandler::DelStore(const std::string &strSid, const std::str
         DelStoreReq.m_strUserID = strUserID;
         DelStoreReq.m_strStoreID = strStoreID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteStoreRsp DelStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelStoreRsp))
         {
             LOG_ERROR_RLD("Delete store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelStoreRsp.m_iRetcode;
@@ -9167,20 +9260,36 @@ bool PassengerFlowMsgHandler::DelStore(const std::string &strSid, const std::str
             " and return code is " << DelStoreRsp.m_iRetcode <<
             " and return msg is " << DelStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyStoreReq ModStoreReq;
         ModStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreReq_T;
@@ -9199,26 +9308,24 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
         ModStoreReq.m_storeInfo.m_area.m_strAreaID = store.m_strDomainID;
         ModStoreReq.m_storeInfo.m_uiOpenState = store.m_uiOpenState;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyStoreRsp ModStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModStoreRsp))
         {
             LOG_ERROR_RLD("Modify store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModStoreRsp.m_iRetcode;
@@ -9226,21 +9333,37 @@ bool PassengerFlowMsgHandler::ModifyStore(const std::string &strSid, const std::
         LOG_INFO_RLD("Modify store and store id is " << store.m_strStoreID << " and return code is " << ModStoreRsp.m_iRetcode <<
             " and return msg is " << ModStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist,
     std::list<DomainInfo> &dmilist, std::list<std::string> &strPhoneList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryStoreInfoReq QueryStoreReq;
         QueryStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreInfoReq_T;
@@ -9249,27 +9372,25 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
 
         QueryStoreReq.m_strUserID = strUserID;
         QueryStoreReq.m_strStoreID = store.m_strStoreID;
-        
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryStoreReq, strSerializeOutPut))
+
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryStoreInfoRsp QueryStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryStoreRsp))
         {
             LOG_ERROR_RLD("Query store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         store.m_strAddress = QueryStoreRsp.m_storeInfo.m_strAddress;
@@ -9323,111 +9444,20 @@ bool PassengerFlowMsgHandler::QueryStore(const std::string &strSid, const std::s
         LOG_INFO_RLD("Query store and store id is " << store.m_strStoreID << " and return code is " << QueryStoreRsp.m_iRetcode <<
             " and return msg is " << QueryStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
-
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
-}
-
-
-bool PassengerFlowMsgHandler::QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
-    const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist)
-{
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
     {
-        PassengerFlowProtoHandler::QueryAllStoreReq QueryAllStoreReq;
-        QueryAllStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreReq_T;
-        QueryAllStoreReq.m_uiMsgSeq = 1;
-        QueryAllStoreReq.m_strSID = strSid;
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-        QueryAllStoreReq.m_strUserID = strUserID;
-        QueryAllStoreReq.m_uiBeginIndex = uiBeginIndex;
-        QueryAllStoreReq.m_strAreaID = strDomainID;
-        QueryAllStoreReq.m_uiOpenState = uiOpenState;
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllStoreReq, strSerializeOutPut))
-        {
-            LOG_ERROR_RLD("Query all store req serialize failed.");
-            return CommMsgHandler::FAILED;
-        }
-
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
-    };
-
-    int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
-    {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
-        PassengerFlowProtoHandler::QueryAllStoreRsp QueryAllStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllStoreRsp))
-        {
-            LOG_ERROR_RLD("Query all store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
-        }
-
-        auto itBegin = QueryAllStoreRsp.m_storeList.begin();
-        auto itEnd = QueryAllStoreRsp.m_storeList.end();
-        while (itBegin != itEnd)
-        {
-            StoreAndEntranceInfo store;
-            store.stinfo.m_strStoreID = itBegin->m_strStoreID;
-            store.stinfo.m_strStoreName = itBegin->m_strStoreName;
-            store.stinfo.m_uiOpenState = itBegin->m_uiOpenState;
-            store.stinfo.m_strAddress = itBegin->m_strAddress;
-            store.stinfo.m_strDomainID = itBegin->m_area.m_strAreaID;
-            store.stinfo.m_strDomainName = itBegin->m_area.m_strAreaName;
-
-            store.stinfo.m_strPhoneList.swap(itBegin->m_strTelephoneList);
-
-            for (auto itB = itBegin->m_entranceList.begin(), itE = itBegin->m_entranceList.end(); itB != itE; ++itB)
-            {
-                EntranceInfo einfo;
-                einfo.m_strID = itB->m_strEntranceID;
-                einfo.m_strName = itB->m_strEntranceName;
-                einfo.m_strPicture = itB->m_strPicture;
-
-                auto itB2 = itB->m_strDeviceIDList.begin();
-                auto itE2 = itB->m_strDeviceIDList.end();
-                while (itB2 != itE2)
-                {
-                    einfo.m_DeviceIDList.push_back(*itB2);
-                    ++itB2;
-                }
-
-                store.etinfolist.push_back(std::move(einfo));
-            }
-
-            storelist.push_back(std::move(store));
-
-            LOG_INFO_RLD("Query all store info received and store id is " << itBegin->m_strStoreID <<
-                " and store name is " << itBegin->m_strStoreName << " and open state is " << itBegin->m_uiOpenState << " and address is " <<
-                itBegin->m_strAddress << " and entrance list size is " << itBegin->m_entranceList.size());
-
-            ++itBegin;
-        }
-
-        iRet = QueryAllStoreRsp.m_iRetcode;
-
-        LOG_INFO_RLD("Query all store and user id is " << strUserID << " and begin index is " << uiBeginIndex << 
-            " and return code is " << QueryAllStoreRsp.m_iRetcode <<
-            " and return msg is " << QueryAllStoreRsp.m_strRetMsg);
-
-        return CommMsgHandler::SUCCEED;
-    };
-
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
-
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllStoreT(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex,
@@ -9435,12 +9465,12 @@ bool PassengerFlowMsgHandler::QueryAllStoreT(const std::string &strSid, const st
 {
     TransClient tc;
     TransClient::Param pam;
-    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000 * 1000;
-    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) + 15;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
     pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
     if (!tc.Init(pam))
     {
-        LOG_ERROR_RLD("Query all store and trans client init failed and user id is " << strUserID);
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
         return false;
     }
 
@@ -9541,7 +9571,18 @@ bool PassengerFlowMsgHandler::QueryAllStoreT(const std::string &strSid, const st
 
 bool PassengerFlowMsgHandler::AddEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, EntranceInfo &einfo)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddEntranceReq AddEntranceReq;
         AddEntranceReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEntranceReq_T;
@@ -9555,26 +9596,24 @@ bool PassengerFlowMsgHandler::AddEntrance(const std::string &strSid, const std::
         AddEntranceReq.m_entranceInfo.m_strDeviceIDList.swap(einfo.m_DeviceIDList);
         AddEntranceReq.m_entranceInfo.m_strPicture = einfo.m_strPicture;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddEntranceReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEntranceReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Add entrance req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddEntranceRsp AddEntranceRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEntranceRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddEntranceRsp))
         {
             LOG_ERROR_RLD("Add entrance rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         einfo.m_strID = AddEntranceRsp.m_strEntranceID;
@@ -9584,20 +9623,36 @@ bool PassengerFlowMsgHandler::AddEntrance(const std::string &strSid, const std::
             " and return code is " << AddEntranceRsp.m_iRetcode <<
             " and return msg is " << AddEntranceRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DelEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strEntranceID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteEntranceReq DelEntranceReq;
         DelEntranceReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEntranceReq_T;
@@ -9608,26 +9663,24 @@ bool PassengerFlowMsgHandler::DelEntrance(const std::string &strSid, const std::
         DelEntranceReq.m_strStoreID = strStoreID;
         DelEntranceReq.m_strEntranceID = strEntranceID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelEntranceReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEntranceReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete entrance req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteEntranceRsp DelEntranceRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEntranceRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelEntranceRsp))
         {
             LOG_ERROR_RLD("Delete entrance rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelEntranceRsp.m_iRetcode;
@@ -9637,21 +9690,37 @@ bool PassengerFlowMsgHandler::DelEntrance(const std::string &strSid, const std::
             " and return code is " << DelEntranceRsp.m_iRetcode <<
             " and return msg is " << DelEntranceRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyEntrance(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const std::string &strEntranceID, const std::string &strEntranceName, const std::string &strPicture, EntranceInfo &einfoadd, EntranceInfo &einfodel)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyEntranceReq ModEntranceReq;
         ModEntranceReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEntranceReq_T;
@@ -9666,26 +9735,24 @@ bool PassengerFlowMsgHandler::ModifyEntrance(const std::string &strSid, const st
         ModEntranceReq.m_strDeletedDeviceIDList.swap(einfodel.m_DeviceIDList);
         ModEntranceReq.m_entranceInfo.m_strPicture = strPicture;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModEntranceReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEntranceReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify entrance req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyEntranceRsp ModEntranceRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEntranceRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModEntranceRsp))
         {
             LOG_ERROR_RLD("Modify entrance rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return true;
         }
 
         iRet = ModEntranceRsp.m_iRetcode;
@@ -9694,20 +9761,36 @@ bool PassengerFlowMsgHandler::ModifyEntrance(const std::string &strSid, const st
             " and return code is " << ModEntranceRsp.m_iRetcode <<
             " and return msg is " << ModEntranceRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::UploadPassengerFlow(const std::string &strSid, const std::string &strDevID, const std::list<PassengerFlowInfo> &pfinfolist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and device id is " << strDevID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ReportCustomerFlowDataReq UploadPassengerFlowReq;
         UploadPassengerFlowReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportCustomerFlowDataReq_T;
@@ -9730,26 +9813,24 @@ bool PassengerFlowMsgHandler::UploadPassengerFlow(const std::string &strSid, con
             ++itBegin;
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(UploadPassengerFlowReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(UploadPassengerFlowReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Upload passenger flow req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ReportCustomerFlowDataRsp UploadPassengerFlowRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UploadPassengerFlowRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, UploadPassengerFlowRsp))
         {
             LOG_ERROR_RLD("Upload passenger flow rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = UploadPassengerFlowRsp.m_iRetcode;
@@ -9758,21 +9839,37 @@ bool PassengerFlowMsgHandler::UploadPassengerFlow(const std::string &strSid, con
             " and return code is " << UploadPassengerFlowRsp.m_iRetcode <<
             " and return msg is " << UploadPassengerFlowRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::BindEntranceDevice(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const std::string &strEntranceID, const std::string &strDevID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddEntranceDeviceReq AddEntranceDevReq;
         AddEntranceDevReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEntranceDeviceReq_T;
@@ -9784,26 +9881,24 @@ bool PassengerFlowMsgHandler::BindEntranceDevice(const std::string &strSid, cons
         AddEntranceDevReq.m_strDeviceID = strDevID;
         AddEntranceDevReq.m_strEntranceID = strEntranceID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddEntranceDevReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEntranceDevReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Bind entrance device req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddEntranceDeviceRsp AddEntranceDevRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEntranceDevRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddEntranceDevRsp))
         {
             LOG_ERROR_RLD("Bind entrance device rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddEntranceDevRsp.m_iRetcode;
@@ -9812,21 +9907,37 @@ bool PassengerFlowMsgHandler::BindEntranceDevice(const std::string &strSid, cons
             " and return code is " << AddEntranceDevRsp.m_iRetcode <<
             " and return msg is " << AddEntranceDevRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::UnbindEntranceDevice(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const std::string &strEntranceID, const std::string &strDevID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteEntranceDeviceReq DelEntranceDevReq;
         DelEntranceDevReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEntranceDeviceReq_T;
@@ -9838,26 +9949,24 @@ bool PassengerFlowMsgHandler::UnbindEntranceDevice(const std::string &strSid, co
         DelEntranceDevReq.m_strDeviceID = strDevID;
         DelEntranceDevReq.m_strEntranceID = strEntranceID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelEntranceDevReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEntranceDevReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Unbind entrance device req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return false;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteEntranceDeviceRsp DelEntranceDevRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEntranceDevRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelEntranceDevRsp))
         {
             LOG_ERROR_RLD("Unbind entrance device rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelEntranceDevRsp.m_iRetcode;
@@ -9866,21 +9975,37 @@ bool PassengerFlowMsgHandler::UnbindEntranceDevice(const std::string &strSid, co
             " and return code is " << DelEntranceDevRsp.m_iRetcode <<
             " and return msg is " << DelEntranceDevRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ImportPosData(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const double dDealAmount, const unsigned int uiOrderAmount, const unsigned int uiGoodsAmount, const std::string &strDealDate)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ImportPOSDataReq ImportPosDataReq;
         ImportPosDataReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ImportPOSDataReq_T;
@@ -9894,26 +10019,24 @@ bool PassengerFlowMsgHandler::ImportPosData(const std::string &strSid, const std
         ImportPosDataReq.m_uiGoodsAmount = uiGoodsAmount;
         ImportPosDataReq.m_uiOrderAmount = uiOrderAmount;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ImportPosDataReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ImportPosDataReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Import pos data req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ImportPOSDataRsp ImportPosDataRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ImportPosDataRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ImportPosDataRsp))
         {
             LOG_ERROR_RLD("Import pos data rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ImportPosDataRsp.m_iRetcode;
@@ -9922,21 +10045,37 @@ bool PassengerFlowMsgHandler::ImportPosData(const std::string &strSid, const std
             " and return code is " << ImportPosDataRsp.m_iRetcode <<
             " and return msg is " << ImportPosDataRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryPassengerFlowReport(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiTimePrecision, std::string &strChartData)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryCustomerFlowStatisticReq QueryCustomerFlowReq;
         QueryCustomerFlowReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCustomerFlowStatisticReq_T;
@@ -9949,26 +10088,24 @@ bool PassengerFlowMsgHandler::QueryPassengerFlowReport(const std::string &strSid
         QueryCustomerFlowReq.m_strEndDate = strEndDate;
         QueryCustomerFlowReq.m_uiTimePrecision = uiTimePrecision;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryCustomerFlowReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryCustomerFlowReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query passenger flow report req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryCustomerFlowStatisticRsp QueryCustomerFlowRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryCustomerFlowRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryCustomerFlowRsp))
         {
             LOG_ERROR_RLD("Query passenger flow report rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QueryCustomerFlowRsp.m_iRetcode;
@@ -9980,20 +10117,36 @@ bool PassengerFlowMsgHandler::QueryPassengerFlowReport(const std::string &strSid
             " and return code is " << QueryCustomerFlowRsp.m_iRetcode <<
             " and return msg is " << QueryCustomerFlowRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ReportEvent(const std::string &strSid, EventInfo &eventinfo)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddEventReq AddEventReq;
         AddEventReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEventReq_T;
@@ -10009,26 +10162,24 @@ bool PassengerFlowMsgHandler::ReportEvent(const std::string &strSid, EventInfo &
         AddEventReq.m_eventInfo.m_strSubmitDate = eventinfo.m_strSubmitDate;
         AddEventReq.m_eventInfo.m_uiTypeList.swap(eventinfo.m_uiEventTypeList);
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddEventReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEventReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Report event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddEventRsp AddEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEventRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddEventRsp))
         {
             LOG_ERROR_RLD("Report event rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddEventRsp.m_iRetcode;
@@ -10039,20 +10190,36 @@ bool PassengerFlowMsgHandler::ReportEvent(const std::string &strSid, EventInfo &
             " and return code is " << AddEventRsp.m_iRetcode <<
             " and return msg is " << AddEventRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteEvent(const std::string &strSid, const std::string &strUserID, const std::string &strEventID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteEventReq DelEventReq;
         DelEventReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEventReq_T;
@@ -10062,27 +10229,24 @@ bool PassengerFlowMsgHandler::DeleteEvent(const std::string &strSid, const std::
         DelEventReq.m_strUserID = strUserID;
         DelEventReq.m_strEventID = strEventID;
         
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelEventReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEventReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteEventRsp DelEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEventRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelEventRsp))
         {
             LOG_ERROR_RLD("Delete event rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelEventRsp.m_iRetcode;
@@ -10091,20 +10255,36 @@ bool PassengerFlowMsgHandler::DeleteEvent(const std::string &strSid, const std::
             " and return code is " << DelEventRsp.m_iRetcode <<
             " and return msg is " << DelEventRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyEvent(const std::string &strSid, EventInfo &eventinfo)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyEventReq ModEventReq;
         ModEventReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEventReq_T;
@@ -10124,26 +10304,24 @@ bool PassengerFlowMsgHandler::ModifyEvent(const std::string &strSid, EventInfo &
         ModEventReq.m_eventInfo.m_strProcessState = eventinfo.m_strProcessState;
         ModEventReq.m_eventInfo.m_uiViewState = boost::lexical_cast<unsigned int>(eventinfo.m_strViewState);
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModEventReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEventReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyEventRsp ModEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEventRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModEventRsp))
         {
             LOG_ERROR_RLD("Modify event rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModEventRsp.m_iRetcode;
@@ -10152,20 +10330,36 @@ bool PassengerFlowMsgHandler::ModifyEvent(const std::string &strSid, EventInfo &
             " and return code is " << ModEventRsp.m_iRetcode <<
             " and return msg is " << ModEventRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &eventinfo)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryEventInfoReq QueryEventReq;
         QueryEventReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryEventInfoReq_T;
@@ -10175,26 +10369,24 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
         QueryEventReq.m_strUserID = eventinfo.m_strUserID;
         QueryEventReq.m_strEventID = eventinfo.m_strEventID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEventReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEventReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryEventInfoRsp QueryEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEventRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryEventRsp))
         {
             LOG_ERROR_RLD("Query event rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         eventinfo.m_strCreateDate = QueryEventRsp.m_eventInfo.m_strCreateDate;
@@ -10219,22 +10411,38 @@ bool PassengerFlowMsgHandler::QueryEvent(const std::string &strSid, EventInfo &e
             " and return code is " << QueryEventRsp.m_iRetcode <<
             " and return msg is " << QueryEventRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std::string &strUserID, const unsigned int uiRelation, const unsigned int uiBeginIndex,
     const unsigned int uiProcessState, const unsigned int uiEventType,
     const std::string &strBeginDate, const std::string &strEndDate, std::list<EventInfo> &eventinfoList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllEventReq QueryAllEventReq;
         QueryAllEventReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEventReq_T;
@@ -10250,26 +10458,24 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
         QueryAllEventReq.m_uiRelation = uiRelation;
         QueryAllEventReq.m_uiEventType = uiEventType;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllEventReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllEventReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllEventRsp QueryAllEventRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllEventRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllEventRsp))
         {
             LOG_ERROR_RLD("Query all event rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         auto itBegin = QueryAllEventRsp.m_eventList.begin();
@@ -10305,20 +10511,36 @@ bool PassengerFlowMsgHandler::QueryAllEvent(const std::string &strSid, const std
             " and return code is " << QueryAllEventRsp.m_iRetcode <<
             " and return msg is " << QueryAllEventRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateGuardStorePlan(const std::string &strSid, Plan &plan)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddSmartGuardStoreReq AddPlanReq;
         AddPlanReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddSmartGuardStoreReq_T;
@@ -10335,26 +10557,24 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlan(const std::string &strSid, Pl
         AddPlanReq.m_smartGuardStore.m_strPlanName = plan.m_strPlanName;
         AddPlanReq.m_smartGuardStore.m_strStoreID = plan.m_strStoreID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddPlanReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddPlanReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create guard plan req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddSmartGuardStoreRsp AddPlanRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddPlanRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddPlanRsp))
         {
             LOG_ERROR_RLD("Create guard plan rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddPlanRsp.m_iRetcode;
@@ -10365,20 +10585,36 @@ bool PassengerFlowMsgHandler::CreateGuardStorePlan(const std::string &strSid, Pl
             " and return code is " << AddPlanRsp.m_iRetcode <<
             " and return msg is " << AddPlanRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteGuardStorePlan(const std::string &strSid, const std::string &strUserID, const std::string &strPlanID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteSmartGuardStoreReq DelPlanReq;
         DelPlanReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteSmartGuardStoreReq_T;
@@ -10388,27 +10624,24 @@ bool PassengerFlowMsgHandler::DeleteGuardStorePlan(const std::string &strSid, co
         DelPlanReq.m_strUserID = strUserID;
         DelPlanReq.m_strPlanID = strPlanID;
 
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelPlanReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelPlanReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete plan req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteSmartGuardStoreRsp DelPlanRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelPlanRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelPlanRsp))
         {
             LOG_ERROR_RLD("Delete plan rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelPlanRsp.m_iRetcode;
@@ -10417,20 +10650,36 @@ bool PassengerFlowMsgHandler::DeleteGuardStorePlan(const std::string &strSid, co
             " and return code is " << DelPlanRsp.m_iRetcode <<
             " and return msg is " << DelPlanRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyGuardStorePlan(const std::string &strSid, Plan &plan)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifySmartGuardStoreReq ModPlanReq;
         ModPlanReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifySmartGuardStoreReq_T;
@@ -10448,26 +10697,24 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlan(const std::string &strSid, Pl
         ModPlanReq.m_smartGuardStore.m_strPlanID = plan.m_strPlanID;
         ModPlanReq.m_smartGuardStore.m_strStoreID = plan.m_strStoreID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModPlanReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModPlanReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify guard plan req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifySmartGuardStoreRsp ModPlanRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModPlanRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModPlanRsp))
         {
             LOG_ERROR_RLD("Modify guard plan rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModPlanRsp.m_iRetcode;
@@ -10476,20 +10723,36 @@ bool PassengerFlowMsgHandler::ModifyGuardStorePlan(const std::string &strSid, Pl
             " and return code is " << ModPlanRsp.m_iRetcode <<
             " and return msg is " << ModPlanRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryGuardStorePlan(const std::string &strSid, Plan &plan)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QuerySmartGuardStoreInfoReq QueryPlanReq;
         QueryPlanReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySmartGuardStoreInfoReq_T;
@@ -10499,26 +10762,24 @@ bool PassengerFlowMsgHandler::QueryGuardStorePlan(const std::string &strSid, Pla
         QueryPlanReq.m_strUserID = plan.m_strUserID;
         QueryPlanReq.m_strPlanID = plan.m_strPlanID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPlanReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPlanReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query plan req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QuerySmartGuardStoreInfoRsp QueryPlanRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryPlanRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryPlanRsp))
         {
             LOG_ERROR_RLD("Query plan rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         plan.m_strBeginTime = QueryPlanRsp.m_smartGuardStore.m_strBeginTime;
@@ -10538,20 +10799,36 @@ bool PassengerFlowMsgHandler::QueryGuardStorePlan(const std::string &strSid, Pla
             " and return code is " << QueryPlanRsp.m_iRetcode <<
             " and return msg is " << QueryPlanRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllGuardStorePlan(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, std::list<Plan> &planlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllSmartGuardStoreReq QueryAllPlanReq;
         QueryAllPlanReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllSmartGuardStoreReq_T;
@@ -10562,26 +10839,24 @@ bool PassengerFlowMsgHandler::QueryAllGuardStorePlan(const std::string &strSid, 
         QueryAllPlanReq.m_strDeviceID = strDevID;
         QueryAllPlanReq.m_uiBeginIndex = 0;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllPlanReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllPlanReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all plan req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllSmartGuardStoreRsp QueryAllPlanRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllPlanRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllPlanRsp))
         {
             LOG_ERROR_RLD("Query all plan rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         auto itBegin = QueryAllPlanRsp.m_planList.begin();
@@ -10611,21 +10886,37 @@ bool PassengerFlowMsgHandler::QueryAllGuardStorePlan(const std::string &strSid, 
             " and return code is " << QueryAllPlanRsp.m_iRetcode <<
             " and return msg is " << QueryAllPlanRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 
 }
 
 bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Patrol &pat)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddRegularPatrolReq AddPatrolReq;
         AddPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRegularPatrolReq_T;
@@ -10656,26 +10947,24 @@ bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Pat
             AddPatrolReq.m_regularPatrol.m_storeEntranceList.push_back(std::move(pse));
         }
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddPatrolReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddPatrolReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create regular patrol req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddRegularPatrolRsp AddPatrolRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddPatrolRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddPatrolRsp))
         {
             LOG_ERROR_RLD("Create regular patrol rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddPatrolRsp.m_iRetcode;
@@ -10686,20 +10975,36 @@ bool PassengerFlowMsgHandler::CreateRegularPatrol(const std::string &strSid, Pat
             " and return code is " << AddPatrolRsp.m_iRetcode <<
             " and return msg is " << AddPatrolRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteRegularPatrol(const std::string &strSid, const std::string &strUserID, const std::string &strPlanID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteRegularPatrolReq DelPatrolReq;
         DelPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRegularPatrolReq_T;
@@ -10709,27 +11014,24 @@ bool PassengerFlowMsgHandler::DeleteRegularPatrol(const std::string &strSid, con
         DelPatrolReq.m_strUserID = strUserID;
         DelPatrolReq.m_strPlanID = strPlanID;
 
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelPatrolReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelPatrolReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete regular patrol req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteRegularPatrolRsp DelPatrolRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelPatrolRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelPatrolRsp))
         {
             LOG_ERROR_RLD("Delete regular patrol rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelPatrolRsp.m_iRetcode;
@@ -10738,20 +11040,36 @@ bool PassengerFlowMsgHandler::DeleteRegularPatrol(const std::string &strSid, con
             " and return code is " << DelPatrolRsp.m_iRetcode <<
             " and return msg is " << DelPatrolRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Patrol &pat)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyRegularPatrolReq ModPatrolReq;
         ModPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRegularPatrolReq_T;
@@ -10783,26 +11101,24 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Pat
             ModPatrolReq.m_regularPatrol.m_storeEntranceList.push_back(std::move(pse));
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModPatrolReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModPatrolReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify regular patrol req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyRegularPatrolRsp ModPatrolRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModPatrolRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModPatrolRsp))
         {
             LOG_ERROR_RLD("Modify regular patrol rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModPatrolRsp.m_iRetcode;
@@ -10811,20 +11127,36 @@ bool PassengerFlowMsgHandler::ModifyRegularPatrol(const std::string &strSid, Pat
             " and return code is " << ModPatrolRsp.m_iRetcode <<
             " and return msg is " << ModPatrolRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, Patrol &pat)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryRegularPatrolInfoReq QueryPantrolReq;
         QueryPantrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRegularPatrolInfoReq_T;
@@ -10834,26 +11166,24 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, 
         QueryPantrolReq.m_strUserID = pat.m_strUserID;
         QueryPantrolReq.m_strPlanID = pat.m_strPatrolID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPantrolReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPantrolReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query regular patrol req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryRegularPatrolInfoRsp QueryPatrolRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryPatrolRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryPatrolRsp))
         {
             LOG_ERROR_RLD("Query regular patrol rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         pat.m_strEnable = QueryPatrolRsp.m_regularPatrol.m_strEnable;
@@ -10891,20 +11221,36 @@ bool PassengerFlowMsgHandler::QueryRegularPatrolPlan(const std::string &strSid, 
             " and return code is " << QueryPatrolRsp.m_iRetcode <<
             " and return msg is " << QueryPatrolRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSid, const std::string &strUserID, const std::string &strDevID, std::list<Patrol> &patlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllRegularPatrolReq QueryAllPatrolReq;
         QueryAllPatrolReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRegularPatrolReq_T;
@@ -10915,26 +11261,24 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSi
         QueryAllPatrolReq.m_strDeviceID = strDevID;
         QueryAllPatrolReq.m_uiBeginIndex = 0;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllPatrolReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllPatrolReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all regular patrol req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllRegularPatrolRsp QueryAllPatrolRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllPatrolRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllPatrolRsp))
         {
             LOG_ERROR_RLD("Query all regular patrol rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         auto itBegin = QueryAllPatrolRsp.m_planList.begin();
@@ -10981,20 +11325,36 @@ bool PassengerFlowMsgHandler::QueryAllRegularPatrolPlan(const std::string &strSi
             " and return code is " << QueryAllPatrolRsp.m_iRetcode <<
             " and return msg is " << QueryAllPatrolRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateVIP(const std::string &strSid, VIP &vip)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddVIPCustomerReq AddVipReq;
         AddVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPCustomerReq_T;
@@ -11023,26 +11383,24 @@ bool PassengerFlowMsgHandler::CreateVIP(const std::string &strSid, VIP &vip)
         AddVipReq.m_customerInfo.m_strVisitDate = vip.m_strVisitDate;
         AddVipReq.m_customerInfo.m_uiVisitTimes = vip.m_uiVisitTimes;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create vip req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddVIPCustomerRsp AddVipRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddVipRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddVipRsp))
         {
             LOG_ERROR_RLD("Create vip rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddVipRsp.m_iRetcode;
@@ -11053,20 +11411,36 @@ bool PassengerFlowMsgHandler::CreateVIP(const std::string &strSid, VIP &vip)
             " and return code is " << AddVipRsp.m_iRetcode <<
             " and return msg is " << AddVipRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteVIP(const std::string &strSid, const std::string &strUserID, const std::string &strVipID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteVIPCustomerReq DelVipReq;
         DelVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPCustomerReq_T;
@@ -11076,27 +11450,24 @@ bool PassengerFlowMsgHandler::DeleteVIP(const std::string &strSid, const std::st
         DelVipReq.m_strUserID = strUserID;
         DelVipReq.m_strVIPID = strVipID;
 
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete vip req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteVIPCustomerRsp DelVipRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelVipRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelVipRsp))
         {
             LOG_ERROR_RLD("Delete vip rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelVipRsp.m_iRetcode;
@@ -11105,20 +11476,36 @@ bool PassengerFlowMsgHandler::DeleteVIP(const std::string &strSid, const std::st
             " and return code is " << DelVipRsp.m_iRetcode <<
             " and return msg is " << DelVipRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyVIP(const std::string &strSid, VIP &vip)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyVIPCustomerReq ModVipReq;
         ModVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPCustomerReq_T;
@@ -11148,26 +11535,24 @@ bool PassengerFlowMsgHandler::ModifyVIP(const std::string &strSid, VIP &vip)
         ModVipReq.m_customerInfo.m_uiVisitTimes = vip.m_uiVisitTimes;
         ModVipReq.m_customerInfo.m_strVIPID = vip.m_strVipID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify vip req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyVIPCustomerRsp ModVipRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModVipRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModVipRsp))
         {
             LOG_ERROR_RLD("Modify vip rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModVipRsp.m_iRetcode;
@@ -11176,20 +11561,36 @@ bool PassengerFlowMsgHandler::ModifyVIP(const std::string &strSid, VIP &vip)
             " and return code is " << ModVipRsp.m_iRetcode <<
             " and return msg is " << ModVipRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryVIP(const std::string &strSid, VIP &vip)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryVIPCustomerInfoReq QueryVipReq;
         QueryVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryVIPCustomerInfoReq_T;
@@ -11199,26 +11600,24 @@ bool PassengerFlowMsgHandler::QueryVIP(const std::string &strSid, VIP &vip)
         QueryVipReq.m_strUserID = vip.m_strVipUserID;
         QueryVipReq.m_strVIPID = vip.m_strVipID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query vip req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryVIPCustomerInfoRsp QueryVipRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryVipRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryVipRsp))
         {
             LOG_ERROR_RLD("Query vip rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryVipRsp.m_customerInfo.m_consumeHistoryList.begin(), itEnd = QueryVipRsp.m_customerInfo.m_consumeHistoryList.end();
@@ -11249,20 +11648,36 @@ bool PassengerFlowMsgHandler::QueryVIP(const std::string &strSid, VIP &vip)
             " and return code is " << QueryVipRsp.m_iRetcode <<
             " and return msg is " << QueryVipRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllVIP(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, std::list<VIP> &viplist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllVIPCustomerReq QueryAllVipReq;
         QueryAllVipReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPCustomerReq_T;
@@ -11272,26 +11687,24 @@ bool PassengerFlowMsgHandler::QueryAllVIP(const std::string &strSid, const std::
         QueryAllVipReq.m_strUserID = strUserID;
         QueryAllVipReq.m_uiBeginIndex = uiBeginIndex;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllVipReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllVipReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all vip req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllVIPCustomerRsp QueryAllVipRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllVipRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllVipRsp))
         {
             LOG_ERROR_RLD("Query all vip rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         auto itBegin = QueryAllVipRsp.m_customerList.begin();
@@ -11333,20 +11746,36 @@ bool PassengerFlowMsgHandler::QueryAllVIP(const std::string &strSid, const std::
             " and return code is " << QueryAllVipRsp.m_iRetcode <<
             " and return msg is " << QueryAllVipRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strVipID, VIP::ConsumeHistory &vph)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddVIPConsumeHistoryReq AddVipConsumeReq;
         AddVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddVIPConsumeHistoryReq_T;
@@ -11363,26 +11792,24 @@ bool PassengerFlowMsgHandler::CreateVIPConsumeHistory(const std::string &strSid,
         AddVipConsumeReq.m_consumeHistory.m_uiGoodsNumber = vph.m_uiGoodNum;
         AddVipConsumeReq.m_consumeHistory.m_strVIPID = strVipID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipConsumeReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddVipConsumeReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create vip consume history req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddVIPConsumeHistoryRsp AddVipConsumeRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddVipConsumeRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddVipConsumeRsp))
         {
             LOG_ERROR_RLD("Create vip consume history rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddVipConsumeRsp.m_iRetcode;
@@ -11393,20 +11820,36 @@ bool PassengerFlowMsgHandler::CreateVIPConsumeHistory(const std::string &strSid,
             " and return code is " << AddVipConsumeRsp.m_iRetcode <<
             " and return msg is " << AddVipConsumeRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strConsumeID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteVIPConsumeHistoryReq DelVipConsumeReq;
         DelVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteVIPConsumeHistoryReq_T;
@@ -11416,26 +11859,24 @@ bool PassengerFlowMsgHandler::DeleteVIPConsumeHistory(const std::string &strSid,
         DelVipConsumeReq.m_strUserID = strUserID;
         DelVipConsumeReq.m_strConsumeID = strConsumeID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipConsumeReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelVipConsumeReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete vip consume req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteVIPConsumeHistoryRsp DelVipConsumeRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelVipConsumeRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelVipConsumeRsp))
         {
             LOG_ERROR_RLD("Delete vip consume rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelVipConsumeRsp.m_iRetcode;
@@ -11444,20 +11885,36 @@ bool PassengerFlowMsgHandler::DeleteVIPConsumeHistory(const std::string &strSid,
             " and return code is " << DelVipConsumeRsp.m_iRetcode <<
             " and return msg is " << DelVipConsumeRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, VIP::ConsumeHistory &vph)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyVIPConsumeHistoryReq ModVipConsumeReq;
         ModVipConsumeReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyVIPConsumeHistoryReq_T;
@@ -11473,26 +11930,24 @@ bool PassengerFlowMsgHandler::ModifyVIPConsumeHistory(const std::string &strSid,
         ModVipConsumeReq.m_consumeHistory.m_strSalesman = vph.m_strSalesman;
         ModVipConsumeReq.m_consumeHistory.m_uiGoodsNumber = vph.m_uiGoodNum;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipConsumeReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModVipConsumeReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify vip consume history req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyVIPConsumeHistoryRsp ModVipConsumeRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModVipConsumeRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModVipConsumeRsp))
         {
             LOG_ERROR_RLD("Modify vip consume history rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModVipConsumeRsp.m_iRetcode;
@@ -11501,21 +11956,37 @@ bool PassengerFlowMsgHandler::ModifyVIPConsumeHistory(const std::string &strSid,
             " and return code is " << ModVipConsumeRsp.m_iRetcode <<
             " and return msg is " << ModVipConsumeRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryVIPConsumeHistory(const std::string &strSid, const std::string &strUserID, const std::string &strVipID, 
     const unsigned int uiBeginIndex, std::list<VIP::ConsumeHistory> &vphlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryReq QueryVipComsumeHisReq;
         QueryVipComsumeHisReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllVIPConsumeHistoryReq_T;
@@ -11526,26 +11997,24 @@ bool PassengerFlowMsgHandler::QueryVIPConsumeHistory(const std::string &strSid, 
         QueryVipComsumeHisReq.m_strVIPID = strVipID;
         QueryVipComsumeHisReq.m_uiBeginIndex = uiBeginIndex;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipComsumeHisReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryVipComsumeHisReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query vip consume req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllVIPConsumeHistoryRsp QueryVipConsumeHisRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryVipConsumeHisRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryVipConsumeHisRsp))
         {
             LOG_ERROR_RLD("Query vip consume rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryVipConsumeHisRsp.m_consumeHistoryList.begin(), itEnd = QueryVipConsumeHisRsp.m_consumeHistoryList.end();
@@ -11569,20 +12038,36 @@ bool PassengerFlowMsgHandler::QueryVIPConsumeHistory(const std::string &strSid, 
             " and return code is " << QueryVipConsumeHisRsp.m_iRetcode <<
             " and return msg is " << QueryVipConsumeHisRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::UserJoinStore(const std::string &strSid, UserOfStore &us)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::UserJoinStoreReq UserJoinStoreReq;
         UserJoinStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserJoinStoreReq_T;
@@ -11594,26 +12079,24 @@ bool PassengerFlowMsgHandler::UserJoinStore(const std::string &strSid, UserOfSto
         UserJoinStoreReq.m_strUserID = us.m_strUserID;
         UserJoinStoreReq.m_strAdministratorID = us.m_strAdminID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(UserJoinStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserJoinStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("User join store event req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::UserJoinStoreRsp UserJoinStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserJoinStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, UserJoinStoreRsp))
         {
             LOG_ERROR_RLD("User join store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = UserJoinStoreRsp.m_iRetcode;
@@ -11623,20 +12106,36 @@ bool PassengerFlowMsgHandler::UserJoinStore(const std::string &strSid, UserOfSto
             " and return code is " << UserJoinStoreRsp.m_iRetcode <<
             " and return msg is " << UserJoinStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::UserQuitStore(const std::string &strSid, const std::string &strAdminID, UserOfStore &us)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::UserQuitStoreReq UserQuitStoreReq;
         UserQuitStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserQuitStoreReq_T;
@@ -11647,26 +12146,24 @@ bool PassengerFlowMsgHandler::UserQuitStore(const std::string &strSid, const std
         UserQuitStoreReq.m_strStoreID = us.m_strStoreID;
         UserQuitStoreReq.m_strUserID = us.m_strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(UserQuitStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserQuitStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("User quit store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return false;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::UserQuitStoreRsp UserQuitStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserQuitStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, UserQuitStoreRsp))
         {
             LOG_ERROR_RLD("User quit store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = UserQuitStoreRsp.m_iRetcode;
@@ -11676,20 +12173,36 @@ bool PassengerFlowMsgHandler::UserQuitStore(const std::string &strSid, const std
             " and return code is " << UserQuitStoreRsp.m_iRetcode <<
             " and return msg is " << UserQuitStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const UserOfStore &us, std::list<UserOfStore> &uslist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryStoreAllUserReq QueryUserOfStoreReq;
         QueryUserOfStoreReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreAllUserReq_T;
@@ -11699,26 +12212,24 @@ bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const 
         QueryUserOfStoreReq.m_strStoreID = us.m_strStoreID;
         QueryUserOfStoreReq.m_strUserID = us.m_strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserOfStoreReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryUserOfStoreReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query user of store req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryStoreAllUserRsp QueryUserOfStoreRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryUserOfStoreRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryUserOfStoreRsp))
         {
             LOG_ERROR_RLD("Query user of store rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QueryUserOfStoreRsp.m_iRetcode;
@@ -11738,20 +12249,36 @@ bool PassengerFlowMsgHandler::QueryUserOfStore(const std::string &strSid, const 
             " and return code is " << QueryUserOfStoreRsp.m_iRetcode <<
             " and return msg is " << QueryUserOfStoreRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const std::string &strUserID, std::list<UserOfStore> &uslist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryCompanyAllUserReq QueryAllUserListReq;
         QueryAllUserListReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryCompanyAllUserReq_T;
@@ -11760,26 +12287,24 @@ bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const 
 
         QueryAllUserListReq.m_strUserID = strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllUserListReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllUserListReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all user list req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryCompanyAllUserRsp QueryAllUserListRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllUserListRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllUserListRsp))
         {
             LOG_ERROR_RLD("Query all user list rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QueryAllUserListRsp.m_iRetcode;
@@ -11800,20 +12325,36 @@ bool PassengerFlowMsgHandler::QueryAllUserList(const std::string &strSid, const 
             " and return code is " << QueryAllUserListRsp.m_iRetcode <<
             " and return msg is " << QueryAllUserListRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateEvaluationTemplate(const std::string &strSid, EvaluationTemplate &evt)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddEvaluationTemplateReq AddEvaTmpReq;
         AddEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddEvaluationTemplateReq_T;
@@ -11826,26 +12367,24 @@ bool PassengerFlowMsgHandler::CreateEvaluationTemplate(const std::string &strSid
         AddEvaTmpReq.m_evaluationItem.m_strDescription = evt.m_strEvaluationDesc;
         AddEvaTmpReq.m_evaluationItem.m_strItemName = evt.m_strEvaluation;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaTmpReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaTmpReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create evaluation template req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddEvaluationTemplateRsp AddEvaTmpRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEvaTmpRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddEvaTmpRsp))
         {
             LOG_ERROR_RLD("Create evaluation template rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddEvaTmpRsp.m_iRetcode;
@@ -11856,20 +12395,36 @@ bool PassengerFlowMsgHandler::CreateEvaluationTemplate(const std::string &strSid
             " and return code is " << AddEvaTmpRsp.m_iRetcode <<
             " and return msg is " << AddEvaTmpRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteEvaluationTemplate(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteEvaluationTemplateReq DelEvaTmpReq;
         DelEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteEvaluationTemplateReq_T;
@@ -11879,26 +12434,24 @@ bool PassengerFlowMsgHandler::DeleteEvaluationTemplate(const std::string &strSid
         DelEvaTmpReq.m_strUserID = strUserID;
         DelEvaTmpReq.m_strEvaluationID = strEvaluationID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaTmpReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaTmpReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete evaluation template req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteEvaluationTemplateRsp DelEvaTmpRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEvaTmpRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelEvaTmpRsp))
         {
             LOG_ERROR_RLD("Delete evaluation template rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelEvaTmpRsp.m_iRetcode;
@@ -11907,20 +12460,36 @@ bool PassengerFlowMsgHandler::DeleteEvaluationTemplate(const std::string &strSid
             " and return code is " << DelEvaTmpRsp.m_iRetcode <<
             " and return msg is " << DelEvaTmpRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyEvaluationTemplate(const std::string &strSid, EvaluationTemplate &evt)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyEvaluationTemplateReq ModEvaTmpReq;
         ModEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyEvaluationTemplateReq_T;
@@ -11934,27 +12503,24 @@ bool PassengerFlowMsgHandler::ModifyEvaluationTemplate(const std::string &strSid
         ModEvaTmpReq.m_evaluationItem.m_strItemID = evt.m_strEvaluationTmpID;
         ModEvaTmpReq.m_evaluationItem.m_strItemName = evt.m_strEvaluation;
 
-
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaTmpReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaTmpReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify evaluation template req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyEvaluationTemplateRsp ModEvaTmpRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEvaTmpRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModEvaTmpRsp))
         {
             LOG_ERROR_RLD("Modify evaluation template rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModEvaTmpRsp.m_iRetcode;
@@ -11963,20 +12529,36 @@ bool PassengerFlowMsgHandler::ModifyEvaluationTemplate(const std::string &strSid
             " and return code is " << ModEvaTmpRsp.m_iRetcode <<
             " and return msg is " << ModEvaTmpRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryEvalutaionTemplate(const std::string &strSid, const std::string &strUserID, std::list<EvaluationTemplate> &evtlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllEvaluationTemplateReq QueryEvaTmpReq;
         QueryEvaTmpReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllEvaluationTemplateReq_T;
@@ -11985,26 +12567,24 @@ bool PassengerFlowMsgHandler::QueryEvalutaionTemplate(const std::string &strSid,
 
         QueryEvaTmpReq.m_strUserID = strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaTmpReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaTmpReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query evaluation template req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllEvaluationTemplateRsp QueryEvaTmpRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaTmpRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryEvaTmpRsp))
         {
             LOG_ERROR_RLD("Query evaluation template rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryEvaTmpRsp.m_evaluationItemList.begin(), itEnd = QueryEvaTmpRsp.m_evaluationItemList.end();
@@ -12025,20 +12605,36 @@ bool PassengerFlowMsgHandler::QueryEvalutaionTemplate(const std::string &strSid,
             " and return code is " << QueryEvaTmpRsp.m_iRetcode <<
             " and return msg is " << QueryEvaTmpRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evaluation &ev)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddStoreEvaluationReq AddEvaReq;
         AddEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreEvaluationReq_T;
@@ -12061,26 +12657,24 @@ bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evalua
             AddEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddEvaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create evaluation req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddStoreEvaluationRsp AddEvaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddEvaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddEvaRsp))
         {
             LOG_ERROR_RLD("Create evaluation rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddEvaRsp.m_iRetcode;
@@ -12092,20 +12686,36 @@ bool PassengerFlowMsgHandler::CreateEvaluation(const std::string &strSid, Evalua
             " and return code is " << AddEvaRsp.m_iRetcode <<
             " and return msg is " << AddEvaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-    m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-    CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteEvaluation(const std::string &strSid, const std::string &strUserID, const std::string &strEvaluationIDOfStore)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteStoreEvaluationReq DelEvaReq;
         DelEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreEvaluationReq_T;
@@ -12115,26 +12725,24 @@ bool PassengerFlowMsgHandler::DeleteEvaluation(const std::string &strSid, const 
         DelEvaReq.m_strUserID = strUserID;
         DelEvaReq.m_strEvaluationID = strEvaluationIDOfStore;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelEvaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete evaluation req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteStoreEvaluationRsp DelEvaTmpRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelEvaTmpRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelEvaTmpRsp))
         {
             LOG_ERROR_RLD("Delete evaluation rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelEvaTmpRsp.m_iRetcode;
@@ -12143,20 +12751,36 @@ bool PassengerFlowMsgHandler::DeleteEvaluation(const std::string &strSid, const 
             " and return code is " << DelEvaTmpRsp.m_iRetcode <<
             " and return msg is " << DelEvaTmpRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evaluation &ev)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyStoreEvaluationReq ModEvaReq;
         ModEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreEvaluationReq_T;
@@ -12182,26 +12806,24 @@ bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evalua
             ModEvaReq.m_storeEvaluation.m_itemScoreList.push_back(std::move(evs));
         }
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModEvaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify evaluation req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyStoreEvaluationRsp ModEvaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModEvaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModEvaRsp))
         {
             LOG_ERROR_RLD("Modify evaluation rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModEvaRsp.m_iRetcode;
@@ -12211,20 +12833,36 @@ bool PassengerFlowMsgHandler::ModifyEvaluation(const std::string &strSid, Evalua
         " and return code is " << ModEvaRsp.m_iRetcode <<
         " and return msg is " << ModEvaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-    m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-    CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const std::string &strUserID, Evaluation &ev)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryStoreEvaluationInfoReq QueryEvaReq;
         QueryEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreEvaluationInfoReq_T;
@@ -12235,26 +12873,24 @@ bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const s
         QueryEvaReq.m_strStoreID = ev.m_strStoreID;
         QueryEvaReq.m_strEvaluationID = ev.m_strEvaluationID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query evaluation req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryStoreEvaluationInfoRsp QueryEvaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryEvaRsp))
         {
             LOG_ERROR_RLD("Query evaluation rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         ev.m_dEvaluationTotalValue = QueryEvaRsp.m_storeEvaluation.m_dTotalScore;
@@ -12288,21 +12924,37 @@ bool PassengerFlowMsgHandler::QueryEvaluation(const std::string &strSid, const s
             " and return code is " << QueryEvaRsp.m_iRetcode <<
             " and return msg is " << QueryEvaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const unsigned int uiCheckStatus,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<Evaluation> &evlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllStoreEvaluationReq QueryEvaReq;
         QueryEvaReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreEvaluationReq_T;
@@ -12316,26 +12968,24 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSi
         QueryEvaReq.m_strEndDate = strEndDate;
         QueryEvaReq.m_uiBeginIndex = uiBeginIndex;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryEvaReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all evaluation req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllStoreEvaluationRsp QueryEvaRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryEvaRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryEvaRsp))
         {
             LOG_ERROR_RLD("Query all evaluation rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryEvaRsp.m_storeEvaluationList.begin(), itEnd = QueryEvaRsp.m_storeEvaluationList.end();
@@ -12360,20 +13010,36 @@ bool PassengerFlowMsgHandler::QueryAllEvaluationOfStore(const std::string &strSi
             " and return code is " << QueryEvaRsp.m_iRetcode <<
             " and return msg is " << QueryEvaRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, PatrolRecord &pr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddRemotePatrolStoreReq AddRemotePRReq;
         AddRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRemotePatrolStoreReq_T;
@@ -12399,26 +13065,24 @@ bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, Patr
             AddRemotePRReq.m_patrolStore.m_patrolPictureList.push_back(std::move(pic));
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddRemotePRReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddRemotePRReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create patrol record req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddRemotePatrolStoreRsp AddRemotePRRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddRemotePRRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddRemotePRRsp))
         {
             LOG_ERROR_RLD("Create patrol record rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddRemotePRRsp.m_iRetcode;
@@ -12430,20 +13094,36 @@ bool PassengerFlowMsgHandler::CreatePatrolRecord(const std::string &strSid, Patr
             " and return code is " << AddRemotePRRsp.m_iRetcode <<
             " and return msg is " << AddRemotePRRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeletePatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strPatrolID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteRemotePatrolStoreReq DelRemotePRReq;
         DelRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteRemotePatrolStoreReq_T;
@@ -12453,26 +13133,24 @@ bool PassengerFlowMsgHandler::DeletePatrolRecord(const std::string &strSid, cons
         DelRemotePRReq.m_strUserID = strUserID;
         DelRemotePRReq.m_strPatrolID = strPatrolID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelRemotePRReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelRemotePRReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete patrol record req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteRemotePatrolStoreRsp DelRemotePRRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelRemotePRRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelRemotePRRsp))
         {
             LOG_ERROR_RLD("Delete patrol record unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelRemotePRRsp.m_iRetcode;
@@ -12481,20 +13159,36 @@ bool PassengerFlowMsgHandler::DeletePatrolRecord(const std::string &strSid, cons
             " and return code is " << DelRemotePRRsp.m_iRetcode <<
             " and return msg is " << DelRemotePRRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyPatrolRecord(const std::string &strSid, PatrolRecord &pr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyRemotePatrolStoreReq ModRemotePRReq;
         ModRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRemotePatrolStoreReq_T;
@@ -12521,26 +13215,24 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecord(const std::string &strSid, Patr
             ModRemotePRReq.m_patrolStore.m_patrolPictureList.push_back(std::move(pic));
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModRemotePRReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModRemotePRReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify patrol record req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyRemotePatrolStoreRsp ModRemotePRRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModRemotePRRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModRemotePRRsp))
         {
             LOG_ERROR_RLD("Modify patrol record rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModRemotePRRsp.m_iRetcode;
@@ -12550,20 +13242,36 @@ bool PassengerFlowMsgHandler::ModifyPatrolRecord(const std::string &strSid, Patr
             " and return code is " << ModRemotePRRsp.m_iRetcode <<
             " and return msg is " << ModRemotePRRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, PatrolRecord &pr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and sid is " << strSid);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoReq QueryRemotePRReq;
         QueryRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRemotePatrolStoreInfoReq_T;
@@ -12573,26 +13281,24 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
         QueryRemotePRReq.m_strPatrolID = pr.m_strPatrolID;
         QueryRemotePRReq.m_strUserID = pr.m_strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRemotePRReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRemotePRReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query patrol record req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryRemotePatrolStoreInfoRsp QueryRemotePRRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryRemotePRRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryRemotePRRsp))
         {
             LOG_ERROR_RLD("Query patrol record rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         pr.m_strDevID = QueryRemotePRRsp.m_patrolStore.m_strDeviceID;
@@ -12625,22 +13331,38 @@ bool PassengerFlowMsgHandler::QueryPatrolRecord(const std::string &strSid, Patro
             " and return code is " << QueryRemotePRRsp.m_iRetcode <<
             " and return msg is " << QueryRemotePRRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, 
     const unsigned int uiPatrolResult, const unsigned int uiPlanFlag, const std::string &strPlanID,
     const std::string &strBeginDate, const std::string &strEndDate, const unsigned int uiBeginIndex, std::list<PatrolRecord> &prlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllRemotePatrolStoreReq QueryAllRemotePRReq;
         QueryAllRemotePRReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRemotePatrolStoreReq_T;
@@ -12656,26 +13378,24 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
         QueryAllRemotePRReq.m_uiPatrolResult = uiPatrolResult;
         QueryAllRemotePRReq.m_uiPlanFlag = uiPlanFlag;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRemotePRReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRemotePRReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all patrol record req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllRemotePatrolStoreRsp QueryAllRemotePRRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllRemotePRRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllRemotePRRsp))
         {
             LOG_ERROR_RLD("Query patrol record rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryAllRemotePRRsp.m_patrolStoreList.begin(), itEnd = QueryAllRemotePRRsp.m_patrolStoreList.end(); itBegin != itEnd; ++itBegin)
@@ -12715,20 +13435,36 @@ bool PassengerFlowMsgHandler::QueryAllPatrolRecord(const std::string &strSid, co
             " and return code is " << QueryAllRemotePRRsp.m_iRetcode <<
             " and return msg is " << QueryAllRemotePRRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddStoreSensorReq AddStoreSensorReq;
         AddStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddStoreSensorReq_T;
@@ -12744,26 +13480,24 @@ bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const
         AddStoreSensorReq.m_sensorInfo.m_strSensorKey = sr.m_strSensorKey;
         AddStoreSensorReq.m_sensorInfo.m_strLocation = sr.m_strLocation;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreSensorReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddStoreSensorReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Create store sensor req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::AddStoreSensorRsp AddStoreSensorRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddStoreSensorRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddStoreSensorRsp))
         {
             LOG_ERROR_RLD("Create store sensor rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddStoreSensorRsp.m_iRetcode;
@@ -12775,20 +13509,36 @@ bool PassengerFlowMsgHandler::CreateStoreSensor(const std::string &strSid, const
             " and return code is " << AddStoreSensorRsp.m_iRetcode <<
             " and return msg is " << AddStoreSensorRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::DeleteStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, const std::string &strSensorID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::DeleteStoreSensorReq DelStoreSensorReq;
         DelStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::DeleteStoreSensorReq_T;
@@ -12799,26 +13549,24 @@ bool PassengerFlowMsgHandler::DeleteStoreSensor(const std::string &strSid, const
         DelStoreSensorReq.m_strSensorID = strSensorID;
         DelStoreSensorReq.m_strStoreID = strStoreID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(DelStoreSensorReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(DelStoreSensorReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Delete store sensor req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::DeleteStoreSensorRsp DelStoreSensorRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, DelStoreSensorRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, DelStoreSensorRsp))
         {
             LOG_ERROR_RLD("Delete store sensor unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = DelStoreSensorRsp.m_iRetcode;
@@ -12827,20 +13575,36 @@ bool PassengerFlowMsgHandler::DeleteStoreSensor(const std::string &strSid, const
             " and return code is " << DelStoreSensorRsp.m_iRetcode <<
             " and return msg is " << DelStoreSensorRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyStoreSensorReq ModifyStoreSensorReq;
         ModifyStoreSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyStoreSensorReq_T;
@@ -12858,26 +13622,24 @@ bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const
         ModifyStoreSensorReq.m_sensorInfo.m_strSensorKey = sr.m_strSensorKey;
         ModifyStoreSensorReq.m_sensorInfo.m_strLocation = sr.m_strLocation;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyStoreSensorReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyStoreSensorReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify store sensor req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::ModifyStoreSensorRsp ModifyStoreSensorRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyStoreSensorRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModifyStoreSensorRsp))
         {
             LOG_ERROR_RLD("Modify store sensor rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModifyStoreSensorRsp.m_iRetcode;
@@ -12887,20 +13649,36 @@ bool PassengerFlowMsgHandler::ModifyStoreSensor(const std::string &strSid, const
             " and return code is " << ModifyStoreSensorRsp.m_iRetcode <<
             " and return msg is " << ModifyStoreSensorRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const std::string &strUserID, Sensor &sr)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryStoreSensorInfoReq QuerySensorInfoReq;
         QuerySensorInfoReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryStoreSensorInfoReq_T;
@@ -12910,26 +13688,24 @@ bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const 
         QuerySensorInfoReq.m_strSensorID = sr.m_strID;
         QuerySensorInfoReq.m_strUserID = strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorInfoReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorInfoReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query sensor info req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryStoreSensorInfoRsp QuerySensorInfoRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorInfoRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QuerySensorInfoRsp))
         {
             LOG_ERROR_RLD("Query sensor info rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         sr.m_strDevID = QuerySensorInfoRsp.m_sensorInfo.m_strDeviceID;
@@ -12948,20 +13724,36 @@ bool PassengerFlowMsgHandler::QueryStoreSensor(const std::string &strSid, const 
             " and return code is " << QuerySensorInfoRsp.m_iRetcode <<
             " and return msg is " << QuerySensorInfoRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, const std::string &strUserID, const std::string &strStoreID, std::list<Sensor> &srlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed and user id is " << strUserID);
+        return false;
+    }
+
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllStoreSensorReq QueryAllSensorReq;
         QueryAllSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllStoreSensorReq_T;
@@ -12971,26 +13763,24 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, con
         QueryAllSensorReq.m_strStoreID = strStoreID;
         QueryAllSensorReq.m_strUserID = strUserID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllSensorReq, strSerializeOutPut))
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllSensorReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all sensor info req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
-
         PassengerFlowProtoHandler::QueryAllStoreSensorRsp QueryAllSensorRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllSensorRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllSensorRsp))
         {
             LOG_ERROR_RLD("Query all sensor info rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QueryAllSensorRsp.m_sensorList.begin(), itEnd = QueryAllSensorRsp.m_sensorList.end(); itBegin != itEnd; ++itBegin)
@@ -13016,20 +13806,36 @@ bool PassengerFlowMsgHandler::QueryAllStoreSensor(const std::string &strSid, con
             " and return code is " << QueryAllSensorRsp.m_iRetcode <<
             " and return msg is " << QueryAllSensorRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ReportSensorInfoReq ReportSensorReq;
         ReportSensorReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorInfoReq_T;
@@ -13050,26 +13856,27 @@ bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const 
         }
         ReportSensorReq.m_sensorList.swap(psrlist);
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Report sensor req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::ReportSensorInfoRsp ReportSensorRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ReportSensorRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ReportSensorRsp))
         {
             LOG_ERROR_RLD("Report sensor unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ReportSensorRsp.m_iRetcode;
@@ -13078,20 +13885,36 @@ bool PassengerFlowMsgHandler::ReportSensorInfo(const std::string &strSid, const 
             " and return code is " << ReportSensorRsp.m_iRetcode <<
             " and return msg is " << ReportSensorRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ReportSensorAlarmInfo(const std::string &strSid, const Sensor &sr, const unsigned int uiRecover, const std::string &strFileID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ReportSensorAlarmInfoReq ReportSensorAlarmReq;
         ReportSensorAlarmReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ReportSensorAlarmInfoReq_T;
@@ -13111,26 +13934,27 @@ bool PassengerFlowMsgHandler::ReportSensorAlarmInfo(const std::string &strSid, c
         ReportSensorAlarmReq.m_sensorInfo.m_strValue = sr.m_strValue;
         ReportSensorAlarmReq.m_sensorInfo.m_strSensorKey = sr.m_strSensorKey;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorAlarmReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(ReportSensorAlarmReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Report sensor alarm req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::ReportSensorAlarmInfoRsp ReportSensorAlarmRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ReportSensorAlarmRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ReportSensorAlarmRsp))
         {
             LOG_ERROR_RLD("Report sensor alarm unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ReportSensorAlarmRsp.m_iRetcode;
@@ -13139,20 +13963,36 @@ bool PassengerFlowMsgHandler::ReportSensorAlarmInfo(const std::string &strSid, c
             " and return code is " << ReportSensorAlarmRsp.m_iRetcode <<
             " and return msg is " << ReportSensorAlarmRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QueryPatrolResult(const std::string &strSid, const std::string &strUserID, PatrolResultReportQueryParam &prqm, std::string &strReport)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryPatrolResultReportReq QueryPatrolResultReq;
         QueryPatrolResultReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryPatrolResultReportReq_T;
@@ -13166,26 +14006,27 @@ bool PassengerFlowMsgHandler::QueryPatrolResult(const std::string &strSid, const
         QueryPatrolResultReq.m_strStoreID = prqm.m_strStoreID;
         QueryPatrolResultReq.m_uiPatrolResult = prqm.m_uiPatrolResult;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPatrolResultReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryPatrolResultReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query patrol result info req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QueryPatrolResultReportRsp QuerySensorInfoRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorInfoRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QuerySensorInfoRsp))
         {
             LOG_ERROR_RLD("Query patrol result info rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         strReport = QuerySensorInfoRsp.m_strChartData;
@@ -13197,20 +14038,36 @@ bool PassengerFlowMsgHandler::QueryPatrolResult(const std::string &strSid, const
             " and return code is " << QuerySensorInfoRsp.m_iRetcode <<
             " and return msg is " << QuerySensorInfoRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QuerySensorAlarmThreshold(const std::string &strSid, const std::string &strDevID, std::list<Sensor> &srlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QuerySensorAlarmThresholdReq QuerySensorAlarmThresholdReq;
         QuerySensorAlarmThresholdReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorAlarmThresholdReq_T;
@@ -13219,26 +14076,27 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmThreshold(const std::string &strSi
 
         QuerySensorAlarmThresholdReq.m_strDeviceID = strDevID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorAlarmThresholdReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorAlarmThresholdReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query sensor alarm threshold req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QuerySensorAlarmThresholdRsp QuerySensorAlarmThresholdRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorAlarmThresholdRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QuerySensorAlarmThresholdRsp))
         {
             LOG_ERROR_RLD("Query sensor alarm threshold rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         for (auto itBegin = QuerySensorAlarmThresholdRsp.m_sensorList.begin(), itEnd = QuerySensorAlarmThresholdRsp.m_sensorList.end(); itBegin != itEnd; ++itBegin)
@@ -13262,20 +14120,36 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmThreshold(const std::string &strSi
             " and return code is " << QuerySensorAlarmThresholdRsp.m_iRetcode <<
             " and return msg is " << QuerySensorAlarmThresholdRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::RemoveSensorRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::RemoveSensorRecordsReq RemoveSensorRecordsReq;
         RemoveSensorRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorRecordsReq_T;
@@ -13286,26 +14160,27 @@ bool PassengerFlowMsgHandler::RemoveSensorRecords(const std::string &strSid, con
         
         RemoveSensorRecordsReq.m_strRecordIDList.swap(strRecordIDList);
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorRecordsReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorRecordsReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Remove sensor records req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::RemoveSensorRecordsRsp RemoveSensorRecordsRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveSensorRecordsRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, RemoveSensorRecordsRsp))
         {
             LOG_ERROR_RLD("Remove sensor records rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = RemoveSensorRecordsRsp.m_iRetcode;
@@ -13314,20 +14189,36 @@ bool PassengerFlowMsgHandler::RemoveSensorRecords(const std::string &strSid, con
             " and return code is " << RemoveSensorRecordsRsp.m_iRetcode <<
             " and return msg is " << RemoveSensorRecordsRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::RemoveSensorAlarmRecords(const std::string &strSid, const std::string &strUserID, std::list<std::string> &strRecordIDList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::RemoveSensorAlarmRecordsReq RemoveSensorAlarmRecordsReq;
         RemoveSensorAlarmRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveSensorAlarmRecordsReq_T;
@@ -13338,26 +14229,27 @@ bool PassengerFlowMsgHandler::RemoveSensorAlarmRecords(const std::string &strSid
 
         RemoveSensorAlarmRecordsReq.m_strRecordIDList.swap(strRecordIDList);
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorAlarmRecordsReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveSensorAlarmRecordsReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Remove sensor alarm records req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::RemoveSensorAlarmRecordsRsp RemoveSensorAlarmRecordsRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveSensorAlarmRecordsRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, RemoveSensorAlarmRecordsRsp))
         {
             LOG_ERROR_RLD("Remove sensor alarm records rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = RemoveSensorAlarmRecordsRsp.m_iRetcode;
@@ -13366,21 +14258,37 @@ bool PassengerFlowMsgHandler::RemoveSensorAlarmRecords(const std::string &strSid
             " and return code is " << RemoveSensorAlarmRecordsRsp.m_iRetcode <<
             " and return msg is " << RemoveSensorAlarmRecordsRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorRecord> &srdlist,
 	unsigned int &uiRealRecordNum)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QuerySensorRecordsReq QuerySensorRecordsReq;
         QuerySensorRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorRecordsReq_T;
@@ -13397,33 +14305,35 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
 		QuerySensorRecordsReq.m_uiTimeRangeType = pm.m_uiRangeType;
 		QuerySensorRecordsReq.m_uiTimeRangeBase = pm.m_uiRangeBase;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorRecordsReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorRecordsReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query sensor records req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QuerySensorRecordsRsp QuerySensorRecordsRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorRecordsRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QuerySensorRecordsRsp))
         {
             LOG_ERROR_RLD("Query sensor records rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         if (QuerySensorRecordsRsp.m_sensorList.size() != QuerySensorRecordsRsp.m_strRecordIDList.size())
         {
             LOG_ERROR_RLD("Query sensor records rsp data is invalid and sensor list size is " << QuerySensorRecordsRsp.m_sensorList.size() <<
                 " and record id list size is " << QuerySensorRecordsRsp.m_strRecordIDList.size());
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QuerySensorRecordsRsp.m_iRetcode;
@@ -13455,20 +14365,36 @@ bool PassengerFlowMsgHandler::QuerySensorRecords(const std::string &strSid, cons
             " and return code is " << QuerySensorRecordsRsp.m_iRetcode <<
             " and return msg is " << QuerySensorRecordsRsp.m_strRetMsg);
 
-        return (100 == uiRealRecordNum)  ? CommMsgHandler::CONTINUE : CommMsgHandler::SUCCEED;
+        return true; //(100 == uiRealRecordNum)  ? CommMsgHandler::CONTINUE : CommMsgHandler::SUCCEED;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::QuerySensorAlarmRecords(const std::string &strSid, const QuerySensorParam &pm, std::list<SensorAlarmRecord> &srdlist)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QuerySensorAlarmRecordsReq QuerySensorAlarmRecordsReq;
         QuerySensorAlarmRecordsReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QuerySensorAlarmRecordsReq_T;
@@ -13485,26 +14411,27 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecords(const std::string &strSid,
         QuerySensorAlarmRecordsReq.m_uiBeginIndex = pm.m_uiBeginIndex;
 
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorAlarmRecordsReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QuerySensorAlarmRecordsReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query sensor alarm records req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QuerySensorAlarmRecordsRsp QuerySensorAlarmRecordsRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QuerySensorAlarmRecordsRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QuerySensorAlarmRecordsRsp))
         {
             LOG_ERROR_RLD("Query sensor alarm records rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QuerySensorAlarmRecordsRsp.m_iRetcode;
@@ -13534,20 +14461,36 @@ bool PassengerFlowMsgHandler::QuerySensorAlarmRecords(const std::string &strSid,
             " and return code is " << QuerySensorAlarmRecordsRsp.m_iRetcode <<
             " and return msg is " << QuerySensorAlarmRecordsRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::AddRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleIDNew, const std::string &strRoleIDOld)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::AddRoleReq AddRoleReq;
         AddRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::AddRoleReq_T;
@@ -13558,26 +14501,27 @@ bool PassengerFlowMsgHandler::AddRole(const std::string &strSid, const std::stri
         AddRoleReq.m_strRoleIDNew = strRoleIDNew;
         AddRoleReq.m_strRoleIDOld = strRoleIDOld;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(AddRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Add role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::AddRoleRsp AddRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, AddRoleRsp))
         {
             LOG_ERROR_RLD("Add role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = AddRoleRsp.m_iRetcode;
@@ -13586,20 +14530,36 @@ bool PassengerFlowMsgHandler::AddRole(const std::string &strSid, const std::stri
             " and return code is " << AddRoleRsp.m_iRetcode <<
             " and return msg is " << AddRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::RemoveRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::RemoveRoleReq RemoveRoleReq;
         RemoveRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::RemoveRoleReq_T;
@@ -13609,26 +14569,27 @@ bool PassengerFlowMsgHandler::RemoveRole(const std::string &strSid, const std::s
         RemoveRoleReq.m_strUserID = strUserID;
         RemoveRoleReq.m_strRoleID = strRoleID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Remove role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::RemoveRoleRsp RemoveRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, RemoveRoleRsp))
         {
             LOG_ERROR_RLD("Remove role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = RemoveRoleRsp.m_iRetcode;
@@ -13637,21 +14598,37 @@ bool PassengerFlowMsgHandler::RemoveRole(const std::string &strSid, const std::s
             " and return code is " << RemoveRoleRsp.m_iRetcode <<
             " and return msg is " << RemoveRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ModifyRole(const std::string &strSid, const std::string  &strUserID, const std::string &strRoleID, 
     const std::list<unsigned int> &uiAllowFuncList, const std::list<unsigned int> &uiDisallowFuncList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::ModifyRoleReq ModifyRoleReq;
         ModifyRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::ModifyRoleReq_T;
@@ -13679,26 +14656,27 @@ bool PassengerFlowMsgHandler::ModifyRole(const std::string &strSid, const std::s
             ModifyRoleReq.m_role.m_pmlist.push_back(std::move(pm));
         }
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(ModifyRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Modify role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::ModifyRoleRsp ModifyRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, ModifyRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, ModifyRoleRsp))
         {
             LOG_ERROR_RLD("Modify role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = ModifyRoleRsp.m_iRetcode;
@@ -13707,21 +14685,37 @@ bool PassengerFlowMsgHandler::ModifyRole(const std::string &strSid, const std::s
             " and return code is " << ModifyRoleRsp.m_iRetcode <<
             " and return msg is " << ModifyRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 template<typename T>
 bool PassengerFlowMsgHandler::QueryRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID, T &Role)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryRoleReq QueryRoleReq;
         QueryRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryRoleReq_T;
@@ -13731,26 +14725,27 @@ bool PassengerFlowMsgHandler::QueryRole(const std::string &strSid, const std::st
         QueryRoleReq.m_strUserID = strUserID;
         QueryRoleReq.m_strRoleID = strRoleID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QueryRoleRsp QueryRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryRoleRsp))
         {
             LOG_ERROR_RLD("Query role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QueryRoleRsp.m_iRetcode;
@@ -13770,22 +14765,38 @@ bool PassengerFlowMsgHandler::QueryRole(const std::string &strSid, const std::st
             " and return code is " << QueryRoleRsp.m_iRetcode <<
             " and return msg is " << QueryRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 
 template<typename T>
 bool PassengerFlowMsgHandler::QueryAllRole(const std::string &strSid, const std::string &strUserID, std::list<T> &RoleList)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::QueryAllRoleReq QueryAllRoleReq;
         QueryAllRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::QueryAllRoleReq_T;
@@ -13794,26 +14805,27 @@ bool PassengerFlowMsgHandler::QueryAllRole(const std::string &strSid, const std:
 
         QueryAllRoleReq.m_strUserID = strUserID;
         
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("Query all role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::QueryAllRoleRsp QueryAllRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, QueryAllRoleRsp))
         {
             LOG_ERROR_RLD("Query all role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = QueryAllRoleRsp.m_iRetcode;
@@ -13824,21 +14836,37 @@ bool PassengerFlowMsgHandler::QueryAllRole(const std::string &strSid, const std:
             " and return code is " << QueryAllRoleRsp.m_iRetcode <<
             " and return msg is " << QueryAllRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 
 bool PassengerFlowMsgHandler::UserBindRole(const std::string &strSid, const std::string &strUserID, const std::string &strRoleID)
 {
-    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    TransClient tc;
+    TransClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;// *1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort) ;
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!tc.Init(pam))
+    {
+        LOG_ERROR_RLD("Trans client init failed.");
+        return false;
+    }
+    
+    auto ReqFunc = [&](std::string &strBinaryContent) -> bool
     {
         PassengerFlowProtoHandler::UserBindRoleReq UserBindRoleReq;
         UserBindRoleReq.m_MsgType = PassengerFlowProtoHandler::CustomerFlowMsgType::UserBindRoleReq_T;
@@ -13848,26 +14876,27 @@ bool PassengerFlowMsgHandler::UserBindRole(const std::string &strSid, const std:
         UserBindRoleReq.m_strUserID = strUserID;
         UserBindRoleReq.m_strRoleID = strRoleID;
 
-        std::string strSerializeOutPut;
-        if (!m_pInteractiveProtoHandler->SerializeReq(UserBindRoleReq, strSerializeOutPut))
+        
+        if (!m_pInteractiveProtoHandler->SerializeReq(UserBindRoleReq, strBinaryContent))
         {
             LOG_ERROR_RLD("User bind role req serialize failed.");
-            return CommMsgHandler::FAILED;
+            return false;
         }
 
-        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+        return true;
     };
 
     int iRet = CommMsgHandler::SUCCEED;
-    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    auto RspFunc = [&](const std::string &strBinaryContent, unsigned int uiRetCode) -> bool
     {
-        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+        
 
         PassengerFlowProtoHandler::UserBindRoleRsp UserBindRoleRsp;
-        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, UserBindRoleRsp))
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strBinaryContent, UserBindRoleRsp))
         {
             LOG_ERROR_RLD("User bind role rsp unserialize failed.");
-            return iRet = CommMsgHandler::FAILED;
+            iRet = CommMsgHandler::FAILED;
+            return false;
         }
 
         iRet = UserBindRoleRsp.m_iRetcode;
@@ -13876,15 +14905,20 @@ bool PassengerFlowMsgHandler::UserBindRole(const std::string &strSid, const std:
             " and return code is " << UserBindRoleRsp.m_iRetcode <<
             " and return msg is " << UserBindRoleRsp.m_strRetMsg);
 
-        return CommMsgHandler::SUCCEED;
+        return true;
     };
 
-    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
-    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&PassengerFlowMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+    tc.SetReqHandler(ReqFunc);
+    tc.SetRspHandler(boost::bind(&PassengerFlowMsgHandler::RspFuncCommonActionT, this, _1, _2, &iRet, RspFunc));
+    if (!tc.Call())
+    {
+        LOG_ERROR_RLD("Trans client call failed");
+        tc.Close();
+        return false;
+    }
 
-    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
-        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
-        CommMsgHandler::SUCCEED == iRet;
+    tc.Close();
+    return CommMsgHandler::SUCCEED == iRet;
 }
 
 bool PassengerFlowMsgHandler::ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter wr)

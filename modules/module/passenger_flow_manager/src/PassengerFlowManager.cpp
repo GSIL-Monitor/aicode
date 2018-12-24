@@ -4687,7 +4687,7 @@ bool PassengerFlowManager::QuerySensorRecordsReq(const std::string &strMsg, cons
         }
 
         unsigned int i = 0;
-        unsigned int uiLoop = 100;
+        unsigned int uiLoop = 0xFFFFFFFF; //100; //设置为0xFFFFFFFF值，是为了确保只会调用一次ActionFunc函数，因为已经没有使用proxy转发了。
         auto itBegin = srlist.begin();
         auto itBegin2 = strRecordIDList.begin();
         auto itEnd = srlist.end();

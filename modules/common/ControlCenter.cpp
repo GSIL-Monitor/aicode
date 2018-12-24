@@ -19,28 +19,29 @@ ControlCenter::~ControlCenter()
 
 void ControlCenter::Run(const bool isWaitRunFinished)
 {
-    ClientCommInterface *pClient = ClientCommInterface::Create(m_ParamInfo.strRemoteAddress.c_str(), 
-        m_ParamInfo.strRemotePort.c_str(), 0, m_ParamInfo.uiShakehandOfChannelInterval);
+    //////////////////////////////////////
+    //ClientCommInterface *pClient = ClientCommInterface::Create(m_ParamInfo.strRemoteAddress.c_str(), 
+    //    m_ParamInfo.strRemotePort.c_str(), 0, m_ParamInfo.uiShakehandOfChannelInterval);
 
-    m_pClient.reset(pClient); //一定要提前初始化好shared_ptr
+    //m_pClient.reset(pClient); //一定要提前初始化好shared_ptr
 
-    pClient->SetCallBack
-        (
-        boost::bind(&ControlCenter::ConnectCB, this, _1),
-        boost::bind(&ControlCenter::ReadCB, this, _1, _2, _3),
-        boost::bind(&ControlCenter::WriteCB, this, _1, _2)
-        );
+    //pClient->SetCallBack
+    //    (
+    //    boost::bind(&ControlCenter::ConnectCB, this, _1),
+    //    boost::bind(&ControlCenter::ReadCB, this, _1, _2, _3),
+    //    boost::bind(&ControlCenter::WriteCB, this, _1, _2)
+    //    );
 
-    ClientCommInterface::Run(m_ParamInfo.uiThreadOfWorking);
-    pClient->AsyncConnect();
-    
-    LOG_INFO_RLD("Control center begin running...");
-    m_MsgWriterRunner.Run();
-    m_MsgHandlerRunner.Run(); //(isWaitRunFinished);
+    //ClientCommInterface::Run(m_ParamInfo.uiThreadOfWorking);
+    //pClient->AsyncConnect();
+    //
+    //LOG_INFO_RLD("Control center begin running...");
+    //m_MsgWriterRunner.Run();
+    //m_MsgHandlerRunner.Run(); //(isWaitRunFinished);
 
-    ////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
     TransServer::Param pam;
-    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.strRemotePort) + 15;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.strRemotePort);
     pam.m_uiThreadNum = m_ParamInfo.uiThreadOfWorking;
     m_pServer.Init(pam);
 

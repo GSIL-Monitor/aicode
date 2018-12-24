@@ -588,9 +588,6 @@ private:
     bool QueryStore(const std::string &strSid, const std::string &strUserID, StoreInfo &store, std::list<EntranceInfo> &entranceInfolist, std::list<DomainInfo> &dmilist,
         std::list<std::string> &strPhoneList);
 
-    bool QueryAllStore(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex, 
-        const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist);
-
     bool QueryAllStoreT(const std::string &strSid, const std::string &strUserID, const unsigned int uiBeginIndex,
         const std::string &strDomainID, const unsigned int uiOpenState, std::list<StoreAndEntranceInfo> &storelist);
 
