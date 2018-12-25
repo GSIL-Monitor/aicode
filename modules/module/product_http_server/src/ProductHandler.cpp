@@ -1073,6 +1073,145 @@ bool ProductHandler::AddOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, 
         return blResult;
     }
     
+    std::list<OrderDetail> OrddtList;
+    std::string strOrderDetail;
+    itFind = pMsgInfoMap->find("order_detail");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strOrderDetail = itFind->second;
+
+        auto OrdDtParseFunc = [&](Json::Value &jsValue) -> bool
+        {
+            if (!jsValue.isObject())
+            {
+                LOG_ERROR_RLD("Order detail parse failed");
+                return false;
+            }
+
+            OrderDetail orddt;
+
+            auto jsPtdID = jsValue["pdtid"];
+            if (!jsPtdID.isNull())
+            {
+                if (!jsPtdID.isString() || jsPtdID.asString().empty())
+                {
+                    LOG_ERROR_RLD("Pdt id parse failed");
+                    return false;
+                }
+
+                orddt.__set_strPdtID(jsPtdID.asString());
+            }
+            else
+            {
+                LOG_ERROR_RLD("Pdt id not found.");
+                return false;
+            }
+
+            auto jsNumber = jsValue["number"];
+            if (!jsNumber.isNull())
+            {
+                if (!jsNumber.isString() || jsNumber.asString().empty())
+                {
+                    LOG_ERROR_RLD("Number parse failed");
+                    return false;
+                }
+
+                int iNumber = 0;
+                if (!ValidType<int>(jsNumber.asString(), iNumber))
+                {
+                    LOG_ERROR_RLD("Number is invalid and value is " << jsNumber.asString());
+                    return false;
+                }
+
+                if (0 >= iNumber)
+                {
+                    LOG_ERROR_RLD("Number is invalid and value is " << iNumber);
+                    return blResult;
+                }
+
+                orddt.__set_iNumber(iNumber);
+            }
+            else
+            {
+                LOG_ERROR_RLD("Number not found.");
+                return false;
+            }
+
+            auto jsPrice = jsValue["price"];
+            if (!jsPrice.isNull())
+            {
+                if (!jsPrice.isString() || jsPrice.asString().empty())
+                {
+                    LOG_ERROR_RLD("Price parse failed");
+                    return false;
+                }
+
+                double dlPrice;
+                if (!ValidType<double>(jsPrice.asString(), dlPrice))
+                {
+                    LOG_ERROR_RLD("Price is invalid and value is " << jsPrice.asString());
+                    return false;
+                }
+
+                if (0 >= dlPrice)
+                {
+                    LOG_ERROR_RLD("Price is invalid and value is " << dlPrice);
+                    return blResult;
+                }
+
+                orddt.__set_dlPrice(dlPrice);
+            }
+            else
+            {
+                LOG_ERROR_RLD("Price not found.");
+                return false;
+            }
+
+            double dlTotalPrice = 0xFFFFFFFF;
+            auto jsTotalPrice = jsValue["total_price"];
+            if (!jsTotalPrice.isNull())
+            {
+                if (!jsTotalPrice.isString() || jsTotalPrice.asString().empty())
+                {
+                    LOG_ERROR_RLD("Total price parse failed");
+                    return false;
+                }
+
+                if (!ValidType<double>(jsTotalPrice.asString(), dlTotalPrice))
+                {
+                    LOG_ERROR_RLD("Total price is invalid and value is " << jsTotalPrice.asString());
+                    return false;
+                }
+            }
+            orddt.__set_dlTotalPrice(dlTotalPrice);
+
+            std::string strExtend;
+            auto jsExtend = jsValue["extend"];
+            if (!jsExtend.isNull())
+            {
+                if (!jsExtend.isString() || jsExtend.asString().empty())
+                {
+                    LOG_ERROR_RLD("Extend parse failed");
+                    return false;
+                }
+
+                strExtend = jsExtend.asString();
+            }
+            orddt.__set_strExtend(strExtend);
+
+
+            OrddtList.push_back(std::move(orddt));
+
+            return true;
+        };
+
+        if (!GetValueFromList(strOrderDetail, OrdDtParseFunc))
+        {
+            LOG_ERROR_RLD("Order detail parse failed and value is " << strOrderDetail);
+            return blResult;
+        }
+    }
+
     std::string strExtend;
     itFind = pMsgInfoMap->find("extend");
     if (pMsgInfoMap->end() != itFind)
@@ -1085,7 +1224,8 @@ bool ProductHandler::AddOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, 
     LOG_INFO_RLD("Add order info received and session id is " << strSid << " and user id is " << strUserID << " and order user id is " << strOrderUserID 
         << " and order name is " << strOrdName
         << " and type is " << iType << " and order status is " << iOrdStatus << " and express info is " << strExpressInfo << " and address is " << strAddress
-        << " and receiver is " << strReceiver << " and phone is " << strPhone << " and create date is " << strCreateDate << " and extend is " << strExtend);
+        << " and receiver is " << strReceiver << " and phone is " << strPhone << " and create date is " << strCreateDate << " and extend is " << strExtend
+        << " and order detail is " << strOrderDetail);
 
     ProductClient pclient;
     ProductClient::Param pam;
@@ -1121,7 +1261,31 @@ bool ProductHandler::AddOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, 
         pclient.Close();
         return blResult;
     }
+
+    //pclient.Close();
+
+    ///////////////////////////
+    for (auto &ordinfo : OrddtList)
+    {
+        ordinfo.__set_strOrdID(adrt.strOrdID);
+
+        AddOrdDetailRT adrt;
+        pclient.AddOrdDetail(adrt, strSid, strUserID, ordinfo);
+        if (adrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+        {
+            LOG_ERROR_RLD("Add order detail call failed" << " and return code is " << adrt.rtcode.iRtCode);
+
+            ReturnInfo::RetCode(adrt.rtcode.iRtCode);
+            pclient.Close();
+            return blResult;
+        }
+
+        LOG_INFO_RLD("Add order detail success and order detail id is " << adrt.strOrddtID);
+    }
+
     pclient.Close();
+
+    ////////////////////////////
 
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
     ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
