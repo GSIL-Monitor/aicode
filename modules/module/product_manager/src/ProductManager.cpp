@@ -719,7 +719,7 @@ void ProductManager::QueryAllOrd(QueryAllOrdRT& _return, const std::string& strS
         len += snprintf(sql + len, size - len, " and create_date <= '%s'", qryparam.strEndDate.c_str());
     }
     
-    snprintf(sql + len, size - len, " order by create_date limit %d, %d", boost::lexical_cast<unsigned int>(qryparam.strBeginIndex), 100);
+    snprintf(sql + len, size - len, " order by create_date desc limit %d, %d", boost::lexical_cast<unsigned int>(qryparam.strBeginIndex), 100);
 
     std::vector<OrderInfo> ordlist;
     OrderInfo ord;
