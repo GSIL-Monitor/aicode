@@ -29,7 +29,7 @@ CREATE TABLE `t_product_info` (
   `pdtprice` DOUBLE NOT NULL DEFAULT '0'             COMMENT '产品单价',
   `pic` varchar(300) DEFAULT ''                      COMMENT '产品图片http地址',
   `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
-  `extend` varchar(2000) DEFAULT ''                  COMMENT '扩展信息',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
   PRIMARY KEY (`id`),
   INDEX index_ref1(pdtid),
   INDEX index_ref2(typeinfo)
@@ -43,9 +43,9 @@ CREATE TABLE `t_product_property` (
   `pdtid` varchar(100) NOT NULL                      COMMENT '产品ID',
   `property_type` int(11) NOT NULL DEFAULT '0'       COMMENT '属性类型，0文本属性，1价格属性，2图片属性，3视频属性',
   `property_name` varchar(200) DEFAULT ''            COMMENT '属性名称',
-  `property_value` varchar(2000) DEFAULT ''          COMMENT '属性值',
+  `property_value` varchar(4000) DEFAULT ''          COMMENT '属性值',
   `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
-  `extend` varchar(2000) DEFAULT ''                  COMMENT '扩展信息',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
   PRIMARY KEY (`id`),
   INDEX index_ref1(pdtpptid),
   INDEX index_ref2(pdtid)
@@ -70,7 +70,7 @@ CREATE TABLE `t_order_info` (
   `back_express_info` varchar(2000) DEFAULT ''       COMMENT '退货快递单信息，json字符串，格式：["xxxx", "mmmm", "yyyy"]',
   `create_date` datetime default current_timestamp   COMMENT '创建日期',
   `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
-  `extend` varchar(2000) DEFAULT ''                  COMMENT '扩展信息',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
   PRIMARY KEY (`id`),
   INDEX index_ref1(ordid),
   INDEX index_ref2(ordname)
@@ -86,7 +86,7 @@ CREATE TABLE `t_order_detail` (
   `pdtprice` DOUBLE NOT NULL DEFAULT '0'             COMMENT '产品单价',
   `totalprice` DOUBLE NOT NULL DEFAULT '0'           COMMENT '产品总金额，允许自定义金额',
   `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
-  `extend` varchar(2000) DEFAULT ''                  COMMENT '扩展信息',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
   PRIMARY KEY (`id`),
   INDEX index_ref1(ordid),
   INDEX index_ref2(orddtid)

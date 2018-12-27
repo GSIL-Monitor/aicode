@@ -112,7 +112,7 @@ void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid
     }
     BOOST_SCOPE_EXIT_END
 
-    char sql[1024] = { 0 };
+    char sql[8192] = { 0 };
     const char *sqlfmt = "insert into t_product_info (id, pdtid, pdtname, typeinfo, typename, aliasname, pdtprice, pic, extend)"
         " values (uuid(), '%s', '%s', %d, '%s', %f, '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str(), pdt.strName.c_str(), pdt.iType, pdt.strTypeName.c_str(), pdt.strAliasName.c_str(), 
@@ -160,7 +160,7 @@ void ProductManager::ModifyProduct(ProductRTInfo& _return, const std::string& st
 
     bool blModified = false;
 
-    char sql[2048] = { 0 };
+    char sql[8192] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_product_info set id = id");
 
@@ -398,7 +398,7 @@ void ProductManager::AddProductProperty(AddProductPropertyRT& _return, const std
     }
     BOOST_SCOPE_EXIT_END
 
-    char sql[1024] = { 0 };
+    char sql[8192] = { 0 };
     const char *sqlfmt = "insert into t_product_property (id, pdtpptid, pdtid, property_type, property_name, property_value, extend)"
         " values (uuid(), '%s', '%s', %d, '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPdtpptID.c_str(), strPdtID.c_str(), pdtppt.iType, pdtppt.strName.c_str(), pdtppt.strValue.c_str(), pdtppt.strExtend.c_str());
@@ -464,7 +464,7 @@ void ProductManager::AddOrd(AddOrdRT& _return, const std::string& strSid, const 
     }
     BOOST_SCOPE_EXIT_END
 
-    char sql[2048] = { 0 };
+    char sql[8192] = { 0 };
     const char *sqlfmt = "insert into t_order_info (id, ordid, ordname, typeinfo, userid, ordstatus, express_info, address, receiver, phone, create_date, extend)"
         " values (uuid(), '%s', '%s', %d, '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strOrdID.c_str(), ord.strName.c_str(), ord.iType, ord.strUserID.c_str(), ord.iOrdStatus, ord.strExpressInfo.c_str(), 
@@ -512,7 +512,7 @@ void ProductManager::ModifyOrd(ProductRTInfo& _return, const std::string& strSid
 
     bool blModified = false;
 
-    char sql[2048] = { 0 };
+    char sql[8192] = { 0 };
     int size = sizeof(sql);
     int len = snprintf(sql, size, "update t_order_info set id = id");
 
@@ -683,7 +683,7 @@ void ProductManager::QueryAllOrd(QueryAllOrdRT& _return, const std::string& strS
     }
     BOOST_SCOPE_EXIT_END
 
-    char sql[1024] = { 0 };
+    char sql[2048] = { 0 };
     int size = sizeof(sql);
     const char *sqlfmt = "select ordid, ordname, typeinfo, userid, ordstatus, express_info, address, receiver, phone, create_date, extend from"
         " t_order_info where status = 0 ";
@@ -822,7 +822,7 @@ void ProductManager::AddOrdDetail(AddOrdDetailRT& _return, const std::string& st
     {
         dlTotalPrice = orddt.iNumber * orddt.dlPrice;
     }
-    char sql[1024] = { 0 };
+    char sql[8192] = { 0 };
     const char *sqlfmt = "insert into t_order_detail (id, orddtid, ordid, pdtid, pdtnumber, pdtprice, totalprice, extend)"
         " values (uuid(), '%s', '%s', '%s', %d, %f, %f, '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strOrddtID.c_str(), orddt.strOrdID.c_str(), orddt.strPdtID.c_str(), orddt.iNumber, orddt.dlPrice, dlTotalPrice, orddt.strExtend.c_str());
